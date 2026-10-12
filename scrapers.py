@@ -403,6 +403,239 @@ def scrape_tablelist(url, ua):
     return events
 
 
+def scrape_eventbrite_jsonld(url, ua):
+    """Scrape Eventbrite search and organizer pages using Schema.org ItemList JSON-LD."""
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    try:
+        resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for s in soup.find_all("script", type="application/ld+json"):
+            if not s.string:
+                continue
+            try:
+                data = json.loads(s.string)
+                if not isinstance(data, dict) or data.get("@type") != "ItemList":
+                    continue
+                for el in data.get("itemListElement", []):
+                    item = el.get("item", {})
+                    name = item.get("name")
+                    start = item.get("startDate")
+                    event_url = item.get("url") or url
+                    if not name or not start:
+                        continue
+                    try:
+                        if "T" in start:
+                            dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
+                        else:
+                            dt = datetime.fromisoformat(f"{start}T19:00:00").replace(tzinfo=EASTERN).astimezone(timezone.utc)
+                    except Exception:
+                        continue
+                    if dt < now:
+                        continue
+                    key = (name.lower(), dt.date().isoformat())
+                    if key in seen:
+                        continue
+                    seen.add(key)
+
+                    offers = item.get("offers")
+                    price = None
+                    if isinstance(offers, dict):
+                        p = offers.get("price") or offers.get("lowPrice")
+                        if p is not None:
+                            price = "Free" if str(p) in ("0", "0.0", "0.00") else f"${p}"
+                    elif isinstance(offers, list) and offers:
+                        p = offers[0].get("price") or offers[0].get("lowPrice")
+                        if p is not None:
+                            price = "Free" if str(p) in ("0", "0.0", "0.00") else f"${p}"
+
+                    loc = item.get("location", {})
+                    vname = loc.get("name") if isinstance(loc, dict) else None
+                    events.append({
+                        "name": name,
+                        "date": dt.isoformat(),
+                        "url": event_url,
+                        "venue": vname,
+                        "price": price,
+                    })
+            except Exception:
+                continue
+    except Exception:
+        pass
+    return events
+
+
+def scrape_petes_candy_store(url, ua):
+    """Pete's Candy Store — iconic Williamsburg backroom music, open mics, & comedy."""
+    events = []
+    now = datetime.now(timezone.utc)
+    try:
+        resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        wrappers = soup.find_all("div", class_=lambda c: c and ("wrapper" in (c or "").lower() or "event" in (c or "").lower()))
+        for w in wrappers:
+            date_text = ""
+            for tag in w.find_all(["h2", "h3", "h4", "div", "span"]):
+                txt = tag.get_text(strip=True)
+                m = re.search(r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})(?:st|nd|rd|th)?", txt, re.IGNORECASE)
+                if m:
+                    date_text = m.group(0)
+                    break
+            content = w.find("div", class_=lambda c: c and "styledContentContainer" in c)
+            if not content:
+                continue
+            title_el = content.find(class_=lambda c: c and "styledTitle" in c)
+            title = title_el.get_text(strip=True) if title_el else ""
+            if not title:
+                continue
+            time_el = content.find(class_=lambda c: c and ("styledTime" in c or "time" in (c or "").lower()))
+            time_str = time_el.get_text(strip=True) if time_el else "8:00pm"
+            if not date_text:
+                cur = w.previous_sibling
+                while cur and not date_text:
+                    if hasattr(cur, "get_text"):
+                        m = re.search(r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})(?:st|nd|rd|th)?", cur.get_text(), re.IGNORECASE)
+                        if m:
+                            date_text = m.group(0)
+                    cur = cur.previous_sibling
+            if not date_text:
+                continue
+            cleaned_date = re.sub(r"(st|nd|rd|th)", "", date_text, flags=re.IGNORECASE)
+            now_dt = datetime.now(EASTERN)
+            year = now_dt.year
+            dt_str = f"{cleaned_date} {year} {time_str}"
+            try:
+                dt = datetime.strptime(dt_str, "%B %d %Y %I:%M%p").replace(tzinfo=EASTERN).astimezone(timezone.utc)
+                if dt < now:
+                    continue
+            except Exception:
+                continue
+            events.append({
+                "name": title,
+                "date": dt.isoformat(),
+                "url": "https://www.petescandystore.com/calendar/",
+                "venue": "Pete's Candy Store",
+                "price": "Free / 1-drink min",
+                "category": "music",
+            })
+    except Exception:
+        pass
+    return events
+
+
+def scrape_squarespace_calendar(url, ua):
+    """Squarespace native JSON calendar API scraper."""
+    events = []
+    now = datetime.now(timezone.utc)
+    try:
+        json_url = url if "format=json" in url else (url + ("&" if "?" in url else "?") + "format=json")
+        resp = _SESSION.get(json_url, headers={"User-Agent": ua}, timeout=12)
+        resp.raise_for_status()
+        data = resp.json()
+        for item in data.get("upcoming", []) or data.get("items", []):
+            title = item.get("title")
+            start_ms = item.get("startDate")
+            if not title or not start_ms:
+                continue
+            try:
+                dt = datetime.fromtimestamp(start_ms / 1000.0, tz=timezone.utc)
+                if dt < now:
+                    continue
+                iso = dt.isoformat()
+            except Exception:
+                continue
+            full_url = item.get("fullUrl")
+            if full_url and not full_url.startswith("http"):
+                domain = "/".join(url.split("/")[:3])
+                full_url = f"{domain}{full_url}"
+            events.append({
+                "name": title,
+                "date": iso,
+                "url": full_url or url,
+                "venue": None,
+                "price": "Free / No Cover",
+                "category": "music",
+            })
+    except Exception:
+        pass
+    return events
+
+
+_WEEKDAYS = {
+    "monday": 0, "mondays": 0,
+    "tuesday": 1, "tuesdays": 1,
+    "wednesday": 2, "wednesdays": 2,
+    "thursday": 3, "thursdays": 3,
+    "friday": 4, "fridays": 4,
+    "saturday": 5, "saturdays": 5,
+    "sunday": 6, "sundays": 6,
+}
+
+
+def scrape_nyc_trivia_league(_url, ua):
+    """NYC Trivia League — 70+ neighborhood pubs & breweries across 5 boroughs."""
+    events = []
+    try:
+        resp = _SESSION.post(
+            "https://nyctrivialeague.com/jm-ajax/get_listings/",
+            data={"per_page": 100, "page": 1},
+            headers={"User-Agent": ua},
+            timeout=12,
+        )
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.json().get("html", ""), "html.parser")
+        today = datetime.now(EASTERN).date()
+        weeks = 4
+        for a in soup.select("article"):
+            title_el = a.select_one(".card__title")
+            tagline_el = a.select_one(".card__tagline")
+            link_el = a.select_one("a[href]")
+            if not title_el or not tagline_el:
+                continue
+            bar_name = title_el.get_text(strip=True)
+            tagline = tagline_el.get_text(strip=True)
+            event_url = link_el.get("href") if link_el else "https://nyctrivialeague.com/"
+            m_day = re.search(r"\b(mondays?|tuesdays?|wednesdays?|thursdays?|fridays?|saturdays?|sundays?)\b", tagline, re.IGNORECASE)
+            m_time = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", tagline, re.IGNORECASE)
+            if not m_day:
+                continue
+            weekday = _WEEKDAYS.get(m_day.group(1).lower())
+            if weekday is None:
+                continue
+            hour = 19
+            minute = 0
+            if m_time:
+                hour = int(m_time.group(1))
+                minute = int(m_time.group(2) or 0)
+                ampm = m_time.group(3).lower()
+                if ampm == "pm" and hour != 12:
+                    hour += 12
+                elif ampm == "am" and hour == 12:
+                    hour = 0
+            ahead = (weekday - today.weekday()) % 7
+            first_day = today + timedelta(days=ahead)
+            is_bingo = "bingo" in tagline.lower()
+            title_prefix = "Mixtape Bingo" if is_bingo else "NYC Trivia Night"
+            full_title = f"{title_prefix} @ {bar_name}"
+            for w in range(weeks):
+                d = first_day + timedelta(weeks=w)
+                dt = datetime(d.year, d.month, d.day, hour, minute, tzinfo=EASTERN)
+                events.append({
+                    "name": full_title,
+                    "date": dt.astimezone(timezone.utc).isoformat(),
+                    "url": event_url,
+                    "venue": bar_name,
+                    "price": "Free / No Cover",
+                    "category": "gaming",
+                })
+    except Exception:
+        pass
+    return events
+
+
 # --- Curated Recurring NYC Events ---
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
@@ -518,6 +751,30 @@ _ALL_VENUES = [
     {"name": "The Town Hall", "url": "https://donyc.com/venues/the-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Sony Hall", "url": "https://donyc.com/venues/sony-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Gramercy Theatre", "url": "https://donyc.com/venues/gramercy-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+
+    # Independent Bookstores & Literary Spaces
+    {"name": "Strand Book Store", "url": "https://www.eventbrite.com/d/ny--new-york/strand-bookstore/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "Books Are Magic", "url": "https://www.eventbrite.com/d/ny--brooklyn/books-are-magic/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "Greenlight Bookstore", "url": "https://www.eventbrite.com/d/ny--brooklyn/greenlight-bookstore/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "McNally Jackson Books", "url": "https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "Bluestockings Cooperative", "url": "https://www.eventbrite.com/d/ny--new-york/bluestockings/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+
+    # NYC Public Libraries (Free Marquee Author Talks & Community Series)
+    {"name": "New York Public Library", "url": "https://www.eventbrite.com/d/ny--new-york/nypl/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Brooklyn Public Library", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-public-library/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Queens Public Library", "url": "https://www.eventbrite.com/d/ny--queens/queens-public-library/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+
+    # Local Neighborhood Bars, Live Jams, Open Mics & Pub Trivia
+    {"name": "Pete's Candy Store", "url": "https://www.petescandystore.com/calendar/", "ua": UA_CHROME, "scraper": scrape_petes_candy_store, "default_category": "music"},
+    {"name": "Skinny Dennis", "url": "https://skinnydennisbrooklyn.com/calendar?format=json", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
+    {"name": "NYC Trivia League", "url": "https://nyctrivialeague.com/jm-ajax/get_listings/", "ua": UA_CHROME, "scraper": scrape_nyc_trivia_league, "default_category": "gaming"},
+
+    # Indie Cinemas, Micro-Theaters & Historic Jazz
+    {"name": "Film Forum", "url": "https://donyc.com/venues/film-forum", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
+    {"name": "Nitehawk Cinema", "url": "https://donyc.com/venues/nitehawk-cinema", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
+    {"name": "IFC Center", "url": "https://donyc.com/venues/ifc-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
+    {"name": "Union Hall Brooklyn", "url": "https://donyc.com/venues/union-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "Smalls Jazz Club", "url": "https://donyc.com/venues/smalls-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
 ]
 
 VENUES = _ALL_VENUES
