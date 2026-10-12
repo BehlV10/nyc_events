@@ -469,6 +469,52 @@ def scrape_eventbrite_jsonld(url, ua):
     return events
 
 
+def scrape_eventbrite_organizer(url, ua):
+    """Scrape official Eventbrite organizer API for complete venue event schedules."""
+    m = re.search(r"(\d{9,12})", url)
+    if not m:
+        return []
+    org_id = m.group(1)
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    api_url = f"https://www.eventbrite.com/api/v3/organizers/{org_id}/events/?order_by=start_asc"
+    try:
+        resp = _SESSION.get(api_url, headers={"User-Agent": ua}, timeout=12)
+        resp.raise_for_status()
+        data = resp.json()
+        for ev in data.get("events", []):
+            name = (ev.get("name") or {}).get("text")
+            start = (ev.get("start") or {}).get("utc")
+            event_url = ev.get("url")
+            if not name or not start:
+                continue
+            try:
+                dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
+            except Exception:
+                continue
+            if dt < now:
+                continue
+            key = (name.lower(), dt.date().isoformat())
+            if key in seen:
+                continue
+            seen.add(key)
+            is_free = ev.get("is_free", False)
+            price = "Free" if is_free else None
+            desc = (ev.get("summary") or "").strip()
+            events.append({
+                "name": name,
+                "date": dt.isoformat(),
+                "url": event_url or f"https://www.eventbrite.com/o/{org_id}",
+                "venue": None,
+                "price": price,
+                "description": desc,
+            })
+    except Exception:
+        pass
+    return events
+
+
 def scrape_petes_candy_store(url, ua):
     """Pete's Candy Store — iconic Williamsburg backroom music, open mics, & comedy."""
     events = []
@@ -942,11 +988,14 @@ _ALL_VENUES = [
     {"name": "Gramercy Theatre", "url": "https://donyc.com/venues/gramercy-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
 
     # Independent Bookstores & Literary Spaces
-    {"name": "Strand Book Store", "url": "https://www.eventbrite.com/d/ny--new-york/strand-bookstore/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
-    {"name": "Books Are Magic", "url": "https://www.eventbrite.com/d/ny--brooklyn/books-are-magic/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
-    {"name": "Greenlight Bookstore", "url": "https://www.eventbrite.com/d/ny--brooklyn/greenlight-bookstore/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "Strand Book Store", "url": "https://www.eventbrite.com/api/v3/organizers/30058841244/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "books"},
+    {"name": "Books Are Magic", "url": "https://www.eventbrite.com/api/v3/organizers/17671794664/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "books"},
+    {"name": "Greenlight Bookstore", "url": "https://www.eventbrite.com/api/v3/organizers/13064382976/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "books"},
+    {"name": "P&T Knitwear Books & Podcasts", "url": "https://www.eventbrite.com/api/v3/organizers/41790821233/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "books"},
+    {"name": "Housing Works Bookstore Cafe", "url": "https://www.eventbrite.com/api/v3/organizers/6548340747/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "books"},
     {"name": "McNally Jackson Books", "url": "https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
     {"name": "Bluestockings Cooperative", "url": "https://www.eventbrite.com/d/ny--new-york/bluestockings/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "KGB Bar (Literary Readings)", "url": "https://donyc.com/venues/kgb-bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "books"},
 
     # NYC Public Libraries (Free Marquee Author Talks & Community Series)
     {"name": "New York Public Library", "url": "https://www.eventbrite.com/d/ny--new-york/nypl/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
@@ -964,6 +1013,22 @@ _ALL_VENUES = [
     {"name": "IFC Center", "url": "https://donyc.com/venues/ifc-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
     {"name": "Union Hall Brooklyn", "url": "https://donyc.com/venues/union-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Smalls Jazz Club", "url": "https://donyc.com/venues/smalls-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+
+    # Legendary Greenwich Village & Lower East Side Music Halls
+    {"name": "Joe's Pub (The Public Theater)", "url": "https://donyc.com/venues/joes-pub", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "The Bitter End (Greenwich Village)", "url": "https://donyc.com/venues/the-bitter-end", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Arlene's Grocery (LES Rock & Karaoke)", "url": "https://donyc.com/venues/arlenes-grocery", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Nublu 151 (Alphabet City)", "url": "https://donyc.com/venues/nublu-151", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Drom NYC (East Village Global Music)", "url": "https://donyc.com/venues/drom", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Terra Blues (Bleecker St)", "url": "https://donyc.com/venues/terra-blues", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Symphony Space (Upper West Side)", "url": "https://donyc.com/venues/symphony-space", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
+
+    # Comedy Clubs & Queens Performance Spaces
+    {"name": "Q.E.D. Astoria (Comedy & Arts)", "url": "https://donyc.com/venues/qed", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "New York Comedy Club Midtown", "url": "https://donyc.com/venues/new-york-comedy-club-midtown", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "New York Comedy Club East Village", "url": "https://donyc.com/venues/new-york-comedy-club-east-village", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "The Tiny Cupboard (Bushwick Rooftop Comedy)", "url": "https://donyc.com/venues/the-tiny-cupboard", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "Brooklyn Comedy Collective (Eris Mainstage)", "url": "https://donyc.com/venues/brooklyn-comedy-collective", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
 
     # Free Events Aggregators & Citywide Parks
     {"name": "NYC Parks Free Public Events", "url": "https://www.nycgovparks.org/xml/events_300_rss.xml", "ua": UA_CHROME, "scraper": scrape_nyc_parks, "default_category": "outdoors"},
