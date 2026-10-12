@@ -1,0 +1,608 @@
+"""NYC Events — venue scrapers and data definitions."""
+
+import json
+import os
+import re
+import ssl
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timedelta, timezone
+from urllib.parse import quote, urljoin
+from zoneinfo import ZoneInfo
+import warnings
+
+import requests
+from requests.adapters import HTTPAdapter
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
+
+CACHE_SECONDS = 15 * 60
+EASTERN = ZoneInfo("America/New_York")
+
+UA_SAFARI = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"
+)
+UA_CHROME = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+)
+UA_CURL = "curl/8.4.0"
+
+_HS_CERTIFI = "/opt/homebrew/var/hs-certifi/cacert.pem"
+
+
+def _make_session():
+    ca = _HS_CERTIFI if os.path.exists(_HS_CERTIFI) else True
+    ctx = ssl.create_default_context(cafile=ca if isinstance(ca, str) else None)
+    if hasattr(ssl, "VERIFY_X509_STRICT"):
+        ctx.verify_flags &= ~ssl.VERIFY_X509_STRICT
+
+    class _Adapter(HTTPAdapter):
+        def init_poolmanager(self, *args, **kwargs):
+            kwargs["ssl_context"] = ctx
+            super().init_poolmanager(*args, **kwargs)
+
+    s = requests.Session()
+    s.mount("https://", _Adapter())
+    return s
+
+
+_SESSION = _make_session()
+
+
+def fetch_soup(url, ua=UA_CHROME, timeout=15):
+    resp = _SESSION.get(
+        url,
+        headers={
+            "User-Agent": ua,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+        },
+        timeout=timeout,
+    )
+    resp.raise_for_status()
+    return BeautifulSoup(resp.text, "html.parser")
+
+
+def _format_price_range(lo, hi, curr="USD"):
+    sym = "$" if curr in ("USD", "$", None) else f"{curr} "
+    def _fmt(val):
+        if val is None:
+            return None
+        return f"{val:.2f}".rstrip("0").rstrip(".")
+    lo_s = _fmt(lo)
+    hi_s = _fmt(hi)
+    if lo_s is None and hi_s is None:
+        return None
+    if lo_s is None:
+        return f"{sym}{hi_s}"
+    if hi_s is None or lo_s == hi_s:
+        return f"{sym}{lo_s}"
+    return f"{sym}{lo_s}–{hi_s}"
+
+
+CATEGORY_KEYWORDS = [
+    ("music",     [r"\b(concert|band|orchestra|jazz|symphony|quartet|choir|acoustic|live music|dj set|indie rock|punk|metal|folk|hip-hop|r&b|brass band)\b"]),
+    ("comedy",    [r"\b(comedy|stand-?up|improv|open mic comedy|comic|roast|laugh)\b"]),
+    ("clubbing",  [r"\b(dj|rave|techno|house music|edm|club night|dance party|nightclub|party|afters)\b"]),
+    ("dance",     [r"\b(salsa|bachata|tango|swing dance|lindy hop|contra dance|ballroom|dance class|social dance|milonga|cumbia)\b"]),
+    ("theater",   [r"\b(theater|theatre|musical|play|broadway|off-broadway|stage|cabaret|drama)\b"]),
+    ("film",      [r"\b(screening|film|movie|cinema|documentary|35mm|q&a screening)\b"]),
+    ("art",       [r"\b(exhibit|gallery|museum|reception|sculpture|painting|open studios?|installation)\b"]),
+    ("books",     [r"\b(book launch|author talk|poetry|reading|bookstore|book signing|literary)\b"]),
+    ("food",      [r"\b(tasting|wine dinner|beer release|food tour|brewery|pop-up dinner|pairing|culinary)\b"]),
+    ("outdoors",  [r"\b(hike|walking tour|nature walk|birding|trail|kayak|park tour|outdoor)\b"]),
+    ("sports",    [r"\b(yankees|mets|knicks|nets|rangers|islanders|soccer|5k|10k|marathon|hockey|basketball)\b"]),
+    ("gaming",    [r"\b(board games?|trivia|arcade|esports|chess|magic the gathering|d&d|tabletop)\b"]),
+    ("community", [r"\b(talk|lecture|panel|discussion|networking|farmers market|flea market|artisan market|expo|festival|parade)\b"]),
+]
+
+CATEGORY_BUCKETS = [
+    ("Music & nightlife", ["music", "clubbing", "dance"]),
+    ("Arts & culture",    ["theater", "film", "art", "books", "comedy"]),
+    ("Outdoors & active", ["outdoors", "sports"]),
+    ("Social & community",["community", "food", "gaming", "other"]),
+]
+
+CATEGORY_STYLES = {
+    "music":     ("#7aa2f7", "♪"),
+    "comedy":    ("#bb9af7", "ツ"),
+    "clubbing":  ("#f7768e", "⚡"),
+    "dance":     ("#ff7ab2", "💃"),
+    "theater":   ("#e0af68", "🎭"),
+    "film":      ("#7dcfff", "🎬"),
+    "art":       ("#ffd866", "✦"),
+    "books":     ("#9ece6a", "📖"),
+    "food":      ("#ff9e64", "🍴"),
+    "outdoors":  ("#73daca", "🌿"),
+    "sports":    ("#2ac3de", "⚽"),
+    "gaming":    ("#b4f9f8", "🎲"),
+    "community": ("#c0caf5", "👥"),
+    "other":     ("#6b7280", "·"),
+}
+
+
+def category_bucket(cat):
+    for bucket_name, members in CATEGORY_BUCKETS:
+        if cat in members:
+            return bucket_name
+    return "Social & community"
+
+
+def guess_category(text, default="community"):
+    if not text:
+        return default
+    t = text.lower()
+    for cat, patterns in CATEGORY_KEYWORDS:
+        for p in patterns:
+            if re.search(p, t):
+                return cat
+    return default
+
+
+# --- NYC Weather ---
+_weather_cache = {"ts": 0, "data": None}
+_WMO_ICON = {
+    0: ("☀️", "Clear"),
+    1: ("🌤️", "Mainly clear"), 2: ("⛅", "Partly cloudy"), 3: ("☁️", "Overcast"),
+    45: ("🌫️", "Fog"), 48: ("🌫️", "Depositing rime fog"),
+    51: ("🌦️", "Light drizzle"), 53: ("🌦️", "Drizzle"), 55: ("🌧️", "Dense drizzle"),
+    61: ("🌧️", "Slight rain"), 63: ("🌧️", "Rain"), 65: ("🌧️", "Heavy rain"),
+    71: ("🌨️", "Slight snow"), 73: ("🌨️", "Snow"), 75: ("🌨️", "Heavy snow"),
+    77: ("🌨️", "Snow grains"),
+    80: ("🌦️", "Slight showers"), 81: ("🌧️", "Showers"), 82: ("🌧️", "Violent showers"),
+    85: ("🌨️", "Snow showers"), 86: ("🌨️", "Heavy snow showers"),
+    95: ("⛈️", "Thunderstorm"), 96: ("⛈️", "Thunderstorm with hail"), 99: ("⛈️", "Heavy thunderstorm"),
+}
+
+
+def fetch_nyc_weather():
+    """Current NYC (Central Park) temp + condition."""
+    if _weather_cache["data"] is not None and time.time() - _weather_cache["ts"] < 30 * 60:
+        return _weather_cache["data"]
+    out = None
+    try:
+        r = _SESSION.get(
+            "https://api.open-meteo.com/v1/forecast",
+            params={
+                "latitude": 40.78, "longitude": -73.96,
+                "current": "temperature_2m,weather_code",
+                "temperature_unit": "fahrenheit",
+                "timezone": "America/New_York",
+            },
+            timeout=8,
+        )
+        r.raise_for_status()
+        cur = r.json().get("current") or {}
+        temp = cur.get("temperature_2m")
+        code = cur.get("weather_code")
+        icon, label = _WMO_ICON.get(code, ("🌡️", "—"))
+        if temp is not None:
+            out = {"temp": round(temp), "icon": icon, "label": label}
+    except Exception:
+        out = None
+    _weather_cache["data"] = out
+    _weather_cache["ts"] = time.time()
+    return out
+
+
+# --- NYC Broadway Lotteries ---
+_luckyseat_cache = {"ts": 0, "data": None}
+
+
+def fetch_luckyseat_nyc():
+    """Fetch LuckySeat Broadway lotteries for NYC."""
+    if _luckyseat_cache["data"] is not None and time.time() - _luckyseat_cache["ts"] < CACHE_SECONDS:
+        return _luckyseat_cache["data"]
+    shows = []
+    try:
+        resp = _SESSION.get(
+            "https://www.luckyseat.com/api/showmanagement/getshowlist",
+            headers={"User-Agent": UA_SAFARI, "Accept": "application/json"},
+            timeout=10,
+        )
+        resp.raise_for_status()
+        for s in resp.json():
+            city = (s.get("city") or "").lower()
+            if "new york" not in city and "broadway" not in city and "ny" not in city:
+                continue
+            if not s.get("isActive") or s.get("isTempClosed"):
+                continue
+            shows.append({
+                "name": s.get("showName"),
+                "venue": s.get("eventLocation"),
+                "price": s.get("priceAndFeesTotal"),
+                "url": f"https://www.luckyseat.com/shows/{s.get('showAlias')}" if s.get("showAlias") else "https://www.luckyseat.com/",
+            })
+    except Exception:
+        shows = []
+    _luckyseat_cache["data"] = shows
+    _luckyseat_cache["ts"] = time.time()
+    return shows
+
+
+# --- Scrapers ---
+
+def scrape_donyc(url, ua):
+    """DoNYC venue & category scraper — parses Schema.org microdata."""
+    soup = fetch_soup(url, ua)
+    events = []
+    now = datetime.now(timezone.utc)
+    seen = set()
+    for card in soup.select('[itemprop="event"]'):
+        name_el = card.find(itemprop="name")
+        date_el = card.find(itemprop="startDate")
+        loc_el = card.find(itemprop="location")
+        if not name_el or not date_el:
+            continue
+        name = name_el.get_text(strip=True)
+        iso = date_el.get("content", "")
+        iso = re.sub(r"([+-]\d{2})(\d{2})$", r"\1:\2", iso)
+        try:
+            dt = datetime.fromisoformat(iso).astimezone(timezone.utc)
+        except (ValueError, AttributeError):
+            continue
+        if dt < now:
+            continue
+        venue_name = None
+        if loc_el:
+            vn = loc_el.find(itemprop="name")
+            venue_name = vn.get_text(strip=True) if vn else None
+        permalink = card.get("data-permalink", "")
+        event_url = f"https://donyc.com{permalink}" if permalink else url
+        key = (name.lower(), dt.date().isoformat())
+        if key in seen:
+            continue
+        seen.add(key)
+        events.append({
+            "name": name,
+            "date": dt.isoformat(),
+            "url": event_url,
+            "venue": venue_name,
+            "price": None,
+        })
+    return events
+
+
+def scrape_donyc_calendar(url, ua):
+    """DoNYC multi-day event calendar — fetches next 10 days of citywide listings."""
+    events = []
+    now = datetime.now(EASTERN)
+    seen = set()
+    for i in range(10):
+        d = now.date() + timedelta(days=i)
+        day_url = f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}"
+        try:
+            day_events = scrape_donyc(day_url, ua)
+            for e in day_events:
+                key = (e["name"].lower(), (e.get("date") or "")[:10])
+                if key not in seen:
+                    seen.add(key)
+                    events.append(e)
+        except Exception:
+            continue
+    return events
+
+
+def scrape_the_skint(url, ua):
+    """The Skint — NYC's legendary daily free and cheap cultural events blog."""
+    resp = _SESSION.get("https://theskint.com/feed/", headers={"User-Agent": ua}, timeout=12)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
+    events = []
+    now = datetime.now(EASTERN)
+    for item in soup.find_all("item")[:15]:
+        title_el = item.find("title")
+        title = title_el.get_text(strip=True) if title_el else ""
+        link_el = item.find("link")
+        link = link_el.get_text(strip=True) if link_el else url
+        pub_el = item.find("pubdate") or item.find("pubDate")
+        pub_str = pub_el.get_text(strip=True) if pub_el else ""
+        
+        # Parse publication date or match date in title
+        try:
+            pub_dt = datetime.strptime(pub_str[:16], "%a, %d %b %Y").replace(tzinfo=EASTERN)
+        except Exception:
+            pub_dt = now
+
+        events.append({
+            "name": title,
+            "date": pub_dt.astimezone(timezone.utc).isoformat(),
+            "url": link,
+            "venue": "The Skint NYC",
+            "price": "Free / Cheap",
+            "category": "community",
+        })
+    return events
+
+
+def scrape_ticketmaster_nyc(_url, _ua):
+    """Ticketmaster Discovery API for NYC venues (MSG, Barclays, Webster Hall, Bowery, etc.)."""
+    key = os.environ.get("TICKETMASTER_API_KEY") or "oo1qd0wzLe7WJpm61ALQuUCTMXGK7U5z"
+    resp = _SESSION.get(
+        "https://app.ticketmaster.com/discovery/v2/events.json",
+        params={
+            "apikey": key,
+            "latlong": "40.7128,-74.0060",
+            "radius": 20,
+            "unit": "miles",
+            "size": 100,
+            "sort": "date,asc",
+            "startDateTime": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        },
+        timeout=15,
+    )
+    resp.raise_for_status()
+    events = []
+    for ev in resp.json().get("_embedded", {}).get("events", []):
+        start = ev.get("dates", {}).get("start", {})
+        iso = start.get("dateTime")
+        if not iso and start.get("localDate"):
+            try:
+                iso = datetime.fromisoformat(f"{start['localDate']}T19:00:00").replace(
+                    tzinfo=EASTERN,
+                ).astimezone(timezone.utc).isoformat()
+            except ValueError:
+                iso = None
+        venues = ev.get("_embedded", {}).get("venues") or []
+        venue = venues[0]["name"] if venues and venues[0].get("name") else "NYC Venue"
+        price = None
+        prs = ev.get("priceRanges") or []
+        if prs:
+            price = _format_price_range(prs[0].get("min"), prs[0].get("max"), prs[0].get("currency", "USD"))
+        events.append({
+            "name": ev.get("name"),
+            "date": iso,
+            "url": ev.get("url"),
+            "venue": venue,
+            "price": price,
+            "category": guess_category(ev.get("name"), "music"),
+        })
+    return events
+
+
+def scrape_tablelist(url, ua):
+    """Tablelist Next.js ticketing embed for nightclubs."""
+    resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=12)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
+    tag = soup.find("script", id="__NEXT_DATA__")
+    if not tag or not tag.string:
+        return []
+    try:
+        data = json.loads(tag.string)
+    except Exception:
+        return []
+    props = data.get("props", {}).get("pageProps", {})
+    venue_info = props.get("venue", {})
+    default_venue = venue_info.get("name") or "Nightclub"
+    raw_events = props.get("events", {}).get("data", [])
+    events = []
+    for item in raw_events:
+        name = item.get("name")
+        start = item.get("dateStart")
+        if not name or not start:
+            continue
+        try:
+            dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
+            iso = dt.isoformat()
+        except Exception:
+            iso = None
+        vname = item.get("venueName") or default_venue
+        events.append({
+            "name": name,
+            "date": iso,
+            "url": item.get("externalSellingLink") or url,
+            "venue": vname,
+            "price": None,
+            "category": "clubbing",
+        })
+    return events
+
+
+# --- Curated Recurring NYC Events ---
+MANUAL_RECURRING_EVENTS = [
+    ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
+        ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", 0, 8, 0, "Free"),
+        ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-w", 2, 8, 0, "Free"),
+        ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-f", 4, 8, 0, "Free"),
+        ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-s", 5, 8, 0, "Free"),
+    ]),
+    ("Grand Bazaar NYC", "https://grandbazaarnyc.org/", "community", [
+        ("Grand Bazaar NYC (Upper West Side)", "https://grandbazaarnyc.org/", 6, 10, 0, "Free"),
+    ]),
+    ("Brooklyn Flea", "https://brooklynflea.com/", "community", [
+        ("Brooklyn Flea @ DUMBO Archway", "https://brooklynflea.com/", 5, 10, 0, "Free"),
+        ("Brooklyn Flea @ DUMBO Archway", "https://brooklynflea.com/", 6, 10, 0, "Free"),
+    ]),
+    ("Smorgasburg NYC", "https://www.smorgasburg.com/", "food", [
+        ("Smorgasburg Williamsburg", "https://www.smorgasburg.com/", 5, 11, 0, "Free entry"),
+        ("Smorgasburg Prospect Park", "https://www.smorgasburg.com/", 6, 11, 0, "Free entry"),
+    ]),
+    ("Comedy Cellar", "https://www.comedycellar.com/line-up/", "comedy", [
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 0, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 1, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 2, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 3, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 4, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 5, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 6, 20, 0),
+    ]),
+]
+
+
+def _expand_manual_recurring(weeks=8):
+    today = datetime.now(EASTERN).date()
+    results = []
+    for venue, venue_url, default_cat, items in MANUAL_RECURRING_EVENTS:
+        events = []
+        for item in items:
+            name, url, weekday, hour, minute = item[:5]
+            price = item[5] if len(item) > 5 else None
+            ahead = (weekday - today.weekday()) % 7
+            first_day = today + timedelta(days=ahead)
+            for w in range(weeks):
+                d = first_day + timedelta(weeks=w)
+                dt = datetime(d.year, d.month, d.day, hour, minute, tzinfo=EASTERN)
+                events.append({
+                    "name": name,
+                    "date": dt.astimezone(timezone.utc).isoformat(),
+                    "url": url,
+                    "venue": venue,
+                    "price": price,
+                    "category": default_cat,
+                })
+        results.append({
+            "venue": venue,
+            "url": venue_url,
+            "events": events,
+            "error": None,
+        })
+    return results
+
+
+# --- Registered Venues ---
+_ALL_VENUES = [
+    # Megasites & Aggregators
+    {"name": "DoNYC Citywide", "url": "https://donyc.com/events", "ua": UA_CHROME, "scraper": scrape_donyc_calendar, "default_category": None},
+    {"name": "The Skint NYC", "url": "https://theskint.com/", "ua": UA_CHROME, "scraper": scrape_the_skint, "default_category": "community"},
+    {"name": "Ticketmaster NYC", "url": "https://www.ticketmaster.com/", "ua": UA_CHROME, "scraper": scrape_ticketmaster_nyc, "default_category": "music"},
+
+    # Brooklyn Music & Nightlife
+    {"name": "Brooklyn Bowl", "url": "https://donyc.com/venues/brooklyn-bowl", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Elsewhere Brooklyn", "url": "https://donyc.com/venues/elsewhere", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Knockdown Center", "url": "https://donyc.com/venues/knockdown-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Good Room Greenpoint", "url": "https://donyc.com/venues/good-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "TV Eye Ridgewood", "url": "https://donyc.com/venues/tv-eye", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Public Records Gowanus", "url": "https://donyc.com/venues/public-records", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "The Bell House", "url": "https://donyc.com/venues/the-bell-house", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "Littlefield Brooklyn", "url": "https://donyc.com/venues/littlefield", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "Music Hall of Williamsburg", "url": "https://donyc.com/venues/music-hall-of-williamsburg", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Brooklyn Steel", "url": "https://donyc.com/venues/brooklyn-steel", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Warsaw Brooklyn", "url": "https://donyc.com/venues/warsaw", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Barclays Center", "url": "https://donyc.com/venues/barclays-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "sports"},
+    {"name": "Kings Theatre Flatbush", "url": "https://donyc.com/venues/kings-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Baby's All Right Williamsburg", "url": "https://donyc.com/venues/baby-s-all-right", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "The Sultan Room Bushwick", "url": "https://donyc.com/venues/the-sultan-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Pioneer Works Red Hook", "url": "https://donyc.com/venues/pioneer-works", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
+    {"name": "C'mon Everybody Bed-Stuy", "url": "https://donyc.com/venues/c-mon-everybody", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+
+    # Queens
+    {"name": "Forest Hills Stadium", "url": "https://donyc.com/venues/forest-hills-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+
+    # The Bronx
+    {"name": "Yankee Stadium", "url": "https://donyc.com/venues/yankee-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "sports"},
+    {"name": "Lehman Center for the Performing Arts", "url": "https://donyc.com/venues/lehman-center-for-the-performing-arts", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
+
+    # Staten Island
+    {"name": "St. George Theatre Staten Island", "url": "https://donyc.com/venues/st-george-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
+
+    # Manhattan Music, Clubs & Comedy
+    {"name": "Bowery Ballroom", "url": "https://donyc.com/venues/bowery-ballroom", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Mercury Lounge", "url": "https://donyc.com/venues/mercury-lounge", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Webster Hall", "url": "https://donyc.com/venues/webster-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Terminal 5", "url": "https://donyc.com/venues/terminal-5", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Irving Plaza", "url": "https://donyc.com/venues/irving-plaza", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Racket NYC", "url": "https://donyc.com/venues/racket-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Le Poisson Rouge", "url": "https://donyc.com/venues/le-poisson-rouge", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Blue Note Jazz Club", "url": "https://donyc.com/venues/blue-note-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Caveat NYC", "url": "https://donyc.com/venues/caveat", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "Apollo Theater", "url": "https://donyc.com/venues/apollo-theater", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
+    {"name": "Madison Square Garden", "url": "https://donyc.com/venues/madison-square-garden", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Radio City Music Hall", "url": "https://donyc.com/venues/radio-city-music-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Beacon Theatre", "url": "https://donyc.com/venues/beacon-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Carnegie Hall", "url": "https://donyc.com/venues/carnegie-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "The Town Hall", "url": "https://donyc.com/venues/the-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Sony Hall", "url": "https://donyc.com/venues/sony-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Gramercy Theatre", "url": "https://donyc.com/venues/gramercy-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+]
+
+VENUES = _ALL_VENUES
+
+
+# Static "useful links" — venues & discount programs worth linking
+STATIC_LINKS = [
+    ("theater", "TodayTix NYC Broadway & Off-Broadway", "https://www.todaytix.com/nyc"),
+    ("theater", "Broadway Direct Digital Lotteries", "https://lottery.broadwaydirect.com/"),
+    ("theater", "Lucky Seat NYC Broadway Lotteries", "https://www.luckyseat.com/"),
+    ("theater", "TKTS Discount Booths (Times Square & Lincoln Center)", "https://www.tdf.org/tkts"),
+    ("art",     "NYC Culture Pass (Free Museums with Library Card)", "https://www.culturepass.nyc/"),
+    ("outdoors","NYC Parks Free Events Directory", "https://www.nycgovparks.org/events"),
+    ("outdoors","NYC Ferry ($4.00 harbor routes)", "https://www.ferry.nyc/"),
+    ("comedy",  "Comedy Cellar Nightly Lineups", "https://www.comedycellar.com/line-up/"),
+    ("art",     "The Metropolitan Museum of Art (The Met)", "https://www.metmuseum.org/events"),
+    ("art",     "Museum of Modern Art (MoMA)", "https://www.moma.org/calendar/events"),
+    ("art",     "Whitney Museum of American Art", "https://whitney.org/events"),
+    ("art",     "Brooklyn Museum First Saturdays & Programs", "https://www.brooklynmuseum.org/programs"),
+    ("music",   "Lincoln Center Events & Free Series", "https://www.lincolncenter.org/series/lincoln-center-presents"),
+    ("music",   "Carnegie Hall Season Calendar", "https://www.carnegiehall.org/Events"),
+    ("music",   "Central Park SummerStage", "https://cityparksfoundation.org/summerstage/"),
+    ("music",   "BRIC Celebrate Brooklyn! Festival", "https://bricartsmedia.org/celebrate-brooklyn/"),
+    ("music",   "Village Vanguard (West Village Jazz)", "https://villagevanguard.com/"),
+    ("music",   "Dizzy's Club Jazz at Lincoln Center", "https://jazz.org/dizzys/"),
+    ("film",    "Film Forum (West Village Independent Cinema)", "https://filmforum.org/"),
+    ("theater", "BAM (Brooklyn Academy of Music)", "https://www.bam.org/"),
+    ("books",   "New York Public Library (NYPL) Events", "https://www.nypl.org/events"),
+    ("books",   "Brooklyn Public Library (BPL) Events", "https://www.bklynlibrary.org/calendar"),
+]
+
+DEAL_LINKS = [
+    ("TodayTix NYC (Broadway & Off-Bway discounts)", "https://www.todaytix.com/nyc"),
+    ("Broadway Direct Lotteries (Hamilton, Wicked, Lion King)", "https://lottery.broadwaydirect.com/"),
+    ("Lucky Seat Broadway Lotteries ($39–$49)", "https://www.luckyseat.com/"),
+    ("NYC Culture Pass (Free museums for NY library cardholders)", "https://www.culturepass.nyc/"),
+    ("NYC Ferry Tickets ($4.00 per ride)", "https://www.ferry.nyc/"),
+]
+
+
+# --- Cache & Scraper Aggregator ---
+_cache = {"ts": 0, "data": None}
+
+
+def _scrape_one(v):
+    t0 = time.time()
+    try:
+        events = v["scraper"](v["url"], v["ua"])
+        for e in events:
+            if not e.get("category"):
+                e["category"] = guess_category(e.get("name"), v.get("default_category") or "community")
+        return {
+            "venue": v["name"],
+            "url": v["url"],
+            "events": events,
+            "error": None,
+            "duration": round(time.time() - t0, 2),
+        }
+    except Exception as exc:
+        return {
+            "venue": v["name"],
+            "url": v["url"],
+            "events": [],
+            "error": str(exc),
+            "duration": round(time.time() - t0, 2),
+        }
+
+
+def get_all_events(force=False):
+    now = time.time()
+    if not force and _cache["data"] and (now - _cache["ts"] < CACHE_SECONDS):
+        return _cache["data"]
+
+    with ThreadPoolExecutor(max_workers=10) as ex:
+        results = list(ex.map(_scrape_one, VENUES))
+
+    # Add recurring events
+    results.extend(_expand_manual_recurring(weeks=8))
+
+    payload = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "venues": results,
+        "weather": fetch_nyc_weather(),
+        "luckyseat": fetch_luckyseat_nyc(),
+    }
+    _cache["ts"] = now
+    _cache["data"] = payload
+    return payload
