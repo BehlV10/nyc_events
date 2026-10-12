@@ -1,11 +1,13 @@
 """NYC Events — venue scrapers and data definitions."""
 
+import html
 import json
 import os
 import re
 import ssl
 import threading
 import time
+import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote, urljoin
@@ -636,6 +638,193 @@ def scrape_nyc_trivia_league(_url, ua):
     return events
 
 
+def scrape_nyc_parks(url, ua):
+    """NYC Parks Department official XML feed — 800+ free public events across all 5 boroughs."""
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    ns = {"event": "http://www.nycgovparks.org/eventsrss_ns/"}
+    try:
+        resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=15)
+        resp.raise_for_status()
+        root = ET.fromstring(resp.content)
+        for item in root.findall(".//item"):
+            title_el = item.find("title")
+            raw_title = title_el.text.strip() if title_el is not None and title_el.text else ""
+            if not raw_title:
+                continue
+            title = html.unescape(raw_title)
+
+            link_el = item.find("link")
+            link = link_el.text.strip() if link_el is not None and link_el.text else "https://www.nycgovparks.org/events"
+
+            startdate_el = item.find("event:startdate", ns)
+            starttime_el = item.find("event:starttime", ns)
+            park_el = item.find("event:parknames", ns)
+            loc_el = item.find("event:location", ns)
+            cat_el = item.find("event:categories", ns)
+
+            startdate = startdate_el.text.strip() if startdate_el is not None and startdate_el.text else ""
+            starttime = starttime_el.text.strip() if starttime_el is not None and starttime_el.text else "10:00 am"
+            park = park_el.text.strip() if park_el is not None and park_el.text else "NYC Park"
+            loc = loc_el.text.strip() if loc_el is not None and loc_el.text else park
+            cats_raw = cat_el.text.strip() if cat_el is not None and cat_el.text else ""
+
+            if not startdate:
+                continue
+
+            m_time = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", starttime, re.IGNORECASE)
+            hour = 10
+            minute = 0
+            if m_time:
+                hour = int(m_time.group(1))
+                minute = int(m_time.group(2) or 0)
+                ampm = m_time.group(3).lower()
+                if ampm == "pm" and hour != 12:
+                    hour += 12
+                elif ampm == "am" and hour == 12:
+                    hour = 0
+            try:
+                dt = datetime.fromisoformat(f"{startdate}T{hour:02d}:{minute:02d}:00").replace(tzinfo=EASTERN).astimezone(timezone.utc)
+            except Exception:
+                continue
+
+            if dt < now:
+                continue
+
+            key = (title.lower(), startdate, park.lower())
+            if key in seen:
+                continue
+            seen.add(key)
+
+            venue_str = f"{park} ({loc})" if loc and loc != park and len(loc) < 40 else park
+
+            cat_lower = (cats_raw + " " + title).lower()
+            if any(w in cat_lower for w in ["concert", "music", "dance", "performance"]):
+                cat = "music"
+            elif any(w in cat_lower for w in ["art", "crafts", "exhibit", "gallery"]):
+                cat = "art"
+            elif any(w in cat_lower for w in ["fitness", "yoga", "run", "sport", "cardio", "zumba"]):
+                cat = "sports"
+            elif any(w in cat_lower for w in ["movie", "film", "cinema"]):
+                cat = "film"
+            elif any(w in cat_lower for w in ["talk", "lecture", "tour", "history", "book"]):
+                cat = "community"
+            else:
+                cat = "outdoors"
+
+            events.append({
+                "name": title,
+                "date": dt.isoformat(),
+                "url": link,
+                "venue": venue_str,
+                "price": "Free",
+                "category": cat,
+            })
+    except Exception:
+        pass
+    return events
+
+
+def scrape_nyc_for_free(url, ua):
+    """NYC for FREE — curated free pop-up experiences, brand activations, and giveaways."""
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    today = datetime.now(EASTERN).date()
+    try:
+        resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for item in soup.select(".w-dyn-item"):
+            link_el = item.select_one("a[href^='/events/']")
+            if not link_el:
+                continue
+            href = link_el.get("href")
+            full_url = f"https://www.nycforfree.co{href}" if href.startswith("/") else href
+
+            head = item.find(["h2", "h3", "h4", "h5"])
+            title = head.get_text(strip=True) if head else ""
+            if not title:
+                parts = [p.strip() for p in link_el.get_text(separator="|").split("|") if p.strip()]
+                if len(parts) >= 2:
+                    title = parts[1]
+                elif parts:
+                    title = parts[0]
+            if not title or len(title) < 4:
+                continue
+
+            raw_text = item.get_text(separator=" | ", strip=True)
+            stamp_matches = re.findall(r"(\d{4}-\d{2}-\d{2})\|(\d{2}:\d{2})", raw_text)
+            date_matches = re.findall(r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s+(\d{4})", raw_text, re.IGNORECASE)
+
+            time_m = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", raw_text, re.IGNORECASE)
+            hour = 12
+            minute = 0
+            if time_m:
+                hour = int(time_m.group(1))
+                minute = int(time_m.group(2) or 0)
+                ampm = time_m.group(3).lower()
+                if ampm == "pm" and hour != 12:
+                    hour += 12
+                elif ampm == "am" and hour == 12:
+                    hour = 0
+
+            addr_m = re.search(r"(\d+[^|]+(?:St|Ave|Rd|Blvd|Way|Dr|Lane|Place|Pl|Square|Sq|Parkway|Pkwy)[^|]*(?:NY|USA)?)", raw_text)
+            venue = addr_m.group(1).strip() if addr_m else "NYC Pop-up / Experience"
+            if len(venue) > 60:
+                venue = venue[:60]
+
+            target_dates = []
+            if stamp_matches:
+                for d_str, t_str in stamp_matches:
+                    try:
+                        th, tm = map(int, t_str.split(":"))
+                        dt = datetime.fromisoformat(f"{d_str}T{th:02d}:{tm:02d}:00").replace(tzinfo=EASTERN).astimezone(timezone.utc)
+                        if dt >= now:
+                            target_dates.append(dt)
+                    except Exception:
+                        pass
+            elif date_matches:
+                parsed_d = []
+                for m, d, y in date_matches:
+                    try:
+                        dt = datetime.strptime(f"{m} {d} {y}", "%B %d %Y").replace(tzinfo=EASTERN)
+                        parsed_d.append(dt)
+                    except Exception:
+                        pass
+                if len(parsed_d) >= 2:
+                    start_d, end_d = parsed_d[0].date(), parsed_d[1].date()
+                    if end_d >= today:
+                        active_d = max(today, start_d)
+                        dt = datetime(active_d.year, active_d.month, active_d.day, hour, minute, tzinfo=EASTERN).astimezone(timezone.utc)
+                        target_dates.append(dt)
+                elif len(parsed_d) == 1:
+                    dt = datetime(parsed_d[0].year, parsed_d[0].month, parsed_d[0].day, hour, minute, tzinfo=EASTERN).astimezone(timezone.utc)
+                    if dt >= now:
+                        target_dates.append(dt)
+
+            if not target_dates:
+                continue
+
+            for dt in target_dates:
+                key = (title.lower(), dt.date().isoformat())
+                if key in seen:
+                    continue
+                seen.add(key)
+                events.append({
+                    "name": title,
+                    "date": dt.isoformat(),
+                    "url": full_url,
+                    "venue": venue,
+                    "price": "Free",
+                    "category": guess_category(title, "community"),
+                })
+    except Exception:
+        pass
+    return events
+
+
 # --- Curated Recurring NYC Events ---
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
@@ -775,6 +964,17 @@ _ALL_VENUES = [
     {"name": "IFC Center", "url": "https://donyc.com/venues/ifc-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
     {"name": "Union Hall Brooklyn", "url": "https://donyc.com/venues/union-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Smalls Jazz Club", "url": "https://donyc.com/venues/smalls-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+
+    # Free Events Aggregators & Citywide Parks
+    {"name": "NYC Parks Free Public Events", "url": "https://www.nycgovparks.org/xml/events_300_rss.xml", "ua": UA_CHROME, "scraper": scrape_nyc_parks, "default_category": "outdoors"},
+    {"name": "NYC for FREE (Pop-ups & Experiences)", "url": "https://www.nycforfree.co/events", "ua": UA_CHROME, "scraper": scrape_nyc_for_free, "default_category": "community"},
+
+    # Super Smash Bros (SSB), Arcades & Competitive Gaming
+    {"name": "OS NYC (Super Smash Bros & Gaming)", "url": "https://www.os-nyc.com/events?format=json", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "gaming"},
+    {"name": "Wonderville (Indie Arcade & Smashville)", "url": "https://www.wonderville.nyc/events?format=json", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "gaming"},
+
+    # Historic Cultural Music Halls
+    {"name": "S.O.B.'s (Sounds of Brazil)", "url": "https://donyc.com/venues/sobs", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
 ]
 
 VENUES = _ALL_VENUES
@@ -784,7 +984,7 @@ VENUES = _ALL_VENUES
 STATIC_LINKS = [
     ("theater", "TodayTix NYC Broadway & Off-Broadway", "https://www.todaytix.com/nyc"),
     ("theater", "Broadway Direct Digital Lotteries", "https://lottery.broadwaydirect.com/"),
-    ("theater", "Lucky Seat NYC Broadway Lotteries", "https://www.luckyseat.com/"),
+    ("theater", "Lucky Seat Broadway Lotteries ($39–$49)", "https://www.luckyseat.com/"),
     ("theater", "TKTS Discount Booths (Times Square & Lincoln Center)", "https://www.tdf.org/tkts"),
     ("art",     "NYC Culture Pass (Free Museums with Library Card)", "https://www.culturepass.nyc/"),
     ("outdoors","NYC Parks Free Events Directory", "https://www.nycgovparks.org/events"),
@@ -804,6 +1004,7 @@ STATIC_LINKS = [
     ("theater", "BAM (Brooklyn Academy of Music)", "https://www.bam.org/"),
     ("books",   "New York Public Library (NYPL) Events", "https://www.nypl.org/events"),
     ("books",   "Brooklyn Public Library (BPL) Events", "https://www.bklynlibrary.org/calendar"),
+    ("gaming",  "start.gg (NYC Super Smash Bros Tournaments)", "https://www.start.gg/"),
 ]
 
 DEAL_LINKS = [
@@ -824,6 +1025,8 @@ def _scrape_one(v):
     try:
         events = v["scraper"](v["url"], v["ua"])
         for e in events:
+            if not e.get("venue"):
+                e["venue"] = v["name"]
             if not e.get("category"):
                 e["category"] = guess_category(e.get("name"), v.get("default_category") or "community")
         return {
