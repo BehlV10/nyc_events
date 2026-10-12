@@ -8,13 +8,13 @@ Companion project to [Wicked Boston Events](https://github.com/BehlV10/boston_ev
 
 ## 🌟 Highlights & Features
 
-- **46+ Live NYC Venues & Data Feeds**: Aggregates from independent concert halls, clubs, Broadway lotteries, citywide calendars, and curated local guides.
+- **62+ Live NYC Venues & Community Feeds**: Aggregates from independent concert halls, indie bookstores, public libraries, neighborhood dive bars, pub trivia leagues, Broadway lotteries, and curated local guides.
 - **5-Borough Multi-Filter**: 1-tap filter pills for Manhattan, Brooklyn, Queens, The Bronx, Staten Island, and Tri-State / Greater NY.
 - **Custom NYC Skyline Hero Art**: Handcrafted, responsive SVG banner featuring One World Trade Center with red beacon spire, Empire State Building, Chrysler Building, Brooklyn Bridge stone arches, Statue of Liberty silhouette, Yellow Taxi pin, starfield, and East River reflections.
 - **Quick-Time Filters**: 1-tap shortcuts for *Today*, *Tomorrow*, *This Weekend*, *Next 7 Days*, and *Free Only*.
 - **Live NYC Weather & Broadway Lotteries**: Real-time Central Park temperature/forecast chip via Open-Meteo, plus live active Broadway lottery draws via LuckySeat.
 - **Calendar Integration**: 1-tap `+ GCal` button to add any event directly to Google Calendar, plus downloadable `.ics` support for Apple Calendar and Outlook.
-- **Zero-Dependency Static Exporter**: Generates a self-contained, lightning-fast static `index.html` suitable for GitHub Pages, Cloudflare Pages, or any CDN.
+- **Zero-Dependency Static Exporter**: Generates a self-contained, lightning-fast static `index.html` (1,800+ events) suitable for GitHub Pages, Cloudflare Pages, or any CDN.
 - **Automated 30-Minute Scraper Pipeline**: GitHub Actions cron runner re-scrapes feeds, refreshes `events.json` and `index.html`, and commits updates automatically.
 
 ---
@@ -22,19 +22,24 @@ Companion project to [Wicked Boston Events](https://github.com/BehlV10/boston_ev
 ## 🏛️ Coverage Across All 5 Boroughs
 
 ### 🎷 Manhattan
-- **Concerts & Clubs**: Bowery Ballroom, Mercury Lounge, Webster Hall, Terminal 5, Irving Plaza, Racket NYC, Le Poisson Rouge, Blue Note Jazz Club, Gramercy Theatre, Sony Hall, The Town Hall, City Winery.
+- **Concerts & Clubs**: Bowery Ballroom, Mercury Lounge, Webster Hall, Terminal 5, Irving Plaza, Racket NYC, Le Poisson Rouge, Blue Note Jazz Club, Smalls Jazz Club, Gramercy Theatre, Sony Hall, The Town Hall, City Winery.
 - **Iconic Halls**: Madison Square Garden, Radio City Music Hall, Beacon Theatre, Carnegie Hall, Apollo Theater, Lincoln Center.
-- **Comedy & Culture**: Caveat NYC, Comedy Cellar, Film Forum, Joe's Pub, The Public Theater.
+- **Independent Bookstores & Readings**: Strand Book Store (Rare Book Room & Flagship author talks), McNally Jackson Books (SoHo & Seaport), Bluestockings Cooperative (LES).
+- **Public Libraries**: New York Public Library (NYPL flagship Schwarzman & SNFL author talks, workshops, and exhibitions).
+- **Independent Film & Comedy**: Film Forum (Greenwich Village), IFC Center (West Village), Caveat NYC, Comedy Cellar, Film Forum, Joe's Pub, The Public Theater.
 - **Markets & Free Happenings**: Union Square Greenmarket, Grand Bazaar NYC (UWS), Bryant Park series, Central Park SummerStage.
 
 ### 🎸 Brooklyn
 - **Indie & Nightlife**: Brooklyn Steel, Music Hall of Williamsburg, Elsewhere Bushwick, Warsaw Greenpoint, Baby's All Right, The Sultan Room, Good Room Greenpoint, Public Records Gowanus, C'mon Everybody Bed-Stuy.
-- **Comedy & Performing Arts**: The Bell House, Littlefield, Kings Theatre Flatbush, Brooklyn Bowl Williamsburg, Pioneer Works Red Hook, BAM (Brooklyn Academy of Music).
+- **Neighborhood Bars & Live Music**: Pete's Candy Store (Williamsburg — nightly backroom music, open mics & comedy), Skinny Dennis (Williamsburg — live honky tonk & roots music).
+- **Independent Bookstores**: Books Are Magic (Cobble Hill & Brooklyn Heights author events), Greenlight Bookstore (Fort Greene).
+- **Public Libraries**: Brooklyn Public Library (BPL Presents & branch programming).
+- **Comedy, Film & Performing Arts**: The Bell House, Union Hall Brooklyn (Park Slope basement comedy), Littlefield, Kings Theatre Flatbush, Brooklyn Bowl Williamsburg, Nitehawk Cinema (Williamsburg & Prospect Park), Pioneer Works Red Hook, BAM (Brooklyn Academy of Music).
 - **Arenas & Markets**: Barclays Center, Brooklyn Flea DUMBO, Smorgasburg (Williamsburg & Prospect Park).
 
 ### 🌳 Queens
-- **Venues**: Forest Hills Stadium, Knockdown Center Maspeth, TV Eye Ridgewood.
-- **Culture**: MoMA PS1, Museum of the Moving Image, Socrates Sculpture Park.
+- **Venues & Music**: Forest Hills Stadium, Knockdown Center Maspeth, TV Eye Ridgewood.
+- **Public Libraries & Culture**: Queens Public Library (author talks & community programs), MoMA PS1, Museum of the Moving Image, Socrates Sculpture Park.
 
 ### ⚾ The Bronx
 - **Sports & Performing Arts**: Yankee Stadium, Lehman Center for the Performing Arts, Bronx Zoo, New York Botanical Garden (NYBG), Wave Hill.
@@ -42,7 +47,8 @@ Companion project to [Wicked Boston Events](https://github.com/BehlV10/boston_ev
 ### 🎭 Staten Island
 - **Historic & Arts Venues**: St. George Theatre, Snug Harbor Cultural Center & Botanical Garden.
 
-### 🎟️ Citywide Megasites & Aggregators
+### 🍻 Citywide Pub Trivia & Aggregators
+- **NYC Trivia League**: 150+ weekly trivia & mixtape bingo nights across 70+ neighborhood bars in Manhattan, Brooklyn, and Queens (Bleecker Street Bar, The Winslow, The Ditty Astoria, Small Change, Bareburger Hell's Kitchen, Pig Beach, Black Forest, Gowanus Gardens).
 - **DoNYC**: 10-day rolling citywide feed covering hundreds of local events.
 - **The Skint NYC**: Cult-favorite daily curated newsletter for cheap and free NYC events.
 - **Ticketmaster Discovery API**: Live NYC discovery feed (`lat/lng: 40.7128, -74.0060`).
