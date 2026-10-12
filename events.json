@@ -1,18 +1,10 @@
 {
-  "generated_at": "2026-10-12T02:15:36.499364+00:00",
+  "generated_at": "2026-10-12T02:34:37.057504+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
       "url": "https://donyc.com/events",
       "events": [
-        {
-          "name": "The Cafe Wha? House Band",
-          "date": "2026-10-12T02:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/11/the-cafe-wha-house-band-tickets-ymxjpk9",
-          "venue": "Cafe Wha?",
-          "price": null,
-          "category": "music"
-        },
         {
           "name": "The Residents - Eskimo Live",
           "date": "2026-10-13T00:00:00+00:00",
@@ -1591,7 +1583,7 @@
         }
       ],
       "error": null,
-      "duration": 9.75
+      "duration": 12.82
     },
     {
       "venue": "The Skint NYC",
@@ -1679,36 +1671,12 @@
         }
       ],
       "error": null,
-      "duration": 2.06
+      "duration": 1.54
     },
     {
       "venue": "Ticketmaster NYC",
       "url": "https://www.ticketmaster.com/",
       "events": [
-        {
-          "name": "Robert Glasper",
-          "date": "2026-10-12T02:30:00Z",
-          "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAvabJ",
-          "venue": "Blue Note Jazz Club - NY",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Robert Glasper X Lalah Hathaway Duo",
-          "date": "2026-10-12T02:30:00Z",
-          "url": "https://www.ticketweb.com/event/robert-glasper-x-lalah-hathaway-blue-note-jazz-club-tickets/15018453",
-          "venue": "Blue Note Jazz Club",
-          "price": "$0",
-          "category": "music"
-        },
-        {
-          "name": "The Birdland Latin Jazz Orchestra",
-          "date": "2026-10-12T02:30:00Z",
-          "url": "https://www.ticketweb.com/event/the-birdland-latin-jazz-orchestra-birdland-jazz-club-tickets/14916313",
-          "venue": "Birdland Jazz Club",
-          "price": "$0",
-          "category": "music"
-        },
         {
           "name": "The Midnight Special",
           "date": "2026-10-12T03:55:00Z",
@@ -2484,10 +2452,34 @@
           "venue": "Williams Center - Cinema Underground - Rutherford",
           "price": "$13.63–15.69",
           "category": "music"
+        },
+        {
+          "name": "Preseason: New York Knicks v Minnesota Timberwolves",
+          "date": "2026-10-12T23:30:00Z",
+          "url": "https://www.ticketmaster.com/preseason-new-york-knicks-v-minnesota-new-york-new-york-10-12-2026/event/3B006511BAB1539E",
+          "venue": "Madison Square Garden",
+          "price": null,
+          "category": "sports"
+        },
+        {
+          "name": "The Bechdel Cast 10 Year Anniversary Tour",
+          "date": "2026-10-12T23:30:00Z",
+          "url": "https://www.ticketmaster.com/the-bechdel-cast-10-year-anniversary-brooklyn-new-york-10-12-2026/event/3000650C0357B525",
+          "venue": "The Bell House",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Two Strangers",
+          "date": "2026-10-12T23:30:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xkP8",
+          "venue": "Longacre Theatre",
+          "price": null,
+          "category": "music"
         }
       ],
       "error": null,
-      "duration": 0.67
+      "duration": 0.57
     },
     {
       "venue": "Brooklyn Bowl",
@@ -2679,7 +2671,7 @@
         }
       ],
       "error": null,
-      "duration": 1.53
+      "duration": 1.47
     },
     {
       "venue": "Elsewhere Brooklyn",
@@ -2887,7 +2879,7 @@
         }
       ],
       "error": null,
-      "duration": 2.05
+      "duration": 2.89
     },
     {
       "venue": "Knockdown Center",
@@ -3071,7 +3063,7 @@
         }
       ],
       "error": null,
-      "duration": 0.92
+      "duration": 1.65
     },
     {
       "venue": "Good Room Greenpoint",
@@ -3183,7 +3175,7 @@
         }
       ],
       "error": null,
-      "duration": 1.32
+      "duration": 1.56
     },
     {
       "venue": "TV Eye Ridgewood",
@@ -3383,7 +3375,7 @@
         }
       ],
       "error": null,
-      "duration": 0.98
+      "duration": 2.22
     },
     {
       "venue": "Public Records Gowanus",
@@ -3559,7 +3551,7 @@
         }
       ],
       "error": null,
-      "duration": 1.85
+      "duration": 2.61
     },
     {
       "venue": "The Bell House",
@@ -3751,7 +3743,7 @@
         }
       ],
       "error": null,
-      "duration": 1.26
+      "duration": 1.83
     },
     {
       "venue": "Littlefield Brooklyn",
@@ -3959,7 +3951,7 @@
         }
       ],
       "error": null,
-      "duration": 1.29
+      "duration": 1.47
     },
     {
       "venue": "Music Hall of Williamsburg",
@@ -4167,7 +4159,7 @@
         }
       ],
       "error": null,
-      "duration": 1.28
+      "duration": 1.32
     },
     {
       "venue": "Brooklyn Steel",
@@ -4367,7 +4359,7 @@
         }
       ],
       "error": null,
-      "duration": 1.02
+      "duration": 1.45
     },
     {
       "venue": "Warsaw Brooklyn",
@@ -4575,7 +4567,7 @@
         }
       ],
       "error": null,
-      "duration": 1.69
+      "duration": 2.28
     },
     {
       "venue": "Barclays Center",
@@ -4767,7 +4759,7 @@
         }
       ],
       "error": null,
-      "duration": 1.13
+      "duration": 1.79
     },
     {
       "venue": "Kings Theatre Flatbush",
@@ -4975,7 +4967,7 @@
         }
       ],
       "error": null,
-      "duration": 1.06
+      "duration": 0.96
     },
     {
       "venue": "Baby's All Right Williamsburg",
@@ -5175,7 +5167,7 @@
         }
       ],
       "error": null,
-      "duration": 1.01
+      "duration": 3.45
     },
     {
       "venue": "The Sultan Room Bushwick",
@@ -5375,7 +5367,7 @@
         }
       ],
       "error": null,
-      "duration": 1.39
+      "duration": 1.02
     },
     {
       "venue": "Pioneer Works Red Hook",
@@ -5511,7 +5503,7 @@
         }
       ],
       "error": null,
-      "duration": 1.0
+      "duration": 0.73
     },
     {
       "venue": "C'mon Everybody Bed-Stuy",
@@ -5559,7 +5551,7 @@
         }
       ],
       "error": null,
-      "duration": 1.09
+      "duration": 0.54
     },
     {
       "venue": "Forest Hills Stadium",
@@ -5599,7 +5591,7 @@
         }
       ],
       "error": null,
-      "duration": 0.41
+      "duration": 0.33
     },
     {
       "venue": "Yankee Stadium",
@@ -5807,7 +5799,7 @@
         }
       ],
       "error": null,
-      "duration": 0.89
+      "duration": 1.25
     },
     {
       "venue": "Lehman Center for the Performing Arts",
@@ -5855,7 +5847,7 @@
         }
       ],
       "error": null,
-      "duration": 1.47
+      "duration": 0.59
     },
     {
       "venue": "St. George Theatre Staten Island",
@@ -6039,7 +6031,7 @@
         }
       ],
       "error": null,
-      "duration": 1.24
+      "duration": 0.8
     },
     {
       "venue": "Bowery Ballroom",
@@ -6239,7 +6231,7 @@
         }
       ],
       "error": null,
-      "duration": 1.53
+      "duration": 1.24
     },
     {
       "venue": "Mercury Lounge",
@@ -6439,7 +6431,7 @@
         }
       ],
       "error": null,
-      "duration": 1.26
+      "duration": 0.91
     },
     {
       "venue": "Webster Hall",
@@ -6647,7 +6639,7 @@
         }
       ],
       "error": null,
-      "duration": 0.93
+      "duration": 2.03
     },
     {
       "venue": "Terminal 5",
@@ -6855,7 +6847,7 @@
         }
       ],
       "error": null,
-      "duration": 1.4
+      "duration": 2.29
     },
     {
       "venue": "Irving Plaza",
@@ -7055,7 +7047,7 @@
         }
       ],
       "error": null,
-      "duration": 1.11
+      "duration": 1.19
     },
     {
       "venue": "Racket NYC",
@@ -7255,7 +7247,7 @@
         }
       ],
       "error": null,
-      "duration": 1.36
+      "duration": 1.12
     },
     {
       "venue": "Le Poisson Rouge",
@@ -7463,7 +7455,7 @@
         }
       ],
       "error": null,
-      "duration": 1.21
+      "duration": 1.27
     },
     {
       "venue": "Blue Note Jazz Club",
@@ -7623,7 +7615,7 @@
         }
       ],
       "error": null,
-      "duration": 1.19
+      "duration": 1.0
     },
     {
       "venue": "Caveat NYC",
@@ -7823,7 +7815,7 @@
         }
       ],
       "error": null,
-      "duration": 0.82
+      "duration": 1.08
     },
     {
       "venue": "Apollo Theater",
@@ -7855,7 +7847,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51
+      "duration": 0.52
     },
     {
       "venue": "Madison Square Garden",
@@ -8039,7 +8031,7 @@
         }
       ],
       "error": null,
-      "duration": 1.59
+      "duration": 0.98
     },
     {
       "venue": "Radio City Music Hall",
@@ -8143,7 +8135,7 @@
         }
       ],
       "error": null,
-      "duration": 1.1
+      "duration": 0.92
     },
     {
       "venue": "Beacon Theatre",
@@ -8343,7 +8335,7 @@
         }
       ],
       "error": null,
-      "duration": 0.92
+      "duration": 1.71
     },
     {
       "venue": "Carnegie Hall",
@@ -8415,7 +8407,7 @@
         }
       ],
       "error": null,
-      "duration": 0.76
+      "duration": 0.64
     },
     {
       "venue": "The Town Hall",
@@ -8615,7 +8607,7 @@
         }
       ],
       "error": null,
-      "duration": 1.16
+      "duration": 2.55
     },
     {
       "venue": "Sony Hall",
@@ -8815,7 +8807,7 @@
         }
       ],
       "error": null,
-      "duration": 0.98
+      "duration": 1.16
     },
     {
       "venue": "Gramercy Theatre",
@@ -9015,7 +9007,7 @@
         }
       ],
       "error": null,
-      "duration": 2.05
+      "duration": 1.29
     },
     {
       "venue": "Union Square Greenmarket",
@@ -10082,66 +10074,5 @@
     "icon": "☁️",
     "label": "Overcast"
   },
-  "luckyseat": [
-    {
-      "name": "Alice in Wonderland",
-      "venue": "The Players Theatre",
-      "price": 47.0,
-      "url": "https://www.luckyseat.com/shows/aliceinwonderland-newyork-2026Sep"
-    },
-    {
-      "name": "Dueling Pianos Boozy Brunch",
-      "venue": "Burgerology Midtown",
-      "price": 24.0,
-      "url": "https://www.luckyseat.com/shows/duelingpianosboozybrunch-newyork-2026May"
-    },
-    {
-      "name": "Friends! The Musical Parody",
-      "venue": "The Theater Center",
-      "price": 39.0,
-      "url": "https://www.luckyseat.com/shows/friends!themusicalparodynewyork-newyork-2025Apr"
-    },
-    {
-      "name": "Hadestown",
-      "venue": "Walter Kerr Theatre",
-      "price": 49.0,
-      "url": "https://www.luckyseat.com/shows/hadestown-newyork"
-    },
-    {
-      "name": "Other Desert Cities",
-      "venue": "Hudson Theatre",
-      "price": 49.0,
-      "url": "https://www.luckyseat.com/shows/otherdesertcities-newyork-2026Sep"
-    },
-    {
-      "name": "Paranormal Activity",
-      "venue": "August Wilson Theatre",
-      "price": 40.0,
-      "url": "https://www.luckyseat.com/shows/paranormalactivity-newyork-2026Jul"
-    },
-    {
-      "name": "Perfect Crime",
-      "venue": "The Theater Center",
-      "price": 39.0,
-      "url": "https://www.luckyseat.com/shows/perfectcrime-newyork-2025Apr"
-    },
-    {
-      "name": "Shake Rattle & Roll Dueling Pianos",
-      "venue": "Chelsea Table & Stage",
-      "price": 24.0,
-      "url": "https://www.luckyseat.com/shows/duelingpianosnyclive-newyork-2026May"
-    },
-    {
-      "name": "Singfeld! A Musical About Nothing!",
-      "venue": "The Theater Center",
-      "price": 39.0,
-      "url": "https://www.luckyseat.com/shows/singfeld!amusicalaboutnothing!-newyork-2025Apr"
-    },
-    {
-      "name": "The Book of Mormon",
-      "venue": "Eugene O'Neill Theatre",
-      "price": 49.0,
-      "url": "https://www.luckyseat.com/shows/thebookofmormon-newyork"
-    }
-  ]
+  "luckyseat": []
 }
