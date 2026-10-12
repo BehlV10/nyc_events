@@ -30,6 +30,7 @@ CITY_RULES = [
         "pete's candy store", "skinny dennis", "carmelo's", "union pool",
         "books are magic", "greenlight bookstore", "greenlight",
         "brooklyn public library", "bpl", "nitehawk cinema", "nitehawk", "union hall",
+        "wonderville", "smashville",
         "brooklyn trivia",
         "brooklyn", "bklyn", "williamsburg", "bushwick", "greenpoint", "dumbo",
         "bed-stuy", "bedford-stuyvesant", "crown heights", "prospect heights",
@@ -55,6 +56,7 @@ CITY_RULES = [
     )),
     ("staten_island", (
         "snug harbor", "st. george theatre", "richmond county bank",
+        "conference house",
         "staten island", "st. george", "tompkinsville", "new brighton",
     )),
     ("manhattan", (
@@ -72,6 +74,7 @@ CITY_RULES = [
         "strand book store", "strand bookstore", "strand", "mcnally jackson",
         "bluestockings", "new york public library", "nypl",
         "ifc center", "smalls jazz club", "smalls jazz", "manhattan trivia",
+        "os nyc", "sobs", "s.o.b.",
         "soho", "tribeca", "noho", "nolita", "chinatown", "lower east side", "les",
         "east village", "west village", "greenwich village", "chelsea",
         "meatpacking", "gramercy", "flatiron", "midtown", "times square",
