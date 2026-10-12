@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T14:22:13.805459+00:00",
+  "generated_at": "2026-10-12T19:37:04.582357+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -214,18 +214,18 @@
           "category": "community"
         },
         {
-          "name": "Knox, Emi Grace",
-          "date": "2026-10-14T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/13/knox-emi-grace-tickets",
-          "venue": "Brooklyn Bowl",
-          "price": null,
-          "category": "community"
-        },
-        {
           "name": "Tokyo Tea Room - Feel Forever Tour",
           "date": "2026-10-14T00:00:00+00:00",
           "url": "https://donyc.com/events/2026/10/13/tokyo-tea-room-feel-forever-tour-tickets",
           "venue": "Music Hall of Williamsburg",
+          "price": null,
+          "category": "community"
+        },
+        {
+          "name": "Knox, Emi Grace",
+          "date": "2026-10-14T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/13/knox-emi-grace-tickets",
+          "venue": "Brooklyn Bowl",
           "price": null,
           "category": "community"
         },
@@ -918,18 +918,18 @@
           "category": "community"
         },
         {
-          "name": "Gimme Gimme Disco",
-          "date": "2026-10-18T03:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/17/gimme-gimme-disco-tickets",
-          "venue": "Brooklyn Bowl",
-          "price": null,
-          "category": "community"
-        },
-        {
           "name": "JPEGMAFIA, redveil, matt proxy",
           "date": "2026-10-17T23:00:00+00:00",
           "url": "https://donyc.com/events/2026/10/17/jpegmafia-redveil-matt-proxy-tickets",
           "venue": "Terminal 5",
+          "price": null,
+          "category": "community"
+        },
+        {
+          "name": "Gimme Gimme Disco",
+          "date": "2026-10-18T03:30:00+00:00",
+          "url": "https://donyc.com/events/2026/10/17/gimme-gimme-disco-tickets",
+          "venue": "Brooklyn Bowl",
           "price": null,
           "category": "community"
         },
@@ -1068,14 +1068,6 @@
           "venue": "Cafe Wha?",
           "price": null,
           "category": "music"
-        },
-        {
-          "name": "JPEGMAFIA: the Experimental Rap Tour",
-          "date": "2026-10-18T22:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/18/jpegmafia-the-experimental-rap-tour-tickets",
-          "venue": "Brooklyn Paramount",
-          "price": null,
-          "category": "community"
         },
         {
           "name": "Peace, Love & Pumpkins",
@@ -1220,6 +1212,14 @@
           "venue": "Saint Vitus Bar",
           "price": null,
           "category": "community"
+        },
+        {
+          "name": "@NICKCHEO the *TOUR* the *MOVIE*",
+          "date": "2026-10-18T23:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/18/nickcheo-the-tour-the-movie-tickets",
+          "venue": "The Bowery Ballroom",
+          "price": null,
+          "category": "film"
         },
         {
           "name": "Toad The Wet Sprocket - Rings: The Acoustic Tour",
@@ -1759,7 +1759,7 @@
         }
       ],
       "error": null,
-      "duration": 10.54
+      "duration": 20.44
     },
     {
       "venue": "The Skint NYC",
@@ -1847,316 +1847,12 @@
         }
       ],
       "error": null,
-      "duration": 2.16
+      "duration": 1.66
     },
     {
       "venue": "Ticketmaster NYC",
       "url": "https://www.ticketmaster.com/",
       "events": [
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T14:30:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T14:30:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T14:45:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T15:00:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T15:00:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Gazillion Bubble Show",
-          "date": "2026-10-12T15:00:00Z",
-          "url": "https://www.ticketmaster.com/the-gazillion-bubble-show-new-york-new-york-10-12-2026/event/Z1r9uZruZqGZ1AvZo0a",
-          "venue": "New World Stages - Stage 2",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T15:15:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T15:30:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T15:30:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T15:45:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T16:00:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T16:00:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Very Hungry Caterpillar Show",
-          "date": "2026-10-12T16:00:00Z",
-          "url": "https://www.ticketmaster.com/the-very-hungry-caterpillar-show-new-york-new-york-10-12-2026/event/Z1r9uZruZqGZ1AvZ8_N",
-          "venue": "DR2",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T16:15:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T16:30:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T16:30:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T16:45:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T17:00:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T17:00:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "Educators Day",
-          "date": "2026-10-12T17:00:00Z",
-          "url": "https://www.universe.com/events/educators-day-tickets-VM0J1D?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T17:15:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T17:30:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T17:30:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T17:45:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T18:00:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T18:00:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "Banksy Museum NY - Monday Movie Day and Nights!",
-          "date": "2026-10-12T18:00:00Z",
-          "url": "https://www.universe.com/events/banksy-museum-ny-monday-movie-day-and-nights-tickets-YH4WCM?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "film"
-        },
-        {
-          "name": "The Very Hungry Caterpillar Show",
-          "date": "2026-10-12T18:00:00Z",
-          "url": "https://www.ticketmaster.com/the-very-hungry-caterpillar-show-new-york-new-york-10-12-2026/event/Z1r9uZruZqGZ1AvZ8_0",
-          "venue": "DR2",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "The Gazillion Bubble Show",
-          "date": "2026-10-12T18:00:00Z",
-          "url": "https://www.ticketmaster.com/the-gazillion-bubble-show-new-york-new-york-10-12-2026/event/Z1r9uZruZqGZ17J_jb",
-          "venue": "New World Stages - Stage 2",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T18:15:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T18:30:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T18:30:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T18:45:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T19:00:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T19:00:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T19:15:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-12T19:30:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-12T19:30:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
         {
           "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
           "date": "2026-10-12T19:45:00Z",
@@ -2274,7 +1970,7 @@
           "date": "2026-10-12T21:30:00Z",
           "url": "https://www.ticketweb.com/event/vince-giordano-and-the-nighthawks-birdland-theater-tickets/14916143",
           "venue": "Birdland Theater",
-          "price": "$24.91–45.76",
+          "price": "$0",
           "category": "music"
         },
         {
@@ -2418,7 +2114,7 @@
           "date": "2026-10-12T23:00:00Z",
           "url": "https://www.ticketweb.com/event/virtual-halston-live-with-julie-birdland-jazz-club-tickets/14278814",
           "venue": "Birdland Jazz Club",
-          "price": "$35.46–45.76",
+          "price": "$0",
           "category": "music"
         },
         {
@@ -2586,7 +2282,7 @@
           "date": "2026-10-13T00:00:00Z",
           "url": "https://www.ticketweb.com/event/eric-roberson-blue-note-jazz-club-tickets/14330414",
           "venue": "Blue Note Jazz Club",
-          "price": "$54.99–66.32",
+          "price": "$55.13–66.46",
           "category": "music"
         },
         {
@@ -2652,10 +2348,314 @@
           "venue": "Beacon Theatre",
           "price": null,
           "category": "music"
+        },
+        {
+          "name": "Pyrex, Conspire, Rejekts, Promise",
+          "date": "2026-10-13T00:30:00Z",
+          "url": "https://www.ticketweb.com/event/pyrex-conspire-rejekts-promise-night-club-101-tickets/14336704",
+          "venue": "Night Club 101",
+          "price": "$20.01",
+          "category": "music"
+        },
+        {
+          "name": "Vince Giordano and the Nighthawks",
+          "date": "2026-10-13T00:30:00Z",
+          "url": "https://www.ticketweb.com/event/vince-giordano-and-the-nighthawks-birdland-theater-tickets/14916243",
+          "venue": "Birdland Theater",
+          "price": "$24.91–45.76",
+          "category": "music"
+        },
+        {
+          "name": "Gengis Don with Luke Waldron",
+          "date": "2026-10-13T01:00:00Z",
+          "url": "https://www.ticketmaster.com/gengis-don-with-luke-waldron-new-york-new-york-10-12-2026/event/0000650A8A565ACF",
+          "venue": "Mercury Lounge",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Jackson And The Janks",
+          "date": "2026-10-13T01:00:00Z",
+          "url": "https://www.ticketweb.com/event/jackson-and-the-janks-lucindas-tickets/14310534",
+          "venue": "Lucinda's",
+          "price": "$0",
+          "category": "music"
+        },
+        {
+          "name": "Jim Caruso's Cast Party with Billy Stritch",
+          "date": "2026-10-13T01:30:00Z",
+          "url": "https://www.ticketweb.com/event/jim-carusos-cast-party-with-birdland-jazz-club-tickets/14916073",
+          "venue": "Birdland Jazz Club",
+          "price": "$0",
+          "category": "clubbing"
+        },
+        {
+          "name": "Eric Roberson",
+          "date": "2026-10-13T02:30:00Z",
+          "url": "https://www.ticketweb.com/event/eric-roberson-blue-note-jazz-club-tickets/14330444",
+          "venue": "Blue Note Jazz Club",
+          "price": "$55.13–66.46",
+          "category": "music"
+        },
+        {
+          "name": "Madison Square Garden Tour Experience",
+          "date": "2026-10-12T23:00:00+00:00",
+          "url": "https://www.ticketmaster.com/madison-square-garden-tour-experience-new-york-new-york-10-12-2026/event/3B00645191BF2820",
+          "venue": "Madison Square Garden",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Radio City Music Hall Tour Experience",
+          "date": "2026-10-12T23:00:00+00:00",
+          "url": "https://www.ticketmaster.com/radio-city-music-hall-tour-experience-new-york-new-york-10-12-2026/event/3C00645A0A392431",
+          "venue": "Radio City Music Hall Tour Experience",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Classic Tour at Yankee Stadium",
+          "date": "2026-10-12T23:00:00+00:00",
+          "url": "https://www.ticketmaster.com/classic-tour-at-yankee-stadium-bronx-new-york-10-12-2026/event/1D006374BDE16070",
+          "venue": "Yankee Stadium",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T14:00:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "The Banksy Museum New York!",
+          "date": "2026-10-13T14:00:00Z",
+          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "Banksy Museum - Flexiticket",
+          "date": "2026-10-13T14:00:00Z",
+          "url": "https://www.universe.com/events/banksy-museum-flexiticket-tickets-F7XJ8T?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T14:15:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T14:30:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "The Banksy Museum New York!",
+          "date": "2026-10-13T14:30:00Z",
+          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T14:45:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T15:00:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "The Banksy Museum New York!",
+          "date": "2026-10-13T15:00:00Z",
+          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T15:15:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T15:30:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "The Banksy Museum New York!",
+          "date": "2026-10-13T15:30:00Z",
+          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T15:45:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T16:00:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "The Banksy Museum New York!",
+          "date": "2026-10-13T16:00:00Z",
+          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T16:15:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T16:30:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "The Banksy Museum New York!",
+          "date": "2026-10-13T16:30:00Z",
+          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T16:45:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T17:00:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "The Banksy Museum New York!",
+          "date": "2026-10-13T17:00:00Z",
+          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T17:15:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T17:30:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "The Banksy Museum New York!",
+          "date": "2026-10-13T17:30:00Z",
+          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T17:45:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T18:00:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "The Banksy Museum New York!",
+          "date": "2026-10-13T18:00:00Z",
+          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
+          "venue": "Banksy Museum New York",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T18:15:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
+        },
+        {
+          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
+          "date": "2026-10-13T18:30:00Z",
+          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
+          "venue": "Balloon Museum NYC",
+          "price": null,
+          "category": "art"
         }
       ],
       "error": null,
-      "duration": 0.72
+      "duration": 0.59
     },
     {
       "venue": "Brooklyn Bowl",
@@ -2863,7 +2863,7 @@
         }
       ],
       "error": null,
-      "duration": 2.37
+      "duration": 2.04
     },
     {
       "venue": "Elsewhere Brooklyn",
@@ -3071,7 +3071,7 @@
         }
       ],
       "error": null,
-      "duration": 1.37
+      "duration": 1.67
     },
     {
       "venue": "Knockdown Center",
@@ -3263,7 +3263,7 @@
         }
       ],
       "error": null,
-      "duration": 1.52
+      "duration": 4.62
     },
     {
       "venue": "Good Room Greenpoint",
@@ -3375,7 +3375,7 @@
         }
       ],
       "error": null,
-      "duration": 1.12
+      "duration": 1.37
     },
     {
       "venue": "TV Eye Ridgewood",
@@ -3583,7 +3583,7 @@
         }
       ],
       "error": null,
-      "duration": 1.84
+      "duration": 1.75
     },
     {
       "venue": "Public Records Gowanus",
@@ -3791,7 +3791,7 @@
         }
       ],
       "error": null,
-      "duration": 1.59
+      "duration": 2.49
     },
     {
       "venue": "The Bell House",
@@ -3999,7 +3999,7 @@
         }
       ],
       "error": null,
-      "duration": 1.24
+      "duration": 2.61
     },
     {
       "venue": "Littlefield Brooklyn",
@@ -4207,7 +4207,7 @@
         }
       ],
       "error": null,
-      "duration": 1.55
+      "duration": 4.16
     },
     {
       "venue": "Music Hall of Williamsburg",
@@ -4415,7 +4415,7 @@
         }
       ],
       "error": null,
-      "duration": 3.18
+      "duration": 3.06
     },
     {
       "venue": "Brooklyn Steel",
@@ -4623,7 +4623,7 @@
         }
       ],
       "error": null,
-      "duration": 1.35
+      "duration": 1.58
     },
     {
       "venue": "Warsaw Brooklyn",
@@ -4831,7 +4831,7 @@
         }
       ],
       "error": null,
-      "duration": 1.31
+      "duration": 2.2
     },
     {
       "venue": "Barclays Center",
@@ -5031,7 +5031,7 @@
         }
       ],
       "error": null,
-      "duration": 1.46
+      "duration": 11.13
     },
     {
       "venue": "Kings Theatre Flatbush",
@@ -5239,7 +5239,7 @@
         }
       ],
       "error": null,
-      "duration": 1.56
+      "duration": 2.13
     },
     {
       "venue": "Baby's All Right Williamsburg",
@@ -5447,7 +5447,7 @@
         }
       ],
       "error": null,
-      "duration": 1.8
+      "duration": 4.06
     },
     {
       "venue": "The Sultan Room Bushwick",
@@ -5655,7 +5655,7 @@
         }
       ],
       "error": null,
-      "duration": 0.92
+      "duration": 2.55
     },
     {
       "venue": "Pioneer Works Red Hook",
@@ -5791,7 +5791,7 @@
         }
       ],
       "error": null,
-      "duration": 0.98
+      "duration": 1.66
     },
     {
       "venue": "C'mon Everybody Bed-Stuy",
@@ -5839,7 +5839,7 @@
         }
       ],
       "error": null,
-      "duration": 0.46
+      "duration": 1.52
     },
     {
       "venue": "Forest Hills Stadium",
@@ -5879,7 +5879,7 @@
         }
       ],
       "error": null,
-      "duration": 0.83
+      "duration": 0.49
     },
     {
       "venue": "Yankee Stadium",
@@ -6087,7 +6087,7 @@
         }
       ],
       "error": null,
-      "duration": 1.7
+      "duration": 1.07
     },
     {
       "venue": "Lehman Center for the Performing Arts",
@@ -6135,7 +6135,7 @@
         }
       ],
       "error": null,
-      "duration": 0.96
+      "duration": 1.32
     },
     {
       "venue": "St. George Theatre Staten Island",
@@ -6319,7 +6319,7 @@
         }
       ],
       "error": null,
-      "duration": 0.78
+      "duration": 2.68
     },
     {
       "venue": "Bowery Ballroom",
@@ -6527,7 +6527,7 @@
         }
       ],
       "error": null,
-      "duration": 2.58
+      "duration": 2.81
     },
     {
       "venue": "Mercury Lounge",
@@ -6735,7 +6735,7 @@
         }
       ],
       "error": null,
-      "duration": 2.1
+      "duration": 1.56
     },
     {
       "venue": "Webster Hall",
@@ -6943,7 +6943,7 @@
         }
       ],
       "error": null,
-      "duration": 1.23
+      "duration": 1.48
     },
     {
       "venue": "Terminal 5",
@@ -7151,7 +7151,7 @@
         }
       ],
       "error": null,
-      "duration": 1.58
+      "duration": 2.34
     },
     {
       "venue": "Irving Plaza",
@@ -7359,7 +7359,7 @@
         }
       ],
       "error": null,
-      "duration": 1.49
+      "duration": 2.97
     },
     {
       "venue": "Racket NYC",
@@ -7567,7 +7567,7 @@
         }
       ],
       "error": null,
-      "duration": 1.57
+      "duration": 1.86
     },
     {
       "venue": "Le Poisson Rouge",
@@ -7775,7 +7775,7 @@
         }
       ],
       "error": null,
-      "duration": 1.72
+      "duration": 3.03
     },
     {
       "venue": "Blue Note Jazz Club",
@@ -7943,7 +7943,7 @@
         }
       ],
       "error": null,
-      "duration": 1.66
+      "duration": 2.0
     },
     {
       "venue": "Caveat NYC",
@@ -8151,7 +8151,7 @@
         }
       ],
       "error": null,
-      "duration": 2.35
+      "duration": 6.93
     },
     {
       "venue": "Apollo Theater",
@@ -8183,7 +8183,7 @@
         }
       ],
       "error": null,
-      "duration": 0.68
+      "duration": 1.04
     },
     {
       "venue": "Madison Square Garden",
@@ -8375,7 +8375,7 @@
         }
       ],
       "error": null,
-      "duration": 2.93
+      "duration": 1.28
     },
     {
       "venue": "Radio City Music Hall",
@@ -8479,7 +8479,7 @@
         }
       ],
       "error": null,
-      "duration": 1.48
+      "duration": 6.72
     },
     {
       "venue": "Beacon Theatre",
@@ -8679,7 +8679,7 @@
         }
       ],
       "error": null,
-      "duration": 1.01
+      "duration": 4.03
     },
     {
       "venue": "Carnegie Hall",
@@ -8751,7 +8751,7 @@
         }
       ],
       "error": null,
-      "duration": 0.82
+      "duration": 0.68
     },
     {
       "venue": "The Town Hall",
@@ -8959,7 +8959,7 @@
         }
       ],
       "error": null,
-      "duration": 1.5
+      "duration": 1.59
     },
     {
       "venue": "Sony Hall",
@@ -9167,7 +9167,7 @@
         }
       ],
       "error": null,
-      "duration": 0.91
+      "duration": 1.19
     },
     {
       "venue": "Gramercy Theatre",
@@ -9375,7 +9375,7 @@
         }
       ],
       "error": null,
-      "duration": 2.44
+      "duration": 2.61
     },
     {
       "venue": "Strand Book Store",
@@ -9607,6 +9607,15 @@
           "category": "books"
         },
         {
+          "name": "Dean Norris: Do What You’re Gonna Do",
+          "date": "2026-11-18T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/dean-norris-do-what-youre-gonna-do-tickets-2002825583234",
+          "venue": "Strand Book Store",
+          "price": null,
+          "description": "Join us for a release event with notable actor Dean Norris, discussing his new book DO WHAT YOU’RE GONNA DO.",
+          "category": "books"
+        },
+        {
           "name": "Dr. Karabi Acharya + Soledad O’Brien: Multitudes",
           "date": "2026-11-17T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/dr-karabi-acharya-soledad-obrien-multitudes-tickets-2003018007781",
@@ -9626,7 +9635,7 @@
         }
       ],
       "error": null,
-      "duration": 0.65
+      "duration": 0.7
     },
     {
       "venue": "Books Are Magic",
@@ -9913,7 +9922,7 @@
         }
       ],
       "error": null,
-      "duration": 0.72
+      "duration": 0.67
     },
     {
       "venue": "Greenlight Bookstore",
@@ -10236,7 +10245,7 @@
         }
       ],
       "error": null,
-      "duration": 0.89
+      "duration": 1.26
     },
     {
       "venue": "P&T Knitwear Books & Podcasts",
@@ -10531,9 +10540,9 @@
           "category": "books"
         },
         {
-          "name": "Made in Jew York: Screening & Talk Back with Clara Perlumutter",
+          "name": "Made in Jew York: Screening & Talk Back with Clara Perlmutter",
           "date": "2026-10-23T22:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/made-in-jew-york-screening-talk-back-with-clara-perlumutter-tickets-2003016968673",
+          "url": "https://www.eventbrite.com/e/made-in-jew-york-screening-talk-back-with-clara-perlmutter-tickets-2003016968673",
           "venue": "P&T Knitwear Books & Podcasts",
           "price": null,
           "description": "In collaboration with Heeb!",
@@ -10559,7 +10568,7 @@
         }
       ],
       "error": null,
-      "duration": 0.97
+      "duration": 1.07
     },
     {
       "venue": "Housing Works Bookstore Cafe",
@@ -10576,21 +10585,21 @@
         }
       ],
       "error": null,
-      "duration": 0.35
+      "duration": 0.57
     },
     {
       "venue": "McNally Jackson Books",
       "url": "https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Bluestockings Cooperative",
       "url": "https://www.eventbrite.com/d/ny--new-york/bluestockings/",
       "events": [],
       "error": null,
-      "duration": 0.05
+      "duration": 0.01
     },
     {
       "venue": "KGB Bar (Literary Readings)",
@@ -10774,21 +10783,21 @@
         }
       ],
       "error": null,
-      "duration": 0.72
+      "duration": 1.87
     },
     {
       "venue": "New York Public Library",
       "url": "https://www.eventbrite.com/d/ny--new-york/nypl/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Brooklyn Public Library",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-public-library/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.02
     },
     {
       "venue": "Queens Public Library",
@@ -10818,7 +10827,7 @@
           "category": "music"
         },
         {
-          "name": "Cinema Pete's-adiso: Backyard Movie Noght",
+          "name": "Cinema Pete's-adiso: Backyard Movie Night",
           "date": "2026-10-13T00:00:00+00:00",
           "url": "https://www.petescandystore.com/calendar/",
           "venue": "Pete's Candy Store",
@@ -10931,6 +10940,14 @@
         },
         {
           "name": "Poster Boy",
+          "date": "2026-10-15T00:00:00+00:00",
+          "url": "https://www.petescandystore.com/calendar/",
+          "venue": "Pete's Candy Store",
+          "price": "Free / 1-drink min",
+          "category": "music"
+        },
+        {
+          "name": "Marlow Shields",
           "date": "2026-10-15T00:00:00+00:00",
           "url": "https://www.petescandystore.com/calendar/",
           "venue": "Pete's Candy Store",
@@ -12170,16 +12187,64 @@
       "url": "https://skinnydennisbrooklyn.com/calendar?format=json",
       "events": [
         {
+          "name": "2'step 2'sday featuring CHRIS LUQUETTE &amp; Nasvhille East",
+          "date": "2026-10-14T00:00:00.245000+00:00",
+          "url": "https://skinnydennisbrooklyn.com/calendar/template-mkxcx-3afkg-rw3cc-pp89p-lp7r7-rl77y-ps6ex-gkwt9-b8ss8-ytdlw-4m926-8fd7p-s5sts-yp9wn-47z8a-zf3ly-mjblm-8j5t8-ml96b-7xln7-ls3gm",
+          "venue": "Skinny Dennis",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "MOLLY RUTH",
+          "date": "2026-10-15T01:00:00.471000+00:00",
+          "url": "https://skinnydennisbrooklyn.com/calendar/template-r7prw-s853k-7yka5-a3g6k-gwkph-r5t3h-nap6r-rgttb-hea3y-9j2ge-xwpfd-r25ks-45k5p-r2fze-kz6cb-gj4th-sgzt8-hx95d-g2jtf",
+          "venue": "Skinny Dennis",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "CC &amp; The Boys ",
+          "date": "2026-10-16T01:00:00.159000+00:00",
+          "url": "https://skinnydennisbrooklyn.com/calendar/template-r7prw-s853k-7yka5-a3g6k-gwkph-r5t3h-nap6r-zgdpa-gkams-ffkrd-643ln-5lp9r-r33ff-zp35y-lrs4m-6x73y-8gbfx-bda9k-843p5-g8sdw-7bp39-hft2z-zhls6-dgc2e",
+          "venue": "Skinny Dennis",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "The National Reserve",
+          "date": "2026-10-17T01:00:00.649000+00:00",
+          "url": "https://skinnydennisbrooklyn.com/calendar/template-sc8eb-tpwjr-frlts-px2b9-rjjsy-rwkxj-ylhzd-5cea2-g7eax-wbwd6-bgnxd-hlchw-3rwk9-czn8g-6wphn-8xadk-twe85-n2yds",
+          "venue": "Skinny Dennis",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
           "name": "HUNTER FLYNN + EVAN CYOTE",
           "date": "2026-10-21T23:30:00.202000+00:00",
           "url": "https://skinnydennisbrooklyn.com/calendar/template-r7prw-s853k-7yka5-a3g6k-gwkph-r5t3h-nap6r-rgttb-hea3y-9j2ge-xwpfd-r25ks-45k5p-r2fze-kz6cb-gj4th-sgzt8-lh6xf-53d6e-we2gd",
           "venue": "Skinny Dennis",
           "price": "Free / No Cover",
           "category": "music"
+        },
+        {
+          "name": "Low Roller  ",
+          "date": "2026-10-25T20:00:00.066000+00:00",
+          "url": "https://skinnydennisbrooklyn.com/calendar/26ca2l5mlejxpy2s2z6w4d4mmr8jee-5l5l5-m9l8f-ck4k9-9pwaz-bsyfb-8kclp-43jjc-78bcz-w7c42-kz6c6-m4ch4-t333g-c7gc2-ks8xr-5pja6-bzm5r-4m3lp",
+          "venue": "Skinny Dennis",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "DAVE SHEPHERD",
+          "date": "2026-11-07T02:00:00.205000+00:00",
+          "url": "https://skinnydennisbrooklyn.com/calendar/template-r7prw-s853k-7yka5-a3g6k-gwkph-r5t3h-nap6r-rgttb-hea3y-9j2ge-xwpfd-r25ks-45k5p-r2fze-kz6cb-gj4th-sgzt8",
+          "venue": "Skinny Dennis",
+          "price": "Free / No Cover",
+          "category": "music"
         }
       ],
       "error": null,
-      "duration": 0.2
+      "duration": 0.62
     },
     {
       "venue": "NYC Trivia League",
@@ -15387,7 +15452,7 @@
         }
       ],
       "error": null,
-      "duration": 0.89
+      "duration": 1.26
     },
     {
       "venue": "Film Forum",
@@ -15595,7 +15660,7 @@
         }
       ],
       "error": null,
-      "duration": 2.81
+      "duration": 1.02
     },
     {
       "venue": "Nitehawk Cinema",
@@ -15763,20 +15828,12 @@
         }
       ],
       "error": null,
-      "duration": 0.79
+      "duration": 1.68
     },
     {
       "venue": "IFC Center",
       "url": "https://donyc.com/venues/ifc-center",
       "events": [
-        {
-          "name": "The Lair of the White Worm",
-          "date": "2026-10-12T15:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/12/the-lair-of-the-white-worm-tickets",
-          "venue": "IFC Center",
-          "price": null,
-          "category": "film"
-        },
         {
           "name": "The Music Lovers",
           "date": "2026-10-12T20:05:00+00:00",
@@ -15851,7 +15908,7 @@
         }
       ],
       "error": null,
-      "duration": 1.37
+      "duration": 0.77
     },
     {
       "venue": "Union Hall Brooklyn",
@@ -16051,20 +16108,12 @@
         }
       ],
       "error": null,
-      "duration": 3.38
+      "duration": 1.83
     },
     {
       "venue": "Smalls Jazz Club",
       "url": "https://donyc.com/venues/smalls-jazz-club",
       "events": [
-        {
-          "name": "Afternoon Jam in the Cafe",
-          "date": "2026-10-12T18:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/12/afternoon-jam-in-the-cafe-tickets",
-          "venue": "Smalls Jazz Club",
-          "price": null,
-          "category": "music"
-        },
         {
           "name": "Jeremy Manasia Trio",
           "date": "2026-10-12T22:00:00+00:00",
@@ -16259,7 +16308,7 @@
         }
       ],
       "error": null,
-      "duration": 2.56
+      "duration": 2.9
     },
     {
       "venue": "Joe's Pub (The Public Theater)",
@@ -16451,7 +16500,7 @@
         }
       ],
       "error": null,
-      "duration": 1.61
+      "duration": 2.11
     },
     {
       "venue": "The Bitter End (Greenwich Village)",
@@ -16659,7 +16708,7 @@
         }
       ],
       "error": null,
-      "duration": 0.8
+      "duration": 1.81
     },
     {
       "venue": "Arlene's Grocery (LES Rock & Karaoke)",
@@ -16867,7 +16916,7 @@
         }
       ],
       "error": null,
-      "duration": 1.31
+      "duration": 6.62
     },
     {
       "venue": "Nublu 151 (Alphabet City)",
@@ -17075,7 +17124,7 @@
         }
       ],
       "error": null,
-      "duration": 0.69
+      "duration": 3.37
     },
     {
       "venue": "Drom NYC (East Village Global Music)",
@@ -17283,7 +17332,7 @@
         }
       ],
       "error": null,
-      "duration": 0.94
+      "duration": 1.4
     },
     {
       "venue": "Terra Blues (Bleecker St)",
@@ -17491,7 +17540,7 @@
         }
       ],
       "error": null,
-      "duration": 1.97
+      "duration": 1.31
     },
     {
       "venue": "Symphony Space (Upper West Side)",
@@ -17683,7 +17732,7 @@
         }
       ],
       "error": null,
-      "duration": 1.25
+      "duration": 2.2
     },
     {
       "venue": "Q.E.D. Astoria (Comedy & Arts)",
@@ -17867,7 +17916,7 @@
         }
       ],
       "error": null,
-      "duration": 1.63
+      "duration": 0.96
     },
     {
       "venue": "New York Comedy Club Midtown",
@@ -18011,7 +18060,7 @@
         }
       ],
       "error": null,
-      "duration": 1.55
+      "duration": 6.59
     },
     {
       "venue": "New York Comedy Club East Village",
@@ -18187,14 +18236,14 @@
         }
       ],
       "error": null,
-      "duration": 1.6
+      "duration": 1.99
     },
     {
       "venue": "The Tiny Cupboard (Bushwick Rooftop Comedy)",
       "url": "https://donyc.com/venues/the-tiny-cupboard",
       "events": [],
       "error": null,
-      "duration": 0.62
+      "duration": 0.54
     },
     {
       "venue": "Brooklyn Comedy Collective (Eris Mainstage)",
@@ -18210,14 +18259,14 @@
         }
       ],
       "error": null,
-      "duration": 1.82
+      "duration": 0.62
     },
     {
       "venue": "NYC Parks Free Public Events",
       "url": "https://www.nycgovparks.org/xml/events_300_rss.xml",
       "events": [],
       "error": null,
-      "duration": 0.25
+      "duration": 0.12
     },
     {
       "venue": "NYC for FREE (Pop-ups & Experiences)",
@@ -18368,6 +18417,14 @@
           "category": "community"
         },
         {
+          "name": "Timebeam at CO Bigelow",
+          "date": "2026-10-14T16:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/timebeam-at-co-bigelow",
+          "venue": "6th Avenue, New York, NY, USA",
+          "price": "Free",
+          "category": "community"
+        },
+        {
           "name": "Bandana’s Free Coffee for Job Seekers!",
           "date": "2026-10-15T12:00:00+00:00",
           "url": "https://www.nycforfree.co/events/bandanas-free-coffee-for-job-seekers",
@@ -18440,7 +18497,7 @@
           "category": "community"
         },
         {
-          "name": "Pop Up Bagel Times Square Grand Opening",
+          "name": "Pop Up Bagels Times Square Grand Opening",
           "date": "2026-10-16T11:00:00+00:00",
           "url": "https://www.nycforfree.co/events/pop-up-bagel-times-square-grand-opening",
           "venue": "NYC Pop-up / Experience",
@@ -18568,6 +18625,22 @@
           "category": "community"
         },
         {
+          "name": "Cleo × Fellini Coffee",
+          "date": "2026-10-17T16:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/cleo-fellini-coffee",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Cleo × Fellini Coffee",
+          "date": "2026-10-18T12:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/cleo-fellini-coffee",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
           "name": "Disability Pride NYC Parade & Block Party",
           "date": "2026-10-18T15:00:00+00:00",
           "url": "https://www.nycforfree.co/events/disability-pride-nyc-parade-block-party",
@@ -18612,6 +18685,54 @@
           "date": "2026-10-23T00:00:00+00:00",
           "url": "https://www.nycforfree.co/events/house-of-courvoisier",
           "venue": "9 W 8th St, New York, NY 10011, USA",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Trick or Streets",
+          "date": "2026-10-22T18:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/trick-or-streets",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Trick or Streets",
+          "date": "2026-10-24T16:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/trick-or-streets",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Trick or Streets",
+          "date": "2026-10-25T18:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/trick-or-streets",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Trick or Streets",
+          "date": "2026-10-28T19:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/trick-or-streets",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Trick or Streets",
+          "date": "2026-10-31T14:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/trick-or-streets",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "MERIT New Wave, The Experience",
+          "date": "2026-10-22T15:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/merit-new-wave-the-experience",
+          "venue": "22nd through 25th, from 11am-5pm every day, located at 22 Wo",
           "price": "Free",
           "category": "community"
         },
@@ -18736,14 +18857,6 @@
           "category": "community"
         },
         {
-          "name": "Trick or Streets at Essex Market",
-          "date": "2026-10-31T20:00:00+00:00",
-          "url": "https://www.nycforfree.co/events/trick-or-streets-at-essex-market",
-          "venue": "NYC Pop-up / Experience",
-          "price": "Free",
-          "category": "community"
-        },
-        {
           "name": "Halloween At Kids In Sports",
           "date": "2026-10-31T17:00:00+00:00",
           "url": "https://www.nycforfree.co/events/halloween-at-kids-in-sports",
@@ -18761,7 +18874,7 @@
         }
       ],
       "error": null,
-      "duration": 0.31
+      "duration": 0.33
     },
     {
       "venue": "OS NYC (Super Smash Bros & Gaming)",
@@ -18905,7 +19018,7 @@
         }
       ],
       "error": null,
-      "duration": 0.14
+      "duration": 0.47
     },
     {
       "venue": "Wonderville (Indie Arcade & Smashville)",
@@ -18920,9 +19033,9 @@
           "category": "music"
         },
         {
-          "name": "the FORT90 BROADCAST SYSTEM presents: FORT90 TV",
+          "name": "THE FORT90 BROADCAST SYSTEM presents THE FORT90 FILM CLUB: \"FEAR CITY CINEMA\" volume 1, part 1",
           "date": "2026-10-13T00:00:00.985000+00:00",
-          "url": "https://www.wonderville.nyc/events/the-fort90-broadcast-system-presents-fort90-tv-10-12-26",
+          "url": "https://www.wonderville.nyc/events/the-fort90-broadcast-system-10-12-26",
           "venue": "Wonderville (Indie Arcade & Smashville)",
           "price": "Free / No Cover",
           "category": "music"
@@ -20241,7 +20354,7 @@
         }
       ],
       "error": null,
-      "duration": 0.35
+      "duration": 0.45
     },
     {
       "venue": "S.O.B.'s (Sounds of Brazil)",
@@ -20449,7 +20562,7 @@
         }
       ],
       "error": null,
-      "duration": 1.09
+      "duration": 2.66
     },
     {
       "venue": "Union Square Greenmarket",
@@ -21512,7 +21625,7 @@
     }
   ],
   "weather": {
-    "temp": 59,
+    "temp": 68,
     "icon": "🌤️",
     "label": "Mainly clear"
   },
