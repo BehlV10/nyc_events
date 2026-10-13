@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-13T08:55:34.481495+00:00",
+  "generated_at": "2026-10-13T16:43:25.421358+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -1318,6 +1318,14 @@
           "category": "community"
         },
         {
+          "name": "Paris Paloma: The Fatal Flaw Tour",
+          "date": "2026-10-20T23:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/20/paris-paloma-the-fatal-flaw-tour-tickets",
+          "venue": "Brooklyn Paramount",
+          "price": null,
+          "category": "community"
+        },
+        {
           "name": "Lexi Jayde",
           "date": "2026-10-20T23:00:00+00:00",
           "url": "https://donyc.com/events/2026/10/20/lexi-jayde-tickets",
@@ -1330,14 +1338,6 @@
           "date": "2026-10-20T23:30:00+00:00",
           "url": "https://donyc.com/events/2026/10/20/noah-gundersen-tickets",
           "venue": "The Vogel at Count Basie Center for the Arts",
-          "price": null,
-          "category": "community"
-        },
-        {
-          "name": "Paris Paloma: The Fatal Flaw Tour",
-          "date": "2026-10-20T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/20/paris-paloma-the-fatal-flaw-tour-tickets",
-          "venue": "Brooklyn Paramount",
           "price": null,
           "category": "community"
         },
@@ -1759,7 +1759,7 @@
         }
       ],
       "error": null,
-      "duration": 16.72
+      "duration": 30.57
     },
     {
       "venue": "The Skint NYC",
@@ -1847,156 +1847,12 @@
         }
       ],
       "error": null,
-      "duration": 1.95
+      "duration": 1.14
     },
     {
       "venue": "Ticketmaster NYC",
       "url": "https://www.ticketmaster.com/",
       "events": [
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T14:00:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-13T14:00:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "Banksy Museum - Flexiticket",
-          "date": "2026-10-13T14:00:00Z",
-          "url": "https://www.universe.com/events/banksy-museum-flexiticket-tickets-F7XJ8T?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T14:15:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T14:30:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-13T14:30:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T14:45:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T15:00:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-13T15:00:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T15:15:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T15:30:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-13T15:30:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T15:45:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T16:00:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-13T16:00:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T16:15:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-10-13T16:30:00Z",
-          "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
-          "venue": "Balloon Museum NYC",
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Banksy Museum New York!",
-          "date": "2026-10-13T16:30:00Z",
-          "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "price": null,
-          "category": "art"
-        },
         {
           "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
           "date": "2026-10-13T16:45:00Z",
@@ -2652,10 +2508,154 @@
           "venue": "Ambassador Theatre-NY",
           "price": null,
           "category": "theater"
+        },
+        {
+          "name": "Paranormal Activity (NY)",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70gx7",
+          "venue": "August Wilson Theatre-NY",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "The Rocky Horror Show",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Jv4b",
+          "venue": "Studio 54",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Wicked",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7rfPA",
+          "venue": "Gershwin Theatre",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "MJ (NY)",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xFGz",
+          "venue": "Neil Simon Theatre",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "The Book of Mormon",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xeAf",
+          "venue": "Eugene O'Neill Theatre",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Just In Time",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZvPK",
+          "venue": "Circle in the Square Theatre",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "The Unbelievers",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAvoF_",
+          "venue": "New York City Center",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Little Shop Of Horrors",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/little-shop-of-horrors-new-york-new-york-10-13-2026/event/Z1r9uZruZqGZ17PP43",
+          "venue": "Westside Theatre Upstairs",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Little Shop of Horrors",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7p88E",
+          "venue": "Westside Theatre Upstairs - NY",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "For Such A Time As This in America: Angela Davis & Salamishah Tillet",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketmaster.com/for-such-a-time-as-this-newark-new-jersey-10-13-2026/event/0000652A953CA665",
+          "venue": "New Jersey Performing Arts Center",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Lucero with special guest Joelton Mayfield",
+          "date": "2026-10-13T23:00:00Z",
+          "url": "https://www.ticketweb.com/event/lucero-with-special-guest-joelton-williams-center-black-tickets/14249244",
+          "venue": "Williams Center - Black Box - Rutherford",
+          "price": "$51.09",
+          "category": "music"
+        },
+        {
+          "name": "New York Rangers vs. Tampa Bay Lightning",
+          "date": "2026-10-13T23:15:00Z",
+          "url": "https://www.ticketmaster.com/new-york-rangers-vs-tampa-bay-new-york-new-york-10-13-2026/event/3B0064F1B1D84445",
+          "venue": "Madison Square Garden",
+          "price": null,
+          "category": "sports"
+        },
+        {
+          "name": "NY Rangers vs Tampa Bay Lightning Premium Seating",
+          "date": "2026-10-13T23:15:00Z",
+          "url": "https://www.gofevo.com/group/NYRPREM1013",
+          "venue": "Madison Square Garden",
+          "price": null,
+          "category": "sports"
+        },
+        {
+          "name": "L'Inferno (1911)",
+          "date": "2026-10-13T23:15:00Z",
+          "url": "https://www.ticketweb.com/event/linferno-1911-williams-center-cinema-tickets/14340434",
+          "venue": "Williams Center - Cinema Underground - Rutherford",
+          "price": "$13.63–15.69",
+          "category": "music"
+        },
+        {
+          "name": "A New York Evening With Miles Caton",
+          "date": "2026-10-13T23:30:00Z",
+          "url": "https://www.universe.com/events/a-new-york-evening-with-miles-caton-tickets-DSXFBG?ref=ticketmaster",
+          "venue": "The Greene Space",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Midnight",
+          "date": "2026-10-13T23:30:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZI7P",
+          "venue": "Daryl Roth Theatre",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Midnight",
+          "date": "2026-10-13T23:30:00Z",
+          "url": "https://www.ticketmaster.com/midnight-new-york-new-york-10-13-2026/event/Z1r9uZruZqGZ1AvZ8Pe",
+          "venue": "Daryl Roth Theatre",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Oh, Mary!",
+          "date": "2026-10-13T23:30:00Z",
+          "url": "https://www.ticketmaster.com/oh-mary-new-york-new-york-10-13-2026/event/Z1r9uZruZqGZ17J9ra",
+          "venue": "Lyceum Theatre",
+          "price": null,
+          "category": "music"
         }
       ],
       "error": null,
-      "duration": 0.44
+      "duration": 0.62
     },
     {
       "venue": "Brooklyn Bowl",
@@ -2863,7 +2863,7 @@
         }
       ],
       "error": null,
-      "duration": 1.53
+      "duration": 10.9
     },
     {
       "venue": "Elsewhere Brooklyn",
@@ -3071,7 +3071,7 @@
         }
       ],
       "error": null,
-      "duration": 1.33
+      "duration": 4.86
     },
     {
       "venue": "Knockdown Center",
@@ -3263,135 +3263,14 @@
         }
       ],
       "error": null,
-      "duration": 1.6
+      "duration": 4.16
     },
     {
       "venue": "Good Room Greenpoint",
       "url": "https://donyc.com/venues/good-room",
-      "events": [
-        {
-          "name": "12 Years of Good Room - DJ Holographic, 4AM NYC, Lee Cash b2b Perna (All Night)",
-          "date": "2026-10-16T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/16/12-years-of-good-room-dj-holographic-4am-nyc-lee-cash-b2b-perna-all-night-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "12 Years of Good Room - The Carry Nation (all night), Timo Lee, JÄK-87",
-          "date": "2026-10-17T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/17/12-years-of-good-room-the-carry-nation-all-night-timo-lee-jak-87-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "S'aint Panic, Arvin T, okocz, Byld, Elle Dee, KORBEAT, skoglund",
-          "date": "2026-10-22T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/22/s-aint-panic-arvin-t-okocz-byld-elle-dee-korbeat-skoglund-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "XOXA ft DJ Shannon, Kim Anh, YASMEENAH, Tossd ft DJ DEADNAME, Sevyn Love, Giovannii, Will Jack",
-          "date": "2026-10-23T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/23/xoxa-ft-dj-shannon-kim-anh-yasmeenah-tossd-ft-dj-deadname-sevyn-love-giovannii-will-jack-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "FIXED with Mozhgan, JDH & Dave P, Universal Cave (all night)",
-          "date": "2026-10-24T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/24/fixed-with-mozhgan-jdh-dave-p-universal-cave-all-night-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "Synthicide Halloween ft Terence Fixmer, Andi, Justin Aulis Long, Stiffdance",
-          "date": "2026-10-30T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/30/synthicide-halloween-ft-terence-fixmer-andi-justin-aulis-long-stiffdance-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "Tiki Disco",
-          "date": "2026-10-31T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/31/tiki-disco-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "22 Years of FIXED ft Kelly Lee Owens (dj set), JDH & Dave P, Ivan Berko (all night)",
-          "date": "2026-11-07T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/6/22-years-of-fixed-ft-kelly-lee-owens-dj-set-jdh-dave-p-ivan-berko-all-night-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Members Party: Tam Tam, Mike Guimond & Harim",
-          "date": "2026-11-08T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/7/members-party-tam-tam-mike-guimond-harim-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "Anastazja, Honey Bun, Royal Male (Red Laser Records), LOLO",
-          "date": "2026-11-14T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/13/anastazja-honey-bun-royal-male-red-laser-records-lolo-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "240 Months of Riotvan ft Panthera Krause, Peter Invasion, Timo Lee, Mike Simonetti (all night)",
-          "date": "2026-11-15T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/14/240-months-of-riotvan-ft-panthera-krause-peter-invasion-timo-lee-mike-simonetti-all-night-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "Juan Maclean (all night), Tavish, Gee Dee",
-          "date": "2026-11-22T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/21/juan-maclean-all-night-tavish-gee-dee-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "LUCY (Cooper B. Handy), F.G.S.",
-          "date": "2026-12-04T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/12/3/lucy-cooper-b-handy-f-g-s-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "St Vitus Presents: LUCY (Cooper B. Handy), F.G.S.",
-          "date": "2026-12-04T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/12/3/st-vitus-presents-lucy-cooper-b-handy-f-g-s-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "Girl Ultra: el Tour de RRRomeo",
-          "date": "2027-02-10T01:00:00+00:00",
-          "url": "https://donyc.com/events/2027/2/9/girl-ultra-el-tour-de-rrromeo-tickets",
-          "venue": "Good Room",
-          "price": null,
-          "category": "clubbing"
-        }
-      ],
-      "error": null,
-      "duration": 1.11
+      "events": [],
+      "error": "HTTPSConnectionPool(host='donyc.com', port=443): Read timed out. (read timeout=15)",
+      "duration": 15.39
     },
     {
       "venue": "TV Eye Ridgewood",
@@ -3599,7 +3478,7 @@
         }
       ],
       "error": null,
-      "duration": 1.45
+      "duration": 5.08
     },
     {
       "venue": "Public Records Gowanus",
@@ -3807,7 +3686,7 @@
         }
       ],
       "error": null,
-      "duration": 1.2
+      "duration": 4.11
     },
     {
       "venue": "The Bell House",
@@ -4015,7 +3894,7 @@
         }
       ],
       "error": null,
-      "duration": 1.78
+      "duration": 5.32
     },
     {
       "venue": "Littlefield Brooklyn",
@@ -4223,7 +4102,7 @@
         }
       ],
       "error": null,
-      "duration": 1.28
+      "duration": 5.25
     },
     {
       "venue": "Music Hall of Williamsburg",
@@ -4431,7 +4310,7 @@
         }
       ],
       "error": null,
-      "duration": 1.21
+      "duration": 3.31
     },
     {
       "venue": "Brooklyn Steel",
@@ -4639,7 +4518,7 @@
         }
       ],
       "error": null,
-      "duration": 0.97
+      "duration": 1.39
     },
     {
       "venue": "Warsaw Brooklyn",
@@ -4847,7 +4726,7 @@
         }
       ],
       "error": null,
-      "duration": 12.56
+      "duration": 1.3
     },
     {
       "venue": "Barclays Center",
@@ -4937,6 +4816,14 @@
           "name": "WWE Monday Night RAW",
           "date": "2026-11-03T00:30:00+00:00",
           "url": "https://donyc.com/events/2026/11/2/wwe-monday-night-raw-tickets",
+          "venue": "Barclays Center",
+          "price": null,
+          "category": "sports"
+        },
+        {
+          "name": "Omer Adam",
+          "date": "2026-11-04T02:00:00+00:00",
+          "url": "https://donyc.com/events/2026/11/3/omer-adam-tickets",
           "venue": "Barclays Center",
           "price": null,
           "category": "sports"
@@ -5036,18 +4923,10 @@
           "venue": "Barclays Center",
           "price": null,
           "category": "sports"
-        },
-        {
-          "name": "World Team Tennis",
-          "date": "2026-12-01T22:30:00+00:00",
-          "url": "https://donyc.com/events/2026/12/1/world-team-tennis-tickets",
-          "venue": "Barclays Center",
-          "price": null,
-          "category": "sports"
         }
       ],
       "error": null,
-      "duration": 0.95
+      "duration": 1.15
     },
     {
       "venue": "Kings Theatre Flatbush",
@@ -5255,7 +5134,7 @@
         }
       ],
       "error": null,
-      "duration": 0.96
+      "duration": 2.05
     },
     {
       "venue": "Baby's All Right Williamsburg",
@@ -5463,7 +5342,7 @@
         }
       ],
       "error": null,
-      "duration": 1.66
+      "duration": 1.74
     },
     {
       "venue": "The Sultan Room Bushwick",
@@ -5671,7 +5550,7 @@
         }
       ],
       "error": null,
-      "duration": 1.61
+      "duration": 2.1
     },
     {
       "venue": "Pioneer Works Red Hook",
@@ -5807,7 +5686,7 @@
         }
       ],
       "error": null,
-      "duration": 1.01
+      "duration": 2.21
     },
     {
       "venue": "C'mon Everybody Bed-Stuy",
@@ -5855,7 +5734,7 @@
         }
       ],
       "error": null,
-      "duration": 0.78
+      "duration": 0.72
     },
     {
       "venue": "Forest Hills Stadium",
@@ -5895,7 +5774,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34
+      "duration": 1.24
     },
     {
       "venue": "Yankee Stadium",
@@ -6103,7 +5982,7 @@
         }
       ],
       "error": null,
-      "duration": 0.8
+      "duration": 2.64
     },
     {
       "venue": "Lehman Center for the Performing Arts",
@@ -6151,7 +6030,7 @@
         }
       ],
       "error": null,
-      "duration": 0.55
+      "duration": 1.02
     },
     {
       "venue": "St. George Theatre Staten Island",
@@ -6335,7 +6214,7 @@
         }
       ],
       "error": null,
-      "duration": 0.96
+      "duration": 2.11
     },
     {
       "venue": "Bowery Ballroom",
@@ -6543,7 +6422,7 @@
         }
       ],
       "error": null,
-      "duration": 1.05
+      "duration": 3.16
     },
     {
       "venue": "Mercury Lounge",
@@ -6751,215 +6630,14 @@
         }
       ],
       "error": null,
-      "duration": 1.63
+      "duration": 1.19
     },
     {
       "venue": "Webster Hall",
       "url": "https://donyc.com/venues/webster-hall",
-      "events": [
-        {
-          "name": "An Evening of Mud with Remi Wolf",
-          "date": "2026-10-14T01:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/13/an-evening-of-mud-with-remi-wolf-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Seun Kuti & Egypt 80",
-          "date": "2026-10-14T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/14/seun-kuti-egypt-80-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Show Me The Body [NO BARRICADE] Lip Critic, Jivebomb",
-          "date": "2026-10-15T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/15/show-me-the-body-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Igorrr:  North American Tour 2026",
-          "date": "2026-10-16T22:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/16/igorrr-north-american-tour-2026-secret-chiefs-3-violent-magic-orchestra-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Rebecca Black – Exhibitionism on Tour",
-          "date": "2026-10-17T23:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/17/rebecca-black-exhibitionism-on-tour-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "MIXMAG LAB NYC ft. HABIBI'S HOUSE w/ DJ Habibeats",
-          "date": "2026-10-18T03:59:00+00:00",
-          "url": "https://donyc.com/events/2026/10/17/mixmag-lab-nyc-ft-habibi-s-house-w-dj-habibeats-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "Rebecca Black – Exhibitionism on Tour",
-          "date": "2026-10-18T23:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/18/rebecca-black-exhibitionism-on-tour-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "The Tallest Man on Earth",
-          "date": "2026-10-21T01:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/20/the-tallest-man-on-earth-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Castle Rat: Summon The Beasts Tour 2026",
-          "date": "2026-10-21T23:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/21/castle-rat-summon-the-beasts-tour-2026-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "King Princess",
-          "date": "2026-10-24T00:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/23/king-princess-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Judah & The Lion",
-          "date": "2026-10-28T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/27/judah-the-lion-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "DJ Meredith Marks",
-          "date": "2026-10-29T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/28/dj-meredith-marks-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "Grateful Shred",
-          "date": "2026-10-29T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/29/grateful-shred-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Mico",
-          "date": "2026-10-30T23:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/30/mico-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Halloween Rock Show & DJ Masquerade - KAMIJO",
-          "date": "2026-11-01T01:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/31/halloween-rock-show-dj-masquerade-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "Halloween Rock Show & DJ Masquerade: AFTER PARTY - KAMIJO",
-          "date": "2026-11-01T03:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/31/halloween-rock-show-dj-masquerade-after-party-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
-          "name": "She Wants Revenge",
-          "date": "2026-11-03T01:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/2/she-wants-revenge-rosegarden-funeral-party-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "The Wrecks - Finally : OUTSIDE Tour",
-          "date": "2026-11-04T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/3/the-wrecks-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Hovvdy",
-          "date": "2026-11-05T01:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/4/hovvdy-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "This is Lorelei",
-          "date": "2026-11-07T01:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/6/this-is-lorelei-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Saosin, Silent Planet, Like Moths To Flames, Save Us",
-          "date": "2026-11-07T22:30:00+00:00",
-          "url": "https://donyc.com/events/2026/11/7/saosin-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "King of Drag",
-          "date": "2026-11-09T01:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/8/king-of-drag-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Fruit Bats",
-          "date": "2026-11-12T00:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/11/fruit-bats-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Protomartyr",
-          "date": "2026-11-13T01:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/12/protomartyr-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Nia Archives - EMOTIONAL WORLD TOUR",
-          "date": "2026-11-14T01:00:00+00:00",
-          "url": "https://donyc.com/events/2026/11/13/nia-archives-emotional-world-tour-tickets",
-          "venue": "Webster Hall",
-          "price": null,
-          "category": "music"
-        }
-      ],
-      "error": null,
-      "duration": 1.91
+      "events": [],
+      "error": "HTTPSConnectionPool(host='donyc.com', port=443): Read timed out. (read timeout=15)",
+      "duration": 15.01
     },
     {
       "venue": "Terminal 5",
@@ -7167,7 +6845,7 @@
         }
       ],
       "error": null,
-      "duration": 1.49
+      "duration": 2.65
     },
     {
       "venue": "Irving Plaza",
@@ -7375,7 +7053,7 @@
         }
       ],
       "error": null,
-      "duration": 1.18
+      "duration": 1.54
     },
     {
       "venue": "Racket NYC",
@@ -7583,7 +7261,7 @@
         }
       ],
       "error": null,
-      "duration": 1.52
+      "duration": 4.36
     },
     {
       "venue": "Le Poisson Rouge",
@@ -7791,7 +7469,7 @@
         }
       ],
       "error": null,
-      "duration": 1.76
+      "duration": 11.07
     },
     {
       "venue": "Blue Note Jazz Club",
@@ -7967,7 +7645,7 @@
         }
       ],
       "error": null,
-      "duration": 1.71
+      "duration": 1.43
     },
     {
       "venue": "Caveat NYC",
@@ -8175,7 +7853,7 @@
         }
       ],
       "error": null,
-      "duration": 1.38
+      "duration": 10.6
     },
     {
       "venue": "Apollo Theater",
@@ -8207,7 +7885,7 @@
         }
       ],
       "error": null,
-      "duration": 0.43
+      "duration": 9.61
     },
     {
       "venue": "Madison Square Garden",
@@ -8391,7 +8069,7 @@
         }
       ],
       "error": null,
-      "duration": 1.35
+      "duration": 2.24
     },
     {
       "venue": "Radio City Music Hall",
@@ -8495,7 +8173,7 @@
         }
       ],
       "error": null,
-      "duration": 10.51
+      "duration": 2.76
     },
     {
       "venue": "Beacon Theatre",
@@ -8630,6 +8308,14 @@
           "category": "music"
         },
         {
+          "name": "Jerry Seinfeld, Leanne Morgan, Louis C.K., Marcello Hernández, George Wallace",
+          "date": "2026-11-18T00:30:00+00:00",
+          "url": "https://donyc.com/events/2026/11/17/jerry-seinfeld-leanne-morgan-louis-c-k-marcello-hernandez-george-wallace-tickets",
+          "venue": "Beacon Theatre",
+          "price": null,
+          "category": "music"
+        },
+        {
           "name": "Lea Michele, Aaron Tveit",
           "date": "2026-11-20T01:00:00+00:00",
           "url": "https://donyc.com/events/2026/11/19/lea-michele-aaron-tveit-tickets",
@@ -8684,18 +8370,10 @@
           "venue": "Beacon Theatre",
           "price": null,
           "category": "music"
-        },
-        {
-          "name": "John Oliver, Seth Meyers",
-          "date": "2026-12-14T00:30:00+00:00",
-          "url": "https://donyc.com/events/2026/12/13/john-oliver-seth-meyers-tickets",
-          "venue": "Beacon Theatre",
-          "price": null,
-          "category": "music"
         }
       ],
       "error": null,
-      "duration": 0.95
+      "duration": 4.2
     },
     {
       "venue": "Carnegie Hall",
@@ -8767,7 +8445,7 @@
         }
       ],
       "error": null,
-      "duration": 0.5
+      "duration": 8.83
     },
     {
       "venue": "The Town Hall",
@@ -8975,7 +8653,7 @@
         }
       ],
       "error": null,
-      "duration": 1.01
+      "duration": 3.26
     },
     {
       "venue": "Sony Hall",
@@ -9183,7 +8861,7 @@
         }
       ],
       "error": null,
-      "duration": 1.07
+      "duration": 3.65
     },
     {
       "venue": "Gramercy Theatre",
@@ -9391,7 +9069,7 @@
         }
       ],
       "error": null,
-      "duration": 1.18
+      "duration": 2.05
     },
     {
       "venue": "Strand Book Store",
@@ -9651,7 +9329,7 @@
         }
       ],
       "error": null,
-      "duration": 0.72
+      "duration": 0.6
     },
     {
       "venue": "Books Are Magic",
@@ -9929,7 +9607,7 @@
         }
       ],
       "error": null,
-      "duration": 0.74
+      "duration": 0.65
     },
     {
       "venue": "Greenlight Bookstore",
@@ -10252,7 +9930,7 @@
         }
       ],
       "error": null,
-      "duration": 1.14
+      "duration": 1.01
     },
     {
       "venue": "P&T Knitwear Books & Podcasts",
@@ -10584,7 +10262,7 @@
         }
       ],
       "error": null,
-      "duration": 0.89
+      "duration": 0.57
     },
     {
       "venue": "Housing Works Bookstore Cafe",
@@ -10601,21 +10279,21 @@
         }
       ],
       "error": null,
-      "duration": 0.57
+      "duration": 0.46
     },
     {
       "venue": "McNally Jackson Books",
       "url": "https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/",
       "events": [],
       "error": null,
-      "duration": 0.01
+      "duration": 0.02
     },
     {
       "venue": "Bluestockings Cooperative",
       "url": "https://www.eventbrite.com/d/ny--new-york/bluestockings/",
       "events": [],
       "error": null,
-      "duration": 0.01
+      "duration": 0.02
     },
     {
       "venue": "KGB Bar (Literary Readings)",
@@ -10791,14 +10469,14 @@
         }
       ],
       "error": null,
-      "duration": 10.31
+      "duration": 7.21
     },
     {
       "venue": "New York Public Library",
       "url": "https://www.eventbrite.com/d/ny--new-york/nypl/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.01
     },
     {
       "venue": "Brooklyn Public Library",
@@ -11379,7 +11057,7 @@
           "category": "music"
         },
         {
-          "name": "Gary + Michelle",
+          "name": "Gary and Emma",
           "date": "2026-10-30T00:00:00+00:00",
           "url": "https://www.petescandystore.com/calendar/",
           "venue": "Pete's Candy Store",
@@ -12043,6 +11721,14 @@
           "category": "music"
         },
         {
+          "name": "Magherita Corsi",
+          "date": "2026-12-02T01:00:00+00:00",
+          "url": "https://www.petescandystore.com/calendar/",
+          "venue": "Pete's Candy Store",
+          "price": "Free / 1-drink min",
+          "category": "music"
+        },
+        {
           "name": "Not Your Mother",
           "date": "2026-12-06T01:00:00+00:00",
           "url": "https://www.petescandystore.com/calendar/",
@@ -12148,7 +11834,7 @@
         }
       ],
       "error": null,
-      "duration": 1.49
+      "duration": 1.33
     },
     {
       "venue": "Skinny Dennis",
@@ -12171,9 +11857,9 @@
           "category": "music"
         },
         {
-          "name": "CC &amp; The Boys ",
-          "date": "2026-10-16T01:00:00.159000+00:00",
-          "url": "https://skinnydennisbrooklyn.com/calendar/template-r7prw-s853k-7yka5-a3g6k-gwkph-r5t3h-nap6r-zgdpa-gkams-ffkrd-643ln-5lp9r-r33ff-zp35y-lrs4m-6x73y-8gbfx-bda9k-843p5-g8sdw-7bp39-hft2z-zhls6-dgc2e",
+          "name": "CC &amp; The Boys",
+          "date": "2026-10-16T01:00:00.321000+00:00",
+          "url": "https://skinnydennisbrooklyn.com/calendar/template-r7prw-s853k-7yka5-a3g6k-gwkph-r5t3h-nap6r-zgdpa-gkams-ffkrd-643ln-5lp9r-r33ff-zp35y-lrs4m-6x73y-8gbfx-bda9k-843p5-g8sdw-wm4sk-ms9hc-lp6lf-2b94f-e82wc-7prbg",
           "venue": "Skinny Dennis",
           "price": "Free / No Cover",
           "category": "music"
@@ -12182,6 +11868,14 @@
           "name": "The National Reserve",
           "date": "2026-10-17T01:00:00.649000+00:00",
           "url": "https://skinnydennisbrooklyn.com/calendar/template-sc8eb-tpwjr-frlts-px2b9-rjjsy-rwkxj-ylhzd-5cea2-g7eax-wbwd6-bgnxd-hlchw-3rwk9-czn8g-6wphn-8xadk-twe85-n2yds",
+          "venue": "Skinny Dennis",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Quartz Casino Band ",
+          "date": "2026-10-18T01:00:00.649000+00:00",
+          "url": "https://skinnydennisbrooklyn.com/calendar/template-mkxcx-3afkg-rw3cc-b96as-48y8r-bxbl8-7pws5-rpn6x-hk5ze-j36ja-yrd5c-kand7",
           "venue": "Skinny Dennis",
           "price": "Free / No Cover",
           "category": "music"
@@ -12212,7 +11906,7 @@
         }
       ],
       "error": null,
-      "duration": 0.39
+      "duration": 1.79
     },
     {
       "venue": "NYC Trivia League",
@@ -15420,7 +15114,7 @@
         }
       ],
       "error": null,
-      "duration": 1.12
+      "duration": 0.92
     },
     {
       "venue": "Film Forum",
@@ -15628,7 +15322,7 @@
         }
       ],
       "error": null,
-      "duration": 1.97
+      "duration": 1.71
     },
     {
       "venue": "Nitehawk Cinema",
@@ -15683,6 +15377,22 @@
           "category": "film"
         },
         {
+          "name": "You Can See Everything",
+          "date": "2026-10-23T00:45:00+00:00",
+          "url": "https://donyc.com/events/2026/10/22/you-can-see-everything-tickets",
+          "venue": "Nitehawk Cinema - Williamsburg",
+          "price": null,
+          "category": "film"
+        },
+        {
+          "name": "You Can See Everything",
+          "date": "2026-10-24T00:45:00+00:00",
+          "url": "https://donyc.com/events/2026/10/23/you-can-see-everything-tickets",
+          "venue": "Nitehawk Cinema - Williamsburg",
+          "price": null,
+          "category": "film"
+        },
+        {
           "name": "Young Frankenstein",
           "date": "2026-10-24T15:00:00+00:00",
           "url": "https://donyc.com/events/2026/10/24/young-frankenstein-tickets",
@@ -15699,6 +15409,14 @@
           "category": "film"
         },
         {
+          "name": "You Can See Everything",
+          "date": "2026-10-25T00:45:00+00:00",
+          "url": "https://donyc.com/events/2026/10/24/you-can-see-everything-tickets",
+          "venue": "Nitehawk Cinema - Williamsburg",
+          "price": null,
+          "category": "film"
+        },
+        {
           "name": "Young Frankenstein",
           "date": "2026-10-25T15:00:00+00:00",
           "url": "https://donyc.com/events/2026/10/25/young-frankenstein-tickets",
@@ -15710,6 +15428,14 @@
           "name": "Spoons Toons & Booze Halloween",
           "date": "2026-10-25T15:15:00+00:00",
           "url": "https://donyc.com/events/2026/10/25/spoons-toons-booze-halloween-tickets",
+          "venue": "Nitehawk Cinema - Williamsburg",
+          "price": null,
+          "category": "film"
+        },
+        {
+          "name": "You Can See Everything",
+          "date": "2026-10-26T00:45:00+00:00",
+          "url": "https://donyc.com/events/2026/10/25/you-can-see-everything-tickets",
           "venue": "Nitehawk Cinema - Williamsburg",
           "price": null,
           "category": "film"
@@ -15772,7 +15498,7 @@
         }
       ],
       "error": null,
-      "duration": 1.84
+      "duration": 4.02
     },
     {
       "venue": "IFC Center",
@@ -15825,10 +15551,58 @@
           "venue": "IFC Center",
           "price": null,
           "category": "film"
+        },
+        {
+          "name": "The Exorcist",
+          "date": "2026-10-17T03:45:00+00:00",
+          "url": "https://donyc.com/events/2026/10/16/the-exorcist-tickets",
+          "venue": "IFC Center",
+          "price": null,
+          "category": "film"
+        },
+        {
+          "name": "Redline",
+          "date": "2026-10-17T03:50:00+00:00",
+          "url": "https://donyc.com/events/2026/10/16/redline-tickets",
+          "venue": "IFC Center",
+          "price": null,
+          "category": "film"
+        },
+        {
+          "name": "The House with Laughing Windows",
+          "date": "2026-10-17T03:55:00+00:00",
+          "url": "https://donyc.com/events/2026/10/16/the-house-with-laughing-windows-tickets",
+          "venue": "IFC Center",
+          "price": null,
+          "category": "film"
+        },
+        {
+          "name": "The Exorcist",
+          "date": "2026-10-18T03:45:00+00:00",
+          "url": "https://donyc.com/events/2026/10/17/the-exorcist-tickets",
+          "venue": "IFC Center",
+          "price": null,
+          "category": "film"
+        },
+        {
+          "name": "Redline",
+          "date": "2026-10-18T03:50:00+00:00",
+          "url": "https://donyc.com/events/2026/10/17/redline-tickets",
+          "venue": "IFC Center",
+          "price": null,
+          "category": "film"
+        },
+        {
+          "name": "The House with Laughing Windows",
+          "date": "2026-10-18T03:55:00+00:00",
+          "url": "https://donyc.com/events/2026/10/17/the-house-with-laughing-windows-tickets",
+          "venue": "IFC Center",
+          "price": null,
+          "category": "film"
         }
       ],
       "error": null,
-      "duration": 1.59
+      "duration": 1.81
     },
     {
       "venue": "Union Hall Brooklyn",
@@ -16028,7 +15802,7 @@
         }
       ],
       "error": null,
-      "duration": 1.8
+      "duration": 1.92
     },
     {
       "venue": "Smalls Jazz Club",
@@ -16236,7 +16010,7 @@
         }
       ],
       "error": null,
-      "duration": 1.81
+      "duration": 1.99
     },
     {
       "venue": "Joe's Pub (The Public Theater)",
@@ -16428,7 +16202,7 @@
         }
       ],
       "error": null,
-      "duration": 3.46
+      "duration": 8.73
     },
     {
       "venue": "The Bitter End (Greenwich Village)",
@@ -16636,7 +16410,7 @@
         }
       ],
       "error": null,
-      "duration": 2.22
+      "duration": 1.57
     },
     {
       "venue": "Arlene's Grocery (LES Rock & Karaoke)",
@@ -16844,7 +16618,7 @@
         }
       ],
       "error": null,
-      "duration": 1.25
+      "duration": 3.72
     },
     {
       "venue": "Nublu 151 (Alphabet City)",
@@ -17052,7 +16826,7 @@
         }
       ],
       "error": null,
-      "duration": 1.9
+      "duration": 1.12
     },
     {
       "venue": "Drom NYC (East Village Global Music)",
@@ -17260,7 +17034,7 @@
         }
       ],
       "error": null,
-      "duration": 2.91
+      "duration": 6.84
     },
     {
       "venue": "Terra Blues (Bleecker St)",
@@ -17468,7 +17242,7 @@
         }
       ],
       "error": null,
-      "duration": 0.83
+      "duration": 2.15
     },
     {
       "venue": "Symphony Space (Upper West Side)",
@@ -17476,8 +17250,8 @@
       "events": [
         {
           "name": "Surviving The Hood",
-          "date": "2026-10-13T15:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/13/surviving-the-hood-tickets",
+          "date": "2026-10-13T22:30:00+00:00",
+          "url": "https://donyc.com/events/2026/10/13/surviving-the-hood-tickets-qenp3e0",
           "venue": "Symphony Space",
           "price": null,
           "category": "theater"
@@ -17660,7 +17434,7 @@
         }
       ],
       "error": null,
-      "duration": 1.07
+      "duration": 3.84
     },
     {
       "venue": "Q.E.D. Astoria (Comedy & Arts)",
@@ -17836,7 +17610,7 @@
         }
       ],
       "error": null,
-      "duration": 1.51
+      "duration": 2.43
     },
     {
       "venue": "New York Comedy Club Midtown",
@@ -17980,7 +17754,7 @@
         }
       ],
       "error": null,
-      "duration": 0.91
+      "duration": 3.12
     },
     {
       "venue": "New York Comedy Club East Village",
@@ -18156,14 +17930,14 @@
         }
       ],
       "error": null,
-      "duration": 0.85
+      "duration": 3.69
     },
     {
       "venue": "The Tiny Cupboard (Bushwick Rooftop Comedy)",
       "url": "https://donyc.com/venues/the-tiny-cupboard",
       "events": [],
       "error": null,
-      "duration": 0.63
+      "duration": 0.62
     },
     {
       "venue": "Brooklyn Comedy Collective (Eris Mainstage)",
@@ -18179,14 +17953,14 @@
         }
       ],
       "error": null,
-      "duration": 0.32
+      "duration": 0.84
     },
     {
       "venue": "NYC Parks Free Public Events",
       "url": "https://www.nycgovparks.org/xml/events_300_rss.xml",
       "events": [],
       "error": null,
-      "duration": 0.26
+      "duration": 0.12
     },
     {
       "venue": "NYC for FREE (Pop-ups & Experiences)",
@@ -18245,14 +18019,6 @@
           "date": "2026-10-13T15:00:00+00:00",
           "url": "https://www.nycforfree.co/events/gocafe-experience-by-zojirushi",
           "venue": "89 E 42nd St, New York, NY 10017, USA",
-          "price": "Free",
-          "category": "community"
-        },
-        {
-          "name": "Boucheron: In Focus A Monograph of a Visionary",
-          "date": "2026-10-13T14:00:00+00:00",
-          "url": "https://www.nycforfree.co/events/boucheron-in-focus-a-monograph-of-a-visionary",
-          "venue": "20 Rockefeller Plaza, New York, NY 10020, USA",
           "price": "Free",
           "category": "community"
         },
@@ -18321,6 +18087,22 @@
           "category": "community"
         },
         {
+          "name": "Kinlaw Fall Risk",
+          "date": "2026-10-14T00:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/kinlaw-fall-risk",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Dave’s Day at Dave's Hot Chicken",
+          "date": "2026-10-13T15:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/daves-day-at-daves-hot-chicken",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
           "name": "Rhone presents: Adult Recess",
           "date": "2026-10-14T15:00:00+00:00",
           "url": "https://www.nycforfree.co/events/rhone-presents-adult-recess",
@@ -18343,6 +18125,14 @@
           "venue": "6th Avenue, New York, NY, USA",
           "price": "Free",
           "category": "community"
+        },
+        {
+          "name": "STREET FIGHTER Advance Screening",
+          "date": "2026-10-14T22:30:00+00:00",
+          "url": "https://www.nycforfree.co/events/street-fighter-advance-screening",
+          "venue": "42nd Street, New York, NY, USA",
+          "price": "Free",
+          "category": "film"
         },
         {
           "name": "Bandana’s Free Coffee for Job Seekers!",
@@ -18457,6 +18247,14 @@
           "category": "community"
         },
         {
+          "name": "Skinny Louie Park Slope Grand Opening",
+          "date": "2026-10-16T22:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/skinny-louie-park-slope-grand-opening",
+          "venue": "218 Flatbush Avenue, Brooklyn, NY, USA",
+          "price": "Free",
+          "category": "community"
+        },
+        {
           "name": "Glow Cultural Center Fall Festival",
           "date": "2026-10-17T16:00:00+00:00",
           "url": "https://www.nycforfree.co/events/glow-cultural-center-fall-festival",
@@ -18561,6 +18359,22 @@
           "category": "community"
         },
         {
+          "name": "Williamsbridge Fall Fiesta",
+          "date": "2026-10-17T15:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/williamsbridge-fall-fiesta",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Halloween Dog Parade & Costume Contest at Forest Park",
+          "date": "2026-10-17T14:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/halloween-dog-parade-costume-contest-at-forest-park",
+          "venue": "80-30 Park Lane, Kew Gardens, NY 11415, USA",
+          "price": "Free",
+          "category": "community"
+        },
+        {
           "name": "Disability Pride NYC Parade & Block Party",
           "date": "2026-10-18T15:00:00+00:00",
           "url": "https://www.nycforfree.co/events/disability-pride-nyc-parade-block-party",
@@ -18583,6 +18397,14 @@
           "venue": "65 YEARS WITH FREE PERFORMANCES, WORKSHOPS, LOCAL FOOD FAMIL",
           "price": "Free",
           "category": "clubbing"
+        },
+        {
+          "name": "Carl Schurz Halloween Howl",
+          "date": "2026-10-18T15:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/carl-schurz-halloween-howl",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
         },
         {
           "name": "Astronomy on Tap NYC: The Dark Night",
@@ -18745,9 +18567,41 @@
           "category": "community"
         },
         {
-          "name": "Domino Park Woof-o-ween",
+          "name": "Riverside Park Pup Halloween Parade",
+          "date": "2026-10-24T16:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/riverside-park-pup-halloween-parade",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Howl-O-Ween at Irving Square Park",
+          "date": "2026-10-24T19:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/howl-o-ween-at-irving-square-park",
+          "venue": "5th Annual Howl-O-Ween Dog Costume contest at Irving Square ",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "The Longest Pastry Table",
+          "date": "2026-10-24T16:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/the-longest-pastry-table",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Domino Park Woof-o-ween 2026",
           "date": "2026-10-25T17:00:00+00:00",
-          "url": "https://www.nycforfree.co/events/domino-park-woof-o-ween",
+          "url": "https://www.nycforfree.co/events/domino-park-woof-o-ween-2026",
+          "venue": "NYC Pop-up / Experience",
+          "price": "Free",
+          "category": "community"
+        },
+        {
+          "name": "Wags to Witches at Van Cortlandt Park",
+          "date": "2026-10-25T17:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/wags-to-witches-at-van-cortlandt-park",
           "venue": "NYC Pop-up / Experience",
           "price": "Free",
           "category": "community"
@@ -18817,6 +18671,14 @@
           "category": "community"
         },
         {
+          "name": "Socrates Park Halloween Harvest Festival",
+          "date": "2026-10-31T22:00:00+00:00",
+          "url": "https://www.nycforfree.co/events/socrates-park-halloween-harvest-festival",
+          "venue": "12 - 6 PM 2026 Halloween Harvest Festival is back with famil",
+          "price": "Free",
+          "category": "community"
+        },
+        {
           "name": "Heatwise x NYC Marathon Free Class",
           "date": "2026-11-01T04:00:00+00:00",
           "url": "https://www.nycforfree.co/events/heatwise-x-nyc-marathon-free-class",
@@ -18850,7 +18712,7 @@
         }
       ],
       "error": null,
-      "duration": 0.22
+      "duration": 0.26
     },
     {
       "venue": "OS NYC (Super Smash Bros & Gaming)",
@@ -18986,7 +18848,7 @@
         }
       ],
       "error": null,
-      "duration": 0.6
+      "duration": 1.36
     },
     {
       "venue": "Wonderville (Indie Arcade & Smashville)",
@@ -20330,7 +20192,7 @@
         }
       ],
       "error": null,
-      "duration": 0.76
+      "duration": 0.23
     },
     {
       "venue": "S.O.B.'s (Sounds of Brazil)",
@@ -20538,7 +20400,7 @@
         }
       ],
       "error": null,
-      "duration": 0.93
+      "duration": 2.51
     },
     {
       "venue": "Union Square Greenmarket",
@@ -21601,7 +21463,7 @@
     }
   ],
   "weather": {
-    "temp": 57,
+    "temp": 70,
     "icon": "☀️",
     "label": "Clear"
   },
