@@ -1045,9 +1045,25 @@ _ALL_VENUES = [
     {"name": "NYC Parks Free Public Events", "url": "https://www.nycgovparks.org/xml/events_300_rss.xml", "ua": UA_CHROME, "scraper": scrape_nyc_parks, "default_category": "outdoors"},
     {"name": "NYC for FREE (Pop-ups & Experiences)", "url": "https://www.nycforfree.co/events", "ua": UA_CHROME, "scraper": scrape_nyc_for_free, "default_category": "community"},
 
-    # Super Smash Bros (SSB), Arcades & Competitive Gaming
+    # Super Smash Bros (SSB), Arcades & Tabletop Gaming
     {"name": "OS NYC (Super Smash Bros & Gaming)", "url": "https://www.os-nyc.com/events?format=json", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "gaming"},
     {"name": "Wonderville (Indie Arcade & Smashville)", "url": "https://www.wonderville.nyc/events?format=json", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "gaming"},
+    {"name": "Hex & Company (Board Games & RPG)", "url": "https://www.eventbrite.com/d/ny--new-york/hex-and-company/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "The Uncommons (Board Game Cafe)", "url": "https://www.eventbrite.com/d/ny--new-york/the-uncommons/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "The Brooklyn Strategist", "url": "https://www.eventbrite.com/d/ny--brooklyn/the-brooklyn-strategist/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+
+    # Nightlife, Immersive Spectacle & Theatrical Circus
+    {"name": "House of Yes (Circus & Dance)", "url": "https://donyc.com/venues/house-of-yes", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "party"},
+
+    # Art Galleries, Food Festivals & Community Learning
+    {"name": "Chelsea Art Gallery Openings", "url": "https://www.eventbrite.com/d/ny--new-york/chelsea-art-gallery/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "art"},
+    {"name": "Japan Fes NYC (Street Food)", "url": "https://www.eventbrite.com/d/ny--new-york/japan-fes/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
+    {"name": "Midnight Runners NYC (Social Run Club)", "url": "https://www.eventbrite.com/d/ny--new-york/midnight-runners/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "sports"},
+    {"name": "Brooklyn Brainery (Community Classes)", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-brainery/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+
+    # Long-Form Improv, Sketch & Alternative Comedy
+    {"name": "Magnet Theater (Improv & Sketch)", "url": "https://www.eventbrite.com/d/ny--new-york/magnet-theater/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Asylum NYC (Alternative Comedy)", "url": "https://www.eventbrite.com/d/ny--new-york/asylum-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
 
     # Historic Cultural Music Halls
     {"name": "S.O.B.'s (Sounds of Brazil)", "url": "https://donyc.com/venues/sobs", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
