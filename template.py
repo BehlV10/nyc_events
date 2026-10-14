@@ -77,6 +77,7 @@ CITY_RULES = [
         "bluestockings", "p&t knitwear", "housing works",
         "kgb bar", "the bitter end", "bitter end", "arlene's grocery", "arlenes grocery",
         "nublu", "drom", "terra blues", "symphony space", "new york comedy club",
+        "tight pants comedy", "tight pants", "greenwich village comedy", "grisly pear", "st. marks comedy",
         "new york public library", "nypl",
         "ifc center", "smalls jazz club", "smalls jazz", "manhattan trivia",
         "os nyc", "sobs", "s.o.b.",

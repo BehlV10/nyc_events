@@ -8,7 +8,7 @@ Companion project to [Wicked Boston Events](https://github.com/BehlV10/boston_ev
 
 ## 🌟 Highlights & Features
 
-- **82+ Live NYC Venues & Community Feeds**: Aggregates from independent concert halls, historic jazz and blues clubs, Super Smash Bros (SSB) gaming arenas, NYC Parks official citywide feeds, free pop-up trackers, indie bookstores, public libraries, neighborhood dive bars, pub trivia leagues, and curated local guides.
+- **86+ Live NYC Venues & Community Feeds**: Aggregates from independent concert halls, historic jazz and blues clubs, stand-up comedy showcases (Tight Pants Comedy, Greenwich Village Comedy Club, St. Marks, Grisly Pear), Super Smash Bros (SSB) gaming arenas, NYC Parks official citywide feeds, free pop-up trackers, indie bookstores, public libraries, neighborhood dive bars, and pub trivia leagues.
 - **5-Borough Multi-Filter**: 1-tap filter pills for Manhattan, Brooklyn, Queens, The Bronx, Staten Island, and Tri-State / Greater NY.
 - **Custom NYC Skyline Hero Art**: Handcrafted, responsive SVG banner featuring One World Trade Center with red beacon spire, Empire State Building, Chrysler Building, Brooklyn Bridge stone arches, Statue of Liberty silhouette, Yellow Taxi pin, starfield, and East River reflections.
 - **Quick-Time & Free Filters**: 1-tap shortcuts for *Today*, *Tomorrow*, *This Weekend*, *Next 7 Days*, and **✨ Free Only (1,800+ free events)**.
@@ -26,7 +26,7 @@ Companion project to [Wicked Boston Events](https://github.com/BehlV10/boston_ev
 - **Super Smash Bros & Competitive Gaming**: OS NYC (Chinatown / Bowery — *The Bowsery* weekly Smash Ultimate, *NYCMelee* Stock Exchange, fighting game tournaments, TCG nights).
 - **Independent Bookstores & Literary Lounges**: Strand Book Store (complete official schedule from the Rare Book Room & main hall), P&T Knitwear Books & Podcasts (LES), Housing Works Bookstore Cafe (SoHo), KGB Bar (East Village literary speakeasy reading series), McNally Jackson Books (SoHo & Seaport), Bluestockings Cooperative (LES).
 - **Public Libraries**: New York Public Library (NYPL flagship Schwarzman & SNFL author talks, workshops, and exhibitions).
-- **Comedy & Independent Film**: New York Comedy Club (Midtown & East Village), Film Forum (Greenwich Village), IFC Center (West Village), Caveat NYC (nerd comedy & storytelling), Comedy Cellar.
+- **Comedy & Independent Film**: Tight Pants Comedy (indie stand-up showcases & speakeasies), Greenwich Village Comedy Club (MacDougal St), The Grisly Pear (West Village), St. Marks Comedy Club, New York Comedy Club (Midtown & East Village), Film Forum (Greenwich Village), IFC Center (West Village), Caveat NYC (nerd comedy & storytelling), Comedy Cellar.
 - **Markets & Free Happenings**: Union Square Greenmarket, Grand Bazaar NYC (UWS), Bryant Park series, Central Park SummerStage.
 
 ### 🎸 Brooklyn
