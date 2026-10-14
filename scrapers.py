@@ -471,7 +471,7 @@ def scrape_eventbrite_jsonld(url, ua):
 
 def scrape_eventbrite_organizer(url, ua):
     """Scrape official Eventbrite organizer API for complete venue event schedules."""
-    m = re.search(r"(\d{9,12})", url)
+    m = re.search(r"(\d{8,14})", url)
     if not m:
         return []
     org_id = m.group(1)
@@ -502,11 +502,18 @@ def scrape_eventbrite_organizer(url, ua):
             is_free = ev.get("is_free", False)
             price = "Free" if is_free else None
             desc = (ev.get("summary") or "").strip()
+            vname = None
+            if isinstance(ev.get("venue"), dict):
+                vname = ev.get("venue", {}).get("name")
+            if not vname:
+                m_at = re.search(r"\bat\s+([A-Z0-9][^|(,\n]+)", name)
+                if m_at:
+                    vname = m_at.group(1).strip()
             events.append({
                 "name": name,
                 "date": dt.isoformat(),
                 "url": event_url or f"https://www.eventbrite.com/o/{org_id}",
-                "venue": None,
+                "venue": vname,
                 "price": price,
                 "description": desc,
             })
@@ -1024,6 +1031,10 @@ _ALL_VENUES = [
     {"name": "Symphony Space (Upper West Side)", "url": "https://donyc.com/venues/symphony-space", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
 
     # Comedy Clubs & Queens Performance Spaces
+    {"name": "Tight Pants Comedy", "url": "https://www.eventbrite.com/api/v3/organizers/58671695943/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
+    {"name": "Greenwich Village Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/greenwich-village-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "The Grisly Pear Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/grisly-pear-comedy/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "St. Marks Comedy Club", "url": "https://donyc.com/venues/st-marks-comedy-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Q.E.D. Astoria (Comedy & Arts)", "url": "https://donyc.com/venues/qed", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "New York Comedy Club Midtown", "url": "https://donyc.com/venues/new-york-comedy-club-midtown", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "New York Comedy Club East Village", "url": "https://donyc.com/venues/new-york-comedy-club-east-village", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
