@@ -878,6 +878,174 @@ def scrape_nyc_for_free(url, ua):
     return events
 
 
+def scrape_thisweekinswingnyc(url, ua):
+    """This Week in Swing NYC — comprehensive weekly calendar of Lindy Hop, Swing, Balboa & Blues dances."""
+    events = []
+    now = datetime.now(timezone.utc)
+    now_eastern = datetime.now(EASTERN)
+    min_date = now_eastern.date() - timedelta(days=1)
+
+    month_map = {
+        "january": 1, "february": 2, "march": 3, "april": 4, "may": 5, "june": 6,
+        "july": 7, "august": 8, "september": 9, "october": 10, "november": 11, "december": 12
+    }
+
+    known_venues = [
+        (["frim fram", "ysbd", "you should be dancing", "saturday night swings", "white heat"], "You Should Be Dancing (YSBD)"),
+        (["midtown swings", "danznik"], "Danznik Studios"),
+        (["back room"], "The Back Room"),
+        (["swing 46"], "Swing 46 Jazz & Supper Club"),
+        (["gotham jazz", "somewhere nowhere"], "Somewhere Nowhere NYC"),
+        (["terra blues"], "Terra Blues"),
+        (["friday night blues", "hungarian house"], "Hungarian House (Blues Dance NY)"),
+        (["swing remix", "good shepherd"], "Good Shepherd Church"),
+        (["the keep", "positively swingin"], "The Keep (Bushwick)"),
+        (["young ethel"], "Young Ethel's (South Brooklyn)"),
+        (["the box house", "box house hotel"], "The Box House Hotel (Greenpoint)"),
+        (["the last word", "astoria swing"], "The Last Word (Astoria)"),
+        (["harlem swing dance", "street dance"], "Harlem Swing Dance Society"),
+        (["connolly", "sock hop"], "Connolly's Pub (Times Square)"),
+        (["kilowatt", "lindy lab"], "Kilowatt Dance Studio"),
+        (["mehanata", "jazz on ludlow"], "Mehanata (Lower East Side)"),
+        (["pangea"], "Pangea (East Village)"),
+        (["estonian house", "shanghai mermaid"], "Estonian House (Murray Hill)"),
+        (["mona"], "Mona's (East Village)"),
+        (["ripley-grier", "queer jazz"], "Ripley-Grier Studios"),
+        (["prince george ballroom"], "Prince George Ballroom"),
+        (["the dl"], "The DL Rooftop"),
+        (["transit museum", "subway swing"], "New York Transit Museum"),
+        (["sara d roosevelt", "chinatown swing"], "Sara D. Roosevelt Park"),
+        (["java street"], "Java Street Community Garden"),
+        (["central park swings"], "Central Park (King Jagiello Plaza)"),
+    ]
+
+    try:
+        resp = _SESSION.get(
+            url,
+            headers={
+                "User-Agent": ua,
+                "Accept": "application/json, text/html, */*",
+            },
+            timeout=15,
+        )
+        resp.raise_for_status()
+
+        posts = []
+        try:
+            posts = resp.json()
+            if not isinstance(posts, list):
+                posts = [posts]
+        except Exception:
+            posts = []
+
+        date_regex = re.compile(
+            r"^(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),\s+([A-Za-z]+)\s+(\d{1,2})(?:[a-z]{2})?(?:,?\s*(\d{4}))?(?:\s*[-–].*)?$",
+            re.I,
+        )
+
+        for post in posts:
+            post_url = post.get("link") or "https://thisweekinswingnyc.com/"
+            content_html = post.get("content", {}).get("rendered", "")
+            if not content_html:
+                continue
+            soup = BeautifulSoup(content_html, "html.parser")
+            text = soup.get_text("\n")
+            lines = [l.strip() for l in text.split("\n") if l.strip()]
+
+            sections = []
+            cur_date_info = None
+            cur_lines = []
+
+            for line in lines:
+                m = date_regex.match(line)
+                if m:
+                    if cur_date_info and cur_lines:
+                        if len(cur_lines) == 1 and len(cur_lines[0]) < 80 and not any(k in cur_lines[0].lower() for k in ["cancelled", "postponed"]):
+                            saved_title = cur_lines[0]
+                        else:
+                            saved_title = None
+                            sections.append((cur_date_info, cur_lines))
+                    else:
+                        saved_title = None
+
+                    day_name, mon_name, day_num, yr = m.group(1), m.group(2).lower(), int(m.group(3)), m.group(4)
+                    year = int(yr) if yr else now_eastern.year
+                    if mon_name in month_map:
+                        mon = month_map[mon_name]
+                        if mon < 10 and year == now_eastern.year and now_eastern.month >= 10:
+                            year = now_eastern.year + 1
+                        cur_date_info = (year, mon, day_num, day_name)
+                        cur_lines = [saved_title] if saved_title else []
+                    else:
+                        cur_lines.append(line)
+                else:
+                    if cur_date_info:
+                        cur_lines.append(line)
+            if cur_date_info and cur_lines:
+                sections.append((cur_date_info, cur_lines))
+
+            for (year, mon, day_num, day_name), blines in sections:
+                if not blines:
+                    continue
+                title = blines[0]
+                full_text = " ".join(blines)
+                if "this event has been postponed" in full_text.lower() or "no fram" in full_text.lower():
+                    continue
+                if len(title) > 90 or title.lower().startswith("eileen") or title.lower().startswith("many thanks"):
+                    continue
+                if re.search(r"^\d+\s+[A-Za-z]|^\d+:\d+", title):
+                    if len(blines) > 1 and len(blines[1]) < 80:
+                        title = blines[1]
+
+                time_m = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", full_text, re.I)
+                hr, mn = 19, 0
+                if time_m:
+                    hr = int(time_m.group(1))
+                    mn = int(time_m.group(2) or 0)
+                    ampm = time_m.group(3).lower()
+                    if ampm == "pm" and hr < 12:
+                        hr += 12
+                    elif ampm == "am" and hr == 12:
+                        hr = 0
+
+                try:
+                    event_date = datetime(year, mon, day_num, hr, mn, tzinfo=EASTERN)
+                except ValueError:
+                    continue
+
+                if event_date.date() < min_date:
+                    continue
+
+                venue = None
+                for patterns, vname in known_venues:
+                    if any(p in title.lower() for p in patterns) or any(p in full_text.lower() for p in patterns):
+                        venue = vname
+                        break
+                if not venue:
+                    venue = "This Week in Swing NYC"
+
+                price = None
+                m_price = re.search(r"(\$\d+(?:\s*[-–/]\s*\$?\d+)?|\bfree\b|no cover)", full_text, re.I)
+                if m_price:
+                    price = m_price.group(1).title()
+
+                desc = " ".join(blines[1:5])[:250]
+                dt_utc = event_date.astimezone(timezone.utc)
+
+                events.append({
+                    "name": title,
+                    "date": dt_utc.isoformat(),
+                    "url": post_url,
+                    "venue": venue,
+                    "price": price,
+                    "description": desc,
+                    "category": "dance",
+                })
+    except Exception:
+        pass
+    return events
+
+
 # --- Curated Recurring NYC Events ---
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
@@ -944,6 +1112,44 @@ MANUAL_RECURRING_EVENTS = [
         ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 5, 20, 30, "Dance Lesson & Band"),
         ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 6, 20, 30, "Dance Lesson & Band"),
     ]),
+    ("You Should Be Dancing (YSBD)", "https://youshouldbedancing.live/", "dance", [
+        ("Frim Fram Jam (Intro Swing Lesson & Social Dance)", "http://www.frimframjam.com/", 3, 20, 30, "$15–$25"),
+        ("Saturday Night Swings (Live Big Band & Lesson)", "https://youshouldbedancing.live/", 5, 19, 15, "$25–$30"),
+        ("Social Swing Dance & Practice Session", "https://youshouldbedancing.live/", 1, 19, 0, "$5"),
+    ]),
+    ("Danznik Studios", "https://midtownswings.com/", "dance", [
+        ("Midtown Swings (Intro Lindy Hop & DJ Social)", "https://midtownswings.com/", 1, 21, 0, "$15–$25"),
+    ]),
+    ("The Keep (Bushwick)", "https://thisweekinswingnyc.com/", "dance", [
+        ("Positively Swingin' (Live Band & Warm-up Lesson)", "https://thisweekinswingnyc.com/", 2, 19, 30, "No Cover"),
+    ]),
+    ("Hungarian House (Blues Dance NY)", "https://bluesdancenewyork.com/", "dance", [
+        ("Friday Night Blues (Live Blues Band & Lesson)", "https://bluesdancenewyork.com/", 4, 20, 0, "$20–$35"),
+    ]),
+    ("Somewhere Nowhere NYC", "https://prohibitionproductions.com/gothamjazz", "dance", [
+        ("Gotham Jazz (Live Hot Toddies Band, Dance Lesson & Burlesque)", "https://prohibitionproductions.com/gothamjazz", 2, 19, 15, "Free RSVP"),
+    ]),
+    ("Harlem Swing Dance Society", "http://www.theharlemswingdancesociety.org/", "dance", [
+        ("Street Dance Harlem (Free Lindy Hop Lesson & Social)", "http://www.theharlemswingdancesociety.org/", 5, 15, 0, "Free"),
+    ]),
+    ("Terra Blues", "https://www.terrablues.com/", "dance", [
+        ("Terra Blues Meet-up (Live Blues Band & Dancing)", "https://www.terrablues.com/", 0, 21, 30, "$20"),
+    ]),
+    ("Good Shepherd Church", "https://swingremix.com/", "dance", [
+        ("Swing Remix Big Band Dance & Workshop", "https://swingremix.com/", 5, 19, 30, "$20–$30"),
+    ]),
+    ("Connolly's Pub (Times Square)", "https://thisweekinswingnyc.com/", "dance", [
+        ("Sock Hop Sundays (50s/60s Rock-n-Roll & Swing Dance)", "https://thisweekinswingnyc.com/", 6, 18, 0, "$25"),
+    ]),
+    ("Kilowatt Dance Studio", "https://thisweekinswingnyc.com/", "dance", [
+        ("Lindy Lab (Self-Directed Practice Session)", "https://thisweekinswingnyc.com/", 5, 17, 0, "Free"),
+    ]),
+    ("The Last Word (Astoria)", "https://thisweekinswingnyc.com/", "dance", [
+        ("Astoria Swing Dance (Free Lesson & DJ Social)", "https://thisweekinswingnyc.com/", 3, 19, 30, "Free"),
+    ]),
+    ("Mehanata (Lower East Side)", "https://thisweekinswingnyc.com/", "dance", [
+        ("Jazz on Ludlow (Swing Lesson & Live Band)", "https://thisweekinswingnyc.com/", 6, 18, 30, "No Cover"),
+    ]),
     ("Pieces Bar", "https://www.piecesbar.com/", "theater", [
         ("Nightly West Village Drag Show", "https://www.piecesbar.com/", 0, 21, 0, "No Cover"),
         ("Nightly West Village Drag Show", "https://www.piecesbar.com/", 1, 21, 0, "No Cover"),
@@ -959,6 +1165,7 @@ MANUAL_RECURRING_EVENTS = [
     ]),
     ("Mona's", "https://www.facebook.com/monasbar/", "music", [
         ("Monday Night Irish Trad Music Session", "https://www.facebook.com/monasbar/", 0, 21, 0, "Free"),
+        ("Mona's Tuesday Night Hot Jazz & Swing Jam", "https://www.facebook.com/MonasTuesdayJazz", 1, 21, 0, "No Cover"),
     ]),
     ("Bossa Nova Civic Club", "https://bossanovacivicclub.com/", "clubbing", [
         ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 0, 22, 0, "Free before 11PM"),
@@ -1144,8 +1351,11 @@ _ALL_VENUES = [
     {"name": "Club Cache (Salsa & Bachata Socials)", "url": "https://www.eventbrite.com/d/ny--new-york/club-cache-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "NYC Salsa Socials & Dance Parties", "url": "https://www.eventbrite.com/d/ny--new-york/salsa-social/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
 
-    # Swing Dancing & Lindy Hop
+    # Swing Dancing, Lindy Hop & Blues
+    {"name": "This Week in Swing NYC", "url": "https://thisweekinswingnyc.com/wp-json/wp/v2/posts?per_page=5", "ua": UA_CHROME, "scraper": scrape_thisweekinswingnyc, "default_category": "dance"},
     {"name": "NYC Swing Dancing & Lindy Hop", "url": "https://www.eventbrite.com/d/ny--new-york/swing-dancing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "Frim Fram Jam (YSBD Swing)", "url": "https://www.eventbrite.com/d/ny--new-york/frim-fram-jam/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "Prohibition Productions (Gotham Jazz)", "url": "https://www.eventbrite.com/d/ny--new-york/prohibition-productions/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
 
     # Queer Nightlife, Drag Shows & Cabaret
     {"name": "3 Dollar Bill (Queer & Drag Venue)", "url": "https://donyc.com/venues/3-dollar-bill", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
@@ -1214,6 +1424,15 @@ STATIC_LINKS = [
     ("dance",   "Salsa Salsa Dance Studios (Brooklyn Latin Dance)", "https://www.salsasalsadance.com/"),
     ("dance",   "Swing 46 Jazz & Supper Club (Lindy Hop & Big Band)", "https://swing46.nyc/"),
     ("dance",   "The Back Room (Monday Night Live Jazz & Swing)", "https://www.backroomnyc.com/"),
+    ("dance",   "This Week in Swing NYC (Weekly Lindy Hop & Blues Calendar)", "https://thisweekinswingnyc.com/"),
+    ("dance",   "Frim Fram Jam / YSBD (Thursday Weekly Swing Dance)", "http://www.frimframjam.com/"),
+    ("dance",   "Midtown Swings at Danznik Studios (Tuesday Lindy Hop)", "https://midtownswings.com/"),
+    ("dance",   "Swing Remix (Upper West Side Live Big Bands)", "https://swingremix.com/"),
+    ("dance",   "Blues Dance New York (Hungarian House Blues)", "https://bluesdancenewyork.com/"),
+    ("dance",   "Harlem Swing Dance Society", "http://www.theharlemswingdancesociety.org/"),
+    ("dance",   "Prohibition Productions (Gotham Jazz & The Salon)", "https://prohibitionproductions.com/"),
+    ("dance",   "The Keep Bushwick (Positively Swingin' Wednesdays)", "https://thisweekinswingnyc.com/"),
+    ("dance",   "The Last Word Astoria (Astoria Swing Dance)", "https://thisweekinswingnyc.com/"),
     ("theater", "3 Dollar Bill (Bushwick Queer & Drag Hall)", "https://www.3dollarbillbk.com/"),
     ("gaming",  "Trivia A.D. (NYC Bar Pop Culture Trivia Nights)", "https://triviaad.com/"),
     ("clubbing","Somewhere Nowhere NYC (Chelsea Rooftop Club & Lounge)", "https://somewherenowherenyc.com/"),
