@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T07:44:47.381604+00:00",
+  "generated_at": "2026-10-15T07:58:12.224778+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -1683,7 +1683,7 @@
           "url": "https://donyc.com/events/2026/10/24/tinashe-dj-set-tickets",
           "venue": "Marquee New York",
           "price": null,
-          "category": "music"
+          "category": "clubbing"
         },
         {
           "name": "Trombone Shorty & Orleans Avenue with Abraham Alexander",
@@ -1767,7 +1767,7 @@
         }
       ],
       "error": null,
-      "duration": 13.06
+      "duration": 16.37
     },
     {
       "venue": "The Skint NYC",
@@ -1855,7 +1855,7 @@
         }
       ],
       "error": null,
-      "duration": 1.43
+      "duration": 1.32
     },
     {
       "venue": "Ticketmaster NYC",
@@ -2109,7 +2109,7 @@
           "lat": 40.75866664,
           "lng": -73.98775745,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "The Outsiders",
@@ -2119,7 +2119,7 @@
           "lat": 40.7593,
           "lng": -73.990196,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Just In Time",
@@ -2129,7 +2129,7 @@
           "lat": 40.762173,
           "lng": -73.985349,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Just In Time",
@@ -2139,7 +2139,7 @@
           "lat": 40.765202,
           "lng": -73.985298,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
@@ -2229,7 +2229,7 @@
           "lat": 40.76351799,
           "lng": -73.98299113,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "The Great Gatsby",
@@ -2239,7 +2239,7 @@
           "lat": 40.765202,
           "lng": -73.985298,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Heathers",
@@ -2249,7 +2249,7 @@
           "lat": 40.765202,
           "lng": -73.985298,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
@@ -2629,7 +2629,7 @@
           "lat": 40.7034,
           "lng": -74.013199,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "A Ghost in Your Ear",
@@ -2639,7 +2639,7 @@
           "lat": 40.7303577,
           "lng": -74.0012676,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Between Two Evils",
@@ -2659,7 +2659,7 @@
           "lat": 40.728188,
           "lng": -73.987498,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Brotherkenzie, Dirt Buyer",
@@ -2689,7 +2689,7 @@
           "lat": 40.7207511,
           "lng": -73.959998,
           "price": "$31.56",
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Jacob Alon (18 and Over)",
@@ -2729,7 +2729,7 @@
           "lat": 40.75554795,
           "lng": -73.9882368,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Aladdin",
@@ -2739,7 +2739,7 @@
           "lat": 40.75605705,
           "lng": -73.98792867,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Maybe Happy Ending",
@@ -2749,7 +2749,7 @@
           "lat": 40.75662668,
           "lng": -73.9839612,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "The Lion King (New York, NY)",
@@ -2759,7 +2759,7 @@
           "lat": 40.757986,
           "lng": -73.98577175,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Buena Vista Social Club",
@@ -2769,7 +2769,7 @@
           "lat": 40.758506,
           "lng": -73.987426,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Ron Carter Duo Featuring Bill Frisell",
@@ -2789,7 +2789,7 @@
           "lat": 40.75866664,
           "lng": -73.98775745,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Maybe Happy Ending",
@@ -2819,7 +2819,7 @@
           "lat": 40.7593,
           "lng": -73.990196,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Music City",
@@ -2839,7 +2839,7 @@
           "lat": 40.7593,
           "lng": -73.990196,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "CATS: The Jellicle Ball",
@@ -2859,18 +2859,211 @@
           "lat": 40.7593,
           "lng": -73.990196,
           "price": null,
-          "category": "music"
+          "category": "theater"
         }
       ],
       "error": null,
-      "duration": 0.46
+      "duration": 0.53
     },
     {
       "venue": "Brooklyn Bowl",
       "url": "https://donyc.com/venues/brooklyn-bowl",
-      "events": [],
-      "error": "HTTPSConnectionPool(host='donyc.com', port=443): Read timed out. (read timeout=15)",
-      "duration": 15.2
+      "events": [
+        {
+          "name": "GZA (Performing Liquid Swords) w/ Phunky Nomads & Keznamdi",
+          "date": "2026-10-16T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/15/keznamdi-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Candy Crush Presents: Golden Era Rave - 2010's EDM Classics",
+          "date": "2026-10-17T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/16/candy-crush-presents-golden-era-rave-2010-s-edm-classics-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "Little Spoon Presents: Music of Bob Marley + More for Kids, Played by The Rock and Roll Playhouse",
+          "date": "2026-10-17T16:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/17/little-spoon-presents-music-of-bob-marley-more-for-kids-played-by-the-rock-and-roll-playhouse-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "BoomBox, Future Joy",
+          "date": "2026-10-18T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/17/boombox-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Gimme Gimme Disco",
+          "date": "2026-10-18T03:30:00+00:00",
+          "url": "https://donyc.com/events/2026/10/17/gimme-gimme-disco-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "AJ McLean presents Alexander James : The Better Man Tour, Matt Bloyd, DJ Gab Wright",
+          "date": "2026-10-20T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/19/aj-mclean-presents-alexander-james-the-better-man-tour-matt-bloyd-dj-gab-wright-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "AJ McLean presents Alexander James : The Better Man Tour",
+          "date": "2026-10-21T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/20/aj-mclean-presents-alexander-james-the-better-man-tour-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Our Wicked Lady Presents: 90's Cover Night, Cherch & Friends, Scarys on the Wall, Dashing Blumpkins, DJ NiteOwl",
+          "date": "2026-10-22T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/21/our-wicked-lady-presents-90-s-cover-night-cherch-friends-scarys-on-the-wall-dashing-blumpkins-dj-niteowl-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "Do Si Don'tcha: Y'all Stars Country Line Dancing",
+          "date": "2026-10-22T23:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/22/do-si-don-tcha-y-all-stars-country-line-dancing-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Space Bacon & Dizgo w/ DJ Greenie of Lotus",
+          "date": "2026-10-24T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/23/space-bacon-dizgo-w-dj-greenie-of-lotus-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "The Q Brothers (Hip Hop for Families!), ft. JJQ and his 10+ Million View Dino Rap!",
+          "date": "2026-10-24T16:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/24/the-q-brothers-hip-hop-for-families-ft-jjq-and-his-10-million-view-dino-rap-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Abbie Gamboa, Chelsea Plank",
+          "date": "2026-10-24T23:30:00+00:00",
+          "url": "https://donyc.com/events/2026/10/24/abbie-gamboa-chelsea-plank-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Soundbath with Franck Raharinosy, Sara Auster, and Nigol Koulajian",
+          "date": "2026-10-27T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/26/soundbath-with-franck-raharinosy-sara-auster-and-nigol-koulajian-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Dead Bowl: Shakedown Citi",
+          "date": "2026-10-29T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/28/dead-bowl-shakedown-citi-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "20 Years of Nekrogoblikon with Special Guests Aborted",
+          "date": "2026-10-29T23:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/29/20-years-of-nekrogoblikon-with-special-guests-aborted-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Too Many Zooz, Thundersmack",
+          "date": "2026-10-31T00:00:00+00:00",
+          "url": "https://donyc.com/events/2026/10/30/too-many-zooz-thundersmack-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Teton Gravity Research presents \"Actually, It Is Rocket Science\"",
+          "date": "2026-11-05T01:00:00+00:00",
+          "url": "https://donyc.com/events/2026/11/4/teton-gravity-research-presents-actually-it-is-rocket-science-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Dave Schools and Friends, featuring: Steve Kimock, Tom Hamilton, Jennifer Hartswick, Alex Koford, John Morgan Kimock and Adam Ma",
+          "date": "2026-11-06T01:00:00+00:00",
+          "url": "https://donyc.com/events/2026/11/5/dave-schools-and-friends-featuring-steve-kimock-tom-hamilton-jennifer-hartswick-alex-koford-john-morgan-kimock-and-adam-ma-ticke",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Dave Schools and Friends, featuring: Steve Kimock, Tom Hamilton, Jennifer Hartswick, Alex Koford, John Morgan Kimock and Adam Ma",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://donyc.com/events/2026/11/6/dave-schools-and-friends-featuring-steve-kimock-tom-hamilton-jennifer-hartswick-alex-koford-john-morgan-kimock-and-adam-ma-ticke",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Donna The Buffalo & Assembly of Dust",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://donyc.com/events/2026/11/7/donna-the-buffalo-assembly-of-dust-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Love in the Club - 2000's Hip Hop and R&B Party",
+          "date": "2026-11-08T04:30:00+00:00",
+          "url": "https://donyc.com/events/2026/11/7/love-in-the-club-2000-s-hip-hop-and-r-b-party-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "RaiNao",
+          "date": "2026-11-09T01:00:00+00:00",
+          "url": "https://donyc.com/events/2026/11/8/rainao-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "The Pharcyde & Slum Village",
+          "date": "2026-11-13T01:00:00+00:00",
+          "url": "https://donyc.com/events/2026/11/12/the-pharcyde-slum-village-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Mountain Grass Unit",
+          "date": "2026-11-14T01:00:00+00:00",
+          "url": "https://donyc.com/events/2026/11/13/mountain-grass-unit-tickets",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 1.3
     },
     {
       "venue": "Elsewhere Brooklyn",
@@ -2922,7 +3115,7 @@
           "url": "https://donyc.com/events/2026/10/23/franc-moody-dj-set-tickets",
           "venue": "Elsewhere",
           "price": null,
-          "category": "music"
+          "category": "clubbing"
         },
         {
           "name": "Big Crown Records 10 Year Anniversary ft El Michels Affair + special guests",
@@ -3078,7 +3271,7 @@
         }
       ],
       "error": null,
-      "duration": 1.6
+      "duration": 2.43
     },
     {
       "venue": "Knockdown Center",
@@ -3250,7 +3443,7 @@
           "url": "https://donyc.com/events/2026/12/6/bonobo-dj-set-tickets",
           "venue": "Knockdown Center",
           "price": null,
-          "category": "music"
+          "category": "clubbing"
         },
         {
           "name": "Anna Von Hausswolff",
@@ -3262,7 +3455,7 @@
         }
       ],
       "error": null,
-      "duration": 1.41
+      "duration": 1.98
     },
     {
       "venue": "Good Room Greenpoint",
@@ -3330,7 +3523,7 @@
           "url": "https://donyc.com/events/2026/11/6/22-years-of-fixed-ft-kelly-lee-owens-dj-set-jdh-dave-p-ivan-berko-all-night-tickets",
           "venue": "Good Room",
           "price": null,
-          "category": "music"
+          "category": "clubbing"
         },
         {
           "name": "Members Party: Tam Tam, Mike Guimond & Harim",
@@ -3390,7 +3583,7 @@
         }
       ],
       "error": null,
-      "duration": 1.31
+      "duration": 2.89
     },
     {
       "venue": "TV Eye Ridgewood",
@@ -3590,7 +3783,7 @@
         }
       ],
       "error": null,
-      "duration": 1.77
+      "duration": 1.3
     },
     {
       "venue": "Public Records Gowanus",
@@ -3682,7 +3875,7 @@
           "url": "https://donyc.com/events/2026/10/22/nate-mercereau-fantastic-thoughts-with-special-guests-carlos-nino-dj-set-tickets",
           "venue": "Public Records",
           "price": null,
-          "category": "music"
+          "category": "clubbing"
         },
         {
           "name": "Echo Chamber S1.E04: Sinai Sound System feat. Lasai",
@@ -3782,7 +3975,7 @@
         }
       ],
       "error": null,
-      "duration": 1.69
+      "duration": 1.07
     },
     {
       "venue": "The Bell House",
@@ -3974,7 +4167,7 @@
         }
       ],
       "error": null,
-      "duration": 1.24
+      "duration": 1.16
     },
     {
       "venue": "Littlefield Brooklyn",
@@ -4182,7 +4375,7 @@
         }
       ],
       "error": null,
-      "duration": 3.12
+      "duration": 3.35
     },
     {
       "venue": "Music Hall of Williamsburg",
@@ -4382,7 +4575,7 @@
         }
       ],
       "error": null,
-      "duration": 2.15
+      "duration": 3.08
     },
     {
       "venue": "Brooklyn Steel",
@@ -4590,7 +4783,7 @@
         }
       ],
       "error": null,
-      "duration": 1.49
+      "duration": 1.02
     },
     {
       "venue": "Warsaw Brooklyn",
@@ -4798,7 +4991,7 @@
         }
       ],
       "error": null,
-      "duration": 2.06
+      "duration": 1.99
     },
     {
       "venue": "Barclays Center",
@@ -4998,7 +5191,7 @@
         }
       ],
       "error": null,
-      "duration": 1.65
+      "duration": 1.54
     },
     {
       "venue": "Kings Theatre Flatbush",
@@ -5206,7 +5399,7 @@
         }
       ],
       "error": null,
-      "duration": 1.69
+      "duration": 2.9
     },
     {
       "venue": "Baby's All Right Williamsburg",
@@ -5398,7 +5591,7 @@
         }
       ],
       "error": null,
-      "duration": 1.47
+      "duration": 1.14
     },
     {
       "venue": "The Sultan Room Bushwick",
@@ -5598,7 +5791,7 @@
         }
       ],
       "error": null,
-      "duration": 1.27
+      "duration": 0.76
     },
     {
       "venue": "Pioneer Works Red Hook",
@@ -5726,7 +5919,7 @@
         }
       ],
       "error": null,
-      "duration": 0.87
+      "duration": 2.28
     },
     {
       "venue": "C'mon Everybody Bed-Stuy",
@@ -5762,11 +5955,11 @@
           "url": "https://donyc.com/events/2026/11/6/dungeons-drag-queens-tickets",
           "venue": "C'mon Everybody",
           "price": null,
-          "category": "theater"
+          "category": "music"
         }
       ],
       "error": null,
-      "duration": 0.78
+      "duration": 0.96
     },
     {
       "venue": "Forest Hills Stadium",
@@ -5806,7 +5999,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53
+      "duration": 0.6
     },
     {
       "venue": "Yankee Stadium",
@@ -6014,7 +6207,7 @@
         }
       ],
       "error": null,
-      "duration": 2.21
+      "duration": 1.03
     },
     {
       "venue": "Lehman Center for the Performing Arts",
@@ -6070,7 +6263,7 @@
         }
       ],
       "error": null,
-      "duration": 0.65
+      "duration": 0.79
     },
     {
       "venue": "St. George Theatre Staten Island",
@@ -6254,7 +6447,7 @@
         }
       ],
       "error": null,
-      "duration": 1.35
+      "duration": 1.71
     },
     {
       "venue": "Bowery Ballroom",
@@ -6454,7 +6647,7 @@
         }
       ],
       "error": null,
-      "duration": 1.54
+      "duration": 3.42
     },
     {
       "venue": "Mercury Lounge",
@@ -6646,7 +6839,7 @@
         }
       ],
       "error": null,
-      "duration": 2.52
+      "duration": 1.89
     },
     {
       "venue": "Webster Hall",
@@ -6810,7 +7003,7 @@
           "url": "https://donyc.com/events/2026/11/8/king-of-drag-tickets",
           "venue": "Webster Hall",
           "price": null,
-          "category": "theater"
+          "category": "music"
         },
         {
           "name": "Fruit Bats",
@@ -6846,7 +7039,7 @@
         }
       ],
       "error": null,
-      "duration": 1.27
+      "duration": 3.13
     },
     {
       "venue": "Terminal 5",
@@ -6930,7 +7123,7 @@
           "url": "https://donyc.com/events/2026/10/29/horsegiirl-dylan-brady-ren-g-dj-set-tickets",
           "venue": "Terminal 5",
           "price": null,
-          "category": "music"
+          "category": "clubbing"
         },
         {
           "name": "horsegiirL",
@@ -7054,7 +7247,7 @@
         }
       ],
       "error": null,
-      "duration": 2.95
+      "duration": 1.96
     },
     {
       "venue": "Irving Plaza",
@@ -7130,7 +7323,7 @@
           "url": "https://donyc.com/events/2026/10/24/gracie-abrams-siriusxm-small-stage-series-tickets",
           "venue": "Irving Plaza",
           "price": null,
-          "category": "theater"
+          "category": "music"
         },
         {
           "name": "Murda: UZAY TOUR",
@@ -7254,7 +7447,7 @@
         }
       ],
       "error": null,
-      "duration": 1.47
+      "duration": 2.37
     },
     {
       "venue": "Racket NYC",
@@ -7454,7 +7647,7 @@
         }
       ],
       "error": null,
-      "duration": 1.26
+      "duration": 1.65
     },
     {
       "venue": "Le Poisson Rouge",
@@ -7610,7 +7803,7 @@
           "url": "https://donyc.com/events/2026/10/30/bradeazy-360-in-the-round-dj-set-tickets",
           "venue": "Le Poisson Rouge",
           "price": null,
-          "category": "music"
+          "category": "clubbing"
         },
         {
           "name": "LOST KINGS 360 \"In The Round\" DJ Set",
@@ -7618,7 +7811,7 @@
           "url": "https://donyc.com/events/2026/10/31/lost-kings-360-in-the-round-dj-set-tickets",
           "venue": "Le Poisson Rouge",
           "price": null,
-          "category": "music"
+          "category": "clubbing"
         },
         {
           "name": "PALEDUSK w/ Headwreck + Slow Degrade",
@@ -7654,7 +7847,7 @@
         }
       ],
       "error": null,
-      "duration": 1.71
+      "duration": 2.56
     },
     {
       "venue": "Blue Note Jazz Club",
@@ -7822,7 +8015,7 @@
         }
       ],
       "error": null,
-      "duration": 1.74
+      "duration": 2.4
     },
     {
       "venue": "Caveat NYC",
@@ -8022,7 +8215,7 @@
         }
       ],
       "error": null,
-      "duration": 1.24
+      "duration": 3.27
     },
     {
       "venue": "Apollo Theater",
@@ -8054,7 +8247,7 @@
         }
       ],
       "error": null,
-      "duration": 0.68
+      "duration": 1.1
     },
     {
       "venue": "Madison Square Garden",
@@ -8230,7 +8423,7 @@
         }
       ],
       "error": null,
-      "duration": 1.49
+      "duration": 1.78
     },
     {
       "venue": "Radio City Music Hall",
@@ -8334,7 +8527,7 @@
         }
       ],
       "error": null,
-      "duration": 1.42
+      "duration": 1.07
     },
     {
       "venue": "Beacon Theatre",
@@ -8534,7 +8727,7 @@
         }
       ],
       "error": null,
-      "duration": 1.07
+      "duration": 1.08
     },
     {
       "venue": "Carnegie Hall",
@@ -8606,7 +8799,7 @@
         }
       ],
       "error": null,
-      "duration": 0.88
+      "duration": 1.2
     },
     {
       "venue": "The Town Hall",
@@ -8814,7 +9007,7 @@
         }
       ],
       "error": null,
-      "duration": 3.21
+      "duration": 1.54
     },
     {
       "venue": "Sony Hall",
@@ -9022,7 +9215,7 @@
         }
       ],
       "error": null,
-      "duration": 1.18
+      "duration": 1.14
     },
     {
       "venue": "Gramercy Theatre",
@@ -9222,7 +9415,7 @@
         }
       ],
       "error": null,
-      "duration": 1.3
+      "duration": 1.19
     },
     {
       "venue": "Strand Book Store",
@@ -9538,7 +9731,7 @@
         }
       ],
       "error": null,
-      "duration": 0.77
+      "duration": 0.7
     },
     {
       "venue": "Books Are Magic",
@@ -9887,7 +10080,7 @@
         }
       ],
       "error": null,
-      "duration": 0.7
+      "duration": 0.58
     },
     {
       "venue": "Greenlight Bookstore",
@@ -10236,7 +10429,7 @@
         }
       ],
       "error": null,
-      "duration": 0.83
+      "duration": 0.71
     },
     {
       "venue": "P&T Knitwear Books & Podcasts",
@@ -10405,7 +10598,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
@@ -10416,7 +10609,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
@@ -10427,7 +10620,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
@@ -10438,7 +10631,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
@@ -10449,7 +10642,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
@@ -10460,7 +10653,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
@@ -10471,7 +10664,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
@@ -10482,7 +10675,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
@@ -10493,7 +10686,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
@@ -10504,7 +10697,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A world premiere new play presented in association with P&T Knitwear November 9-December 6 only.",
-          "category": "theater"
+          "category": "books"
         },
         {
           "name": "Lawrence Kramer presents Experience, with Andrew McCarron",
@@ -10637,21 +10830,21 @@
         }
       ],
       "error": null,
-      "duration": 0.57
+      "duration": 0.34
     },
     {
       "venue": "McNally Jackson Books",
       "url": "https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Bluestockings Cooperative",
       "url": "https://www.eventbrite.com/d/ny--new-york/bluestockings/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "KGB Bar (Literary Readings)",
@@ -10843,7 +11036,7 @@
         }
       ],
       "error": null,
-      "duration": 0.82
+      "duration": 1.35
     },
     {
       "venue": "New York Public Library",
@@ -10857,14 +11050,14 @@
       "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-public-library/",
       "events": [],
       "error": null,
-      "duration": 0.05
+      "duration": 0.02
     },
     {
       "venue": "Queens Public Library",
       "url": "https://www.eventbrite.com/d/ny--queens/queens-public-library/",
       "events": [],
       "error": null,
-      "duration": 0.06
+      "duration": 0.02
     },
     {
       "venue": "Pete's Candy Store",
@@ -12208,7 +12401,7 @@
         }
       ],
       "error": null,
-      "duration": 4.42
+      "duration": 1.58
     },
     {
       "venue": "Skinny Dennis",
@@ -12272,7 +12465,7 @@
         }
       ],
       "error": null,
-      "duration": 0.48
+      "duration": 0.3
     },
     {
       "venue": "NYC Trivia League",
@@ -16280,7 +16473,7 @@
         }
       ],
       "error": null,
-      "duration": 1.05
+      "duration": 1.29
     },
     {
       "venue": "Film Forum",
@@ -16488,7 +16681,7 @@
         }
       ],
       "error": null,
-      "duration": 1.34
+      "duration": 1.64
     },
     {
       "venue": "Nitehawk Cinema",
@@ -16632,7 +16825,7 @@
         }
       ],
       "error": null,
-      "duration": 1.08
+      "duration": 1.11
     },
     {
       "venue": "IFC Center",
@@ -16704,7 +16897,7 @@
         }
       ],
       "error": null,
-      "duration": 1.28
+      "duration": 0.77
     },
     {
       "venue": "Union Hall Brooklyn",
@@ -16904,7 +17097,7 @@
         }
       ],
       "error": null,
-      "duration": 8.52
+      "duration": 1.57
     },
     {
       "venue": "Smalls Jazz Club",
@@ -17032,7 +17225,7 @@
         }
       ],
       "error": null,
-      "duration": 1.4
+      "duration": 1.94
     },
     {
       "venue": "Joe's Pub (The Public Theater)",
@@ -17200,7 +17393,7 @@
         }
       ],
       "error": null,
-      "duration": 3.39
+      "duration": 1.43
     },
     {
       "venue": "The Bitter End (Greenwich Village)",
@@ -17400,7 +17593,7 @@
         }
       ],
       "error": null,
-      "duration": 1.22
+      "duration": 2.38
     },
     {
       "venue": "Arlene's Grocery (LES Rock & Karaoke)",
@@ -17600,7 +17793,7 @@
         }
       ],
       "error": null,
-      "duration": 2.74
+      "duration": 3.14
     },
     {
       "venue": "Nublu 151 (Alphabet City)",
@@ -17652,7 +17845,7 @@
           "url": "https://donyc.com/events/2026/10/21/latin-wednesdays-live-band-and-great-latin-dj-s-tickets-tickets",
           "venue": "Nublu 151",
           "price": null,
-          "category": "music"
+          "category": "clubbing"
         },
         {
           "name": "Play_Ground Tickets",
@@ -17800,7 +17993,7 @@
         }
       ],
       "error": null,
-      "duration": 1.88
+      "duration": 1.2
     },
     {
       "venue": "Drom NYC (East Village Global Music)",
@@ -18000,7 +18193,7 @@
         }
       ],
       "error": null,
-      "duration": 3.12
+      "duration": 1.35
     },
     {
       "venue": "Terra Blues (Bleecker St)",
@@ -18200,7 +18393,7 @@
         }
       ],
       "error": null,
-      "duration": 1.08
+      "duration": 1.77
     },
     {
       "venue": "Symphony Space (Upper West Side)",
@@ -18392,7 +18585,7 @@
         }
       ],
       "error": null,
-      "duration": 1.47
+      "duration": 0.81
     },
     {
       "venue": "Tight Pants Comedy",
@@ -18422,7 +18615,7 @@
         }
       ],
       "error": null,
-      "duration": 0.4
+      "duration": 0.39
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -18628,7 +18821,7 @@
         }
       ],
       "error": null,
-      "duration": 2.18
+      "duration": 1.58
     },
     {
       "venue": "Q.E.D. Astoria (Comedy & Arts)",
@@ -18796,7 +18989,7 @@
         }
       ],
       "error": null,
-      "duration": 2.65
+      "duration": 0.88
     },
     {
       "venue": "New York Comedy Club Midtown",
@@ -18924,7 +19117,7 @@
         }
       ],
       "error": null,
-      "duration": 0.97
+      "duration": 1.52
     },
     {
       "venue": "New York Comedy Club East Village",
@@ -19076,14 +19269,14 @@
         }
       ],
       "error": null,
-      "duration": 2.21
+      "duration": 1.93
     },
     {
       "venue": "The Tiny Cupboard (Bushwick Rooftop Comedy)",
       "url": "https://donyc.com/venues/the-tiny-cupboard",
       "events": [],
       "error": null,
-      "duration": 4.83
+      "duration": 0.35
     },
     {
       "venue": "Brooklyn Comedy Collective (Eris Mainstage)",
@@ -19099,14 +19292,14 @@
         }
       ],
       "error": null,
-      "duration": 0.74
+      "duration": 0.81
     },
     {
       "venue": "NYC Parks Free Public Events",
       "url": "https://www.nycgovparks.org/xml/events_300_rss.xml",
       "events": [],
       "error": null,
-      "duration": 0.29
+      "duration": 0.14
     },
     {
       "venue": "NYC for FREE (Pop-ups & Experiences)",
@@ -19906,7 +20099,7 @@
         }
       ],
       "error": null,
-      "duration": 0.38
+      "duration": 0.25
     },
     {
       "venue": "Meetup: NYC Hikes & Nature Walks",
@@ -20199,6 +20392,17 @@
           "category": "outdoors"
         },
         {
+          "name": "CONCRETE TO TRAILS: Hogencamp Mountain",
+          "date": "2026-10-31T12:00:00+00:00",
+          "url": "https://www.meetup.com/amcnynj/events/316899322/",
+          "venue": "NYC Community Location",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "[Please Registered Here](https://activities.outdoors.org/s/oc-activity/a5UVX000001IXUn/act00023715)\n\n**Start Location**\nGeorge Washington Bridge Bus Station, New York, NY, US (40.848956, -73.938864)\n\n**\\*Meeting Info**:\nPlease arrive **by 7:45 AM.** ",
+          "category": "outdoors"
+        },
+        {
           "name": "Fall Foliage day Hike & Seven Lakes Drive",
           "date": "2026-10-17T14:00:00+00:00",
           "url": "https://www.meetup.com/new-york-roadtrips-meetup-group/events/316963953/",
@@ -20210,20 +20414,9 @@
           "category": "outdoors"
         },
         {
-          "name": "CONCRETE TO TRAILS: Hogencamp Mountain",
-          "date": "2026-10-31T12:00:00+00:00",
-          "url": "https://www.meetup.com/amcyoungmembers/events/316899343/",
-          "venue": "NYC Community Location",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "[Please Register Here](https://activities.outdoors.org/s/oc-activity/a5UVX000001IXUn/act00023715)\n\n**Start Location**\nGeorge Washington Bridge Bus Station, New York, NY, US (40.848956, -73.938864)\n\n**\\*Meeting Info**:\nPlease arrive **by 7:45 AM.** We",
-          "category": "outdoors"
-        },
-        {
           "name": "Smoky Mountain Boots and Roots Hiking",
-          "date": "2026-10-22T11:00:00+00:00",
-          "url": "https://www.meetup.com/explorer-chicks-of-nyc/events/314559004/",
+          "date": "2026-10-15T11:00:00+00:00",
+          "url": "https://www.meetup.com/explorer-chicks-of-nyc/events/314526308/",
           "venue": "NYC Community Location",
           "lat": null,
           "lng": null,
@@ -20233,7 +20426,7 @@
         }
       ],
       "error": null,
-      "duration": 2.62
+      "duration": 2.22
     },
     {
       "venue": "Meetup: Outdoor Hikes & Trails",
@@ -20460,6 +20653,17 @@
           "category": "outdoors"
         },
         {
+          "name": "Saturday Oct 17th Forest Park Hike.",
+          "date": "2026-10-17T14:30:00+00:00",
+          "url": "https://www.meetup.com/kew-gardens-hiking/events/316988911/",
+          "venue": "Wallenberg Square (Corner of Park Lane and Metropolitan Ave., Kew Gardens, NY)",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "\\*\\*\\* CHECK HERE BEFORE GOING \\*\\*\\* Rainy weather may cancel hike\n\nMeet time is 10:30AM, hike start is 10:45AM. Duration is about 2 hours + or - a few minutes.\n\nWe will hike along several of the many trails in the woods.\nWear heavy shoes or boots a",
+          "category": "outdoors"
+        },
+        {
           "name": "Biking Fall Colors Jim Thorpe/Lehigh River - ByoB or  Rent, 20-30miles",
           "date": "2026-10-24T12:30:00+00:00",
           "url": "https://www.meetup.com/desi-outdoors-enrichment-and-recreational-activities/events/316575751/",
@@ -20479,17 +20683,6 @@
           "lng": null,
           "price": "Free",
           "description": "Diamond Mountain & Pine Meadow Lake — Harriman State Park\n\nhttps://www.alltrails.com/trail/us/new-york/diamond-mountain-trail?sh=icfnhe&utm_medium=trail_share&utm_source=alltrails_virality\n\nJoin us for a scenic fall hike through Harriman State Park f",
-          "category": "outdoors"
-        },
-        {
-          "name": "Saturday Oct 17th Forest Park Hike.",
-          "date": "2026-10-17T14:30:00+00:00",
-          "url": "https://www.meetup.com/kew-gardens-hiking/events/316988911/",
-          "venue": "Wallenberg Square (Corner of Park Lane and Metropolitan Ave., Kew Gardens, NY)",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "\\*\\*\\* CHECK HERE BEFORE GOING \\*\\*\\* Rainy weather may cancel hike\n\nMeet time is 10:30AM, hike start is 10:45AM. Duration is about 2 hours + or - a few minutes.\n\nWe will hike along several of the many trails in the woods.\nWear heavy shoes or boots a",
           "category": "outdoors"
         },
         {
@@ -20537,17 +20730,6 @@
           "category": "outdoors"
         },
         {
-          "name": "Moderate Hike @ Gertrude's Nose",
-          "date": "2026-10-17T13:00:00+00:00",
-          "url": "https://www.meetup.com/nycasianmeetup/events/316855314/",
-          "venue": "NYC Community Location",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "**\\>\\>\\>** Event is **\"OPEN\"** to **RSVP or Carpool** use link below **<<<**\n• https://docs.google.com/forms/d/1fvmftEV5rkrtCIrNIclyh7a4OLpE-Hinm9HyUlHKUHM/\n\n**COST:**\n• $10 per vehicle\n\n**MEETUP LOCATION:**\n• GPS Coordinates 41.7284, -74.2374\n\n**DES",
-          "category": "outdoors"
-        },
-        {
           "name": "Hump Day Hike @ Mills Reservation",
           "date": "2026-10-21T21:45:00+00:00",
           "url": "https://www.meetup.com/take-a-hike-new-jersey/events/316696598/",
@@ -20568,10 +20750,21 @@
           "price": "Free",
           "description": "Over three consecutive days, Tuesday through Thursday, we'll walk the iconic 32-mile Great Saunter path in reverse (counterclockwise), circumnavigating Manhattan Island up the East Side and down the West Side.\n\nThis stretch is the last in the series ",
           "category": "outdoors"
+        },
+        {
+          "name": "Moderate Hike @ Gertrude's Nose",
+          "date": "2026-10-17T13:00:00+00:00",
+          "url": "https://www.meetup.com/nycasianmeetup/events/316855314/",
+          "venue": "NYC Community Location",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "**\\>\\>\\>** Event is **\"OPEN\"** to **RSVP or Carpool** use link below **<<<**\n• https://docs.google.com/forms/d/1fvmftEV5rkrtCIrNIclyh7a4OLpE-Hinm9HyUlHKUHM/\n\n**COST:**\n• $10 per vehicle\n\n**MEETUP LOCATION:**\n• GPS Coordinates 41.7284, -74.2374\n\n**DES",
+          "category": "outdoors"
         }
       ],
       "error": null,
-      "duration": 2.31
+      "duration": 2.09
     },
     {
       "venue": "OS NYC (Super Smash Bros & Gaming)",
@@ -20715,7 +20908,7 @@
         }
       ],
       "error": null,
-      "duration": 0.38
+      "duration": 0.25
     },
     {
       "venue": "Wonderville (Indie Arcade & Smashville)",
@@ -22035,28 +22228,28 @@
         }
       ],
       "error": null,
-      "duration": 0.38
+      "duration": 0.33
     },
     {
       "venue": "Hex & Company (Board Games & RPG)",
       "url": "https://www.eventbrite.com/d/ny--new-york/hex-and-company/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "The Uncommons (Board Game Cafe)",
       "url": "https://www.eventbrite.com/d/ny--new-york/the-uncommons/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "The Brooklyn Strategist",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/the-brooklyn-strategist/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Meetup: NYC Board Game Nights",
@@ -22082,7 +22275,7 @@
           "lng": null,
           "price": "Free",
           "description": "Follow us on Instagram: [@bklynboardgames](https://www.instagram.com/bklynboardgames/)\nJoin us for board gaming at the Brooklyn Society for Ethical Culture at **265 4th Ave Brooklyn, NY!**\n\n* Donation of $12 (or whatever you can give)\n* You can enter",
-          "category": "theater"
+          "category": "gaming"
         },
         {
           "name": "Board Games at Brookfield Place",
@@ -22104,7 +22297,7 @@
           "lng": null,
           "price": "Free",
           "description": "On Sunday, October 25th we'll play board games at The Hugh from 4:30 to 8pm!\n\nEveryone must wear a costume for board games!! 😯 (no we won't turn you away lol but it'll be so much more fun!)\n\nThe top 3 costumes will win a prize! 🤣 (Categories are funn",
-          "category": "theater"
+          "category": "gaming"
         },
         {
           "name": "FPG Meetup - Sat. Oct. 17",
@@ -22236,7 +22429,7 @@
           "lng": null,
           "price": "Free",
           "description": "🎟️ **Tickets required:** grab yours at [Luma](https://luma.com/thirsty-edpr). RSVPing here saves your interest, but your spot is only confirmed with a ticket.\nGrab a mimosa and learn mahjong at La Noxe, a moody speakeasy cocktail lounge tucked inside",
-          "category": "theater"
+          "category": "gaming"
         },
         {
           "name": "Monthly Weekend Afternoon Boardgaming at Cobblestones (September 2026)",
@@ -22261,14 +22454,14 @@
           "category": "gaming"
         },
         {
-          "name": "Boardgames at Flushing Hyatt@ 1pm",
-          "date": "2026-10-17T17:00:00+00:00",
-          "url": "https://www.meetup.com/queens-board-gamers-group/events/316737816/",
-          "venue": "Hyatt Place (On 1st Floor though the entrance at 39th Ave) (133-42 39th Ave, Flushing, NY)",
+          "name": "Friday night games at Panera",
+          "date": "2026-10-16T22:30:00+00:00",
+          "url": "https://www.meetup.com/hoboken-board-games-meetup/events/316696582/",
+          "venue": "Panera Bread (310 Washington St, Hoboken, NJ)",
           "lat": null,
           "lng": null,
           "price": "Free",
-          "description": "133-42 39th Avenue, Flushing, NY 11354, United States of America\n\nhttps://www.hyatt.com/hyatt-place/en-US/nyczf-hyatt-place-flushing-laguardia-airport\n\nRSVP'ing early will make it easier for everyone to coordinate game starts as many of the games we ",
+          "description": "**This event is not open to the public. I have not asked any website to publish or promote my events. You must be a member of the group before the date of the meetup with a positive RSVP or you will not be welcome at the event. Thank you**\n\nPlease (r",
           "category": "gaming"
         },
         {
@@ -22283,14 +22476,14 @@
           "category": "gaming"
         },
         {
-          "name": "Friday night games at Panera",
-          "date": "2026-10-16T22:30:00+00:00",
-          "url": "https://www.meetup.com/hoboken-board-games-meetup/events/316696582/",
-          "venue": "Panera Bread (310 Washington St, Hoboken, NJ)",
+          "name": "Boardgames at Flushing Hyatt@ 1pm",
+          "date": "2026-10-17T17:00:00+00:00",
+          "url": "https://www.meetup.com/queens-board-gamers-group/events/316737816/",
+          "venue": "Hyatt Place (On 1st Floor though the entrance at 39th Ave) (133-42 39th Ave, Flushing, NY)",
           "lat": null,
           "lng": null,
           "price": "Free",
-          "description": "**This event is not open to the public. I have not asked any website to publish or promote my events. You must be a member of the group before the date of the meetup with a positive RSVP or you will not be welcome at the event. Thank you**\n\nPlease (r",
+          "description": "133-42 39th Avenue, Flushing, NY 11354, United States of America\n\nhttps://www.hyatt.com/hyatt-place/en-US/nyczf-hyatt-place-flushing-laguardia-airport\n\nRSVP'ing early will make it easier for everyone to coordinate game starts as many of the games we ",
           "category": "gaming"
         },
         {
@@ -22361,7 +22554,7 @@
         }
       ],
       "error": null,
-      "duration": 3.1
+      "duration": 2.62
     },
     {
       "venue": "Meetup: Tabletop & RPG Games",
@@ -22376,7 +22569,7 @@
           "lng": null,
           "price": "Free",
           "description": "Follow us on Instagram: [@bklynboardgames](https://www.instagram.com/bklynboardgames/)\nJoin us for board gaming at the Brooklyn Society for Ethical Culture at **265 4th Ave Brooklyn, NY!**\n\n* Donation of $12 (or whatever you can give)\n* You can enter",
-          "category": "theater"
+          "category": "gaming"
         },
         {
           "name": "QUEENS! RPG One-Shots—Beginners Welcome! RSVPs open 10/11",
@@ -22486,7 +22679,7 @@
           "lng": null,
           "price": "Free",
           "description": "**Register for game here: [https://theeclecticchicboutique.com/event/drag-dungeons-dragons-one-shot-lodge-in-the-forest/](https://theeclecticchicboutique.com/event/drag-dungeons-dragons-one-shot-lodge-in-the-forest/)**\n\nAdventurers! Join us for a fun",
-          "category": "theater"
+          "category": "gaming"
         },
         {
           "name": "TTRPG Steampunk Game Night at Celtic Corner",
@@ -22555,17 +22748,6 @@
           "category": "gaming"
         },
         {
-          "name": "Dungeons and Dragons Thursday (Beginner Friendly)",
-          "date": "2026-10-15T23:00:00+00:00",
-          "url": "https://www.meetup.com/new-york-dungeons-dragons-meetup-group/events/316716924/",
-          "venue": "Play Hoboken (1012 Grand Street, Hoboken, NJ)",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "Money is so hard to come by in the Flanaess. Luckily, for the truly desperate or adventurous, there's piracy! Embark on a journey through the seas of Oerth, raid lost cities, and uncover the sinister plots throughout the land that threaten your very ",
-          "category": "gaming"
-        },
-        {
           "name": "Spooktacular Tabletop Tuesday",
           "date": "2026-10-20T22:00:00+00:00",
           "url": "https://www.meetup.com/tabletop-tuesday/events/316780936/",
@@ -22574,6 +22756,17 @@
           "lng": null,
           "price": "Free",
           "description": "WEEK 268 of Tabletop Tuesdays \\| Sunnyside Game Night is ON\\!\n\nSANGER HALL SPOOKTACULAR THIS WEEK\n\nWe will have plenty of games to choose from but always feel free to bring your own. We will be playing in the event space past the bar as you come into",
+          "category": "gaming"
+        },
+        {
+          "name": "Dungeons and Dragons Thursday (Beginner Friendly)",
+          "date": "2026-10-15T23:00:00+00:00",
+          "url": "https://www.meetup.com/new-york-dungeons-dragons-meetup-group/events/316716924/",
+          "venue": "Play Hoboken (1012 Grand Street, Hoboken, NJ)",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Money is so hard to come by in the Flanaess. Luckily, for the truly desperate or adventurous, there's piracy! Embark on a journey through the seas of Oerth, raid lost cities, and uncover the sinister plots throughout the land that threaten your very ",
           "category": "gaming"
         },
         {
@@ -22665,19 +22858,19 @@
           "category": "gaming"
         },
         {
-          "name": "D&D 5.5E - AL",
-          "date": "2026-10-17T17:00:00+00:00",
-          "url": "https://www.meetup.com/nyc-dnd/events/316543118/",
-          "venue": "ETC Eatery (345 5th Ave, New York, NY 10016, USA, New York, NY)",
+          "name": "Friday night games at Panera",
+          "date": "2026-10-16T22:30:00+00:00",
+          "url": "https://www.meetup.com/hoboken-board-games-meetup/events/316696582/",
+          "venue": "Panera Bread (310 Washington St, Hoboken, NJ)",
           "lat": null,
           "lng": null,
           "price": "Free",
-          "description": "We run a variety of 5e campaigns and one-shots throughout the year. To sign up and play, you must be 18 or older.\n\nRegardless of experience, anyone can join. We provide aid to beginners who wish to learn the game as well as challenge our most seasone",
+          "description": "**This event is not open to the public. I have not asked any website to publish or promote my events. You must be a member of the group before the date of the meetup with a positive RSVP or you will not be welcome at the event. Thank you**\n\nPlease (r",
           "category": "gaming"
         }
       ],
       "error": null,
-      "duration": 3.13
+      "duration": 2.41
     },
     {
       "venue": "Meetup: NYC Bar Trivia Nights",
@@ -22861,7 +23054,7 @@
         }
       ],
       "error": null,
-      "duration": 4.03
+      "duration": 3.39
     },
     {
       "venue": "House of Yes (Circus & Dance)",
@@ -23029,49 +23222,49 @@
         }
       ],
       "error": null,
-      "duration": 0.91
+      "duration": 1.02
     },
     {
       "venue": "Chelsea Art Gallery Openings",
       "url": "https://www.eventbrite.com/d/ny--new-york/chelsea-art-gallery/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Japan Fes NYC (Street Food)",
       "url": "https://www.eventbrite.com/d/ny--new-york/japan-fes/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Midnight Runners NYC (Social Run Club)",
       "url": "https://www.eventbrite.com/d/ny--new-york/midnight-runners/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Brooklyn Brainery (Community Classes)",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-brainery/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Magnet Theater (Improv & Sketch)",
       "url": "https://www.eventbrite.com/d/ny--new-york/magnet-theater/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Asylum NYC (Alternative Comedy)",
       "url": "https://www.eventbrite.com/d/ny--new-york/asylum-nyc/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "S.O.B.'s (Sounds of Brazil)",
@@ -23279,42 +23472,42 @@
         }
       ],
       "error": null,
-      "duration": 1.48
+      "duration": 2.35
     },
     {
       "venue": "NYC Salsa & Bachata Socials",
       "url": "https://www.eventbrite.com/d/ny--new-york/salsa-dancing/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "NYC Bachata & Latin Socials",
       "url": "https://www.eventbrite.com/d/ny--new-york/bachata/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Taj Lounge (Salsa & Latin Socials)",
       "url": "https://www.eventbrite.com/d/ny--new-york/taj-lounge-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Club Cache (Salsa & Bachata Socials)",
       "url": "https://www.eventbrite.com/d/ny--new-york/club-cache-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "NYC Salsa Socials & Dance Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/salsa-social/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Washington Square Park (Garibaldi Plaza Salsa)",
@@ -23328,21 +23521,21 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/sunset-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Pa' La Calle NYC (Bella Abzug Park Salsa)",
       "url": "https://www.eventbrite.com/d/ny--new-york/pa-la-calle/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "NYC Outdoor Salsa & Latin Socials",
       "url": "https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Meetup: NYC Social Dance & Salsa",
@@ -23426,6 +23619,17 @@
           "category": "dance"
         },
         {
+          "name": "FRIDAY — $10 Intro Cuban Salsa Class + Friday Dancing 💃🎶",
+          "date": "2026-11-13T22:35:00+00:00",
+          "url": "https://www.meetup.com/cuban-salsa-nyc-dance-classes/events/316561162/",
+          "venue": "Salsa Sabrosa (410-412 8th Ave 4th Floor, New York, NY 10001, USA, New York, NY)",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "If you've been wanting to learn salsa but don't know where to begin, this class is for you.\nJoin us for our **$10 Intro Cuban Salsa Class**, created especially for new dancers and people who want to learn the fundamentals in a relaxed and friendly en",
+          "category": "dance"
+        },
+        {
           "name": "New Beginner Salsa Classes in Jackson Heights",
           "date": "2026-10-15T22:00:00+00:00",
           "url": "https://www.meetup.com/cucala-dance-company/events/316917660/",
@@ -23467,17 +23671,6 @@
           "lng": null,
           "price": "Free",
           "description": "Please join us every Wednesday for an amazing salsa class/lessons. First timers have no fear! Three different levels going on at the same time. Beginner, intermediate and advanced. You will develop your fundamentals and advanced techniques in leading",
-          "category": "dance"
-        },
-        {
-          "name": "FRIDAY — $10 Intro Cuban Salsa Class + Friday Dancing 💃🎶",
-          "date": "2026-12-04T22:35:00+00:00",
-          "url": "https://www.meetup.com/cuban-salsa-nyc-dance-classes/events/316561188/",
-          "venue": "Salsa Sabrosa (410-412 8th Ave 4th Floor, New York, NY 10001, USA, New York, NY)",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "If you've been wanting to learn salsa but don't know where to begin, this class is for you.\nJoin us for our **$10 Intro Cuban Salsa Class**, created especially for new dancers and people who want to learn the fundamentals in a relaxed and friendly en",
           "category": "dance"
         },
         {
@@ -23592,8 +23785,8 @@
         },
         {
           "name": "Timba Night (Salsa Social Dance)",
-          "date": "2026-10-17T00:10:00+00:00",
-          "url": "https://www.meetup.com/cuban-salsa-nyc-dance-classes/events/316561839/",
+          "date": "2026-10-24T00:10:00+00:00",
+          "url": "https://www.meetup.com/cuban-salsa-nyc-dance-classes/events/316561849/",
           "venue": "410-412 8th Ave (410-412 8th Ave, New York, NY)",
           "lat": null,
           "lng": null,
@@ -23669,35 +23862,35 @@
         }
       ],
       "error": null,
-      "duration": 3.41
+      "duration": 2.4
     },
     {
       "venue": "This Week in Swing NYC",
       "url": "https://thisweekinswingnyc.com/wp-json/wp/v2/posts?per_page=5",
       "events": [],
       "error": null,
-      "duration": 0.1
+      "duration": 0.2
     },
     {
       "venue": "NYC Swing Dancing & Lindy Hop",
       "url": "https://www.eventbrite.com/d/ny--new-york/swing-dancing/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Frim Fram Jam (YSBD Swing)",
       "url": "https://www.eventbrite.com/d/ny--new-york/frim-fram-jam/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.02
     },
     {
       "venue": "Prohibition Productions (Gotham Jazz)",
       "url": "https://www.eventbrite.com/d/ny--new-york/prohibition-productions/",
       "events": [],
       "error": null,
-      "duration": 0.05
+      "duration": 0.02
     },
     {
       "venue": "Meetup: NYC Swing Dancing",
@@ -23760,8 +23953,8 @@
         },
         {
           "name": "Timba Night (Salsa Social Dance)",
-          "date": "2026-10-17T00:10:00+00:00",
-          "url": "https://www.meetup.com/cuban-salsa-nyc-dance-classes/events/316561839/",
+          "date": "2026-10-24T00:10:00+00:00",
+          "url": "https://www.meetup.com/cuban-salsa-nyc-dance-classes/events/316561849/",
           "venue": "410-412 8th Ave (410-412 8th Ave, New York, NY)",
           "lat": null,
           "lng": null,
@@ -23825,6 +24018,17 @@
           "category": "dance"
         },
         {
+          "name": "Sensual Bachata class",
+          "date": "2026-10-20T23:00:00+00:00",
+          "url": "https://www.meetup.com/salsa-merengue-bachata-kizomba-dancers-meetup-group/events/316732251/",
+          "venue": "500 8th Avenue (500 8th Avenue, NY, NY)",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Jump into our in-person Modern Bachata class and learn smooth moves with great vibes!\nGet Ready to Dance!\n\nJoin our Modern Bachata class and spice up your dance moves! This is an in-person event where you’ll learn smooth steps and stylish grooves in ",
+          "category": "dance"
+        },
+        {
           "name": "FRIDAY — $10 Intro Cuban Salsa Class + Friday Dancing 💃🎶",
           "date": "2026-10-16T21:35:00+00:00",
           "url": "https://www.meetup.com/cuban-salsa-nyc-dance-classes/events/316561142/",
@@ -23834,21 +24038,10 @@
           "price": "Free",
           "description": "If you've been wanting to learn salsa but don't know where to begin, this class is for you.\nJoin us for our **$10 Intro Cuban Salsa Class**, created especially for new dancers and people who want to learn the fundamentals in a relaxed and friendly en",
           "category": "dance"
-        },
-        {
-          "name": "Cuban Salsa & Rueda de Casino Classes!",
-          "date": "2026-10-18T21:00:00+00:00",
-          "url": "https://www.meetup.com/cuban-salsa-new-york/events/316756699/",
-          "venue": "Adelante studios (25 W 31st street, New York, NY)",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "# 💃🏼🕺🏼 Ready to Try Salsa? How About ***Cuban Salsa***? 🇨🇺\n\n**Have you ever wanted to learn Salsa but weren't sure where to start?** Maybe you've never danced before, don't have a partner, or just want to try something completely new.\n**Sunday, Octob",
-          "category": "dance"
         }
       ],
       "error": null,
-      "duration": 1.75
+      "duration": 1.35
     },
     {
       "venue": "3 Dollar Bill (Queer & Drag Venue)",
@@ -24008,7 +24201,7 @@
         }
       ],
       "error": null,
-      "duration": 1.12
+      "duration": 1.1
     },
     {
       "venue": "NYC Drag Shows & Brunches",
@@ -24022,35 +24215,35 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.07
     },
     {
       "venue": "Pieces Bar (West Village Drag)",
       "url": "https://www.eventbrite.com/d/ny--new-york/pieces-bar/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "NYC Video Game Tournaments",
       "url": "https://www.eventbrite.com/d/ny--new-york/video-game-tournament/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "NYC Smash Bros Tournaments",
       "url": "https://www.eventbrite.com/d/ny--new-york/smash-bros/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Barcade (Arcade & Craft Beer)",
       "url": "https://www.eventbrite.com/d/ny--new-york/barcade/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Union Pool (Williamsburg Live Music Bar)",
@@ -24250,21 +24443,21 @@
         }
       ],
       "error": null,
-      "duration": 1.52
+      "duration": 1.02
     },
     {
       "venue": "Our Wicked Lady (Bushwick Live Music)",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "NYC Bar Concerts & Live Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/live-music-bar/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Trivia A.D. (NYC Bar Trivia)",
@@ -24734,77 +24927,77 @@
         }
       ],
       "error": null,
-      "duration": 0.75
+      "duration": 0.73
     },
     {
       "venue": "NYC Free Club Guestlists",
       "url": "https://www.eventbrite.com/d/ny--new-york/free-guestlist/",
       "events": [],
       "error": null,
-      "duration": 0.06
+      "duration": 0.03
     },
     {
       "venue": "NYC Nightclub Guestlists",
       "url": "https://www.eventbrite.com/d/ny--new-york/nightclub-guestlist/",
       "events": [],
       "error": null,
-      "duration": 0.06
+      "duration": 0.02
     },
     {
       "venue": "NYC Free RSVP Nightlife",
       "url": "https://www.eventbrite.com/d/ny--new-york/free-rsvp-party/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.02
     },
     {
       "venue": "NYC Rooftop Club Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/rooftop-party/",
       "events": [],
       "error": null,
-      "duration": 0.05
+      "duration": 0.02
     },
     {
       "venue": "Somewhere Nowhere Rooftop Club",
       "url": "https://www.eventbrite.com/d/ny--new-york/somewhere-nowhere/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "The DL (LES Rooftop Club)",
       "url": "https://www.eventbrite.com/d/ny--new-york/the-dl/",
       "events": [],
       "error": null,
-      "duration": 0.05
+      "duration": 0.02
     },
     {
       "venue": "Harbor NYC Rooftop Club",
       "url": "https://www.eventbrite.com/d/ny--new-york/harbor-nyc/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.03
     },
     {
       "venue": "230 Fifth Rooftop Nightclub",
       "url": "https://www.eventbrite.com/d/ny--new-york/230-fifth/",
       "events": [],
       "error": null,
-      "duration": 0.06
+      "duration": 0.03
     },
     {
       "venue": "Slate NYC (Chelsea Lounge & Club)",
       "url": "https://www.eventbrite.com/d/ny--new-york/slate-nyc/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.02
     },
     {
       "venue": "Nebula NYC (Midtown Nightclub)",
       "url": "https://www.eventbrite.com/d/ny--new-york/nebula/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.02
     },
     {
       "venue": "Superior Ingredients (Williamsburg)",
@@ -24908,7 +25101,7 @@
         }
       ],
       "error": null,
-      "duration": 0.87
+      "duration": 1.19
     },
     {
       "venue": "Union Square Greenmarket",
@@ -30433,7 +30626,7 @@
     }
   ],
   "weather": {
-    "temp": 60,
+    "temp": 59,
     "icon": "🌤️",
     "label": "Mainly clear"
   },
