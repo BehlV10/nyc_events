@@ -89,7 +89,7 @@ def _format_price_range(lo, hi, curr="USD"):
 CATEGORY_KEYWORDS = [
     ("music",     [r"\b(concert|band|orchestra|jazz|symphony|quartet|choir|acoustic|live music|dj set|indie rock|punk|metal|folk|hip-hop|r&b|brass band|honky-tonk|bar concert|live band)\b"]),
     ("comedy",    [r"\b(comedy|stand-?up|improv|open mic comedy|comic|roast|laugh)\b"]),
-    ("clubbing",  [r"\b(dj|rave|techno|house music|edm|club night|dance party|nightclub|party|afters)\b"]),
+    ("clubbing",  [r"\b(dj|rave|techno|house music|edm|club night|dance party|nightclub|party|afters|guestlist|free guestlist|rooftop party|clubbing|nightlife)\b"]),
     ("dance",     [r"\b(salsa|bachata|tango|swing dance|swing dancing|lindy hop|lindy|contra dance|ballroom|dance class|social dance|milonga|cumbia)\b"]),
     ("theater",   [r"\b(theater|theatre|musical|play|broadway|off-broadway|stage|cabaret|drama|drag|drag show|drag queen|drag brunch|burlesque)\b"]),
     ("film",      [r"\b(screening|film|movie|cinema|documentary|35mm|q&a screening)\b"]),
@@ -937,6 +937,21 @@ MANUAL_RECURRING_EVENTS = [
     ("Mona's", "https://www.facebook.com/monasbar/", "music", [
         ("Monday Night Irish Trad Music Session", "https://www.facebook.com/monasbar/", 0, 21, 0, "Free"),
     ]),
+    ("Bossa Nova Civic Club", "https://bossanovacivicclub.com/", "clubbing", [
+        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 0, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 1, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 2, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 3, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 4, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 5, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 6, 22, 0, "Free before 11PM"),
+    ]),
+    ("Jupiter Disco", "https://www.jupiterdisco.com/", "clubbing", [
+        ("Analog Synth & Underground DJ Night", "https://www.jupiterdisco.com/", 3, 20, 0, "No Cover"),
+        ("Analog Synth & Underground DJ Night", "https://www.jupiterdisco.com/", 4, 20, 0, "No Cover"),
+        ("Analog Synth & Underground DJ Night", "https://www.jupiterdisco.com/", 5, 20, 0, "No Cover"),
+        ("Analog Synth & Underground DJ Night", "https://www.jupiterdisco.com/", 6, 20, 0, "No Cover"),
+    ]),
 ]
 
 
@@ -1122,6 +1137,19 @@ _ALL_VENUES = [
     {"name": "Our Wicked Lady (Bushwick Live Music)", "url": "https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
     {"name": "NYC Bar Concerts & Live Music", "url": "https://www.eventbrite.com/d/ny--new-york/live-music-bar/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
     {"name": "Trivia A.D. (NYC Bar Trivia)", "url": "https://www.eventbrite.com/api/v3/organizers/4701927701/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "gaming"},
+
+    # Free Club Guestlists, Rooftop Lounges & Nightlife RSVPs
+    {"name": "NYC Free Club Guestlists", "url": "https://www.eventbrite.com/d/ny--new-york/free-guestlist/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "NYC Nightclub Guestlists", "url": "https://www.eventbrite.com/d/ny--new-york/nightclub-guestlist/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "NYC Free RSVP Nightlife", "url": "https://www.eventbrite.com/d/ny--new-york/free-rsvp-party/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "NYC Rooftop Club Parties", "url": "https://www.eventbrite.com/d/ny--new-york/rooftop-party/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "Somewhere Nowhere Rooftop Club", "url": "https://www.eventbrite.com/d/ny--new-york/somewhere-nowhere/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "The DL (LES Rooftop Club)", "url": "https://www.eventbrite.com/d/ny--new-york/the-dl/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "Harbor NYC Rooftop Club", "url": "https://www.eventbrite.com/d/ny--new-york/harbor-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "230 Fifth Rooftop Nightclub", "url": "https://www.eventbrite.com/d/ny--new-york/230-fifth/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "Slate NYC (Chelsea Lounge & Club)", "url": "https://www.eventbrite.com/d/ny--new-york/slate-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "Nebula NYC (Midtown Nightclub)", "url": "https://www.eventbrite.com/d/ny--new-york/nebula/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "Superior Ingredients (Williamsburg)", "url": "https://donyc.com/venues/superior-ingredients", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
 ]
 
 VENUES = _ALL_VENUES
@@ -1156,6 +1184,11 @@ STATIC_LINKS = [
     ("dance",   "Swing 46 Jazz & Supper Club (Lindy Hop & Big Band)", "https://swing46.nyc/"),
     ("theater", "3 Dollar Bill (Bushwick Queer & Drag Hall)", "https://www.3dollarbillbk.com/"),
     ("gaming",  "Trivia A.D. (NYC Bar Pop Culture Trivia Nights)", "https://triviaad.com/"),
+    ("clubbing","Somewhere Nowhere NYC (Chelsea Rooftop Club & Lounge)", "https://somewherenowherenyc.com/"),
+    ("clubbing","The DL (LES Multi-Level Rooftop Club)", "https://thedl-nyc.com/"),
+    ("clubbing","Harbor NYC (Hell's Kitchen Rooftop Nightclub)", "https://harbornewyorkcity.com/"),
+    ("clubbing","Superior Ingredients (Williamsburg Roof & Room)", "https://superioringredientsnyc.com/"),
+    ("clubbing","Bossa Nova Civic Club (Bushwick Underground Techno)", "https://bossanovacivicclub.com/"),
 ]
 
 DEAL_LINKS = [

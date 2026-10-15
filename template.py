@@ -34,6 +34,7 @@ CITY_RULES = [
         "brooklyn comedy collective", "bcc",
         "house of yes", "brooklyn strategist", "the brooklyn strategist", "brooklyn brainery",
         "3 dollar bill", "three dollar bill",
+        "superior ingredients", "bossa nova civic club", "bossa nova", "jupiter disco",
         "brooklyn trivia",
         "brooklyn", "bklyn", "williamsburg", "bushwick", "greenpoint", "dumbo",
         "bed-stuy", "bedford-stuyvesant", "crown heights", "prospect heights",
@@ -89,6 +90,7 @@ CITY_RULES = [
         "gonzalez y gonzalez", "swing 46", "the back room", "back room",
         "mona's", "monas", "pieces bar", "the stonewall inn", "stonewall inn", "stonewall",
         "trivia a.d.", "trivia ad", "barcade",
+        "somewhere nowhere", "the dl", "harbor nyc", "harbor new york", "230 fifth", "slate nyc", "slate ny", "nebula",
         "soho", "tribeca", "noho", "nolita", "chinatown", "lower east side", "les",
         "east village", "west village", "greenwich village", "chelsea",
         "meatpacking", "gramercy", "flatiron", "midtown", "times square",
@@ -139,6 +141,12 @@ def _maps_link(venue, city):
 _FREE_TITLE_RE = re.compile(
     r"\b("
     r"free|"
+    r"guestlist|"
+    r"free guestlist|"
+    r"free rsvp|"
+    r"rsvp free|"
+    r"free entry|"
+    r"complimentary|"
     r"parade|"
     r"car-free|"
     r"open streets?|"
@@ -182,6 +190,14 @@ _FREE_DESC_PHRASES = [
     "free outdoor",
     "no tickets required",
     "free dance class",
+    "free guestlist",
+    "free rsvp",
+    "free with rsvp",
+    "free w/ rsvp",
+    "free before 11",
+    "free before 12",
+    "free before midnight",
+    "free entry before",
 ]
 
 
