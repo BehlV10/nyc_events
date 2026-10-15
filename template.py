@@ -19,7 +19,37 @@ from scrapers import (
 from venues_geo import resolve_event_geo
 
 
+TRISTATE_NEEDLES = (
+    # New Jersey markers & towns
+    "new jersey", ", nj", " nj ", " nj,", "hoboken", "jersey city", "newark", "asbury park",
+    "montclair", "paramus", "hackensack", "westwood", "maywood", "weehawken", "secaucus",
+    "englewood", "fort lee", "edgewater", "morristown", "lyndhurst", "wanaque", "loch arbour",
+    "wyckoff", "west orange", "paterson", "clifton", "passaic", "teaneck", "ridgefield",
+    # Connecticut markers & towns
+    "connecticut", ", ct", " ct ", " ct,", "stamford", "greenwich, ct", "greenwich ct",
+    "norwalk", "new haven", "bridgeport", "darien", "westport",
+    # Westchester, Hudson Valley & Upstate NY
+    "new rochelle", "white plains", "yonkers", "port chester", "tarrytown", "nyack",
+    "scarsdale", "mount vernon", "peekskill", "ossining", "mamaroneck", "rye, ny", "rye ny",
+    "bethel woods", "hudson valley", "woodbury", "poughkeepsie", "beacon, ny", "sleepy hollow",
+    # Long Island (Nassau / Suffolk)
+    "long island", "nassau", "suffolk", "huntington", "garden city", "hempstead",
+    "patchogue", "babylon", "montauk", "hamptons", "riverhead", "westbury, ny",
+)
+
 CITY_RULES = [
+    ("bronx", (
+        "yankee stadium", "bronx zoo", "new york botanical garden", "nybg",
+        "wave hill", "woodlawn", "bronx brewery",
+        "lehman center for the performing arts", "lehman center", "lehman college",
+        "clinton hall bronx", "the bronx", "south bronx", "riverdale", "concourse",
+        "fordham", "pelham", "mott haven", "city island", "bronx",
+    )),
+    ("staten_island", (
+        "snug harbor", "st. george theatre", "richmond county bank",
+        "conference house",
+        "staten island", "st. george", "tompkinsville", "new brighton",
+    )),
     ("brooklyn", (
         "brooklyn bowl", "elsewhere", "good room", "public records",
         "the bell house", "bell house", "littlefield", "music hall of williamsburg",
@@ -35,6 +65,11 @@ CITY_RULES = [
         "brooklyn comedy collective", "bcc",
         "house of yes", "brooklyn strategist", "the brooklyn strategist", "brooklyn brainery",
         "3 dollar bill", "three dollar bill",
+        "xanadu roller arts", "xanadu",
+        "eastville comedy club", "eastville comedy",
+        "montague diner", "sweet catch bk", "vacations bar", "conor's goat", "conor’s goat",
+        "keg & lantern", "brooklyn brewery", "other half brewing", "the wheelhouse",
+        "vineapple café", "vineapple cafe", "gowanus gardens", "fancyfree", "nook",
         "superior ingredients", "bossa nova civic club", "bossa nova", "jupiter disco",
         "salsa salsa dance", "salsa salsa",
         "the keep", "young ethel", "box house hotel", "the box house", "transit museum", "java street", "brooklyn swings",
@@ -53,22 +88,16 @@ CITY_RULES = [
         "kaufman astoria", "terrasa 7", "queens public library", "qpl",
         "q.e.d.", "qed astoria", "qed",
         "the last word", "last word", "astoria swing",
+        "the gaf astoria", "the gaf", "small change", "the ditty",
+        "judy & punch", "judy and punch", "mosaic", "31st avenue open street", "corner bistro east", "on the 7",
+        "mom's astoria", "mom’s astoria", "oliver's astoria", "oliver’s astoria",
+        "the bier & cheese collective", "bar dalia", "singlecut beersmiths", "singlecut",
+        "sanger hall", "the skillman", "sunswick astoria",
         "hunters point south park", "hunters point waterfront", "hunters point",
         "astoria trivia", "queens trivia",
         "queens", "astoria", "long island city", "lic", "flushing",
         "ridgewood", "sunnyside", "jackson heights", "woodside",
         "bayside", "jamaica, ny", "rockaway", "far rockaway",
-    )),
-    ("bronx", (
-        "yankee stadium", "bronx zoo", "new york botanical garden", "nybg",
-        "wave hill", "woodlawn", "bronx brewery",
-        "bronx", "the bronx", "south bronx", "riverdale", "concourse",
-        "fordham", "pelham", "mott haven", "city island",
-    )),
-    ("staten_island", (
-        "snug harbor", "st. george theatre", "richmond county bank",
-        "conference house",
-        "staten island", "st. george", "tompkinsville", "new brighton",
     )),
     ("manhattan", (
         "bowery ballroom", "mercury lounge", "webster hall", "terminal 5",
@@ -92,7 +121,29 @@ CITY_RULES = [
         "magnet theater", "asylum nyc", "asylum",
         "new york public library", "nypl",
         "ifc center", "smalls jazz club", "smalls jazz", "manhattan trivia",
-        "os nyc", "sobs", "s.o.b.",
+        "os nyc", "sobs", "s.o.b.", "sob's", "s.o.b.'s",
+        "cafe wha?", "cafe wha", "pubkey", "houston hall", "bleecker street bar",
+        "berlin", "night club 101", "culture club", "the culture club",
+        "new world stages", "lena horne theatre", "lena horne",
+        "chelsea bell", "the chelsea bell",
+        "overlook", "american whiskey", "dolly's hell's kitchen", "dolly’s hell’s kitchen",
+        "the broadway tavern", "t-squared social", "the hamilton", "faces & names",
+        "talea beer co. — bryant park", "talea beer co.", "talea bryant park",
+        "draught 55", "bareburger — hell’s kitchen", "bareburger hell's kitchen",
+        "dutch fred's", "dutch fred’s", "the district", "due west", "motel no tell", "the high note",
+        "reilly's plates & pours", "reilly’s plates & pours", "rocco's sports&rec", "rocco’s sports&rec",
+        "ace bar", "milk & hops", "the dakota bar", "lion's head tavern", "lion’s head tavern",
+        "the vale public house", "bardough", "the gaf east", "mom's midtown", "mom’s midtown",
+        "lexington publick", "the factory 380", "valhalla bar", "the alvin public house",
+        "drop off service", "the westbury", "the long hall", "bubby's", "bubby’s",
+        "maiden lane", "cooper's craft", "cooper’s craft", "saluggi's east", "saluggi’s east",
+        "triona's", "triona’s", "the mayfly", "mad dog & beans", "mama's bar", "mama’s bar",
+        "mess hall – harlem", "mess hall harlem", "phil hughes", "blondie's sports", "blondie’s sports",
+        "gramercy ale house", "e's bar", "e’s bar", "captain's bar", "captain’s bar",
+        "phoenix bar", "the hunterian", "the five lamps", "the hairy lemon", "ryan maguire's", "ryan maguire’s",
+        "the winslow", "scrappleland", "rose's r&r bar", "roses r&r bar", "sadie's ward", "sadie’s ward",
+        "lily's", "lily’s", "ella's cafe", "ella’s cafe", "farm.one",
+        "broadway", "off-broadway", "theater district", "theatre district",
         "gonzalez y gonzalez", "swing 46", "the back room", "back room",
         "mona's", "monas", "pieces bar", "the stonewall inn", "stonewall inn", "stonewall",
         "trivia a.d.", "trivia ad", "barcade",
@@ -103,7 +154,7 @@ CITY_RULES = [
         "ripley-grier", "prince george ballroom", "sara d roosevelt", "harlem swing dance", "harlem swing",
         "blues dance new york", "this week in swing nyc", "this week in swing",
         "washington square park", "garibaldi plaza", "hudson river park", "pier 45", "pier 76", "sunset salsa",
-        "bella abzug park", "bella abzug", "pa' la calle", "pa la calle", "bryant park dance",
+        "bella abzug park", "bella abzug", "pa' la calle", "pa la calle", "bryant park dance", "bryant park",
         "brookfield place", "port authority", "penn station", "gw bridge", "george washington bridge",
         "the hugh", "pearl studios", "adelante studios", "adelante", "nomad",
         "soho", "tribeca", "noho", "nolita", "chinatown", "lower east side", "les",
@@ -112,7 +163,7 @@ CITY_RULES = [
         "hell's kitchen", "upper west side", "uws", "upper east side", "ues",
         "harlem", "morningside heights", "washington heights", "inwood",
         "battery park", "financial district", "fidi",
-        "manhattan", "new york, ny", ", ny", "new york", "nyc",
+        "manhattan", "new york, ny", "new york city", "new york", "nyc",
     )),
 ]
 
@@ -135,9 +186,43 @@ CITY_COLORS = {
 }
 
 
+def _is_tristate(hay):
+    h = f" {hay.lower()} "
+    for n in TRISTATE_NEEDLES:
+        if n in h:
+            return True
+    return False
+
+
+def _city_from_zip(hay):
+    m = re.search(r"\b(10[0-2]\d{2}|103\d{2}|104\d{2}|112\d{2}|11[1346]\d{2})\b", hay)
+    if not m:
+        return None
+    zip_code = int(m.group(1))
+    if 10001 <= zip_code <= 10282:
+        return "manhattan"
+    if 10301 <= zip_code <= 10314:
+        return "staten_island"
+    if 10451 <= zip_code <= 10475:
+        return "bronx"
+    if 11201 <= zip_code <= 11256:
+        return "brooklyn"
+    if 11004 <= zip_code <= 11697:
+        return "queens"
+    return None
+
+
 def _event_city(venue, source):
     v = (venue or "").strip().lower()
-    hay = v if v else (source or "").strip().lower()
+    hay = f"{v} {(source or '').strip().lower()}"
+    # 1. Definitively outside NYC
+    if _is_tristate(hay):
+        return "other"
+    # 2. Match standard NYC Postal Codes
+    zc = _city_from_zip(hay)
+    if zc:
+        return zc
+    # 3. Match borough needle rules
     for city, needles in CITY_RULES:
         for n in needles:
             if n in hay:
@@ -148,9 +233,14 @@ def _event_city(venue, source):
 def _maps_link(venue, city):
     if not venue:
         return ""
+    if city == "other":
+        return f"https://www.google.com/maps/search/?api=1&query={quote(venue)}"
     label = CITY_LABELS.get(city)
-    query = venue if city == "other" or not label else f"{venue}, {label}, NY"
-    return f"https://www.google.com/maps/search/?api=1&query={quote(query)}"
+    v_lower = venue.lower()
+    # If the venue already contains address components or borough names, do not append redundant labels
+    if not label or f", {label.lower()}" in v_lower or f"({label.lower()})" in v_lower or ", ny" in v_lower or " new york" in v_lower:
+        return f"https://www.google.com/maps/search/?api=1&query={quote(venue)}"
+    return f"https://www.google.com/maps/search/?api=1&query={quote(f'{venue}, {label}, NY')}"
 
 
 _FREE_TITLE_RE = re.compile(
@@ -280,7 +370,17 @@ def _build_gcal_link(e, title, venue, city):
         end_str = end_dt.strftime("%Y%m%dT%H%M%SZ")
     except (ValueError, TypeError, AttributeError):
         return None
-    loc = f"{venue}, {CITY_LABELS.get(city, 'New York')}, NY" if venue else "New York, NY"
+    if not venue:
+        loc = "New York, NY"
+    elif city == "other":
+        loc = venue
+    else:
+        label = CITY_LABELS.get(city)
+        v_lower = venue.lower()
+        if not label or f", {label.lower()}" in v_lower or f"({label.lower()})" in v_lower or ", ny" in v_lower or " new york" in v_lower:
+            loc = venue
+        else:
+            loc = f"{venue}, {label}, NY"
     details = f"Details & Tickets: {e.get('url') or ''}\n\nDiscovered on NYC Events"
     return f"https://calendar.google.com/calendar/render?action=TEMPLATE&text={quote(title)}&dates={start_str}/{end_str}&details={quote(details)}&location={quote(loc)}"
 
@@ -603,6 +703,23 @@ def _build_compare_links(e, raw_title):
     return f'<span class="compare-tickets">{label}: <a href="{escape(gt_url)}" target="_blank" rel="noopener">Gametime</a> · <a href="{escape(sh_url)}" target="_blank" rel="noopener">StubHub</a></span>'
 
 
+def _clean_artist_name(name):
+    t = (name or "").lower()
+    t = re.sub(r"\b(late set with|early set with|evening set with|presents:?|featuring|feat\.?|ft\.?|w/|with)\b", " ", t)
+    t = re.sub(r"\b(quintet|quartet|trio|sextet|septet|duo|ensemble|band|orchestra|collective|group)\b", " ", t)
+    t = re.sub(r"[^a-z0-9]+", " ", t).strip()
+    return t
+
+
+def _norm_venue(v):
+    if not v:
+        return ""
+    v = v.lower()
+    v = re.sub(r"\([^)]*\)", " ", v)
+    v = re.sub(r"[^a-z0-9]+", " ", v).strip()
+    return v
+
+
 def _dedup_key(e):
     name = (e.get("name") or "").strip().lower()
     name = re.sub(r"[^a-z0-9]+", " ", name).strip()
@@ -612,25 +729,51 @@ def _dedup_key(e):
 
 
 def _merge_duplicates(events):
-    """Collapse events sharing a normalized name within the same day bucket."""
-    seen = {}
+    """Collapse duplicates sharing URL, exact title, or same venue + close time + artist name."""
     out = []
     for e in events:
         key = _dedup_key(e)
-        if key is None:
-            out.append(e)
-            continue
-        if key in seen:
-            primary = seen[key]
-            primary.setdefault("_alt_sources", [])
+        e_url = e.get("url")
+        e_art = _clean_artist_name(e.get("name"))
+        e_v = _norm_venue(e.get("venue"))
+        e_time = e.get("_time")
+
+        match = None
+        for cand in out:
+            # 1. Exact URL
+            if e_url and cand.get("url") == e_url:
+                match = cand
+                break
+            # 2. Exact dedup key
+            c_key = _dedup_key(cand)
+            if key and c_key and key == c_key:
+                match = cand
+                break
+            # 3. Same venue and close start time (within 45 minutes)
+            c_v = _norm_venue(cand.get("venue"))
+            if e_v and c_v and (e_v in c_v or c_v in e_v or e_v == c_v):
+                c_time = cand.get("_time")
+                if e_time and c_time and abs((e_time - c_time).total_seconds()) <= 2700:
+                    c_art = _clean_artist_name(cand.get("name"))
+                    if e_art and c_art and (e_art == c_art or (len(e_art) >= 5 and e_art in c_art) or (len(c_art) >= 5 and c_art in e_art)):
+                        match = cand
+                        break
+                    if key and c_key and ((len(key) >= 6 and key in c_key) or (len(c_key) >= 6 and c_key in key)):
+                        match = cand
+                        break
+
+        if match is not None:
+            match.setdefault("_alt_sources", [])
             src_url = e.get("url")
             src_name = e.get("_source_venue") or e.get("venue") or "source"
-            if src_url and not any(a.get("url") == src_url for a in primary["_alt_sources"]) and src_url != primary.get("url"):
-                primary["_alt_sources"].append({"venue": src_name, "url": src_url})
-            if not primary.get("price") and e.get("price"):
-                primary["price"] = e["price"]
+            if src_url and not any(a.get("url") == src_url for a in match["_alt_sources"]) and src_url != match.get("url"):
+                match["_alt_sources"].append({"venue": src_name, "url": src_url})
+            if not match.get("price") and e.get("price"):
+                match["price"] = e["price"]
+            if not match.get("lat") and e.get("lat"):
+                match["lat"] = e["lat"]
+                match["lng"] = e.get("lng")
         else:
-            seen[key] = e
             out.append(e)
     return out
 
