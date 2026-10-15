@@ -8,13 +8,13 @@ Companion project to [Wicked Boston Events](https://github.com/BehlV10/boston_ev
 
 ## 🌟 Highlights & Features
 
-- **116+ Live NYC Venues & Community Feeds**: Aggregates from independent concert halls, historic jazz and blues clubs, salsa & Latin dance socials, swing dancing & Lindy Hop halls, iconic drag shows & queer cabaret, Super Smash Bros (SSB) gaming arenas, arcade bars, neighborhood bar concerts, pop culture pub trivia leagues, stand-up & improv comedy showcases, Chelsea art gallery walks, street food festivals (Japan Fes), social run clubs (Midnight Runners), grassroots learning (Brooklyn Brainery), NYC Parks official citywide feeds, free pop-up trackers, indie bookstores, and public libraries.
+- **129+ Live NYC Venues & Community Feeds**: Aggregates from independent concert halls, historic jazz and blues clubs, free club guestlists & rooftop lounges, salsa & Latin dance socials, swing dancing & Lindy Hop halls, iconic drag shows & queer cabaret, Super Smash Bros (SSB) gaming arenas, arcade bars, neighborhood bar concerts, pop culture pub trivia leagues, stand-up & improv comedy showcases, Chelsea art gallery walks, street food festivals (Japan Fes), social run clubs (Midnight Runners), grassroots learning (Brooklyn Brainery), NYC Parks official citywide feeds, free pop-up trackers, indie bookstores, and public libraries.
 - **5-Borough Multi-Filter**: 1-tap filter pills for Manhattan, Brooklyn, Queens, The Bronx, Staten Island, and Tri-State / Greater NY.
 - **Custom NYC Skyline Hero Art**: Handcrafted, responsive SVG banner featuring One World Trade Center with red beacon spire, Empire State Building, Chrysler Building, Brooklyn Bridge stone arches, Statue of Liberty silhouette, Yellow Taxi pin, starfield, and East River reflections.
-- **Quick-Time & Free Filters**: 1-tap shortcuts for *Today*, *Tomorrow*, *This Weekend*, *Next 7 Days*, and **✨ Free Only (1,900+ free events)**.
+- **Quick-Time & Free Filters**: 1-tap shortcuts for *Today*, *Tomorrow*, *This Weekend*, *Next 7 Days*, and **✨ Free Only (2,000+ free events & guestlists)**.
 - **Live NYC Weather & Broadway Lotteries**: Real-time Central Park temperature/forecast chip via Open-Meteo, plus live active Broadway lottery draws via LuckySeat.
 - **Calendar Integration**: 1-tap `+ GCal` button to add any event directly to Google Calendar, plus downloadable `.ics` support for Apple Calendar and Outlook.
-- **Zero-Dependency Static Exporter**: Generates a self-contained, lightning-fast static `index.html` (3,800+ events) suitable for GitHub Pages, Cloudflare Pages, or any CDN.
+- **Zero-Dependency Static Exporter**: Generates a self-contained, lightning-fast static `index.html` (3,900+ events) suitable for GitHub Pages, Cloudflare Pages, or any CDN.
 - **Automated 30-Minute Scraper Pipeline**: GitHub Actions cron runner re-scrapes feeds, refreshes `events.json` and `index.html`, and commits updates automatically.
 
 ---
@@ -23,6 +23,7 @@ Companion project to [Wicked Boston Events](https://github.com/BehlV10/boston_ev
 
 ### 🎷 Manhattan
 - **Concerts, Clubs & Historic Halls**: Bowery Ballroom, Mercury Lounge, Webster Hall, Terminal 5, Irving Plaza, Racket NYC, Le Poisson Rouge, Blue Note Jazz Club, Smalls Jazz Club, S.O.B.'s (Sounds of Brazil), Joe's Pub (The Public Theater), The Bitter End (Greenwich Village), Arlene's Grocery (LES), Nublu 151 (Alphabet City), Drom NYC (East Village), Terra Blues (Bleecker St), Symphony Space (Upper West Side), Gramercy Theatre, Sony Hall, The Town Hall, Madison Square Garden, Radio City Music Hall, Beacon Theatre, Carnegie Hall, Apollo Theater, Lincoln Center.
+- **Free Club Guestlists & Rooftop Lounges**: Somewhere Nowhere NYC (Chelsea 38th-floor rooftop pool & nightclub guestlists), The DL (Lower East Side multi-level rooftop club guestlists), Harbor NYC (Hell's Kitchen multi-level rooftop nightclub), 230 Fifth (Flatiron rooftop lounge & club), Slate NYC (Chelsea nightclub & lounge), Nebula NYC (Midtown kinetic LED mega-club), NYC Free Club Guestlists, NYC Nightclub Guestlists, and NYC Rooftop Club Parties.
 - **Salsa, Swing & Social Dancing**: Gonzalez y Gonzalez (Greenwich Village — weekly live salsa orchestra & free dance lessons), Swing 46 Jazz & Supper Club (Restaurant Row / Midtown — big band swing dance nights & dance lessons), The Back Room (Norfolk St LES — Monday night live jazz & swing dancing, no cover), NYC Salsa & Bachata Socials, NYC Swing Dancing & Lindy Hop.
 - **Queer Nightlife & Drag Shows**: Pieces Bar (Christopher St West Village — nightly live drag shows, no cover), The Stonewall Inn (historic upstairs drag & cabaret shows), NYC Drag Shows & Brunches.
 - **Neighborhood Bar Concerts & Trad Sessions**: Mona's (East Village — legendary Monday night Irish trad session, free), NYC Bar Concerts & Live Music directory.
@@ -36,6 +37,7 @@ Companion project to [Wicked Boston Events](https://github.com/BehlV10/boston_ev
 
 ### 🎸 Brooklyn
 - **Indie & Nightlife**: Brooklyn Steel, Music Hall of Williamsburg, Elsewhere Bushwick, Warsaw Greenpoint, Baby's All Right, The Sultan Room, Good Room Greenpoint, Public Records Gowanus, C'mon Everybody Bed-Stuy.
+- **Underground Dance Clubs & Rooftops**: Superior Ingredients (Williamsburg rooftop & club room), Bossa Nova Civic Club (Bushwick underground techno/house, free before 11PM nightly), Jupiter Disco (Bushwick retro sci-fi synth bar with resident DJs, no cover).
 - **Queer Hall, Cabaret & Immersive Spectacle**: 3 Dollar Bill (East Williamsburg / Bushwick queer performance hall, drag shows, queer dance parties & cabaret), House of Yes (Bushwick — aerial circus, burlesque, themed dance parties, and cabaret).
 - **Neighborhood Bars & Live Music**: Union Pool (Williamsburg — live music bar & backyard taco truck shows), Our Wicked Lady (Bushwick — live music, indie rock bands & rooftop parties), Pete's Candy Store (Williamsburg — nightly backroom music, open mics & comedy), Skinny Dennis (Williamsburg — live honky tonk & roots music).
 - **Arcades, Super Smash Bros & Tabletop**: Wonderville (Bushwick — *Smashville*, Killer Queen open hive, WordHack, indie arcade games), The Brooklyn Strategist (Cobble Hill — community board games & chess).
