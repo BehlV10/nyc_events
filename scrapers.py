@@ -146,6 +146,20 @@ def guess_category(text, default="community"):
     return default
 
 
+# Shows or productions that have closed or concluded their runs but whose
+# future ticketing stubs remain in Ticketmaster / SeatGeek feeds.
+CLOSED_SHOWS = (
+    "heathers",  # Closed Oct 11, 2026 at New World Stages
+)
+
+
+def is_closed_show(name):
+    if not name:
+        return False
+    low = name.lower()
+    return any(c in low for c in CLOSED_SHOWS)
+
+
 # --- NYC Weather ---
 _weather_cache = {"ts": 0, "data": None}
 _WMO_ICON = {
@@ -354,6 +368,12 @@ def scrape_ticketmaster_nyc(_url, _ua):
             if not batch:
                 break
             for ev in batch:
+                name = ev.get("name")
+                if is_closed_show(name):
+                    continue
+                status_code = (ev.get("dates", {}).get("status", {}) or {}).get("code", "").lower()
+                if status_code in ("cancelled", "canceled", "postponed"):
+                    continue
                 start = ev.get("dates", {}).get("start", {})
                 iso = start.get("dateTime")
                 if not iso and start.get("localDate"):
@@ -462,6 +482,11 @@ def scrape_seatgeek_nyc(_url, _ua):
                 title = ev.get("title")
                 iso = ev.get("datetime_utc")
                 if not title or not iso:
+                    continue
+                if is_closed_show(title):
+                    continue
+                status = (ev.get("status") or "").lower()
+                if status in ("cancelled", "canceled", "postponed"):
                     continue
                 if not iso.endswith("Z") and "+" not in iso:
                     iso = iso + "Z"
@@ -2035,6 +2060,7 @@ def _scrape_one(v):
     t0 = time.time()
     try:
         events = v["scraper"](v["url"], v["ua"])
+        events = [e for e in events if not is_closed_show(e.get("name"))]
         for e in events:
             if not e.get("venue"):
                 e["venue"] = v["name"]

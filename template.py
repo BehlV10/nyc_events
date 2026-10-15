@@ -16,6 +16,7 @@ from scrapers import (
     guess_category,
     fetch_nyc_weather,
     fetch_luckyseat_nyc,
+    is_closed_show,
 )
 from venues_geo import resolve_event_geo
 
@@ -792,6 +793,8 @@ def group_by_date(results):
     ongoing = []
     for r in results:
         for e in r.get("events", []):
+            if is_closed_show(e.get("name")):
+                continue
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["venue"] = e.get("venue") or r.get("venue", "")
             entry["category"] = guess_category(e.get("name"), e.get("category") or r.get("default_category") or "community")
