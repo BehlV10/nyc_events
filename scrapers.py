@@ -911,6 +911,29 @@ MANUAL_RECURRING_EVENTS = [
         ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 4, 21, 0, "Live Band"),
         ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 5, 21, 0, "Live Band"),
     ]),
+    ("Taj Lounge", "https://tajloungenyc.com/", "dance", [
+        ("Taj Monday Night Salsa & Bachata Social", "https://tajloungenyc.com/", 0, 19, 0, "Dance Lesson & Social"),
+    ]),
+    ("Club Cache", "https://www.clubcachenyc.com/", "dance", [
+        ("Club Cache Thursday Salsa & Bachata Social", "https://www.clubcachenyc.com/", 3, 20, 0, "Dance Class & Social"),
+        ("Club Cache Saturday Latin Dance Party", "https://www.clubcachenyc.com/", 5, 20, 0, "Dance Class & Social"),
+    ]),
+    ("Iguana NYC", "https://www.iguananyc.com/", "dance", [
+        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananyc.com/", 2, 20, 0, "No Cover / Latin Lounge"),
+        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananyc.com/", 3, 20, 0, "No Cover / Latin Lounge"),
+        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananyc.com/", 4, 20, 0, "Latin Dance Upstairs"),
+        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananyc.com/", 5, 20, 0, "Latin Dance Upstairs"),
+    ]),
+    ("S.O.B.'s (Sounds of Brazil)", "https://sobs.com/", "dance", [
+        ("Live Salsa Orchestra & Latin Dance Party", "https://sobs.com/", 4, 22, 0, "Live Band & Dancing"),
+        ("Live Salsa Orchestra & Latin Dance Party", "https://sobs.com/", 5, 22, 0, "Live Band & Dancing"),
+    ]),
+    ("Cucala Dance Company", "https://www.cucaladance.com/", "dance", [
+        ("Friday Night Salsa Social & Workshops", "https://www.cucaladance.com/", 4, 20, 0, "Dance Lesson & Social"),
+    ]),
+    ("Salsa Salsa Dance Studios", "https://www.salsasalsadance.com/", "dance", [
+        ("Brooklyn Salsa Social & Practice Party", "https://www.salsasalsadance.com/", 4, 20, 0, "Practice Social"),
+    ]),
     ("The Back Room", "https://www.backroomnyc.com/", "dance", [
         ("Monday Night Live Jazz & Swing Dancing", "https://www.backroomnyc.com/", 0, 20, 30, "No Cover"),
     ]),
@@ -1117,6 +1140,9 @@ _ALL_VENUES = [
     # Salsa, Bachata & Latin Social Dancing
     {"name": "NYC Salsa & Bachata Socials", "url": "https://www.eventbrite.com/d/ny--new-york/salsa-dancing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "NYC Bachata & Latin Socials", "url": "https://www.eventbrite.com/d/ny--new-york/bachata/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "Taj Lounge (Salsa & Latin Socials)", "url": "https://www.eventbrite.com/d/ny--new-york/taj-lounge-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "Club Cache (Salsa & Bachata Socials)", "url": "https://www.eventbrite.com/d/ny--new-york/club-cache-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "NYC Salsa Socials & Dance Parties", "url": "https://www.eventbrite.com/d/ny--new-york/salsa-social/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
 
     # Swing Dancing & Lindy Hop
     {"name": "NYC Swing Dancing & Lindy Hop", "url": "https://www.eventbrite.com/d/ny--new-york/swing-dancing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
@@ -1181,7 +1207,13 @@ STATIC_LINKS = [
     ("books",   "Brooklyn Public Library (BPL) Events", "https://www.bklynlibrary.org/calendar"),
     ("gaming",  "start.gg (NYC Super Smash Bros Tournaments)", "https://www.start.gg/"),
     ("dance",   "Gonzalez y Gonzalez (Live Salsa & Latin Socials)", "https://www.gygnyc.com/"),
+    ("dance",   "Taj Lounge (Monday Night Salsa & Bachata Social)", "https://tajloungenyc.com/"),
+    ("dance",   "Club Cache (Thursday & Saturday Salsa Socials)", "https://www.clubcachenyc.com/"),
+    ("dance",   "Iguana NYC (Latin Dance & Salsa Lounge)", "https://www.iguananyc.com/"),
+    ("dance",   "Cucala Dance Company (East Village Salsa Classes)", "https://www.cucaladance.com/"),
+    ("dance",   "Salsa Salsa Dance Studios (Brooklyn Latin Dance)", "https://www.salsasalsadance.com/"),
     ("dance",   "Swing 46 Jazz & Supper Club (Lindy Hop & Big Band)", "https://swing46.nyc/"),
+    ("dance",   "The Back Room (Monday Night Live Jazz & Swing)", "https://www.backroomnyc.com/"),
     ("theater", "3 Dollar Bill (Bushwick Queer & Drag Hall)", "https://www.3dollarbillbk.com/"),
     ("gaming",  "Trivia A.D. (NYC Bar Pop Culture Trivia Nights)", "https://triviaad.com/"),
     ("clubbing","Somewhere Nowhere NYC (Chelsea Rooftop Club & Lounge)", "https://somewherenowherenyc.com/"),
@@ -1196,6 +1228,14 @@ DEAL_LINKS = [
     ("Broadway Direct Lotteries (Hamilton, Wicked, Lion King)", "https://lottery.broadwaydirect.com/"),
     ("Lucky Seat Broadway Lotteries ($39–$49)", "https://www.luckyseat.com/"),
     ("NYC Culture Pass (Free museums for NY library cardholders)", "https://www.culturepass.nyc/"),
+    ("Somewhere Nowhere NYC (Free VIP Guestlist before 11:30 PM)", "https://somewherenowherenyc.com/"),
+    ("The DL Rooftop (Free Guestlist Entry before 11 PM)", "https://thedl-nyc.com/"),
+    ("Harbor NYC (Free RSVP & Sunset Rooftop Parties)", "https://harbornewyorkcity.com/"),
+    ("230 Fifth Rooftop (Free General Admission & Igloos)", "https://www.230-fifth.com/"),
+    ("Superior Ingredients (Free RSVP House & Techno before 11 PM)", "https://superioringredientsnyc.com/"),
+    ("Bossa Nova Civic Club (Free Entry Before 11 PM Nightly)", "https://bossanovacivicclub.com/"),
+    ("Jupiter Disco (Always Free / No Cover Retro DJs)", "https://www.jupiterdisco.com/"),
+    ("NYC Club Guestlists (Live Eventbrite Free Guestlists)", "https://www.eventbrite.com/d/ny--new-york/free-guestlist/"),
     ("NYC Ferry Tickets ($4.00 per ride)", "https://www.ferry.nyc/"),
 ]
 

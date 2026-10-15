@@ -35,6 +35,7 @@ CITY_RULES = [
         "house of yes", "brooklyn strategist", "the brooklyn strategist", "brooklyn brainery",
         "3 dollar bill", "three dollar bill",
         "superior ingredients", "bossa nova civic club", "bossa nova", "jupiter disco",
+        "salsa salsa dance", "salsa salsa",
         "brooklyn trivia",
         "brooklyn", "bklyn", "williamsburg", "bushwick", "greenpoint", "dumbo",
         "bed-stuy", "bedford-stuyvesant", "crown heights", "prospect heights",
@@ -91,6 +92,7 @@ CITY_RULES = [
         "mona's", "monas", "pieces bar", "the stonewall inn", "stonewall inn", "stonewall",
         "trivia a.d.", "trivia ad", "barcade",
         "somewhere nowhere", "the dl", "harbor nyc", "harbor new york", "230 fifth", "slate nyc", "slate ny", "nebula",
+        "taj lounge", "taj ii", "club cache", "cache", "iguana nyc", "iguana", "cucala dance", "cucala",
         "soho", "tribeca", "noho", "nolita", "chinatown", "lower east side", "les",
         "east village", "west village", "greenwich village", "chelsea",
         "meatpacking", "gramercy", "flatiron", "midtown", "times square",
@@ -228,6 +230,27 @@ def _is_event_free(e):
     if any(p in desc for p in _FREE_DESC_PHRASES):
         return True
 
+    return False
+
+
+_GUESTLIST_RE = re.compile(
+    r"\b(guestlist|guest-list|free rsvp|rsvp free|free with rsvp|free w/ rsvp|free before|free entry before|complimentary ticket|vip guestlist)\b",
+    re.IGNORECASE,
+)
+
+
+def _is_event_guestlist(e):
+    source = (e.get("_source_venue") or "").lower()
+    if any(k in source for k in [
+        "guestlist", "free rsvp", "somewhere nowhere", "the dl", "harbor nyc",
+        "230 fifth", "slate nyc", "nebula", "superior ingredients", "bossa nova", "jupiter disco"
+    ]):
+        return True
+    name = (e.get("name") or "").lower()
+    price = (e.get("price") or "").lower()
+    desc = (e.get("description") or "").lower()
+    if _GUESTLIST_RE.search(name) or _GUESTLIST_RE.search(price) or _GUESTLIST_RE.search(desc):
+        return True
     return False
 
 
@@ -631,10 +654,13 @@ def render_page(results):
         raw_desc = (e.get("description") or "").replace("***", "").replace("**", "").replace("__", "").replace("`", "").strip()
         desc = raw_desc[:180]
         desc_html = f'<div class="desc">{escape(desc)}</div>' if desc else ""
-        free_flag = "true" if is_free else "false"
-        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}" data-city="{escape(city)}" data-recur="{recur_flag}" data-free="{free_flag}">
+        is_guestlist = _is_event_guestlist(e)
+        guestlist_flag = "true" if is_guestlist else "false"
+        guestlist_badge = '<span class="badge-guestlist" title="Free club guestlist or RSVP entry">🎟️ Guestlist</span>' if is_guestlist else ""
+        free_flag = "true" if (is_free or is_guestlist) else "false"
+        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}" data-city="{escape(city)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}">
           <div class="when">{escape(format_when(e))}</div>
-          <div class="what">{link}{price_tag}{recur_badge}
+          <div class="what">{link}{price_tag}{guestlist_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{cal_html}</div>
             {desc_html}
           </div>
@@ -720,8 +746,32 @@ def render_page(results):
             <div class="deals-sub-head">LuckySeat — Broadway NYC</div>
             <p class="hint">Check lotteries for daily $39–$49 rush tickets.</p>
           </div>'''
+            guestlist_deals = [
+                ("Somewhere Nowhere NYC", "https://somewherenowherenyc.com/", "Free VIP Guestlist (before 11:30 PM)", "Chelsea Rooftop"),
+                ("The DL NYC", "https://thedl-nyc.com/", "Free Guestlist Entry (before 11:00 PM)", "Lower East Side"),
+                ("Harbor NYC Rooftop", "https://harbornewyorkcity.com/", "Free RSVP & Sunset Parties", "Hell's Kitchen"),
+                ("230 Fifth Rooftop", "https://www.230-fifth.com/", "Free Admission & Heated Igloos", "Flatiron Rooftop"),
+                ("Superior Ingredients", "https://superioringredientsnyc.com/", "Free RSVP Dance Series (before 11 PM)", "Williamsburg"),
+                ("Bossa Nova Civic Club", "https://bossanovacivicclub.com/", "Free Entry Before 11:00 PM Nightly", "Bushwick Techno"),
+                ("Jupiter Disco", "https://www.jupiterdisco.com/", "No Cover / Always Free Retro DJs", "Bushwick Synth"),
+                ("Slate NYC", "https://slatenyc.com/", "Free RSVP Club & Games Lounge", "Chelsea"),
+                ("Nebula NYC", "https://nebulanewyork.com/", "Kinetic Mega-Club Guestlist Draws", "Midtown"),
+                ("Eventbrite NYC Guestlists", "https://www.eventbrite.com/d/ny--new-york/free-guestlist/", "Live Rotating Club Guestlists", "Citywide"),
+            ]
+            gl_items = "".join(
+                f'<li><a href="{escape(u)}" target="_blank" rel="noopener">'
+                f'<span class="deal-name">{escape(n)}</span>'
+                f'<span class="deal-meta">{escape(m)} · {escape(loc)}</span>'
+                f'</a></li>'
+                for n, u, m, loc in guestlist_deals
+            )
+            guestlist_deals_html = f'''
+          <div class="deals-sub">
+            <div class="deals-sub-head"><a href="https://www.eventbrite.com/d/ny--new-york/free-guestlist/" target="_blank" rel="noopener">🎟️ Free Club Guestlists &amp; RSVPs</a></div>
+            <ul class="deals-list">{gl_items}</ul>
+          </div>'''
             other_deals_html = ""
-            others = [(n, u) for n, u in DEAL_LINKS if "luckyseat" not in u.lower()]
+            others = [(n, u) for n, u in DEAL_LINKS if "luckyseat" not in u.lower() and "guestlist" not in u.lower() and "somewhere nowhere" not in u.lower() and "the dl" not in u.lower() and "harbor nyc" not in u.lower() and "230 fifth" not in u.lower() and "superior ingredients" not in u.lower() and "bossa nova" not in u.lower() and "jupiter disco" not in u.lower()]
             if others:
                 other_items = "".join(
                     f'<li><a href="{escape(u)}" target="_blank" rel="noopener">{escape(n)}</a></li>'
@@ -731,6 +781,7 @@ def render_page(results):
             deals_block = f'''
         <div class="useful-inner">
           <h3>Deals &amp; lotteries</h3>
+          {guestlist_deals_html}
           {lucky_html}
           {other_deals_html}
         </div>'''
@@ -1150,7 +1201,6 @@ def render_page(results):
     color: var(--green);
     border-color: var(--green-border);
     background: var(--green-bg);
-    margin-left: auto;
   }}
   .chip-free.active {{
     background: var(--green);
@@ -1158,6 +1208,34 @@ def render_page(results):
     border-color: var(--green);
     font-weight: 700;
     box-shadow: 0 2px 10px rgba(74, 222, 128, 0.3);
+  }}
+  .chip-guestlist {{
+    color: #ff76ac;
+    border-color: rgba(255, 118, 172, 0.35);
+    background: rgba(255, 118, 172, 0.12);
+    margin-left: auto;
+  }}
+  .chip-guestlist.active {{
+    background: #ff76ac;
+    color: #1a0612;
+    border-color: #ff76ac;
+    font-weight: 700;
+    box-shadow: 0 2px 10px rgba(255, 118, 172, 0.35);
+  }}
+  .badge-guestlist {{
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #ff76ac;
+    background: rgba(255, 118, 172, 0.15);
+    border: 1px solid rgba(255, 118, 172, 0.35);
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+    margin-left: 6px;
   }}
 
   /* Day Section */
@@ -1480,6 +1558,10 @@ def render_page(results):
           <input type="checkbox" id="free-only-chk">
           <span>✨ Free events only</span>
         </label>
+        <label class="free-toggle" for="guestlist-only-chk" style="margin-top:6px;">
+          <input type="checkbox" id="guestlist-only-chk">
+          <span>🎟️ Free club guestlists only</span>
+        </label>
       </div>
       <div class="filter-group">
         <h3>Category <span class="spacer"></span> <button type="button" id="cat-all">all</button> <button type="button" id="cat-none">none</button></h3>
@@ -1514,6 +1596,7 @@ def render_page(results):
         <button type="button" class="chip" data-time="tomorrow">Tomorrow</button>
         <button type="button" class="chip" data-time="weekend">🎉 This Weekend</button>
         <button type="button" class="chip" data-time="week">📅 Next 7 Days</button>
+        <button type="button" class="chip chip-guestlist" id="quick-guestlist-chip">🎟️ Guestlists</button>
         <button type="button" class="chip chip-free" id="quick-free-chip">✨ Free Only</button>
       </div>
       <div class="week-nav" id="week-nav">
@@ -1554,10 +1637,12 @@ def render_page(results):
     const searchStatus = document.getElementById('search-status');
     const searchCount = document.getElementById('search-count');
     const freeOnlyChk = document.getElementById('free-only-chk');
+    const guestlistOnlyChk = document.getElementById('guestlist-only-chk');
 
     const locChips = document.querySelectorAll('#location-chips .loc-chip');
     const quickChips = document.querySelectorAll('#quick-chips .chip[data-time]');
     const quickFreeChip = document.getElementById('quick-free-chip');
+    const quickGuestlistChip = document.getElementById('quick-guestlist-chip');
     let timeFilter = 'all';
 
     const mobileToggle = document.getElementById('mobile-filter-toggle');
@@ -1609,6 +1694,9 @@ def render_page(results):
       if (quickFreeChip) {{
         quickFreeChip.classList.toggle('active', freeOnlyChk ? freeOnlyChk.checked : false);
       }}
+      if (quickGuestlistChip) {{
+        quickGuestlistChip.classList.toggle('active', guestlistOnlyChk ? guestlistOnlyChk.checked : false);
+      }}
     }}
 
     function updateLocChipsUI() {{
@@ -1646,7 +1734,8 @@ def render_page(results):
       const allVenues = venueBoxes.length;
       const chkVenues = Array.from(venueBoxes).filter(b => b.checked).length;
       const isFree = freeOnlyChk && freeOnlyChk.checked;
-      const isFiltered = (chkCats < allCats) || (chkVenues < allVenues) || isFree || searchInput.value.trim();
+      const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
+      const isFiltered = (chkCats < allCats) || (chkVenues < allVenues) || isFree || isGuestlist || searchInput.value.trim();
       mobileBadge.textContent = isFiltered ? 'Active' : 'All';
       mobileBadge.style.color = isFiltered ? 'var(--accent)' : '';
     }}
@@ -1665,6 +1754,7 @@ def render_page(results):
       if (checkedCities.length > 0 && checkedCities.length < allCities.length) params.set('city', checkedCities.join(','));
 
       if (freeOnlyChk && freeOnlyChk.checked) params.set('free', '1');
+      if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
 
       if (timeFilter !== 'all') params.set('t', timeFilter);
       if (!showAll && fmtISO(anchor) !== todayISO) params.set('d', fmtISO(anchor));
@@ -1680,6 +1770,7 @@ def render_page(results):
 
       if (params.has('q')) searchInput.value = params.get('q');
       if (params.get('free') === '1' && freeOnlyChk) freeOnlyChk.checked = true;
+      if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
 
       if (params.has('t')) {{
         timeFilter = params.get('t');
@@ -1710,6 +1801,7 @@ def render_page(results):
       const cities = new Set(Array.from(cityBoxes).filter(b => b.checked).map(b => b.value));
       const searchText = searchInput.value.trim().toLowerCase();
       const freeOnly = freeOnlyChk ? freeOnlyChk.checked : false;
+      const guestlistOnly = guestlistOnlyChk ? guestlistOnlyChk.checked : false;
       const week = new Set(weekDates());
 
       document.querySelectorAll('.event').forEach(li => {{
@@ -1718,8 +1810,9 @@ def render_page(results):
         const recurOk = recurs.has(li.dataset.recur);
         const cityOk = cities.has(li.dataset.city);
         const freeOk = !freeOnly || li.dataset.free === 'true';
+        const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
         const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
-        li.classList.toggle('hidden', !(catOk && venueOk && recurOk && cityOk && searchOk && freeOk));
+        li.classList.toggle('hidden', !(catOk && venueOk && recurOk && cityOk && searchOk && freeOk && guestlistOk));
       }});
 
       document.querySelectorAll('.bucket').forEach(b => {{
@@ -1841,6 +1934,13 @@ def render_page(results):
         apply();
       }});
     }}
+    if (quickGuestlistChip && guestlistOnlyChk) {{
+      quickGuestlistChip.addEventListener('click', () => {{
+        guestlistOnlyChk.checked = !guestlistOnlyChk.checked;
+        apply();
+      }});
+    }}
+    if (guestlistOnlyChk) guestlistOnlyChk.addEventListener('change', apply);
 
     document.addEventListener('keydown', (e) => {{
       if ((e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) &&
