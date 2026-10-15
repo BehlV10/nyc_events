@@ -880,6 +880,124 @@ def scrape_nyc_for_free(url, ua):
     return events
 
 
+def scrape_meetup(url, ua):
+    """Meetup.com — in-person community events (board games, hikes, salsa, swing, trivia)."""
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    try:
+        resp = _SESSION.get(
+            url,
+            headers={
+                "User-Agent": ua,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.9",
+            },
+            timeout=15,
+        )
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+
+        for s in soup.find_all("script", type="application/ld+json"):
+            try:
+                data = json.loads(s.string)
+                if not isinstance(data, list):
+                    if isinstance(data, dict) and data.get("@type") == "Event":
+                        data = [data]
+                    else:
+                        continue
+
+                for ev in data:
+                    if not isinstance(ev, dict) or ev.get("@type") != "Event":
+                        continue
+
+                    # Strict filter for in-person physical events only
+                    mode = (ev.get("eventAttendanceMode") or "").lower()
+                    if "online" in mode:
+                        continue
+
+                    loc = ev.get("location", {})
+                    if not isinstance(loc, dict) or loc.get("@type") == "VirtualLocation":
+                        continue
+
+                    name = (ev.get("name") or "").strip()
+                    if not name:
+                        continue
+
+                    # Filter out spam / virtual events masquerading as offline
+                    name_lower = name.lower()
+                    if any(w in name_lower for w in [
+                        "zoom", "webinar", "virtual", "online event", "from home",
+                        "speed dating from home", "instant zoom", "match from home"
+                    ]):
+                        continue
+
+                    raw_date = ev.get("startDate")
+                    if not raw_date:
+                        continue
+                    try:
+                        dt = datetime.fromisoformat(raw_date.replace("Z", "+00:00")).astimezone(timezone.utc)
+                    except Exception:
+                        continue
+
+                    if dt < now:
+                        continue
+
+                    key = (name_lower, raw_date[:10])
+                    if key in seen:
+                        continue
+                    seen.add(key)
+
+                    vname = (loc.get("name") or "").strip()
+                    addr = loc.get("address")
+                    city_hint = ""
+                    if isinstance(addr, dict):
+                        street = (addr.get("streetAddress") or "").strip()
+                        city_hint = (addr.get("addressLocality") or "").strip()
+                        if not vname and street:
+                            vname = f"{street}, {city_hint}" if city_hint else street
+                        elif vname and street and street not in vname:
+                            vname = f"{vname} ({street})"
+
+                    if not vname or vname.lower() in ["none", "see event description", "view point", "null"]:
+                        vname = f"NYC Meetup ({city_hint})" if city_hint else "NYC Community Location"
+
+                    # Price extraction
+                    price = None
+                    offers = ev.get("offers")
+                    if isinstance(offers, dict):
+                        p = str(offers.get("price", "")).strip()
+                        if p in ["0", "0.00", "0.0", ""]:
+                            price = "Free"
+                        elif p:
+                            price = f"${p}"
+                    elif isinstance(offers, list) and offers:
+                        p = str(offers[0].get("price", "")).strip()
+                        if p in ["0", "0.00", "0.0", ""]:
+                            price = "Free"
+                        elif p:
+                            price = f"${p}"
+                    else:
+                        price = "Free"
+
+                    desc = (ev.get("description") or "").strip()[:250]
+                    event_url = ev.get("url") or url
+
+                    events.append({
+                        "name": name,
+                        "date": dt.isoformat(),
+                        "url": event_url,
+                        "venue": vname,
+                        "price": price,
+                        "description": desc,
+                    })
+            except Exception:
+                pass
+    except Exception:
+        pass
+    return events
+
+
 def scrape_thisweekinswingnyc(url, ua):
     """This Week in Swing NYC — comprehensive weekly calendar of Lindy Hop, Swing, Balboa & Blues dances."""
     events = []
@@ -1348,6 +1466,8 @@ _ALL_VENUES = [
     # Free Events Aggregators & Citywide Parks
     {"name": "NYC Parks Free Public Events", "url": "https://www.nycgovparks.org/xml/events_300_rss.xml", "ua": UA_CHROME, "scraper": scrape_nyc_parks, "default_category": "outdoors"},
     {"name": "NYC for FREE (Pop-ups & Experiences)", "url": "https://www.nycforfree.co/events", "ua": UA_CHROME, "scraper": scrape_nyc_for_free, "default_category": "community"},
+    {"name": "Meetup: NYC Hikes & Nature Walks", "url": "https://www.meetup.com/find/?keywords=hiking&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "outdoors"},
+    {"name": "Meetup: Outdoor Hikes & Trails", "url": "https://www.meetup.com/find/?keywords=hike&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "outdoors"},
 
     # Super Smash Bros (SSB), Arcades & Tabletop Gaming
     {"name": "OS NYC (Super Smash Bros & Gaming)", "url": "https://www.os-nyc.com/events?format=json", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "gaming"},
@@ -1355,6 +1475,9 @@ _ALL_VENUES = [
     {"name": "Hex & Company (Board Games & RPG)", "url": "https://www.eventbrite.com/d/ny--new-york/hex-and-company/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
     {"name": "The Uncommons (Board Game Cafe)", "url": "https://www.eventbrite.com/d/ny--new-york/the-uncommons/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
     {"name": "The Brooklyn Strategist", "url": "https://www.eventbrite.com/d/ny--brooklyn/the-brooklyn-strategist/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "Meetup: NYC Board Game Nights", "url": "https://www.meetup.com/find/?keywords=board%20games&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Tabletop & RPG Games", "url": "https://www.meetup.com/find/?keywords=tabletop%20games&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: NYC Bar Trivia Nights", "url": "https://www.meetup.com/find/?keywords=trivia&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
 
     # Nightlife, Immersive Spectacle & Theatrical Circus
     {"name": "House of Yes (Circus & Dance)", "url": "https://donyc.com/venues/house-of-yes", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "party"},
@@ -1382,12 +1505,14 @@ _ALL_VENUES = [
     {"name": "Hudson River Park (Sunset Salsa Pier 45 & 76)", "url": "https://www.eventbrite.com/d/ny--new-york/sunset-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "Pa' La Calle NYC (Bella Abzug Park Salsa)", "url": "https://www.eventbrite.com/d/ny--new-york/pa-la-calle/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "NYC Outdoor Salsa & Latin Socials", "url": "https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "Meetup: NYC Social Dance & Salsa", "url": "https://www.meetup.com/find/?keywords=salsa%20dancing&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "dance"},
 
     # Swing Dancing, Lindy Hop & Blues
     {"name": "This Week in Swing NYC", "url": "https://thisweekinswingnyc.com/wp-json/wp/v2/posts?per_page=5", "ua": UA_CHROME, "scraper": scrape_thisweekinswingnyc, "default_category": "dance"},
     {"name": "NYC Swing Dancing & Lindy Hop", "url": "https://www.eventbrite.com/d/ny--new-york/swing-dancing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "Frim Fram Jam (YSBD Swing)", "url": "https://www.eventbrite.com/d/ny--new-york/frim-fram-jam/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "Prohibition Productions (Gotham Jazz)", "url": "https://www.eventbrite.com/d/ny--new-york/prohibition-productions/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "Meetup: NYC Swing Dancing", "url": "https://www.meetup.com/find/?keywords=swing%20dance&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "dance"},
 
     # Queer Nightlife, Drag Shows & Cabaret
     {"name": "3 Dollar Bill (Queer & Drag Venue)", "url": "https://donyc.com/venues/3-dollar-bill", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
@@ -1432,6 +1557,9 @@ STATIC_LINKS = [
     ("art",     "NYC Culture Pass (Free Museums with Library Card)", "https://www.culturepass.nyc/"),
     ("outdoors","NYC Parks Free Events Directory", "https://www.nycgovparks.org/events"),
     ("outdoors","NYC Ferry ($4.00 harbor routes)", "https://www.ferry.nyc/"),
+    ("outdoors","Meetup NYC Hiking & Trail Groups", "https://www.meetup.com/find/?keywords=hiking&location=us--ny--New%20York&source=EVENTS"),
+    ("gaming",  "Meetup NYC Board Games & Tabletop", "https://www.meetup.com/find/?keywords=board%20games&location=us--ny--New%20York&source=EVENTS"),
+    ("dance",   "Meetup NYC Salsa & Social Dance Groups", "https://www.meetup.com/find/?keywords=salsa%20dancing&location=us--ny--New%20York&source=EVENTS"),
     ("comedy",  "Comedy Cellar Nightly Lineups", "https://www.comedycellar.com/line-up/"),
     ("art",     "The Metropolitan Museum of Art (The Met)", "https://www.metmuseum.org/events"),
     ("art",     "Museum of Modern Art (MoMA)", "https://www.moma.org/calendar/events"),
