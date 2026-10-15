@@ -150,6 +150,7 @@ def guess_category(text, default="community"):
 # future ticketing stubs remain in Ticketmaster / SeatGeek feeds.
 CLOSED_SHOWS = (
     "heathers",  # Closed Oct 11, 2026 at New World Stages
+    "swing 46",  # Closed Jan 2, 2026 permanently on Restaurant Row
 )
 
 
@@ -1400,7 +1401,6 @@ def scrape_thisweekinswingnyc(url, ua):
         (["frim fram", "ysbd", "you should be dancing", "saturday night swings", "white heat"], "You Should Be Dancing (YSBD)"),
         (["midtown swings", "danznik"], "Danznik Studios"),
         (["back room"], "The Back Room"),
-        (["swing 46"], "Swing 46 Jazz & Supper Club"),
         (["gotham jazz", "somewhere nowhere"], "Somewhere Nowhere NYC"),
         (["terra blues"], "Terra Blues"),
         (["friday night blues", "hungarian house"], "Hungarian House (Blues Dance NY)"),
@@ -1636,13 +1636,6 @@ MANUAL_RECURRING_EVENTS = [
     ]),
     ("The Back Room", "https://www.backroomnyc.com/", "dance", [
         ("Monday Night Live Jazz & Swing Dancing", "https://www.backroomnyc.com/", 0, 20, 30, "No Cover"),
-    ]),
-    ("Swing 46 Jazz & Supper Club", "https://swing46.nyc/", "dance", [
-        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 2, 20, 30, "Dance Lesson & Band"),
-        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 3, 20, 30, "Dance Lesson & Band"),
-        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 4, 20, 30, "Dance Lesson & Band"),
-        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 5, 20, 30, "Dance Lesson & Band"),
-        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 6, 20, 30, "Dance Lesson & Band"),
     ]),
     ("You Should Be Dancing (YSBD)", "https://youshouldbedancing.live/", "dance", [
         ("Frim Fram Jam (Intro Swing Lesson & Social Dance)", "http://www.frimframjam.com/", 3, 20, 30, "$15–$25"),
@@ -2015,7 +2008,6 @@ STATIC_LINKS = [
     ("dance",   "Salsa Salsa Outdoor Series (Vanderbilt Open Streets & Abolitionist Place)", "https://www.salsasalsadance.com/"),
     ("dance",   "Hunters Point South Park Waterfront Salsa", "https://www.hunterspointparks.org/"),
     ("dance",   "Domino Park Waterfront Salsa & Latin Nights", "https://www.dominopark.com/"),
-    ("dance",   "Swing 46 Jazz & Supper Club (Lindy Hop & Big Band)", "https://swing46.nyc/"),
     ("dance",   "The Back Room (Monday Night Live Jazz & Swing)", "https://www.backroomnyc.com/"),
     ("dance",   "This Week in Swing NYC (Weekly Lindy Hop & Blues Calendar)", "https://thisweekinswingnyc.com/"),
     ("dance",   "Frim Fram Jam / YSBD (Thursday Weekly Swing Dance)", "http://www.frimframjam.com/"),
