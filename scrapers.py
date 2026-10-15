@@ -320,8 +320,18 @@ def scrape_the_skint(url, ua):
     for item in soup.find_all("item")[:15]:
         title_el = item.find("title")
         title = title_el.get_text(strip=True) if title_el else ""
+        link = ""
         link_el = item.find("link")
-        link = link_el.get_text(strip=True) if link_el else url
+        if link_el and link_el.next_sibling:
+            cand = str(link_el.next_sibling).strip()
+            if cand.startswith("http"):
+                link = cand
+        if not link:
+            guid_el = item.find("guid")
+            if guid_el:
+                link = guid_el.get_text(strip=True)
+        if not link:
+            link = url
         pub_el = item.find("pubdate") or item.find("pubDate")
         pub_str = pub_el.get_text(strip=True) if pub_el else ""
         
@@ -1571,32 +1581,32 @@ MANUAL_RECURRING_EVENTS = [
         ("Smorgasburg Williamsburg", "https://www.smorgasburg.com/", 5, 11, 0, "Free entry"),
         ("Smorgasburg Prospect Park", "https://www.smorgasburg.com/", 6, 11, 0, "Free entry"),
     ]),
-    ("Comedy Cellar", "https://www.comedycellar.com/line-up/", "comedy", [
-        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 0, 20, 0),
-        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 1, 20, 0),
-        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 2, 20, 0),
-        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 3, 20, 0),
-        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 4, 20, 0),
-        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 5, 20, 0),
-        ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 6, 20, 0),
+    ("Comedy Cellar", "https://www.comedycellar.com/new-york-line-up/", "comedy", [
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/new-york-line-up/", 0, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/new-york-line-up/", 1, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/new-york-line-up/", 2, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/new-york-line-up/", 3, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/new-york-line-up/", 4, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/new-york-line-up/", 5, 20, 0),
+        ("Comedy Cellar Showcase", "https://www.comedycellar.com/new-york-line-up/", 6, 20, 0),
     ]),
     ("Gonzalez y Gonzalez", "https://www.gygnyc.com/", "dance", [
         ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 3, 21, 0, "Free Lesson"),
         ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 4, 21, 0, "Live Band"),
         ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 5, 21, 0, "Live Band"),
     ]),
-    ("Taj Lounge", "https://tajloungenyc.com/", "dance", [
-        ("Taj Monday Night Salsa & Bachata Social", "https://tajloungenyc.com/", 0, 19, 0, "Dance Lesson & Social"),
+    ("Taj Lounge (OOO)", "https://www.ooonewyork.com/", "dance", [
+        ("Taj Monday Night Salsa & Bachata Social", "https://www.ooonewyork.com/", 0, 19, 0, "Dance Lesson & Social"),
     ]),
-    ("Club Cache", "https://www.clubcachenyc.com/", "dance", [
-        ("Club Cache Thursday Salsa & Bachata Social", "https://www.clubcachenyc.com/", 3, 20, 0, "Dance Class & Social"),
-        ("Club Cache Saturday Latin Dance Party", "https://www.clubcachenyc.com/", 5, 20, 0, "Dance Class & Social"),
+    ("Club Cache", "https://www.instagram.com/clubcachenyc/", "dance", [
+        ("Club Cache Thursday Salsa & Bachata Social", "https://www.instagram.com/clubcachenyc/", 3, 20, 0, "Dance Class & Social"),
+        ("Club Cache Saturday Latin Dance Party", "https://www.instagram.com/clubcachenyc/", 5, 20, 0, "Dance Class & Social"),
     ]),
-    ("Iguana NYC", "https://www.iguananyc.com/", "dance", [
-        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananyc.com/", 2, 20, 0, "No Cover / Latin Lounge"),
-        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananyc.com/", 3, 20, 0, "No Cover / Latin Lounge"),
-        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananyc.com/", 4, 20, 0, "Latin Dance Upstairs"),
-        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananyc.com/", 5, 20, 0, "Latin Dance Upstairs"),
+    ("Iguana NYC", "https://www.iguananewyork.com/", "dance", [
+        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananewyork.com/", 2, 20, 0, "No Cover / Latin Lounge"),
+        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananewyork.com/", 3, 20, 0, "No Cover / Latin Lounge"),
+        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananewyork.com/", 4, 20, 0, "Latin Dance Upstairs"),
+        ("Iguana Latin Dance & Salsa Lounge", "https://www.iguananewyork.com/", 5, 20, 0, "Latin Dance Upstairs"),
     ]),
     ("S.O.B.'s (Sounds of Brazil)", "https://sobs.com/", "dance", [
         ("Live Salsa Orchestra & Latin Dance Party", "https://sobs.com/", 4, 22, 0, "Live Band & Dancing"),
@@ -1605,8 +1615,8 @@ MANUAL_RECURRING_EVENTS = [
     ("Cucala Dance Company", "https://www.cucaladance.com/", "dance", [
         ("Friday Night Salsa Social & Workshops", "https://www.cucaladance.com/", 4, 20, 0, "Dance Lesson & Social"),
     ]),
-    ("Salsa Salsa Dance Studios", "https://www.salsasalsadance.com/", "dance", [
-        ("Brooklyn Salsa Social & Practice Party", "https://www.salsasalsadance.com/", 4, 20, 0, "Practice Social"),
+    ("Salsa Salsa Dance Studios", "https://www.instagram.com/salsasalsanyc/", "dance", [
+        ("Brooklyn Salsa Social & Practice Party", "https://www.instagram.com/salsasalsanyc/", 4, 20, 0, "Practice Social"),
     ]),
     ("Washington Square Park (Garibaldi Plaza)", "https://www.nycgovparks.org/events/dance", "dance", [
         ("Garibaldi Plaza Salsa Social (Free Lesson & Open Dance)", "https://www.nycgovparks.org/events/dance", 2, 18, 0, "Free"),
@@ -1622,11 +1632,11 @@ MANUAL_RECURRING_EVENTS = [
     ("Bella Abzug Park (Hudson Yards)", "https://www.somoslatindance.com/palacallenyc", "dance", [
         ("Pa' La Calle NYC Latin Dance Social (Intro Lesson & Open Dancing)", "https://www.somoslatindance.com/palacallenyc", 6, 16, 0, "Free"),
     ]),
-    ("Vanderbilt Open Streets (Brooklyn)", "https://www.salsasalsadance.com/", "dance", [
-        ("Salsa Salsa on Vanderbilt Open Streets (Free Class & Social)", "https://www.salsasalsadance.com/", 5, 17, 0, "Free"),
+    ("Vanderbilt Open Streets (Brooklyn)", "https://www.instagram.com/salsasalsanyc/", "dance", [
+        ("Salsa Salsa on Vanderbilt Open Streets (Free Class & Social)", "https://www.instagram.com/salsasalsanyc/", 5, 17, 0, "Free"),
     ]),
-    ("Abolitionist Place Park (Downtown Brooklyn)", "https://www.salsasalsadance.com/", "dance", [
-        ("Abolitionist Place Park Outdoor Salsa & Bachata Social", "https://www.salsasalsadance.com/", 6, 16, 0, "Free"),
+    ("Abolitionist Place Park (Downtown Brooklyn)", "https://www.instagram.com/salsasalsanyc/", "dance", [
+        ("Abolitionist Place Park Outdoor Salsa & Bachata Social", "https://www.instagram.com/salsasalsanyc/", 6, 16, 0, "Free"),
     ]),
     ("Hunters Point South Park (Long Island City)", "https://www.hunterspointparks.org/", "dance", [
         ("Hunters Point Waterfront Salsa Social (Free Lesson & Sunset Dance)", "https://www.hunterspointparks.org/", 6, 17, 0, "Free"),
@@ -1637,10 +1647,10 @@ MANUAL_RECURRING_EVENTS = [
     ("The Back Room", "https://www.backroomnyc.com/", "dance", [
         ("Monday Night Live Jazz & Swing Dancing", "https://www.backroomnyc.com/", 0, 20, 30, "No Cover"),
     ]),
-    ("You Should Be Dancing (YSBD)", "https://youshouldbedancing.live/", "dance", [
+    ("You Should Be Dancing (YSBD)", "https://www.instagram.com/youshouldbedancingnyc/", "dance", [
         ("Frim Fram Jam (Intro Swing Lesson & Social Dance)", "http://www.frimframjam.com/", 3, 20, 30, "$15–$25"),
-        ("Saturday Night Swings (Live Big Band & Lesson)", "https://youshouldbedancing.live/", 5, 19, 15, "$25–$30"),
-        ("Social Swing Dance & Practice Session", "https://youshouldbedancing.live/", 1, 19, 0, "$5"),
+        ("Saturday Night Swings (Live Big Band & Lesson)", "https://www.instagram.com/youshouldbedancingnyc/", 5, 19, 15, "$25–$30"),
+        ("Social Swing Dance & Practice Session", "https://www.instagram.com/youshouldbedancingnyc/", 1, 19, 0, "$5"),
     ]),
     ("Danznik Studios", "https://midtownswings.com/", "dance", [
         ("Midtown Swings (Intro Lindy Hop & DJ Social)", "https://midtownswings.com/", 1, 21, 0, "$15–$25"),
@@ -1648,8 +1658,8 @@ MANUAL_RECURRING_EVENTS = [
     ("The Keep (Bushwick)", "https://thisweekinswingnyc.com/", "dance", [
         ("Positively Swingin' (Live Band & Warm-up Lesson)", "https://thisweekinswingnyc.com/", 2, 19, 30, "No Cover"),
     ]),
-    ("Hungarian House (Blues Dance NY)", "https://bluesdancenewyork.com/", "dance", [
-        ("Friday Night Blues (Live Blues Band & Lesson)", "https://bluesdancenewyork.com/", 4, 20, 0, "$20–$35"),
+    ("Hungarian House (Blues Dance NY)", "https://www.bluesdancenewyork.com/", "dance", [
+        ("Friday Night Blues (Live Blues Band & Lesson)", "https://www.bluesdancenewyork.com/", 4, 20, 0, "$20–$35"),
     ]),
     ("Somewhere Nowhere NYC", "https://prohibitionproductions.com/gothamjazz", "dance", [
         ("Gotham Jazz (Live Hot Toddies Band, Dance Lesson & Burlesque)", "https://prohibitionproductions.com/gothamjazz", 2, 19, 15, "Free RSVP"),
@@ -1692,14 +1702,14 @@ MANUAL_RECURRING_EVENTS = [
         ("Monday Night Irish Trad Music Session", "https://www.facebook.com/monasbar/", 0, 21, 0, "Free"),
         ("Mona's Tuesday Night Hot Jazz & Swing Jam", "https://www.facebook.com/MonasTuesdayJazz", 1, 21, 0, "No Cover"),
     ]),
-    ("Bossa Nova Civic Club", "https://bossanovacivicclub.com/", "clubbing", [
-        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 0, 22, 0, "Free before 11PM"),
-        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 1, 22, 0, "Free before 11PM"),
-        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 2, 22, 0, "Free before 11PM"),
-        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 3, 22, 0, "Free before 11PM"),
-        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 4, 22, 0, "Free before 11PM"),
-        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 5, 22, 0, "Free before 11PM"),
-        ("Techno & House Sessions (Free Before 11PM)", "https://bossanovacivicclub.com/", 6, 22, 0, "Free before 11PM"),
+    ("Bossa Nova Civic Club", "https://www.instagram.com/bossanovacivicclub/", "clubbing", [
+        ("Techno & House Sessions (Free Before 11PM)", "https://www.instagram.com/bossanovacivicclub/", 0, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://www.instagram.com/bossanovacivicclub/", 1, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://www.instagram.com/bossanovacivicclub/", 2, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://www.instagram.com/bossanovacivicclub/", 3, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://www.instagram.com/bossanovacivicclub/", 4, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://www.instagram.com/bossanovacivicclub/", 5, 22, 0, "Free before 11PM"),
+        ("Techno & House Sessions (Free Before 11PM)", "https://www.instagram.com/bossanovacivicclub/", 6, 22, 0, "Free before 11PM"),
     ]),
     ("Jupiter Disco", "https://www.jupiterdisco.com/", "clubbing", [
         ("Analog Synth & Underground DJ Night", "https://www.jupiterdisco.com/", 3, 20, 0, "No Cover"),
@@ -1979,7 +1989,7 @@ STATIC_LINKS = [
     ("outdoors","Meetup NYC Hiking & Trail Groups", "https://www.meetup.com/find/?keywords=hiking&location=us--ny--New%20York&source=EVENTS"),
     ("gaming",  "Meetup NYC Board Games & Tabletop", "https://www.meetup.com/find/?keywords=board%20games&location=us--ny--New%20York&source=EVENTS"),
     ("dance",   "Meetup NYC Salsa & Social Dance Groups", "https://www.meetup.com/find/?keywords=salsa%20dancing&location=us--ny--New%20York&source=EVENTS"),
-    ("comedy",  "Comedy Cellar Nightly Lineups", "https://www.comedycellar.com/line-up/"),
+    ("comedy",  "Comedy Cellar Nightly Lineups", "https://www.comedycellar.com/new-york-line-up/"),
     ("art",     "The Metropolitan Museum of Art (The Met)", "https://www.metmuseum.org/events"),
     ("art",     "Museum of Modern Art (MoMA)", "https://www.moma.org/calendar/events"),
     ("art",     "Whitney Museum of American Art", "https://whitney.org/events"),
@@ -1996,16 +2006,16 @@ STATIC_LINKS = [
     ("books",   "Brooklyn Public Library (BPL) Events", "https://www.bklynlibrary.org/calendar"),
     ("gaming",  "start.gg (NYC Super Smash Bros Tournaments)", "https://www.start.gg/"),
     ("dance",   "Gonzalez y Gonzalez (Live Salsa & Latin Socials)", "https://www.gygnyc.com/"),
-    ("dance",   "Taj Lounge (Monday Night Salsa & Bachata Social)", "https://tajloungenyc.com/"),
-    ("dance",   "Club Cache (Thursday & Saturday Salsa Socials)", "https://www.clubcachenyc.com/"),
-    ("dance",   "Iguana NYC (Latin Dance & Salsa Lounge)", "https://www.iguananyc.com/"),
+    ("dance",   "Taj Lounge (Monday Night Salsa & Bachata Social)", "https://www.ooonewyork.com/"),
+    ("dance",   "Club Cache (Thursday & Saturday Salsa Socials)", "https://www.instagram.com/clubcachenyc/"),
+    ("dance",   "Iguana NYC (Latin Dance & Salsa Lounge)", "https://www.iguananewyork.com/"),
     ("dance",   "Cucala Dance Company (East Village Salsa Classes)", "https://www.cucaladance.com/"),
-    ("dance",   "Salsa Salsa Dance Studios (Brooklyn Latin Dance)", "https://www.salsasalsadance.com/"),
+    ("dance",   "Salsa Salsa Dance Studios (Brooklyn Latin Dance)", "https://www.instagram.com/salsasalsanyc/"),
     ("dance",   "Hudson River Park Sunset Salsa (Pier 45 & Pier 76)", "https://hudsonriverpark.org/event-series/dance-in-hrpk/"),
     ("dance",   "Washington Square Park Garibaldi Plaza Salsa Social", "https://www.nycgovparks.org/events/dance"),
     ("dance",   "Bryant Park Dance Party (Outdoor Salsa & Latin)", "https://bryantpark.org/activities/dance-party"),
     ("dance",   "Pa' La Calle NYC (Bella Abzug Park Hudson Yards Salsa)", "https://www.somoslatindance.com/palacallenyc"),
-    ("dance",   "Salsa Salsa Outdoor Series (Vanderbilt Open Streets & Abolitionist Place)", "https://www.salsasalsadance.com/"),
+    ("dance",   "Salsa Salsa Outdoor Series (Vanderbilt Open Streets & Abolitionist Place)", "https://www.instagram.com/salsasalsanyc/"),
     ("dance",   "Hunters Point South Park Waterfront Salsa", "https://www.hunterspointparks.org/"),
     ("dance",   "Domino Park Waterfront Salsa & Latin Nights", "https://www.dominopark.com/"),
     ("dance",   "The Back Room (Monday Night Live Jazz & Swing)", "https://www.backroomnyc.com/"),
@@ -2013,7 +2023,7 @@ STATIC_LINKS = [
     ("dance",   "Frim Fram Jam / YSBD (Thursday Weekly Swing Dance)", "http://www.frimframjam.com/"),
     ("dance",   "Midtown Swings at Danznik Studios (Tuesday Lindy Hop)", "https://midtownswings.com/"),
     ("dance",   "Swing Remix (Upper West Side Live Big Bands)", "https://swingremix.com/"),
-    ("dance",   "Blues Dance New York (Hungarian House Blues)", "https://bluesdancenewyork.com/"),
+    ("dance",   "Blues Dance New York (Hungarian House Blues)", "https://www.bluesdancenewyork.com/"),
     ("dance",   "Harlem Swing Dance Society", "http://www.theharlemswingdancesociety.org/"),
     ("dance",   "Prohibition Productions (Gotham Jazz & The Salon)", "https://prohibitionproductions.com/"),
     ("dance",   "The Keep Bushwick (Positively Swingin' Wednesdays)", "https://thisweekinswingnyc.com/"),
@@ -2023,8 +2033,8 @@ STATIC_LINKS = [
     ("clubbing","Somewhere Nowhere NYC (Chelsea Rooftop Club & Lounge)", "https://somewherenowherenyc.com/"),
     ("clubbing","The DL (LES Multi-Level Rooftop Club)", "https://thedl-nyc.com/"),
     ("clubbing","Harbor NYC (Hell's Kitchen Rooftop Nightclub)", "https://harbornewyorkcity.com/"),
-    ("clubbing","Superior Ingredients (Williamsburg Roof & Room)", "https://superioringredientsnyc.com/"),
-    ("clubbing","Bossa Nova Civic Club (Bushwick Underground Techno)", "https://bossanovacivicclub.com/"),
+    ("clubbing","Superior Ingredients (Williamsburg Roof & Room)", "https://si-bk.com/"),
+    ("clubbing","Bossa Nova Civic Club (Bushwick Underground Techno)", "https://www.instagram.com/bossanovacivicclub/"),
 ]
 
 DEAL_LINKS = [
@@ -2036,8 +2046,8 @@ DEAL_LINKS = [
     ("The DL Rooftop (Free Guestlist Entry before 11 PM)", "https://thedl-nyc.com/"),
     ("Harbor NYC (Free RSVP & Sunset Rooftop Parties)", "https://harbornewyorkcity.com/"),
     ("230 Fifth Rooftop (Free General Admission & Igloos)", "https://www.230-fifth.com/"),
-    ("Superior Ingredients (Free RSVP House & Techno before 11 PM)", "https://superioringredientsnyc.com/"),
-    ("Bossa Nova Civic Club (Free Entry Before 11 PM Nightly)", "https://bossanovacivicclub.com/"),
+    ("Superior Ingredients (Free RSVP House & Techno before 11 PM)", "https://si-bk.com/"),
+    ("Bossa Nova Civic Club (Free Entry Before 11 PM Nightly)", "https://www.instagram.com/bossanovacivicclub/"),
     ("Jupiter Disco (Always Free / No Cover Retro DJs)", "https://www.jupiterdisco.com/"),
     ("NYC Club Guestlists (Live Eventbrite Free Guestlists)", "https://www.eventbrite.com/d/ny--new-york/free-guestlist/"),
     ("NYC Ferry Tickets ($4.00 per ride)", "https://www.ferry.nyc/"),
