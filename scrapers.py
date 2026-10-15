@@ -87,18 +87,18 @@ def _format_price_range(lo, hi, curr="USD"):
 
 
 CATEGORY_KEYWORDS = [
-    ("music",     [r"\b(concert|band|orchestra|jazz|symphony|quartet|choir|acoustic|live music|dj set|indie rock|punk|metal|folk|hip-hop|r&b|brass band)\b"]),
+    ("music",     [r"\b(concert|band|orchestra|jazz|symphony|quartet|choir|acoustic|live music|dj set|indie rock|punk|metal|folk|hip-hop|r&b|brass band|honky-tonk|bar concert|live band)\b"]),
     ("comedy",    [r"\b(comedy|stand-?up|improv|open mic comedy|comic|roast|laugh)\b"]),
     ("clubbing",  [r"\b(dj|rave|techno|house music|edm|club night|dance party|nightclub|party|afters)\b"]),
-    ("dance",     [r"\b(salsa|bachata|tango|swing dance|lindy hop|contra dance|ballroom|dance class|social dance|milonga|cumbia)\b"]),
-    ("theater",   [r"\b(theater|theatre|musical|play|broadway|off-broadway|stage|cabaret|drama)\b"]),
+    ("dance",     [r"\b(salsa|bachata|tango|swing dance|swing dancing|lindy hop|lindy|contra dance|ballroom|dance class|social dance|milonga|cumbia)\b"]),
+    ("theater",   [r"\b(theater|theatre|musical|play|broadway|off-broadway|stage|cabaret|drama|drag|drag show|drag queen|drag brunch|burlesque)\b"]),
     ("film",      [r"\b(screening|film|movie|cinema|documentary|35mm|q&a screening)\b"]),
     ("art",       [r"\b(exhibit|gallery|museum|reception|sculpture|painting|open studios?|installation)\b"]),
     ("books",     [r"\b(book launch|author talk|poetry|reading|bookstore|book signing|literary)\b"]),
     ("food",      [r"\b(tasting|wine dinner|beer release|food tour|brewery|pop-up dinner|pairing|culinary)\b"]),
     ("outdoors",  [r"\b(hike|walking tour|nature walk|birding|trail|kayak|park tour|outdoor)\b"]),
     ("sports",    [r"\b(yankees|mets|knicks|nets|rangers|islanders|soccer|5k|10k|marathon|hockey|basketball)\b"]),
-    ("gaming",    [r"\b(board games?|trivia|arcade|esports|chess|magic the gathering|d&d|tabletop)\b"]),
+    ("gaming",    [r"\b(board games?|trivia|arcade|esports|chess|magic the gathering|d&d|tabletop|video game|smash bros|gaming tournament|smash ultimate|melee|lan)\b"]),
     ("community", [r"\b(talk|lecture|panel|discussion|networking|farmers market|flea market|artisan market|expo|festival|parade)\b"]),
 ]
 
@@ -906,6 +906,37 @@ MANUAL_RECURRING_EVENTS = [
         ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 5, 20, 0),
         ("Comedy Cellar Showcase", "https://www.comedycellar.com/line-up/", 6, 20, 0),
     ]),
+    ("Gonzalez y Gonzalez", "https://www.gygnyc.com/", "dance", [
+        ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 3, 21, 0, "Free Lesson"),
+        ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 4, 21, 0, "Live Band"),
+        ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 5, 21, 0, "Live Band"),
+    ]),
+    ("The Back Room", "https://www.backroomnyc.com/", "dance", [
+        ("Monday Night Live Jazz & Swing Dancing", "https://www.backroomnyc.com/", 0, 20, 30, "No Cover"),
+    ]),
+    ("Swing 46 Jazz & Supper Club", "https://swing46.nyc/", "dance", [
+        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 2, 20, 30, "Dance Lesson & Band"),
+        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 3, 20, 30, "Dance Lesson & Band"),
+        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 4, 20, 30, "Dance Lesson & Band"),
+        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 5, 20, 30, "Dance Lesson & Band"),
+        ("Big Band Swing Dance & Lessons", "https://swing46.nyc/", 6, 20, 30, "Dance Lesson & Band"),
+    ]),
+    ("Pieces Bar", "https://www.piecesbar.com/", "theater", [
+        ("Nightly West Village Drag Show", "https://www.piecesbar.com/", 0, 21, 0, "No Cover"),
+        ("Nightly West Village Drag Show", "https://www.piecesbar.com/", 1, 21, 0, "No Cover"),
+        ("Nightly West Village Drag Show", "https://www.piecesbar.com/", 2, 21, 0, "No Cover"),
+        ("Nightly West Village Drag Show", "https://www.piecesbar.com/", 3, 21, 0, "No Cover"),
+        ("Nightly West Village Drag Show", "https://www.piecesbar.com/", 4, 21, 0, "No Cover"),
+        ("Nightly West Village Drag Show", "https://www.piecesbar.com/", 5, 21, 0, "No Cover"),
+        ("Nightly West Village Drag Show", "https://www.piecesbar.com/", 6, 21, 0, "No Cover"),
+    ]),
+    ("The Stonewall Inn", "https://thestonewallinnnyc.com/", "theater", [
+        ("Stonewall Upstairs Drag & Cabaret", "https://thestonewallinnnyc.com/", 4, 22, 0, "$5–$10"),
+        ("Stonewall Upstairs Drag & Cabaret", "https://thestonewallinnnyc.com/", 5, 22, 0, "$5–$10"),
+    ]),
+    ("Mona's", "https://www.facebook.com/monasbar/", "music", [
+        ("Monday Night Irish Trad Music Session", "https://www.facebook.com/monasbar/", 0, 21, 0, "Free"),
+    ]),
 ]
 
 
@@ -1067,6 +1098,30 @@ _ALL_VENUES = [
 
     # Historic Cultural Music Halls
     {"name": "S.O.B.'s (Sounds of Brazil)", "url": "https://donyc.com/venues/sobs", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+
+    # Salsa, Bachata & Latin Social Dancing
+    {"name": "NYC Salsa & Bachata Socials", "url": "https://www.eventbrite.com/d/ny--new-york/salsa-dancing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "NYC Bachata & Latin Socials", "url": "https://www.eventbrite.com/d/ny--new-york/bachata/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+
+    # Swing Dancing & Lindy Hop
+    {"name": "NYC Swing Dancing & Lindy Hop", "url": "https://www.eventbrite.com/d/ny--new-york/swing-dancing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+
+    # Queer Nightlife, Drag Shows & Cabaret
+    {"name": "3 Dollar Bill (Queer & Drag Venue)", "url": "https://donyc.com/venues/3-dollar-bill", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
+    {"name": "NYC Drag Shows & Brunches", "url": "https://www.eventbrite.com/d/ny--new-york/drag-show/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
+    {"name": "The Stonewall Inn (Events)", "url": "https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
+    {"name": "Pieces Bar (West Village Drag)", "url": "https://www.eventbrite.com/d/ny--new-york/pieces-bar/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
+
+    # Video Games, Super Smash Bros Tournaments & Arcades
+    {"name": "NYC Video Game Tournaments", "url": "https://www.eventbrite.com/d/ny--new-york/video-game-tournament/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "NYC Smash Bros Tournaments", "url": "https://www.eventbrite.com/d/ny--new-york/smash-bros/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "Barcade (Arcade & Craft Beer)", "url": "https://www.eventbrite.com/d/ny--new-york/barcade/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+
+    # Neighborhood Bar Concerts, Live Music Bars & Pop Culture Pub Trivia
+    {"name": "Union Pool (Williamsburg Live Music Bar)", "url": "https://donyc.com/venues/union-pool", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Our Wicked Lady (Bushwick Live Music)", "url": "https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
+    {"name": "NYC Bar Concerts & Live Music", "url": "https://www.eventbrite.com/d/ny--new-york/live-music-bar/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
+    {"name": "Trivia A.D. (NYC Bar Trivia)", "url": "https://www.eventbrite.com/api/v3/organizers/4701927701/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "gaming"},
 ]
 
 VENUES = _ALL_VENUES
@@ -1097,6 +1152,10 @@ STATIC_LINKS = [
     ("books",   "New York Public Library (NYPL) Events", "https://www.nypl.org/events"),
     ("books",   "Brooklyn Public Library (BPL) Events", "https://www.bklynlibrary.org/calendar"),
     ("gaming",  "start.gg (NYC Super Smash Bros Tournaments)", "https://www.start.gg/"),
+    ("dance",   "Gonzalez y Gonzalez (Live Salsa & Latin Socials)", "https://www.gygnyc.com/"),
+    ("dance",   "Swing 46 Jazz & Supper Club (Lindy Hop & Big Band)", "https://swing46.nyc/"),
+    ("theater", "3 Dollar Bill (Bushwick Queer & Drag Hall)", "https://www.3dollarbillbk.com/"),
+    ("gaming",  "Trivia A.D. (NYC Bar Pop Culture Trivia Nights)", "https://triviaad.com/"),
 ]
 
 DEAL_LINKS = [
