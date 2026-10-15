@@ -13,6 +13,7 @@ from scrapers import (
     DEAL_LINKS,
     STATIC_LINKS,
     category_bucket,
+    guess_category,
     fetch_nyc_weather,
     fetch_luckyseat_nyc,
 )
@@ -787,6 +788,7 @@ def group_by_date(results):
         for e in r.get("events", []):
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["venue"] = e.get("venue") or r.get("venue", "")
+            entry["category"] = guess_category(e.get("name"), e.get("category") or r.get("default_category") or "community")
             raw = e.get("date")
             key = None
             if raw:
@@ -1472,6 +1474,23 @@ def render_page(results):
     border-color: var(--green);
     font-weight: 700;
     box-shadow: 0 2px 10px rgba(74, 222, 128, 0.3);
+  }}
+  .chip-theater {{
+    color: #f7d794;
+    border-color: rgba(224, 175, 104, 0.4);
+    background: rgba(224, 175, 104, 0.12);
+  }}
+  .chip-theater:hover {{
+    background: rgba(224, 175, 104, 0.22);
+    border-color: #e0af68;
+    color: #fff;
+  }}
+  .chip-theater.active {{
+    background: #e0af68;
+    color: #1a1406;
+    border-color: #e0af68;
+    font-weight: 700;
+    box-shadow: 0 2px 10px rgba(224, 175, 104, 0.35);
   }}
   .chip-guestlist {{
     color: #ff76ac;
@@ -2327,6 +2346,7 @@ def render_page(results):
         <button type="button" class="chip" data-time="weekend">🎉 This Weekend</button>
         <button type="button" class="chip" data-time="week">📅 Next 7 Days</button>
         <button type="button" class="chip" data-time="all">All Upcoming</button>
+        <button type="button" class="chip chip-theater" id="quick-theater-chip">🎭 Theater</button>
         <button type="button" class="chip chip-guestlist" id="quick-guestlist-chip">🎟️ Guestlists</button>
         <button type="button" class="chip chip-free" id="quick-free-chip">✨ Free Only</button>
       </div>
@@ -2404,6 +2424,7 @@ def render_page(results):
     const quickChips = document.querySelectorAll('#quick-chips .chip[data-time]');
     const quickFreeChip = document.getElementById('quick-free-chip');
     const quickGuestlistChip = document.getElementById('quick-guestlist-chip');
+    const quickTheaterChip = document.getElementById('quick-theater-chip');
     let timeFilter = 'today';
     let currentView = 'list';
     let showPastToday = false;
@@ -2661,6 +2682,10 @@ def render_page(results):
       quickChips.forEach(chip => {{
         chip.classList.toggle('active', chip.dataset.time === timeFilter);
       }});
+      if (quickTheaterChip) {{
+        const checked = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
+        quickTheaterChip.classList.toggle('active', checked.length === 1 && checked[0] === 'Theater');
+      }}
       if (quickFreeChip) {{
         quickFreeChip.classList.toggle('active', freeOnlyChk ? freeOnlyChk.checked : false);
       }}
@@ -3026,6 +3051,21 @@ def render_page(results):
         apply();
       }});
     }});
+
+    if (quickTheaterChip) {{
+      quickTheaterChip.addEventListener('click', () => {{
+        const checked = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
+        if (checked.length === 1 && checked[0] === 'Theater') {{
+          catBoxes.forEach(b => {{ b.checked = true; }});
+        }} else {{
+          catBoxes.forEach(b => {{
+            b.checked = (b.value === 'Theater');
+          }});
+        }}
+        apply();
+        stateToHash();
+      }});
+    }}
 
     if (quickFreeChip && freeOnlyChk) {{
       quickFreeChip.addEventListener('click', () => {{

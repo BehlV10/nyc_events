@@ -87,11 +87,11 @@ def _format_price_range(lo, hi, curr="USD"):
 
 
 CATEGORY_KEYWORDS = [
-    ("music",     [r"\b(concert|band|orchestra|jazz|symphony|quartet|choir|acoustic|live music|dj set|indie rock|punk|metal|folk|hip-hop|r&b|brass band|honky-tonk|bar concert|live band)\b"]),
+    ("theater",   [r"\b(theater|theatre|musical|the musical|broadway|off-broadway|playwright|stage play|cabaret|drama|drag show|drag queen|drag cabaret|drag brunch|burlesque|curtain call)\b"]),
     ("comedy",    [r"\b(comedy|stand-?up|improv|open mic comedy|comic|roast|laugh)\b"]),
     ("clubbing",  [r"\b(dj|rave|techno|house music|edm|club night|dance party|nightclub|party|afters|guestlist|free guestlist|rooftop party|clubbing|nightlife)\b"]),
     ("dance",     [r"\b(salsa|bachata|tango|swing dance|swing dancing|lindy hop|lindy|contra dance|ballroom|dance class|social dance|milonga|cumbia)\b"]),
-    ("theater",   [r"\b(theater|theatre|musical|play|broadway|off-broadway|stage|cabaret|drama|drag|drag show|drag queen|drag brunch|burlesque)\b"]),
+    ("music",     [r"\b(concert|band|orchestra|jazz|symphony|quartet|choir|acoustic|live music|dj set|indie rock|punk|metal|folk|hip-hop|r&b|brass band|honky-tonk|bar concert|live band)\b"]),
     ("film",      [r"\b(screening|film|movie|cinema|documentary|35mm|q&a screening)\b"]),
     ("art",       [r"\b(exhibit|gallery|museum|reception|sculpture|painting|open studios?|installation)\b"]),
     ("books",     [r"\b(book launch|author talk|poetry|reading|bookstore|book signing|literary)\b"]),
@@ -103,10 +103,11 @@ CATEGORY_KEYWORDS = [
 ]
 
 CATEGORY_BUCKETS = [
-    ("Music & nightlife", ["music", "clubbing", "dance"]),
-    ("Arts & culture",    ["theater", "film", "art", "books", "comedy"]),
-    ("Outdoors & active", ["outdoors", "sports"]),
-    ("Social & community",["community", "food", "gaming", "other"]),
+    ("Theater",            ["theater"]),
+    ("Music & nightlife",  ["music", "clubbing", "dance"]),
+    ("Arts & culture",     ["film", "art", "books", "comedy"]),
+    ("Outdoors & active",  ["outdoors", "sports"]),
+    ("Social & community", ["community", "food", "gaming", "other"]),
 ]
 
 CATEGORY_STYLES = {
@@ -373,6 +374,32 @@ def scrape_ticketmaster_nyc(_url, _ua):
         prs = ev.get("priceRanges") or []
         if prs:
             price = _format_price_range(prs[0].get("min"), prs[0].get("max"), prs[0].get("currency", "USD"))
+
+        cat = "music"
+        for c in ev.get("classifications") or []:
+            seg = (c.get("segment") or {}).get("name", "").lower()
+            gnr = (c.get("genre") or {}).get("name", "").lower()
+            sub = (c.get("subGenre") or {}).get("name", "").lower()
+            combined = f"{seg} {gnr} {sub}"
+            if any(k in combined for k in ["theatre", "theater", "broadway", "musical", "play", "cabaret", "drama"]):
+                cat = "theater"
+                break
+            elif "comedy" in combined or "stand-up" in combined:
+                cat = "comedy"
+                break
+            elif "sport" in combined:
+                cat = "sports"
+                break
+            elif "dance" in combined:
+                cat = "dance"
+                break
+            elif "film" in combined or "movie" in combined:
+                cat = "film"
+                break
+            elif "art" in combined:
+                cat = "art"
+                break
+
         events.append({
             "name": ev.get("name"),
             "date": iso,
@@ -381,7 +408,7 @@ def scrape_ticketmaster_nyc(_url, _ua):
             "lat": lat,
             "lng": lng,
             "price": price,
-            "category": guess_category(ev.get("name"), "music"),
+            "category": guess_category(ev.get("name"), cat),
         })
     return events
 
