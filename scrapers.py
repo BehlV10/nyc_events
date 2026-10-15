@@ -92,14 +92,14 @@ CATEGORY_KEYWORDS = [
     ("clubbing",  [r"\b(dj|rave|techno|house music|edm|club night|dance party|nightclub|party|afters|guestlist|free guestlist|rooftop party|clubbing|nightlife)\b"]),
     ("dance",     [r"\b(salsa|bachata|tango|swing dance|swing dancing|lindy hop|lindy|contra dance|ballroom|dance class|social dance|milonga|cumbia)\b"]),
     ("music",     [r"\b(concert|band|orchestra|jazz|symphony|quartet|choir|acoustic|live music|dj set|indie rock|punk|metal|folk|hip-hop|r&b|brass band|honky-tonk|bar concert|live band)\b"]),
-    ("film",      [r"\b(screening|film|movie|cinema|documentary|35mm|q&a screening)\b"]),
+    ("film",      [r"\b(screening|film|movie|cinema|documentary|35mm|q&a screening|indie film)\b"]),
     ("art",       [r"\b(exhibit|gallery|museum|reception|sculpture|painting|open studios?|installation)\b"]),
     ("books",     [r"\b(book launch|author talk|poetry|reading|bookstore|book signing|literary)\b"]),
     ("food",      [r"\b(tasting|wine dinner|beer release|food tour|brewery|pop-up dinner|pairing|culinary)\b"]),
     ("outdoors",  [r"\b(hike|walking tour|nature walk|birding|trail|kayak|park tour|outdoor)\b"]),
     ("sports",    [r"\b(yankees|mets|knicks|nets|rangers|islanders|soccer|5k|10k|marathon|hockey|basketball)\b"]),
     ("gaming",    [r"\b(board games?|trivia|arcade|esports|chess|magic the gathering|d&d|tabletop|video game|smash bros|gaming tournament|smash ultimate|melee|lan)\b"]),
-    ("community", [r"\b(talk|lecture|panel|discussion|networking|farmers market|flea market|artisan market|expo|festival|parade)\b"]),
+    ("community", [r"\b(talk|lecture|panel|discussion|networking|farmers market|flea market|artisan market|expo|festival|parade|sample sale|fashion|symposium|speed-dating|skip the small talk)\b"]),
 ]
 
 CATEGORY_BUCKETS = [
@@ -271,22 +271,27 @@ def scrape_donyc(url, ua):
 
 
 def scrape_donyc_calendar(url, ua):
-    """DoNYC multi-day event calendar — fetches next 10 days of citywide listings."""
+    """DoNYC multi-day event calendar — fetches next 12 days of citywide listings with pagination."""
     events = []
     now = datetime.now(EASTERN)
     seen = set()
-    for i in range(10):
+    for i in range(12):
         d = now.date() + timedelta(days=i)
-        day_url = f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}"
-        try:
-            day_events = scrape_donyc(day_url, ua)
-            for e in day_events:
-                key = (e["name"].lower(), (e.get("date") or "")[:10])
-                if key not in seen:
-                    seen.add(key)
-                    events.append(e)
-        except Exception:
-            continue
+        for page in (1, 2):
+            day_url = f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}"
+            if page > 1:
+                day_url = f"{day_url}?page={page}"
+            try:
+                day_events = scrape_donyc(day_url, ua)
+                if not day_events:
+                    break
+                for e in day_events:
+                    key = (e["name"].lower(), (e.get("date") or "")[:10])
+                    if key not in seen:
+                        seen.add(key)
+                        events.append(e)
+            except Exception:
+                continue
     return events
 
 
@@ -325,91 +330,343 @@ def scrape_the_skint(url, ua):
 def scrape_ticketmaster_nyc(_url, _ua):
     """Ticketmaster Discovery API for NYC venues (MSG, Barclays, Webster Hall, Bowery, etc.)."""
     key = os.environ.get("TICKETMASTER_API_KEY") or "oo1qd0wzLe7WJpm61ALQuUCTMXGK7U5z"
-    resp = _SESSION.get(
-        "https://app.ticketmaster.com/discovery/v2/events.json",
-        params={
-            "apikey": key,
-            "latlong": "40.7128,-74.0060",
-            "radius": 20,
-            "unit": "miles",
-            "size": 100,
-            "sort": "date,asc",
-            "startDateTime": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        },
-        timeout=15,
-    )
-    resp.raise_for_status()
     events = []
-    for ev in resp.json().get("_embedded", {}).get("events", []):
-        start = ev.get("dates", {}).get("start", {})
-        iso = start.get("dateTime")
-        if not iso and start.get("localDate"):
-            try:
-                iso = datetime.fromisoformat(f"{start['localDate']}T19:00:00").replace(
-                    tzinfo=EASTERN,
-                ).astimezone(timezone.utc).isoformat()
-            except ValueError:
-                iso = None
-        venues = ev.get("_embedded", {}).get("venues") or []
-        vobj = venues[0] if venues else {}
-        vname = vobj.get("name") or "NYC Venue"
-        city_name = (vobj.get("city") or {}).get("name") or ""
-        state_code = (vobj.get("state") or {}).get("stateCode") or ""
-        if city_name and city_name.lower() not in vname.lower():
-            venue = f"{vname} ({city_name}, {state_code})" if state_code else f"{vname} ({city_name})"
-        else:
-            venue = vname
+    seen = set()
+    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    for page in range(3):
+        try:
+            resp = _SESSION.get(
+                "https://app.ticketmaster.com/discovery/v2/events.json",
+                params={
+                    "apikey": key,
+                    "latlong": "40.7128,-74.0060",
+                    "radius": 20,
+                    "unit": "miles",
+                    "size": 100,
+                    "page": page,
+                    "sort": "date,asc",
+                    "startDateTime": now_str,
+                },
+                timeout=15,
+            )
+            resp.raise_for_status()
+            batch = resp.json().get("_embedded", {}).get("events", [])
+            if not batch:
+                break
+            for ev in batch:
+                start = ev.get("dates", {}).get("start", {})
+                iso = start.get("dateTime")
+                if not iso and start.get("localDate"):
+                    try:
+                        iso = datetime.fromisoformat(f"{start['localDate']}T19:00:00").replace(
+                            tzinfo=EASTERN,
+                        ).astimezone(timezone.utc).isoformat()
+                    except ValueError:
+                        iso = None
+                venues = ev.get("_embedded", {}).get("venues") or []
+                vobj = venues[0] if venues else {}
+                vname = vobj.get("name") or "NYC Venue"
+                city_name = (vobj.get("city") or {}).get("name") or ""
+                state_code = (vobj.get("state") or {}).get("stateCode") or ""
+                if city_name and city_name.lower() not in vname.lower():
+                    venue = f"{vname} ({city_name}, {state_code})" if state_code else f"{vname} ({city_name})"
+                else:
+                    venue = vname
 
-        lat = None
-        lng = None
-        loc_coords = vobj.get("location")
-        if isinstance(loc_coords, dict) and loc_coords.get("latitude") and loc_coords.get("longitude"):
-            try:
-                lat = float(loc_coords["latitude"])
-                lng = float(loc_coords["longitude"])
-            except Exception:
-                pass
+                lat = None
+                lng = None
+                loc_coords = vobj.get("location")
+                if isinstance(loc_coords, dict) and loc_coords.get("latitude") and loc_coords.get("longitude"):
+                    try:
+                        lat = float(loc_coords["latitude"])
+                        lng = float(loc_coords["longitude"])
+                    except Exception:
+                        pass
 
-        price = None
-        prs = ev.get("priceRanges") or []
-        if prs:
-            price = _format_price_range(prs[0].get("min"), prs[0].get("max"), prs[0].get("currency", "USD"))
+                price = None
+                prs = ev.get("priceRanges") or []
+                if prs:
+                    price = _format_price_range(prs[0].get("min"), prs[0].get("max"), prs[0].get("currency", "USD"))
 
-        cat = "music"
-        for c in ev.get("classifications") or []:
-            seg = (c.get("segment") or {}).get("name", "").lower()
-            gnr = (c.get("genre") or {}).get("name", "").lower()
-            sub = (c.get("subGenre") or {}).get("name", "").lower()
-            combined = f"{seg} {gnr} {sub}"
-            if any(k in combined for k in ["theatre", "theater", "broadway", "musical", "play", "cabaret", "drama"]):
-                cat = "theater"
-                break
-            elif "comedy" in combined or "stand-up" in combined:
-                cat = "comedy"
-                break
-            elif "sport" in combined:
-                cat = "sports"
-                break
-            elif "dance" in combined:
-                cat = "dance"
-                break
-            elif "film" in combined or "movie" in combined:
-                cat = "film"
-                break
-            elif "art" in combined:
-                cat = "art"
-                break
+                cat = "music"
+                for c in ev.get("classifications") or []:
+                    seg = (c.get("segment") or {}).get("name", "").lower()
+                    gnr = (c.get("genre") or {}).get("name", "").lower()
+                    sub = (c.get("subGenre") or {}).get("name", "").lower()
+                    combined = f"{seg} {gnr} {sub}"
+                    if any(k in combined for k in ["theatre", "theater", "broadway", "musical", "play", "cabaret", "drama"]):
+                        cat = "theater"
+                        break
+                    elif "comedy" in combined or "stand-up" in combined:
+                        cat = "comedy"
+                        break
+                    elif "sport" in combined:
+                        cat = "sports"
+                        break
+                    elif "dance" in combined:
+                        cat = "dance"
+                        break
+                    elif "film" in combined or "movie" in combined:
+                        cat = "film"
+                        break
+                    elif "art" in combined:
+                        cat = "art"
+                        break
 
-        events.append({
-            "name": ev.get("name"),
-            "date": iso,
-            "url": ev.get("url"),
-            "venue": venue,
-            "lat": lat,
-            "lng": lng,
-            "price": price,
-            "category": guess_category(ev.get("name"), cat),
-        })
+                key = (ev.get("name", "").lower(), (iso or "")[:10])
+                if key in seen:
+                    continue
+                seen.add(key)
+
+                events.append({
+                    "name": ev.get("name"),
+                    "date": iso,
+                    "url": ev.get("url"),
+                    "venue": venue,
+                    "lat": lat,
+                    "lng": lng,
+                    "price": price,
+                    "category": guess_category(ev.get("name"), cat),
+                })
+        except Exception:
+            break
+    return events
+
+
+def scrape_seatgeek_nyc(_url, _ua):
+    """SeatGeek Discovery API for NYC — Broadway shows, major concerts, comedy, sports."""
+    cid = os.environ.get("SEATGEEK_CLIENT_ID") or "MTg5NjE5MzZ8MTc3NjcwMTYxNS4yODM3MDE3"
+    events = []
+    seen = set()
+    for page in range(1, 3):
+        try:
+            resp = _SESSION.get(
+                "https://api.seatgeek.com/2/events",
+                params={
+                    "client_id": cid,
+                    "lat": 40.7128,
+                    "lon": -74.0060,
+                    "range": "20mi",
+                    "per_page": 100,
+                    "page": page,
+                    "sort": "datetime_local.asc",
+                    "datetime_utc.gte": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
+                },
+                timeout=15,
+            )
+            resp.raise_for_status()
+            batch = resp.json().get("events", [])
+            if not batch:
+                break
+            for ev in batch:
+                title = ev.get("title")
+                iso = ev.get("datetime_utc")
+                if not title or not iso:
+                    continue
+                if not iso.endswith("Z") and "+" not in iso:
+                    iso = iso + "Z"
+                stats = ev.get("stats") or {}
+                lo = stats.get("lowest_price")
+                hi = stats.get("highest_price")
+                price = _format_price_range(lo, hi) if lo else None
+                v_obj = ev.get("venue") or {}
+                vname = v_obj.get("name") or "NYC Venue"
+                city = v_obj.get("city")
+                state = v_obj.get("state")
+                venue = f"{vname} ({city}, {state})" if city and city.lower() not in vname.lower() else vname
+                v_loc = v_obj.get("location") or {}
+                lat = v_loc.get("lat")
+                lng = v_loc.get("lon")
+
+                tax_names = [t.get("name", "").lower() for t in ev.get("taxonomies", [])]
+                ev_type = (ev.get("type") or "").lower()
+                all_tags = set(tax_names + [ev_type])
+                cat = "music"
+                if any(s in all_tags for s in ["theater", "broadway", "musical", "play", "comedy_club"]):
+                    if "comedy" in all_tags:
+                        cat = "comedy"
+                    else:
+                        cat = "theater"
+                elif any(s in all_tags for s in ["sports", "nba", "mlb", "nhl", "nfl", "soccer", "basketball", "baseball", "hockey"]):
+                    cat = "sports"
+                elif any(s in all_tags for s in ["concert", "music_festival"]):
+                    cat = "music"
+
+                key = (title.lower(), iso[:10])
+                if key in seen:
+                    continue
+                seen.add(key)
+                events.append({
+                    "name": title,
+                    "date": iso,
+                    "url": ev.get("url"),
+                    "venue": venue,
+                    "lat": lat,
+                    "lng": lng,
+                    "price": price,
+                    "category": guess_category(title, cat),
+                })
+        except Exception:
+            break
+    return events
+
+
+def scrape_resident_advisor(url, ua):
+    """Resident Advisor GraphQL API — underground electronic music, DJ sets & nightlife across NYC clubs."""
+    now = datetime.now(timezone.utc)
+    today_str = now.strftime("%Y-%m-%dT00:00:00.000Z")
+    month_str = (now + timedelta(days=21)).strftime("%Y-%m-%dT23:59:59.999Z")
+
+    query = '''
+    query GetEvents($pageSize: Int, $filters: FilterInputDtoInput) {
+      eventListings(pageSize: $pageSize, filters: $filters) {
+        totalResults
+        data {
+          event {
+            id
+            title
+            startTime
+            cost
+            contentUrl
+            venue { name address }
+          }
+        }
+      }
+    }
+    '''
+    headers = {
+        "User-Agent": ua or UA_CHROME,
+        "Content-Type": "application/json",
+        "Referer": "https://ra.co/events/us/newyorkcity"
+    }
+    events = []
+    seen = set()
+    for page in range(1, 3):
+        try:
+            r = _SESSION.post(
+                "https://ra.co/graphql",
+                json={
+                    "query": query,
+                    "variables": {
+                        "pageSize": 100,
+                        "page": page,
+                        "filters": {
+                            "areas": {"eq": 8},
+                            "listingDate": {"gte": today_str, "lte": month_str}
+                        }
+                    }
+                },
+                headers=headers,
+                timeout=12
+            )
+            r.raise_for_status()
+            data = r.json().get("data", {}).get("eventListings", {})
+            for item in data.get("data", []):
+                ev = item.get("event") or {}
+                title = (ev.get("title") or "").strip()
+                start = ev.get("startTime")
+                if not title or not start:
+                    continue
+                v_obj = ev.get("venue") or {}
+                vname = (v_obj.get("name") or "").strip() or "NYC Nightclub"
+                vaddr = (v_obj.get("address") or "").strip()
+                if vaddr and vname not in vaddr:
+                    venue = f"{vname} ({vaddr.split(';')[0]})"
+                else:
+                    venue = vname
+
+                cost = (ev.get("cost") or "").strip()
+                if cost in ["0", "0.00", "0.0", "Free", "free", "Free RSVP"]:
+                    price = "Free"
+                elif cost and cost.lower() != "null":
+                    price = cost if cost.startswith("$") else f"${cost}"
+                else:
+                    price = None
+
+                content_url = ev.get("contentUrl") or ""
+                ev_url = f"https://ra.co{content_url}" if content_url.startswith("/") else (content_url or "https://ra.co/events/us/newyorkcity")
+
+                iso = start
+                if not iso.endswith("Z") and "+" not in iso:
+                    iso = iso + "Z"
+
+                key = (title.lower(), iso[:10])
+                if key in seen:
+                    continue
+                seen.add(key)
+
+                events.append({
+                    "name": title,
+                    "date": iso,
+                    "url": ev_url,
+                    "venue": venue,
+                    "price": price,
+                    "category": guess_category(title, "clubbing"),
+                })
+        except Exception:
+            break
+    return events
+
+
+def scrape_dice_nyc(url, ua):
+    """Dice.fm — curated NYC live concerts, underground electronic, and club events."""
+    events = []
+    seen = set()
+    try:
+        resp = _SESSION.get(url or "https://dice.fm/browse/new-york", headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        tag = soup.find("script", id="__NEXT_DATA__")
+        if not tag or not tag.string:
+            return []
+        data = json.loads(tag.string)
+        props = data.get("props", {}).get("pageProps", {})
+        raw_events = props.get("events", [])
+        for ev in raw_events:
+            name = (ev.get("name") or "").strip()
+            dates = ev.get("dates") or {}
+            start = dates.get("event_start_date")
+            if not name or not start:
+                continue
+
+            venues = ev.get("venues") or []
+            vobj = venues[0] if venues else {}
+            vname = (vobj.get("name") or "NYC Venue").strip()
+            vcity_raw = vobj.get("city")
+            if isinstance(vcity_raw, dict):
+                vcity = (vcity_raw.get("name") or "").strip()
+            elif isinstance(vcity_raw, str):
+                vcity = vcity_raw.strip()
+            else:
+                vcity = ""
+            venue = f"{vname} ({vcity})" if vcity and vcity.lower() not in vname.lower() else vname
+
+            price = None
+            pr_obj = ev.get("price") or {}
+            amt = pr_obj.get("amount") or pr_obj.get("amount_from")
+            if amt == 0 or amt == "0":
+                price = "Free"
+            elif amt:
+                price = f"${amt / 100:.2f}".rstrip("0").rstrip(".") if isinstance(amt, (int, float)) and amt > 100 else f"${amt}"
+
+            perm_name = ev.get("perm_name")
+            event_url = f"https://dice.fm/event/{perm_name}" if perm_name else (url or "https://dice.fm/browse/new-york")
+
+            key = (name.lower(), start[:10])
+            if key in seen:
+                continue
+            seen.add(key)
+
+            events.append({
+                "name": name,
+                "date": start,
+                "url": event_url,
+                "venue": venue,
+                "price": price,
+                "category": guess_category(name, "music"),
+            })
+    except Exception:
+        pass
     return events
 
 
@@ -1471,6 +1728,9 @@ _ALL_VENUES = [
     {"name": "DoNYC Citywide", "url": "https://donyc.com/events", "ua": UA_CHROME, "scraper": scrape_donyc_calendar, "default_category": None},
     {"name": "The Skint NYC", "url": "https://theskint.com/", "ua": UA_CHROME, "scraper": scrape_the_skint, "default_category": "community"},
     {"name": "Ticketmaster NYC", "url": "https://www.ticketmaster.com/", "ua": UA_CHROME, "scraper": scrape_ticketmaster_nyc, "default_category": "music"},
+    {"name": "SeatGeek NYC", "url": "https://api.seatgeek.com/2/events", "ua": UA_CHROME, "scraper": scrape_seatgeek_nyc, "default_category": None},
+    {"name": "Resident Advisor NYC", "url": "https://ra.co/events/us/newyorkcity", "ua": UA_CHROME, "scraper": scrape_resident_advisor, "default_category": "clubbing"},
+    {"name": "Dice.fm NYC", "url": "https://dice.fm/browse/new-york", "ua": UA_CHROME, "scraper": scrape_dice_nyc, "default_category": "music"},
 
     # Brooklyn Music & Nightlife
     {"name": "Brooklyn Bowl", "url": "https://donyc.com/venues/brooklyn-bowl", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -1490,6 +1750,12 @@ _ALL_VENUES = [
     {"name": "The Sultan Room Bushwick", "url": "https://donyc.com/venues/the-sultan-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Pioneer Works Red Hook", "url": "https://donyc.com/venues/pioneer-works", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
     {"name": "C'mon Everybody Bed-Stuy", "url": "https://donyc.com/venues/c-mon-everybody", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Brooklyn Made", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-made/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
+    {"name": "Market Hotel", "url": "https://donyc.com/venues/market-hotel", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "SILO Brooklyn", "url": "https://donyc.com/venues/silo-brooklyn", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Avant Gardner", "url": "https://donyc.com/venues/avant-gardner", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Brooklyn Mirage", "url": "https://donyc.com/venues/the-brooklyn-mirage", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Basement NY", "url": "https://donyc.com/venues/basement-ny", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
 
     # Queens
     {"name": "Forest Hills Stadium", "url": "https://donyc.com/venues/forest-hills-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -1540,10 +1806,14 @@ _ALL_VENUES = [
     {"name": "Skinny Dennis", "url": "https://skinnydennisbrooklyn.com/calendar?format=json", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
     {"name": "NYC Trivia League", "url": "https://nyctrivialeague.com/jm-ajax/get_listings/", "ua": UA_CHROME, "scraper": scrape_nyc_trivia_league, "default_category": "gaming"},
 
-    # Indie Cinemas, Micro-Theaters & Historic Jazz
+    # Indie Cinemas, Micro-Theaters & Film Programs
     {"name": "Film Forum", "url": "https://donyc.com/venues/film-forum", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
     {"name": "Nitehawk Cinema", "url": "https://donyc.com/venues/nitehawk-cinema", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
     {"name": "IFC Center", "url": "https://donyc.com/venues/ifc-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
+    {"name": "Film at Lincoln Center", "url": "https://donyc.com/venues/film-at-lincoln-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
+    {"name": "NYC Indie Film & Screenings", "url": "https://www.eventbrite.com/d/ny--new-york/indie-film/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
+    {"name": "Metrograph NYC Screenings", "url": "https://www.eventbrite.com/d/ny--new-york/metrograph/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
+    {"name": "Rooftop Films & Outdoor Cinema", "url": "https://www.eventbrite.com/d/ny--new-york/rooftop-films/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
     {"name": "Union Hall Brooklyn", "url": "https://donyc.com/venues/union-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Smalls Jazz Club", "url": "https://donyc.com/venues/smalls-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
 
@@ -1569,9 +1839,33 @@ _ALL_VENUES = [
 
     # Free Events Aggregators & Citywide Parks
     {"name": "NYC Parks Free Public Events", "url": "https://www.nycgovparks.org/xml/events_300_rss.xml", "ua": UA_CHROME, "scraper": scrape_nyc_parks, "default_category": "outdoors"},
+    {"name": "Central Park Conservancy Events", "url": "https://www.eventbrite.com/d/ny--new-york/central-park/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "outdoors"},
+    {"name": "Prospect Park Alliance Events", "url": "https://www.eventbrite.com/d/ny--brooklyn/prospect-park/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "outdoors"},
+    {"name": "Brooklyn Bridge Park Events", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-bridge-park/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "outdoors"},
+    {"name": "Hudson River Park Events", "url": "https://www.eventbrite.com/d/ny--new-york/hudson-river-park/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "outdoors"},
     {"name": "NYC for FREE (Pop-ups & Experiences)", "url": "https://www.nycforfree.co/events", "ua": UA_CHROME, "scraper": scrape_nyc_for_free, "default_category": "community"},
+    {"name": "NYC Pop-Up Experiences & Activations", "url": "https://www.eventbrite.com/d/ny--new-york/pop-up/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Hudson Yards Events & Activations", "url": "https://www.eventbrite.com/d/ny--new-york/hudson-yards/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "The Shed (Hudson Yards)", "url": "https://www.eventbrite.com/d/ny--new-york/the-shed/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
+    {"name": "Union Square Events & Gatherings", "url": "https://www.eventbrite.com/d/ny--new-york/union-square/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Lincoln Center Events & Tours", "url": "https://www.eventbrite.com/d/ny--new-york/lincoln-center/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
+    {"name": "Jazz at Lincoln Center", "url": "https://www.eventbrite.com/d/ny--new-york/jazz-at-lincoln-center/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
     {"name": "Meetup: NYC Hikes & Nature Walks", "url": "https://www.meetup.com/find/?keywords=hiking&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "outdoors"},
     {"name": "Meetup: Outdoor Hikes & Trails", "url": "https://www.meetup.com/find/?keywords=hike&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "outdoors"},
+
+    # Fashion, Sample Sales, Talks & Social Connection
+    {"name": "NYC Fashion Events & Sample Sales", "url": "https://www.eventbrite.com/d/ny--new-york/sample-sale/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Fashion Shows & Runway", "url": "https://www.eventbrite.com/d/ny--new-york/fashion-show/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Talks & Lectures", "url": "https://www.eventbrite.com/d/ny--new-york/talks/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Panel Discussions & Symposiums", "url": "https://www.eventbrite.com/d/ny--new-york/panel-discussion/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Skip the Small Talk NYC", "url": "https://www.eventbrite.com/d/ny--new-york/skip-the-small-talk/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+
+    # Literary Cafes, Book Bars, Breweries & Neighborhood Hubs
+    {"name": "Bibliothèque Wine & Book Bar", "url": "https://www.eventbrite.com/d/ny--new-york/bibliotheque/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "Liz's Book Bar (Carroll Gardens)", "url": "https://www.eventbrite.com/d/ny--brooklyn/lizs-book-bar/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "Threes Brewing (Gowanus & Greenpoint)", "url": "https://www.eventbrite.com/d/ny--brooklyn/threes-brewing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
+    {"name": "McCarren Parkhouse (Williamsburg)", "url": "https://www.eventbrite.com/d/ny--brooklyn/mccarren-parkhouse/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Flop House Comedy Club", "url": "https://www.eventbrite.com/d/ny--brooklyn/flop-house-comedy/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
 
     # Super Smash Bros (SSB), Arcades & Tabletop Gaming
     {"name": "OS NYC (Super Smash Bros & Gaming)", "url": "https://www.os-nyc.com/events?format=json", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "gaming"},
@@ -1585,6 +1879,9 @@ _ALL_VENUES = [
 
     # Nightlife, Immersive Spectacle & Theatrical Circus
     {"name": "House of Yes (Circus & Dance)", "url": "https://donyc.com/venues/house-of-yes", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "party"},
+    {"name": "House of Yes (Brooklyn Spectacle)", "url": "https://www.eventbrite.com/d/ny--brooklyn/house-of-yes/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
+    {"name": "The Slipper Room (NYC Burlesque)", "url": "https://donyc.com/venues/the-slipper-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
+    {"name": "NYC Burlesque Shows & Cabaret", "url": "https://www.eventbrite.com/d/ny--new-york/burlesque/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
 
     # Art Galleries, Food Festivals & Community Learning
     {"name": "Chelsea Art Gallery Openings", "url": "https://www.eventbrite.com/d/ny--new-york/chelsea-art-gallery/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "art"},
