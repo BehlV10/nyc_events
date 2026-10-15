@@ -1,0 +1,480 @@
+"""NYC Events — Venue geocoding and coordinate mapping for OpenStreetMap integration.
+
+Provides pre-geocoded coordinates for New York City music venues, comedy clubs,
+theatres, museums, dance spaces, rooftops, and community hubs to enable instant, zero-latency
+client-side mapping without rate limits.
+"""
+
+import re
+from typing import Optional, Dict, Any, Tuple
+
+# Curated coordinates for NYC venues across all 5 boroughs
+# (lat, lng, neighborhood, street_address, canonical_name)
+VENUE_COORDINATES: Dict[str, Tuple[float, float, str, str, str]] = {
+    # === MANHATTAN ===
+    # Lower East Side, East Village & Bowery
+    "bowery ballroom": (40.7204, -73.9934, "Lower East Side", "6 Delancey St, New York, NY", "Bowery Ballroom"),
+    "mercury lounge": (40.7224, -73.9868, "Lower East Side", "217 E Houston St, New York, NY", "Mercury Lounge"),
+    "webster hall": (40.7317, -73.9891, "East Village", "125 E 11th St, New York, NY", "Webster Hall"),
+    "arlene's grocery": (40.7222, -73.9877, "Lower East Side", "95 Stanton St, New York, NY", "Arlene's Grocery"),
+    "arlenes grocery": (40.7222, -73.9877, "Lower East Side", "95 Stanton St, New York, NY", "Arlene's Grocery"),
+    "nublu": (40.7262, -73.9785, "Alphabet City", "151 Ave C, New York, NY", "Nublu 151"),
+    "drom": (40.7263, -73.9841, "East Village", "85 Ave A, New York, NY", "Drom NYC"),
+    "drom nyc": (40.7263, -73.9841, "East Village", "85 Ave A, New York, NY", "Drom NYC"),
+    "the back room": (40.7196, -73.9877, "Lower East Side", "102 Norfolk St, New York, NY", "The Back Room"),
+    "back room": (40.7196, -73.9877, "Lower East Side", "102 Norfolk St, New York, NY", "The Back Room"),
+    "the dl": (40.7188, -73.9890, "Lower East Side", "95 Delancey St, New York, NY", "The DL NYC"),
+    "the dl nyc": (40.7188, -73.9890, "Lower East Side", "95 Delancey St, New York, NY", "The DL NYC"),
+    "mehanata": (40.7201, -73.9886, "Lower East Side", "113 Ludlow St, New York, NY", "Mehanata"),
+    "pangea": (40.7305, -73.9866, "East Village", "178 2nd Ave, New York, NY", "Pangea"),
+    "mona's": (40.7297, -73.9788, "East Village", "224 Ave B, New York, NY", "Mona's"),
+    "monas": (40.7297, -73.9788, "East Village", "224 Ave B, New York, NY", "Mona's"),
+    "cucala dance": (40.7247, -73.9851, "East Village", "47 Ave A, New York, NY", "Cucala Dance Company"),
+    "cucala dance company": (40.7247, -73.9851, "East Village", "47 Ave A, New York, NY", "Cucala Dance Company"),
+    "caveat": (40.7206, -73.9847, "Lower East Side", "21A Clinton St, New York, NY", "Caveat NYC"),
+    "caveat nyc": (40.7206, -73.9847, "Lower East Side", "21A Clinton St, New York, NY", "Caveat NYC"),
+    "st. marks comedy": (40.7275, -73.9842, "East Village", "131 Ave A, New York, NY", "St. Marks Comedy Club"),
+    "st marks comedy club": (40.7275, -73.9842, "East Village", "131 Ave A, New York, NY", "St. Marks Comedy Club"),
+    "barcade st. marks": (40.7290, -73.9895, "East Village", "6 St Marks Pl, New York, NY", "Barcade (St. Marks)"),
+    "barcade st marks": (40.7290, -73.9895, "East Village", "6 St Marks Pl, New York, NY", "Barcade (St. Marks)"),
+    "os nyc": (40.7183, -73.9917, "Chinatown / LES", "324 Grand St, New York, NY", "OS NYC (Gaming & Smash)"),
+    "p&t knitwear": (40.7226, -73.9885, "Lower East Side", "180 Orchard St, New York, NY", "P&T Knitwear Books & Podcasts"),
+    "bluestockings": (40.7203, -73.9866, "Lower East Side", "116 Suffolk St, New York, NY", "Bluestockings Cooperative"),
+    "kgb bar": (40.7266, -73.9896, "East Village", "85 E 4th St, New York, NY", "KGB Bar"),
+    "sara d roosevelt park": (40.7188, -73.9930, "Chinatown / LES", "Chrystie St & Forsyth St, New York, NY", "Sara D. Roosevelt Park"),
+
+    # Greenwich Village, SoHo & West Village
+    "le poisson rouge": (40.7289, -73.9996, "Greenwich Village", "158 Bleecker St, New York, NY", "Le Poisson Rouge"),
+    "lpr": (40.7289, -73.9996, "Greenwich Village", "158 Bleecker St, New York, NY", "Le Poisson Rouge"),
+    "blue note": (40.7306, -74.0006, "Greenwich Village", "131 W 3rd St, New York, NY", "Blue Note Jazz Club"),
+    "blue note jazz club": (40.7306, -74.0006, "Greenwich Village", "131 W 3rd St, New York, NY", "Blue Note Jazz Club"),
+    "smalls jazz club": (40.7344, -74.0033, "Greenwich Village", "183 W 10th St, New York, NY", "Smalls Jazz Club"),
+    "smalls jazz": (40.7344, -74.0033, "Greenwich Village", "183 W 10th St, New York, NY", "Smalls Jazz Club"),
+    "village vanguard": (40.7360, -74.0016, "Greenwich Village", "178 7th Ave S, New York, NY", "Village Vanguard"),
+    "the bitter end": (40.7287, -73.9999, "Greenwich Village", "147 Bleecker St, New York, NY", "The Bitter End"),
+    "bitter end": (40.7287, -73.9999, "Greenwich Village", "147 Bleecker St, New York, NY", "The Bitter End"),
+    "terra blues": (40.7288, -73.9997, "Greenwich Village", "149 Bleecker St, New York, NY", "Terra Blues"),
+    "gonzalez y gonzalez": (40.7265, -73.9961, "Greenwich Village", "192 Mercer St, New York, NY", "Gonzalez y Gonzalez"),
+    "comedy cellar": (40.7301, -74.0003, "Greenwich Village", "117 MacDougal St, New York, NY", "Comedy Cellar"),
+    "greenwich village comedy club": (40.7295, -74.0002, "Greenwich Village", "99 MacDougal St, New York, NY", "Greenwich Village Comedy Club"),
+    "greenwich village comedy": (40.7295, -74.0002, "Greenwich Village", "99 MacDougal St, New York, NY", "Greenwich Village Comedy Club"),
+    "the grisly pear": (40.7298, -74.0003, "Greenwich Village", "107 MacDougal St, New York, NY", "The Grisly Pear"),
+    "grisly pear": (40.7298, -74.0003, "Greenwich Village", "107 MacDougal St, New York, NY", "The Grisly Pear"),
+    "the uncommons": (40.7293, -73.9987, "Greenwich Village", "230 Thompson St, New York, NY", "The Uncommons Board Game Cafe"),
+    "uncommons": (40.7293, -73.9987, "Greenwich Village", "230 Thompson St, New York, NY", "The Uncommons Board Game Cafe"),
+    "pieces bar": (40.7340, -74.0004, "West Village", "8 Christopher St, New York, NY", "Pieces Bar"),
+    "the stonewall inn": (40.7338, -74.0027, "West Village", "53 Christopher St, New York, NY", "The Stonewall Inn"),
+    "stonewall inn": (40.7338, -74.0027, "West Village", "53 Christopher St, New York, NY", "The Stonewall Inn"),
+    "stonewall": (40.7338, -74.0027, "West Village", "53 Christopher St, New York, NY", "The Stonewall Inn"),
+    "film forum": (40.7283, -74.0039, "South Village", "209 W Houston St, New York, NY", "Film Forum"),
+    "ifc center": (40.7311, -74.0006, "Greenwich Village", "323 6th Ave, New York, NY", "IFC Center"),
+    "sobs": (40.7282, -74.0049, "SoHo / Hudson Sq", "204 Varick St, New York, NY", "S.O.B.'s"),
+    "s.o.b.'s": (40.7282, -74.0049, "SoHo / Hudson Sq", "204 Varick St, New York, NY", "S.O.B.'s"),
+    "housing works": (40.7243, -73.9967, "SoHo", "126 Crosby St, New York, NY", "Housing Works Bookstore Cafe"),
+    "mcnally jackson": (40.7231, -73.9954, "SoHo", "52 Prince St, New York, NY", "McNally Jackson Books"),
+    "washington square park": (40.7308, -73.9973, "Greenwich Village", "Garibaldi Plaza, Washington Square Park, New York, NY", "Washington Square Park (Garibaldi Plaza)"),
+    "garibaldi plaza": (40.7308, -73.9973, "Greenwich Village", "Garibaldi Plaza, Washington Square Park, New York, NY", "Washington Square Park (Garibaldi Plaza)"),
+    "hudson river park pier 45": (40.7327, -74.0118, "West Village", "Pier 45, Hudson River Park, New York, NY", "Hudson River Park (Pier 45)"),
+    "pier 45": (40.7327, -74.0118, "West Village", "Pier 45, Hudson River Park, New York, NY", "Hudson River Park (Pier 45)"),
+
+    # Union Square, NoHo, Flatiron & Chelsea
+    "irving plaza": (40.7349, -73.9884, "Union Square", "17 Irving Pl, New York, NY", "Irving Plaza"),
+    "strand book store": (40.7333, -73.9908, "Union Square", "828 Broadway, New York, NY", "Strand Book Store"),
+    "strand": (40.7333, -73.9908, "Union Square", "828 Broadway, New York, NY", "Strand Book Store"),
+    "club cache": (40.7344, -73.9921, "Union Square", "35 E 13th St, New York, NY", "Club Cache"),
+    "cache": (40.7344, -73.9921, "Union Square", "35 E 13th St, New York, NY", "Club Cache"),
+    "joe's pub": (40.7291, -73.9919, "NoHo", "425 Lafayette St, New York, NY", "Joe's Pub"),
+    "public theater": (40.7291, -73.9919, "NoHo", "425 Lafayette St, New York, NY", "The Public Theater"),
+    "somewhere nowhere": (40.7441, -73.9912, "Chelsea", "112 W 25th St, New York, NY", "Somewhere Nowhere NYC"),
+    "somewhere nowhere nyc": (40.7441, -73.9912, "Chelsea", "112 W 25th St, New York, NY", "Somewhere Nowhere NYC"),
+    "taj lounge": (40.7409, -73.9922, "Chelsea", "48 W 21st St, New York, NY", "Taj II Lounge"),
+    "taj ii": (40.7409, -73.9922, "Chelsea", "48 W 21st St, New York, NY", "Taj II Lounge"),
+    "slate nyc": (40.7410, -73.9926, "Chelsea", "54 W 21st St, New York, NY", "Slate NYC"),
+    "slate ny": (40.7410, -73.9926, "Chelsea", "54 W 21st St, New York, NY", "Slate NYC"),
+    "racket nyc": (40.7438, -74.0048, "Chelsea", "431 W 16th St, New York, NY", "Racket NYC"),
+    "racket": (40.7438, -74.0048, "Chelsea", "431 W 16th St, New York, NY", "Racket NYC"),
+    "city winery nyc": (40.7441, -74.0097, "Chelsea / Pier 57", "25 11th Ave, New York, NY", "City Winery NYC"),
+    "city winery": (40.7441, -74.0097, "Chelsea / Pier 57", "25 11th Ave, New York, NY", "City Winery NYC"),
+    "barcade chelsea": (40.7445, -73.9942, "Chelsea", "148 W 24th St, New York, NY", "Barcade (Chelsea)"),
+    "magnet theater": (40.7489, -73.9942, "Chelsea", "254 W 29th St, New York, NY", "Magnet Theater"),
+    "asylum nyc": (40.7402, -73.9856, "Flatiron", "123 E 24th St, New York, NY", "Asylum NYC"),
+    "230 fifth": (40.7440, -73.9882, "Flatiron", "230 5th Ave, New York, NY", "230 Fifth Rooftop"),
+    "ysbd": (40.7442, -73.9898, "NoMad / Flatiron", "37 W 26th St, New York, NY", "You Should Be Dancing / YSBD"),
+    "you should be dancing": (40.7442, -73.9898, "NoMad / Flatiron", "37 W 26th St, New York, NY", "You Should Be Dancing / YSBD"),
+    "frim fram": (40.7442, -73.9898, "NoMad / Flatiron", "37 W 26th St, New York, NY", "Frim Fram Jam (YSBD)"),
+    "candela fridays": (40.7442, -73.9898, "NoMad / Flatiron", "37 W 26th St, New York, NY", "Candela Fridays"),
+    "the cutting room": (40.7466, -73.9829, "NoMad", "44 E 32nd St, New York, NY", "The Cutting Room"),
+    "adelante studios": (40.7471, -73.9877, "NoMad", "25 W 31st St, New York, NY", "Adelante Studios"),
+    "adelante": (40.7471, -73.9877, "NoMad", "25 W 31st St, New York, NY", "Adelante Studios"),
+
+    # Midtown, Times Square, Hell's Kitchen & Garment District
+    "madison square garden": (40.7505, -73.9934, "Midtown", "4 Pennsylvania Plaza, New York, NY", "Madison Square Garden"),
+    "msg": (40.7505, -73.9934, "Midtown", "4 Pennsylvania Plaza, New York, NY", "Madison Square Garden"),
+    "penn station": (40.7506, -73.9935, "Midtown", "8th Ave & 31st St, New York, NY", "Penn Station"),
+    "port authority": (40.7569, -73.9904, "Midtown", "625 8th Ave, New York, NY", "Port Authority Bus Terminal"),
+    "port authority bus terminal": (40.7569, -73.9904, "Midtown", "625 8th Ave, New York, NY", "Port Authority Bus Terminal"),
+    "pearl studios": (40.7525, -73.9928, "Garment District", "500 8th Ave, New York, NY", "Pearl Studios"),
+    "danznik": (40.7533, -73.9909, "Garment District", "240 W 37th St, New York, NY", "Danznik Studios (Midtown Swings)"),
+    "danznik studios": (40.7533, -73.9909, "Garment District", "240 W 37th St, New York, NY", "Danznik Studios (Midtown Swings)"),
+    "midtown swings": (40.7533, -73.9909, "Garment District", "240 W 37th St, New York, NY", "Midtown Swings (Danznik)"),
+    "salsa sabrosa": (40.7501, -73.9950, "Midtown / Chelsea", "410 8th Ave, New York, NY", "Salsa Sabrosa"),
+    "bryant park": (40.7536, -73.9832, "Midtown", "42nd St & 6th Ave, New York, NY", "Bryant Park"),
+    "radio city": (40.7599, -73.9799, "Midtown", "1260 6th Ave, New York, NY", "Radio City Music Hall"),
+    "radio city music hall": (40.7599, -73.9799, "Midtown", "1260 6th Ave, New York, NY", "Radio City Music Hall"),
+    "carnegie hall": (40.7651, -73.9799, "Midtown", "881 7th Ave, New York, NY", "Carnegie Hall"),
+    "the town hall": (40.7560, -73.9845, "Times Square", "123 W 43rd St, New York, NY", "The Town Hall"),
+    "town hall": (40.7560, -73.9845, "Times Square", "123 W 43rd St, New York, NY", "The Town Hall"),
+    "sony hall": (40.7592, -73.9868, "Times Square", "235 W 46th St, New York, NY", "Sony Hall"),
+    "swing 46": (40.7603, -73.9895, "Restaurant Row / Midtown", "349 W 46th St, New York, NY", "Swing 46 Jazz & Supper Club"),
+    "connolly's": (40.7573, -73.9837, "Times Square", "121 W 45th St, New York, NY", "Connolly's Pub"),
+    "connollys": (40.7573, -73.9837, "Times Square", "121 W 45th St, New York, NY", "Connolly's Pub"),
+    "nebula": (40.7548, -73.9855, "Midtown", "135 W 41st St, New York, NY", "Nebula NYC"),
+    "nebula nyc": (40.7548, -73.9855, "Midtown", "135 W 41st St, New York, NY", "Nebula NYC"),
+    "iguana": (40.7644, -73.9839, "Midtown", "240 W 54th St, New York, NY", "Iguana NYC"),
+    "iguana nyc": (40.7644, -73.9839, "Midtown", "240 W 54th St, New York, NY", "Iguana NYC"),
+    "kilowatt": (40.7656, -73.9840, "Midtown", "939 8th Ave, New York, NY", "Kilowatt Dance Studio"),
+    "kilowatt dance studio": (40.7656, -73.9840, "Midtown", "939 8th Ave, New York, NY", "Kilowatt Dance Studio"),
+    "terminal 5": (40.7697, -73.9928, "Hell's Kitchen", "610 W 56th St, New York, NY", "Terminal 5"),
+    "harbor nyc": (40.7634, -73.9989, "Hell's Kitchen", "621 W 46th St, New York, NY", "Harbor NYC Rooftop"),
+    "hudson river park pier 76": (40.7588, -74.0040, "Hell's Kitchen", "408 12th Ave, New York, NY", "Hudson River Park (Pier 76)"),
+    "pier 76": (40.7588, -74.0040, "Hell's Kitchen", "408 12th Ave, New York, NY", "Hudson River Park (Pier 76)"),
+    "bella abzug park": (40.7561, -74.0006, "Hudson Yards", "542 W 36th St, New York, NY", "Bella Abzug Park (Hudson Yards)"),
+    "the hugh": (40.7584, -73.9708, "Midtown East", "157 E 53rd St, New York, NY", "The Hugh"),
+    "estonian house": (40.7446, -73.9760, "Murray Hill", "243 E 34th St, New York, NY", "New York Estonian House"),
+    "nypl": (40.7532, -73.9822, "Midtown", "476 5th Ave, New York, NY", "New York Public Library (Schwarzman)"),
+    "new york public library": (40.7532, -73.9822, "Midtown", "476 5th Ave, New York, NY", "New York Public Library (Schwarzman)"),
+
+    # Upper West Side, Upper East Side & Harlem
+    "lincoln center": (40.7725, -73.9835, "Upper West Side", "10 Lincoln Center Plaza, New York, NY", "Lincoln Center"),
+    "beacon theatre": (40.7803, -73.9814, "Upper West Side", "2124 Broadway, New York, NY", "Beacon Theatre"),
+    "symphony space": (40.7946, -73.9723, "Upper West Side", "2537 Broadway, New York, NY", "Symphony Space"),
+    "good shepherd": (40.7745, -73.9831, "Upper West Side", "152 W 66th St, New York, NY", "Good Shepherd Faith Presbyterian Church"),
+    "hungarian house": (40.7758, -73.9537, "Upper East Side", "213 E 82nd St, New York, NY", "Hungarian House of New York"),
+    "the met": (40.7794, -73.9632, "Upper East Side", "1000 5th Ave, New York, NY", "The Metropolitan Museum of Art"),
+    "metropolitan museum": (40.7794, -73.9632, "Upper East Side", "1000 5th Ave, New York, NY", "The Metropolitan Museum of Art"),
+    "guggenheim": (40.7829, -73.9589, "Upper East Side", "1071 5th Ave, New York, NY", "Solomon R. Guggenheim Museum"),
+    "central park": (40.7725, -73.9702, "Central Park", "Central Park, New York, NY", "Central Park"),
+    "summerstage": (40.7724, -73.9715, "Central Park", "Rumsey Playfield, Central Park, New York, NY", "Central Park SummerStage"),
+    "king jagiello": (40.7725, -73.9702, "Central Park", "Central Park East, New York, NY", "King Jagiello Monument (Central Park)"),
+    "hex & company": (40.8062, -73.9645, "Morningside Heights", "2911 Broadway, New York, NY", "Hex & Company"),
+    "apollo theater": (40.8100, -73.9501, "Harlem", "253 W 125th St, New York, NY", "Apollo Theater"),
+    "apollo": (40.8100, -73.9501, "Harlem", "253 W 125th St, New York, NY", "Apollo Theater"),
+    "gw bridge": (40.8491, -73.9377, "Washington Heights", "4211 Broadway, New York, NY", "George Washington Bridge Bus Terminal"),
+    "george washington bridge": (40.8491, -73.9377, "Washington Heights", "4211 Broadway, New York, NY", "George Washington Bridge Bus Terminal"),
+    "brookfield place": (40.7127, -74.0147, "Battery Park City", "230 Vesey St, New York, NY", "Brookfield Place"),
+
+    # === BROOKLYN ===
+    # Williamsburg & Greenpoint
+    "brooklyn steel": (40.7193, -73.9388, "East Williamsburg", "319 Frost St, Brooklyn, NY", "Brooklyn Steel"),
+    "music hall of williamsburg": (40.7194, -73.9616, "Williamsburg", "66 N 6th St, Brooklyn, NY", "Music Hall of Williamsburg"),
+    "warsaw": (40.7224, -73.9489, "Greenpoint", "261 Driggs Ave, Brooklyn, NY", "Warsaw Brooklyn"),
+    "warsaw brooklyn": (40.7224, -73.9489, "Greenpoint", "261 Driggs Ave, Brooklyn, NY", "Warsaw Brooklyn"),
+    "baby's all right": (40.7101, -73.9634, "Williamsburg", "146 Broadway, Brooklyn, NY", "Baby's All Right"),
+    "babys all right": (40.7101, -73.9634, "Williamsburg", "146 Broadway, Brooklyn, NY", "Baby's All Right"),
+    "good room": (40.7262, -73.9530, "Greenpoint", "98 Meserole Ave, Brooklyn, NY", "Good Room Greenpoint"),
+    "superior ingredients": (40.7208, -73.9587, "Williamsburg", "74 Wythe Ave, Brooklyn, NY", "Superior Ingredients"),
+    "pete's candy store": (40.7183, -73.9501, "Williamsburg", "709 Lorimer St, Brooklyn, NY", "Pete's Candy Store"),
+    "skinny dennis": (40.7158, -73.9618, "Williamsburg", "152 Metropolitan Ave, Brooklyn, NY", "Skinny Dennis"),
+    "union pool": (40.7150, -73.9517, "Williamsburg", "484 Union Ave, Brooklyn, NY", "Union Pool"),
+    "brooklyn comedy collective": (40.7099, -73.9442, "Williamsburg", "167 Graham Ave, Brooklyn, NY", "Brooklyn Comedy Collective"),
+    "brooklyn bowl": (40.7219, -73.9575, "Williamsburg", "61 Wythe Ave, Brooklyn, NY", "Brooklyn Bowl"),
+    "nitehawk cinema": (40.7163, -73.9626, "Williamsburg", "136 Metropolitan Ave, Brooklyn, NY", "Nitehawk Cinema"),
+    "nitehawk": (40.7163, -73.9626, "Williamsburg", "136 Metropolitan Ave, Brooklyn, NY", "Nitehawk Cinema"),
+    "domino park": (40.7158, -73.9678, "Williamsburg", "15 River St, Brooklyn, NY", "Domino Park"),
+    "the box house hotel": (40.7360, -73.9535, "Greenpoint", "77 Box St, Brooklyn, NY", "The Box House Hotel"),
+    "box house hotel": (40.7360, -73.9535, "Greenpoint", "77 Box St, Brooklyn, NY", "The Box House Hotel"),
+    "java street": (40.7314, -73.9577, "Greenpoint", "59 Java St, Brooklyn, NY", "Java Street Community Garden"),
+
+    # Bushwick & East Williamsburg
+    "elsewhere": (40.7093, -73.9232, "Bushwick", "599 Johnson Ave, Brooklyn, NY", "Elsewhere Brooklyn"),
+    "elsewhere brooklyn": (40.7093, -73.9232, "Bushwick", "599 Johnson Ave, Brooklyn, NY", "Elsewhere Brooklyn"),
+    "the sultan room": (40.7054, -73.9232, "Bushwick", "234 Starr St, Brooklyn, NY", "The Sultan Room"),
+    "sultan room": (40.7054, -73.9232, "Bushwick", "234 Starr St, Brooklyn, NY", "The Sultan Room"),
+    "house of yes": (40.7068, -73.9237, "Bushwick", "2 Wyckoff Ave, Brooklyn, NY", "House of Yes"),
+    "3 dollar bill": (40.7081, -73.9355, "East Williamsburg", "260 Meserole St, Brooklyn, NY", "3 Dollar Bill"),
+    "three dollar bill": (40.7081, -73.9355, "East Williamsburg", "260 Meserole St, Brooklyn, NY", "3 Dollar Bill"),
+    "bossa nova civic club": (40.6974, -73.9288, "Bushwick", "1271 Myrtle Ave, Brooklyn, NY", "Bossa Nova Civic Club"),
+    "bossa nova": (40.6974, -73.9288, "Bushwick", "1271 Myrtle Ave, Brooklyn, NY", "Bossa Nova Civic Club"),
+    "jupiter disco": (40.7076, -73.9261, "Bushwick", "1237 Flushing Ave, Brooklyn, NY", "Jupiter Disco"),
+    "wonderville": (40.6924, -73.9298, "Bushwick", "1186 Broadway, Brooklyn, NY", "Wonderville"),
+    "smashville": (40.6924, -73.9298, "Bushwick", "1186 Broadway, Brooklyn, NY", "Wonderville (Smashville)"),
+    "the tiny cupboard": (40.6818, -73.9102, "Bushwick", "1717 Broadway, Brooklyn, NY", "The Tiny Cupboard"),
+    "tiny cupboard": (40.6818, -73.9102, "Bushwick", "1717 Broadway, Brooklyn, NY", "The Tiny Cupboard"),
+    "the keep": (40.7029, -73.9103, "Bushwick", "205 Cypress Ave, Brooklyn, NY", "The Keep"),
+
+    # Gowanus, Park Slope, Downtown Brooklyn, Cobble Hill & Bed-Stuy
+    "public records": (40.6837, -73.9844, "Gowanus", "233 Butler St, Brooklyn, NY", "Public Records Gowanus"),
+    "the bell house": (40.6738, -73.9928, "Gowanus", "149 7th St, Brooklyn, NY", "The Bell House"),
+    "bell house": (40.6738, -73.9928, "Gowanus", "149 7th St, Brooklyn, NY", "The Bell House"),
+    "littlefield": (40.6806, -73.9859, "Gowanus", "635 Sackett St, Brooklyn, NY", "Littlefield Brooklyn"),
+    "littlefield brooklyn": (40.6806, -73.9859, "Gowanus", "635 Sackett St, Brooklyn, NY", "Littlefield Brooklyn"),
+    "union hall": (40.6760, -73.9796, "Park Slope", "702 Union St, Brooklyn, NY", "Union Hall Brooklyn"),
+    "young ethel's": (40.6679, -73.9863, "Park Slope", "506 5th Ave, Brooklyn, NY", "Young Ethel's"),
+    "young ethel": (40.6679, -73.9863, "Park Slope", "506 5th Ave, Brooklyn, NY", "Young Ethel's"),
+    "salsa salsa": (40.6823, -73.9818, "Park Slope", "55 4th Ave, Brooklyn, NY", "Salsa Salsa Dance Studio"),
+    "salsa salsa dance": (40.6823, -73.9818, "Park Slope", "55 4th Ave, Brooklyn, NY", "Salsa Salsa Dance Studio"),
+    "265 4th ave": (40.6763, -73.9850, "Park Slope", "265 4th Ave, Brooklyn, NY", "Prospect Park Board Gaming Club"),
+    "prospect park board": (40.6763, -73.9850, "Park Slope", "265 4th Ave, Brooklyn, NY", "Prospect Park Board Gaming Club"),
+    "the brooklyn strategist": (40.6830, -73.9961, "Cobble Hill", "333 Court St, Brooklyn, NY", "The Brooklyn Strategist"),
+    "brooklyn strategist": (40.6830, -73.9961, "Cobble Hill", "333 Court St, Brooklyn, NY", "The Brooklyn Strategist"),
+    "books are magic": (40.6866, -73.9937, "Cobble Hill", "225 Smith St, Brooklyn, NY", "Books Are Magic"),
+    "greenlight bookstore": (40.6872, -73.9740, "Fort Greene", "686 Fulton St, Brooklyn, NY", "Greenlight Bookstore"),
+    "greenlight": (40.6872, -73.9740, "Fort Greene", "686 Fulton St, Brooklyn, NY", "Greenlight Bookstore"),
+    "bam": (40.6865, -73.9777, "Fort Greene", "30 Lafayette Ave, Brooklyn, NY", "Brooklyn Academy of Music (BAM)"),
+    "barclays center": (40.6826, -73.9754, "Prospect Heights", "620 Atlantic Ave, Brooklyn, NY", "Barclays Center"),
+    "barclays": (40.6826, -73.9754, "Prospect Heights", "620 Atlantic Ave, Brooklyn, NY", "Barclays Center"),
+    "brooklyn brainery": (40.6766, -73.9667, "Prospect Heights", "190 Underhill Ave, Brooklyn, NY", "Brooklyn Brainery"),
+    "vanderbilt open streets": (40.6784, -73.9688, "Prospect Heights", "Vanderbilt Ave, Brooklyn, NY", "Vanderbilt Ave Open Streets"),
+    "transit museum": (40.6906, -73.9897, "Downtown Brooklyn", "99 Schermerhorn St, Brooklyn, NY", "New York Transit Museum"),
+    "abolitionist place": (40.6917, -73.9853, "Downtown Brooklyn", "225 Duffield St, Brooklyn, NY", "Abolitionist Place Park"),
+    "abolitionist place park": (40.6917, -73.9853, "Downtown Brooklyn", "225 Duffield St, Brooklyn, NY", "Abolitionist Place Park"),
+    "c'mon everybody": (40.6897, -73.9575, "Bed-Stuy", "325 Franklin Ave, Brooklyn, NY", "C'mon Everybody"),
+    "kings theatre": (40.6457, -73.9583, "Flatbush", "1027 Flatbush Ave, Brooklyn, NY", "Kings Theatre Flatbush"),
+    "pioneer works": (40.6797, -74.0116, "Red Hook", "159 Pioneer St, Brooklyn, NY", "Pioneer Works Red Hook"),
+    "brooklyn public library": (40.6725, -73.9682, "Grand Army Plaza", "10 Grand Army Plaza, Brooklyn, NY", "Brooklyn Public Library Central"),
+    "bpl": (40.6725, -73.9682, "Grand Army Plaza", "10 Grand Army Plaza, Brooklyn, NY", "Brooklyn Public Library Central"),
+
+    # === QUEENS ===
+    "knockdown center": (40.7157, -73.9150, "Maspeth", "52-19 Flushing Ave, Queens, NY", "Knockdown Center"),
+    "tv eye": (40.6967, -73.9054, "Ridgewood", "1647 Weirfield St, Queens, NY", "TV Eye Ridgewood"),
+    "trans-pecos": (40.6974, -73.9059, "Ridgewood", "915 Wyckoff Ave, Queens, NY", "Trans-Pecos"),
+    "nowadays": (40.6928, -73.9015, "Ridgewood", "56-06 Cooper Ave, Queens, NY", "Nowadays"),
+    "q.e.d.": (40.7749, -73.9118, "Astoria", "27-16 23rd Ave, Queens, NY", "Q.E.D. Astoria"),
+    "qed astoria": (40.7749, -73.9118, "Astoria", "27-16 23rd Ave, Queens, NY", "Q.E.D. Astoria"),
+    "qed": (40.7749, -73.9118, "Astoria", "27-16 23rd Ave, Queens, NY", "Q.E.D. Astoria"),
+    "the last word": (40.7745, -73.9099, "Astoria", "31-30 Ditmars Blvd, Queens, NY", "The Last Word"),
+    "last word": (40.7745, -73.9099, "Astoria", "31-30 Ditmars Blvd, Queens, NY", "The Last Word"),
+    "hunters point south park": (40.7418, -73.9587, "Long Island City", "50th Ave & Center Blvd, Queens, NY", "Hunters Point South Park"),
+    "hunters point": (40.7418, -73.9587, "Long Island City", "50th Ave & Center Blvd, Queens, NY", "Hunters Point South Park"),
+    "moma ps1": (40.7456, -73.9472, "Long Island City", "22-25 Jackson Ave, Queens, NY", "MoMA PS1"),
+    "museum of the moving image": (40.7563, -73.9239, "Astoria", "36-01 35th Ave, Queens, NY", "Museum of the Moving Image"),
+    "socrates sculpture": (40.7686, -73.9360, "Long Island City", "32-01 Vernon Blvd, Queens, NY", "Socrates Sculpture Park"),
+    "forest hills stadium": (40.7202, -73.8447, "Forest Hills", "1 Tennis Pl, Queens, NY", "Forest Hills Stadium"),
+    "forest hills": (40.7202, -73.8447, "Forest Hills", "1 Tennis Pl, Queens, NY", "Forest Hills Stadium"),
+    "citi field": (40.7571, -73.8458, "Flushing", "41 Seaver Way, Queens, NY", "Citi Field"),
+
+    # === THE BRONX ===
+    "yankee stadium": (40.8296, -73.9262, "South Bronx", "1 E 161st St, Bronx, NY", "Yankee Stadium"),
+    "lehman center": (40.8719, -73.8942, "Bedford Park", "250 Bedford Park Blvd W, Bronx, NY", "Lehman Center"),
+    "lehman center for the performing arts": (40.8719, -73.8942, "Bedford Park", "250 Bedford Park Blvd W, Bronx, NY", "Lehman Center"),
+    "bronx zoo": (40.8506, -73.8770, "Bronx Park", "2300 Southern Blvd, Bronx, NY", "Bronx Zoo"),
+    "new york botanical garden": (40.8624, -73.8778, "Bronx Park", "2900 Southern Blvd, Bronx, NY", "New York Botanical Garden"),
+    "nybg": (40.8624, -73.8778, "Bronx Park", "2900 Southern Blvd, Bronx, NY", "New York Botanical Garden"),
+    "wave hill": (40.8978, -73.9118, "Riverdale", "4900 Independence Ave, Bronx, NY", "Wave Hill Public Garden"),
+
+    # === STATEN ISLAND ===
+    "st. george theatre": (40.6424, -74.0772, "St. George", "35 Hyatt St, Staten Island, NY", "St. George Theatre"),
+    "snug harbor": (40.6438, -74.1018, "Livingston", "1000 Richmond Terrace, Staten Island, NY", "Snug Harbor Cultural Center"),
+    "conference house": (40.5034, -74.2531, "Tottenville", "298 Satterlee St, Staten Island, NY", "Conference House Park"),
+}
+
+# Substring needle rules for matching venues in event or source titles
+VENUE_RULES = [
+    ("bowery ballroom", (40.7204, -73.9934, "Lower East Side", "6 Delancey St, New York, NY", "Bowery Ballroom")),
+    ("mercury lounge", (40.7224, -73.9868, "Lower East Side", "217 E Houston St, New York, NY", "Mercury Lounge")),
+    ("webster hall", (40.7317, -73.9891, "East Village", "125 E 11th St, New York, NY", "Webster Hall")),
+    ("terminal 5", (40.7697, -73.9928, "Hell's Kitchen", "610 W 56th St, New York, NY", "Terminal 5")),
+    ("irving plaza", (40.7349, -73.9884, "Union Square", "17 Irving Pl, New York, NY", "Irving Plaza")),
+    ("racket nyc", (40.7438, -74.0048, "Chelsea", "431 W 16th St, New York, NY", "Racket NYC")),
+    ("le poisson rouge", (40.7289, -73.9996, "Greenwich Village", "158 Bleecker St, New York, NY", "Le Poisson Rouge")),
+    ("blue note", (40.7306, -74.0006, "Greenwich Village", "131 W 3rd St, New York, NY", "Blue Note Jazz Club")),
+    ("smalls jazz", (40.7344, -74.0033, "Greenwich Village", "183 W 10th St, New York, NY", "Smalls Jazz Club")),
+    ("village vanguard", (40.7360, -74.0016, "Greenwich Village", "178 7th Ave S, New York, NY", "Village Vanguard")),
+    ("somewhere nowhere", (40.7441, -73.9912, "Chelsea", "112 W 25th St, New York, NY", "Somewhere Nowhere NYC")),
+    ("the dl", (40.7188, -73.9890, "Lower East Side", "95 Delancey St, New York, NY", "The DL NYC")),
+    ("harbor nyc", (40.7634, -73.9989, "Hell's Kitchen", "621 W 46th St, New York, NY", "Harbor NYC Rooftop")),
+    ("230 fifth", (40.7440, -73.9882, "Flatiron", "230 5th Ave, New York, NY", "230 Fifth Rooftop")),
+    ("slate nyc", (40.7410, -73.9926, "Chelsea", "54 W 21st St, New York, NY", "Slate NYC")),
+    ("nebula", (40.7548, -73.9855, "Midtown", "135 W 41st St, New York, NY", "Nebula NYC")),
+    ("taj lounge", (40.7409, -73.9922, "Chelsea", "48 W 21st St, New York, NY", "Taj II Lounge")),
+    ("club cache", (40.7344, -73.9921, "Union Square", "35 E 13th St, New York, NY", "Club Cache")),
+    ("iguana", (40.7644, -73.9839, "Midtown", "240 W 54th St, New York, NY", "Iguana NYC")),
+    ("gonzalez y gonzalez", (40.7265, -73.9961, "Greenwich Village", "192 Mercer St, New York, NY", "Gonzalez y Gonzalez")),
+    ("swing 46", (40.7603, -73.9895, "Restaurant Row / Midtown", "349 W 46th St, New York, NY", "Swing 46 Jazz & Supper Club")),
+    ("the back room", (40.7196, -73.9877, "Lower East Side", "102 Norfolk St, New York, NY", "The Back Room")),
+    ("danznik", (40.7533, -73.9909, "Garment District", "240 W 37th St, New York, NY", "Danznik Studios (Midtown Swings)")),
+    ("midtown swings", (40.7533, -73.9909, "Garment District", "240 W 37th St, New York, NY", "Midtown Swings (Danznik)")),
+    ("ysbd", (40.7442, -73.9898, "NoMad", "37 W 26th St, New York, NY", "You Should Be Dancing / YSBD")),
+    ("frim fram", (40.7442, -73.9898, "NoMad", "37 W 26th St, New York, NY", "Frim Fram Jam (YSBD)")),
+    ("candela fridays", (40.7442, -73.9898, "NoMad", "37 W 26th St, New York, NY", "Candela Fridays")),
+    ("salsa sabrosa", (40.7501, -73.9950, "Midtown", "410 8th Ave, New York, NY", "Salsa Sabrosa")),
+    ("hungarian house", (40.7758, -73.9537, "Upper East Side", "213 E 82nd St, New York, NY", "Hungarian House of New York")),
+    ("good shepherd", (40.7745, -73.9831, "Upper West Side", "152 W 66th St, New York, NY", "Good Shepherd Faith Presbyterian Church")),
+    ("connolly's", (40.7573, -73.9837, "Times Square", "121 W 45th St, New York, NY", "Connolly's Pub")),
+    ("kilowatt", (40.7656, -73.9840, "Midtown", "939 8th Ave, New York, NY", "Kilowatt Dance Studio")),
+    ("mehanata", (40.7201, -73.9886, "Lower East Side", "113 Ludlow St, New York, NY", "Mehanata")),
+    ("pangea", (40.7305, -73.9866, "East Village", "178 2nd Ave, New York, NY", "Pangea")),
+    ("estonian house", (40.7446, -73.9760, "Murray Hill", "243 E 34th St, New York, NY", "New York Estonian House")),
+    ("garibaldi plaza", (40.7308, -73.9973, "Greenwich Village", "Washington Square Park, New York, NY", "Washington Square Park (Garibaldi Plaza)")),
+    ("washington square", (40.7308, -73.9973, "Greenwich Village", "Washington Square Park, New York, NY", "Washington Square Park")),
+    ("pier 45", (40.7327, -74.0118, "West Village", "Pier 45, Hudson River Park, New York, NY", "Hudson River Park (Pier 45)")),
+    ("pier 76", (40.7588, -74.0040, "Hell's Kitchen", "Pier 76, Hudson River Park, New York, NY", "Hudson River Park (Pier 76)")),
+    ("hudson river park", (40.7327, -74.0118, "West Village", "Pier 45, Hudson River Park, New York, NY", "Hudson River Park")),
+    ("bryant park", (40.7536, -73.9832, "Midtown", "Bryant Park, New York, NY", "Bryant Park")),
+    ("bella abzug", (40.7561, -74.0006, "Hudson Yards", "542 W 36th St, New York, NY", "Bella Abzug Park (Hudson Yards)")),
+    ("brookfield place", (40.7127, -74.0147, "Battery Park City", "230 Vesey St, New York, NY", "Brookfield Place")),
+    ("port authority", (40.7569, -73.9904, "Midtown", "625 8th Ave, New York, NY", "Port Authority Bus Terminal")),
+    ("penn station", (40.7506, -73.9935, "Midtown", "8th Ave & 31st St, New York, NY", "Penn Station")),
+    ("gw bridge", (40.8491, -73.9377, "Washington Heights", "4211 Broadway, New York, NY", "George Washington Bridge Bus Terminal")),
+    ("the hugh", (40.7584, -73.9708, "Midtown East", "157 E 53rd St, New York, NY", "The Hugh")),
+    ("pearl studios", (40.7525, -73.9928, "Garment District", "500 8th Ave, New York, NY", "Pearl Studios")),
+    ("adelante", (40.7471, -73.9877, "NoMad", "25 W 31st St, New York, NY", "Adelante Studios")),
+    ("comedy cellar", (40.7301, -74.0003, "Greenwich Village", "117 MacDougal St, New York, NY", "Comedy Cellar")),
+    ("greenwich village comedy", (40.7295, -74.0002, "Greenwich Village", "99 MacDougal St, New York, NY", "Greenwich Village Comedy Club")),
+    ("grisly pear", (40.7298, -74.0003, "Greenwich Village", "107 MacDougal St, New York, NY", "The Grisly Pear")),
+    ("st. marks comedy", (40.7275, -73.9842, "East Village", "131 Ave A, New York, NY", "St. Marks Comedy Club")),
+    ("magnet theater", (40.7489, -73.9942, "Chelsea", "254 W 29th St, New York, NY", "Magnet Theater")),
+    ("asylum", (40.7402, -73.9856, "Flatiron", "123 E 24th St, New York, NY", "Asylum NYC")),
+    ("caveat", (40.7206, -73.9847, "Lower East Side", "21A Clinton St, New York, NY", "Caveat NYC")),
+    ("strand", (40.7333, -73.9908, "Union Square", "828 Broadway, New York, NY", "Strand Book Store")),
+    ("p&t knitwear", (40.7226, -73.9885, "Lower East Side", "180 Orchard St, New York, NY", "P&T Knitwear")),
+    ("housing works", (40.7243, -73.9967, "SoHo", "126 Crosby St, New York, NY", "Housing Works Bookstore Cafe")),
+    ("mcnally jackson", (40.7231, -73.9954, "SoHo", "52 Prince St, New York, NY", "McNally Jackson")),
+    ("bluestockings", (40.7203, -73.9866, "Lower East Side", "116 Suffolk St, New York, NY", "Bluestockings")),
+    ("os nyc", (40.7183, -73.9917, "Chinatown / LES", "324 Grand St, New York, NY", "OS NYC")),
+    ("uncommons", (40.7293, -73.9987, "Greenwich Village", "230 Thompson St, New York, NY", "The Uncommons")),
+    ("hex & company", (40.8062, -73.9645, "Morningside Heights", "2911 Broadway, New York, NY", "Hex & Company")),
+    ("pieces bar", (40.7340, -74.0004, "West Village", "8 Christopher St, New York, NY", "Pieces Bar")),
+    ("stonewall", (40.7338, -74.0027, "West Village", "53 Christopher St, New York, NY", "The Stonewall Inn")),
+    ("mona's", (40.7297, -73.9788, "East Village", "224 Ave B, New York, NY", "Mona's")),
+    ("monas", (40.7297, -73.9788, "East Village", "224 Ave B, New York, NY", "Mona's")),
+    ("king jagiello", (40.7725, -73.9702, "Central Park", "Central Park, New York, NY", "Central Park (King Jagiello)")),
+    ("summerstage", (40.7724, -73.9715, "Central Park", "Central Park, New York, NY", "Central Park SummerStage")),
+    ("apollo", (40.8100, -73.9501, "Harlem", "253 W 125th St, New York, NY", "Apollo Theater")),
+    ("symphony space", (40.7946, -73.9723, "Upper West Side", "2537 Broadway, New York, NY", "Symphony Space")),
+    ("lincoln center", (40.7725, -73.9835, "Upper West Side", "10 Lincoln Center Plaza, New York, NY", "Lincoln Center")),
+    ("beacon theatre", (40.7803, -73.9814, "Upper West Side", "2124 Broadway, New York, NY", "Beacon Theatre")),
+    ("radio city", (40.7599, -73.9799, "Midtown", "1260 6th Ave, New York, NY", "Radio City Music Hall")),
+    ("madison square garden", (40.7505, -73.9934, "Midtown", "4 Pennsylvania Plaza, New York, NY", "Madison Square Garden")),
+    ("carnegie hall", (40.7651, -73.9799, "Midtown", "881 7th Ave, New York, NY", "Carnegie Hall")),
+    ("sony hall", (40.7592, -73.9868, "Times Square", "235 W 46th St, New York, NY", "Sony Hall")),
+    ("town hall", (40.7560, -73.9845, "Times Square", "123 W 43rd St, New York, NY", "The Town Hall")),
+    ("city winery", (40.7441, -74.0097, "Chelsea", "25 11th Ave, New York, NY", "City Winery NYC")),
+
+    # Brooklyn Rules
+    ("brooklyn steel", (40.7193, -73.9388, "East Williamsburg", "319 Frost St, Brooklyn, NY", "Brooklyn Steel")),
+    ("music hall of williamsburg", (40.7194, -73.9616, "Williamsburg", "66 N 6th St, Brooklyn, NY", "Music Hall of Williamsburg")),
+    ("elsewhere", (40.7093, -73.9232, "Bushwick", "599 Johnson Ave, Brooklyn, NY", "Elsewhere")),
+    ("warsaw", (40.7224, -73.9489, "Greenpoint", "261 Driggs Ave, Brooklyn, NY", "Warsaw Brooklyn")),
+    ("baby's all right", (40.7101, -73.9634, "Williamsburg", "146 Broadway, Brooklyn, NY", "Baby's All Right")),
+    ("babys all right", (40.7101, -73.9634, "Williamsburg", "146 Broadway, Brooklyn, NY", "Baby's All Right")),
+    ("sultan room", (40.7054, -73.9232, "Bushwick", "234 Starr St, Brooklyn, NY", "The Sultan Room")),
+    ("good room", (40.7262, -73.9530, "Greenpoint", "98 Meserole Ave, Brooklyn, NY", "Good Room")),
+    ("public records", (40.6837, -73.9844, "Gowanus", "233 Butler St, Brooklyn, NY", "Public Records")),
+    ("c'mon everybody", (40.6897, -73.9575, "Bed-Stuy", "325 Franklin Ave, Brooklyn, NY", "C'mon Everybody")),
+    ("house of yes", (40.7068, -73.9237, "Bushwick", "2 Wyckoff Ave, Brooklyn, NY", "House of Yes")),
+    ("3 dollar bill", (40.7081, -73.9355, "East Williamsburg", "260 Meserole St, Brooklyn, NY", "3 Dollar Bill")),
+    ("three dollar bill", (40.7081, -73.9355, "East Williamsburg", "260 Meserole St, Brooklyn, NY", "3 Dollar Bill")),
+    ("superior ingredients", (40.7208, -73.9587, "Williamsburg", "74 Wythe Ave, Brooklyn, NY", "Superior Ingredients")),
+    ("bossa nova", (40.6974, -73.9288, "Bushwick", "1271 Myrtle Ave, Brooklyn, NY", "Bossa Nova Civic Club")),
+    ("jupiter disco", (40.7076, -73.9261, "Bushwick", "1237 Flushing Ave, Brooklyn, NY", "Jupiter Disco")),
+    ("pete's candy", (40.7183, -73.9501, "Williamsburg", "709 Lorimer St, Brooklyn, NY", "Pete's Candy Store")),
+    ("skinny dennis", (40.7158, -73.9618, "Williamsburg", "152 Metropolitan Ave, Brooklyn, NY", "Skinny Dennis")),
+    ("union pool", (40.7150, -73.9517, "Williamsburg", "484 Union Ave, Brooklyn, NY", "Union Pool")),
+    ("wonderville", (40.6924, -73.9298, "Bushwick", "1186 Broadway, Brooklyn, NY", "Wonderville")),
+    ("smashville", (40.6924, -73.9298, "Bushwick", "1186 Broadway, Brooklyn, NY", "Wonderville (Smashville)")),
+    ("tiny cupboard", (40.6818, -73.9102, "Bushwick", "1717 Broadway, Brooklyn, NY", "The Tiny Cupboard")),
+    ("the keep", (40.7029, -73.9103, "Bushwick", "205 Cypress Ave, Brooklyn, NY", "The Keep")),
+    ("the bell house", (40.6738, -73.9928, "Gowanus", "149 7th St, Brooklyn, NY", "The Bell House")),
+    ("bell house", (40.6738, -73.9928, "Gowanus", "149 7th St, Brooklyn, NY", "The Bell House")),
+    ("littlefield", (40.6806, -73.9859, "Gowanus", "635 Sackett St, Brooklyn, NY", "Littlefield")),
+    ("union hall", (40.6760, -73.9796, "Park Slope", "702 Union St, Brooklyn, NY", "Union Hall")),
+    ("young ethel", (40.6679, -73.9863, "Park Slope", "506 5th Ave, Brooklyn, NY", "Young Ethel's")),
+    ("salsa salsa", (40.6823, -73.9818, "Park Slope", "55 4th Ave, Brooklyn, NY", "Salsa Salsa Dance Studio")),
+    ("265 4th ave", (40.6763, -73.9850, "Park Slope", "265 4th Ave, Brooklyn, NY", "Prospect Park Board Gaming")),
+    ("prospect park board", (40.6763, -73.9850, "Park Slope", "265 4th Ave, Brooklyn, NY", "Prospect Park Board Gaming")),
+    ("brooklyn strategist", (40.6830, -73.9961, "Cobble Hill", "333 Court St, Brooklyn, NY", "The Brooklyn Strategist")),
+    ("books are magic", (40.6866, -73.9937, "Cobble Hill", "225 Smith St, Brooklyn, NY", "Books Are Magic")),
+    ("greenlight", (40.6872, -73.9740, "Fort Greene", "686 Fulton St, Brooklyn, NY", "Greenlight Bookstore")),
+    ("brooklyn brainery", (40.6766, -73.9667, "Prospect Heights", "190 Underhill Ave, Brooklyn, NY", "Brooklyn Brainery")),
+    ("vanderbilt open streets", (40.6784, -73.9688, "Prospect Heights", "Vanderbilt Ave, Brooklyn, NY", "Vanderbilt Ave Open Streets")),
+    ("abolitionist place", (40.6917, -73.9853, "Downtown Brooklyn", "225 Duffield St, Brooklyn, NY", "Abolitionist Place Park")),
+    ("domino park", (40.7158, -73.9678, "Williamsburg", "15 River St, Brooklyn, NY", "Domino Park")),
+    ("box house hotel", (40.7360, -73.9535, "Greenpoint", "77 Box St, Brooklyn, NY", "The Box House Hotel")),
+    ("java street", (40.7314, -73.9577, "Greenpoint", "59 Java St, Brooklyn, NY", "Java Street Community Garden")),
+    ("barclays", (40.6826, -73.9754, "Prospect Heights", "620 Atlantic Ave, Brooklyn, NY", "Barclays Center")),
+    ("kings theatre", (40.6457, -73.9583, "Flatbush", "1027 Flatbush Ave, Brooklyn, NY", "Kings Theatre")),
+    ("brooklyn bowl", (40.7219, -73.9575, "Williamsburg", "61 Wythe Ave, Brooklyn, NY", "Brooklyn Bowl")),
+    ("nitehawk", (40.7163, -73.9626, "Williamsburg", "136 Metropolitan Ave, Brooklyn, NY", "Nitehawk Cinema")),
+    ("pioneer works", (40.6797, -74.0116, "Red Hook", "159 Pioneer St, Brooklyn, NY", "Pioneer Works")),
+
+    # Queens Rules
+    ("knockdown center", (40.7157, -73.9150, "Maspeth", "52-19 Flushing Ave, Queens, NY", "Knockdown Center")),
+    ("tv eye", (40.6967, -73.9054, "Ridgewood", "1647 Weirfield St, Queens, NY", "TV Eye")),
+    ("trans-pecos", (40.6974, -73.9059, "Ridgewood", "915 Wyckoff Ave, Queens, NY", "Trans-Pecos")),
+    ("nowadays", (40.6928, -73.9015, "Ridgewood", "56-06 Cooper Ave, Queens, NY", "Nowadays")),
+    ("qed", (40.7749, -73.9118, "Astoria", "27-16 23rd Ave, Queens, NY", "Q.E.D. Astoria")),
+    ("last word", (40.7745, -73.9099, "Astoria", "31-30 Ditmars Blvd, Queens, NY", "The Last Word")),
+    ("hunters point", (40.7418, -73.9587, "Long Island City", "50th Ave & Center Blvd, Queens, NY", "Hunters Point South Park")),
+    ("moma ps1", (40.7456, -73.9472, "Long Island City", "22-25 Jackson Ave, Queens, NY", "MoMA PS1")),
+    ("moving image", (40.7563, -73.9239, "Astoria", "36-01 35th Ave, Queens, NY", "Museum of the Moving Image")),
+    ("socrates sculpture", (40.7686, -73.9360, "Long Island City", "32-01 Vernon Blvd, Queens, NY", "Socrates Sculpture Park")),
+    ("forest hills stadium", (40.7202, -73.8447, "Forest Hills", "1 Tennis Pl, Queens, NY", "Forest Hills Stadium")),
+    ("citi field", (40.7571, -73.8458, "Flushing", "41 Seaver Way, Queens, NY", "Citi Field")),
+
+    # Bronx & Staten Island Rules
+    ("yankee stadium", (40.8296, -73.9262, "South Bronx", "1 E 161st St, Bronx, NY", "Yankee Stadium")),
+    ("lehman center", (40.8719, -73.8942, "Bedford Park", "250 Bedford Park Blvd W, Bronx, NY", "Lehman Center")),
+    ("bronx zoo", (40.8506, -73.8770, "Bronx Park", "2300 Southern Blvd, Bronx, NY", "Bronx Zoo")),
+    ("nybg", (40.8624, -73.8778, "Bronx Park", "2900 Southern Blvd, Bronx, NY", "New York Botanical Garden")),
+    ("botanical garden", (40.8624, -73.8778, "Bronx Park", "2900 Southern Blvd, Bronx, NY", "New York Botanical Garden")),
+    ("wave hill", (40.8978, -73.9118, "Riverdale", "4900 Independence Ave, Bronx, NY", "Wave Hill")),
+    ("st. george theatre", (40.6424, -74.0772, "St. George", "35 Hyatt St, Staten Island, NY", "St. George Theatre")),
+    ("snug harbor", (40.6438, -74.1018, "Livingston", "1000 Richmond Terrace, Staten Island, NY", "Snug Harbor")),
+    ("conference house", (40.5034, -74.2531, "Tottenville", "298 Satterlee St, Staten Island, NY", "Conference House Park")),
+]
+
+# Coordinate bounding box for valid NYC Metro area events
+MIN_LAT, MAX_LAT = 40.48, 40.95
+MIN_LNG, MAX_LNG = -74.30, -73.65
+
+
+def resolve_event_geo(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Resolve latitude, longitude, neighborhood, and venue name for an event.
+
+    Prioritizes:
+    1. Pre-existing valid event coordinates (e.g. from Ticketmaster/Eventbrite)
+    2. Exact curated venue match
+    3. Pattern/needle match on venue name and source
+    """
+    venue_raw = (event.get("venue") or "").strip()
+    source_raw = (event.get("_source_venue") or "").strip()
+
+    # Discard non-physical venues
+    v_lower = venue_raw.lower()
+    if not v_lower or v_lower in ("zoom", "online", "virtual", "online event", "tba", "various"):
+        return None
+
+    # 1. Check if event has native coordinates
+    lat = event.get("lat") or event.get("latitude")
+    lng = event.get("lng") or event.get("lon") or event.get("longitude")
+    if lat is not None and lng is not None:
+        try:
+            flat, flng = float(lat), float(lng)
+            if MIN_LAT <= flat <= MAX_LAT and MIN_LNG <= flng <= MAX_LNG:
+                return {
+                    "lat": round(flat, 5),
+                    "lng": round(flng, 5),
+                    "venue": venue_raw or source_raw,
+                    "neighborhood": event.get("neighborhood") or "",
+                    "address": event.get("address") or "",
+                }
+        except (ValueError, TypeError):
+            pass
+
+    # 2. Check exact curated match
+    norm_v = re.sub(r"[^\w\s]", "", v_lower).strip()
+    if v_lower in VENUE_COORDINATES:
+        lat, lng, neigh, addr, cname = VENUE_COORDINATES[v_lower]
+        return {"lat": lat, "lng": lng, "venue": cname, "neighborhood": neigh, "address": addr}
+    if norm_v in VENUE_COORDINATES:
+        lat, lng, neigh, addr, cname = VENUE_COORDINATES[norm_v]
+        return {"lat": lat, "lng": lng, "venue": cname, "neighborhood": neigh, "address": addr}
+
+    # 3. Check needle rules
+    target = f"{v_lower} {source_raw.lower()}"
+    for needle, (lat, lng, neigh, addr, cname) in VENUE_RULES:
+        if needle in target:
+            return {"lat": lat, "lng": lng, "venue": cname, "neighborhood": neigh, "address": addr}
+
+    return None

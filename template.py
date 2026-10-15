@@ -4,7 +4,7 @@ import re
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from html import escape
-from urllib.parse import quote
+from urllib.parse import quote, quote_plus
 
 from scrapers import (
     EASTERN,
@@ -16,6 +16,7 @@ from scrapers import (
     fetch_nyc_weather,
     fetch_luckyseat_nyc,
 )
+from venues_geo import resolve_event_geo
 
 
 CITY_RULES = [
@@ -528,6 +529,80 @@ def compute_recurring(dated):
     return recurring
 
 
+COMMERCIAL_VENUES = {
+    "madison square garden", "msg", "barclays center", "barclays", "radio city", "radio city music hall",
+    "beacon theatre", "carnegie hall", "lincoln center", "bowery ballroom", "mercury lounge", "webster hall",
+    "terminal 5", "irving plaza", "racket nyc", "racket", "brooklyn steel", "music hall of williamsburg",
+    "warsaw", "kings theatre", "forest hills stadium", "yankee stadium", "citi field", "le poisson rouge",
+    "lpr", "blue note", "sony hall", "town hall", "the town hall", "city winery", "apollo theater",
+    "apollo", "symphony space", "comedy cellar", "gramercy theatre", "somewhere nowhere",
+    "superior ingredients", "house of yes", "knockdown center"
+}
+
+EXCLUDE_VENUES_OR_SOURCES = {
+    "museum", "library", "bookstore", "strand", "greenmarket", "farmers market",
+    "board games", "trivia", "run club", "hiking", "volunteer", "central park",
+    "church", "cathedral", "parks", "meetup"
+}
+
+
+def _clean_ticket_query(title):
+    if not title:
+        return ""
+    q = title
+    q = re.sub(r"^(?:broadway in nyc|presents|live nation presents|bowery presents):\s*", "", q, flags=re.IGNORECASE)
+    q = re.sub(r"^(?:nba\s+|mlb\s+|nhl\s+|nfl\s+|wnba\s+)?(?:preseason|rescheduled|postponed):\s*", "", q, flags=re.IGNORECASE)
+    q = re.sub(r"\s*[\(\[](?:18\+|21\+|all ages|sold out|matinee|late show|early show|touring|preseason)[^\)\]]*[\)\]]", "", q, flags=re.IGNORECASE)
+    if ":" in q:
+        head, _ = q.split(":", 1)
+        if len(head.strip()) >= 3 and not any(gen in head.lower() for gen in ["tour", "special", "an evening", "night", "live"]):
+            q = head.strip()
+    for q_sep in [" “", " \"", " - ", " – ", " — "]:
+        if q_sep in q:
+            head, _ = q.split(q_sep, 1)
+            if len(head.strip()) >= 4:
+                q = head.strip()
+                break
+    q = re.sub(r"\s*-\s*New York\b.*", "", q, flags=re.IGNORECASE)
+    q = re.sub(r"[\"“”]", "", q)
+    q = re.sub(r"\s+", " ", q).strip()
+    return q
+
+
+def _is_commercial_ticketed(e):
+    p = (e.get("price") or "").lower()
+    if "free" in p or p in ("$0", "0"):
+        return False
+    source = (e.get("_source_venue") or "").lower()
+    venue = (e.get("venue") or "").lower()
+    name = (e.get("name") or "").lower()
+    cat = (e.get("category") or "").lower()
+    if any(ex in source or ex in venue for ex in EXCLUDE_VENUES_OR_SOURCES):
+        return False
+    if "museum tour" in name or "walking tour" in name or "historical tour" in name:
+        return False
+    if any(s in source for s in ["ticketmaster", "seatgeek", "donyc"]):
+        return True
+    if any(cv in venue or cv in source for cv in COMMERCIAL_VENUES):
+        return True
+    if cat in ("music", "sports", "comedy", "theater") and e.get("price"):
+        return True
+    return False
+
+
+def _build_compare_links(e, raw_title):
+    if not _is_commercial_ticketed(e):
+        return ""
+    q = _clean_ticket_query(raw_title)
+    if not q or len(q) < 3:
+        return ""
+    encoded_q = quote_plus(q)
+    gt_url = f"https://gametime.co/search?q={encoded_q}"
+    sh_url = f"https://www.stubhub.com/search?q={encoded_q}"
+    label = "compare prices" if e.get("price") else "live prices"
+    return f'<span class="compare-tickets">{label}: <a href="{escape(gt_url)}" target="_blank" rel="noopener">Gametime</a> · <a href="{escape(sh_url)}" target="_blank" rel="noopener">StubHub</a></span>'
+
+
 def _dedup_key(e):
     name = (e.get("name") or "").strip().lower()
     name = re.sub(r"[^a-z0-9]+", " ", name).strip()
@@ -622,6 +697,7 @@ def render_page(results):
         )
         is_free = _is_event_free(e)
         price_raw = escape(e["price"]) if e.get("price") else ""
+        is_comm = _is_commercial_ticketed(e)
         if price_raw:
             if "free" in price_raw.lower() or price_raw in ("$0", "0"):
                 price_tag = f'<span class="price free">{price_raw}</span>'
@@ -629,6 +705,8 @@ def render_page(results):
                 price_tag = f'<span class="price">{price_raw}</span>'
         elif is_free:
             price_tag = '<span class="price free">Free</span>'
+        elif is_comm:
+            price_tag = '<span class="price ticketed">Live Pricing ↗</span>'
         else:
             price_tag = ""
 
@@ -651,9 +729,19 @@ def render_page(results):
             )
             if alt_links:
                 alt_html = f'<span class="alt-sources">also on {alt_links}</span>'
+
+        compare_html = _build_compare_links(e, raw_title)
+
+        geo = resolve_event_geo(e)
+        geo_attrs = ""
+        geo_btn = ""
+        if geo:
+            geo_attrs = f' data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue-name="{escape(geo["venue"])}" data-neighborhood="{escape(geo["neighborhood"])}"'
+            geo_btn = f' <button type="button" class="venue-map-jump" data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue="{escape(geo["venue"])}" title="View {escape(geo["venue"])} on Map">📍</button>'
+
         if venue:
             maps_url = _maps_link(venue, city)
-            venue_html = f'<a class="venue-link" href="{escape(maps_url)}" target="_blank" rel="noopener">{escape(venue)}</a>'
+            venue_html = f'<a class="venue-link" href="{escape(maps_url)}" target="_blank" rel="noopener">{escape(venue)}</a>{geo_btn}'
         else:
             venue_html = ""
 
@@ -672,10 +760,12 @@ def render_page(results):
         guestlist_flag = "true" if is_guestlist else "false"
         guestlist_badge = '<span class="badge-guestlist" title="Free club guestlist or RSVP entry">🎟️ Guestlist</span>' if is_guestlist else ""
         free_flag = "true" if (is_free or is_guestlist) else "false"
-        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}" data-city="{escape(city)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}">
+        epoch_attr = f' data-epoch="{int(e["_time"].timestamp())}"' if e.get("_time") else ''
+        extra_html = f' · {compare_html}' if compare_html else ''
+        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}" data-city="{escape(city)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}"{epoch_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
           <div class="what">{link}{price_tag}{guestlist_badge}{recur_badge}
-            <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{cal_html}</div>
+            <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
             {desc_html}
           </div>
         </li>'''
@@ -705,6 +795,9 @@ def render_page(results):
             </div>''')
         return "".join(bucket_blocks)
 
+    today = datetime.now(EASTERN).date()
+    today_iso = today.isoformat()
+
     def _render_day_section(heading_html, events, date_attr=""):
         by_city = {c: [] for c in city_day_order}
         for e in events:
@@ -720,9 +813,23 @@ def render_page(results):
             <h3 class="city-head"><span>{escape(CITY_LABELS[cname])}</span><span class="count">{len(city_events)}</span></h3>
             <div class="buckets">{_render_buckets(city_events)}</div>
           </div>''')
+        is_today = (date_attr == today_iso)
+        day_class = "day" if is_today else "day out-of-week"
+        past_banner_html = '''
+          <div class="past-events-banner" id="past-events-banner" style="display: none;">
+            <div class="past-banner-info">
+              <span class="past-banner-badge" id="past-banner-badge">⏱️ Live Tonight</span>
+              <span class="past-banner-text" id="past-banner-text"></span>
+            </div>
+            <div class="past-banner-actions">
+              <button type="button" class="past-banner-btn" id="btn-toggle-past">Show earlier today</button>
+              <button type="button" class="past-banner-btn btn-tomorrow" id="btn-banner-tomorrow" style="display: none;">See Tomorrow →</button>
+            </div>
+          </div>''' if is_today else ""
         return f'''
-        <section class="day" data-date="{date_attr}">
+        <section class="{day_class}" data-date="{date_attr}">
           <h2>{heading_html}<span class="count">{len(events)}</span></h2>
+          {past_banner_html}
           <div class="cities">{"".join(city_blocks)}</div>
         </section>'''
 
@@ -1304,6 +1411,10 @@ def render_page(results):
   .cat-pill {{ display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 5px; font-size: 11px; font-weight: 600; line-height: 1.3; border: 1px solid; }}
   .price {{ display:inline-block; background: rgba(255,255,255,0.06); color: var(--muted); font-size: 11px; padding: 2px 7px; border-radius: 5px; font-weight: 500; }}
   .price.free {{ background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); font-weight: 700; }}
+  .price.ticketed {{ background: rgba(139, 178, 255, 0.12); color: #8bb2ff; border: 1px solid rgba(139, 178, 255, 0.3); font-weight: 600; font-size: 10px; }}
+  .compare-tickets {{ font-size: 11px; color: var(--muted); }}
+  .compare-tickets a {{ color: var(--accent); text-decoration: none; }}
+  .compare-tickets a:hover {{ text-decoration: underline; }}
   .cal-links {{ display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; }}
   .cal-btn {{ background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 500; text-decoration: none; cursor: pointer; line-height: 1.3; display: inline-flex; align-items: center; gap: 3px; font-family: inherit; transition: all 0.15s ease; }}
   .cal-btn:hover {{ color: #fff; border-color: var(--accent); background: rgba(93,155,255,0.15); }}
@@ -1379,6 +1490,454 @@ def render_page(results):
   .mini-cal-grid .d:not(.blank):hover {{ border-color: var(--accent); }}
   .event.hidden {{ display: none; }}
   .day.empty, .day.out-of-week {{ display: none; }}
+  .no-events-msg {{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 36px 20px;
+    text-align: center;
+    color: var(--muted);
+    margin: 8px 0 16px;
+  }}
+  .no-events-msg p {{
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: var(--fg);
+  }}
+
+  /* Past Events Filter Banner */
+  .past-events-banner {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    margin: 8px 0 16px;
+  }}
+  .past-banner-info {{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--fg);
+  }}
+  .past-banner-badge {{
+    background: rgba(93, 155, 255, 0.15);
+    color: var(--accent);
+    border: 1px solid rgba(93, 155, 255, 0.3);
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+  }}
+  .past-banner-badge.badge-all {{
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--fg);
+    border-color: var(--border);
+  }}
+  .past-banner-badge.badge-done {{
+    background: rgba(242, 158, 76, 0.15);
+    color: #f29e4c;
+    border-color: rgba(242, 158, 76, 0.35);
+  }}
+  .past-banner-text strong {{
+    color: #fff;
+  }}
+  .past-banner-actions {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }}
+  .past-banner-btn {{
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+  }}
+  .past-banner-btn:hover {{
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--accent);
+    color: #fff;
+  }}
+  .past-banner-btn.btn-tomorrow {{
+    background: var(--accent);
+    color: #0c0e14;
+    border-color: var(--accent);
+    font-weight: 700;
+  }}
+  .past-banner-btn.btn-tomorrow:hover {{
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }}
+  .event.past-time {{
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+  }}
+  .event.past-time:hover {{
+    opacity: 0.95;
+  }}
+  .event.past-time .when::after {{
+    content: " (earlier)";
+    font-size: 10px;
+    opacity: 0.7;
+    font-weight: 400;
+  }}
+
+  /* View Switcher */
+  .view-switch-bar {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 6px 12px;
+  }}
+  .view-toggle {{
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 2px;
+    gap: 2px;
+  }}
+  .view-btn {{
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s ease;
+  }}
+  .view-btn:hover {{
+    color: var(--fg);
+  }}
+  .view-btn.active {{
+    background: var(--accent);
+    color: #0c0e14;
+    font-weight: 700;
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }}
+  .map-venue-stat {{
+    font-size: 12px;
+    color: var(--muted);
+  }}
+  .map-venue-stat strong {{
+    color: var(--accent);
+  }}
+
+  /* Map View Wrapper */
+  .map-view-wrapper {{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+  }}
+  .map-header {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0 4px;
+  }}
+  .map-header-title {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--fg);
+  }}
+  .map-hint {{
+    color: var(--muted);
+    font-size: 11px;
+  }}
+  .map-tool-btn {{
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    border-radius: var(--radius-sm);
+    padding: 3px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+  }}
+  .map-tool-btn:hover {{
+    border-color: var(--accent);
+    color: var(--accent);
+  }}
+  .leaflet-map {{
+    width: 100%;
+    height: 520px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    background: #0c0e14;
+    z-index: 1;
+  }}
+  .leaflet-container.osm-dark-tiles,
+  .leaflet-container.osm-dark-tiles .leaflet-tile-container {{
+    background: #0c0e14 !important;
+  }}
+  .leaflet-container.osm-dark-tiles .leaflet-tile-pane {{
+    filter: invert(100%) hue-rotate(180deg) brightness(88%) contrast(95%);
+  }}
+  .leaflet-control-attribution {{
+    background: rgba(12, 14, 20, 0.85) !important;
+    color: var(--muted) !important;
+    border-radius: var(--radius-sm);
+    font-size: 10px !important;
+    padding: 2px 6px !important;
+  }}
+  .leaflet-control-attribution a {{
+    color: var(--accent) !important;
+    text-decoration: none !important;
+  }}
+  .leaflet-control-attribution a:hover {{
+    text-decoration: underline !important;
+  }}
+  .leaflet-bar a {{
+    background-color: #141824 !important;
+    color: #eef1f8 !important;
+    border: 1px solid var(--border) !important;
+    border-bottom: 1px solid var(--border) !important;
+  }}
+  .leaflet-bar a:hover {{
+    background-color: #1e2436 !important;
+    color: var(--accent) !important;
+  }}
+
+  /* Venue Map Pin in Leaflet */
+  .custom-venue-icon {{
+    background: transparent !important;
+    border: none !important;
+  }}
+  .venue-marker {{
+    background: #141824;
+    border: 1.5px solid var(--accent);
+    color: #eef1f8;
+    border-radius: 999px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.7), 0 0 10px rgba(93, 155, 255, 0.35);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    transform: translate(-50%, -50%);
+    user-select: none;
+  }}
+  .venue-marker:hover, .venue-marker.highlighted {{
+    transform: translate(-50%, -50%) scale(1.12);
+    background: var(--accent);
+    color: #0c0e14;
+    border-color: #fff;
+    box-shadow: 0 6px 20px rgba(93, 155, 255, 0.6);
+    z-index: 9999 !important;
+  }}
+  .venue-marker .pin-count {{
+    background: var(--accent);
+    color: #0c0e14;
+    border-radius: 999px;
+    font-size: 10px;
+    padding: 1px 6px;
+    font-weight: 800;
+    line-height: 1.2;
+  }}
+  .venue-marker:hover .pin-count, .venue-marker.highlighted .pin-count {{
+    background: #0c0e14;
+    color: #fff;
+  }}
+  .venue-map-jump {{
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0 2px;
+    line-height: 1;
+    opacity: 0.75;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+    display: inline-block;
+    vertical-align: middle;
+  }}
+  .venue-map-jump:hover {{
+    opacity: 1;
+    transform: scale(1.3);
+  }}
+
+  /* Dark theme Leaflet Popups */
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip {{
+    background: #151822 !important;
+    color: #eef1f8 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.85) !important;
+    border-radius: 12px !important;
+  }}
+  .leaflet-popup-content {{
+    margin: 12px 14px !important;
+    line-height: 1.4 !important;
+    font-family: inherit !important;
+  }}
+  .leaflet-container a.leaflet-popup-close-button {{
+    color: var(--muted) !important;
+    padding: 8px 10px !important;
+  }}
+  .leaflet-container a.leaflet-popup-close-button:hover {{
+    color: #fff !important;
+  }}
+  .map-popup {{
+    min-width: 220px;
+    max-width: 280px;
+  }}
+  .popup-head {{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }}
+  .popup-head strong {{
+    font-size: 13px;
+    color: #fff;
+  }}
+  .popup-neighborhood {{
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+  }}
+  .popup-events {{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 220px;
+    overflow-y: auto;
+  }}
+  .popup-event-item {{
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+  }}
+  .popup-time {{
+    font-size: 10px;
+    color: var(--muted);
+  }}
+  .popup-title {{
+    color: var(--fg);
+    text-decoration: none;
+    font-weight: 500;
+  }}
+  .popup-title:hover {{
+    color: var(--accent);
+    text-decoration: underline;
+  }}
+  .popup-price {{
+    font-size: 10px;
+    color: var(--muted);
+  }}
+  .popup-price.free {{
+    color: var(--green);
+    font-weight: 600;
+  }}
+  .popup-more {{
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    padding: 4px 0 2px;
+  }}
+  .popup-foot {{
+    margin-top: 8px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+    text-align: right;
+  }}
+  .popup-dir-link {{
+    font-size: 11px;
+    color: var(--accent);
+    text-decoration: none;
+  }}
+  .popup-dir-link:hover {{
+    text-decoration: underline;
+  }}
+
+  /* Slide-down venue card below map */
+  .map-venue-card {{
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+  }}
+  .map-venue-card-head {{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }}
+  .map-venue-card-head h3 {{
+    margin: 0;
+    font-size: 15px;
+    color: #fff;
+  }}
+  .panel-sub {{
+    margin: 2px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+  }}
+  .panel-close {{
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 2px 6px;
+    line-height: 1;
+  }}
+  .panel-close:hover {{
+    color: #fff;
+  }}
+  .panel-events {{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 240px;
+    overflow-y: auto;
+  }}
   .ongoing {{ margin-top: 4px; }}
   .ongoing h2 {{ margin: 0 0 4px; font-size: 15px; font-weight: 600; display:flex; align-items:center; gap:8px; color: var(--fg); }}
   .ongoing .hint {{ margin: 0 0 10px; color: var(--muted); font-size: 12px; }}
@@ -1595,6 +2154,21 @@ def render_page(results):
       </div>
     </aside>
     <main>
+      <div class="view-switch-bar">
+        <div class="view-toggle" role="group" aria-label="View mode">
+          <button type="button" class="view-btn active" id="btn-view-list" data-view="list">
+            <span>📋</span> List View
+          </button>
+          <button type="button" class="view-btn" id="btn-view-map" data-view="map">
+            <span>🗺️</span> Map View
+          </button>
+        </div>
+        <div class="view-switch-right">
+          <span id="map-venue-stat" class="map-venue-stat" style="display: none;">
+            <strong id="map-venue-count">0</strong> venues on map
+          </span>
+        </div>
+      </div>
       <div class="location-chips-bar" id="location-chips">
         <button type="button" class="loc-chip active" data-city="all">📍 All Boroughs</button>
         <button type="button" class="loc-chip" data-city="manhattan"><span class="city-dot" style="background:#5d9bff"></span>Manhattan</button>
@@ -1605,18 +2179,18 @@ def render_page(results):
         <button type="button" class="loc-chip" data-city="other"><span class="city-dot" style="background:#9aa3b2"></span>Tri-State</button>
       </div>
       <div class="quick-chips-bar" id="quick-chips">
-        <button type="button" class="chip active" data-time="all">All Upcoming</button>
-        <button type="button" class="chip" data-time="today">⚡ Today</button>
+        <button type="button" class="chip active" data-time="today">⚡ Today</button>
         <button type="button" class="chip" data-time="tomorrow">Tomorrow</button>
         <button type="button" class="chip" data-time="weekend">🎉 This Weekend</button>
         <button type="button" class="chip" data-time="week">📅 Next 7 Days</button>
+        <button type="button" class="chip" data-time="all">All Upcoming</button>
         <button type="button" class="chip chip-guestlist" id="quick-guestlist-chip">🎟️ Guestlists</button>
         <button type="button" class="chip chip-free" id="quick-free-chip">✨ Free Only</button>
       </div>
       <div class="week-nav" id="week-nav">
-        <button type="button" id="week-prev" aria-label="Previous week">← prev</button>
-        <span id="week-label">Loading…</span>
-        <button type="button" id="week-next" aria-label="Next week">next →</button>
+        <button type="button" id="week-prev" aria-label="Previous">← prev</button>
+        <span id="week-label">Today, {today.strftime("%b %d")}</span>
+        <button type="button" id="week-next" aria-label="Next">next →</button>
         <button type="button" id="week-today">today</button>
         <button type="button" id="week-all" data-mode="week">show all</button>
         <button type="button" id="cal-toggle" aria-expanded="false">📅 pick date</button>
@@ -1628,6 +2202,36 @@ def render_page(results):
           <button type="button" id="cal-next-month" aria-label="Next month">›</button>
         </div>
         <div class="mini-cal-grid" id="mini-cal-grid"></div>
+      </div>
+      <div id="map-view-wrapper" class="map-view-wrapper" style="display: none;">
+        <div class="map-header">
+          <div class="map-header-title">
+            <span class="live-pulse"></span>
+            <strong>NYC Live Map</strong>
+            <span class="map-hint">· OpenStreetMap · Pins update with your date &amp; filters</span>
+          </div>
+          <div class="map-header-actions">
+            <button type="button" id="map-recenter-btn" class="map-tool-btn" title="Center map on NYC">🎯 Center NYC</button>
+          </div>
+        </div>
+        <div id="leaflet-map" class="leaflet-map"></div>
+        <div id="map-selected-venue" class="map-venue-card" style="display: none;">
+          <div class="map-venue-card-head">
+            <div>
+              <h3 id="panel-venue-name"></h3>
+              <p id="panel-venue-sub" class="panel-sub"></p>
+            </div>
+            <button type="button" id="panel-close-btn" class="panel-close" aria-label="Close panel">✕</button>
+          </div>
+          <ul id="panel-events-list" class="panel-events"></ul>
+        </div>
+      </div>
+      <div id="no-events-msg" class="no-events-msg" style="display: none;">
+        <p>No events found for this selection.</p>
+        <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="chip" id="no-events-week-btn">📅 View Next 7 Days</button>
+          <button type="button" class="chip" id="no-events-all-btn">All Upcoming</button>
+        </div>
       </div>
       {"".join(sections)}
       <div class="week-nav bottom">
@@ -1657,7 +2261,12 @@ def render_page(results):
     const quickChips = document.querySelectorAll('#quick-chips .chip[data-time]');
     const quickFreeChip = document.getElementById('quick-free-chip');
     const quickGuestlistChip = document.getElementById('quick-guestlist-chip');
-    let timeFilter = 'all';
+    let timeFilter = 'today';
+    let currentView = 'list';
+    let showPastToday = false;
+    let leafletMap = null;
+    let markersLayer = null;
+    let mapLoading = false;
 
     const mobileToggle = document.getElementById('mobile-filter-toggle');
     const mobileClose = document.getElementById('mobile-filter-close');
@@ -1680,7 +2289,7 @@ def render_page(results):
 
     const todayISO = fmtISO(new Date());
     let anchor = parseISO(todayISO);
-    let showAll = true;
+    let showAll = false;
     let calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
 
     function weekDates() {{
@@ -1689,16 +2298,220 @@ def render_page(results):
       return out;
     }}
     function updateWeekLabel() {{
-      const end = addDays(anchor, 6);
-      const label = (timeFilter === 'all' || showAll)
-        ? 'Showing all upcoming'
-        : `${{fmtShort(anchor)}} – ${{fmtShort(end)}}, ${{end.getFullYear()}}`;
+      let label = '';
+      if (timeFilter === 'all' || showAll) {{
+        label = 'Showing all upcoming';
+      }} else if (timeFilter === 'today') {{
+        label = `Today, ${{fmtShort(parseISO(todayISO))}}`;
+      }} else if (timeFilter === 'tomorrow') {{
+        label = `Tomorrow, ${{fmtShort(addDays(parseISO(todayISO), 1))}}`;
+      }} else if (timeFilter === 'weekend') {{
+        label = 'This Weekend';
+      }} else if (timeFilter === 'day') {{
+        label = `${{fmtShort(anchor)}}, ${{anchor.getFullYear()}}`;
+      }} else {{
+        const end = addDays(anchor, 6);
+        label = `${{fmtShort(anchor)}} – ${{fmtShort(end)}}, ${{end.getFullYear()}}`;
+      }}
       document.getElementById('week-label').textContent = label;
       const b = document.getElementById('week-label-b');
       if (b) b.textContent = label;
       const btn = document.getElementById('week-all');
-      btn.textContent = (timeFilter === 'all' || showAll) ? 'week view' : 'show all';
-      btn.setAttribute('aria-pressed', (timeFilter === 'all' || showAll) ? 'true' : 'false');
+      if (btn) {{
+        btn.textContent = (timeFilter === 'all' || showAll) ? 'today view' : 'show all';
+        btn.setAttribute('aria-pressed', (timeFilter === 'all' || showAll) ? 'true' : 'false');
+      }}
+    }}
+
+    function escapeHTML(str) {{
+      if (!str) return '';
+      return String(str)
+        .split('&').join('&amp;')
+        .split('<').join('&lt;')
+        .split('>').join('&gt;')
+        .split('"').join('&quot;')
+        .split("'").join('&#39;');
+    }}
+
+    function loadLeaflet(callback) {{
+      if (window.L) {{ callback(); return; }}
+      if (mapLoading) {{
+        const interval = setInterval(() => {{
+          if (window.L) {{ clearInterval(interval); callback(); }}
+        }}, 50);
+        return;
+      }}
+      mapLoading = true;
+      const css = document.createElement('link');
+      css.rel = 'stylesheet';
+      css.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+      document.head.appendChild(css);
+
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.onload = () => {{
+        mapLoading = false;
+        callback();
+      }};
+      document.head.appendChild(script);
+    }}
+
+    function initMap() {{
+      if (leafletMap) return;
+      const mapEl = document.getElementById('leaflet-map');
+      if (!mapEl) return;
+
+      leafletMap = L.map(mapEl, {{
+        center: [40.7300, -73.9900],
+        zoom: 12,
+        minZoom: 10,
+        maxZoom: 18,
+      }});
+
+      mapEl.classList.add('osm-dark-tiles');
+      const osmUrl = (location.protocol === 'file:')
+        ? 'https://tile.openstreetmap.de/{{z}}/{{x}}/{{y}}.png'
+        : 'https://tile.openstreetmap.org/{{z}}/{{x}}/{{y}}.png';
+
+      const tiles = L.tileLayer(osmUrl, {{
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+        maxZoom: 19
+      }});
+
+      tiles.on('tileerror', function(error) {{
+        if (error.tile && error.tile.src && error.tile.src.includes('openstreetmap.org')) {{
+          error.tile.src = error.tile.src.replace('tile.openstreetmap.org', 'tile.openstreetmap.de');
+        }}
+      }});
+
+      tiles.addTo(leafletMap);
+      markersLayer = L.layerGroup().addTo(leafletMap);
+      updateMapMarkers();
+    }}
+
+    function switchView(mode) {{
+      currentView = mode;
+      const listBtn = document.getElementById('btn-view-list');
+      const mapBtn = document.getElementById('btn-view-map');
+      const mapWrapper = document.getElementById('map-view-wrapper');
+      const mapStat = document.getElementById('map-venue-stat');
+
+      if (listBtn) listBtn.classList.toggle('active', mode === 'list');
+      if (mapBtn) mapBtn.classList.toggle('active', mode === 'map');
+      if (mapWrapper) mapWrapper.style.display = (mode === 'map') ? 'flex' : 'none';
+      if (mapStat) mapStat.style.display = (mode === 'map') ? 'inline-block' : 'none';
+
+      if (mode === 'map') {{
+        loadLeaflet(() => {{
+          initMap();
+          if (leafletMap) {{
+            leafletMap.invalidateSize();
+            updateMapMarkers();
+          }}
+        }});
+      }}
+      stateToHash();
+    }}
+
+    function updateMapMarkers() {{
+      if (!leafletMap || !markersLayer) return;
+      markersLayer.clearLayers();
+
+      const visibleDaySecs = daySections.filter(d => !d.classList.contains('out-of-week') && !d.classList.contains('empty'));
+      const venueMap = new Map();
+
+      visibleDaySecs.forEach(day => {{
+        const dayDate = day.dataset.date;
+        day.querySelectorAll('.event:not(.hidden)').forEach(li => {{
+          const lat = parseFloat(li.dataset.lat);
+          const lng = parseFloat(li.dataset.lng);
+          if (isNaN(lat) || isNaN(lng)) return;
+
+          const vName = li.dataset.venueName || li.dataset.venue || 'Venue';
+          const key = `${{lat.toFixed(4)}},${{lng.toFixed(4)}}`;
+          if (!venueMap.has(key)) {{
+            venueMap.set(key, {{
+              lat, lng,
+              name: vName,
+              neighborhood: li.dataset.neighborhood || '',
+              events: []
+            }});
+          }}
+
+          const linkEl = li.querySelector('.what a');
+          const title = linkEl ? linkEl.textContent.trim() : (li.querySelector('.what')?.textContent || '');
+          const url = linkEl ? linkEl.getAttribute('href') : '';
+          const when = li.querySelector('.when')?.textContent.trim() || '';
+          const price = li.querySelector('.price')?.textContent.trim() || '';
+          const isFree = li.dataset.free === 'true';
+
+          venueMap.get(key).events.push({{
+            title, url, when, price, isFree, date: dayDate
+          }});
+        }});
+      }});
+
+      const countBadge = document.getElementById('map-venue-count');
+      if (countBadge) countBadge.textContent = venueMap.size;
+
+      venueMap.forEach(v => {{
+        const count = v.events.length;
+        const icon = L.divIcon({{
+          className: 'custom-venue-icon',
+          html: `<div class="venue-marker" title="${{escapeHTML(v.name)}} (${{count}} events)"><span class="pin-name">${{escapeHTML(v.name)}}</span><span class="pin-count">${{count}}</span></div>`,
+          iconSize: null,
+          iconAnchor: [0, 0],
+        }});
+
+        const marker = L.marker([v.lat, v.lng], {{ icon: icon }});
+
+        let popupHtml = `<div class="map-popup">
+          <div class="popup-head">
+            <strong>${{escapeHTML(v.name)}}</strong>
+            ${{v.neighborhood ? `<span class="popup-neighborhood">📍 ${{escapeHTML(v.neighborhood)}}</span>` : ''}}
+          </div>
+          <div class="popup-events">`;
+
+        v.events.slice(0, 5).forEach(ev => {{
+          popupHtml += `<div class="popup-event-item">
+            <span class="popup-time">${{escapeHTML(ev.when)}}</span>
+            <a href="${{escapeHTML(ev.url)}}" target="_blank" rel="noopener" class="popup-title">${{escapeHTML(ev.title)}}</a>
+            ${{ev.price ? `<span class="popup-price ${{ev.isFree ? 'free' : ''}}">${{escapeHTML(ev.price)}}</span>` : ''}}
+          </div>`;
+        }});
+        if (v.events.length > 5) {{
+          popupHtml += `<div class="popup-more">+ ${{v.events.length - 5}} more events</div>`;
+        }}
+        const mapsQuery = encodeURIComponent(`${{v.name}}, New York NY`);
+        popupHtml += `</div>
+          <div class="popup-foot">
+            <a href="https://www.google.com/maps/search/?api=1&query=${{mapsQuery}}" target="_blank" rel="noopener" class="popup-dir-link">Google Maps Directions ↗</a>
+          </div>
+        </div>`;
+
+        marker.bindPopup(popupHtml, {{ maxWidth: 300 }});
+        marker.on('click', () => {{
+          showVenuePanel(v);
+        }});
+        markersLayer.addLayer(marker);
+      }});
+    }}
+
+    function showVenuePanel(v) {{
+      const panel = document.getElementById('map-selected-venue');
+      if (!panel) return;
+      document.getElementById('panel-venue-name').textContent = v.name;
+      document.getElementById('panel-venue-sub').textContent = v.neighborhood ? `📍 ${{v.neighborhood}} · ${{v.events.length}} event(s)` : `${{v.events.length}} event(s)`;
+
+      const list = document.getElementById('panel-events-list');
+      list.innerHTML = v.events.map(ev => `
+        <li class="popup-event-item">
+          <span class="popup-time">${{escapeHTML(ev.when)}}</span>
+          <a href="${{escapeHTML(ev.url)}}" target="_blank" rel="noopener" class="popup-title">${{escapeHTML(ev.title)}}</a>
+          ${{ev.price ? `<span class="popup-price ${{ev.isFree ? 'free' : ''}}">${{escapeHTML(ev.price)}}</span>` : ''}}
+        </li>
+      `).join('');
+      panel.style.display = 'block';
     }}
 
     function updateQuickChipsUI() {{
@@ -1770,8 +2583,10 @@ def render_page(results):
       if (freeOnlyChk && freeOnlyChk.checked) params.set('free', '1');
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
 
-      if (timeFilter !== 'all') params.set('t', timeFilter);
+      if (timeFilter !== 'today') params.set('t', timeFilter);
       if (!showAll && fmtISO(anchor) !== todayISO) params.set('d', fmtISO(anchor));
+      if (currentView !== 'list') params.set('v', currentView);
+      if (showPastToday) params.set('past', '1');
 
       const hash = params.toString();
       history.replaceState(null, '', hash ? '#' + hash : location.pathname + location.search);
@@ -1785,6 +2600,10 @@ def render_page(results):
       if (params.has('q')) searchInput.value = params.get('q');
       if (params.get('free') === '1' && freeOnlyChk) freeOnlyChk.checked = true;
       if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
+      if (params.get('past') === '1') showPastToday = true;
+      if (params.get('v') === 'map') {{
+        switchView('map');
+      }}
 
       if (params.has('t')) {{
         timeFilter = params.get('t');
@@ -1804,7 +2623,14 @@ def render_page(results):
       if (params.has('d')) {{
         const d = params.get('d');
         if (d === 'all') {{ showAll = true; timeFilter = 'all'; }}
-        else {{ anchor = parseISO(d); calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1); }}
+        else {{
+          anchor = parseISO(d);
+          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+          if (d === todayISO) timeFilter = 'today';
+          else if (d === fmtISO(addDays(parseISO(todayISO), 1))) timeFilter = 'tomorrow';
+          else timeFilter = 'day';
+          showAll = false;
+        }}
       }}
     }}
 
@@ -1818,6 +2644,19 @@ def render_page(results):
       const guestlistOnly = guestlistOnlyChk ? guestlistOnlyChk.checked : false;
       const week = new Set(weekDates());
 
+      const nowEpoch = Math.floor(Date.now() / 1000);
+      const twoHoursAgoEpoch = nowEpoch - 7200;
+      const cutoffDate = new Date(Date.now() - 7200 * 1000);
+      const cutoffTimeStr = cutoffDate.toLocaleTimeString('en-US', {{
+        timeZone: 'America/New_York',
+        hour: 'numeric',
+        minute: '2-digit'
+      }});
+
+      let hiddenPastCount = 0;
+      let totalTodayEventsCount = 0;
+      let visibleTonightCount = 0;
+
       document.querySelectorAll('.event').forEach(li => {{
         const catOk = cats.has(li.dataset.bucket);
         const venueOk = venues.has(li.dataset.venue);
@@ -1826,17 +2665,80 @@ def render_page(results):
         const freeOk = !freeOnly || li.dataset.free === 'true';
         const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
         const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
-        li.classList.toggle('hidden', !(catOk && venueOk && recurOk && cityOk && searchOk && freeOk && guestlistOk));
+
+        const daySec = li.closest('.day');
+        const isToday = daySec && daySec.dataset.date === todayISO;
+        const epoch = li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0;
+        const isPast = isToday && epoch > 0 && epoch < twoHoursAgoEpoch;
+
+        if (isToday && epoch > 0) {{
+          totalTodayEventsCount++;
+        }}
+
+        li.classList.toggle('past-time', isPast);
+
+        let timePastOk = true;
+        if (isPast) {{
+          if (!showPastToday) {{
+            timePastOk = false;
+            hiddenPastCount++;
+          }}
+        }}
+
+        const isVisible = catOk && venueOk && recurOk && cityOk && searchOk && freeOk && guestlistOk && timePastOk;
+        li.classList.toggle('hidden', !isVisible);
+
+        if (isToday && isVisible && !isPast) {{
+          visibleTonightCount++;
+        }}
       }});
 
       document.querySelectorAll('.bucket').forEach(b => {{
         const visible = b.querySelectorAll('.event:not(.hidden)').length;
         b.classList.toggle('empty', visible === 0);
+        const countSpan = b.querySelector('.bucket-head .count');
+        if (countSpan) countSpan.textContent = visible;
       }});
       document.querySelectorAll('.city-section').forEach(sec => {{
         const visible = sec.querySelectorAll('.event:not(.hidden)').length;
         sec.classList.toggle('empty', visible === 0);
+        const countSpan = sec.querySelector('.city-head .count');
+        if (countSpan) countSpan.textContent = visible;
       }});
+
+      // Update past events notice banner
+      const pastBanner = document.getElementById('past-events-banner');
+      if (pastBanner) {{
+        const showBanner = (timeFilter === 'today' || (timeFilter === 'all' && showAll)) && (hiddenPastCount > 0 || showPastToday);
+        if (showBanner && (hiddenPastCount > 0 || (showPastToday && totalTodayEventsCount > 0))) {{
+          pastBanner.style.display = 'flex';
+          const badge = document.getElementById('past-banner-badge');
+          const text = document.getElementById('past-banner-text');
+          const toggleBtn = document.getElementById('btn-toggle-past');
+          const tomorrowBtn = document.getElementById('btn-banner-tomorrow');
+
+          if (!showPastToday) {{
+            if (visibleTonightCount === 0 && hiddenPastCount > 0) {{
+              if (badge) {{ badge.textContent = 'Tonight Wrapped Up'; badge.className = 'past-banner-badge badge-done'; }}
+              if (text) {{ text.innerHTML = `All scheduled events for today have started (<strong>${{hiddenPastCount}}</strong> earlier event${{hiddenPastCount === 1 ? '' : 's'}} hidden)`; }}
+              if (toggleBtn) {{ toggleBtn.textContent = 'Show earlier today'; }}
+              if (tomorrowBtn) {{ tomorrowBtn.style.display = 'inline-block'; }}
+            }} else {{
+              if (badge) {{ badge.textContent = '⏱️ Live Tonight'; badge.className = 'past-banner-badge'; }}
+              if (text) {{ text.innerHTML = `Showing events from <strong>${{cutoffTimeStr}}</strong> onward (<strong>${{hiddenPastCount}}</strong> earlier event${{hiddenPastCount === 1 ? '' : 's'}} hidden)`; }}
+              if (toggleBtn) {{ toggleBtn.textContent = 'Show earlier today'; }}
+              if (tomorrowBtn) {{ tomorrowBtn.style.display = 'none'; }}
+            }}
+          }} else {{
+            if (badge) {{ badge.textContent = 'All Day'; badge.className = 'past-banner-badge badge-all'; }}
+            if (text) {{ text.innerHTML = `Showing all events for today (including earlier events before ${{cutoffTimeStr}})`; }}
+            if (toggleBtn) {{ toggleBtn.textContent = 'Hide earlier events'; }}
+            if (tomorrowBtn) {{ tomorrowBtn.style.display = 'none'; }}
+          }}
+        }} else {{
+          pastBanner.style.display = 'none';
+        }}
+      }}
 
       const todayDate = parseISO(todayISO);
       const dayOfWeek = todayDate.getDay();
@@ -1846,6 +2748,7 @@ def render_page(results):
       const sunISO = fmtISO(addDays(todayDate, daysToSat + 1));
       const tomorrowISO = fmtISO(addDays(todayDate, 1));
 
+      let visibleDays = 0;
       daySections.forEach(day => {{
         const date = day.dataset.date;
         let inTime = true;
@@ -1857,13 +2760,23 @@ def render_page(results):
           inTime = (date === satISO || date === sunISO);
         }} else if (timeFilter === 'week') {{
           inTime = (date === 'tba' || week.has(date));
+        }} else if (timeFilter === 'day') {{
+          inTime = (date === fmtISO(anchor));
         }} else {{
           inTime = showAll || date === 'tba' || week.has(date);
         }}
         day.classList.toggle('out-of-week', !inTime);
         const visible = day.querySelectorAll('.event:not(.hidden)').length;
         day.classList.toggle('empty', visible === 0);
+        const headingCount = day.querySelector('h2 .count');
+        if (headingCount) headingCount.textContent = visible;
+        if (inTime && visible > 0) visibleDays++;
       }});
+
+      const noEventsEl = document.getElementById('no-events-msg');
+      if (noEventsEl) {{
+        noEventsEl.style.display = (visibleDays === 0) ? 'block' : 'none';
+      }}
 
       renderCal();
       updateWeekLabel();
@@ -1871,6 +2784,9 @@ def render_page(results):
       updateLocChipsUI();
       updateSearchUI();
       updateMobileBadge();
+      if (currentView === 'map' && leafletMap) {{
+        updateMapMarkers();
+      }}
       stateToHash();
     }}
 
@@ -1890,24 +2806,50 @@ def render_page(results):
         const classes = ['d'];
         if (eventDates.has(iso)) classes.push('has-events');
         if (iso === todayISO) classes.push('today');
-        if (!showAll && week.has(iso)) classes.push('in-week');
+        if (!showAll && timeFilter === 'week' && week.has(iso)) classes.push('in-week');
         if (iso === fmtISO(anchor)) classes.push('anchor');
         html += `<div class="${{classes.join(' ')}}" data-date="${{iso}}">${{d}}</div>`;
       }}
       grid.innerHTML = html;
     }}
 
-    function shiftWeek(delta) {{
-      timeFilter = 'week';
+    function shiftNav(delta) {{
+      if (timeFilter === 'week') {{
+        anchor = addDays(anchor, delta * 7);
+      }} else if (timeFilter === 'today' || timeFilter === 'tomorrow' || timeFilter === 'day') {{
+        anchor = addDays(anchor, delta);
+        const iso = fmtISO(anchor);
+        if (iso === todayISO) {{
+          timeFilter = 'today';
+        }} else if (iso === fmtISO(addDays(parseISO(todayISO), 1))) {{
+          timeFilter = 'tomorrow';
+        }} else {{
+          timeFilter = 'day';
+        }}
+      }} else if (timeFilter === 'weekend') {{
+        anchor = addDays(anchor, delta * 7);
+      }} else {{
+        // 'all'
+        anchor = addDays(parseISO(todayISO), delta > 0 ? 1 : 0);
+        const iso = fmtISO(anchor);
+        timeFilter = (iso === todayISO) ? 'today' : (iso === fmtISO(addDays(parseISO(todayISO), 1)) ? 'tomorrow' : 'day');
+      }}
       showAll = false;
-      anchor = addDays(anchor, delta);
       calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
       apply();
     }}
+
     function setAnchor(iso) {{
-      timeFilter = 'week';
+      if (iso === todayISO) {{
+        timeFilter = 'today';
+      }} else if (iso === fmtISO(addDays(parseISO(todayISO), 1))) {{
+        timeFilter = 'tomorrow';
+      }} else {{
+        timeFilter = 'day';
+      }}
       showAll = false;
       anchor = parseISO(iso);
+      calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
       apply();
     }}
 
@@ -1991,22 +2933,51 @@ def render_page(results):
       }});
     }}
 
-    document.getElementById('week-prev').addEventListener('click', () => shiftWeek(-7));
-    document.getElementById('week-next').addEventListener('click', () => shiftWeek(7));
-    document.getElementById('week-prev-b').addEventListener('click', () => shiftWeek(-7));
-    document.getElementById('week-next-b').addEventListener('click', () => shiftWeek(7));
-    document.getElementById('week-today').addEventListener('click', () => {{ setAnchor(todayISO); calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1); apply(); }});
+    document.getElementById('week-prev').addEventListener('click', () => shiftNav(-1));
+    document.getElementById('week-next').addEventListener('click', () => shiftNav(1));
+    const prevB = document.getElementById('week-prev-b');
+    if (prevB) prevB.addEventListener('click', () => shiftNav(-1));
+    const nextB = document.getElementById('week-next-b');
+    if (nextB) nextB.addEventListener('click', () => shiftNav(1));
+    document.getElementById('week-today').addEventListener('click', () => {{
+      timeFilter = 'today';
+      showAll = false;
+      anchor = parseISO(todayISO);
+      calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+      apply();
+    }});
     document.getElementById('week-all').addEventListener('click', () => {{
       if (showAll || timeFilter === 'all') {{
         showAll = false;
-        timeFilter = 'week';
+        timeFilter = 'today';
         anchor = parseISO(todayISO);
       }} else {{
         showAll = true;
         timeFilter = 'all';
       }}
+      calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
       apply();
     }});
+
+    const noEventsWeek = document.getElementById('no-events-week-btn');
+    if (noEventsWeek) {{
+      noEventsWeek.addEventListener('click', () => {{
+        timeFilter = 'week';
+        showAll = false;
+        anchor = parseISO(todayISO);
+        calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+        apply();
+      }});
+    }}
+    const noEventsAll = document.getElementById('no-events-all-btn');
+    if (noEventsAll) {{
+      noEventsAll.addEventListener('click', () => {{
+        timeFilter = 'all';
+        showAll = true;
+        calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+        apply();
+      }});
+    }}
     document.getElementById('cal-toggle').addEventListener('click', (e) => {{
       const cal = document.getElementById('mini-cal');
       const open = cal.hasAttribute('hidden');
@@ -2057,6 +3028,66 @@ def render_page(results):
         }}
         apply();
       }});
+    }});
+
+    const btnViewList = document.getElementById('btn-view-list');
+    if (btnViewList) btnViewList.addEventListener('click', () => switchView('list'));
+
+    const btnViewMap = document.getElementById('btn-view-map');
+    if (btnViewMap) btnViewMap.addEventListener('click', () => switchView('map'));
+
+    const mapRecenterBtn = document.getElementById('map-recenter-btn');
+    if (mapRecenterBtn) {{
+      mapRecenterBtn.addEventListener('click', () => {{
+        if (leafletMap) {{
+          leafletMap.setView([40.7300, -73.9900], 12, {{ animate: true }});
+        }}
+      }});
+    }}
+
+    const panelCloseBtn = document.getElementById('panel-close-btn');
+    if (panelCloseBtn) {{
+      panelCloseBtn.addEventListener('click', () => {{
+        const p = document.getElementById('map-selected-venue');
+        if (p) p.style.display = 'none';
+      }});
+    }}
+
+    document.addEventListener('click', (e) => {{
+      const jumpBtn = e.target.closest('.venue-map-jump');
+      if (jumpBtn) {{
+        e.preventDefault();
+        const lat = parseFloat(jumpBtn.dataset.lat);
+        const lng = parseFloat(jumpBtn.dataset.lng);
+        if (isNaN(lat) || isNaN(lng)) return;
+        switchView('map');
+        loadLeaflet(() => {{
+          initMap();
+          if (leafletMap) {{
+            leafletMap.setView([lat, lng], 15, {{ animate: true }});
+            const mapWrap = document.getElementById('map-view-wrapper');
+            if (mapWrap) mapWrap.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+          }}
+        }});
+      }}
+    }});
+
+    document.addEventListener('click', (e) => {{
+      if (e.target && e.target.id === 'btn-toggle-past') {{
+        showPastToday = !showPastToday;
+        apply();
+      }} else if (e.target && e.target.id === 'btn-banner-tomorrow') {{
+        const tomorrowChip = document.querySelector('#quick-chips .chip[data-time="tomorrow"]');
+        if (tomorrowChip) {{
+          tomorrowChip.click();
+        }}
+      }}
+    }});
+
+    window.addEventListener('focus', () => {{
+      if (timeFilter === 'today' && !showPastToday) {{
+        apply();
+      }}
     }});
 
     function downloadICS(title, dateStr, venue, url) {{
