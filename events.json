@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T15:52:34.332871+00:00",
+  "generated_at": "2026-10-15T15:55:35.669066+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -1038,6 +1038,14 @@
           "category": "community"
         },
         {
+          "name": "Rebecca Black – Exhibitionism on Tour",
+          "date": "2026-10-17T23:30:00+00:00",
+          "url": "https://donyc.com/events/2026/10/17/rebecca-black-exhibitionism-on-tour-tickets",
+          "venue": "Webster Hall",
+          "price": null,
+          "category": "community"
+        },
+        {
           "name": "All Them Witches - Emma Ruth Rundle",
           "date": "2026-10-17T23:00:00+00:00",
           "url": "https://donyc.com/events/2026/10/17/all-them-witches-emma-ruth-rundle-tickets",
@@ -1050,14 +1058,6 @@
           "date": "2026-10-17T23:30:00+00:00",
           "url": "https://donyc.com/events/2026/10/17/acid-mothers-temple-magick-potion-tickets",
           "venue": "TV Eye",
-          "price": null,
-          "category": "community"
-        },
-        {
-          "name": "Rebecca Black – Exhibitionism on Tour",
-          "date": "2026-10-17T23:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/17/rebecca-black-exhibitionism-on-tour-tickets",
-          "venue": "Webster Hall",
           "price": null,
           "category": "community"
         },
@@ -4487,7 +4487,7 @@
         }
       ],
       "error": null,
-      "duration": 27.49
+      "duration": 44.94
     },
     {
       "venue": "The Skint NYC",
@@ -4575,7 +4575,7 @@
         }
       ],
       "error": null,
-      "duration": 1.56
+      "duration": 1.23
     },
     {
       "venue": "Ticketmaster NYC",
@@ -5103,7 +5103,7 @@
         }
       ],
       "error": null,
-      "duration": 0.76
+      "duration": 0.57
     },
     {
       "venue": "SeatGeek NYC",
@@ -6040,26 +6040,6 @@
           "category": "theater"
         },
         {
-          "name": "A Ghost in Your Ear - New York",
-          "date": "2026-10-16T23:00:00Z",
-          "url": "https://seatgeek.com/a-ghost-in-your-ear-tickets/theater/2026-10-16-7-pm/18584707",
-          "venue": "Minetta Lane Theatre (New York, NY)",
-          "lat": 40.7303,
-          "lng": -74.0011,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Schmigadoon! - New York",
-          "date": "2026-10-16T23:00:00Z",
-          "url": "https://seatgeek.com/schmigadoon-tickets/theater/2026-10-16-7-pm/18229770",
-          "venue": "Nederlander Theatre - NY (New York, NY)",
-          "lat": 40.7557,
-          "lng": -73.9882,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "MJ - The Musical - New York",
           "date": "2026-10-16T23:00:00Z",
           "url": "https://seatgeek.com/mj-the-musical-tickets/broadway/2026-10-16-7-pm/18037660",
@@ -6088,6 +6068,26 @@
           "lng": -73.9845,
           "price": null,
           "category": "comedy"
+        },
+        {
+          "name": "A Ghost in Your Ear - New York",
+          "date": "2026-10-16T23:00:00Z",
+          "url": "https://seatgeek.com/a-ghost-in-your-ear-tickets/theater/2026-10-16-7-pm/18584707",
+          "venue": "Minetta Lane Theatre (New York, NY)",
+          "lat": 40.7303,
+          "lng": -74.0011,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Schmigadoon! - New York",
+          "date": "2026-10-16T23:00:00Z",
+          "url": "https://seatgeek.com/schmigadoon-tickets/theater/2026-10-16-7-pm/18229770",
+          "venue": "Nederlander Theatre - NY (New York, NY)",
+          "lat": 40.7557,
+          "lng": -73.9882,
+          "price": null,
+          "category": "theater"
         },
         {
           "name": "The Book of Mormon - New York",
@@ -6350,16 +6350,6 @@
           "category": "theater"
         },
         {
-          "name": "Just In Time - New York",
-          "date": "2026-10-17T00:00:00Z",
-          "url": "https://seatgeek.com/just-in-time-tickets/broadway/2026-10-16-8-pm/18320360",
-          "venue": "Circle In The Square Theatre (New York, NY)",
-          "lat": 40.7623,
-          "lng": -73.9852,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "Sugar",
           "date": "2026-10-17T00:00:00Z",
           "url": "https://seatgeek.com/sugar-tickets/brooklyn-new-york-brooklyn-steel-2026-10-16-8-pm/concert/18024421",
@@ -6380,22 +6370,22 @@
           "category": "theater"
         },
         {
+          "name": "Just In Time - New York",
+          "date": "2026-10-17T00:00:00Z",
+          "url": "https://seatgeek.com/just-in-time-tickets/broadway/2026-10-16-8-pm/18320360",
+          "venue": "Circle In The Square Theatre (New York, NY)",
+          "lat": 40.7623,
+          "lng": -73.9852,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "Scene Queen with Wargasm and Bailey Spinn",
           "date": "2026-10-17T00:00:00Z",
           "url": "https://seatgeek.com/scene-queen-tickets/new-york-new-york-racket-nyc-2026-10-16-8-pm/concert/18299462",
           "venue": "Racket NYC (New York, NY)",
           "lat": 40.7402,
           "lng": -73.9869,
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Alvaro Diaz",
-          "date": "2026-10-17T00:00:00Z",
-          "url": "https://seatgeek.com/alvaro-diaz-tickets/new-york-new-york-manhattan-center-hammerstein-ballroom-2026-10-16-8-pm/concert/18294773",
-          "venue": "Manhattan Center Hammerstein Ballroom (New York, NY)",
-          "lat": 40.7529,
-          "lng": -73.9941,
           "price": null,
           "category": "music"
         },
@@ -6410,12 +6400,32 @@
           "category": "theater"
         },
         {
+          "name": "Alvaro Diaz",
+          "date": "2026-10-17T00:00:00Z",
+          "url": "https://seatgeek.com/alvaro-diaz-tickets/new-york-new-york-manhattan-center-hammerstein-ballroom-2026-10-16-8-pm/concert/18294773",
+          "venue": "Manhattan Center Hammerstein Ballroom (New York, NY)",
+          "lat": 40.7529,
+          "lng": -73.9941,
+          "price": null,
+          "category": "music"
+        },
+        {
           "name": "Other Desert Cities - New York",
           "date": "2026-10-17T00:00:00Z",
           "url": "https://seatgeek.com/other-desert-cities-tickets/broadway/2026-10-16-8-pm/18310046",
           "venue": "Hudson Theatre - New York",
           "lat": 40.7569,
           "lng": -73.9848,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "& Juliet - New York",
+          "date": "2026-10-17T00:00:00Z",
+          "url": "https://seatgeek.com/juliet-tickets/broadway/2026-10-16-8-pm/18198711",
+          "venue": "Stephen Sondheim Theatre - New York",
+          "lat": 40.7559,
+          "lng": -73.9849,
           "price": null,
           "category": "theater"
         },
@@ -6428,16 +6438,6 @@
           "lng": -73.9943,
           "price": null,
           "category": "music"
-        },
-        {
-          "name": "& Juliet - New York",
-          "date": "2026-10-17T00:00:00Z",
-          "url": "https://seatgeek.com/juliet-tickets/broadway/2026-10-16-8-pm/18198711",
-          "venue": "Stephen Sondheim Theatre - New York",
-          "lat": 40.7559,
-          "lng": -73.9849,
-          "price": null,
-          "category": "theater"
         },
         {
           "name": "Wanted - New York",
@@ -6468,16 +6468,6 @@
           "lng": -73.9753,
           "price": null,
           "category": "music"
-        },
-        {
-          "name": "Chicago - The Musical - New York",
-          "date": "2026-10-17T00:00:00Z",
-          "url": "https://seatgeek.com/chicago-the-musical-tickets/broadway/2026-10-16-8-pm/18187858",
-          "venue": "Ambassador Theatre - New York",
-          "lat": 40.7613,
-          "lng": -73.985,
-          "price": null,
-          "category": "theater"
         },
         {
           "name": "Drunk Dracula - New York",
@@ -6528,6 +6518,16 @@
           "lng": -73.9379,
           "price": null,
           "category": "music"
+        },
+        {
+          "name": "Chicago - The Musical - New York",
+          "date": "2026-10-17T00:00:00Z",
+          "url": "https://seatgeek.com/chicago-the-musical-tickets/broadway/2026-10-16-8-pm/18187858",
+          "venue": "Ambassador Theatre - New York",
+          "lat": 40.7613,
+          "lng": -73.985,
+          "price": null,
+          "category": "theater"
         },
         {
           "name": "Friends! The Musical Parody - New York",
@@ -6830,16 +6830,6 @@
           "category": "theater"
         },
         {
-          "name": "Aladdin - New York",
-          "date": "2026-10-17T18:00:00Z",
-          "url": "https://seatgeek.com/aladdin-tickets/theater/2026-10-17-2-pm/18260410",
-          "venue": "New Amsterdam Theatre (New York, NY)",
-          "lat": 40.7563,
-          "lng": -73.9877,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "The Lost Boys - New York",
           "date": "2026-10-17T18:00:00Z",
           "url": "https://seatgeek.com/the-lost-boys-tickets/broadway/2026-10-17-2-pm/18313004",
@@ -6870,12 +6860,12 @@
           "category": "theater"
         },
         {
-          "name": "The Great Gatsby - The Musical - New York",
+          "name": "Aladdin - New York",
           "date": "2026-10-17T18:00:00Z",
-          "url": "https://seatgeek.com/the-great-gatsby-the-musical-tickets/broadway/2026-10-17-2-pm/18048731",
-          "venue": "Broadway Theatre - New York",
-          "lat": 40.7632,
-          "lng": -73.9829,
+          "url": "https://seatgeek.com/aladdin-tickets/theater/2026-10-17-2-pm/18260410",
+          "venue": "New Amsterdam Theatre (New York, NY)",
+          "lat": 40.7563,
+          "lng": -73.9877,
           "price": null,
           "category": "theater"
         },
@@ -6898,10 +6888,20 @@
           "lng": -73.9851,
           "price": null,
           "category": "theater"
+        },
+        {
+          "name": "The Great Gatsby - The Musical - New York",
+          "date": "2026-10-17T18:00:00Z",
+          "url": "https://seatgeek.com/the-great-gatsby-the-musical-tickets/broadway/2026-10-17-2-pm/18048731",
+          "venue": "Broadway Theatre - New York",
+          "lat": 40.7632,
+          "lng": -73.9829,
+          "price": null,
+          "category": "theater"
         }
       ],
       "error": null,
-      "duration": 0.89
+      "duration": 0.75
     },
     {
       "venue": "Resident Advisor NYC",
@@ -7564,14 +7564,6 @@
           "category": "clubbing"
         },
         {
-          "name": "ARISE & SHINE: LIBRA EDITION with J.Sterling & DIGI",
-          "date": "2026-10-16T22:00:00.000Z",
-          "url": "https://ra.co/events/2539129",
-          "venue": "East River Bar (97 South 6th Street)",
-          "price": "Free",
-          "category": "clubbing"
-        },
-        {
           "name": "Drone Lab & VoicePlay + Open Projector",
           "date": "2026-10-16T19:00:00.000Z",
           "url": "https://ra.co/events/2553827",
@@ -7593,6 +7585,14 @@
           "url": "https://ra.co/events/2561799",
           "venue": "MAD Radio NYC (395 WYTHE AVE, BROOKLYN, NEW YORK)",
           "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "ARISE & SHINE: LIBRA EDITION with J.Sterling & DIGI",
+          "date": "2026-10-16T22:00:00.000Z",
+          "url": "https://ra.co/events/2539129",
+          "venue": "East River Bar (97 South 6th Street)",
+          "price": "Free",
           "category": "clubbing"
         },
         {
@@ -7693,7 +7693,7 @@
         }
       ],
       "error": null,
-      "duration": 0.69
+      "duration": 0.65
     },
     {
       "venue": "Dice.fm NYC",
@@ -7941,7 +7941,7 @@
         }
       ],
       "error": null,
-      "duration": 0.45
+      "duration": 0.48
     },
     {
       "venue": "Brooklyn Bowl",
@@ -8149,7 +8149,7 @@
         }
       ],
       "error": null,
-      "duration": 1.64
+      "duration": 1.58
     },
     {
       "venue": "Elsewhere Brooklyn",
@@ -8357,7 +8357,7 @@
         }
       ],
       "error": null,
-      "duration": 1.49
+      "duration": 3.33
     },
     {
       "venue": "Knockdown Center",
@@ -8549,7 +8549,7 @@
         }
       ],
       "error": null,
-      "duration": 2.63
+      "duration": 1.92
     },
     {
       "venue": "Good Room Greenpoint",
@@ -8685,7 +8685,7 @@
         }
       ],
       "error": null,
-      "duration": 4.42
+      "duration": 2.08
     },
     {
       "venue": "TV Eye Ridgewood",
@@ -8893,7 +8893,7 @@
         }
       ],
       "error": null,
-      "duration": 0.89
+      "duration": 2.22
     },
     {
       "venue": "Public Records Gowanus",
@@ -9101,7 +9101,7 @@
         }
       ],
       "error": null,
-      "duration": 2.13
+      "duration": 2.87
     },
     {
       "venue": "The Bell House",
@@ -9309,7 +9309,7 @@
         }
       ],
       "error": null,
-      "duration": 1.04
+      "duration": 5.8
     },
     {
       "venue": "Littlefield Brooklyn",
@@ -9517,7 +9517,7 @@
         }
       ],
       "error": null,
-      "duration": 1.83
+      "duration": 1.79
     },
     {
       "venue": "Music Hall of Williamsburg",
@@ -9725,7 +9725,7 @@
         }
       ],
       "error": null,
-      "duration": 1.3
+      "duration": 3.0
     },
     {
       "venue": "Brooklyn Steel",
@@ -9933,7 +9933,7 @@
         }
       ],
       "error": null,
-      "duration": 2.18
+      "duration": 2.26
     },
     {
       "venue": "Warsaw Brooklyn",
@@ -10141,7 +10141,7 @@
         }
       ],
       "error": null,
-      "duration": 0.93
+      "duration": 1.87
     },
     {
       "venue": "Barclays Center",
@@ -10341,7 +10341,7 @@
         }
       ],
       "error": null,
-      "duration": 1.21
+      "duration": 1.89
     },
     {
       "venue": "Kings Theatre Flatbush",
@@ -10549,7 +10549,7 @@
         }
       ],
       "error": null,
-      "duration": 2.41
+      "duration": 2.43
     },
     {
       "venue": "Baby's All Right Williamsburg",
@@ -10757,7 +10757,7 @@
         }
       ],
       "error": null,
-      "duration": 3.27
+      "duration": 2.12
     },
     {
       "venue": "The Sultan Room Bushwick",
@@ -10965,7 +10965,7 @@
         }
       ],
       "error": null,
-      "duration": 1.44
+      "duration": 1.9
     },
     {
       "venue": "Pioneer Works Red Hook",
@@ -11101,7 +11101,7 @@
         }
       ],
       "error": null,
-      "duration": 1.23
+      "duration": 1.27
     },
     {
       "venue": "C'mon Everybody Bed-Stuy",
@@ -11141,14 +11141,14 @@
         }
       ],
       "error": null,
-      "duration": 0.53
+      "duration": 0.57
     },
     {
       "venue": "Brooklyn Made",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-made/",
       "events": [],
       "error": null,
-      "duration": 0.26
+      "duration": 0.19
     },
     {
       "venue": "Market Hotel",
@@ -11164,7 +11164,7 @@
         }
       ],
       "error": null,
-      "duration": 0.3
+      "duration": 1.7
     },
     {
       "venue": "SILO Brooklyn",
@@ -11340,7 +11340,7 @@
         }
       ],
       "error": null,
-      "duration": 0.85
+      "duration": 1.86
     },
     {
       "venue": "Avant Gardner",
@@ -11492,7 +11492,7 @@
         }
       ],
       "error": null,
-      "duration": 1.94
+      "duration": 2.11
     },
     {
       "venue": "Brooklyn Mirage",
@@ -11644,7 +11644,7 @@
         }
       ],
       "error": null,
-      "duration": 2.04
+      "duration": 1.05
     },
     {
       "venue": "Basement NY",
@@ -11700,7 +11700,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61
+      "duration": 0.66
     },
     {
       "venue": "Forest Hills Stadium",
@@ -11740,7 +11740,7 @@
         }
       ],
       "error": null,
-      "duration": 1.25
+      "duration": 0.83
     },
     {
       "venue": "Yankee Stadium",
@@ -11948,7 +11948,7 @@
         }
       ],
       "error": null,
-      "duration": 1.31
+      "duration": 2.03
     },
     {
       "venue": "Lehman Center for the Performing Arts",
@@ -12004,7 +12004,7 @@
         }
       ],
       "error": null,
-      "duration": 0.44
+      "duration": 2.19
     },
     {
       "venue": "St. George Theatre Staten Island",
@@ -12188,7 +12188,7 @@
         }
       ],
       "error": null,
-      "duration": 1.37
+      "duration": 3.72
     },
     {
       "venue": "Bowery Ballroom",
@@ -12396,7 +12396,7 @@
         }
       ],
       "error": null,
-      "duration": 1.23
+      "duration": 4.59
     },
     {
       "venue": "Mercury Lounge",
@@ -12604,7 +12604,7 @@
         }
       ],
       "error": null,
-      "duration": 2.2
+      "duration": 2.02
     },
     {
       "venue": "Webster Hall",
@@ -12812,7 +12812,7 @@
         }
       ],
       "error": null,
-      "duration": 3.5
+      "duration": 1.72
     },
     {
       "venue": "Terminal 5",
@@ -13020,7 +13020,7 @@
         }
       ],
       "error": null,
-      "duration": 1.91
+      "duration": 1.73
     },
     {
       "venue": "Irving Plaza",
@@ -13228,7 +13228,7 @@
         }
       ],
       "error": null,
-      "duration": 1.03
+      "duration": 3.01
     },
     {
       "venue": "Racket NYC",
@@ -13436,7 +13436,7 @@
         }
       ],
       "error": null,
-      "duration": 1.02
+      "duration": 3.87
     },
     {
       "venue": "Le Poisson Rouge",
@@ -13644,7 +13644,7 @@
         }
       ],
       "error": null,
-      "duration": 1.46
+      "duration": 1.45
     },
     {
       "venue": "Blue Note Jazz Club",
@@ -13820,7 +13820,7 @@
         }
       ],
       "error": null,
-      "duration": 1.94
+      "duration": 2.47
     },
     {
       "venue": "Caveat NYC",
@@ -14028,7 +14028,7 @@
         }
       ],
       "error": null,
-      "duration": 1.54
+      "duration": 2.06
     },
     {
       "venue": "Apollo Theater",
@@ -14060,7 +14060,7 @@
         }
       ],
       "error": null,
-      "duration": 0.44
+      "duration": 0.53
     },
     {
       "venue": "Madison Square Garden",
@@ -14236,7 +14236,7 @@
         }
       ],
       "error": null,
-      "duration": 2.28
+      "duration": 1.86
     },
     {
       "venue": "Radio City Music Hall",
@@ -14340,7 +14340,7 @@
         }
       ],
       "error": null,
-      "duration": 2.14
+      "duration": 2.37
     },
     {
       "venue": "Beacon Theatre",
@@ -14540,7 +14540,7 @@
         }
       ],
       "error": null,
-      "duration": 1.89
+      "duration": 3.92
     },
     {
       "venue": "Carnegie Hall",
@@ -14612,7 +14612,7 @@
         }
       ],
       "error": null,
-      "duration": 1.44
+      "duration": 2.17
     },
     {
       "venue": "The Town Hall",
@@ -14820,7 +14820,7 @@
         }
       ],
       "error": null,
-      "duration": 0.95
+      "duration": 1.12
     },
     {
       "venue": "Sony Hall",
@@ -15028,7 +15028,7 @@
         }
       ],
       "error": null,
-      "duration": 2.12
+      "duration": 2.18
     },
     {
       "venue": "Gramercy Theatre",
@@ -15236,7 +15236,7 @@
         }
       ],
       "error": null,
-      "duration": 1.74
+      "duration": 2.73
     },
     {
       "venue": "Strand Book Store",
@@ -15552,7 +15552,7 @@
         }
       ],
       "error": null,
-      "duration": 0.57
+      "duration": 0.69
     },
     {
       "venue": "Books Are Magic",
@@ -15901,7 +15901,7 @@
         }
       ],
       "error": null,
-      "duration": 0.74
+      "duration": 0.9
     },
     {
       "venue": "Greenlight Bookstore",
@@ -16250,7 +16250,7 @@
         }
       ],
       "error": null,
-      "duration": 0.59
+      "duration": 0.79
     },
     {
       "venue": "P&T Knitwear Books & Podcasts",
@@ -16632,7 +16632,7 @@
         }
       ],
       "error": null,
-      "duration": 1.04
+      "duration": 1.82
     },
     {
       "venue": "Housing Works Bookstore Cafe",
@@ -16651,21 +16651,21 @@
         }
       ],
       "error": null,
-      "duration": 0.8
+      "duration": 0.77
     },
     {
       "venue": "McNally Jackson Books",
       "url": "https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/",
       "events": [],
       "error": null,
-      "duration": 0.21
+      "duration": 0.03
     },
     {
       "venue": "Bluestockings Cooperative",
       "url": "https://www.eventbrite.com/d/ny--new-york/bluestockings/",
       "events": [],
       "error": null,
-      "duration": 0.13
+      "duration": 0.03
     },
     {
       "venue": "KGB Bar (Literary Readings)",
@@ -16857,7 +16857,7 @@
         }
       ],
       "error": null,
-      "duration": 1.2
+      "duration": 2.52
     },
     {
       "venue": "New York Public Library",
@@ -16878,7 +16878,7 @@
       "url": "https://www.eventbrite.com/d/ny--queens/queens-public-library/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Pete's Candy Store",
@@ -18230,7 +18230,7 @@
         }
       ],
       "error": null,
-      "duration": 1.47
+      "duration": 1.59
     },
     {
       "venue": "Skinny Dennis",
@@ -18318,7 +18318,7 @@
         }
       ],
       "error": null,
-      "duration": 1.32
+      "duration": 1.37
     },
     {
       "venue": "NYC Trivia League",
@@ -22326,7 +22326,7 @@
         }
       ],
       "error": null,
-      "duration": 1.0
+      "duration": 0.83
     },
     {
       "venue": "Film Forum",
@@ -22534,7 +22534,7 @@
         }
       ],
       "error": null,
-      "duration": 1.11
+      "duration": 3.61
     },
     {
       "venue": "Nitehawk Cinema",
@@ -22678,7 +22678,7 @@
         }
       ],
       "error": null,
-      "duration": 0.79
+      "duration": 1.21
     },
     {
       "venue": "IFC Center",
@@ -22750,7 +22750,7 @@
         }
       ],
       "error": null,
-      "duration": 0.75
+      "duration": 3.57
     },
     {
       "venue": "Film at Lincoln Center",
@@ -22950,28 +22950,28 @@
         }
       ],
       "error": null,
-      "duration": 1.13
+      "duration": 1.18
     },
     {
       "venue": "NYC Indie Film & Screenings",
       "url": "https://www.eventbrite.com/d/ny--new-york/indie-film/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Metrograph NYC Screenings",
       "url": "https://www.eventbrite.com/d/ny--new-york/metrograph/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.04
     },
     {
       "venue": "Rooftop Films & Outdoor Cinema",
       "url": "https://www.eventbrite.com/d/ny--new-york/rooftop-films/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.05
     },
     {
       "venue": "Union Hall Brooklyn",
@@ -23171,7 +23171,7 @@
         }
       ],
       "error": null,
-      "duration": 1.61
+      "duration": 2.73
     },
     {
       "venue": "Smalls Jazz Club",
@@ -23379,7 +23379,7 @@
         }
       ],
       "error": null,
-      "duration": 1.92
+      "duration": 2.63
     },
     {
       "venue": "Joe's Pub (The Public Theater)",
@@ -23555,7 +23555,7 @@
         }
       ],
       "error": null,
-      "duration": 2.58
+      "duration": 4.87
     },
     {
       "venue": "The Bitter End (Greenwich Village)",
@@ -23763,7 +23763,7 @@
         }
       ],
       "error": null,
-      "duration": 1.6
+      "duration": 2.01
     },
     {
       "venue": "Arlene's Grocery (LES Rock & Karaoke)",
@@ -23971,7 +23971,7 @@
         }
       ],
       "error": null,
-      "duration": 1.29
+      "duration": 3.18
     },
     {
       "venue": "Nublu 151 (Alphabet City)",
@@ -24179,7 +24179,7 @@
         }
       ],
       "error": null,
-      "duration": 1.48
+      "duration": 4.68
     },
     {
       "venue": "Drom NYC (East Village Global Music)",
@@ -24387,7 +24387,7 @@
         }
       ],
       "error": null,
-      "duration": 1.51
+      "duration": 4.76
     },
     {
       "venue": "Terra Blues (Bleecker St)",
@@ -24595,7 +24595,7 @@
         }
       ],
       "error": null,
-      "duration": 1.29
+      "duration": 2.84
     },
     {
       "venue": "Symphony Space (Upper West Side)",
@@ -24795,7 +24795,7 @@
         }
       ],
       "error": null,
-      "duration": 2.51
+      "duration": 1.39
     },
     {
       "venue": "Tight Pants Comedy",
@@ -24825,21 +24825,21 @@
         }
       ],
       "error": null,
-      "duration": 0.45
+      "duration": 0.64
     },
     {
       "venue": "Greenwich Village Comedy Club",
       "url": "https://www.eventbrite.com/d/ny--new-york/greenwich-village-comedy-club/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "The Grisly Pear Comedy Club",
       "url": "https://www.eventbrite.com/d/ny--new-york/grisly-pear-comedy/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "St. Marks Comedy Club",
@@ -25047,7 +25047,7 @@
         }
       ],
       "error": null,
-      "duration": 1.01
+      "duration": 1.32
     },
     {
       "venue": "Q.E.D. Astoria (Comedy & Arts)",
@@ -25231,7 +25231,7 @@
         }
       ],
       "error": null,
-      "duration": 0.86
+      "duration": 2.2
     },
     {
       "venue": "New York Comedy Club Midtown",
@@ -25359,7 +25359,7 @@
         }
       ],
       "error": null,
-      "duration": 1.25
+      "duration": 1.45
     },
     {
       "venue": "New York Comedy Club East Village",
@@ -25519,7 +25519,7 @@
         }
       ],
       "error": null,
-      "duration": 1.86
+      "duration": 2.85
     },
     {
       "venue": "The Tiny Cupboard (Bushwick Rooftop Comedy)",
@@ -25543,7 +25543,7 @@
         }
       ],
       "error": null,
-      "duration": 0.66
+      "duration": 2.72
     },
     {
       "venue": "Brooklyn Comedy Collective (Eris Mainstage)",
@@ -25559,42 +25559,42 @@
         }
       ],
       "error": null,
-      "duration": 0.34
+      "duration": 0.51
     },
     {
       "venue": "NYC Parks Free Public Events",
       "url": "https://www.nycgovparks.org/xml/events_300_rss.xml",
       "events": [],
       "error": null,
-      "duration": 0.31
+      "duration": 0.16
     },
     {
       "venue": "Central Park Conservancy Events",
       "url": "https://www.eventbrite.com/d/ny--new-york/central-park/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Prospect Park Alliance Events",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/prospect-park/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Brooklyn Bridge Park Events",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-bridge-park/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Hudson River Park Events",
       "url": "https://www.eventbrite.com/d/ny--new-york/hudson-river-park/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "NYC for FREE (Pop-ups & Experiences)",
@@ -26386,49 +26386,49 @@
         }
       ],
       "error": null,
-      "duration": 0.61
+      "duration": 0.44
     },
     {
       "venue": "NYC Pop-Up Experiences & Activations",
       "url": "https://www.eventbrite.com/d/ny--new-york/pop-up/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Hudson Yards Events & Activations",
       "url": "https://www.eventbrite.com/d/ny--new-york/hudson-yards/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.04
     },
     {
       "venue": "The Shed (Hudson Yards)",
       "url": "https://www.eventbrite.com/d/ny--new-york/the-shed/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.05
     },
     {
       "venue": "Union Square Events & Gatherings",
       "url": "https://www.eventbrite.com/d/ny--new-york/union-square/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Lincoln Center Events & Tours",
       "url": "https://www.eventbrite.com/d/ny--new-york/lincoln-center/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Jazz at Lincoln Center",
       "url": "https://www.eventbrite.com/d/ny--new-york/jazz-at-lincoln-center/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.04
     },
     {
       "venue": "Meetup: NYC Hikes & Nature Walks",
@@ -26755,7 +26755,7 @@
         }
       ],
       "error": null,
-      "duration": 2.03
+      "duration": 0.39
     },
     {
       "venue": "Meetup: Outdoor Hikes & Trails",
@@ -27082,21 +27082,21 @@
         }
       ],
       "error": null,
-      "duration": 2.41
+      "duration": 0.31
     },
     {
       "venue": "NYC Fashion Events & Sample Sales",
       "url": "https://www.eventbrite.com/d/ny--new-york/sample-sale/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.11
     },
     {
       "venue": "NYC Fashion Shows & Runway",
       "url": "https://www.eventbrite.com/d/ny--new-york/fashion-show/",
       "events": [],
       "error": null,
-      "duration": 0.06
+      "duration": 0.07
     },
     {
       "venue": "NYC Talks & Lectures",
@@ -27117,21 +27117,21 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/skip-the-small-talk/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.04
     },
     {
       "venue": "Bibliothèque Wine & Book Bar",
       "url": "https://www.eventbrite.com/d/ny--new-york/bibliotheque/",
       "events": [],
       "error": null,
-      "duration": 0.05
+      "duration": 0.04
     },
     {
       "venue": "Liz's Book Bar (Carroll Gardens)",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/lizs-book-bar/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.06
     },
     {
       "venue": "Threes Brewing (Gowanus & Greenpoint)",
@@ -27152,7 +27152,7 @@
       "url": "https://www.eventbrite.com/d/ny--brooklyn/flop-house-comedy/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.06
     },
     {
       "venue": "OS NYC (Super Smash Bros & Gaming)",
@@ -27296,7 +27296,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34
+      "duration": 0.48
     },
     {
       "venue": "Wonderville (Indie Arcade & Smashville)",
@@ -28616,14 +28616,14 @@
         }
       ],
       "error": null,
-      "duration": 0.44
+      "duration": 0.66
     },
     {
       "venue": "Hex & Company (Board Games & RPG)",
       "url": "https://www.eventbrite.com/d/ny--new-york/hex-and-company/",
       "events": [],
       "error": null,
-      "duration": 0.09
+      "duration": 0.04
     },
     {
       "venue": "The Uncommons (Board Game Cafe)",
@@ -28637,7 +28637,7 @@
       "url": "https://www.eventbrite.com/d/ny--brooklyn/the-brooklyn-strategist/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.05
     },
     {
       "venue": "Meetup: NYC Board Game Nights",
@@ -28953,7 +28953,7 @@
         }
       ],
       "error": null,
-      "duration": 3.49
+      "duration": 0.12
     },
     {
       "venue": "Meetup: Tabletop & RPG Games",
@@ -29269,7 +29269,7 @@
         }
       ],
       "error": null,
-      "duration": 2.07
+      "duration": 0.13
     },
     {
       "venue": "Meetup: NYC Bar Trivia Nights",
@@ -29453,7 +29453,7 @@
         }
       ],
       "error": null,
-      "duration": 3.68
+      "duration": 0.2
     },
     {
       "venue": "House of Yes (Circus & Dance)",
@@ -29661,7 +29661,7 @@
         }
       ],
       "error": null,
-      "duration": 1.06
+      "duration": 1.1
     },
     {
       "venue": "House of Yes (Brooklyn Spectacle)",
@@ -29876,56 +29876,56 @@
         }
       ],
       "error": null,
-      "duration": 1.53
+      "duration": 1.36
     },
     {
       "venue": "NYC Burlesque Shows & Cabaret",
       "url": "https://www.eventbrite.com/d/ny--new-york/burlesque/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Chelsea Art Gallery Openings",
       "url": "https://www.eventbrite.com/d/ny--new-york/chelsea-art-gallery/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.04
     },
     {
       "venue": "Japan Fes NYC (Street Food)",
       "url": "https://www.eventbrite.com/d/ny--new-york/japan-fes/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.04
     },
     {
       "venue": "Midnight Runners NYC (Social Run Club)",
       "url": "https://www.eventbrite.com/d/ny--new-york/midnight-runners/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.04
     },
     {
       "venue": "Brooklyn Brainery (Community Classes)",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-brainery/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.13
     },
     {
       "venue": "Magnet Theater (Improv & Sketch)",
       "url": "https://www.eventbrite.com/d/ny--new-york/magnet-theater/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.11
     },
     {
       "venue": "Asylum NYC (Alternative Comedy)",
       "url": "https://www.eventbrite.com/d/ny--new-york/asylum-nyc/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "S.O.B.'s (Sounds of Brazil)",
@@ -30133,70 +30133,70 @@
         }
       ],
       "error": null,
-      "duration": 1.4
+      "duration": 5.02
     },
     {
       "venue": "NYC Salsa & Bachata Socials",
       "url": "https://www.eventbrite.com/d/ny--new-york/salsa-dancing/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "NYC Bachata & Latin Socials",
       "url": "https://www.eventbrite.com/d/ny--new-york/bachata/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Taj Lounge (Salsa & Latin Socials)",
       "url": "https://www.eventbrite.com/d/ny--new-york/taj-lounge-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Club Cache (Salsa & Bachata Socials)",
       "url": "https://www.eventbrite.com/d/ny--new-york/club-cache-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "NYC Salsa Socials & Dance Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/salsa-social/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Washington Square Park (Garibaldi Plaza Salsa)",
       "url": "https://www.eventbrite.com/d/ny--new-york/washington-square-park-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Hudson River Park (Sunset Salsa Pier 45 & 76)",
       "url": "https://www.eventbrite.com/d/ny--new-york/sunset-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Pa' La Calle NYC (Bella Abzug Park Salsa)",
       "url": "https://www.eventbrite.com/d/ny--new-york/pa-la-calle/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "NYC Outdoor Salsa & Latin Socials",
       "url": "https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Meetup: NYC Social Dance & Salsa",
@@ -30523,35 +30523,35 @@
         }
       ],
       "error": null,
-      "duration": 2.94
+      "duration": 0.11
     },
     {
       "venue": "This Week in Swing NYC",
       "url": "https://thisweekinswingnyc.com/wp-json/wp/v2/posts?per_page=5",
       "events": [],
       "error": null,
-      "duration": 0.18
+      "duration": 0.15
     },
     {
       "venue": "NYC Swing Dancing & Lindy Hop",
       "url": "https://www.eventbrite.com/d/ny--new-york/swing-dancing/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Frim Fram Jam (YSBD Swing)",
       "url": "https://www.eventbrite.com/d/ny--new-york/frim-fram-jam/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.04
     },
     {
       "venue": "Prohibition Productions (Gotham Jazz)",
       "url": "https://www.eventbrite.com/d/ny--new-york/prohibition-productions/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Meetup: NYC Swing Dancing",
@@ -30702,7 +30702,7 @@
         }
       ],
       "error": null,
-      "duration": 1.45
+      "duration": 0.09
     },
     {
       "venue": "3 Dollar Bill (Queer & Drag Venue)",
@@ -30894,49 +30894,49 @@
         }
       ],
       "error": null,
-      "duration": 0.9
+      "duration": 1.31
     },
     {
       "venue": "NYC Drag Shows & Brunches",
       "url": "https://www.eventbrite.com/d/ny--new-york/drag-show/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.03
     },
     {
       "venue": "The Stonewall Inn (Events)",
       "url": "https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.03
     },
     {
       "venue": "Pieces Bar (West Village Drag)",
       "url": "https://www.eventbrite.com/d/ny--new-york/pieces-bar/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.03
     },
     {
       "venue": "NYC Video Game Tournaments",
       "url": "https://www.eventbrite.com/d/ny--new-york/video-game-tournament/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.03
     },
     {
       "venue": "NYC Smash Bros Tournaments",
       "url": "https://www.eventbrite.com/d/ny--new-york/smash-bros/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Barcade (Arcade & Craft Beer)",
       "url": "https://www.eventbrite.com/d/ny--new-york/barcade/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Union Pool (Williamsburg Live Music Bar)",
@@ -31144,21 +31144,21 @@
         }
       ],
       "error": null,
-      "duration": 1.46
+      "duration": 2.31
     },
     {
       "venue": "Our Wicked Lady (Bushwick Live Music)",
       "url": "https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "NYC Bar Concerts & Live Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/live-music-bar/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Trivia A.D. (NYC Bar Trivia)",
@@ -31628,7 +31628,7 @@
         }
       ],
       "error": null,
-      "duration": 0.92
+      "duration": 1.03
     },
     {
       "venue": "NYC Free Club Guestlists",
@@ -31642,63 +31642,63 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/nightclub-guestlist/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "NYC Free RSVP Nightlife",
       "url": "https://www.eventbrite.com/d/ny--new-york/free-rsvp-party/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "NYC Rooftop Club Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/rooftop-party/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Somewhere Nowhere Rooftop Club",
       "url": "https://www.eventbrite.com/d/ny--new-york/somewhere-nowhere/",
       "events": [],
       "error": null,
-      "duration": 0.04
+      "duration": 0.03
     },
     {
       "venue": "The DL (LES Rooftop Club)",
       "url": "https://www.eventbrite.com/d/ny--new-york/the-dl/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Harbor NYC Rooftop Club",
       "url": "https://www.eventbrite.com/d/ny--new-york/harbor-nyc/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "230 Fifth Rooftop Nightclub",
       "url": "https://www.eventbrite.com/d/ny--new-york/230-fifth/",
       "events": [],
       "error": null,
-      "duration": 0.02
+      "duration": 0.03
     },
     {
       "venue": "Slate NYC (Chelsea Lounge & Club)",
       "url": "https://www.eventbrite.com/d/ny--new-york/slate-nyc/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.04
     },
     {
       "venue": "Nebula NYC (Midtown Nightclub)",
       "url": "https://www.eventbrite.com/d/ny--new-york/nebula/",
       "events": [],
       "error": null,
-      "duration": 0.03
+      "duration": 0.06
     },
     {
       "venue": "Superior Ingredients (Williamsburg)",
@@ -31802,7 +31802,7 @@
         }
       ],
       "error": null,
-      "duration": 0.94
+      "duration": 1.49
     },
     {
       "venue": "Union Square Greenmarket",
