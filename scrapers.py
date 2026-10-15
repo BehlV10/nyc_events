@@ -350,7 +350,25 @@ def scrape_ticketmaster_nyc(_url, _ua):
             except ValueError:
                 iso = None
         venues = ev.get("_embedded", {}).get("venues") or []
-        venue = venues[0]["name"] if venues and venues[0].get("name") else "NYC Venue"
+        vobj = venues[0] if venues else {}
+        vname = vobj.get("name") or "NYC Venue"
+        city_name = (vobj.get("city") or {}).get("name") or ""
+        state_code = (vobj.get("state") or {}).get("stateCode") or ""
+        if city_name and city_name.lower() not in vname.lower():
+            venue = f"{vname} ({city_name}, {state_code})" if state_code else f"{vname} ({city_name})"
+        else:
+            venue = vname
+
+        lat = None
+        lng = None
+        loc_coords = vobj.get("location")
+        if isinstance(loc_coords, dict) and loc_coords.get("latitude") and loc_coords.get("longitude"):
+            try:
+                lat = float(loc_coords["latitude"])
+                lng = float(loc_coords["longitude"])
+            except Exception:
+                pass
+
         price = None
         prs = ev.get("priceRanges") or []
         if prs:
@@ -360,6 +378,8 @@ def scrape_ticketmaster_nyc(_url, _ua):
             "date": iso,
             "url": ev.get("url"),
             "venue": venue,
+            "lat": lat,
+            "lng": lng,
             "price": price,
             "category": guess_category(ev.get("name"), "music"),
         })
@@ -478,7 +498,7 @@ def scrape_eventbrite_organizer(url, ua):
     events = []
     seen = set()
     now = datetime.now(timezone.utc)
-    api_url = f"https://www.eventbrite.com/api/v3/organizers/{org_id}/events/?order_by=start_asc"
+    api_url = f"https://www.eventbrite.com/api/v3/organizers/{org_id}/events/?order_by=start_asc&expand=venue"
     try:
         resp = _SESSION.get(api_url, headers={"User-Agent": ua}, timeout=12)
         resp.raise_for_status()
@@ -503,8 +523,21 @@ def scrape_eventbrite_organizer(url, ua):
             price = "Free" if is_free else None
             desc = (ev.get("summary") or "").strip()
             vname = None
-            if isinstance(ev.get("venue"), dict):
-                vname = ev.get("venue", {}).get("name")
+            lat = None
+            lng = None
+            vobj = ev.get("venue")
+            if isinstance(vobj, dict):
+                vname = vobj.get("name")
+                addr_obj = vobj.get("address") or {}
+                loc_disp = addr_obj.get("localized_area_display") or addr_obj.get("city")
+                if vname and loc_disp and loc_disp.lower() not in vname.lower():
+                    vname = f"{vname} ({loc_disp})"
+                if vobj.get("latitude"):
+                    try:
+                        lat = float(vobj["latitude"])
+                        lng = float(vobj["longitude"])
+                    except Exception:
+                        pass
             if not vname:
                 m_at = re.search(r"\bat\s+([A-Z0-9][^|(,\n]+)", name)
                 if m_at:
@@ -514,6 +547,8 @@ def scrape_eventbrite_organizer(url, ua):
                 "date": dt.isoformat(),
                 "url": event_url or f"https://www.eventbrite.com/o/{org_id}",
                 "venue": vname,
+                "lat": lat,
+                "lng": lng,
                 "price": price,
                 "description": desc,
             })
@@ -672,6 +707,31 @@ def scrape_nyc_trivia_league(_url, ua):
                     hour = 0
             ahead = (weekday - today.weekday()) % 7
             first_day = today + timedelta(days=ahead)
+            data_cat = (a.get("data-categories") or "").lower()
+            lat_str = a.get("data-latitude")
+            lng_str = a.get("data-longitude")
+            borough_name = None
+            if "brooklyn" in data_cat:
+                borough_name = "Brooklyn"
+            elif "queens" in data_cat:
+                borough_name = "Queens"
+            elif "manhattan" in data_cat:
+                borough_name = "Manhattan"
+            elif "bronx" in data_cat:
+                borough_name = "The Bronx"
+            elif "staten" in data_cat:
+                borough_name = "Staten Island"
+
+            venue_display = f"{bar_name} ({borough_name})" if borough_name else bar_name
+            lat_val = None
+            lng_val = None
+            if lat_str and lng_str:
+                try:
+                    lat_val = float(lat_str)
+                    lng_val = float(lng_str)
+                except Exception:
+                    pass
+
             is_bingo = "bingo" in tagline.lower()
             title_prefix = "Mixtape Bingo" if is_bingo else "NYC Trivia Night"
             full_title = f"{title_prefix} @ {bar_name}"
@@ -682,7 +742,9 @@ def scrape_nyc_trivia_league(_url, ua):
                     "name": full_title,
                     "date": dt.astimezone(timezone.utc).isoformat(),
                     "url": event_url,
-                    "venue": bar_name,
+                    "venue": venue_display,
+                    "lat": lat_val,
+                    "lng": lng_val,
                     "price": "Free / No Cover",
                     "category": "gaming",
                 })
@@ -951,9 +1013,12 @@ def scrape_meetup(url, ua):
                     vname = (loc.get("name") or "").strip()
                     addr = loc.get("address")
                     city_hint = ""
+                    region_hint = ""
+                    street = ""
                     if isinstance(addr, dict):
                         street = (addr.get("streetAddress") or "").strip()
                         city_hint = (addr.get("addressLocality") or "").strip()
+                        region_hint = (addr.get("addressRegion") or "").strip()
                         if not vname and street:
                             vname = f"{street}, {city_hint}" if city_hint else street
                         elif vname and street and street not in vname:
@@ -961,6 +1026,16 @@ def scrape_meetup(url, ua):
 
                     if not vname or vname.lower() in ["none", "see event description", "view point", "null"]:
                         vname = f"NYC Meetup ({city_hint})" if city_hint else "NYC Community Location"
+
+                    lat = None
+                    lng = None
+                    geo = loc.get("geo")
+                    if isinstance(geo, dict):
+                        try:
+                            lat = float(geo.get("latitude"))
+                            lng = float(geo.get("longitude"))
+                        except Exception:
+                            pass
 
                     # Price extraction
                     price = None
@@ -988,6 +1063,8 @@ def scrape_meetup(url, ua):
                         "date": dt.isoformat(),
                         "url": event_url,
                         "venue": vname,
+                        "lat": lat,
+                        "lng": lng,
                         "price": price,
                         "description": desc,
                     })
