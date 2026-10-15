@@ -103,11 +103,11 @@ CATEGORY_KEYWORDS = [
 ]
 
 CATEGORY_BUCKETS = [
-    ("Theater",            ["theater"]),
     ("Music & nightlife",  ["music", "clubbing", "dance"]),
     ("Arts & culture",     ["film", "art", "books", "comedy"]),
     ("Outdoors & active",  ["outdoors", "sports"]),
     ("Social & community", ["community", "food", "gaming", "other"]),
+    ("Theater",            ["theater"]),
 ]
 
 CATEGORY_STYLES = {

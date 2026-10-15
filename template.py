@@ -2352,9 +2352,9 @@ def render_page(results):
         <button type="button" class="chip" data-time="weekend">🎉 This Weekend</button>
         <button type="button" class="chip" data-time="week">📅 Next 7 Days</button>
         <button type="button" class="chip" data-time="all">All Upcoming</button>
-        <button type="button" class="chip chip-theater" id="quick-theater-chip">🎭 Theater</button>
         <button type="button" class="chip chip-guestlist" id="quick-guestlist-chip">🎟️ Guestlists</button>
         <button type="button" class="chip chip-free" id="quick-free-chip">✨ Free Only</button>
+        <button type="button" class="chip chip-theater" id="quick-theater-chip">🎭 Theater</button>
       </div>
       <div class="week-nav" id="week-nav">
         <button type="button" id="week-prev" aria-label="Previous">← prev</button>
