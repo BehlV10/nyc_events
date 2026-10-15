@@ -753,7 +753,9 @@ def scrape_nyc_parks(url, ua):
             venue_str = f"{park} ({loc})" if loc and loc != park and len(loc) < 40 else park
 
             cat_lower = (cats_raw + " " + title).lower()
-            if any(w in cat_lower for w in ["concert", "music", "dance", "performance"]):
+            if any(w in cat_lower for w in ["salsa", "bachata", "tango", "swing dance", "social dance", "lindy hop", "ballroom"]):
+                cat = "dance"
+            elif any(w in cat_lower for w in ["concert", "music", "dance", "performance"]):
                 cat = "music"
             elif any(w in cat_lower for w in ["art", "crafts", "exhibit", "gallery"]):
                 cat = "art"
@@ -1102,6 +1104,32 @@ MANUAL_RECURRING_EVENTS = [
     ("Salsa Salsa Dance Studios", "https://www.salsasalsadance.com/", "dance", [
         ("Brooklyn Salsa Social & Practice Party", "https://www.salsasalsadance.com/", 4, 20, 0, "Practice Social"),
     ]),
+    ("Washington Square Park (Garibaldi Plaza)", "https://www.nycgovparks.org/events/dance", "dance", [
+        ("Garibaldi Plaza Salsa Social (Free Lesson & Open Dance)", "https://www.nycgovparks.org/events/dance", 2, 18, 0, "Free"),
+        ("Washington Square Park Sunday Salsa & Latin Social", "https://www.nycgovparks.org/events/dance", 6, 16, 0, "Free"),
+    ]),
+    ("Hudson River Park (Pier 45 & Pier 76)", "https://hudsonriverpark.org/event-series/dance-in-hrpk/", "dance", [
+        ("Sunset Salsa with Talía Castro-Pozo @ Pier 45", "https://hudsonriverpark.org/event-series/dance-in-hrpk/", 3, 18, 30, "Free"),
+        ("Sunset Salsa @ Pier 76 (Waterfront Social & Lesson)", "https://hudsonriverpark.org/event-series/dance-in-hrpk/", 1, 18, 30, "Free"),
+    ]),
+    ("Bryant Park", "https://bryantpark.org/activities/dance-party", "dance", [
+        ("Bryant Park Dance Party (Live Band & Outdoor Salsa)", "https://bryantpark.org/activities/dance-party", 2, 18, 0, "Free"),
+    ]),
+    ("Bella Abzug Park (Hudson Yards)", "https://www.somoslatindance.com/palacallenyc", "dance", [
+        ("Pa' La Calle NYC Latin Dance Social (Intro Lesson & Open Dancing)", "https://www.somoslatindance.com/palacallenyc", 6, 16, 0, "Free"),
+    ]),
+    ("Vanderbilt Open Streets (Brooklyn)", "https://www.salsasalsadance.com/", "dance", [
+        ("Salsa Salsa on Vanderbilt Open Streets (Free Class & Social)", "https://www.salsasalsadance.com/", 5, 17, 0, "Free"),
+    ]),
+    ("Abolitionist Place Park (Downtown Brooklyn)", "https://www.salsasalsadance.com/", "dance", [
+        ("Abolitionist Place Park Outdoor Salsa & Bachata Social", "https://www.salsasalsadance.com/", 6, 16, 0, "Free"),
+    ]),
+    ("Hunters Point South Park (Long Island City)", "https://www.hunterspointparks.org/", "dance", [
+        ("Hunters Point Waterfront Salsa Social (Free Lesson & Sunset Dance)", "https://www.hunterspointparks.org/", 6, 17, 0, "Free"),
+    ]),
+    ("Domino Park (Williamsburg Waterfront)", "https://www.dominopark.com/", "dance", [
+        ("Domino Park Waterfront Latin & Salsa Social", "https://www.dominopark.com/", 5, 17, 0, "Free"),
+    ]),
     ("The Back Room", "https://www.backroomnyc.com/", "dance", [
         ("Monday Night Live Jazz & Swing Dancing", "https://www.backroomnyc.com/", 0, 20, 30, "No Cover"),
     ]),
@@ -1350,6 +1378,10 @@ _ALL_VENUES = [
     {"name": "Taj Lounge (Salsa & Latin Socials)", "url": "https://www.eventbrite.com/d/ny--new-york/taj-lounge-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "Club Cache (Salsa & Bachata Socials)", "url": "https://www.eventbrite.com/d/ny--new-york/club-cache-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "NYC Salsa Socials & Dance Parties", "url": "https://www.eventbrite.com/d/ny--new-york/salsa-social/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "Washington Square Park (Garibaldi Plaza Salsa)", "url": "https://www.eventbrite.com/d/ny--new-york/washington-square-park-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "Hudson River Park (Sunset Salsa Pier 45 & 76)", "url": "https://www.eventbrite.com/d/ny--new-york/sunset-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "Pa' La Calle NYC (Bella Abzug Park Salsa)", "url": "https://www.eventbrite.com/d/ny--new-york/pa-la-calle/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
+    {"name": "NYC Outdoor Salsa & Latin Socials", "url": "https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
 
     # Swing Dancing, Lindy Hop & Blues
     {"name": "This Week in Swing NYC", "url": "https://thisweekinswingnyc.com/wp-json/wp/v2/posts?per_page=5", "ua": UA_CHROME, "scraper": scrape_thisweekinswingnyc, "default_category": "dance"},
@@ -1422,6 +1454,13 @@ STATIC_LINKS = [
     ("dance",   "Iguana NYC (Latin Dance & Salsa Lounge)", "https://www.iguananyc.com/"),
     ("dance",   "Cucala Dance Company (East Village Salsa Classes)", "https://www.cucaladance.com/"),
     ("dance",   "Salsa Salsa Dance Studios (Brooklyn Latin Dance)", "https://www.salsasalsadance.com/"),
+    ("dance",   "Hudson River Park Sunset Salsa (Pier 45 & Pier 76)", "https://hudsonriverpark.org/event-series/dance-in-hrpk/"),
+    ("dance",   "Washington Square Park Garibaldi Plaza Salsa Social", "https://www.nycgovparks.org/events/dance"),
+    ("dance",   "Bryant Park Dance Party (Outdoor Salsa & Latin)", "https://bryantpark.org/activities/dance-party"),
+    ("dance",   "Pa' La Calle NYC (Bella Abzug Park Hudson Yards Salsa)", "https://www.somoslatindance.com/palacallenyc"),
+    ("dance",   "Salsa Salsa Outdoor Series (Vanderbilt Open Streets & Abolitionist Place)", "https://www.salsasalsadance.com/"),
+    ("dance",   "Hunters Point South Park Waterfront Salsa", "https://www.hunterspointparks.org/"),
+    ("dance",   "Domino Park Waterfront Salsa & Latin Nights", "https://www.dominopark.com/"),
     ("dance",   "Swing 46 Jazz & Supper Club (Lindy Hop & Big Band)", "https://swing46.nyc/"),
     ("dance",   "The Back Room (Monday Night Live Jazz & Swing)", "https://www.backroomnyc.com/"),
     ("dance",   "This Week in Swing NYC (Weekly Lindy Hop & Blues Calendar)", "https://thisweekinswingnyc.com/"),

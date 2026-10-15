@@ -37,6 +37,7 @@ CITY_RULES = [
         "superior ingredients", "bossa nova civic club", "bossa nova", "jupiter disco",
         "salsa salsa dance", "salsa salsa",
         "the keep", "young ethel", "box house hotel", "the box house", "transit museum", "java street", "brooklyn swings",
+        "vanderbilt open streets", "vanderbilt ave open streets", "abolitionist place", "abolitionist place park", "domino park",
         "brooklyn trivia",
         "brooklyn", "bklyn", "williamsburg", "bushwick", "greenpoint", "dumbo",
         "bed-stuy", "bedford-stuyvesant", "crown heights", "prospect heights",
@@ -51,6 +52,7 @@ CITY_RULES = [
         "kaufman astoria", "terrasa 7", "queens public library", "qpl",
         "q.e.d.", "qed astoria", "qed",
         "the last word", "last word", "astoria swing",
+        "hunters point south park", "hunters point waterfront", "hunters point",
         "astoria trivia", "queens trivia",
         "queens", "astoria", "long island city", "lic", "flushing",
         "ridgewood", "sunnyside", "jackson heights", "woodside",
@@ -99,6 +101,8 @@ CITY_RULES = [
         "good shepherd", "kilowatt", "mehanata", "pangea", "connolly's", "connollys", "connolly",
         "ripley-grier", "prince george ballroom", "sara d roosevelt", "harlem swing dance", "harlem swing",
         "blues dance new york", "this week in swing nyc", "this week in swing",
+        "washington square park", "garibaldi plaza", "hudson river park", "pier 45", "pier 76", "sunset salsa",
+        "bella abzug park", "bella abzug", "pa' la calle", "pa la calle", "bryant park dance",
         "soho", "tribeca", "noho", "nolita", "chinatown", "lower east side", "les",
         "east village", "west village", "greenwich village", "chelsea",
         "meatpacking", "gramercy", "flatiron", "midtown", "times square",
@@ -226,7 +230,9 @@ def _is_event_free(e):
 
     if any(k in source or k in venue for k in [
         "library", "nypl", "bpl", "parks free", "summerstage", "bryant park",
-        "greenmarket", "union square greenmarket"
+        "greenmarket", "union square greenmarket", "garibaldi plaza", "sunset salsa",
+        "pa' la calle", "pa la calle", "open streets", "abolitionist place",
+        "hunters point waterfront", "domino park waterfront"
     ]):
         return True
 
