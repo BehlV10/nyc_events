@@ -793,7 +793,7 @@ def group_by_date(results):
     ongoing = []
     for r in results:
         for e in r.get("events", []):
-            if is_closed_show(e.get("name")):
+            if is_closed_show(e.get("name")) or is_closed_show(e.get("venue")):
                 continue
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["venue"] = e.get("venue") or r.get("venue", "")
