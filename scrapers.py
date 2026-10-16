@@ -2774,6 +2774,12 @@ _ALL_VENUES = [
     {"name": "Avant Gardner", "url": "https://donyc.com/venues/avant-gardner", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Brooklyn Mirage", "url": "https://donyc.com/venues/the-brooklyn-mirage", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Basement NY", "url": "https://donyc.com/venues/basement-ny", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "The Brooklyn Monarch", "url": "https://donyc.com/venues/the-brooklyn-monarch", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "The Meadows Brooklyn", "url": "https://donyc.com/venues/the-meadows", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Brooklyn Paramount", "url": "https://donyc.com/venues/brooklyn-paramount", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Under the K Bridge Park", "url": "https://donyc.com/venues/under-the-k-bridge-park", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Roulette Intermedium", "url": "https://donyc.com/venues/roulette", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "National Sawdust", "url": "https://donyc.com/venues/national-sawdust", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
 
     # Queens
     {"name": "Forest Hills Stadium", "url": "https://donyc.com/venues/forest-hills-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
