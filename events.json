@@ -5300,16 +5300,6 @@
           "category": "music"
         },
         {
-          "name": "Buena Vista Social Club - The Musical - New York",
-          "date": "2026-10-16T23:00:00Z",
-          "url": "https://seatgeek.com/buena-vista-social-club-the-musical-tickets/broadway/2026-10-16-7-pm/18208919",
-          "venue": "Gerald Schoenfeld Theatre (New York, NY)",
-          "lat": 40.7587,
-          "lng": -73.9873,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "The Play That Goes Wrong - New York",
           "date": "2026-10-16T23:00:00Z",
           "url": "https://seatgeek.com/the-play-that-goes-wrong-tickets/theater/2026-10-16-7-pm/18286752",
@@ -6570,14 +6560,14 @@
           "category": "music"
         },
         {
-          "name": "JPEGMAFIA",
+          "name": "A Few Good Men - New York",
           "date": "2026-10-18T00:00:00Z",
-          "url": "https://seatgeek.com/jpegmafia-tickets/new-york-new-york-terminal-5-2026-10-17-8-pm/concert/18212677",
-          "venue": "Terminal 5 (New York, NY)",
-          "lat": 40.7697,
-          "lng": -73.9928,
+          "url": "https://seatgeek.com/a-few-good-men-tickets/theater/2026-10-17-8-pm/18360873",
+          "venue": "Lincoln Center Theater - Vivian Beaumont Theater (New York, NY)",
+          "lat": 40.7736,
+          "lng": -73.984,
           "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Milly Quezada with Miriam Cruz",
@@ -6590,14 +6580,14 @@
           "category": "music"
         },
         {
-          "name": "A Few Good Men - New York",
+          "name": "JPEGMAFIA",
           "date": "2026-10-18T00:00:00Z",
-          "url": "https://seatgeek.com/a-few-good-men-tickets/theater/2026-10-17-8-pm/18360873",
-          "venue": "Lincoln Center Theater - Vivian Beaumont Theater (New York, NY)",
-          "lat": 40.7736,
-          "lng": -73.984,
+          "url": "https://seatgeek.com/jpegmafia-tickets/new-york-new-york-terminal-5-2026-10-17-8-pm/concert/18212677",
+          "venue": "Terminal 5 (New York, NY)",
+          "lat": 40.7697,
+          "lng": -73.9928,
           "price": null,
-          "category": "theater"
+          "category": "music"
         },
         {
           "name": "Perfect Crime - New York",
@@ -7056,14 +7046,6 @@
           "category": "clubbing"
         },
         {
-          "name": "ARISE & SHINE: LIBRA EDITION with J.Sterling & DIGI",
-          "date": "2026-10-16T22:00:00.000Z",
-          "url": "https://ra.co/events/2539129",
-          "venue": "East River Bar (97 South 6th Street)",
-          "price": "Free",
-          "category": "clubbing"
-        },
-        {
           "name": "Drone Lab & VoicePlay + Open Projector",
           "date": "2026-10-16T19:00:00.000Z",
           "url": "https://ra.co/events/2553827",
@@ -7085,6 +7067,14 @@
           "url": "https://ra.co/events/2561799",
           "venue": "MAD Radio NYC (395 WYTHE AVE, BROOKLYN, NEW YORK)",
           "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "ARISE & SHINE: LIBRA EDITION with J.Sterling & DIGI",
+          "date": "2026-10-16T22:00:00.000Z",
+          "url": "https://ra.co/events/2539129",
+          "venue": "East River Bar (97 South 6th Street)",
+          "price": "Free",
           "category": "clubbing"
         },
         {
@@ -7288,18 +7278,18 @@
           "category": "clubbing"
         },
         {
-          "name": "Reggaeton on Houston - Latin & Reggaeton Party NYC",
-          "date": "2026-10-17T17:00:00.000Z",
-          "url": "https://ra.co/events/2538759",
-          "venue": "San Antonios (247 Eldridge St, New York, NY 10002, US)",
-          "price": null,
-          "category": "clubbing"
-        },
-        {
           "name": "Witches Take over District Saturdays Midtown Nightclub Halloween",
           "date": "2026-10-17T23:00:00.000Z",
           "url": "https://ra.co/events/2552262",
           "venue": "Nexo (29 W 36th St., New York, NY 10018, USA)",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "Reggaeton on Houston - Latin & Reggaeton Party NYC",
+          "date": "2026-10-17T17:00:00.000Z",
+          "url": "https://ra.co/events/2538759",
+          "venue": "San Antonios (247 Eldridge St, New York, NY 10002, US)",
           "price": null,
           "category": "clubbing"
         },
@@ -42265,7 +42255,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53
+      "duration": 0.61
     },
     {
       "venue": "Hex & Company (Board Games & RPG)",
