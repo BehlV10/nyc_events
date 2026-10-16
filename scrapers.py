@@ -2544,6 +2544,157 @@ def scrape_thisweekinswingnyc(url, ua):
     return events
 
 
+def scrape_sobs(url, ua):
+    """S.O.B.'s (Sounds of Brazil) — Direct official calendar scraper from sobs.com/calendar/."""
+    events = []
+    seen = set()
+    month_map = {
+        "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+        "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12
+    }
+    now = datetime.now(EASTERN)
+    urls = [url or "https://sobs.com/calendar/"]
+    if now.day >= 15:
+        next_month = now.month % 12 + 1
+        next_year = now.year + (1 if now.month == 12 else 0)
+        urls.append(f"https://sobs.com/calendar/?dir=next&view=grid&month={next_year}{next_month:02d}")
+
+    for target_url in urls:
+        try:
+            resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+            if resp.status_code != 200:
+                continue
+            soup = BeautifulSoup(resp.text, "html.parser")
+            cards = soup.select(".ecard")
+            for card in cards:
+                titu_el = card.select_one(".ecard_titu")
+                if not titu_el:
+                    continue
+                title = titu_el.get_text(strip=True)
+                if not title:
+                    continue
+
+                event_url = card.get("data-link") or ""
+                link_el = card.select_one("a.btn-line, a[href*='/events/']")
+                if not event_url and link_el:
+                    event_url = link_el.get("href") or ""
+
+                date_el = card.select_one(".ecard_date")
+                time_el = card.select_one(".ecard_time")
+                date_text = date_el.get_text(strip=True) if date_el else ""
+                time_text = time_el.get_text(strip=True) if time_el else ""
+
+                m_date = re.search(r"([A-Za-z]{3,9})\s+(\d{1,2})(?:,?\s*(\d{4}))?", date_text)
+                if not m_date:
+                    continue
+                mon_str = m_date.group(1).lower()[:3]
+                if mon_str not in month_map:
+                    continue
+                month = month_map[mon_str]
+                day = int(m_date.group(2))
+                year = int(m_date.group(3)) if m_date.group(3) else now.year
+
+                hr, mn = 20, 0
+                m_time = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", time_text, re.I)
+                if m_time:
+                    hr = int(m_time.group(1))
+                    mn = int(m_time.group(2) or 0)
+                    ampm = m_time.group(3).lower()
+                    if ampm == "pm" and hr < 12:
+                        hr += 12
+                    elif ampm == "am" and hr == 12:
+                        hr = 0
+
+                try:
+                    dt = datetime(year, month, day, hr, mn, tzinfo=EASTERN)
+                except ValueError:
+                    continue
+
+                dt_utc = dt.astimezone(timezone.utc)
+                key = (title.lower(), dt_utc.date().isoformat())
+                if key in seen:
+                    continue
+                seen.add(key)
+
+                img_el = card.select_one(".ecard-image")
+                img_url = ""
+                if img_el and "background-image" in img_el.get("style", ""):
+                    m_img = re.search(r"url\(([^)]+)\)", img_el.get("style", ""))
+                    if m_img:
+                        img_url = m_img.group(1).strip("'\"")
+
+                events.append({
+                    "name": title,
+                    "date": dt_utc.isoformat(),
+                    "url": event_url or "https://sobs.com/calendar/",
+                    "venue": "S.O.B.'s",
+                    "lat": 40.7282,
+                    "lng": -74.0049,
+                    "price": None,
+                    "image": img_url or None,
+                    "category": guess_category(title, "music", venue="S.O.B.'s"),
+                })
+        except Exception:
+            continue
+    return events
+
+
+def scrape_warsaw(url, ua):
+    """Warsaw Brooklyn — Live Nation venue direct JSON-LD scraper from warsawconcerts.com."""
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    target_url = url or "https://www.warsawconcerts.com/"
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for s in soup.find_all("script", type="application/ld+json"):
+            if not s.string:
+                continue
+            try:
+                data = json.loads(s.string)
+                items = data if isinstance(data, list) else [data] if isinstance(data, dict) else []
+                for it in items:
+                    if it.get("@type") in ("Event", "MusicEvent"):
+                        name = (it.get("name") or "").strip()
+                        start = it.get("startDate")
+                        event_url = it.get("url") or target_url
+                        if not name or not start:
+                            continue
+                        dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
+                        if dt < now:
+                            continue
+                        key = (name.lower(), dt.date().isoformat())
+                        if key in seen:
+                            continue
+                        seen.add(key)
+
+                        img = it.get("image")
+                        if isinstance(img, list) and img:
+                            img = img[0]
+                        elif isinstance(img, dict):
+                            img = img.get("url")
+
+                        events.append({
+                            "name": name,
+                            "date": dt.isoformat(),
+                            "url": event_url,
+                            "venue": "Warsaw Brooklyn",
+                            "lat": 40.7224,
+                            "lng": -73.9489,
+                            "price": None,
+                            "image": img if isinstance(img, str) else None,
+                            "category": "music"
+                        })
+            except Exception:
+                continue
+    except Exception:
+        pass
+    return events
+
+
 # --- Curated Recurring NYC Events ---
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
@@ -2761,7 +2912,7 @@ _ALL_VENUES = [
     {"name": "Littlefield Brooklyn", "url": "https://www.eventbrite.com/api/v3/organizers/18046024060/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "Music Hall of Williamsburg", "url": "https://donyc.com/venues/music-hall-of-williamsburg", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Brooklyn Steel", "url": "https://donyc.com/venues/brooklyn-steel", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Warsaw Brooklyn", "url": "https://donyc.com/venues/warsaw", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Warsaw Brooklyn", "url": "https://www.warsawconcerts.com/", "ua": UA_CHROME, "scraper": scrape_warsaw, "default_category": "music"},
     {"name": "Barclays Center", "url": "https://donyc.com/venues/barclays-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "sports"},
     {"name": "Kings Theatre Flatbush", "url": "https://donyc.com/venues/kings-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Baby's All Right Williamsburg", "url": "https://donyc.com/venues/baby-s-all-right", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -2920,7 +3071,7 @@ _ALL_VENUES = [
     {"name": "Asylum NYC (Alternative Comedy)", "url": "https://www.eventbrite.com/d/ny--new-york/asylum-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
 
     # Historic Cultural Music Halls
-    {"name": "S.O.B.'s (Sounds of Brazil)", "url": "https://donyc.com/venues/sobs", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "S.O.B.'s (Sounds of Brazil)", "url": "https://sobs.com/calendar/", "ua": UA_CHROME, "scraper": scrape_sobs, "default_category": "music"},
 
     # Salsa, Bachata & Latin Social Dancing
     {"name": "NYC Salsa & Bachata Socials", "url": "https://www.eventbrite.com/d/ny--new-york/salsa-dancing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
