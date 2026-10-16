@@ -63,10 +63,23 @@ def api_events():
 
 def export_json(dest="events.json"):
     data = get_all_events(force=True)
+    new_total = sum(len(v.get("events", [])) for v in data.get("venues", []))
+
+    # Guard against degraded cloud scrapes (e.g. CI runner datacenter IP blocks losing thousands of events)
+    if os.path.exists(dest):
+        try:
+            with open(dest, "r", encoding="utf-8") as existing_file:
+                existing_data = json.load(existing_file)
+            old_total = sum(len(v.get("events", [])) for v in existing_data.get("venues", []))
+            if new_total < old_total * 0.70 and new_total < 5000:
+                print(f"Preserving existing {dest} ({old_total} events) — new scrape yielded only {new_total} events (likely CI runner datacenter IP rate-limits)")
+                return
+        except Exception:
+            pass
+
     with open(dest, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
-    total = sum(len(v.get("events", [])) for v in data.get("venues", []))
-    print(f"wrote {dest}: {total} events across {len(data.get('venues', []))} venues")
+    print(f"wrote {dest}: {new_total} events across {len(data.get('venues', []))} venues")
 
 
 def export_html(dest="index.html", source_json="events.json"):
