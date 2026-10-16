@@ -453,6 +453,8 @@ VENUE_RULES = [
     ("st. mary the virgin", (40.7583, -73.9837, "Theater District", "145 W 46th St, New York, NY", "Church of St. Mary the Virgin")),
     ("tishman auditorium", (40.7354, -73.9971, "Greenwich Village", "66 W 12th St, New York, NY", "The New School Tishman Auditorium")),
     ("the new school", (40.7354, -73.9971, "Greenwich Village", "66 W 12th St, New York, NY", "The New School Tishman Auditorium")),
+    ("sesh comedy", (40.7169, -73.9938, "Chinatown / LES", "55 Chrystie St, New York, NY", "Sesh Comedy")),
+    ("flop house (east village)", (40.7222, -73.9892, "East Village", "201 Allen St, New York, NY", "Flop House Comedy (East Village)")),
 
     # Brooklyn Rules
     ("flop house", (40.7115, -73.9545, "Williamsburg", "362 Grand St, Brooklyn, NY", "Flop House Comedy Club")),

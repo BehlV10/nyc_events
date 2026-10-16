@@ -48,7 +48,7 @@ def _is_within_horizon(e, max_days=HORIZON_DAYS):
 
 def _get_venue_ttl(vname):
     low = vname.lower()
-    if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc", "the skint", "secret nyc", "greenpointers"]):
+    if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc", "the skint", "secret nyc", "greenpointers", "flop house", "sesh comedy"]):
         return FAST_VENUE_TTL
     if any(k in low for k in ["parks", "trivia", "library", "flea", "greenmarket"]):
         return SLOW_VENUE_TTL
@@ -925,6 +925,111 @@ def scrape_greenpointers(url, ua):
                 "url": link,
                 "price": "Free / Various",
                 "category": cat
+            }
+            if _is_within_horizon(ev_obj):
+                events.append(ev_obj)
+
+    return events
+
+
+def scrape_flophouse(url, ua):
+    """Flop House Comedy Club — Williamsburg & East Village intimate indie comedy showcases via official JSON API."""
+    events = []
+    seen = set()
+    venue_endpoints = [
+        ("Flop House Comedy (Williamsburg)", "362 Grand St, Brooklyn, NY", "d4746cdc-a0b5-45ce-b897-afcb896b1851"),
+        ("Flop House Comedy (East Village)", "201 Allen St, New York, NY", "d2a2a158-e9fa-4b6e-af68-a8bd9b57a375"),
+    ]
+    for loc_name, addr, vid in venue_endpoints:
+        endpoint = f"https://flophousecomedy.com/venues/{vid}_events.json"
+        try:
+            resp = _SESSION.get(endpoint, headers={"User-Agent": ua}, timeout=10)
+            if not resp.ok:
+                continue
+            data = resp.json()
+            for show_item in data:
+                show_info = show_item.get("show") or {}
+                title = (show_info.get("title") or "Flop House Comedy").replace("^", "'")
+                desc = show_info.get("description") or ""
+                for ev in show_item.get("events") or []:
+                    start_ms = ev.get("startTime")
+                    if not start_ms:
+                        continue
+                    dt = datetime.fromtimestamp(start_ms / 1000.0, tz=timezone.utc)
+                    eb_id = ev.get("eventbriteId")
+                    ticket_url = f"https://www.eventbrite.com/e/tickets-{eb_id}" if eb_id else "https://flophousecomedy.com/"
+                    key = (title.lower(), dt.strftime("%Y-%m-%dT%H"))
+                    if key not in seen:
+                        seen.add(key)
+                        ev_obj = {
+                            "name": title,
+                            "date": dt.isoformat(),
+                            "venue": loc_name,
+                            "url": ticket_url,
+                            "price": "$15 - $20",
+                            "category": "comedy",
+                        }
+                        if _is_within_horizon(ev_obj):
+                            events.append(ev_obj)
+        except Exception:
+            continue
+    return events
+
+
+def scrape_sesh_comedy(url, ua):
+    """Sesh Comedy — Lower East Side / Chinatown live stand-up comedy club & speakeasy."""
+    events = []
+    seen = set()
+    now = datetime.now(EASTERN)
+    try:
+        resp = _SESSION.get("https://seshcomedy.com/showcases.php", headers={"User-Agent": ua}, timeout=12)
+        if not resp.ok:
+            return events
+        soup = BeautifulSoup(resp.content, "html.parser")
+    except Exception:
+        return events
+
+    for card in soup.find_all("div", class_="show"):
+        title = card.get("data-title") or ""
+        when_str = card.get("data-when") or ""
+        rel_url = card.get("data-url") or ""
+        is_sold_out = card.get("data-soldout") == "true" or "sold out" in title.lower()
+
+        if not title or not when_str:
+            continue
+
+        m = re.search(r"([A-Za-z]+),\s+([A-Za-z]+)\s+(\d{1,2})\s*—\s*(\d{1,2}):(\d{2})\s*(AM|PM)", when_str, re.I)
+        if m:
+            mo_str = m.group(2)[:3].lower()
+            day = int(m.group(3))
+            hr = int(m.group(4))
+            mn = int(m.group(5))
+            ampm = m.group(6).upper()
+            if ampm == "PM" and hr != 12:
+                hr += 12
+            elif ampm == "AM" and hr == 12:
+                hr = 0
+            try:
+                mo_num = datetime.strptime(mo_str, "%b").month
+                dt = datetime(now.year, mo_num, day, hr, mn, tzinfo=EASTERN)
+            except Exception:
+                continue
+        else:
+            continue
+
+        clean_title = re.sub(r"^\d+/\d+\s*", "", title).strip()
+        ev_url = f"https://seshcomedy.com/{rel_url}" if rel_url else "https://seshcomedy.com/"
+        price = "Sold Out" if is_sold_out else "$20.00 – $30.00 (BYOB)"
+        key = (clean_title.lower(), dt.strftime("%Y-%m-%dT%H"))
+        if key not in seen:
+            seen.add(key)
+            ev_obj = {
+                "name": clean_title,
+                "date": dt.astimezone(timezone.utc).isoformat(),
+                "venue": "Sesh Comedy (Chinatown / LES)",
+                "url": ev_url,
+                "price": price,
+                "category": "comedy",
             }
             if _is_within_horizon(ev_obj):
                 events.append(ev_obj)
@@ -2779,8 +2884,8 @@ _ALL_VENUES = [
     {"name": "Bibliothèque Wine & Book Bar", "url": "https://www.eventbrite.com/d/ny--new-york/bibliotheque/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
     {"name": "Liz's Book Bar (Carroll Gardens)", "url": "https://www.eventbrite.com/d/ny--brooklyn/lizs-book-bar/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
     {"name": "Threes Brewing (Gowanus & Greenpoint)", "url": "https://www.eventbrite.com/d/ny--brooklyn/threes-brewing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
-    {"name": "McCarren Parkhouse (Williamsburg)", "url": "https://www.eventbrite.com/d/ny--brooklyn/mccarren-parkhouse/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
-    {"name": "Flop House Comedy Club", "url": "https://www.eventbrite.com/d/ny--brooklyn/flop-house-comedy/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Flop House Comedy Club", "url": "https://flophousecomedy.com/", "ua": UA_CHROME, "scraper": scrape_flophouse, "default_category": "comedy"},
+    {"name": "Sesh Comedy (Chinatown / LES)", "url": "https://seshcomedy.com/showcases.php", "ua": UA_CHROME, "scraper": scrape_sesh_comedy, "default_category": "comedy"},
 
     # Super Smash Bros (SSB), Arcades & Tabletop Gaming
     {"name": "OS NYC (Super Smash Bros & Gaming)", "url": "https://www.os-nyc.com/events?format=json", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "gaming"},
