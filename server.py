@@ -62,7 +62,8 @@ def api_events():
 
 
 def export_json(dest="events.json"):
-    data = get_all_events(force=True)
+    force = os.environ.get("FORCE_SCRAPE", "").lower() in ("1", "true")
+    data = get_all_events(force=force)
     new_total = sum(len(v.get("events", [])) for v in data.get("venues", []))
 
     # Guard against degraded cloud scrapes (e.g. CI runner datacenter IP blocks losing thousands of events)
@@ -71,7 +72,7 @@ def export_json(dest="events.json"):
             with open(dest, "r", encoding="utf-8") as existing_file:
                 existing_data = json.load(existing_file)
             old_total = sum(len(v.get("events", [])) for v in existing_data.get("venues", []))
-            if new_total < old_total * 0.70 and new_total < 5000:
+            if new_total < old_total * 0.50 and new_total < 2500:
                 print(f"Preserving existing {dest} ({old_total} events) — new scrape yielded only {new_total} events (likely CI runner datacenter IP rate-limits)")
                 return
         except Exception:
