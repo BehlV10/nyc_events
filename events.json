@@ -6655,6 +6655,26 @@
           "category": "music"
         },
         {
+          "name": "Rocket from the Crypt",
+          "date": "2026-10-16T23:00:00Z",
+          "url": "https://seatgeek.com/rocket-from-the-crypt-tickets/new-york-new-york-irving-plaza-2026-10-16-7-pm/concert/18411364",
+          "venue": "Irving Plaza (New York, NY)",
+          "lat": 40.734905,
+          "lng": -73.98838,
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Harry Potter and The Cursed Child - New York",
+          "date": "2026-10-16T23:00:00Z",
+          "url": "https://seatgeek.com/harry-potter-and-the-cursed-child-tickets/theater/2026-10-16-7-pm/17958371",
+          "venue": "Lyric Theatre - New York",
+          "lat": 40.7565,
+          "lng": -73.9878,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "The Book of Mormon - New York",
           "date": "2026-10-16T23:00:00Z",
           "url": "https://seatgeek.com/the-book-of-mormon-tickets/broadway/2026-10-16-7-pm/18128133",
@@ -6815,6 +6835,16 @@
           "category": "theater"
         },
         {
+          "name": "Nine Vicious",
+          "date": "2026-10-16T23:00:00Z",
+          "url": "https://seatgeek.com/nine-vicious-tickets/brooklyn-new-york-brooklyn-paramount-2026-10-16-7-pm/concert/18603984",
+          "venue": "Brooklyn Paramount",
+          "lat": 40.6917,
+          "lng": -73.9815,
+          "price": null,
+          "category": "music"
+        },
+        {
           "name": "Wicked - New York",
           "date": "2026-10-16T23:00:00Z",
           "url": "https://seatgeek.com/wicked-tickets/broadway/2026-10-16-7-pm/17967338",
@@ -6875,12 +6905,12 @@
           "category": "music"
         },
         {
-          "name": "School Girls: Or, The African Mean Girls - New York",
+          "name": "Little Shop of Horrors - New York",
           "date": "2026-10-16T23:00:00Z",
-          "url": "https://seatgeek.com/school-girls-or-the-african-mean-girls-tickets/theater/2026-10-16-7-pm/18390703",
-          "venue": "Samuel J. Friedman Theatre (New York, NY)",
-          "lat": 40.7602,
-          "lng": -73.9868,
+          "url": "https://seatgeek.com/little-shop-of-horrors-tickets/theater/2026-10-16-7-pm/17420177",
+          "venue": "Westside Theatre Upstairs (New York, NY)",
+          "lat": 40.7593,
+          "lng": -73.9927,
           "price": null,
           "category": "theater"
         },
@@ -7195,16 +7225,6 @@
           "category": "theater"
         },
         {
-          "name": "Chazz Palminteri's A Bronx Tale - Carteret",
-          "date": "2026-10-17T00:00:00Z",
-          "url": "https://seatgeek.com/chazz-palminteri-s-a-bronx-tale-tickets/broadway/2026-10-16-8-pm/18649138",
-          "venue": "Carteret Performing Arts and Events Center",
-          "lat": 40.5765,
-          "lng": -74.2215,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "A Few Good Men - New York",
           "date": "2026-10-17T00:00:00Z",
           "url": "https://seatgeek.com/a-few-good-men-tickets/theater/2026-10-16-8-pm/18360872",
@@ -7467,10 +7487,10 @@
         {
           "name": "New York City Ballet - All Balanchine I",
           "date": "2026-10-17T18:00:00Z",
-          "url": "https://seatgeek.com/new-york-city-ballet-tickets/dance/2026-10-17-2-pm/18528585",
-          "venue": "David H Koch Theater (New York, NY)",
-          "lat": 40.772,
-          "lng": -73.9833,
+          "url": "https://seatgeek.com/billy-crystal-860-tickets/broadway/2026-10-17-2-pm/18324009",
+          "venue": "Imperial Theatre - NY (New York, NY)",
+          "lat": 40.7588,
+          "lng": -73.9873,
           "price": null,
           "category": "theater"
         },
@@ -7495,7 +7515,7 @@
           "category": "theater"
         },
         {
-          "name": "The Play That Goes Wrong - New York",
+          "name": "The Lion King - New York",
           "date": "2026-10-17T18:00:00Z",
           "url": "https://seatgeek.com/the-play-that-goes-wrong-tickets/theater/2026-10-17-2-pm/18286756",
           "venue": "New World Stages - Stage 4 (New York, NY)",
@@ -7611,16 +7631,6 @@
           "venue": "Bernard B. Jacobs Theatre (New York, NY)",
           "lat": 40.7586,
           "lng": -73.9878,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Lost Boys - New York",
-          "date": "2026-10-17T18:00:00Z",
-          "url": "https://seatgeek.com/the-lost-boys-tickets/broadway/2026-10-17-2-pm/18313004",
-          "venue": "Palace Theatre - New York",
-          "lat": 40.7589,
-          "lng": -73.9846,
           "price": null,
           "category": "theater"
         },
@@ -7931,6 +7941,16 @@
           "venue": "Laura Pels Theater (New York, NY)",
           "lat": 40.7579,
           "lng": -73.983,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "New York City Ballet - All Balanchine I",
+          "date": "2026-10-17T23:30:00Z",
+          "url": "https://seatgeek.com/new-york-city-ballet-tickets/dance/2026-10-17-7-30-pm/18528584",
+          "venue": "David H Koch Theater (New York, NY)",
+          "lat": 40.772,
+          "lng": -73.9833,
           "price": null,
           "category": "theater"
         },
@@ -13707,7 +13727,7 @@
       "url": "https://www.eventbrite.com/d/ny--queens/queens-public-library/",
       "events": [],
       "error": null,
-      "duration": 0.02,
+      "duration": 2.19,
       "cached": false
     },
     {
@@ -20364,6 +20384,17 @@
           "category": "outdoors"
         },
         {
+          "name": "Chelsea Art Gallery Hop-Limited Space",
+          "date": "2026-10-16T17:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-wanderers/events/316742151/",
+          "venue": "NYC Community Location",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "PLEASE ONLY RSVP AFTER YOU HAVE READ THE DESCRIPTION OF THE EVENT CAREFULLY AND ANY COMMENTS I MIGHT POST.\n\nTHIS WILL BE A FUN AND INTERESTING EVENT. I HAVE DONE MANY, MANY GALLERY HOPS OVER THE YEARS IN ALL DIFFERENT NEIGHBORHOODS. They are always f",
+          "category": "art"
+        },
+        {
           "name": "Autumn At Greenbrook Sanctuary: Naturalist Tour and Scenic Palisades Hike",
           "date": "2026-10-25T14:10:00+00:00",
           "url": "https://www.meetup.com/sundance-outdoor-adventure-society/events/316334278/",
@@ -20624,6 +20655,17 @@
           "price": "Free",
           "description": "",
           "category": "outdoors"
+        },
+        {
+          "name": "Chelsea Art Gallery Hop-Limited Space",
+          "date": "2026-10-16T17:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-wanderers/events/316742151/",
+          "venue": "NYC Community Location",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "PLEASE ONLY RSVP AFTER YOU HAVE READ THE DESCRIPTION OF THE EVENT CAREFULLY AND ANY COMMENTS I MIGHT POST.\n\nTHIS WILL BE A FUN AND INTERESTING EVENT. I HAVE DONE MANY, MANY GALLERY HOPS OVER THE YEARS IN ALL DIFFERENT NEIGHBORHOODS. They are always f",
+          "category": "art"
         },
         {
           "name": "Autumn At Greenbrook Sanctuary: Naturalist Tour and Scenic Palisades Hike",
@@ -22467,8 +22509,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/washington-square-park-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.58,
+      "cached": true
     },
     {
       "venue": "Hudson River Park (Sunset Salsa Pier 45 & 76)",
@@ -22799,16 +22841,16 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/frim-fram-jam/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.39,
+      "cached": true
     },
     {
       "venue": "Prohibition Productions (Gotham Jazz)",
       "url": "https://www.eventbrite.com/d/ny--new-york/prohibition-productions/",
       "events": [],
       "error": null,
-      "duration": 0.03,
-      "cached": false
+      "duration": 1.86,
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Swing Dancing",
@@ -23088,8 +23130,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/pieces-bar/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 1.62,
+      "cached": true
     },
     {
       "venue": "NYC Video Game Tournaments",
@@ -23571,8 +23613,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/rooftop-party/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.95,
+      "cached": true
     },
     {
       "venue": "Somewhere Nowhere Rooftop Club",
