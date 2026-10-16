@@ -22,6 +22,67 @@ warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 CACHE_SECONDS = 15 * 60
 EASTERN = ZoneInfo("America/New_York")
+HORIZON_DAYS = 14
+
+CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".cache", "venues")
+os.makedirs(CACHE_DIR, exist_ok=True)
+
+DEFAULT_VENUE_TTL = 3 * 3600    # 3 hours for standard venue feeds
+FAST_VENUE_TTL = 1 * 3600       # 1 hour for high-turnover feeds (Ticketmaster, SeatGeek, RA, Dice, DoNYC)
+SLOW_VENUE_TTL = 12 * 3600      # 12 hours for evergreen/slow feeds (NYC Parks XML, Trivia, Bookstores)
+
+
+def _is_within_horizon(e, max_days=HORIZON_DAYS):
+    """Check if event start date is between today and max_days ahead."""
+    raw = e.get("date")
+    if not raw:
+        return True
+    try:
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00")).astimezone(EASTERN)
+        today = datetime.now(EASTERN).date()
+        max_date = today + timedelta(days=max_days)
+        return today <= dt.date() <= max_date
+    except Exception:
+        return True
+
+
+def _get_venue_ttl(vname):
+    low = vname.lower()
+    if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc"]):
+        return FAST_VENUE_TTL
+    if any(k in low for k in ["parks", "trivia", "library", "flea", "greenmarket"]):
+        return SLOW_VENUE_TTL
+    return DEFAULT_VENUE_TTL
+
+
+def _venue_cache_path(vname):
+    slug = re.sub(r"[^a-zA-Z0-9_\-]+", "_", vname).strip("_").lower()
+    return os.path.join(CACHE_DIR, f"{slug}.json")
+
+
+def _load_venue_cache(vname, max_age=None):
+    path = _venue_cache_path(vname)
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            cached = json.load(f)
+        if max_age is not None:
+            age = time.time() - cached.get("ts", 0)
+            if age > max_age:
+                return None
+        return cached
+    except Exception:
+        return None
+
+
+def _save_venue_cache(vname, events, duration=0.0):
+    path = _venue_cache_path(vname)
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump({"ts": time.time(), "venue": vname, "duration": duration, "events": events}, f, ensure_ascii=False)
+    except Exception:
+        pass
 
 UA_SAFARI = (
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
@@ -322,11 +383,11 @@ def scrape_donyc(url, ua):
 
 
 def scrape_donyc_calendar(url, ua):
-    """DoNYC multi-day event calendar — fetches next 12 days of citywide listings with pacing & pagination."""
+    """DoNYC multi-day event calendar — fetches next 14 days of citywide listings with pacing & pagination."""
     events = []
     now = datetime.now(EASTERN)
     seen = set()
-    for i in range(12):
+    for i in range(HORIZON_DAYS):
         d = now.date() + timedelta(days=i)
         for page in (1, 2):
             day_url = f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}"
@@ -885,7 +946,7 @@ def scrape_resident_advisor(url, ua):
     """Resident Advisor GraphQL API — underground electronic music, DJ sets & nightlife across NYC clubs."""
     now = datetime.now(timezone.utc)
     today_str = now.strftime("%Y-%m-%dT00:00:00.000Z")
-    month_str = (now + timedelta(days=21)).strftime("%Y-%m-%dT23:59:59.999Z")
+    month_str = (now + timedelta(days=HORIZON_DAYS)).strftime("%Y-%m-%dT23:59:59.999Z")
 
     query = '''
     query GetEvents($pageSize: Int, $filters: FilterInputDtoInput) {
@@ -1332,7 +1393,7 @@ def scrape_nyc_trivia_league(_url, ua):
         resp.raise_for_status()
         soup = BeautifulSoup(resp.json().get("html", ""), "html.parser")
         today = datetime.now(EASTERN).date()
-        weeks = 4
+        weeks = 2
         for a in soup.select("article"):
             title_el = a.select_one(".card__title")
             tagline_el = a.select_one(".card__tagline")
@@ -2060,7 +2121,7 @@ MANUAL_RECURRING_EVENTS = [
 ]
 
 
-def _expand_manual_recurring(weeks=8):
+def _expand_manual_recurring(weeks=2):
     today = datetime.now(EASTERN).date()
     results = []
     for venue, venue_url, default_cat, items in MANUAL_RECURRING_EVENTS:
@@ -2404,33 +2465,72 @@ DEAL_LINKS = [
 _cache = {"ts": 0, "data": None}
 
 
-def _scrape_one(v):
+def _scrape_one(v, force=False):
+    vname = v["name"]
+    ttl = _get_venue_ttl(vname)
+
+    # 1. Check if cached data exists and is within TTL
+    if not force:
+        cached = _load_venue_cache(vname, max_age=ttl)
+        if cached and cached.get("events") is not None:
+            events = [e for e in cached["events"] if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_closed_show(e.get("name"))]
+            return {
+                "venue": vname,
+                "url": v["url"],
+                "events": events,
+                "error": None,
+                "duration": cached.get("duration", 0.0),
+                "cached": True,
+            }
+
+    # 2. Scrape live from external endpoint
     t0 = time.time()
     try:
         events = v["scraper"](v["url"], v["ua"])
         events = [e for e in events if not is_closed_show(e.get("name"))]
         for e in events:
             if not e.get("venue"):
-                e["venue"] = v["name"]
+                e["venue"] = vname
             existing_cat = e.get("category")
             if not existing_cat or existing_cat == "other":
                 e["category"] = guess_category(e.get("name"), v.get("default_category") or "community", venue=e.get("venue"))
             else:
                 e["category"] = guess_category(e.get("name"), existing_cat, venue=e.get("venue"))
+
+        dur = round(time.time() - t0, 2)
+        # Save raw parsed events to cache before horizon filtering
+        _save_venue_cache(vname, events, duration=dur)
+
+        # Filter events to 14-day rolling window
+        events = [e for e in events if _is_within_horizon(e, max_days=HORIZON_DAYS)]
         return {
-            "venue": v["name"],
+            "venue": vname,
             "url": v["url"],
             "events": events,
             "error": None,
-            "duration": round(time.time() - t0, 2),
+            "duration": dur,
+            "cached": False,
         }
     except Exception as exc:
+        # Error resilience: fall back to existing cache if network/Cloudflare fails
+        stale_cache = _load_venue_cache(vname, max_age=None)
+        if stale_cache and stale_cache.get("events"):
+            events = [e for e in stale_cache["events"] if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_closed_show(e.get("name"))]
+            return {
+                "venue": vname,
+                "url": v["url"],
+                "events": events,
+                "error": f"{exc} (serving stale cache)",
+                "duration": round(time.time() - t0, 2),
+                "cached": True,
+            }
         return {
-            "venue": v["name"],
+            "venue": vname,
             "url": v["url"],
             "events": [],
             "error": str(exc),
             "duration": round(time.time() - t0, 2),
+            "cached": False,
         }
 
 
@@ -2439,11 +2539,14 @@ def get_all_events(force=False):
     if not force and _cache["data"] and (now - _cache["ts"] < CACHE_SECONDS):
         return _cache["data"]
 
-    with ThreadPoolExecutor(max_workers=10) as ex:
-        results = list(ex.map(_scrape_one, VENUES))
+    def _worker(v):
+        return _scrape_one(v, force=force)
 
-    # Add recurring events
-    results.extend(_expand_manual_recurring(weeks=8))
+    with ThreadPoolExecutor(max_workers=10) as ex:
+        results = list(ex.map(_worker, VENUES))
+
+    # Add recurring events (expanded for 2 weeks / 14 days)
+    results.extend(_expand_manual_recurring(weeks=2))
 
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),

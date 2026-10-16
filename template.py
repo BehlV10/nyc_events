@@ -803,6 +803,7 @@ def _merge_duplicates(events):
 
 def group_by_date(results):
     today = datetime.now(EASTERN).date()
+    max_date = today + timedelta(days=14)
     buckets = {}
     tba = []
     ongoing = []
@@ -830,7 +831,7 @@ def group_by_date(results):
                 tba.append(entry)
             elif key < today:
                 ongoing.append(entry)
-            else:
+            elif key <= max_date:
                 buckets.setdefault(key, []).append(entry)
     for date_key, events in list(buckets.items()):
         events.sort(key=lambda e: e.get("_time", datetime.min.replace(tzinfo=EASTERN)))
