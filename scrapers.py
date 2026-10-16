@@ -86,8 +86,33 @@ def _format_price_range(lo, hi, curr="USD"):
     return f"{sym}{lo_s}–{hi_s}"
 
 
+BROADWAY_THEATRES = {
+    "broadhurst", "gershwin", "minskoff", "amsterdam theatre", "new amsterdam",
+    "winter garden", "richard rodgers", "al hirschfeld", "st. james theatre",
+    "st james theatre", "walter kerr", "neil simon", "august wilson",
+    "lyric theatre", "marquis theatre", "imperial theatre", "shubert theatre",
+    "music box theatre", "belasco theatre", "eugene o'neill", "booth theatre",
+    "schoenfeld", "bernard b. jacobs", "barrymore theatre", "ethel barrymore",
+    "broadway theatre", "lunt-fontanne", "new world stages", "vivian beaumont",
+    "mitzi e. newhouse", "hudson theatre", "samuel j. friedman", "todd haimes",
+    "studio 54", "stephen sondheim", "nederlander theatre", "john golden theatre",
+    "lyceum theatre", "majestic theatre", "ambassador theatre", "circle in the square",
+    "longacre theatre", "st. ann's warehouse", "lucille lortel", "minetta lane",
+    "cherry lane theatre", "daryl roth", "astor place theatre", "orpheum theatre",
+    "westside theatre", "playwrights horizons", "signature theatre", "atlantic theater",
+    "classic stage", "soho rep", "irish rep", "second stage", "manhattan theatre club",
+    "lincoln center theater", "new york city center", "city center"
+}
+
+COMEDY_VENUES = {
+    "comedy cellar", "the stand", "gotham comedy", "broadway comedy", "eastville comedy",
+    "greenwich village comedy", "grisly pear", "st. marks comedy", "tight pants comedy",
+    "new york comedy club", "magnet theater", "the pit", "peoples improv theater",
+    "caveat", "flop house comedy", "brooklyn comedy collective", "tiny cupboard"
+}
+
 CATEGORY_KEYWORDS = [
-    ("theater",   [r"\b(theater|theatre|musical|the musical|broadway|off-broadway|playwright|stage play|cabaret|drama|drag show|drag queen|drag cabaret|drag brunch|burlesque|curtain call)\b"]),
+    ("theater",   [r"\b(theater|theatre|musical|the musical|broadway|off-broadway|playwright|stage play|cabaret|drama|drag show|drag queen|drag cabaret|drag brunch|burlesque|curtain call|cats: the jellicle ball|hamilton|hadestown|moulin rouge|aladdin|lion king|the outsiders|great gatsby|buena vista social club|stereophonic|sunset boulevard|book of mormon|little shop of horrors|maybe happy ending|operation mincemeat|swept away|death becomes her|sweeney todd|into the woods|west side story|mamma mia|les miserables|phantom of the opera|rent|funny girl|waitress|kinky boots|dear evan hansen|in the heights|spring awakening|titanique|play that goes wrong|cursed child|water for elephants|illinoise|suffs|our town|romeo and juliet|mcneal|yellow face|left on tenth|hills of california|cult of love|gypsy|amaze)\b"]),
     ("comedy",    [r"\b(comedy|stand-?up|improv|open mic comedy|comic|roast|laugh)\b"]),
     ("clubbing",  [r"\b(dj|rave|techno|house music|edm|club night|dance party|nightclub|party|afters|guestlist|free guestlist|rooftop party|clubbing|nightlife)\b"]),
     ("dance",     [r"\b(salsa|bachata|tango|swing dance|swing dancing|lindy hop|lindy|contra dance|ballroom|dance class|social dance|milonga|cumbia)\b"]),
@@ -135,7 +160,15 @@ def category_bucket(cat):
     return "Social & community"
 
 
-def guess_category(text, default="community"):
+def guess_category(text, default="community", venue=None):
+    if venue:
+        v_low = venue.lower()
+        if any(cv in v_low for cv in COMEDY_VENUES):
+            return "comedy"
+        if any(bt in v_low for bt in BROADWAY_THEATRES) and not any(k in v_low for k in ["comedy", "film", "cinema"]):
+            return "theater"
+    if default == "theater":
+        return "theater"
     if not text:
         return default
     t = text.lower()
@@ -420,29 +453,35 @@ def scrape_ticketmaster_nyc(_url, _ua):
                     price = _format_price_range(prs[0].get("min"), prs[0].get("max"), prs[0].get("currency", "USD"))
 
                 cat = "music"
-                for c in ev.get("classifications") or []:
-                    seg = (c.get("segment") or {}).get("name", "").lower()
-                    gnr = (c.get("genre") or {}).get("name", "").lower()
-                    sub = (c.get("subGenre") or {}).get("name", "").lower()
-                    combined = f"{seg} {gnr} {sub}"
-                    if any(k in combined for k in ["theatre", "theater", "broadway", "musical", "play", "cabaret", "drama"]):
-                        cat = "theater"
-                        break
-                    elif "comedy" in combined or "stand-up" in combined:
-                        cat = "comedy"
-                        break
-                    elif "sport" in combined:
-                        cat = "sports"
-                        break
-                    elif "dance" in combined:
-                        cat = "dance"
-                        break
-                    elif "film" in combined or "movie" in combined:
-                        cat = "film"
-                        break
-                    elif "art" in combined:
-                        cat = "art"
-                        break
+                v_low = venue.lower()
+                if any(cv in v_low for cv in COMEDY_VENUES):
+                    cat = "comedy"
+                elif any(bt in v_low for bt in BROADWAY_THEATRES) and not any(k in v_low for k in ["comedy", "film", "cinema"]):
+                    cat = "theater"
+                else:
+                    for c in ev.get("classifications") or []:
+                        seg = (c.get("segment") or {}).get("name", "").lower()
+                        gnr = (c.get("genre") or {}).get("name", "").lower()
+                        sub = (c.get("subGenre") or {}).get("name", "").lower()
+                        combined = f"{seg} {gnr} {sub}"
+                        if any(k in combined for k in ["theatre", "theater", "broadway", "musical", "play", "cabaret", "drama"]):
+                            cat = "theater"
+                            break
+                        elif "comedy" in combined or "stand-up" in combined:
+                            cat = "comedy"
+                            break
+                        elif "sport" in combined:
+                            cat = "sports"
+                            break
+                        elif "dance" in combined:
+                            cat = "dance"
+                            break
+                        elif "film" in combined or "movie" in combined:
+                            cat = "film"
+                            break
+                        elif "art" in combined:
+                            cat = "art"
+                            break
 
                 key = (ev.get("name", "").lower(), (iso or "")[:10])
                 if key in seen:
@@ -457,10 +496,141 @@ def scrape_ticketmaster_nyc(_url, _ua):
                     "lat": lat,
                     "lng": lng,
                     "price": price,
-                    "category": guess_category(ev.get("name"), cat),
+                    "category": guess_category(ev.get("name"), cat, venue=venue),
                 })
         except Exception:
             break
+    return events
+
+
+def scrape_carnegie_hall_tm(_url, _ua):
+    """Ticketmaster Discovery API for Carnegie Hall (Stern Auditorium, Zankel Hall, Weill Recital Hall)."""
+    key = os.environ.get("TICKETMASTER_API_KEY") or "oo1qd0wzLe7WJpm61ALQuUCTMXGK7U5z"
+    events = []
+    seen = set()
+    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    try:
+        resp = _SESSION.get(
+            "https://app.ticketmaster.com/discovery/v2/events.json",
+            params={
+                "apikey": key,
+                "venueId": "KovZpZA1dnJA,ZFr9jZ7kvA,ZFr9jZ117e,ZFr9jZ1kvA",
+                "size": 100,
+                "sort": "date,asc",
+                "startDateTime": now_str,
+            },
+            timeout=15,
+        )
+        resp.raise_for_status()
+        batch = resp.json().get("_embedded", {}).get("events", [])
+        for ev in batch:
+            name = ev.get("name")
+            if not name or is_closed_show(name):
+                continue
+            status_code = (ev.get("dates", {}).get("status", {}) or {}).get("code", "").lower()
+            if status_code in ("cancelled", "canceled", "postponed"):
+                continue
+            start = ev.get("dates", {}).get("start", {})
+            iso = start.get("dateTime")
+            if not iso and start.get("localDate"):
+                try:
+                    iso = datetime.fromisoformat(f"{start['localDate']}T20:00:00").replace(
+                        tzinfo=EASTERN,
+                    ).astimezone(timezone.utc).isoformat()
+                except ValueError:
+                    iso = None
+            if not iso:
+                continue
+
+            venues = ev.get("_embedded", {}).get("venues") or []
+            vobj = venues[0] if venues else {}
+            vname = vobj.get("name") or "Carnegie Hall"
+            if "carnegie hall" not in vname.lower():
+                vname = f"{vname} at Carnegie Hall"
+
+            lat = 40.7651
+            lng = -73.9799
+            loc_coords = vobj.get("location")
+            if isinstance(loc_coords, dict) and loc_coords.get("latitude") and loc_coords.get("longitude"):
+                try:
+                    lat = float(loc_coords["latitude"])
+                    lng = float(loc_coords["longitude"])
+                except Exception:
+                    pass
+
+            price = None
+            prs = ev.get("priceRanges") or []
+            if prs:
+                price = _format_price_range(prs[0].get("min"), prs[0].get("max"), prs[0].get("currency", "USD"))
+
+            key_tup = (name.lower(), iso[:10])
+            if key_tup in seen:
+                continue
+            seen.add(key_tup)
+
+            cat = "music"
+            for c in ev.get("classifications") or []:
+                seg = (c.get("segment") or {}).get("name", "").lower()
+                gnr = (c.get("genre") or {}).get("name", "").lower()
+                if "comedy" in seg or "comedy" in gnr:
+                    cat = "comedy"
+                    break
+                elif "theatre" in seg or "theater" in seg or "theatre" in gnr or "theater" in gnr:
+                    cat = "theater"
+                    break
+
+            events.append({
+                "name": name,
+                "date": iso,
+                "url": ev.get("url") or "https://www.carnegiehall.org/",
+                "venue": vname,
+                "lat": lat,
+                "lng": lng,
+                "price": price,
+                "category": guess_category(name, cat, venue=vname),
+            })
+    except Exception as exc:
+        print(f"Error scraping Carnegie Hall TM: {exc}")
+    return events
+
+
+def scrape_the_stand_nyc(url, ua):
+    """Scrape live shows from The Stand NYC (thestandnyc.com/shows)."""
+    soup = fetch_soup(url, ua)
+    events = []
+    seen = set()
+    for h2 in soup.select("h2.showtitle"):
+        a = h2.find("a", href=True)
+        if not a:
+            continue
+        title = a.get_text(strip=True)
+        href = a["href"].strip()
+        m = re.search(r"(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})\d{2}", href)
+        if not m or not title:
+            continue
+        y, mo, d, h, mi = map(int, m.groups())
+        try:
+            dt = datetime(y, mo, d, h, mi, tzinfo=EASTERN)
+            iso = dt.astimezone(timezone.utc).isoformat()
+        except ValueError:
+            continue
+        clean_url = href.replace("https://thestandnyc.com//", "https://thestandnyc.com/")
+        if not clean_url.startswith("http"):
+            clean_url = f"https://thestandnyc.com{clean_url}"
+        key = (title.lower(), iso)
+        if key in seen:
+            continue
+        seen.add(key)
+        events.append({
+            "name": title,
+            "date": iso,
+            "url": clean_url,
+            "venue": "The Stand NYC",
+            "lat": 40.7358,
+            "lng": -73.9877,
+            "price": None,
+            "category": "comedy",
+        })
     return events
 
 
@@ -518,7 +688,12 @@ def scrape_seatgeek_nyc(_url, _ua):
                 ev_type = (ev.get("type") or "").lower()
                 all_tags = set(tax_names + [ev_type])
                 cat = "music"
-                if any(s in all_tags for s in ["theater", "broadway", "musical", "play", "comedy_club"]):
+                v_low = venue.lower()
+                if any(cv in v_low for cv in COMEDY_VENUES):
+                    cat = "comedy"
+                elif any(bt in v_low for bt in BROADWAY_THEATRES) and not any(k in v_low for k in ["comedy", "film", "cinema"]):
+                    cat = "theater"
+                elif any(s in all_tags for s in ["theater", "broadway", "musical", "play", "comedy_club"]):
                     if "comedy" in all_tags:
                         cat = "comedy"
                     else:
@@ -540,7 +715,7 @@ def scrape_seatgeek_nyc(_url, _ua):
                     "lat": lat,
                     "lng": lng,
                     "price": price,
-                    "category": guess_category(title, cat),
+                    "category": guess_category(title, cat, venue=venue),
                 })
         except Exception:
             break
@@ -1590,6 +1765,12 @@ MANUAL_RECURRING_EVENTS = [
         ("Comedy Cellar Showcase", "https://www.comedycellar.com/new-york-line-up/", 5, 20, 0),
         ("Comedy Cellar Showcase", "https://www.comedycellar.com/new-york-line-up/", 6, 20, 0),
     ]),
+    ("Gotham Comedy Club", "https://www.gothamcomedyclub.com/", "comedy", [
+        ("Gotham Comedy Live Showcase", "https://www.gothamcomedyclub.com/", 3, 20, 0),
+        ("Gotham All-Stars Showcase", "https://www.gothamcomedyclub.com/", 4, 20, 0),
+        ("Gotham All-Stars Showcase", "https://www.gothamcomedyclub.com/", 5, 20, 0),
+        ("Gotham All-Stars Showcase", "https://www.gothamcomedyclub.com/", 6, 19, 30),
+    ]),
     ("Gonzalez y Gonzalez", "https://www.gygnyc.com/", "dance", [
         ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 3, 21, 0, "Free Lesson"),
         ("Live Salsa Band & Dance Party", "https://www.gygnyc.com/", 4, 21, 0, "Live Band"),
@@ -1809,7 +1990,7 @@ _ALL_VENUES = [
     {"name": "Madison Square Garden", "url": "https://donyc.com/venues/madison-square-garden", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Radio City Music Hall", "url": "https://donyc.com/venues/radio-city-music-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Beacon Theatre", "url": "https://donyc.com/venues/beacon-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Carnegie Hall", "url": "https://donyc.com/venues/carnegie-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Carnegie Hall", "url": "https://www.carnegiehall.org/Events", "ua": UA_CHROME, "scraper": scrape_carnegie_hall_tm, "default_category": "music"},
     {"name": "The Town Hall", "url": "https://donyc.com/venues/the-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Sony Hall", "url": "https://donyc.com/venues/sony-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Gramercy Theatre", "url": "https://donyc.com/venues/gramercy-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -1855,13 +2036,15 @@ _ALL_VENUES = [
     {"name": "Symphony Space (Upper West Side)", "url": "https://donyc.com/venues/symphony-space", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
 
     # Comedy Clubs & Queens Performance Spaces
+    {"name": "The Stand NYC", "url": "https://thestandnyc.com/shows", "ua": UA_CHROME, "scraper": scrape_the_stand_nyc, "default_category": "comedy"},
     {"name": "Tight Pants Comedy", "url": "https://www.eventbrite.com/api/v3/organizers/58671695943/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
+    {"name": "Broadway Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/broadway-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "EastVille Comedy Club", "url": "https://donyc.com/venues/eastville-comedy-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Greenwich Village Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/greenwich-village-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
     {"name": "The Grisly Pear Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/grisly-pear-comedy/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
-    {"name": "St. Marks Comedy Club", "url": "https://donyc.com/venues/st-marks-comedy-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "Q.E.D. Astoria (Comedy & Arts)", "url": "https://donyc.com/venues/qed", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "New York Comedy Club Midtown", "url": "https://donyc.com/venues/new-york-comedy-club-midtown", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "New York Comedy Club East Village", "url": "https://donyc.com/venues/new-york-comedy-club-east-village", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "St. Marks Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Q.E.D. Astoria (Comedy & Arts)", "url": "https://www.eventbrite.com/d/ny--astoria/qed/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "New York Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/new-york-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
     {"name": "The Tiny Cupboard (Bushwick Rooftop Comedy)", "url": "https://donyc.com/venues/the-tiny-cupboard", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Brooklyn Comedy Collective (Eris Mainstage)", "url": "https://donyc.com/venues/brooklyn-comedy-collective", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
 
@@ -1990,6 +2173,10 @@ STATIC_LINKS = [
     ("gaming",  "Meetup NYC Board Games & Tabletop", "https://www.meetup.com/find/?keywords=board%20games&location=us--ny--New%20York&source=EVENTS"),
     ("dance",   "Meetup NYC Salsa & Social Dance Groups", "https://www.meetup.com/find/?keywords=salsa%20dancing&location=us--ny--New%20York&source=EVENTS"),
     ("comedy",  "Comedy Cellar Nightly Lineups", "https://www.comedycellar.com/new-york-line-up/"),
+    ("comedy",  "The Stand NYC Live Lineups & Dinners", "https://thestandnyc.com/shows"),
+    ("comedy",  "Gotham Comedy Club Lineups & Headliners", "https://www.gothamcomedyclub.com/"),
+    ("comedy",  "EastVille Comedy Club Lineups (Brooklyn)", "https://www.eastvillecomedy.com/"),
+    ("comedy",  "Broadway Comedy Club Lineups (Times Square)", "https://broadwaycomedyclub.com/"),
     ("art",     "The Metropolitan Museum of Art (The Met)", "https://www.metmuseum.org/events"),
     ("art",     "Museum of Modern Art (MoMA)", "https://www.moma.org/calendar/events"),
     ("art",     "Whitney Museum of American Art", "https://whitney.org/events"),
@@ -2066,8 +2253,11 @@ def _scrape_one(v):
         for e in events:
             if not e.get("venue"):
                 e["venue"] = v["name"]
-            if not e.get("category"):
-                e["category"] = guess_category(e.get("name"), v.get("default_category") or "community")
+            existing_cat = e.get("category")
+            if not existing_cat or existing_cat == "other":
+                e["category"] = guess_category(e.get("name"), v.get("default_category") or "community", venue=e.get("venue"))
+            else:
+                e["category"] = guess_category(e.get("name"), existing_cat, venue=e.get("venue"))
         return {
             "venue": v["name"],
             "url": v["url"],

@@ -776,6 +776,21 @@ def _merge_duplicates(events):
             src_name = e.get("_source_venue") or e.get("venue") or "source"
             if src_url and not any(a.get("url") == src_url for a in match["_alt_sources"]) and src_url != match.get("url"):
                 match["_alt_sources"].append({"venue": src_name, "url": src_url})
+
+            GENERIC_AGGREGATORS = {
+                "donyc citywide", "the skint nyc", "ticketmaster nyc", "seatgeek nyc",
+                "dice.fm nyc", "resident advisor nyc", "nyc parks department", "meetup nyc",
+                "nyc broadway lotteries", "luckyseat nyc broadway lotteries"
+            }
+            cand_src = (match.get("_source_venue") or "").strip()
+            e_src = (e.get("_source_venue") or "").strip()
+            v_name = (match.get("venue") or "").strip().lower()
+
+            if e_src and e_src.lower() not in GENERIC_AGGREGATORS and e_src.lower() not in v_name:
+                match["_presenter"] = e_src
+            elif cand_src and cand_src.lower() not in GENERIC_AGGREGATORS and cand_src.lower() not in v_name:
+                match["_presenter"] = cand_src
+
             if not match.get("price") and e.get("price"):
                 match["price"] = e["price"]
             if not match.get("lat") and e.get("lat"):
@@ -797,7 +812,11 @@ def group_by_date(results):
                 continue
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["venue"] = e.get("venue") or r.get("venue", "")
-            entry["category"] = guess_category(e.get("name"), e.get("category") or r.get("default_category") or "community")
+            existing_cat = e.get("category")
+            if existing_cat == "theater":
+                entry["category"] = "theater"
+            else:
+                entry["category"] = guess_category(e.get("name"), existing_cat or r.get("default_category") or "community", venue=entry["venue"])
             raw = e.get("date")
             key = None
             if raw:
@@ -893,9 +912,25 @@ def render_page(results):
             geo_attrs = f' data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue-name="{escape(geo["venue"])}" data-neighborhood="{escape(geo["neighborhood"])}"'
             geo_btn = f' <button type="button" class="venue-map-jump" data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue="{escape(geo["venue"])}" title="View {escape(geo["venue"])} on Map">📍</button>'
 
+        GENERIC_AGGREGATORS = {
+            "donyc citywide", "the skint nyc", "ticketmaster nyc", "seatgeek nyc",
+            "dice.fm nyc", "resident advisor nyc", "nyc parks department", "meetup nyc",
+            "nyc broadway lotteries", "luckyseat nyc broadway lotteries"
+        }
+        presenter = e.get("_presenter") or ""
+        if not presenter and source and venue and source.strip().lower() not in GENERIC_AGGREGATORS:
+            s_clean = source.strip().lower()
+            v_clean = venue.strip().lower()
+            if s_clean not in v_clean and v_clean not in s_clean:
+                presenter = source
+
+        presenter_html = f' <span class="presenter-tag" title="Presented by {escape(presenter)}">presented by {escape(presenter)}</span>' if presenter else ""
+
         if venue:
             maps_url = _maps_link(venue, city)
-            venue_html = f'<a class="venue-link" href="{escape(maps_url)}" target="_blank" rel="noopener">{escape(venue)}</a>{geo_btn}'
+            venue_html = f'<a class="venue-link" href="{escape(maps_url)}" target="_blank" rel="noopener">{escape(venue)}</a>{geo_btn}{presenter_html}'
+        elif presenter_html:
+            venue_html = presenter_html
         else:
             venue_html = ""
 
@@ -916,7 +951,8 @@ def render_page(results):
         free_flag = "true" if (is_free or is_guestlist) else "false"
         epoch_attr = f' data-epoch="{int(e["_time"].timestamp())}"' if e.get("_time") else ''
         extra_html = f' · {compare_html}' if compare_html else ''
-        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}" data-city="{escape(city)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}"{epoch_attr}{geo_attrs}>
+        pres_attr = f' data-presenter="{escape(presenter)}"' if presenter else ''
+        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}"{epoch_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
           <div class="what">{link}{price_tag}{guestlist_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
@@ -1136,7 +1172,12 @@ def render_page(results):
 
     venue_counts = {v: 0 for v in all_venue_names}
     for e in all_events_flat:
-        venue_counts[e.get("_source_venue", "")] = venue_counts.get(e.get("_source_venue", ""), 0) + 1
+        src = e.get("_source_venue", "")
+        if src in venue_counts:
+            venue_counts[src] += 1
+        pres = e.get("_presenter", "")
+        if pres and pres in venue_counts and pres != src:
+            venue_counts[pres] += 1
 
     venue_boxes = "\n".join(
         f'''<label class="chk">
@@ -1590,6 +1631,7 @@ def render_page(results):
   .cal-btn {{ background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 5px; font-size: 10px; font-weight: 500; text-decoration: none; cursor: pointer; line-height: 1.3; display: inline-flex; align-items: center; gap: 3px; font-family: inherit; transition: all 0.15s ease; }}
   .cal-btn:hover {{ color: #fff; border-color: var(--accent); background: rgba(93,155,255,0.15); }}
   .recur {{ display:inline-block; margin-left: 8px; background: rgba(255,122,178,0.14); color: #ff7ab2; font-size: 10px; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.02em; }}
+  .presenter-tag {{ display: inline-block; color: #ff9e64; font-size: 11px; font-weight: 600; background: rgba(255,158,100,0.12); padding: 1px 6px; border-radius: 4px; border: 1px solid rgba(255,158,100,0.25); }}
   .alt-sources {{ color: var(--muted); font-size: 11px; }}
   .alt-sources a {{ color: var(--accent); text-decoration: none; }}
   .alt-sources a:hover {{ text-decoration: underline; }}
@@ -2836,7 +2878,7 @@ def render_page(results):
 
       document.querySelectorAll('.event').forEach(li => {{
         const catOk = cats.has(li.dataset.bucket);
-        const venueOk = venues.has(li.dataset.venue);
+        const venueOk = venues.has(li.dataset.venue) || (li.dataset.presenter && venues.has(li.dataset.presenter));
         const recurOk = recurs.has(li.dataset.recur);
         const cityOk = cities.has(li.dataset.city);
         const freeOk = !freeOnly || li.dataset.free === 'true';
