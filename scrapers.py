@@ -48,7 +48,7 @@ def _is_within_horizon(e, max_days=HORIZON_DAYS):
 
 def _get_venue_ttl(vname):
     low = vname.lower()
-    if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc"]):
+    if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc", "the skint", "secret nyc", "greenpointers"]):
         return FAST_VENUE_TTL
     if any(k in low for k in ["parks", "trivia", "library", "flea", "greenmarket"]):
         return SLOW_VENUE_TTL
@@ -718,6 +718,216 @@ def scrape_the_skint(url, ua):
                         "price": price,
                         "category": cat
                     })
+
+    return events
+
+
+def scrape_secret_nyc(url, ua):
+    """Secret NYC — trending pop-ups, immersive exhibits, and curated weekend roundups."""
+    events = []
+    seen = set()
+    now = datetime.now(EASTERN)
+    try:
+        resp = _SESSION.get("https://secretnyc.co/feed/", headers={"User-Agent": ua}, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.content, "html.parser")
+    except Exception:
+        return events
+
+    month_map = {
+        "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+        "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12
+    }
+
+    for item in soup.find_all("item")[:10]:
+        t = item.find("title").get_text(strip=True) if item.find("title") else ""
+        post_link = item.find("link").get_text(strip=True) if item.find("link") else "https://secretnyc.co"
+        if not post_link:
+            guid = item.find("guid")
+            post_link = guid.get_text(strip=True) if guid else "https://secretnyc.co"
+
+        enc = item.find("content:encoded")
+        if not enc:
+            continue
+
+        bs = BeautifulSoup(enc.text, "html.parser")
+
+        if "things to do in nyc this weekend" in t.lower() or "things to do this weekend" in t.lower():
+            m_month = re.search(r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+(\d{1,2})", t, re.I)
+            weekend_start = now.date()
+            if m_month:
+                mo_num = month_map.get(m_month.group(1).lower()[:3], now.month)
+                day_num = int(m_month.group(2))
+                try:
+                    weekend_start = datetime(now.year, mo_num, day_num).date()
+                except ValueError:
+                    pass
+
+            heading_rows = bs.find_all("div", class_="module-heading-row")
+            for hr in heading_rows:
+                h_el = hr.find(["h2", "h3"])
+                raw_title = h_el.get_text(strip=True) if h_el else hr.get_text(strip=True)
+                if not raw_title or len(raw_title) < 5:
+                    continue
+
+                p_texts = []
+                links = []
+                curr = hr.find_next_sibling()
+                while curr and not ("module-heading-row" in (curr.get("class") or [])):
+                    if curr.name == "p":
+                        txt = curr.get_text(" ", strip=True)
+                        if txt:
+                            p_texts.append(txt)
+                        for a in curr.find_all("a"):
+                            href = a.get("href")
+                            if href and not href.startswith("mailto:") and "instagram" not in href:
+                                links.append(href)
+                    curr = curr.find_next_sibling()
+
+                full_desc = " ".join(p_texts)
+                ev_date = weekend_start
+                if "saturday" in full_desc.lower() or "saturday" in raw_title.lower():
+                    ev_date = weekend_start + timedelta(days=(5 - weekend_start.weekday()) % 7)
+                elif "sunday" in full_desc.lower() or "sunday" in raw_title.lower():
+                    ev_date = weekend_start + timedelta(days=(6 - weekend_start.weekday()) % 7)
+                elif "friday" in full_desc.lower() or "friday" in raw_title.lower():
+                    ev_date = weekend_start + timedelta(days=(4 - weekend_start.weekday()) % 7)
+
+                dt = datetime(ev_date.year, ev_date.month, ev_date.day, 12, 0, tzinfo=EASTERN)
+
+                clean_name = raw_title
+                clean_name = re.sub(
+                    r"^(?:celebrate|check out|enjoy|go behind the scenes of|explore|grab a free|see|dive into|dive 12,000 feet underwater in|stroll through|glide into|join us in making|create your own|track|plan a day trip for the)\s+",
+                    "", clean_name, flags=re.I
+                ).strip(" !.")
+                clean_name = clean_name[:1].upper() + clean_name[1:]
+
+                ev_link = links[0] if links else post_link
+                low = (clean_name + " " + full_desc).lower()
+                cat = "community"
+                if any(k in low for k in ("exhibit", "art", "museum", "gallery")):
+                    cat = "art"
+                elif any(k in low for k in ("concert", "music", "live set", "orchestra", "dj")):
+                    cat = "music"
+                elif any(k in low for k in ("parade", "dog", "halloween", "festival", "fair", "market")):
+                    cat = "community"
+
+                venue = "NYC / Secret NYC"
+                m_at = re.search(r"\b(?:at|in)\s+([A-Z0-9][A-Za-z0-9\s&’'\.-]+?)(?:\.|\,|\;|$)", full_desc)
+                if m_at:
+                    v_cand = m_at.group(1).strip()
+                    if 3 < len(v_cand) < 40 and not any(skip in v_cand.lower() for skip in ("october", "this", "addition", "order", "fact")):
+                        venue = v_cand
+
+                key = (clean_name.lower(), ev_date.strftime("%Y-%m-%d"))
+                if key not in seen:
+                    seen.add(key)
+                    ev_obj = {
+                        "name": clean_name,
+                        "date": dt.astimezone(timezone.utc).isoformat(),
+                        "venue": venue,
+                        "url": ev_link,
+                        "price": "Free / Various",
+                        "category": cat
+                    }
+                    if _is_within_horizon(ev_obj):
+                        events.append(ev_obj)
+        else:
+            if any(k in t.lower() for k in ("live set", "exhibition", "opens", "market", "festival", "parade", "fair", "concert", "tour")):
+                dt = datetime(now.year, now.month, now.day, 19, 0, tzinfo=EASTERN)
+                key = (t.lower(), dt.strftime("%Y-%m-%d"))
+                if key not in seen:
+                    seen.add(key)
+                    ev_obj = {
+                        "name": t,
+                        "date": dt.astimezone(timezone.utc).isoformat(),
+                        "venue": "NYC / Secret NYC",
+                        "url": post_link,
+                        "price": "Check link",
+                        "category": "community"
+                    }
+                    if _is_within_horizon(ev_obj):
+                        events.append(ev_obj)
+
+    return events
+
+
+def scrape_greenpointers(url, ua):
+    """Greenpointers — local North Brooklyn community events, pop-ups, and weekly happenings."""
+    events = []
+    seen = set()
+    now = datetime.now(EASTERN)
+    try:
+        resp = _SESSION.get("https://greenpointers.com/category/events/", headers={"User-Agent": ua}, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.content, "html.parser")
+    except Exception:
+        return events
+
+    for art in soup.find_all("article")[:10]:
+        h_el = art.find(["h1", "h2", "h3"])
+        if not h_el:
+            continue
+        title = h_el.get_text(strip=True)
+        a_el = art.find("a")
+        link = a_el.get("href") if a_el else "https://greenpointers.com"
+        time_el = art.find("time")
+        date_str = time_el.get("datetime") if time_el else ""
+        
+        dt = now
+        m = re.search(r"\((\d{1,2})/(\d{1,2})\s*-\s*(\d{1,2})\)", title)
+        if m:
+            mo = int(m.group(1))
+            start_d = int(m.group(2))
+            end_d = int(m.group(3))
+            start_date = datetime(now.year, mo, start_d).date()
+            end_date = datetime(now.year, mo, end_d).date()
+            if start_date <= now.date() <= end_date:
+                dt = now
+            elif now.date() <= start_date:
+                dt = datetime(now.year, mo, start_d, 12, 0, tzinfo=EASTERN)
+            else:
+                continue
+        elif date_str:
+            try:
+                art_dt = datetime.fromisoformat(date_str).astimezone(EASTERN)
+                if art_dt.date() >= now.date():
+                    dt = art_dt
+                elif (now.date() - art_dt.date()).days <= 3:
+                    dt = now
+                else:
+                    continue
+            except Exception:
+                dt = now
+
+        venue = "Greenpoint & Williamsburg (Brooklyn)"
+        low = title.lower()
+        if "hotel" in low or "moxy" in low:
+            venue = "Moxy Hotel (Williamsburg)"
+        elif "park" in low or "mcgolrick" in low:
+            venue = "McGolrick Park (Greenpoint)"
+        elif "mccarren" in low:
+            venue = "McCarren Park (Greenpoint / Williamsburg)"
+
+        cat = "community"
+        if any(k in low for k in ("dance party", "dj", "concert", "music")):
+            cat = "music"
+        elif any(k in low for k in ("market", "fair", "pierogi", "food", "pumpkin")):
+            cat = "community"
+
+        key = (title.lower(), dt.strftime("%Y-%m-%d"))
+        if key not in seen:
+            seen.add(key)
+            ev_obj = {
+                "name": title,
+                "date": dt.astimezone(timezone.utc).isoformat(),
+                "venue": venue,
+                "url": link,
+                "price": "Free / Various",
+                "category": cat
+            }
+            if _is_within_horizon(ev_obj):
+                events.append(ev_obj)
 
     return events
 
@@ -2428,6 +2638,8 @@ _ALL_VENUES = [
     # Megasites & Aggregators
     {"name": "DoNYC Citywide", "url": "https://donyc.com/events", "ua": UA_CHROME, "scraper": scrape_donyc_calendar, "default_category": None},
     {"name": "The Skint NYC", "url": "https://theskint.com/", "ua": UA_CHROME, "scraper": scrape_the_skint, "default_category": "community"},
+    {"name": "Secret NYC", "url": "https://secretnyc.co/", "ua": UA_CHROME, "scraper": scrape_secret_nyc, "default_category": "community"},
+    {"name": "Greenpointers Brooklyn", "url": "https://greenpointers.com/", "ua": UA_CHROME, "scraper": scrape_greenpointers, "default_category": "community"},
     {"name": "Ticketmaster NYC", "url": "https://www.ticketmaster.com/", "ua": UA_CHROME, "scraper": scrape_ticketmaster_nyc, "default_category": "music"},
     {"name": "SeatGeek NYC", "url": "https://api.seatgeek.com/2/events", "ua": UA_CHROME, "scraper": scrape_seatgeek_nyc, "default_category": None},
     {"name": "Resident Advisor NYC", "url": "https://ra.co/events/us/newyorkcity", "ua": UA_CHROME, "scraper": scrape_resident_advisor, "default_category": "clubbing"},
