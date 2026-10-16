@@ -278,8 +278,11 @@ def fetch_luckyseat_nyc():
 # --- Scrapers ---
 
 def scrape_donyc(url, ua):
-    """DoNYC venue & category scraper — parses Schema.org microdata."""
-    soup = fetch_soup(url, ua)
+    """DoNYC venue & category scraper — parses Schema.org microdata with Cloudflare error shielding."""
+    try:
+        soup = fetch_soup(url, ua)
+    except Exception:
+        return []
     events = []
     now = datetime.now(timezone.utc)
     seen = set()
@@ -319,7 +322,7 @@ def scrape_donyc(url, ua):
 
 
 def scrape_donyc_calendar(url, ua):
-    """DoNYC multi-day event calendar — fetches next 12 days of citywide listings with pagination."""
+    """DoNYC multi-day event calendar — fetches next 12 days of citywide listings with pacing & pagination."""
     events = []
     now = datetime.now(EASTERN)
     seen = set()
@@ -330,6 +333,7 @@ def scrape_donyc_calendar(url, ua):
             if page > 1:
                 day_url = f"{day_url}?page={page}"
             try:
+                time.sleep(0.3)  # Gentle pacing to avoid DoStuff origin server 521 rate limits
                 day_events = scrape_donyc(day_url, ua)
                 if not day_events:
                     break
@@ -631,6 +635,161 @@ def scrape_the_stand_nyc(url, ua):
             "price": None,
             "category": "comedy",
         })
+    return events
+
+
+def scrape_elsewhere_brooklyn(url, ua):
+    """Elsewhere Brooklyn — multi-room live music, rooftop, and club schedules."""
+    try:
+        resp = _SESSION.get(url or "https://www.elsewherebrooklyn.com/calendar", headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        articles = soup.find_all("article", class_=lambda c: c and "listing-compact" in c)
+        events = []
+        now = datetime.now(timezone.utc)
+        current_year = datetime.now(EASTERN).year
+
+        for a in articles:
+            text = a.get_text(separator=" | ", strip=True)
+            parts = [p.strip() for p in text.split(" | ")]
+            date_str = None
+            time_str = None
+            title = None
+            room = None
+
+            for p in parts:
+                m_date = re.search(r"\b(Mon|Tue|Wed|Thu|Fri|Sat|Sun),\s+([A-Za-z]+)\s+(\d{1,2})", p)
+                if m_date:
+                    date_str = p
+                elif re.search(r"\b\d{1,2}:\d{2}\s*(?:AM|PM)\b", p, re.I):
+                    time_str = p
+                elif any(r in p.lower() for r in ["rooftop", "the hall", "zone one", "full venue"]):
+                    room = p
+
+            if len(parts) >= 2:
+                title = parts[1]
+            if not title or not date_str:
+                continue
+
+            time_clean = time_str if time_str else "8:00 PM"
+            try:
+                m_d = re.search(r"([A-Za-z]+)\s+(\d{1,2})", date_str)
+                month_name, day_num = m_d.group(1), int(m_d.group(2))
+                dt_raw = datetime.strptime(f"{month_name} {day_num} {current_year} {time_clean}", "%b %d %Y %I:%M %p")
+                dt = dt_raw.replace(tzinfo=EASTERN).astimezone(timezone.utc)
+                if dt < now:
+                    continue
+            except Exception:
+                continue
+
+            btn = a.find("a", href=True)
+            link = btn["href"] if btn else "https://www.elsewherebrooklyn.com/calendar"
+            if not link.startswith("http"):
+                link = f"https://www.elsewherebrooklyn.com{link}"
+
+            venue_label = f"Elsewhere Brooklyn ({room})" if room else "Elsewhere Brooklyn"
+            events.append({
+                "name": title,
+                "date": dt.isoformat(),
+                "url": link,
+                "venue": venue_label,
+                "lat": 40.7093,
+                "lng": -73.9232,
+                "price": None,
+                "category": "clubbing",
+            })
+        return events
+    except Exception:
+        return []
+
+
+def scrape_bell_house(url, ua):
+    """The Bell House — Gowanus live music, podcast tapings, comedy showcases via Schema.org JSON-LD."""
+    events = []
+    now = datetime.now(timezone.utc)
+    seen = set()
+    try:
+        resp = _SESSION.get(url or "https://www.thebellhouseny.com/shows", headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for s in soup.find_all("script", type="application/ld+json"):
+            if not s.string:
+                continue
+            try:
+                data = json.loads(s.string)
+                if data.get("@type") in ("MusicEvent", "Event", "ComedyEvent"):
+                    name = data.get("name")
+                    start = data.get("startDate")
+                    event_url = data.get("url") or "https://www.thebellhouseny.com/shows"
+                    if not name or not start:
+                        continue
+                    dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
+                    if dt < now:
+                        continue
+                    key = (name.lower(), dt.date().isoformat())
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    events.append({
+                        "name": name,
+                        "date": dt.isoformat(),
+                        "url": event_url,
+                        "venue": "The Bell House",
+                        "lat": 40.6738,
+                        "lng": -73.9897,
+                        "price": None,
+                        "category": guess_category(name, "comedy", venue="The Bell House"),
+                    })
+            except Exception:
+                continue
+    except Exception:
+        pass
+    return events
+
+
+def scrape_tiny_cupboard(url, ua):
+    """The Tiny Cupboard — Bushwick indie comedy club & board game bar via Schema.org JSON-LD."""
+    events = []
+    now = datetime.now(timezone.utc)
+    seen = set()
+    try:
+        resp = _SESSION.get(url or "https://www.thetinycupboard.com/calendar", headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for s in soup.find_all("script", type="application/ld+json"):
+            if not s.string:
+                continue
+            try:
+                data = json.loads(s.string)
+                items = data if isinstance(data, list) else [data] if isinstance(data, dict) else []
+                for it in items:
+                    if it.get("@type") in ("ComedyEvent", "Event", "MusicEvent"):
+                        name = it.get("name")
+                        start = it.get("startDate")
+                        event_url = it.get("url") or "https://www.thetinycupboard.com/calendar"
+                        if not name or not start:
+                            continue
+                        dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
+                        if dt < now:
+                            continue
+                        key = (name.lower(), dt.isoformat())
+                        if key in seen:
+                            continue
+                        seen.add(key)
+                        events.append({
+                            "name": name,
+                            "date": dt.isoformat(),
+                            "url": event_url,
+                            "venue": "The Tiny Cupboard",
+                            "lat": 40.6865,
+                            "lng": -73.9098,
+                            "price": None,
+                            "category": "comedy",
+                        })
+            except Exception:
+                continue
+    except Exception:
+        pass
     return events
 
 
@@ -1943,13 +2102,13 @@ _ALL_VENUES = [
 
     # Brooklyn Music & Nightlife
     {"name": "Brooklyn Bowl", "url": "https://donyc.com/venues/brooklyn-bowl", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Elsewhere Brooklyn", "url": "https://donyc.com/venues/elsewhere", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Elsewhere Brooklyn", "url": "https://www.elsewherebrooklyn.com/calendar", "ua": UA_CHROME, "scraper": scrape_elsewhere_brooklyn, "default_category": "clubbing"},
     {"name": "Knockdown Center", "url": "https://donyc.com/venues/knockdown-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Good Room Greenpoint", "url": "https://donyc.com/venues/good-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "TV Eye Ridgewood", "url": "https://donyc.com/venues/tv-eye", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Public Records Gowanus", "url": "https://donyc.com/venues/public-records", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
-    {"name": "The Bell House", "url": "https://donyc.com/venues/the-bell-house", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "Littlefield Brooklyn", "url": "https://donyc.com/venues/littlefield", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "The Bell House", "url": "https://www.thebellhouseny.com/shows", "ua": UA_CHROME, "scraper": scrape_bell_house, "default_category": "comedy"},
+    {"name": "Littlefield Brooklyn", "url": "https://www.eventbrite.com/api/v3/organizers/18046024060/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "Music Hall of Williamsburg", "url": "https://donyc.com/venues/music-hall-of-williamsburg", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Brooklyn Steel", "url": "https://donyc.com/venues/brooklyn-steel", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Warsaw Brooklyn", "url": "https://donyc.com/venues/warsaw", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -2023,7 +2182,7 @@ _ALL_VENUES = [
     {"name": "NYC Indie Film & Screenings", "url": "https://www.eventbrite.com/d/ny--new-york/indie-film/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
     {"name": "Metrograph NYC Screenings", "url": "https://www.eventbrite.com/d/ny--new-york/metrograph/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
     {"name": "Rooftop Films & Outdoor Cinema", "url": "https://www.eventbrite.com/d/ny--new-york/rooftop-films/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
-    {"name": "Union Hall Brooklyn", "url": "https://donyc.com/venues/union-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "Union Hall Brooklyn", "url": "https://www.eventbrite.com/api/v3/organizers/17899496497/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "Smalls Jazz Club", "url": "https://donyc.com/venues/smalls-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
 
     # Legendary Greenwich Village & Lower East Side Music Halls
@@ -2045,8 +2204,8 @@ _ALL_VENUES = [
     {"name": "St. Marks Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
     {"name": "Q.E.D. Astoria (Comedy & Arts)", "url": "https://www.eventbrite.com/d/ny--astoria/qed/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
     {"name": "New York Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/new-york-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
-    {"name": "The Tiny Cupboard (Bushwick Rooftop Comedy)", "url": "https://donyc.com/venues/the-tiny-cupboard", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "Brooklyn Comedy Collective (Eris Mainstage)", "url": "https://donyc.com/venues/brooklyn-comedy-collective", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "The Tiny Cupboard (Bushwick Rooftop Comedy)", "url": "https://www.thetinycupboard.com/calendar", "ua": UA_CHROME, "scraper": scrape_tiny_cupboard, "default_category": "comedy"},
+    {"name": "Brooklyn Comedy Collective (Eris Mainstage)", "url": "https://www.eventbrite.com/api/v3/organizers/27620063469/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
 
     # Free Events Aggregators & Citywide Parks
     {"name": "NYC Parks Free Public Events", "url": "https://www.nycgovparks.org/xml/events_300_rss.xml", "ua": UA_CHROME, "scraper": scrape_nyc_parks, "default_category": "outdoors"},
