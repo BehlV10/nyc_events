@@ -410,43 +410,315 @@ def scrape_donyc_calendar(url, ua):
 
 def scrape_the_skint(url, ua):
     """The Skint — NYC's legendary daily free and cheap cultural events blog."""
-    resp = _SESSION.get("https://theskint.com/feed/", headers={"User-Agent": ua}, timeout=12)
-    resp.raise_for_status()
-    soup = BeautifulSoup(resp.text, "html.parser")
     events = []
+    seen = set()
     now = datetime.now(EASTERN)
-    for item in soup.find_all("item")[:15]:
-        title_el = item.find("title")
-        title = title_el.get_text(strip=True) if title_el else ""
-        link = ""
-        link_el = item.find("link")
-        if link_el and link_el.next_sibling:
-            cand = str(link_el.next_sibling).strip()
-            if cand.startswith("http"):
-                link = cand
-        if not link:
-            guid_el = item.find("guid")
-            if guid_el:
-                link = guid_el.get_text(strip=True)
-        if not link:
-            link = url
+    try:
+        resp = _SESSION.get("https://theskint.com/feed/", headers={"User-Agent": ua}, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.content, "html.parser")
+    except Exception:
+        return events
+
+    day_map = {
+        "mon": 0, "monday": 0,
+        "tue": 1, "tues": 1, "tuesday": 1,
+        "wed": 2, "wednesday": 2,
+        "thu": 3, "thur": 3, "thurs": 3, "thursday": 3,
+        "fri": 4, "friday": 4,
+        "sat": 5, "saturday": 5,
+        "sun": 6, "sunday": 6,
+    }
+
+    def _parse_time(time_str):
+        m = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", time_str, re.I)
+        if not m:
+            m_range = re.search(r"(\d{1,2})\s*-\s*\d{1,2}\s*(am|pm)", time_str, re.I)
+            if m_range:
+                hour = int(m_range.group(1))
+                ampm = m_range.group(2).lower()
+                if ampm == "pm" and hour != 12 and hour < 8:
+                    hour += 12
+                return hour, 0
+            return 19, 0
+        hour = int(m.group(1))
+        minute = int(m.group(2)) if m.group(2) else 0
+        ampm = m.group(3).lower()
+        if ampm == "pm" and hour != 12:
+            hour += 12
+        elif ampm == "am" and hour == 12:
+            hour = 0
+        return hour, minute
+
+    def _clean_title(t):
+        t = (t or "").strip()
+        t = re.sub(r"^(?:►\s*)?(?:the\s+)?", "", t, flags=re.I)
+        t = t.rstrip(" :.-")
+        if not t:
+            return ""
+        return t[:1].upper() + t[1:]
+
+    def _extract_venue(rest, ev_title):
+        low_t = ev_title.lower()
+        low_r = rest.lower()
+        if "tompkins square" in low_t or "tompkins square" in low_r:
+            return "Tompkins Square Park (East Village)"
+        if "washington square" in low_t or "washington square" in low_r:
+            return "Garibaldi Plaza, Washington Square Park (Greenwich Village)"
+        if "carl schurz" in low_t or "carl schurz" in low_r:
+            return "Carl Schurz Park (Upper East Side)"
+        if "smorgasburg" in low_t or "smorgasburg" in low_r:
+            return "Smorgasburg (Williamsburg / Prospect Park)"
+        if "gowanus open studios" in low_t:
+            return "Gowanus Open Studios (Gowanus)"
+        if "metropolitan pavilion" in low_r:
+            return "Metropolitan Pavilion (Chelsea)"
+        if "industry city" in low_r:
+            return "Industry City (Sunset Park)"
+        if "royal palms" in low_r:
+            return "Royal Palms Shuffleboard Club (Gowanus)"
+        if "littlefield" in low_r:
+            return "Littlefield (Gowanus)"
+        if "caveat" in low_r:
+            return "Caveat (Lower East Side)"
+        if "p+t knitwear" in low_r or "p&t knitwear" in low_r:
+            return "P&T Knitwear (Lower East Side)"
+        if "pete’s candy store" in low_r or "petes candy store" in low_r:
+            return "Pete's Candy Store (Williamsburg)"
+        if "halyards" in low_r:
+            return "Halyards (Gowanus)"
+        if "union hall" in low_r:
+            return "Union Hall (Park Slope)"
+        if "young ethel" in low_r:
+            return "Young Ethel's (Park Slope)"
+        if "the brick theater" in low_r or "brick theater" in low_r:
+            return "The Brick Theater (Williamsburg)"
+        if "mayday space" in low_r:
+            return "Mayday Space (Bushwick)"
+        if "cloud city" in low_r:
+            return "Cloud City (Williamsburg)"
+        if "secret pour" in low_r:
+            return "Secret Pour (Bushwick)"
+        if "cobra club" in low_r:
+            return "The Cobra Club (Bushwick)"
+        if "lucky 13 saloon" in low_r:
+            return "Lucky 13 Saloon (Gowanus)"
+        if "culture lab" in low_r:
+            return "Culture Lab LIC (Long Island City)"
+        if "sisters" in low_r:
+            return "Sisters (Clinton Hill)"
+        if "hudson yards" in low_r:
+            return "Hudson Yards Public Square & Gardens"
+        if "100 sutton" in low_r:
+            return "100 Sutton (Greenpoint)"
+        if "st. marks theatre" in low_r or "under st. marks" in low_r:
+            return "Under St. Marks Theatre (East Village)"
+        if "kgb bar" in low_r or "red room" in low_r:
+            return "The Red Room at KGB Bar (East Village)"
+        if "maria hernandez park" in low_r:
+            return "Maria Hernandez Park (Bushwick)"
+        if "coney island usa" in low_r or "freak bar" in low_r:
+            return "Freak Bar at Coney Island USA"
+        if "old stone house" in low_r:
+            return "Old Stone House (Park Slope)"
+        if "fashion industries" in low_r:
+            return "High School of Fashion Industries (Chelsea)"
+        if "st. mary the virgin" in low_r:
+            return "Church of St. Mary the Virgin (Midtown)"
+        if "tishman auditorium" in low_r or "new school" in low_r:
+            return "The New School Tishman Auditorium (Greenwich Village)"
+        if "open house new york" in low_t:
+            return "Citywide (300+ Locations Across NYC)"
+        if "flop house" in low_t or "flop house" in low_r:
+            return "Flop House Comedy Club (Williamsburg / East Village)"
+        if "hoboken" in low_t or "hoboken" in low_r:
+            return "Church Square Park (Hoboken, NJ)"
+        if "disability pride" in low_t:
+            return "Madison Sq Park to Union Sq Park"
+        if "brownstone boys" in low_t:
+            return "375 Vanderbilt Ave (Clinton Hill)"
+        if "muddy paws" in low_t:
+            return "W 54th St between 9th & 10th Ave (Hell's Kitchen)"
+        if "brooklyn navy yard" in low_t:
+            return "Brooklyn Navy Yard (Building 77)"
+        if "moving body" in low_t:
+            return "Lincoln Center (David Rubenstein Atrium)"
+        if "howl-o-ween" in low_t and "smith st" in low_r:
+            return "Smith St & Union St (Carroll Gardens)"
+        if "smith street neighbors" in low_t:
+            return "Smith St between Bergen & Union (Carroll Gardens)"
+        if "good neighbors bake sale" in low_t:
+            return "Index Space (Greenpoint)"
+        if "objects of times past" in low_t:
+            return "432 E 9th St (East Village)"
+        if "indigenous peoples" in low_t:
+            return "Madison Ave & 23rd St to Broadway & 17th St (Flatiron)"
+        
+        m = re.search(r"([A-Za-z0-9\s&’'\.-]+?)\s*\(([^)]+)\)", rest)
+        if m:
+            cand_v = m.group(1).strip()
+            cand_hood = m.group(2).strip()
+            if not any(skip in cand_v.lower() for skip in ("weather", "note", "save", "reg", "weather permitting", "doors")):
+                cand_v = re.sub(r"^.*?\b(?:at|in|inside)\s+", "", cand_v, flags=re.I).strip()
+                if len(cand_v) > 3 and not cand_v.lower().startswith("the line"):
+                    return f"{cand_v} ({cand_hood})"
+                elif cand_hood:
+                    return f"NYC ({cand_hood})"
+
+        m_at = re.search(r"\b(?:at|@)\s+([A-Z0-9][A-Za-z0-9\s&’'\.-]+?)(?:\.|\,|\;|$)", rest)
+        if m_at:
+            v = m_at.group(1).strip()
+            if len(v) > 3:
+                return v
+
+        return "NYC / The Skint"
+
+    for item in soup.find_all("item")[:10]:
+        post_title = item.find("title").get_text(strip=True) if item.find("title") else ""
         pub_el = item.find("pubdate") or item.find("pubDate")
         pub_str = pub_el.get_text(strip=True) if pub_el else ""
-        
-        # Parse publication date or match date in title
         try:
             pub_dt = datetime.strptime(pub_str[:16], "%a, %d %b %Y").replace(tzinfo=EASTERN)
         except Exception:
             pub_dt = now
 
-        events.append({
-            "name": title,
-            "date": pub_dt.astimezone(timezone.utc).isoformat(),
-            "url": link,
-            "venue": "The Skint NYC",
-            "price": "Free / Cheap",
-            "category": "community",
-        })
+        encoded = item.find("content:encoded")
+        if not encoded:
+            continue
+
+        body_soup = BeautifulSoup(encoded.text, "html.parser")
+        current_day = None
+
+        if "SPONSORED" in post_title.upper() and not any(k in post_title.upper() for k in ("WEEKEND", "TUES-THURS", "MON-WED")):
+            links = [a.get("href") for a in body_soup.find_all("a") if a.get("href") and not a.get("href").startswith("mailto:") and "buymeacoffee" not in a.get("href")]
+            if links:
+                ev_name = _clean_title(post_title.replace("(SPONSORED)", "").strip())
+                ev_link = links[0]
+                text_content = body_soup.get_text(" ", strip=True)
+                venue = _extract_venue(text_content, ev_name)
+                price = "Special Offer"
+                m_p = re.search(r"(\$\d+(?:\.\d+)?|\bfree\b)", text_content, re.I)
+                if m_p:
+                    price = m_p.group(1).capitalize()
+                cat = "theater" if any(w in ev_name.lower() for w in ("broadway", "play", "theater", "theatre")) else "community"
+                key = (ev_name.lower(), pub_dt.strftime("%Y-%m-%d"))
+                if key not in seen:
+                    seen.add(key)
+                    events.append({
+                        "name": ev_name,
+                        "date": pub_dt.astimezone(timezone.utc).isoformat(),
+                        "venue": venue,
+                        "url": ev_link,
+                        "price": price,
+                        "category": cat
+                    })
+            continue
+
+        for el in body_soup.find_all(["p", "div", "h2", "h3", "h4"]):
+            txt = el.get_text(" ", strip=True)
+            lower_txt = txt.lower()
+
+            if lower_txt in ("friday", "saturday", "sunday", "monday", "tuesday", "wednesday", "thursday"):
+                current_day = lower_txt[:3]
+                continue
+
+            m_bullet = re.match(
+                r"^(?:►\s*)?(?:sponsored\s*:\s*)?(fri|sat|sun|mon|tue|wed|thu|friday|saturday|sunday|monday)"
+                r"(?:\s*(?:thru|\+|-)\s*(?:fri|sat|sun|mon|tue|wed|thu|friday|saturday|sunday|monday|[0-9/]+))?"
+                r"\s*(.*?):(.*)$",
+                txt, re.I
+            )
+            if not m_bullet and not ("►" in txt):
+                continue
+
+            day_prefix = None
+            time_part = ""
+            rest = ""
+
+            if m_bullet:
+                day_prefix = m_bullet.group(1).lower()[:3]
+                time_part = m_bullet.group(2).strip()
+                rest = m_bullet.group(3).strip()
+            else:
+                parts = txt.split(":", 2)
+                if len(parts) >= 2:
+                    time_part = parts[0].replace("►", "").strip()
+                    rest = ":".join(parts[1:]).strip()
+
+            event_day = day_prefix or current_day
+            if not event_day:
+                for d_cand in ("sat", "sun", "fri", "mon", "tue", "wed", "thu"):
+                    if d_cand in time_part.lower():
+                        event_day = d_cand
+                        break
+
+            if event_day in day_map:
+                target_weekday = day_map[event_day]
+                diff = (target_weekday - pub_dt.weekday()) % 7
+                event_date = (pub_dt + timedelta(days=diff)).date()
+            else:
+                event_date = pub_dt.date()
+
+            hour, minute = _parse_time(time_part)
+            dt = datetime(event_date.year, event_date.month, event_date.day, hour, minute, tzinfo=EASTERN)
+
+            b_tags = [b.get_text(strip=True) for b in el.find_all("b") if b.get_text(strip=True).lower() not in (">>", "here", "saturday", "sunday", "monday", "friday", "ongoing", "sponsored")]
+            if b_tags:
+                ev_title = b_tags[0]
+                if any(hdr in ev_title.lower() for hdr in ("halloween dog parades", "cultural fests", "ongoing")):
+                    if len(b_tags) > 1:
+                        ev_title = b_tags[1]
+            else:
+                ev_title = rest.split(":")[0].strip()
+
+            if not ev_title or len(ev_title) < 3 or any(hdr in ev_title.lower() for hdr in ("halloween dog parades", "cultural fests", "roundup of", "buymeacoffee")):
+                continue
+
+            ev_title = _clean_title(ev_title)
+
+            links = [a.get("href") for a in el.find_all("a") if a.get("href") and not a.get("href").startswith("mailto:") and "buymeacoffee" not in a.get("href")]
+            ev_link = links[-1] if links else "https://theskint.com"
+
+            price = "Free / Cheap"
+            m_price = re.search(r"(\$\d+(?:-\d+)?(?:\s*(?:adv|door|general|students))?|free\s*admission|free\b)", rest, re.I)
+            if m_price:
+                price = m_price.group(1).capitalize()
+
+            cat = "community"
+            low = (ev_title + " " + rest).lower()
+            if any(w in low for w in ("comedy", "stand up", "standup", "improv", "comic")):
+                cat = "comedy"
+            elif any(w in low for w in ("concert", "music", "orchestra", "synth", "band", "quartet")):
+                cat = "music"
+            elif any(w in low for w in ("film", "movie", "screening", "cinema")):
+                cat = "film"
+            elif any(w in low for w in ("theatre", "theater", "musical", "play")):
+                cat = "theater"
+            elif any(w in low for w in ("dance party", "dj", "nightclub")):
+                cat = "nightlife"
+            elif any(w in low for w in ("art", "market", "bazaar", "parade", "contest", "expo", "festival")):
+                cat = "community"
+
+            venue = _extract_venue(rest, ev_title)
+
+            days_to_add = [dt]
+            if "sat + sun" in lower_txt or "sat and sun" in lower_txt:
+                sun_dt = dt + timedelta(days=1)
+                days_to_add.append(sun_dt)
+
+            for event_dt in days_to_add:
+                key = (ev_title.lower(), event_dt.strftime("%Y-%m-%d"))
+                if key not in seen:
+                    seen.add(key)
+                    events.append({
+                        "name": ev_title,
+                        "date": event_dt.astimezone(timezone.utc).isoformat(),
+                        "venue": venue,
+                        "url": ev_link,
+                        "price": price,
+                        "category": cat
+                    })
+
     return events
 
 
