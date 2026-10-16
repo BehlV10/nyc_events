@@ -6647,6 +6647,16 @@
         {
           "name": "Slam Frank - New York",
           "date": "2026-10-16T23:00:00Z",
+          "url": "https://seatgeek.com/lauren-ash-tickets/comedy/2026-10-16-7-pm/18661149",
+          "venue": "DROM (New York, NY)",
+          "lat": 40.7253,
+          "lng": -73.9845,
+          "price": null,
+          "category": "comedy"
+        },
+        {
+          "name": "Genitorturers",
+          "date": "2026-10-16T23:00:00Z",
           "url": "https://seatgeek.com/slam-frank-tickets/theater/2026-10-16-7-pm/18526935",
           "venue": "Orpheum Theatre - NY (New York, NY)",
           "lat": 40.7282,
@@ -6655,14 +6665,34 @@
           "category": "theater"
         },
         {
-          "name": "Genitorturers",
+          "name": "Rocket from the Crypt",
           "date": "2026-10-16T23:00:00Z",
-          "url": "https://seatgeek.com/genitorturers-tickets/clifton-new-jersey-dingbatz-2026-10-16-7-pm/concert/18529290",
-          "venue": "Dingbatz (Clifton, NJ)",
-          "lat": 40.8579,
-          "lng": -74.1476,
+          "url": "https://seatgeek.com/rocket-from-the-crypt-tickets/new-york-new-york-irving-plaza-2026-10-16-7-pm/concert/18411364",
+          "venue": "Irving Plaza (New York, NY)",
+          "lat": 40.734905,
+          "lng": -73.98838,
           "price": null,
           "category": "music"
+        },
+        {
+          "name": "Harry Potter and The Cursed Child - New York",
+          "date": "2026-10-16T23:00:00Z",
+          "url": "https://seatgeek.com/harry-potter-and-the-cursed-child-tickets/theater/2026-10-16-7-pm/17958371",
+          "venue": "Lyric Theatre - New York",
+          "lat": 40.7565,
+          "lng": -73.9878,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "The Book of Mormon - New York",
+          "date": "2026-10-16T23:00:00Z",
+          "url": "https://seatgeek.com/the-book-of-mormon-tickets/broadway/2026-10-16-7-pm/18128133",
+          "venue": "Eugene O'Neill Theatre (New York, NY)",
+          "lat": 40.7611,
+          "lng": -73.9857,
+          "price": null,
+          "category": "theater"
         },
         {
           "name": "The Outsiders - New York",
@@ -6761,6 +6791,16 @@
           "venue": "Public Theater - Newman Theater (New York, NY)",
           "lat": 40.729,
           "lng": -73.9918,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "A Ghost in Your Ear - New York",
+          "date": "2026-10-16T23:00:00Z",
+          "url": "https://seatgeek.com/a-ghost-in-your-ear-tickets/theater/2026-10-16-7-pm/18584707",
+          "venue": "Minetta Lane Theatre (New York, NY)",
+          "lat": 40.7303,
+          "lng": -74.0011,
           "price": null,
           "category": "theater"
         },
@@ -6885,12 +6925,12 @@
           "category": "theater"
         },
         {
-          "name": "Nine Vicious",
+          "name": "Billy Crystal: 860 - New York",
           "date": "2026-10-16T23:00:00Z",
-          "url": "https://seatgeek.com/nine-vicious-tickets/brooklyn-new-york-brooklyn-paramount-2026-10-16-7-pm/concert/18603984",
-          "venue": "Brooklyn Paramount",
-          "lat": 40.6917,
-          "lng": -73.9815,
+          "url": "https://seatgeek.com/billy-crystal-860-tickets/broadway/2026-10-16-7-pm/18324008",
+          "venue": "Imperial Theatre - NY (New York, NY)",
+          "lat": 40.7588,
+          "lng": -73.9873,
           "price": null,
           "category": "music"
         },
@@ -7175,12 +7215,12 @@
           "category": "music"
         },
         {
-          "name": "Alvaro Diaz",
+          "name": "Sin Bandera",
           "date": "2026-10-17T00:00:00Z",
-          "url": "https://seatgeek.com/alvaro-diaz-tickets/new-york-new-york-manhattan-center-hammerstein-ballroom-2026-10-16-8-pm/concert/18294773",
-          "venue": "Manhattan Center Hammerstein Ballroom (New York, NY)",
-          "lat": 40.7529,
-          "lng": -73.9941,
+          "url": "https://seatgeek.com/sin-bandera-tickets/new-york-new-york-united-palace-theatre-2026-10-16-8-pm/concert/18356094",
+          "venue": "United Palace Theatre (New York, NY)",
+          "lat": 40.8465,
+          "lng": -73.9379,
           "price": null,
           "category": "music"
         },
@@ -7575,6 +7615,16 @@
           "category": "theater"
         },
         {
+          "name": "The Book of Mormon - New York",
+          "date": "2026-10-17T18:00:00Z",
+          "url": "https://seatgeek.com/the-book-of-mormon-tickets/broadway/2026-10-17-2-pm/18128135",
+          "venue": "Eugene O'Neill Theatre (New York, NY)",
+          "lat": 40.7611,
+          "lng": -73.9857,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "Hadestown - New York",
           "date": "2026-10-17T18:00:00Z",
           "url": "https://seatgeek.com/hadestown-tickets/broadway/2026-10-17-2-pm/18221677",
@@ -7845,22 +7895,22 @@
           "category": "theater"
         },
         {
-          "name": "Gryffin (21+)",
-          "date": "2026-10-17T23:00:00Z",
-          "url": "https://seatgeek.com/gryffin-tickets/brooklyn-new-york-under-the-k-bridge-2026-10-17-7-pm/concert/18129469",
-          "venue": "Under the K Bridge (Brooklyn, NY)",
-          "lat": 40.7246,
-          "lng": -73.9366,
-          "price": null,
-          "category": "music"
-        },
-        {
           "name": "Ryan Beatty",
           "date": "2026-10-17T23:00:00Z",
           "url": "https://seatgeek.com/ryan-beatty-tickets/brooklyn-new-york-brooklyn-paramount-2026-10-17-7-pm/concert/18306989",
           "venue": "Brooklyn Paramount",
           "lat": 40.6917,
           "lng": -73.9815,
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Gryffin (21+)",
+          "date": "2026-10-17T23:00:00Z",
+          "url": "https://seatgeek.com/gryffin-tickets/brooklyn-new-york-under-the-k-bridge-2026-10-17-7-pm/concert/18129469",
+          "venue": "Under the K Bridge (Brooklyn, NY)",
+          "lat": 40.7246,
+          "lng": -73.9366,
           "price": null,
           "category": "music"
         },
@@ -7951,6 +8001,16 @@
           "venue": "Laura Pels Theater (New York, NY)",
           "lat": 40.7579,
           "lng": -73.983,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "New York City Ballet - All Balanchine I",
+          "date": "2026-10-17T23:30:00Z",
+          "url": "https://seatgeek.com/new-york-city-ballet-tickets/dance/2026-10-17-7-30-pm/18528584",
+          "venue": "David H Koch Theater (New York, NY)",
+          "lat": 40.772,
+          "lng": -73.9833,
           "price": null,
           "category": "theater"
         },
@@ -10478,86 +10538,39 @@
     },
     {
       "venue": "Warsaw Brooklyn",
-      "url": "https://donyc.com/venues/warsaw",
+      "url": "https://www.warsawconcerts.com/",
       "events": [
         {
-          "name": "Chasing Abbey",
-          "date": "2026-10-17T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/17/chasing-abbey-tickets",
-          "venue": "Warsaw",
+          "name": "Osees ft. Brigid Dawson",
+          "date": "2026-10-24T23:00:00+00:00",
+          "url": "https://www.ticketmaster.com/osees-ft-brigid-dawson-brooklyn-new-york-10-24-2026/event/0000637A21E75790",
+          "venue": "Warsaw Brooklyn",
+          "lat": 40.7224,
+          "lng": -73.9489,
           "price": null,
-          "category": "music"
-        },
-        {
-          "name": "PeelingFlesh",
-          "date": "2026-10-18T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/18/peelingflesh-tickets",
-          "venue": "Warsaw",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Lifehouse - Best Of Acoustic",
-          "date": "2026-10-19T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/19/lifehouse-best-of-acoustic-tickets",
-          "venue": "Warsaw",
-          "price": null,
+          "image": "https://s1.ticketm.net/dam/a/817/f604dc3c-e5a6-4dbc-9223-74ba475dc817_TABLET_LANDSCAPE_LARGE_16_9.jpg",
           "category": "music"
         },
         {
           "name": "CRADLE OF FILTH: Majestic In Death II",
           "date": "2026-10-22T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/22/cradle-of-filth-majestic-in-death-ii-tickets",
-          "venue": "Warsaw",
+          "url": "https://www.ticketmaster.com/cradle-of-filth-majestic-in-death-brooklyn-new-york-10-22-2026/event/000064E9EBBC9CBC",
+          "venue": "Warsaw Brooklyn",
+          "lat": 40.7224,
+          "lng": -73.9489,
           "price": null,
+          "image": "https://s1.ticketm.net/dam/a/c57/cb8a453a-5a77-42b9-96c6-15e52dd18c57_TABLET_LANDSCAPE_LARGE_16_9.jpg",
           "category": "music"
         },
         {
-          "name": "Osees ft. Brigid Dawson",
-          "date": "2026-10-23T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/23/osees-tickets",
-          "venue": "Warsaw",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Osees ft. Brigid Dawson",
-          "date": "2026-10-24T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/24/osees-tickets",
-          "venue": "Warsaw",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "BIG FAMOUS: A Benefit Concert for The Directors Company",
-          "date": "2026-10-26T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/26/big-famous-a-benefit-concert-for-the-directors-company-tickets",
-          "venue": "Warsaw",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "The Army, The Navy: The Fake Brave Tour 2026",
+          "name": "THE ARMY, THE NAVY: THE FAKE BRAVE TOUR 2026",
           "date": "2026-10-28T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/28/the-army-the-navy-tickets",
-          "venue": "Warsaw",
+          "url": "https://www.ticketmaster.com/the-army-the-navy-the-fake-brooklyn-new-york-10-28-2026/event/000064CCBAA7258D",
+          "venue": "Warsaw Brooklyn",
+          "lat": 40.7224,
+          "lng": -73.9489,
           "price": null,
-          "category": "music"
-        },
-        {
-          "name": "YHWH Nailgun",
-          "date": "2026-10-29T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/29/yhwh-nailgun-tickets",
-          "venue": "Warsaw",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Neurosis",
-          "date": "2026-10-30T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/30/neurosis-tickets",
-          "venue": "Warsaw",
-          "price": null,
+          "image": "https://s1.ticketm.net/dam/a/0ac/7f9447f6-c787-4255-81b9-5352d6ac20ac_TABLET_LANDSCAPE_LARGE_16_9.jpg",
           "category": "music"
         }
       ],
@@ -11088,8 +11101,8 @@
       "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-made/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 3.29,
+      "cached": true
     },
     {
       "venue": "Market Hotel",
@@ -14092,8 +14105,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/bluestockings/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 1.44,
+      "cached": true
     },
     {
       "venue": "KGB Bar (Literary Readings)",
@@ -14197,8 +14210,8 @@
       "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-public-library/",
       "events": [],
       "error": null,
-      "duration": 0.01,
-      "cached": false
+      "duration": 4.26,
+      "cached": true
     },
     {
       "venue": "Queens Public Library",
@@ -18843,8 +18856,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/broadway-comedy-club/",
       "events": [],
       "error": null,
-      "duration": 0.01,
-      "cached": false
+      "duration": 1.81,
+      "cached": true
     },
     {
       "venue": "EastVille Comedy Club",
@@ -19076,16 +19089,16 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 1.5,
+      "cached": true
     },
     {
       "venue": "Q.E.D. Astoria (Comedy & Arts)",
       "url": "https://www.eventbrite.com/d/ny--astoria/qed/",
       "events": [],
       "error": null,
-      "duration": 0.01,
-      "cached": false
+      "duration": 1.73,
+      "cached": true
     },
     {
       "venue": "New York Comedy Club",
@@ -20394,14 +20407,6 @@
           "category": "community"
         },
         {
-          "name": "Oasis Cafe Chelsea Official Grand Opening",
-          "date": "2026-10-18T17:00:00+00:00",
-          "url": "https://www.nycforfree.co/events/oasis-cafe-chelsea-official-grand-opening",
-          "venue": "18, for the Grand Opening Party. Coffee, music, giveaways & ",
-          "price": "Free",
-          "category": "community"
-        },
-        {
           "name": "Astronomy on Tap NYC: The Dark Night",
           "date": "2026-10-20T23:00:00+00:00",
           "url": "https://www.nycforfree.co/events/astronomy-on-tap-nyc-the-dark-night",
@@ -20550,14 +20555,6 @@
           "date": "2026-10-23T22:00:00+00:00",
           "url": "https://www.nycforfree.co/events/club-pret",
           "venue": "NYC Pop-up / Experience",
-          "price": "Free",
-          "category": "community"
-        },
-        {
-          "name": "Bora Bora Sunset Park Grand Opening",
-          "date": "2026-10-23T19:00:00+00:00",
-          "url": "https://www.nycforfree.co/events/bora-bora-sunset-park-grand-opening",
-          "venue": "5603 2nd Ave, Brooklyn, NY 11220, USA",
           "price": "Free",
           "category": "community"
         },
@@ -20747,8 +20744,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/the-shed/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 1.5,
+      "cached": true
     },
     {
       "venue": "Union Square Events & Gatherings",
@@ -20876,6 +20873,17 @@
           "price": "Free",
           "description": "",
           "category": "outdoors"
+        },
+        {
+          "name": "Chelsea Art Gallery Hop-Limited Space",
+          "date": "2026-10-16T17:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-wanderers/events/316742151/",
+          "venue": "NYC Community Location",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "PLEASE ONLY RSVP AFTER YOU HAVE READ THE DESCRIPTION OF THE EVENT CAREFULLY AND ANY COMMENTS I MIGHT POST.\n\nTHIS WILL BE A FUN AND INTERESTING EVENT. I HAVE DONE MANY, MANY GALLERY HOPS OVER THE YEARS IN ALL DIFFERENT NEIGHBORHOODS. They are always f",
+          "category": "art"
         },
         {
           "name": "Autumn At Greenbrook Sanctuary: Naturalist Tour and Scenic Palisades Hike",
@@ -21140,6 +21148,17 @@
           "category": "outdoors"
         },
         {
+          "name": "Chelsea Art Gallery Hop-Limited Space",
+          "date": "2026-10-16T17:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-wanderers/events/316742151/",
+          "venue": "NYC Community Location",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "PLEASE ONLY RSVP AFTER YOU HAVE READ THE DESCRIPTION OF THE EVENT CAREFULLY AND ANY COMMENTS I MIGHT POST.\n\nTHIS WILL BE A FUN AND INTERESTING EVENT. I HAVE DONE MANY, MANY GALLERY HOPS OVER THE YEARS IN ALL DIFFERENT NEIGHBORHOODS. They are always f",
+          "category": "art"
+        },
+        {
           "name": "Autumn At Greenbrook Sanctuary: Naturalist Tour and Scenic Palisades Hike",
           "date": "2026-10-25T14:10:00+00:00",
           "url": "https://www.meetup.com/sundance-outdoor-adventure-society/events/316334278/",
@@ -21316,8 +21335,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/panel-discussion/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.3,
+      "cached": true
     },
     {
       "venue": "Skip the Small Talk NYC",
@@ -23187,111 +23206,150 @@
     },
     {
       "venue": "S.O.B.'s (Sounds of Brazil)",
-      "url": "https://donyc.com/venues/sobs",
+      "url": "https://sobs.com/calendar/",
       "events": [
-        {
-          "name": "AZ Chike",
-          "date": "2026-10-16T23:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/16/az-chike-tickets",
-          "venue": "SOB's",
-          "price": null,
-          "category": "music"
-        },
         {
           "name": "Lesson 001: Jared Jackson & Stonie Blue",
           "date": "2026-10-17T03:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/16/lesson-001-jared-jackson-stonie-blue-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/jared-jackson-stonie-blue/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/09/NTS-FINAL.png",
+          "category": "music"
+        },
+        {
+          "name": "Dominican Saturdays: Dembow y Bachata",
+          "date": "2026-10-18T03:00:00+00:00",
+          "url": "https://sobs.com/events/dominican-saturdays-100-dembow-oct-17-2026/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
+          "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/10/dr_poster-scaled.png",
+          "category": "dance"
+        },
+        {
+          "name": "Bossa Nova Sunset: Live Band & Happy Hour",
+          "date": "2026-10-18T22:00:00+00:00",
+          "url": "https://sobs.com/events/bossa-nova-sunset-live-band-happy-hour/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
+          "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/10/BOSSA_NOVA_FINAL-scaled.jpg",
+          "category": "music"
+        },
+        {
+          "name": "AZ Chike",
+          "date": "2026-10-16T23:00:00+00:00",
+          "url": "https://sobs.com/events/az-chike/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
+          "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/08/AZ-Chike-NYC-localized-1.png",
           "category": "music"
         },
         {
           "name": "Kita Rose: Break Up Didn't Break Me Tour",
           "date": "2026-10-17T22:30:00+00:00",
-          "url": "https://donyc.com/events/2026/10/17/kita-rose-break-up-didn-t-break-me-tour-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/kita-rose-break-up-didnt-break-me-tour/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/09/IMG_1810.jpeg",
           "category": "music"
         },
         {
-          "name": "Dominican Saturdays: 100% Dembow",
-          "date": "2026-10-18T03:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/17/dominican-saturdays-100-dembow-tickets",
-          "venue": "SOB's",
+          "name": "Knicks Watch Party: Season Opener + Ring Ceremony",
+          "date": "2026-10-20T21:30:00+00:00",
+          "url": "https://sobs.com/events/knicks-watch-party-season-opener/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Bossa Nova Sunset: Live Band & Happy Hour",
-          "date": "2026-10-18T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/18/bossa-nova-sunset-live-band-happy-hour-tickets",
-          "venue": "SOB's",
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Knicks Watch Party: Season Opener",
-          "date": "2026-10-20T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/20/knicks-watch-party-season-opener-tickets",
-          "venue": "SOB's",
-          "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/09/1-5-scaled.png",
           "category": "clubbing"
         },
         {
           "name": "Celia Cruz Birthday Tribute",
           "date": "2026-10-21T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/21/celia-cruz-birthday-tribute-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/celia-cruz-birthday-tribute/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/09/SOBs-celia-cruz-birthday-2.png",
           "category": "music"
         },
         {
           "name": "Juliana: USA Tour en New York",
           "date": "2026-10-22T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/22/juliana-usa-tour-en-new-york-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/juliana-usa-tour-en-new-york/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/08/juliana-4x5-1.png",
           "category": "music"
         },
         {
           "name": "Bar-Side R&B: Deep Cuts Only",
-          "date": "2026-10-23T02:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/22/bar-side-r-b-deep-cuts-only-tickets",
-          "venue": "SOB's",
+          "date": "2026-10-23T02:30:00+00:00",
+          "url": "https://sobs.com/events/bar-side-rb-deep-cuts-only-oct-22-2026/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/10/BAR_SIDE_NEW_4-scaled.jpg",
           "category": "music"
         },
         {
           "name": "¡Baila Bachata! Dance Class & Happy Hour",
           "date": "2026-10-23T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/23/baila-bachata-dance-class-happy-hour-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/baila-bachata-dance-class-happy-hour-oct-23-2026/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/09/BAILA-BACHATA-FLYER-9-scaled.png",
           "category": "dance"
         },
         {
-          "name": "Sak Pasé: Haitian Fridays",
+          "name": "Sak Pasé: Haitian FridaysKonpa, Rara, Raboday, Gouyad, & More",
           "date": "2026-10-24T03:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/23/sak-pase-haitian-fridays-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/sak-pase-haitian-fridays-october-23-2026/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/10/SakPase_NEW_5-scaled.jpg",
           "category": "music"
         },
         {
-          "name": "MELTING POT ALL-STARS",
+          "name": "King Changō Melting Pot All Stars: Featuring Original Band Members",
           "date": "2026-10-24T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/24/melting-pot-all-stars-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/king-chango-melting-pot-all-stars/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/09/MPAS-Flyer-01-Pose-4x5-V4.png",
           "category": "music"
         },
         {
-          "name": "2000's Emo Night: The Black Parade 20th Anniversary",
+          "name": "2000's Emo Night: The Black Parade 20th AnniversaryY2K-era emo + pop punk",
           "date": "2026-10-25T03:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/24/2000-s-emo-night-the-black-parade-20th-anniversary-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/2000s-emo-night-the-black-parade-20th-anniversary/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
-          "category": "community"
+          "image": "https://sobs.com/wp-content/uploads/2026/10/EMO_MCR_1-scaled.png",
+          "category": "music"
         },
         {
           "name": "Amor Prohibido: Selena Biopic Screening, DJ Sets, & Community Ofrenda",
@@ -23307,30 +23365,51 @@
           "url": "https://donyc.com/events/2026/10/28/francisco-cespedes-w-special-guest-gerardo-contino-tickets",
           "venue": "SOB's",
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/10/HIGHLIGHTS2-scaled.png",
+          "category": "clubbing"
+        },
+        {
+          "name": "Francisco Céspedes",
+          "date": "2026-10-28T22:00:00+00:00",
+          "url": "https://sobs.com/events/francisco-cespedes-la-habana-tu-special-guest-gerardo-contino/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
+          "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/09/Feed-verison-2-1.png",
           "category": "music"
         },
         {
           "name": "King & Queen of the Cypher",
           "date": "2026-10-29T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/29/king-queen-of-the-cypher-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/king-queen-of-the-cypher/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/09/6EE0A248-388C-4126-8286-F047B2C989DC.jpg",
           "category": "music"
         },
         {
           "name": "Molly & June's Honky Tonk: Line Dance Classes & Country Music",
           "date": "2026-10-30T22:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/30/molly-june-s-honky-tonk-line-dance-classes-country-music-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/molly-junes-honky-tonk-oct-30-2026/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/09/mollyjunes-10-30-26.png",
           "category": "music"
         },
         {
           "name": "Y2K Party: Halloween Eve",
           "date": "2026-10-31T03:00:00+00:00",
-          "url": "https://donyc.com/events/2026/10/30/y2k-party-halloween-eve-tickets",
-          "venue": "SOB's",
+          "url": "https://sobs.com/events/y2k-party-halloween-eve-oct-30-2026/",
+          "venue": "S.O.B.'s",
+          "lat": 40.7282,
+          "lng": -74.0049,
           "price": null,
+          "image": "https://sobs.com/wp-content/uploads/2026/10/Y2K_HALLOWEEN_FINAL-scaled.jpg",
           "category": "clubbing"
         }
       ],
@@ -23367,8 +23446,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/club-cache-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.01,
-      "cached": false
+      "duration": 2.44,
+      "cached": true
     },
     {
       "venue": "NYC Salsa Socials & Dance Parties",
@@ -23383,8 +23462,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/washington-square-park-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.01,
-      "cached": false
+      "duration": 2.58,
+      "cached": true
     },
     {
       "venue": "Hudson River Park (Sunset Salsa Pier 45 & 76)",
@@ -23603,8 +23682,8 @@
         },
         {
           "name": "Timba Night (Salsa Social Dance)",
-          "date": "2026-10-17T00:10:00+00:00",
-          "url": "https://www.meetup.com/cuban-salsa-nyc-dance-classes/events/316561839/",
+          "date": "2026-10-24T00:10:00+00:00",
+          "url": "https://www.meetup.com/cuban-salsa-nyc-dance-classes/events/316561849/",
           "venue": "410-412 8th Ave (410-412 8th Ave, New York, NY)",
           "lat": null,
           "lng": null,
@@ -23969,40 +24048,40 @@
         }
       ],
       "error": null,
-      "duration": 0.98,
-      "cached": false
+      "duration": 1.34,
+      "cached": true
     },
     {
       "venue": "NYC Drag Shows & Brunches",
       "url": "https://www.eventbrite.com/d/ny--new-york/drag-show/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 4.13,
+      "cached": true
     },
     {
       "venue": "The Stonewall Inn (Events)",
       "url": "https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.77,
+      "cached": true
     },
     {
       "venue": "Pieces Bar (West Village Drag)",
       "url": "https://www.eventbrite.com/d/ny--new-york/pieces-bar/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.31,
+      "cached": true
     },
     {
       "venue": "NYC Video Game Tournaments",
       "url": "https://www.eventbrite.com/d/ny--new-york/video-game-tournament/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 3.58,
+      "cached": true
     },
     {
       "venue": "NYC Smash Bros Tournaments",
@@ -24130,8 +24209,8 @@
       "url": "https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 3.42,
+      "cached": true
     },
     {
       "venue": "NYC Bar Concerts & Live Music",
