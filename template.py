@@ -84,7 +84,7 @@ CITY_RULES = [
         "bed-stuy", "bedford-stuyvesant", "crown heights", "prospect heights",
         "park slope", "gowanus", "red hook", "flatbush", "bay ridge",
         "fort greene", "clinton hill", "cobble hill", "carroll gardens",
-        "boerum hill", "prospect park", "sunset park", "coney island",
+        "boerum hill", "prospect park", "sunset park", "coney island", "downtown brooklyn",
     )),
     ("queens", (
         "knockdown center", "tv eye", "trans-pecos", "nowadays", "basement ny", "basement",
@@ -170,7 +170,8 @@ CITY_RULES = [
         "meatpacking", "gramercy", "flatiron", "midtown", "times square",
         "hell's kitchen", "upper west side", "uws", "upper east side", "ues",
         "harlem", "morningside heights", "washington heights", "inwood",
-        "battery park", "financial district", "fidi",
+        "battery park", "financial district", "fidi", "governors island",
+        "columbus circle", "lincoln square", "meatpacking district",
         "manhattan", "new york, ny", "new york city", "new york", "nyc",
     )),
 ]
@@ -220,9 +221,11 @@ def _city_from_zip(hay):
     return None
 
 
-def _event_city(venue, source):
+def _event_city(venue, source, geo=None):
     v = (venue or "").strip().lower()
     hay = f"{v} {(source or '').strip().lower()}"
+    if geo:
+        hay = f"{hay} {(geo.get('neighborhood') or '').lower()} {(geo.get('address') or '').lower()}"
     # 1. Definitively outside NYC
     if _is_tristate(hay):
         return "other"
@@ -233,7 +236,10 @@ def _event_city(venue, source):
     # 3. Match borough needle rules
     for city, needles in CITY_RULES:
         for n in needles:
-            if n in hay:
+            if len(n) <= 4:
+                if re.search(r"\b" + re.escape(n) + r"\b", hay):
+                    return city
+            elif n in hay:
                 return city
     return "other"
 
@@ -936,7 +942,14 @@ def render_page(results):
         cat_tag = f'<span class="cat-pill" style="--cat-c:{color}; background:{color}18; border-color:{color}33; color:{color}">{icon} {escape(cat)}</span>'
         venue = e.get("venue") or ""
         source = e.get("_source_venue") or ""
-        city = _event_city(venue, source)
+        geo = resolve_event_geo(e)
+        geo_attrs = ""
+        geo_btn = ""
+        if geo:
+            geo_attrs = f' data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue-name="{escape(geo["venue"])}" data-neighborhood="{escape(geo["neighborhood"])}"'
+            geo_btn = f' <button type="button" class="venue-map-jump" data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue="{escape(geo["venue"])}" title="View {escape(geo["venue"])} on Map">📍</button>'
+
+        city = _event_city(venue, source, geo=geo)
         recurring = is_recurring(e)
         recur_flag = "weekly" if recurring else "once"
         recur_badge = '<span class="recur">↻ weekly</span>' if recurring else ""
@@ -951,13 +964,6 @@ def render_page(results):
                 alt_html = f'<span class="alt-sources">also on {alt_links}</span>'
 
         compare_html = _build_compare_links(e, raw_title)
-
-        geo = resolve_event_geo(e)
-        geo_attrs = ""
-        geo_btn = ""
-        if geo:
-            geo_attrs = f' data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue-name="{escape(geo["venue"])}" data-neighborhood="{escape(geo["neighborhood"])}"'
-            geo_btn = f' <button type="button" class="venue-map-jump" data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue="{escape(geo["venue"])}" title="View {escape(geo["venue"])} on Map">📍</button>'
 
         GENERIC_AGGREGATORS = {
             "donyc citywide", "the skint nyc", "ticketmaster nyc", "seatgeek nyc",
@@ -1038,7 +1044,8 @@ def render_page(results):
     def _render_day_section(heading_html, events, date_attr=""):
         by_city = {c: [] for c in city_day_order}
         for e in events:
-            c = _event_city(e.get("venue"), e.get("_source_venue"))
+            geo = resolve_event_geo(e)
+            c = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo)
             by_city.setdefault(c, []).append(e)
         city_blocks = []
         for cname in city_day_order:
@@ -1237,7 +1244,8 @@ def render_page(results):
     city_order = ["manhattan", "brooklyn", "queens", "bronx", "staten_island", "other"]
     city_counts = {c: 0 for c in city_order}
     for e in all_events_flat:
-        c = _event_city(e.get("venue"), e.get("_source_venue"))
+        geo = resolve_event_geo(e)
+        c = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo)
         city_counts[c] = city_counts.get(c, 0) + 1
 
     city_boxes = "\n".join(
