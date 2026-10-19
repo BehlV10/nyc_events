@@ -1803,14 +1803,40 @@ def scrape_eventbrite_jsonld(url, ua):
                             price = "Free" if str(p) in ("0", "0.0", "0.00") else f"${p}"
 
                     loc = item.get("location", {})
-                    vname = loc.get("name") if isinstance(loc, dict) else None
-                    events.append({
+                    vname = None
+                    lat = None
+                    lng = None
+                    addr_str = None
+                    neigh_str = None
+                    if isinstance(loc, dict):
+                        vname = loc.get("name")
+                        geo = loc.get("geo")
+                        if isinstance(geo, dict):
+                            lat = geo.get("latitude")
+                            lng = geo.get("longitude")
+                        addr = loc.get("address")
+                        if isinstance(addr, dict):
+                            street = addr.get("streetAddress", "")
+                            city = addr.get("addressLocality", "")
+                            region = addr.get("addressRegion", "")
+                            addr_str = f"{street}, {city}, {region}".strip(", ")
+                            neigh_str = city
+
+                    ev_dict = {
                         "name": name,
                         "date": dt.isoformat(),
                         "url": event_url,
                         "venue": vname,
                         "price": price,
-                    })
+                    }
+                    if lat is not None and lng is not None:
+                        ev_dict["lat"] = lat
+                        ev_dict["lng"] = lng
+                    if addr_str:
+                        ev_dict["address"] = addr_str
+                    if neigh_str:
+                        ev_dict["neighborhood"] = neigh_str
+                    events.append(ev_dict)
             except Exception:
                 continue
     except Exception:
@@ -1880,6 +1906,71 @@ def scrape_eventbrite_organizer(url, ua):
                 "lng": lng,
                 "price": price,
                 "description": desc,
+            })
+    except Exception:
+        pass
+    return events
+
+
+def scrape_lincoln_square_bid(url, ua):
+    """Scrape official Lincoln Square BID & Columbus Circle district events."""
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    horizon = now + timedelta(days=14)
+    try:
+        resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=12)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for item in soup.select(".event-item"):
+            title_el = item.select_one(".event-item-content h3 a")
+            if not title_el:
+                continue
+            name = title_el.get_text(strip=True)
+            ev_url = title_el.get("href") or url
+
+            ps = item.select(".event-item-content p")
+            date_text = ps[0].get_text(strip=True) if ps else ""
+            venue_text = ps[1].get_text(strip=True) if len(ps) > 1 else "Lincoln Square / Columbus Circle"
+
+            matches = re.findall(r"(\d{1,2})/(\d{1,2})(?:/(\d{4}))?", date_text)
+            if not matches:
+                continue
+            m_start = matches[0]
+            s_m, s_d = int(m_start[0]), int(m_start[1])
+            s_y = int(m_start[2]) if m_start[2] else now.year
+            try:
+                start_dt = datetime(s_y, s_m, s_d, 18, 0, tzinfo=EASTERN).astimezone(timezone.utc)
+            except Exception:
+                continue
+
+            end_dt = start_dt
+            if len(matches) > 1:
+                m_end = matches[1]
+                e_m, e_d = int(m_end[0]), int(m_end[1])
+                e_y = int(m_end[2]) if m_end[2] else now.year
+                try:
+                    end_dt = datetime(e_y, e_m, e_d, 18, 0, tzinfo=EASTERN).astimezone(timezone.utc)
+                except Exception:
+                    end_dt = start_dt
+
+            if end_dt < now:
+                continue
+            ev_dt = start_dt if start_dt >= now else now
+            if ev_dt > horizon:
+                continue
+
+            key = (name.lower(), ev_dt.date().isoformat())
+            if key in seen:
+                continue
+            seen.add(key)
+            events.append({
+                "name": name,
+                "date": ev_dt.isoformat(),
+                "url": ev_url,
+                "venue": venue_text or "Lincoln Square / Columbus Circle",
+                "price": "Free" if "free" in item.get("class", []) or "free" in name.lower() else None,
+                "category": "theater" if any(k in name.lower() for k in ["opera", "theatre", "theater", "play", "dance"]) else "art",
             })
     except Exception:
         pass
@@ -3207,6 +3298,44 @@ _ALL_VENUES = [
     {"name": "Slate NYC (Chelsea Lounge & Club)", "url": "https://www.eventbrite.com/d/ny--new-york/slate-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
     {"name": "Nebula NYC (Midtown Nightclub)", "url": "https://www.eventbrite.com/d/ny--new-york/nebula/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
     {"name": "Superior Ingredients (Williamsburg)", "url": "https://donyc.com/venues/superior-ingredients", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+
+    # Free Street Fairs, Cultural Fests & Outdoor Celebrations
+    {"name": "NYC Free Festivals & Celebrations", "url": "https://www.eventbrite.com/d/ny--new-york/free--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Street Fairs & Block Parties", "url": "https://www.eventbrite.com/d/ny--new-york/free--street-fair/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Free Community Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/free--community--events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Cultural & Heritage Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/cultural-festival/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Free Food & Night Markets", "url": "https://www.eventbrite.com/d/ny--new-york/free--food-and-drink--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
+    {"name": "Brooklyn Free Festivals & Fairs", "url": "https://www.eventbrite.com/d/ny--brooklyn/free--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Queens Free Festivals & Markets", "url": "https://www.eventbrite.com/d/ny--queens/free--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Bronx Cultural & Community Events", "url": "https://www.eventbrite.com/d/ny--bronx/free--events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Night Markets & Bazaars", "url": "https://www.eventbrite.com/d/ny--new-york/night-market/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
+
+    # Area BIDs, Public Conservancies & Government Feeds
+    {"name": "Lincoln Square BID (Columbus Circle)", "url": "https://www.lincolnsquarebid.org/events", "ua": UA_CHROME, "scraper": scrape_lincoln_square_bid, "default_category": "art"},
+    {"name": "Columbus Circle District Events", "url": "https://www.eventbrite.com/d/ny--new-york/columbus-circle/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Downtown Brooklyn Partnership", "url": "https://www.eventbrite.com/d/ny--brooklyn/downtown-brooklyn-partnership/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Meatpacking District Events", "url": "https://www.eventbrite.com/d/ny--new-york/meatpacking-district/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Governors Island Events", "url": "https://www.eventbrite.com/d/ny--new-york/governors-island/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "outdoors"},
+    {"name": "Times Square District Events", "url": "https://www.eventbrite.com/d/ny--new-york/times-square/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Battery Park City Events", "url": "https://www.eventbrite.com/d/ny--new-york/battery-park-city/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "outdoors"},
+
+    # Off-Broadway Theaters, Plays & Musicals
+    {"name": "NYC Off-Broadway Shows", "url": "https://www.eventbrite.com/d/ny--new-york/off-broadway/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
+    {"name": "NYC Musicals & Musical Theatre", "url": "https://www.eventbrite.com/d/ny--new-york/musical/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
+    {"name": "NYC Plays & Drama", "url": "https://www.eventbrite.com/d/ny--new-york/plays/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
+    {"name": "NYC Improv & Alternative Comedy", "url": "https://www.eventbrite.com/d/ny--new-york/improv/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+
+    # Board Game Clubs, Tabletop RPGs & Social Meetups
+    {"name": "NYC Board Games & Tabletop", "url": "https://www.eventbrite.com/d/ny--new-york/board-games/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "Brooklyn Board Games & Socials", "url": "https://www.eventbrite.com/d/ny--brooklyn/board-games/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "NYC Tabletop RPG & D&D", "url": "https://www.eventbrite.com/d/ny--new-york/tabletop/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "NYC Social Meetups & Mixers", "url": "https://www.eventbrite.com/d/ny--new-york/meetup/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Language Exchange & Culture Meetups", "url": "https://www.eventbrite.com/d/ny--new-york/language-exchange/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+
+    # Live Jazz Clubs, Acoustic Sessions & Historic Bars
+    {"name": "NYC Live Jazz Sessions", "url": "https://www.eventbrite.com/d/ny--new-york/jazz/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
+    {"name": "Brooklyn Live Jazz & Blues", "url": "https://www.eventbrite.com/d/ny--brooklyn/jazz/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
+    {"name": "NYC Speakeasy & Acoustic Sessions", "url": "https://www.eventbrite.com/d/ny--new-york/acoustic/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
 ]
 
 VENUES = _ALL_VENUES
