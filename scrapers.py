@@ -10,7 +10,7 @@ import time
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
-from urllib.parse import quote, urljoin
+from urllib.parse import parse_qs, quote, urljoin, urlparse
 from zoneinfo import ZoneInfo
 import warnings
 
@@ -368,17 +368,44 @@ def scrape_donyc(url, ua):
             venue_name = vn.get_text(strip=True) if vn else None
         permalink = card.get("data-permalink", "")
         event_url = f"https://donyc.com{permalink}" if permalink else url
+
+        # Extract direct ticketing/source link
+        ticket_url = None
+        offer_el = card.find(itemprop="offers")
+        tix_btn = card.select_one(".ds-buy-tix, a[class*='buy-tix']")
+        raw_tix = ""
+        if offer_el:
+            meta_url = offer_el.find("meta", itemprop="url")
+            if meta_url and meta_url.get("content"):
+                raw_tix = meta_url.get("content")
+        if not raw_tix and tix_btn:
+            raw_tix = tix_btn.get("href") or ""
+
+        if raw_tix:
+            try:
+                parsed = urlparse(raw_tix)
+                qs = parse_qs(parsed.query)
+                if "u" in qs and qs["u"] and qs["u"][0].startswith("http"):
+                    ticket_url = qs["u"][0]
+                elif raw_tix.startswith("http") and not any(d in raw_tix for d in ["donyc.com", "doubleclick.net"]):
+                    ticket_url = raw_tix
+            except Exception:
+                pass
+
         key = (name.lower(), dt.date().isoformat())
         if key in seen:
             continue
         seen.add(key)
-        events.append({
+        ev_dict = {
             "name": name,
             "date": dt.isoformat(),
             "url": event_url,
             "venue": venue_name,
             "price": None,
-        })
+        }
+        if ticket_url:
+            ev_dict["ticket_url"] = ticket_url
+        events.append(ev_dict)
     return events
 
 
@@ -2931,6 +2958,9 @@ _ALL_VENUES = [
     {"name": "Under the K Bridge Park", "url": "https://donyc.com/venues/under-the-k-bridge-park", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Roulette Intermedium", "url": "https://donyc.com/venues/roulette", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "National Sawdust", "url": "https://donyc.com/venues/national-sawdust", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Xanadu Roller Arts", "url": "https://donyc.com/venues/xanadu", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "party"},
+    {"name": "Saint Vitus Bar", "url": "https://donyc.com/venues/saint-vitus-bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Bar LunÀtico", "url": "https://donyc.com/venues/lunatico", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
 
     # Queens
     {"name": "Forest Hills Stadium", "url": "https://donyc.com/venues/forest-hills-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -2960,6 +2990,16 @@ _ALL_VENUES = [
     {"name": "The Town Hall", "url": "https://donyc.com/venues/the-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Sony Hall", "url": "https://donyc.com/venues/sony-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Gramercy Theatre", "url": "https://donyc.com/venues/gramercy-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Cafe Wha? (Greenwich Village)", "url": "https://donyc.com/venues/cafe-wha", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Club Cumming (East Village)", "url": "https://donyc.com/venues/club-cumming", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
+    {"name": "Rough Trade NYC", "url": "https://donyc.com/venues/rough-trade-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Bryant Park NYC", "url": "https://donyc.com/venues/bryant-park", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "outdoors"},
+    {"name": "Bowery Palace", "url": "https://donyc.com/venues/bowery-palace", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Pianos NYC (Lower East Side)", "url": "https://donyc.com/venues/pianos", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "The Rooftop at Pier 17", "url": "https://donyc.com/venues/the-rooftop-at-pier-17", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Palladium Times Square", "url": "https://donyc.com/venues/palladium-times-square", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Sid Gold's Request Room", "url": "https://donyc.com/venues/sid-gold-s-request-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Marquee New York", "url": "https://donyc.com/venues/marquee-new-york", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
 
     # Independent Bookstores & Literary Spaces
     {"name": "Strand Book Store", "url": "https://www.eventbrite.com/api/v3/organizers/30058841244/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "books"},
