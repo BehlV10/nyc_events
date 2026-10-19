@@ -736,10 +736,50 @@ def _dedup_key(e):
     return name
 
 
+def _ticket_source_name(url):
+    if not url:
+        return "Official Tickets"
+    low = url.lower()
+    if "ticketmaster.com" in low:
+        return "Ticketmaster"
+    if "livenation.com" in low:
+        return "Live Nation"
+    if "dice.fm" in low or "kyd.to" in low:
+        return "Dice.fm"
+    if "seetickets.us" in low or "seetickets" in low:
+        return "SeeTickets"
+    if "eventbrite.com" in low:
+        return "Eventbrite"
+    if "ticketweb.com" in low:
+        return "Ticketweb"
+    if "axs.com" in low:
+        return "AXS"
+    if "ovationtix.com" in low:
+        return "OvationTix"
+    if "ra.co" in low or "residentadvisor" in low:
+        return "Resident Advisor"
+    if "etix.com" in low:
+        return "Etix"
+    if "tixr.com" in low:
+        return "Tixr"
+    if "telecharge.com" in low:
+        return "Telecharge"
+    if "seatgeek.com" in low:
+        return "SeatGeek"
+    return "Official Tickets"
+
+
 def _merge_duplicates(events):
     """Collapse duplicates sharing URL, exact title, or same venue + close time + artist name."""
     out = []
     for e in events:
+        t_url = e.get("ticket_url")
+        if t_url and t_url != e.get("url"):
+            src_label = _ticket_source_name(t_url)
+            e.setdefault("_alt_sources", [])
+            if not any(a.get("url") == t_url for a in e["_alt_sources"]):
+                e["_alt_sources"].append({"venue": src_label, "url": t_url})
+
         key = _dedup_key(e)
         e_url = e.get("url")
         e_art = _clean_artist_name(e.get("name"))
@@ -776,6 +816,12 @@ def _merge_duplicates(events):
             src_name = e.get("_source_venue") or e.get("venue") or "source"
             if src_url and not any(a.get("url") == src_url for a in match["_alt_sources"]) and src_url != match.get("url"):
                 match["_alt_sources"].append({"venue": src_name, "url": src_url})
+
+            cand_t_url = e.get("ticket_url")
+            if cand_t_url and cand_t_url != match.get("url"):
+                t_label = _ticket_source_name(cand_t_url)
+                if not any(a.get("url") == cand_t_url for a in match["_alt_sources"]):
+                    match["_alt_sources"].append({"venue": t_label, "url": cand_t_url})
 
             GENERIC_AGGREGATORS = {
                 "donyc citywide", "the skint nyc", "ticketmaster nyc", "seatgeek nyc",
