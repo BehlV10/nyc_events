@@ -5505,8 +5505,8 @@
         }
       ],
       "error": null,
-      "duration": 0.25,
-      "cached": false
+      "duration": 0.44,
+      "cached": true
     },
     {
       "venue": "Ticketmaster NYC",
@@ -6292,6 +6292,16 @@
           "category": "theater"
         },
         {
+          "name": "MJ - The Musical - New York",
+          "date": "2026-10-20T23:00:00Z",
+          "url": "https://seatgeek.com/mj-the-musical-tickets/broadway/2026-10-20-7-pm/18037668",
+          "venue": "Neil Simon Theatre (New York, NY)",
+          "lat": 40.7632,
+          "lng": -73.9845,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "Maybe Happy Ending - New York",
           "date": "2026-10-20T23:00:00Z",
           "url": "https://seatgeek.com/maybe-happy-ending-tickets/broadway/2026-10-20-7-pm/18096074",
@@ -7042,6 +7052,16 @@
           "category": "theater"
         },
         {
+          "name": "A Ghost in Your Ear - New York",
+          "date": "2026-10-21T23:00:00Z",
+          "url": "https://seatgeek.com/a-ghost-in-your-ear-tickets/theater/2026-10-21-7-pm/18584719",
+          "venue": "Minetta Lane Theatre (New York, NY)",
+          "lat": 40.7303,
+          "lng": -74.0011,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "Jamie Allan's Amaze - New York",
           "date": "2026-10-21T23:00:00Z",
           "url": "https://seatgeek.com/jamie-allan-s-amaze-tickets/entertainment/2026-10-21-7-pm/18408245",
@@ -7118,16 +7138,6 @@
           "venue": "Westside Theatre Upstairs (New York, NY)",
           "lat": 40.7593,
           "lng": -73.9927,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Book of Mormon - New York",
-          "date": "2026-10-21T23:00:00Z",
-          "url": "https://seatgeek.com/the-book-of-mormon-tickets/broadway/2026-10-21-7-pm/18128144",
-          "venue": "Eugene O'Neill Theatre (New York, NY)",
-          "lat": 40.7611,
-          "lng": -73.9857,
           "price": null,
           "category": "theater"
         },
@@ -7554,12 +7564,32 @@
         {
           "name": "A Ghost in Your Ear - New York",
           "date": "2026-10-22T23:00:00Z",
-          "url": "https://seatgeek.com/a-ghost-in-your-ear-tickets/theater/2026-10-22-7-pm/18584720",
-          "venue": "Minetta Lane Theatre (New York, NY)",
-          "lat": 40.7303,
-          "lng": -74.0011,
+          "url": "https://seatgeek.com/richard-o-brien-s-rocky-horror-show-tickets/theater/2026-10-22-7-pm/18310452",
+          "venue": "Studio 54 - New York",
+          "lat": 40.764313,
+          "lng": -73.9838,
           "price": null,
           "category": "theater"
+        },
+        {
+          "name": "The Play That Goes Wrong - New York",
+          "date": "2026-10-22T23:00:00Z",
+          "url": "https://seatgeek.com/the-play-that-goes-wrong-tickets/theater/2026-10-22-7-pm/18286753",
+          "venue": "New World Stages - Stage 4 (New York, NY)",
+          "lat": 40.7628,
+          "lng": -73.9874,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Carly Pearce (Rescheduled from 10/21/2026)",
+          "date": "2026-10-22T23:00:00Z",
+          "url": "https://seatgeek.com/carly-pearce-tickets/new-york-new-york-gramercy-theatre-2026-10-22-7-pm/concert/18328005",
+          "venue": "Gramercy Theatre (New York, NY)",
+          "lat": 40.738,
+          "lng": -73.9829,
+          "price": null,
+          "category": "music"
         },
         {
           "name": "Anaheim Ducks at New Jersey Devils",
@@ -7612,7 +7642,7 @@
           "category": "theater"
         },
         {
-          "name": "Paranormal Activity - New York",
+          "name": "Hamilton - New York",
           "date": "2026-10-22T23:00:00Z",
           "url": "https://seatgeek.com/paranormal-activity-1-tickets/theater/2026-10-22-7-pm/18245469",
           "venue": "August Wilson Theatre (New York, NY)",
@@ -7783,8 +7813,8 @@
         }
       ],
       "error": null,
-      "duration": 1.36,
-      "cached": false
+      "duration": 1.07,
+      "cached": true
     },
     {
       "venue": "Resident Advisor NYC",
@@ -10034,7 +10064,7 @@
       "events": [
         {
           "name": "Neurosis",
-          "date": "2026-10-31T19:00:00+00:00",
+          "date": "2026-10-31T23:00:00+00:00",
           "url": "https://www.ticketmaster.com/neurosis-brooklyn-new-york-10-31-2026/event/00006523B6434638",
           "venue": "Warsaw Brooklyn",
           "lat": 40.7224,
@@ -10045,7 +10075,7 @@
         },
         {
           "name": "Osees ft. Brigid Dawson",
-          "date": "2026-10-24T19:00:00+00:00",
+          "date": "2026-10-24T23:00:00+00:00",
           "url": "https://www.ticketmaster.com/osees-ft-brigid-dawson-brooklyn-new-york-10-24-2026/event/0000637A21E75790",
           "venue": "Warsaw Brooklyn",
           "lat": 40.7224,
@@ -10056,7 +10086,7 @@
         },
         {
           "name": "THE ARMY, THE NAVY: THE FAKE BRAVE TOUR 2026",
-          "date": "2026-10-28T19:00:00+00:00",
+          "date": "2026-10-28T23:00:00+00:00",
           "url": "https://www.ticketmaster.com/the-army-the-navy-the-fake-brooklyn-new-york-10-28-2026/event/000064CCBAA7258D",
           "venue": "Warsaw Brooklyn",
           "lat": 40.7224,
@@ -13928,7 +13958,16 @@
           "price": null,
           "ticket_url": "https://dice.fm/event/6a865459fcb8130001317907",
           "category": "music"
-        },
+        }
+      ],
+      "error": null,
+      "duration": 1.03,
+      "cached": true
+    },
+    {
+      "venue": "Cafe Wha? (Greenwich Village)",
+      "url": "https://donyc.com/venues/cafe-wha",
+      "events": [
         {
           "name": "Good Music For A Good Cause - Gwenn Malick  Help Wanted  Birdie Wren  FLEET",
           "date": "2026-10-22T23:00:00+00:00",
@@ -18028,8 +18067,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/metrograph/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 1.75,
+      "cached": true
     },
     {
       "venue": "Rooftop Films & Outdoor Cinema",
@@ -19609,8 +19648,8 @@
       "url": "https://www.eventbrite.com/d/ny--astoria/qed/",
       "events": [],
       "error": null,
-      "duration": 0.01,
-      "cached": false
+      "duration": 1.93,
+      "cached": true
     },
     {
       "venue": "New York Comedy Club",
@@ -20295,8 +20334,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/central-park/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.4,
+      "cached": true
     },
     {
       "venue": "Prospect Park Alliance Events",
@@ -20319,8 +20358,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/hudson-river-park/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 1.7,
+      "cached": true
     },
     {
       "venue": "NYC for FREE (Pop-ups & Experiences)",
@@ -21064,16 +21103,16 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/pop-up/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.53,
+      "cached": true
     },
     {
       "venue": "Hudson Yards Events & Activations",
       "url": "https://www.eventbrite.com/d/ny--new-york/hudson-yards/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 4.8,
+      "cached": true
     },
     {
       "venue": "The Shed (Hudson Yards)",
@@ -21104,8 +21143,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/jazz-at-lincoln-center/",
       "events": [],
       "error": null,
-      "duration": 0.01,
-      "cached": false
+      "duration": 2.4,
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Hikes & Nature Walks",
@@ -21594,8 +21633,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/panel-discussion/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.22,
+      "cached": true
     },
     {
       "venue": "Skip the Small Talk NYC",
@@ -21610,8 +21649,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/bibliotheque/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.3,
+      "cached": true
     },
     {
       "venue": "Liz's Book Bar (Carroll Gardens)",
@@ -23086,8 +23125,8 @@
       "url": "https://www.eventbrite.com/d/ny--brooklyn/house-of-yes/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 2.77,
+      "cached": true
     },
     {
       "venue": "The Slipper Room (NYC Burlesque)",
@@ -23559,8 +23598,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/washington-square-park-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.01,
-      "cached": false
+      "duration": 3.03,
+      "cached": true
     },
     {
       "venue": "Hudson River Park (Sunset Salsa Pier 45 & 76)",
@@ -23583,8 +23622,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/",
       "events": [],
       "error": null,
-      "duration": 0.02,
-      "cached": false
+      "duration": 1.91,
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Social Dance & Salsa",
@@ -24561,8 +24600,8 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/free-guestlist/",
       "events": [],
       "error": null,
-      "duration": 0.03,
-      "cached": false
+      "duration": 2.25,
+      "cached": true
     },
     {
       "venue": "NYC Nightclub Guestlists",
