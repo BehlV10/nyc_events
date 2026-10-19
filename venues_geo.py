@@ -745,12 +745,24 @@ def resolve_event_geo(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         try:
             flat, flng = float(lat), float(lng)
             if MIN_LAT <= flat <= MAX_LAT and MIN_LNG <= flng <= MAX_LNG:
+                neigh = event.get("neighborhood") or ""
+                addr = event.get("address") or ""
+                norm_v = re.sub(r"[^\w\s]", "", v_lower).strip()
+                curated = VENUE_COORDINATES.get(v_lower) or VENUE_COORDINATES.get(norm_v)
+                c_venue = venue_raw or source_raw
+                if curated:
+                    if not neigh:
+                        neigh = curated[2]
+                    if not addr:
+                        addr = curated[3]
+                    if curated[4]:
+                        c_venue = curated[4]
                 return {
                     "lat": round(flat, 5),
                     "lng": round(flng, 5),
-                    "venue": venue_raw or source_raw,
-                    "neighborhood": event.get("neighborhood") or "",
-                    "address": event.get("address") or "",
+                    "venue": c_venue,
+                    "neighborhood": neigh,
+                    "address": addr,
                 }
         except (ValueError, TypeError):
             pass
