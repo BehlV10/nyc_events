@@ -255,6 +255,49 @@ def is_closed_show(name):
     return any(c in low for c in CLOSED_SHOWS)
 
 
+def is_placeholder_or_closed_event(title: str) -> bool:
+    """Detect dummy calendar placeholders, cancellations, closures, and private events."""
+    if not title:
+        return True
+    t = title.strip()
+    if is_closed_show(t):
+        return True
+
+    # 1. Explicit cancellation or postponement at start of title
+    if re.match(r"^\s*(\*{1,3}|\[|\()?\s*(canceled|cancelled|postponed)\b", t, re.I):
+        return True
+
+    # 2. "No event / no show / no music / no jam / no gypsy jazz"
+    if re.search(r"\bno\s+([\w\s]+\s+)?(event|events|show|shows|live\s+music|music|performance|performances|band|bands|jam|jams|open\s+mic|dancing|dance|jazz)\b", t, re.I):
+        # Guard against band/show names like "No Cover", "No Bad Chords", "No Static", "No Pressure", "No Friends"
+        if not re.search(r"\bno\s+(cover|bad|pressure|static|relation|doubt|friends|more|guarantee|limit|worries|regrets|stopping)\b", t, re.I):
+            return True
+
+    # 3. Check calendar placeholder
+    if re.search(r"\bcheck\s+(our\s+)?calendar\b", t, re.I):
+        return True
+
+    # 4. Standalone or holiday closures: "club closed", "closed for Thanksgiving", "closed for private event"
+    if re.search(r"\b(closed|closing)\b.*(for\s+.*(holiday|thanksgiving|christmas|new\s+year|private)|private\s+(event|party))", t, re.I):
+        return True
+    if re.search(r"^\s*(club|venue|room|lounge|bar|taproom|brewery|kitchen)?\s*closed(\s+today|\s+tonight)?\s*$", t, re.I):
+        return True
+    if re.search(r"\bclosed\s+for\s+(the\s+)?holiday\b", t, re.I):
+        return True
+
+    # 5. Standalone Private event / Private party
+    if re.search(r"^\s*(\*{1,3}|\[|\()?\s*private\s+(event|party|rental|function)\s*(\*{1,3}|\]|\))?\s*$", t, re.I):
+        return True
+    if re.search(r"\bclosed\s+for\s+(a\s+)?private\s+(event|party)\b", t, re.I):
+        return True
+
+    # 6. Generic single-word / short placeholder
+    if t.lower() in ("tba", "tbd", "to be announced", "placeholder", "no title", "closed", "dark"):
+        return True
+
+    return False
+
+
 # --- NYC Weather ---
 _weather_cache = {"ts": 0, "data": None}
 _WMO_ICON = {
@@ -3448,7 +3491,7 @@ def _scrape_one(v, force=False):
     t0 = time.time()
     try:
         events = v["scraper"](v["url"], v["ua"])
-        events = [e for e in events if not is_closed_show(e.get("name"))]
+        events = [e for e in events if not is_placeholder_or_closed_event(e.get("name"))]
         for e in events:
             if not e.get("venue"):
                 e["venue"] = vname
@@ -3476,7 +3519,7 @@ def _scrape_one(v, force=False):
         # Error resilience: fall back to existing cache if network/Cloudflare fails
         stale_cache = _load_venue_cache(vname, max_age=None)
         if stale_cache and stale_cache.get("events"):
-            events = [e for e in stale_cache["events"] if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_closed_show(e.get("name"))]
+            events = [e for e in stale_cache["events"] if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_placeholder_or_closed_event(e.get("name"))]
             return {
                 "venue": vname,
                 "url": v["url"],
@@ -3495,6 +3538,45 @@ def _scrape_one(v, force=False):
         }
 
 
+def _load_community_events():
+    """Load community-submitted events from community_events.json."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "community_events.json")
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        if not isinstance(data, list) or not data:
+            return []
+
+        events = []
+        for e in data:
+            if not e.get("name") or not e.get("venue"):
+                continue
+            name = str(e["name"]).strip()
+            if is_placeholder_or_closed_event(name):
+                continue
+            venue = str(e["venue"]).strip()
+            cat = e.get("category") or guess_category(name, "community", venue=venue)
+            events.append({
+                "name": name,
+                "date": e.get("date"),
+                "url": e.get("url") or "",
+                "venue": venue,
+                "price": e.get("price"),
+                "category": cat,
+                "_is_community": True,
+                "_source_venue": "Community Submission",
+                "address": e.get("address") or "",
+            })
+        if not events:
+            return []
+        return [{"venue": "Community Submissions", "url": "", "events": events, "error": None}]
+    except Exception as err:
+        print(f"Warning: could not load community events: {err}")
+        return []
+
+
 def get_all_events(force=False):
     now = time.time()
     if not force and _cache["data"] and (now - _cache["ts"] < CACHE_SECONDS):
@@ -3508,6 +3590,7 @@ def get_all_events(force=False):
 
     # Add recurring events (expanded for 2 weeks / 14 days)
     results.extend(_expand_manual_recurring(weeks=2))
+    results.extend(_load_community_events())
 
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),

@@ -1,5 +1,8 @@
 """NYC Events — HTML rendering and template logic."""
 
+import hashlib
+import json
+import os
 import re
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
@@ -17,6 +20,7 @@ from scrapers import (
     fetch_nyc_weather,
     fetch_luckyseat_nyc,
     is_closed_show,
+    is_placeholder_or_closed_event,
 )
 from venues_geo import resolve_event_geo
 
@@ -193,6 +197,111 @@ CITY_COLORS = {
     "staten_island": "#a78bfa",
     "other": "#9aa3b2",
 }
+
+SUBAREAS_BY_CITY = {
+    "manhattan": [
+        ("les_ev", "East Village & LES", "🎸"),
+        ("village_soho", "Greenwich Village & SoHo", "🍸"),
+        ("midtown_chelsea", "Midtown & Chelsea", "🎭"),
+        ("uws_lincoln", "Upper West & Lincoln Sq", "🌳"),
+        ("ues_museums", "Upper East & Museums", "🏛️"),
+        ("harlem_uptown", "Harlem & Uptown", "🎷"),
+        ("fidi_tribeca", "FiDi & Tribeca", "⛵"),
+        ("manhattan_other", "Other Manhattan", "📍"),
+    ],
+    "brooklyn": [
+        ("williamsburg_gp", "Williamsburg & Greenpoint", "🎸"),
+        ("bushwick_ew", "Bushwick & E. Williamsburg", "🎨"),
+        ("dumbo_downtown", "DUMBO & Downtown BK", "🌳"),
+        ("park_slope_gowanus", "Park Slope & Gowanus", "☕"),
+        ("bedstuy_crown", "Bed-Stuy & Crown Heights", "🎺"),
+        ("south_bk", "Coney Island & Bay Ridge", "🌊"),
+        ("brooklyn_other", "Other Brooklyn", "📍"),
+    ],
+    "queens": [
+        ("astoria_lic", "Astoria & Long Island City", "🍺"),
+        ("flushing_ridgewood", "Flushing & Ridgewood", "🍜"),
+        ("queens_other", "Other Queens", "📍"),
+    ],
+    "bronx": [
+        ("south_bronx", "South Bronx & Concourse", "🎺"),
+        ("bronx_other", "Other Bronx", "📍"),
+    ],
+    "staten_island": [
+        ("staten_island_all", "Staten Island", "🚢"),
+    ],
+    "other": [
+        ("tristate_other", "Tri-State Area", "🌲"),
+    ]
+}
+
+
+def resolve_subarea(city, event, geo=None):
+    if not geo:
+        geo = resolve_event_geo(event)
+    vn = (event.get("venue") or "").lower()
+    src = (event.get("_source_venue") or "").lower()
+    title = (event.get("title") or event.get("name") or "").lower()
+    loc = (event.get("location") or event.get("address") or "").lower()
+    neigh = (geo.get("neighborhood") or "").lower() if geo else ""
+    blob = f"{vn} {src} {title} {loc} {neigh}"
+
+    if city == "manhattan":
+        if any(k in blob for k in ["east village", "lower east side", "les", "bowery", "mercury lounge", "rockwood", "pianos", "drom", "nublu", "berlin", "webster hall", "st. marks"]):
+            return ("East Village & LES", "les_ev")
+        if any(k in blob for k in ["greenwich village", "west village", "soho", "noho", "nolita", "comedy cellar", "le poisson rouge", "lpr", "village vanguard", "blue note", "cafe wha", "pubkey", "houston hall", "bleecker", "the bitter end", "duane park", "angelika"]):
+            return ("Greenwich Village & SoHo", "village_soho")
+        if any(k in blob for k in ["midtown", "chelsea", "hell's kitchen", "times square", "broadway", "hudson yards", "the shed", "high line", "madison square garden", "msg", "radio city", "carnegie hall", "sony hall", "town hall", "terminal 5", "irving plaza", "bryant park", "caveat", "asylum", "magnet", "cutting room"]):
+            return ("Midtown & Chelsea", "midtown_chelsea")
+        if any(k in blob for k in ["upper west side", "uws", "lincoln center", "lincoln square", "columbus circle", "david geffen", "alice tully", "merkin", "symphony space", "central park", "summerstage", "beacon theatre", "american folk art", "library for the performing arts"]):
+            return ("Upper West & Lincoln Sq", "uws_lincoln")
+        if any(k in blob for k in ["upper east side", "ues", "metropolitan museum", "the met", "guggenheim", "comic strip", "hungarian house", "frick", "cooper hewitt", "92ny", "92nd street y"]):
+            return ("Upper East & Museums", "ues_museums")
+        if any(k in blob for k in ["harlem", "apollo", "washington heights", "inwood", "united palace", "morningside", "columbia university", "smoke jazz"]):
+            return ("Harlem & Uptown", "harlem_uptown")
+        if any(k in blob for k in ["fidi", "financial district", "tribeca", "battery park", "brookfield", "pier 17", "governors island", "roxy cinema"]):
+            return ("FiDi & Tribeca", "fidi_tribeca")
+        return ("Other Manhattan", "manhattan_other")
+
+    elif city == "brooklyn":
+        if any(k in blob for k in ["williamsburg", "greenpoint", "brooklyn steel", "brooklyn bowl", "music hall of williamsburg", "baby's all right", "warsaw", "pete's candy store", "skinny dennis", "union pool", "nitehawk", "flop house", "national sawdust"]):
+            return ("Williamsburg & Greenpoint", "williamsburg_gp")
+        if any(k in blob for k in ["bushwick", "east williamsburg", "elsewhere", "avant gardner", "brooklyn mirage", "house of yes", "market hotel", "sultan room", "brooklyn monarch", "the meadows", "tv eye", "h0l0"]):
+            return ("Bushwick & E. Williamsburg", "bushwick_ew")
+        if any(k in blob for k in ["dumbo", "downtown brooklyn", "fort greene", "brooklyn navy yard", "brooklyn academy of music", "bam", "st. ann's", "transit museum", "barclays center"]):
+            return ("DUMBO & Downtown BK", "dumbo_downtown")
+        if any(k in blob for k in ["park slope", "gowanus", "prospect heights", "the bell house", "littlefield", "union hall", "public records", "brooklyn museum", "prospect park", "barbes"]):
+            return ("Park Slope & Gowanus", "park_slope_gowanus")
+        if any(k in blob for k in ["bed-stuy", "bedstuy", "crown heights", "flatbush", "kings theatre", "c'mon everybody"]):
+            return ("Bed-Stuy & Crown Heights", "bedstuy_crown")
+        if any(k in blob for k in ["coney island", "bay ridge", "sunset park", "industry city", "ford amphitheater"]):
+            return ("Coney Island & Bay Ridge", "south_bk")
+        return ("Other Brooklyn", "brooklyn_other")
+
+    elif city == "queens":
+        if any(k in blob for k in ["astoria", "lic", "long island city", "knockdown center", "q.e.d.", "qed", "moma ps1", "museum of the moving image", "socrates"]):
+            return ("Astoria & Long Island City", "astoria_lic")
+        if any(k in blob for k in ["flushing", "ridgewood", "forest hills", "citi field"]):
+            return ("Flushing & Ridgewood", "flushing_ridgewood")
+        return ("Other Queens", "queens_other")
+
+    elif city == "bronx":
+        if any(k in blob for k in ["south bronx", "concourse", "yankee stadium"]):
+            return ("South Bronx & Concourse", "south_bronx")
+        return ("Other Bronx", "bronx_other")
+
+    elif city == "staten_island":
+        return ("Staten Island", "staten_island_all")
+
+    return ("Tri-State Area", "tristate_other")
+
+
+def _event_stable_id(e):
+    title = (e.get("name") or "").strip().lower()
+    venue = (e.get("venue") or e.get("_source_venue") or "").strip().lower()
+    date_str = (e.get("date") or "")[:10]
+    raw = f"{venue}|{title}|{date_str}"
+    return "ev_" + hashlib.md5(raw.encode("utf-8")).hexdigest()[:12]
 
 
 def _is_tristate(hay):
@@ -643,6 +752,12 @@ def compute_recurring(dated):
     return recurring
 
 
+GENERIC_HEADS = {
+    "trivia", "story hour", "open mic", "board games", "run club", "farmers market",
+    "salsa", "bachata", "yoga", "live music", "comedy night", "book club",
+    "happy hour", "karaoke", "jazz night", "reunion", "tour", "tours", "market"
+}
+
 COMMERCIAL_VENUES = {
     "madison square garden", "msg", "barclays center", "barclays", "radio city", "radio city music hall",
     "beacon theatre", "carnegie hall", "lincoln center", "bowery ballroom", "mercury lounge", "webster hall",
@@ -658,6 +773,73 @@ EXCLUDE_VENUES_OR_SOURCES = {
     "board games", "trivia", "run club", "hiking", "volunteer", "central park",
     "church", "cathedral", "parks", "meetup"
 }
+
+GENERIC_DESCRIPTOR_PREFIXES = {
+    "recital", "concert", "workshop", "screening", "lecture", "class",
+    "showcase", "exhibition", "panel", "presentation", "meeting",
+    "discussion", "reception", "webinar", "seminar", "film", "movie",
+    "book launch", "reading"
+}
+
+
+def _normalize_title_head(title, venue=None):
+    t = (title or "").lower().strip()
+
+    # 1. Strip venue name from title if title starts with venue
+    if venue:
+        v_clean = re.sub(r"[^a-z0-9]+", " ", venue.lower()).strip()
+        v_core = re.sub(r"^the\s+", "", v_clean).strip()
+        t_clean = re.sub(r"[^a-z0-9]+", " ", t).strip()
+        for v_cand in [v_clean, v_core]:
+            if v_cand and len(v_cand) >= 4 and t_clean.startswith(v_cand):
+                t = t_clean[len(v_cand):].strip()
+                break
+
+    # 2. Strip leading generic words
+    t = re.sub(r"^(?:live|traditional|weekly|annual)\s+", "", t, flags=re.I)
+
+    # 3. Strip parentheses / brackets with openers, support, guest, tour, age limits
+    t = re.sub(r"\s*[\(\[][^\)\]]*(?:touring|18\+|21\+|sold out|ages|rescheduled|presale|preseason|preview|week\s*\d+|opens|opener|support|guest|special guest|featuring)[^\)\]]*[\)\]]", "", t, flags=re.I)
+
+    # 4. Standard prefixes & suffixes
+    t = re.sub(r"^(?:broadway in nyc|presents|live nation presents|bowery presents):\s*", "", t)
+    t = re.sub(r"^(?:nba\s+|mlb\s+|nhl\s+|nfl\s+|wnba\s+)?(?:preseason|rescheduled|postponed):\s*", "", t)
+    t = re.sub(r"\s+at\s+(?:the\s+)?[a-z0-9\x27\s\.\&\-]+$", "", t)
+    t = re.sub(r"\s*-\s*202\d\s+tour.*$", "", t)
+    t = re.sub(r"\s*-\s*tour.*$", "", t)
+    t = re.sub(r"\s*-\s*(?:nyc|new york)(\b.*)?$", "", t)
+
+    # If title starts with a generic descriptor prefix like "Recital:", strip it
+    for p in GENERIC_DESCRIPTOR_PREFIXES:
+        if t.startswith(p + ":") or t.startswith(p + " -"):
+            t = t[len(p) + 1:].strip()
+            break
+
+    GENERIC_CATEGORY_SUFFIXES = (
+        "workshop", "class", "clinic", "tour", "screening", "recital",
+        "lecture", "discussion", "series", "market", "night", "trivia", "brunch", "show"
+    )
+
+    for sep in [":", " @ ", " @", " with ", " feat. ", " feat ", " ft. ", " ft ", " - ", " – ", " — ", " “", " \"", "”", "“", "\""]:
+        if sep in t:
+            parts = t.split(sep, 1)
+            left = parts[0].strip()
+            if any(left.endswith(suff) for suff in GENERIC_CATEGORY_SUFFIXES):
+                if len(parts[1].strip()) >= 3:
+                    t = parts[1].strip()
+                    continue
+            if len(left) >= 3 and left not in GENERIC_DESCRIPTOR_PREFIXES and not any(gen in left for gen in ["an evening", "a night", "special"]):
+                t = left
+                break
+    if "," in t:
+        parts = t.split(",", 1)
+        if len(parts[0].strip()) >= 3:
+            t = parts[0].strip()
+
+    t = re.sub(r"^(?:live|traditional|weekly|annual)\s+", "", t, flags=re.I)
+    t = re.sub(r"\bmusic\s+", "", t, flags=re.I)
+    t = re.sub(r"[^a-z0-9]+", " ", t).strip()
+    return t
 
 
 def _clean_ticket_query(title):
@@ -713,33 +895,36 @@ def _build_compare_links(e, raw_title):
     encoded_q = quote_plus(q)
     gt_url = f"https://gametime.co/search?q={encoded_q}"
     sh_url = f"https://www.stubhub.com/search?q={encoded_q}"
-    label = "compare prices" if e.get("price") else "live prices"
+    label = "compare prices" if e.get("price") else "tickets"
     return f'<span class="compare-tickets">{label}: <a href="{escape(gt_url)}" target="_blank" rel="noopener">Gametime</a> · <a href="{escape(sh_url)}" target="_blank" rel="noopener">StubHub</a></span>'
 
 
-def _clean_artist_name(name):
-    t = (name or "").lower()
-    t = re.sub(r"\b(late set with|early set with|evening set with|presents:?|featuring|feat\.?|ft\.?|w/|with)\b", " ", t)
-    t = re.sub(r"\b(quintet|quartet|trio|sextet|septet|duo|ensemble|band|orchestra|collective|group)\b", " ", t)
-    t = re.sub(r"[^a-z0-9]+", " ", t).strip()
-    return t
+def _source_priority(s):
+    s = (s or "").lower()
+    if any(agg in s for agg in ("ticketmaster", "seatgeek", "eventbrite")):
+        return 1
+    if any(agg in s for agg in ("donyc", "the skint", "dice.fm", "resident advisor", "nyc parks", "meetup", "lottery", "lotteries")):
+        return 5
+    return 10
 
 
-def _norm_venue(v):
-    if not v:
+def _clean_event_url(u):
+    if not u or not isinstance(u, str):
         return ""
-    v = v.lower()
-    v = re.sub(r"\([^)]*\)", " ", v)
-    v = re.sub(r"[^a-z0-9]+", " ", v).strip()
-    return v
-
-
-def _dedup_key(e):
-    name = (e.get("name") or "").strip().lower()
-    name = re.sub(r"[^a-z0-9]+", " ", name).strip()
-    if not name or len(name) < 4:
-        return None
-    return name
+    u = re.sub(r"[?#].*$", "", u).strip().rstrip("/")
+    generic = {
+        "https://donyc.com",
+        "https://theskint.com",
+        "https://www.nycgovparks.org",
+        "https://www.eventbrite.com",
+        "https://boweryballroom.com/events",
+        "https://sobs.com/calendar",
+        "https://facebook.com",
+        "https://instagram.com",
+    }
+    if u in generic or len(u.split("/")) <= 3:
+        return ""
+    return u
 
 
 def _ticket_source_name(url):
@@ -776,71 +961,170 @@ def _ticket_source_name(url):
 
 
 def _merge_duplicates(events):
-    """Collapse duplicates sharing URL, exact title, or same venue + close time + artist name."""
+    """Collapse events sharing a normalized name or head title within the same day bucket.
+
+    Preserves the best physical venue, merges prices across primary and alt sources,
+    and attaches alt sources so users can compare providers. Preserves distinct
+    showtimes from the same primary source (e.g. 7:00 PM and 9:30 PM performances),
+    while merging cross-source postings of the same show.
+    """
+    seen_exact = {}
+    seen_head = {}
+    seen_url = {}
     out = []
+    generic_sources = {
+        "ticketmaster", "seatgeek", "donyc citywide", "the skint nyc",
+        "ticketmaster nyc", "seatgeek nyc", "dice.fm nyc", "resident advisor nyc",
+        "nyc parks department", "meetup nyc", "nyc broadway lotteries", "luckyseat nyc broadway lotteries"
+    }
+
+    def _is_different_show(e1, e2):
+        t1 = e1.get("_time")
+        t2 = e2.get("_time")
+        if not t1 and e1.get("date"):
+            try:
+                t1 = datetime.fromisoformat(str(e1["date"]).replace("Z", "+00:00"))
+            except Exception:
+                pass
+        if not t2 and e2.get("date"):
+            try:
+                t2 = datetime.fromisoformat(str(e2["date"]).replace("Z", "+00:00"))
+            except Exception:
+                pass
+        if not t1 or not t2:
+            return False
+        if t1.tzinfo is None:
+            t1 = t1.replace(tzinfo=EASTERN)
+        else:
+            t1 = t1.astimezone(EASTERN)
+        if t2.tzinfo is None:
+            t2 = t2.replace(tzinfo=EASTERN)
+        else:
+            t2 = t2.astimezone(EASTERN)
+        if (t1.hour == 0 and t1.minute == 0) or (t2.hour == 0 and t2.minute == 0):
+            return False
+        diff_mins = abs((t1 - t2).total_seconds()) / 60.0
+        s1 = (e1.get("_source_venue") or e1.get("source") or "").lower()
+        s2 = (e2.get("_source_venue") or e2.get("source") or "").lower()
+        if s1 and s1 == s2 and diff_mins >= 45:
+            return True
+        if s1 != s2 and diff_mins <= 90:
+            return False
+        if diff_mins > 90:
+            return True
+        return False
+
+    def _venue_match(v1, v2, e1, e2):
+        if not v1 or not v2:
+            return True
+        v1_low = v1.lower()
+        v2_low = v2.lower()
+        if v1_low in generic_sources or v2_low in generic_sources:
+            return True
+        if v1_low == v2_low:
+            return True
+        generic_vwords = {
+            "the", "at", "in", "of", "and", "new", "york", "nyc", "manhattan", "brooklyn", "queens", "bronx",
+            "theatre", "theater", "tavern", "pub", "bar", "lounge", "brewery",
+            "brewing", "cafe", "café", "center", "hall", "club", "studio", "house", "room"
+        }
+        w1 = {re.sub(r"s$", "", w) for w in re.findall(r"\w+", v1_low)} - generic_vwords
+        w2 = {re.sub(r"s$", "", w) for w in re.findall(r"\w+", v2_low)} - generic_vwords
+        if w1 and w2 and (w1 & w2):
+            return True
+        if e1 and e2:
+            g1 = resolve_event_geo(e1)
+            g2 = resolve_event_geo(e2)
+            if g1 and g2 and g1.get("venue") and g1.get("venue") == g2.get("venue"):
+                return True
+        return False
+
     for e in events:
+        # Normalize ticket_url
         t_url = e.get("ticket_url")
         if t_url and t_url != e.get("url"):
             src_label = _ticket_source_name(t_url)
             e.setdefault("_alt_sources", [])
             if not any(a.get("url") == t_url for a in e["_alt_sources"]):
-                e["_alt_sources"].append({"venue": src_label, "url": t_url})
+                e["_alt_sources"].append({"venue": src_label, "url": t_url, "price": e.get("price")})
 
-        key = _dedup_key(e)
-        e_url = e.get("url")
-        e_art = _clean_artist_name(e.get("name"))
-        e_v = _norm_venue(e.get("venue"))
-        e_time = e.get("_time")
+        raw_name = e.get("name") or ""
+        full = re.sub(r"[^a-z0-9]+", " ", raw_name.lower()).strip()
+        venue_str = e.get("venue") or ""
+        head = _normalize_title_head(raw_name, venue=venue_str)
+        venue = venue_str.lower()
+        curl = _clean_event_url(e.get("url"))
 
         match = None
-        for cand in out:
-            # 1. Exact URL
-            if e_url and cand.get("url") == e_url:
-                match = cand
-                break
-            # 2. Exact dedup key
-            c_key = _dedup_key(cand)
-            if key and c_key and key == c_key:
-                match = cand
-                break
-            # 3. Same venue and close start time (within 45 minutes)
-            c_v = _norm_venue(cand.get("venue"))
-            if e_v and c_v and (e_v in c_v or c_v in e_v or e_v == c_v):
-                c_time = cand.get("_time")
-                if e_time and c_time and abs((e_time - c_time).total_seconds()) <= 2700:
-                    c_art = _clean_artist_name(cand.get("name"))
-                    if e_art and c_art and (e_art == c_art or (len(e_art) >= 5 and e_art in c_art) or (len(c_art) >= 5 and c_art in e_art)):
-                        match = cand
-                        break
-                    if key and c_key and ((len(key) >= 6 and key in c_key) or (len(c_key) >= 6 and c_key in key)):
+        # 0. Canonical specific URL match check
+        if curl and curl in seen_url:
+            for cand in seen_url[curl]:
+                if not _is_different_show(e, cand):
+                    match = cand
+                    break
+
+        # 1. Exact match check
+        if not match and full and len(full) >= 4 and full in seen_exact:
+            for cand in seen_exact[full]:
+                if not _is_different_show(e, cand):
+                    match = cand
+                    break
+
+        # 2. Normalized head match check
+        if not match and head and len(head) >= 4 and head not in GENERIC_HEADS and head in seen_head:
+            for cand in seen_head[head]:
+                c_venue = (cand.get("venue") or "").lower()
+                if _venue_match(venue, c_venue, e, cand):
+                    if not _is_different_show(e, cand):
                         match = cand
                         break
 
-        if match is not None:
+        # 3. Same physical venue title prefix/containment match
+        if not match and head and len(head) >= 4 and head not in GENERIC_HEADS:
+            for cand in out:
+                c_venue = (cand.get("venue") or "").lower()
+                if _venue_match(venue, c_venue, e, cand) and not _is_different_show(e, cand):
+                    cand_head = _normalize_title_head(cand.get("name") or "", venue=cand.get("venue"))
+                    if cand_head and cand_head not in GENERIC_HEADS:
+                        if (cand_head.startswith(head) or head.startswith(cand_head)) and min(len(head), len(cand_head)) >= 6:
+                            match = cand
+                            break
+
+        if match:
             match.setdefault("_alt_sources", [])
             src_url = e.get("url")
-            src_name = e.get("_source_venue") or e.get("venue") or "source"
+            src_name = e.get("_source_venue") or e.get("source") or e.get("venue") or "source"
             if src_url and not any(a.get("url") == src_url for a in match["_alt_sources"]) and src_url != match.get("url"):
-                match["_alt_sources"].append({"venue": src_name, "url": src_url})
+                match["_alt_sources"].append({"venue": src_name, "source": src_name, "url": src_url, "price": e.get("price")})
 
             cand_t_url = e.get("ticket_url")
             if cand_t_url and cand_t_url != match.get("url"):
                 t_label = _ticket_source_name(cand_t_url)
                 if not any(a.get("url") == cand_t_url for a in match["_alt_sources"]):
-                    match["_alt_sources"].append({"venue": t_label, "url": cand_t_url})
+                    match["_alt_sources"].append({"venue": t_label, "source": t_label, "url": cand_t_url, "price": e.get("price")})
 
-            GENERIC_AGGREGATORS = {
-                "donyc citywide", "the skint nyc", "ticketmaster nyc", "seatgeek nyc",
-                "dice.fm nyc", "resident advisor nyc", "nyc parks department", "meetup nyc",
-                "nyc broadway lotteries", "luckyseat nyc broadway lotteries"
-            }
+            # Upgrade primary source if newly arrived event has higher priority
+            cur_prio = _source_priority(match.get("_source_venue") or match.get("source"))
+            new_prio = _source_priority(e.get("_source_venue") or e.get("source"))
+            if new_prio > cur_prio:
+                old_url = match.get("url")
+                old_src = match.get("_source_venue") or match.get("source")
+                if old_url and not any(a.get("url") == old_url for a in match["_alt_sources"]):
+                    match["_alt_sources"].append({"venue": old_src, "source": old_src, "url": old_url, "price": match.get("price")})
+                match["url"] = e.get("url")
+                match["name"] = e.get("name")
+                match["venue"] = e.get("venue")
+                match["_source_venue"] = e.get("_source_venue") or e.get("source")
+                if e.get("_time") and (e["_time"].hour != 0 or e["_time"].minute != 0):
+                    match["_time"] = e["_time"]
+
+            # Presenter tag resolution
             cand_src = (match.get("_source_venue") or "").strip()
             e_src = (e.get("_source_venue") or "").strip()
             v_name = (match.get("venue") or "").strip().lower()
-
-            if e_src and e_src.lower() not in GENERIC_AGGREGATORS and e_src.lower() not in v_name:
+            if e_src and e_src.lower() not in generic_sources and e_src.lower() not in v_name:
                 match["_presenter"] = e_src
-            elif cand_src and cand_src.lower() not in GENERIC_AGGREGATORS and cand_src.lower() not in v_name:
+            elif cand_src and cand_src.lower() not in generic_sources and cand_src.lower() not in v_name:
                 match["_presenter"] = cand_src
 
             if not match.get("price") and e.get("price"):
@@ -848,8 +1132,19 @@ def _merge_duplicates(events):
             if not match.get("lat") and e.get("lat"):
                 match["lat"] = e["lat"]
                 match["lng"] = e.get("lng")
+            if (not match.get("category") or match.get("category") in ("other", "community")) and e.get("category") and e.get("category") not in ("other", "community"):
+                match["category"] = e["category"]
+            if not match.get("description") and e.get("description"):
+                match["description"] = e["description"]
         else:
+            if curl:
+                seen_url.setdefault(curl, []).append(e)
+            if full and len(full) >= 4:
+                seen_exact.setdefault(full, []).append(e)
+            if head and len(head) >= 4 and head not in GENERIC_HEADS:
+                seen_head.setdefault(head, []).append(e)
             out.append(e)
+
     return out
 
 
@@ -861,7 +1156,7 @@ def group_by_date(results):
     ongoing = []
     for r in results:
         for e in r.get("events", []):
-            if is_closed_show(e.get("name")) or is_closed_show(e.get("venue")):
+            if is_placeholder_or_closed_event(e.get("name")) or is_closed_show(e.get("venue")):
                 continue
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["venue"] = e.get("venue") or r.get("venue", "")
@@ -923,7 +1218,6 @@ def render_page(results):
         )
         is_free = _is_event_free(e)
         price_raw = escape(e["price"]) if e.get("price") else ""
-        is_comm = _is_commercial_ticketed(e)
         if price_raw:
             if "free" in price_raw.lower() or price_raw in ("$0", "0"):
                 price_tag = f'<span class="price free">{price_raw}</span>'
@@ -931,8 +1225,6 @@ def render_page(results):
                 price_tag = f'<span class="price">{price_raw}</span>'
         elif is_free:
             price_tag = '<span class="price free">Free</span>'
-        elif is_comm:
-            price_tag = '<span class="price ticketed">Live Pricing ↗</span>'
         else:
             price_tag = ""
 
@@ -950,6 +1242,8 @@ def render_page(results):
             geo_btn = f' <button type="button" class="venue-map-jump" data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue="{escape(geo["venue"])}" title="View {escape(geo["venue"])} on Map">📍</button>'
 
         city = _event_city(venue, source, geo=geo)
+        sub_name, sub_slug = resolve_subarea(city, e, geo=geo)
+        subarea_tag = f' <span class="subarea-tag">· {escape(sub_name)}</span>' if sub_name and not sub_name.startswith("Other ") else ""
         recurring = is_recurring(e)
         recur_flag = "weekly" if recurring else "once"
         recur_badge = '<span class="recur">↻ weekly</span>' if recurring else ""
@@ -978,14 +1272,15 @@ def render_page(results):
                 presenter = source
 
         presenter_html = f' <span class="presenter-tag" title="Presented by {escape(presenter)}">presented by {escape(presenter)}</span>' if presenter else ""
+        community_badge = ' <span class="badge-community" title="Community submitted event">👤 Community</span>' if e.get("_is_community") else ""
 
         if venue:
             maps_url = _maps_link(venue, city)
-            venue_html = f'<a class="venue-link" href="{escape(maps_url)}" target="_blank" rel="noopener">{escape(venue)}</a>{geo_btn}{presenter_html}'
+            venue_html = f'<a class="venue-link" href="{escape(maps_url)}" target="_blank" rel="noopener">{escape(venue)}</a>{geo_btn}{presenter_html}{community_badge}{subarea_tag}'
         elif presenter_html:
-            venue_html = presenter_html
+            venue_html = f'{presenter_html}{community_badge}{subarea_tag}'
         else:
-            venue_html = ""
+            venue_html = f'{community_badge}{subarea_tag}'.strip()
 
         gcal_url = _build_gcal_link(e, raw_title, venue, city)
         cal_actions = []
@@ -1005,7 +1300,8 @@ def render_page(results):
         epoch_attr = f' data-epoch="{int(e["_time"].timestamp())}"' if e.get("_time") else ''
         extra_html = f' · {compare_html}' if compare_html else ''
         pres_attr = f' data-presenter="{escape(presenter)}"' if presenter else ''
-        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}"{epoch_attr}{geo_attrs}>
+        ev_id = _event_stable_id(e)
+        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-subarea-name="{escape(sub_name)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}" data-event-id="{ev_id}"{epoch_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
           <div class="what">{link}{price_tag}{guestlist_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
@@ -1393,6 +1689,33 @@ def render_page(results):
   .pill-stat {{ color: var(--fg); }}
   .pill-refresh {{ color: #ffd866; text-decoration: none; font-weight: 600; font-size: 12px; }}
   .pill-refresh:hover {{ text-decoration: underline; }}
+  .pill-submit-btn {{
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #ffd866 0%, #f29e4c 100%);
+    color: #0c0e14;
+    border: none;
+    border-radius: 999px;
+    padding: 3px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 2px 8px rgba(255, 216, 102, 0.3);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    line-height: 1.3;
+    vertical-align: middle;
+  }}
+  .pill-submit-btn:hover {{
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(255, 216, 102, 0.45);
+    filter: brightness(1.06);
+  }}
+  .pill-submit-btn:active {{
+    transform: translateY(1px);
+  }}
 
   /* Layout */
   .layout {{
@@ -1531,6 +1854,55 @@ def render_page(results):
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
+  }}
+
+  /* Secondary Subarea Chips Bar */
+  .subarea-chips-bar {{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
+    padding: 6px 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    max-width: 100%;
+  }}
+  .subarea-chips-bar::-webkit-scrollbar {{
+    display: none;
+  }}
+  .sub-chip {{
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 11px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }}
+  .sub-chip:hover {{
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+  }}
+  .sub-chip.active {{
+    background: rgba(93, 155, 255, 0.16);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   }}
 
   /* Quick-Access Chips Bar */
@@ -1675,8 +2047,9 @@ def render_page(results):
   .venue-tag {{ color: var(--muted); font-size: 11px; margin-top: 4px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }}
   .venue-link {{ color: var(--muted); text-decoration: none; border-bottom: 1px dotted rgba(154,163,178,0.4); }}
   .venue-link:hover {{ color: var(--fg); border-bottom-color: var(--fg); }}
+  .subarea-tag {{ color: var(--accent); font-weight: 500; font-size: 11px; }}
   .cat-pill {{ display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 5px; font-size: 11px; font-weight: 600; line-height: 1.3; border: 1px solid; }}
-  .price {{ display:inline-block; background: rgba(255,255,255,0.06); color: var(--muted); font-size: 11px; padding: 2px 7px; border-radius: 5px; font-weight: 500; }}
+  .price {{ display:inline-block; margin-left: 8px; background: rgba(255,255,255,0.06); color: var(--muted); font-size: 11px; padding: 2px 7px; border-radius: 5px; font-weight: 500; }}
   .price.free {{ background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); font-weight: 700; }}
   .price.ticketed {{ background: rgba(139, 178, 255, 0.12); color: #8bb2ff; border: 1px solid rgba(139, 178, 255, 0.3); font-weight: 600; font-size: 10px; }}
   .compare-tickets {{ font-size: 11px; color: var(--muted); }}
@@ -1711,6 +2084,30 @@ def render_page(results):
   .filter-group h3 .spacer {{ flex:1; }}
   .filter-group h3 button {{ background: none; border: 1px solid var(--border); color: var(--muted); font-size: 10px; padding: 1px 8px; border-radius: 999px; cursor: pointer; font-family: inherit; letter-spacing: 0; text-transform: none; }}
   .filter-group h3 button:hover {{ color: var(--fg); border-color: var(--fg); }}
+  .filter-badge {{ background: var(--accent); color: #0d1117; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; text-transform: none; letter-spacing: 0; }}
+  .reset-filters-bar {{ margin-bottom: 8px; }}
+  .btn-reset-filters {{
+    width: 100%;
+    background: rgba(224, 90, 107, 0.12);
+    border: 1px solid rgba(224, 90, 107, 0.35);
+    color: #ff7b72;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }}
+  .btn-reset-filters:hover {{
+    background: rgba(224, 90, 107, 0.22);
+    border-color: #ff7b72;
+    color: #ffffff;
+  }}
   .filter-group.venues .chk-grid {{ max-height: 280px; overflow-y: auto; }}
   .chk-grid {{ display:flex; flex-direction: column; gap:2px; }}
   .chk {{ display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; padding: 3px 4px; border-radius: 6px; }}
@@ -1905,6 +2302,30 @@ def render_page(results):
     font-weight: 700;
     box-shadow: 0 2px 8px var(--accent-glow);
   }}
+  .share-filter-btn {{
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.15s ease;
+  }}
+  .share-filter-btn:hover {{
+    color: var(--fg);
+    border-color: var(--accent);
+  }}
+  .share-filter-btn.copied {{
+    background: rgba(35, 134, 54, 0.2);
+    border-color: #238636;
+    color: #3fb950;
+  }}
   .map-venue-stat {{
     font-size: 12px;
     color: var(--muted);
@@ -2041,6 +2462,29 @@ def render_page(results):
   .venue-marker:hover .pin-count, .venue-marker.highlighted .pin-count {{
     background: #0c0e14;
     color: #fff;
+  }}
+  /* Compact numbers-only mode */
+  .leaflet-map.hide-pin-names .venue-marker {{
+    min-width: 24px;
+    height: 24px;
+    padding: 0 4px;
+    border-radius: 999px;
+    justify-content: center;
+    gap: 0;
+  }}
+  .leaflet-map.hide-pin-names .venue-marker .pin-name {{
+    display: none !important;
+  }}
+  .leaflet-map.hide-pin-names .venue-marker .pin-count {{
+    background: transparent;
+    color: var(--accent);
+    padding: 0;
+    font-size: 11px;
+    font-weight: 800;
+  }}
+  .leaflet-map.hide-pin-names .venue-marker:hover .pin-count,
+  .leaflet-map.hide-pin-names .venue-marker.highlighted .pin-count {{
+    color: #0c0e14;
   }}
   .venue-map-jump {{
     background: none;
@@ -2287,6 +2731,14 @@ def render_page(results):
       padding: 5px 12px;
       font-size: 12px;
     }}
+    .subarea-chips-bar {{
+      padding: 5px 8px;
+      gap: 5px;
+    }}
+    .sub-chip {{
+      padding: 3px 9px;
+      font-size: 11px;
+    }}
     .quick-chips-bar {{
       flex-wrap: nowrap;
       overflow-x: auto;
@@ -2353,6 +2805,321 @@ def render_page(results):
       max-width: 100%;
       box-sizing: border-box;
     }}
+    .leaflet-map {{
+      height: 380px;
+    }}
+    .map-header {{
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }}
+    /* Mobile: Default to compact numbers-only pins to prevent clutter */
+    .venue-marker {{
+      min-width: 24px;
+      height: 24px;
+      padding: 0 4px;
+      border-radius: 999px;
+      justify-content: center;
+      gap: 0;
+    }}
+    .venue-marker .pin-name {{
+      display: none;
+    }}
+    .venue-marker .pin-count {{
+      background: transparent;
+      color: var(--accent);
+      padding: 0;
+      font-size: 11px;
+      font-weight: 800;
+    }}
+    .venue-marker:hover .pin-count,
+    .venue-marker.highlighted .pin-count {{
+      color: #0c0e14;
+    }}
+    /* Mobile: If user toggles names on */
+    .leaflet-map.show-pin-names-mobile .venue-marker {{
+      min-width: auto;
+      height: auto;
+      padding: 3px 8px;
+      border-radius: 999px;
+      gap: 5px;
+    }}
+    .leaflet-map.show-pin-names-mobile .venue-marker .pin-name {{
+      display: inline !important;
+    }}
+    .leaflet-map.show-pin-names-mobile .venue-marker .pin-count {{
+      background: var(--accent);
+      color: #0c0e14;
+      padding: 1px 6px;
+    }}
+  }}
+
+  /* Community Badge */
+  .badge-community {{
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    background: rgba(93, 155, 255, 0.15);
+    border: 1px solid rgba(93, 155, 255, 0.3);
+    color: #5d9bff;
+    vertical-align: middle;
+  }}
+
+  /* Submission Modal Overlay */
+  .modal-overlay {{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(6, 8, 12, 0.78);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    overflow-y: auto;
+    animation: modalFadeIn 0.2s ease-out;
+  }}
+  @keyframes modalFadeIn {{
+    from {{ opacity: 0; }}
+    to {{ opacity: 1; }}
+  }}
+  .modal-card {{
+    background: #141722;
+    border: 1px solid var(--border-hover);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 28px 24px;
+    position: relative;
+    animation: modalCardPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }}
+  @keyframes modalCardPop {{
+    from {{ transform: scale(0.95) translateY(12px); opacity: 0; }}
+    to {{ transform: scale(1) translateY(0); opacity: 1; }}
+  }}
+  .modal-header {{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }}
+  .modal-tabs {{
+    display: flex;
+    gap: 6px;
+    margin-bottom: 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 4px;
+  }}
+  .modal-tab {{
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }}
+  .modal-tab:hover {{
+    color: #ffffff;
+  }}
+  .modal-tab.active {{
+    background: var(--accent);
+    color: #0c0e14;
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }}
+  .modal-title {{
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+  }}
+  .modal-sub {{
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+  }}
+  .modal-close-btn {{
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+  }}
+  .modal-close-btn:hover {{
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }}
+  .modal-form {{
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }}
+  .form-row {{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }}
+  .form-grid-2 {{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }}
+  @media (max-width: 520px) {{
+    .form-grid-2 {{
+      grid-template-columns: 1fr;
+    }}
+  }}
+  .form-label {{
+    font-size: 12px;
+    font-weight: 700;
+    color: #c9d1d9;
+    letter-spacing: 0.02em;
+  }}
+  .form-label .req {{
+    color: #e05a6b;
+  }}
+  .form-label .hint {{
+    font-weight: 400;
+    color: var(--muted);
+  }}
+  .form-input, .form-select, .form-textarea {{
+    width: 100%;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    color: #ffffff;
+    font-size: 13px;
+    font-family: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }}
+  .form-input:focus, .form-select:focus, .form-textarea:focus {{
+    outline: none;
+    border-color: var(--accent);
+    background: rgba(93, 155, 255, 0.08);
+  }}
+  .form-select option {{
+    background: #151822;
+    color: #ffffff;
+  }}
+  .price-input-row {{
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }}
+  .btn-pill-free {{
+    background: rgba(74, 222, 128, 0.14);
+    border: 1px solid rgba(74, 222, 128, 0.35);
+    color: #4ade80;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s ease;
+  }}
+  .btn-pill-free:hover {{
+    background: rgba(74, 222, 128, 0.25);
+  }}
+  .form-status {{
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+  }}
+  .form-status.success {{
+    background: rgba(74, 222, 128, 0.15);
+    border: 1px solid rgba(74, 222, 128, 0.4);
+    color: #4ade80;
+  }}
+  .form-status.error {{
+    background: rgba(224, 90, 107, 0.15);
+    border: 1px solid rgba(224, 90, 107, 0.4);
+    color: #ff7b8b;
+  }}
+  .form-actions {{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }}
+  .btn-cancel {{
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 9px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }}
+  .btn-cancel:hover {{
+    color: #ffffff;
+    border-color: var(--border-hover);
+  }}
+  .btn-primary-submit {{
+    background: linear-gradient(135deg, #5d9bff 0%, #3b82f6 100%);
+    border: none;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    transition: all 0.15s ease;
+  }}
+  .btn-primary-submit:hover {{
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    filter: brightness(1.08);
+  }}
+  .form-footer-note {{
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 4px;
   }}
 </style>
 </head>
@@ -2370,6 +3137,10 @@ def render_page(results):
         <span class="pill-dot">·</span>
         <span class="pill-stat"><strong>{total:,}</strong> events · <strong>{len(venue_list)}</strong> venues &amp; feeds</span>
         <span class="pill-dot">·</span>
+        <button type="button" class="pill-submit-btn" id="btn-open-submit-modal" aria-haspopup="dialog" aria-expanded="false">
+          <span>＋ Add Event</span>
+        </button>
+        <span class="pill-dot">·</span>
         <a href="?refresh=1" class="pill-refresh" title="Force refresh live feeds">↻ Refresh</a>
       </div>
     </div>
@@ -2383,6 +3154,9 @@ def render_page(results):
     </div>
     <aside class="filters" id="sidebar-filters">
       <button type="button" id="mobile-filter-close" class="mobile-filter-close">✕ Done Filtering</button>
+      <div id="reset-filters-bar" class="reset-filters-bar" style="display: none;">
+        <button type="button" id="btn-reset-filters" class="btn-reset-filters">↺ Reset All Filters</button>
+      </div>
       <div class="filter-group">
         <h3>Search</h3>
         <div class="search-input-wrap">
@@ -2417,7 +3191,7 @@ def render_page(results):
         <div class="chk-grid">{recur_boxes}</div>
       </div>
       <div class="filter-group venues">
-        <h3>Venue <span class="spacer"></span> <button type="button" id="venue-all">all</button> <button type="button" id="venue-none">none</button></h3>
+        <h3>Venue <span id="venue-filter-count" class="filter-badge" style="display:none;"></span><span class="spacer"></span> <button type="button" id="venue-all">all</button> <button type="button" id="venue-none">none</button></h3>
         <div class="chk-grid">{venue_boxes}</div>
       </div>
     </aside>
@@ -2432,6 +3206,9 @@ def render_page(results):
           </button>
         </div>
         <div class="view-switch-right">
+          <button type="button" id="btn-share-filter" class="share-filter-btn" title="Copy shareable link with current filters">
+            <span>🔗</span> <span id="share-btn-text">Share View</span>
+          </button>
           <span id="map-venue-stat" class="map-venue-stat" style="display: none;">
             <strong id="map-venue-count">0</strong> venues on map
           </span>
@@ -2446,6 +3223,7 @@ def render_page(results):
         <button type="button" class="loc-chip" data-city="staten_island"><span class="city-dot" style="background:#a78bfa"></span>Staten Island</button>
         <button type="button" class="loc-chip" data-city="other"><span class="city-dot" style="background:#9aa3b2"></span>Tri-State</button>
       </div>
+      <div class="subarea-chips-bar" id="subarea-chips-bar" style="display: none;"></div>
       <div class="quick-chips-bar" id="quick-chips">
         <button type="button" class="chip active" data-time="today">⚡ Today</button>
         <button type="button" class="chip" data-time="tomorrow">Tomorrow</button>
@@ -2480,6 +3258,7 @@ def render_page(results):
             <span class="map-hint">· OpenStreetMap · Pins update with your date &amp; filters</span>
           </div>
           <div class="map-header-actions">
+            <button type="button" id="map-label-toggle-btn" class="map-tool-btn" title="Toggle between venue names and numbers only">🏷️ Names: On</button>
             <button type="button" id="map-recenter-btn" class="map-tool-btn" title="Center map on NYC">🎯 Center NYC</button>
           </div>
         </div>
@@ -2500,6 +3279,7 @@ def render_page(results):
         <div style="display:flex; justify-content:center; gap:8px; flex-wrap:wrap;">
           <button type="button" class="chip" id="no-events-week-btn">📅 View Next 7 Days</button>
           <button type="button" class="chip" id="no-events-all-btn">All Upcoming</button>
+          <button type="button" class="chip" id="no-events-reset-btn" style="display: none;">↺ Reset All Filters</button>
         </div>
       </div>
       {"".join(sections)}
@@ -2512,7 +3292,231 @@ def render_page(results):
     </main>
     {useful_sidebar}
   </div>
-  <footer>Scraped live from each venue's site. Times shown in Eastern.</footer>
+  <footer>
+    <p>NYC Events · Live local music, comedy, arts, outdoors &amp; community events across New York City.</p>
+    <p style="margin-top:6px; font-size:11px; opacity:0.85;">Data compiled directly from venue calendars and official local community feeds. Not affiliated with any commercial ticketing broker.</p>
+  </footer>
+
+  <!-- Community Event & Venue Submission Modal -->
+  <div id="submit-event-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-submit-title" style="display:none;">
+    <div class="modal-card" id="submit-modal-card">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="modal-submit-title">Add to NYC Events</h2>
+          <p class="modal-sub" id="modal-submit-sub">Share an event or suggest a new venue / space for automatic tracking.</p>
+        </div>
+        <button type="button" class="modal-close-btn" id="btn-close-submit-modal" aria-label="Close modal">✕</button>
+      </div>
+
+      <div class="modal-tabs" role="tablist">
+        <button type="button" class="modal-tab active" id="tab-btn-event" role="tab" aria-selected="true">
+          <span>📅</span> Add an Event
+        </button>
+        <button type="button" class="modal-tab" id="tab-btn-venue" role="tab" aria-selected="false">
+          <span>📍</span> Suggest a Venue
+        </button>
+      </div>
+
+      <!-- Tab 1: Submit an Event Form -->
+      <div id="modal-view-event">
+        <form id="community-event-form" class="modal-form" novalidate>
+          <input type="text" name="_hp_company" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none !important;">
+
+          <div class="form-row">
+            <label for="ev-title" class="form-label">
+              Event Title <span class="req">*</span>
+            </label>
+            <input type="text" id="ev-title" name="name" class="form-input" placeholder="e.g., Live Jazz Trio, Rooftop Party, Brooklyn Comedy Showcase" required maxlength="150">
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="ev-venue" class="form-label">
+                Venue / Location <span class="req">*</span>
+              </label>
+              <input type="text" id="ev-venue" name="venue" class="form-input" placeholder="e.g., Blue Note, Brooklyn Steel, Central Park" required maxlength="150">
+            </div>
+            <div class="form-row">
+              <label for="ev-city" class="form-label">
+                Borough / Area <span class="req">*</span>
+              </label>
+              <select id="ev-city" name="city" class="form-select" required>
+                <option value="manhattan" selected>Manhattan (East Village, LES, SoHo, Midtown, UWS, UES, Harlem, FiDi)</option>
+                <option value="brooklyn">Brooklyn (Williamsburg, Bushwick, DUMBO, Park Slope, Gowanus, Bed-Stuy)</option>
+                <option value="queens">Queens (Astoria, Long Island City, Flushing, Ridgewood)</option>
+                <option value="bronx">The Bronx</option>
+                <option value="staten_island">Staten Island</option>
+                <option value="other">Tri-State Area / Suburbs</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="ev-address" class="form-label">
+              Street Address / Neighborhood <span class="hint">(optional, helps map accurately)</span>
+            </label>
+            <input type="text" id="ev-address" name="address" class="form-input" placeholder="e.g., 131 W 3rd St, Greenwich Village" maxlength="150">
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="ev-date" class="form-label">
+                Date <span class="req">*</span>
+              </label>
+              <input type="date" id="ev-date" name="date" class="form-input" required>
+            </div>
+            <div class="form-row">
+              <label for="ev-time" class="form-label">
+                Start Time <span class="hint">(optional)</span>
+              </label>
+              <input type="time" id="ev-time" name="time" class="form-input" value="19:00">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="ev-category" class="form-label">
+                Category <span class="req">*</span>
+              </label>
+              <select id="ev-category" name="category" class="form-select" required>
+                <option value="music">🎵 Music / Concert</option>
+                <option value="comedy">🎙️ Comedy</option>
+                <option value="theater">🎭 Stage &amp; Theater</option>
+                <option value="dance">💃 Dance / Social</option>
+                <option value="clubbing">🪩 Clubbing &amp; DJ</option>
+                <option value="art">🎨 Art &amp; Gallery</option>
+                <option value="food">🍷 Food &amp; Drink</option>
+                <option value="fitness">🏃 Fitness &amp; Outdoors</option>
+                <option value="books">📚 Books &amp; Talks</option>
+                <option value="gaming">🎲 Trivia &amp; Games</option>
+                <option value="community">🤝 Community &amp; Pop-up</option>
+                <option value="other" selected>✨ Other</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="ev-price" class="form-label">
+                Price <span class="hint">(e.g., Free, $15, $20-$30)</span>
+              </label>
+              <div class="price-input-row">
+                <input type="text" id="ev-price" name="price" class="form-input" placeholder="e.g., Free or $15">
+                <button type="button" id="btn-quick-free" class="btn-pill-free">✨ Free</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="ev-url" class="form-label">
+              Event Website / Ticket URL <span class="req">*</span>
+            </label>
+            <input type="url" id="ev-url" name="url" class="form-input" placeholder="https://..." required>
+          </div>
+
+          <div class="form-row">
+            <label for="ev-desc" class="form-label">
+              Short Description / Notes <span class="hint">(optional)</span>
+            </label>
+            <textarea id="ev-desc" name="description" class="form-textarea" rows="2" placeholder="Brief note about the performers, dress code, RSVP details..." maxlength="400"></textarea>
+          </div>
+
+          <div class="form-status" id="form-submit-status" style="display:none;"></div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-submit">Cancel</button>
+            <button type="submit" class="btn-primary-submit" id="btn-submit-action">
+              <span class="btn-text">Publish Event ↗</span>
+              <span class="btn-spinner" style="display:none;">⏳ Adding...</span>
+            </button>
+          </div>
+
+          <div class="form-footer-note">
+            <span>🛡️ Submissions are instantly verified and added to the live schedule.</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Tab 2: Suggest a Venue Form -->
+      <div id="modal-view-venue" style="display:none;">
+        <form id="suggest-venue-form" class="modal-form" novalidate>
+          <input type="text" name="_hp_company" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none !important;">
+
+          <div class="form-row">
+            <label for="vn-name" class="form-label">
+              Venue / Space Name <span class="req">*</span>
+            </label>
+            <input type="text" id="vn-name" name="name" class="form-input" placeholder="e.g., S.O.B.'s, Flop House, Baby's All Right" required maxlength="150">
+          </div>
+
+          <div class="form-row">
+            <label for="vn-url" class="form-label">
+              Venue Website or Calendar Page <span class="req">*</span>
+            </label>
+            <input type="url" id="vn-url" name="url" class="form-input" placeholder="https://..." required>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="vn-city" class="form-label">
+                Borough / Area <span class="req">*</span>
+              </label>
+              <select id="vn-city" name="city" class="form-select" required>
+                <option value="manhattan" selected>Manhattan (East Village, LES, SoHo, Midtown, UWS, UES, Harlem, FiDi)</option>
+                <option value="brooklyn">Brooklyn (Williamsburg, Bushwick, DUMBO, Park Slope, Gowanus, Bed-Stuy)</option>
+                <option value="queens">Queens (Astoria, Long Island City, Flushing, Ridgewood)</option>
+                <option value="bronx">The Bronx</option>
+                <option value="staten_island">Staten Island</option>
+                <option value="other">Tri-State Area / Suburbs</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="vn-category" class="form-label">
+                Primary Genre / Type
+              </label>
+              <select id="vn-category" name="category" class="form-select">
+                <option value="music" selected>🎵 Live Music &amp; Concerts</option>
+                <option value="comedy">🎙️ Comedy</option>
+                <option value="theater">🎭 Stage &amp; Theater</option>
+                <option value="dance">💃 Dance / Social</option>
+                <option value="clubbing">🪩 Clubbing &amp; DJ</option>
+                <option value="food">🍺 Brewery / Bar / Food</option>
+                <option value="books">📚 Books &amp; Talks</option>
+                <option value="art">🎨 Gallery &amp; Art Space</option>
+                <option value="community">🤝 Community &amp; Pop-up</option>
+                <option value="other">✨ Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="vn-address" class="form-label">
+              Address / Neighborhood <span class="hint">(optional)</span>
+            </label>
+            <input type="text" id="vn-address" name="address" class="form-input" placeholder="e.g., 204 Varick St, SoHo" maxlength="150">
+          </div>
+
+          <div class="form-row">
+            <label for="vn-notes" class="form-label">
+              Notes / Events to Scrape <span class="hint">(optional)</span>
+            </label>
+            <textarea id="vn-notes" name="notes" class="form-textarea" rows="2" placeholder="e.g., Live salsa every Friday and comedy on weekends..." maxlength="400"></textarea>
+          </div>
+
+          <div class="form-status" id="form-venue-status" style="display:none;"></div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-venue">Cancel</button>
+            <button type="submit" class="btn-primary-submit" id="btn-submit-venue">
+              <span class="btn-text">Submit Suggestion ↗</span>
+              <span class="btn-spinner" style="display:none;">⏳ Submitting...</span>
+            </button>
+          </div>
+
+          <div class="form-footer-note">
+            <span>💡 Suggested venues are reviewed and plugged into our automated 30-minute scrapers!</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
   <script>
     const catBoxes = document.querySelectorAll('.cat-chk');
     const venueBoxes = document.querySelectorAll('.venue-chk');
@@ -2527,6 +3531,11 @@ def render_page(results):
     const guestlistOnlyChk = document.getElementById('guestlist-only-chk');
 
     const locChips = document.querySelectorAll('#location-chips .loc-chip');
+    const subareaBar = document.getElementById('subarea-chips-bar');
+    const SUBAREAS_DATA = {json.dumps(SUBAREAS_BY_CITY)};
+    const CITY_LABELS_MAP = {json.dumps(CITY_LABELS)};
+    let activeSubarea = 'all';
+    let renderedSubareaCity = null;
     const quickChips = document.querySelectorAll('#quick-chips .chip[data-time]');
     const quickFreeChip = document.getElementById('quick-free-chip');
     const quickGuestlistChip = document.getElementById('quick-guestlist-chip');
@@ -2554,13 +3563,125 @@ def render_page(results):
     }}
     function addDays(d, n) {{ const c = new Date(d); c.setDate(c.getDate() + n); return c; }}
     const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const DAYS_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     function fmtShort(d) {{ return MONTHS[d.getMonth()] + ' ' + d.getDate(); }}
     function fmtMonth(d) {{ return d.toLocaleString('en-US', {{ month: 'long', year: 'numeric' }}); }}
 
-    const todayISO = fmtISO(new Date());
+    function getEasternTodayISO() {{
+      try {{
+        const formatter = new Intl.DateTimeFormat('en-CA', {{
+          timeZone: 'America/New_York',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }});
+        return formatter.format(new Date());
+      }} catch (e) {{
+        return "{today_iso}";
+      }}
+    }}
+
+    let todayISO = getEasternTodayISO();
     let anchor = parseISO(todayISO);
     let showAll = false;
     let calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+
+    function updateDayHeadings() {{
+      const tDate = parseISO(todayISO);
+      daySections.forEach(day => {{
+        const dStr = day.dataset.date;
+        if (!dStr || dStr === 'tba') return;
+        const dObj = parseISO(dStr);
+        const diffDays = Math.round((dObj - tDate) / 86400000);
+        const h2 = day.querySelector('h2');
+        if (!h2) return;
+        const countSpan = h2.querySelector('.count');
+        const countHtml = countSpan ? countSpan.outerHTML : '';
+        const dayName = DAYS_FULL[dObj.getDay()];
+        const shortStr = `${{MONTHS[dObj.getMonth()]}} ${{dObj.getDate()}}`;
+        let prefix = dayName;
+        if (diffDays === 0) {{
+          prefix = 'Today';
+        }} else if (diffDays === 1) {{
+          prefix = 'Tomorrow';
+        }} else if (diffDays === -1) {{
+          prefix = 'Yesterday';
+        }}
+        h2.innerHTML = `${{prefix}} · ${{dayName}}, ${{shortStr}}${{countHtml}}`;
+      }});
+    }}
+
+    function repositionPastBanner() {{
+      let pastBanner = document.getElementById('past-events-banner');
+      const todaySec = document.querySelector(`.day[data-date="${{todayISO}}"]`);
+      if (!todaySec) return;
+      const h2 = todaySec.querySelector('h2');
+      if (!h2) return;
+      if (!pastBanner) {{
+        pastBanner = document.createElement('div');
+        pastBanner.className = 'past-events-banner';
+        pastBanner.id = 'past-events-banner';
+        pastBanner.style.display = 'none';
+        pastBanner.innerHTML = `
+          <div class="past-banner-info">
+            <span class="past-banner-badge" id="past-banner-badge">⏱️ Live Tonight</span>
+            <span class="past-banner-text" id="past-banner-text"></span>
+          </div>
+          <div class="past-banner-actions">
+            <button type="button" class="past-banner-btn" id="btn-toggle-past">Show earlier today</button>
+            <button type="button" class="past-banner-btn btn-tomorrow" id="btn-banner-tomorrow" style="display: none;">See Tomorrow →</button>
+          </div>
+        `;
+        h2.insertAdjacentElement('afterend', pastBanner);
+      }} else if (pastBanner.parentElement !== todaySec) {{
+        h2.insertAdjacentElement('afterend', pastBanner);
+      }}
+    }}
+
+    function msUntilEasternMidnight() {{
+      try {{
+        const now = new Date();
+        const parts = new Intl.DateTimeFormat('en-US', {{
+          timeZone: 'America/New_York',
+          hour12: false,
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric'
+        }}).formatToParts(now);
+        const h = parseInt(parts.find(p => p.type === 'hour').value, 10) % 24;
+        const m = parseInt(parts.find(p => p.type === 'minute').value, 10);
+        const s = parseInt(parts.find(p => p.type === 'second').value, 10);
+        const ms = now.getMilliseconds();
+        const secondsPassed = h * 3600 + m * 60 + s;
+        const secondsUntilMidnight = 86400 - secondsPassed;
+        return Math.max(1000, (secondsUntilMidnight * 1000) - ms + 1000);
+      }} catch (e) {{
+        return 60000;
+      }}
+    }}
+
+    function checkDayRollover() {{
+      const currentEasternISO = getEasternTodayISO();
+      if (currentEasternISO && currentEasternISO !== todayISO) {{
+        const wasToday = (timeFilter === 'today');
+        todayISO = currentEasternISO;
+        if (wasToday) {{
+          anchor = parseISO(todayISO);
+          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+        }}
+        repositionPastBanner();
+        updateDayHeadings();
+        apply();
+      }}
+    }}
+
+    function scheduleMidnightRefresh() {{
+      const ms = msUntilEasternMidnight();
+      setTimeout(() => {{
+        checkDayRollover();
+        scheduleMidnightRefresh();
+      }}, Math.min(ms, 2147483647));
+    }}
 
     function weekDates() {{
       const out = [];
@@ -2568,19 +3689,25 @@ def render_page(results):
       return out;
     }}
     function updateWeekLabel() {{
+      const end = addDays(anchor, 6);
       let label = '';
       if (timeFilter === 'all' || showAll) {{
         label = 'Showing all upcoming';
       }} else if (timeFilter === 'today') {{
-        label = `Today, ${{fmtShort(parseISO(todayISO))}}`;
+        label = `Today, ${{fmtShort(anchor)}}`;
       }} else if (timeFilter === 'tomorrow') {{
-        label = `Tomorrow, ${{fmtShort(addDays(parseISO(todayISO), 1))}}`;
+        label = `Tomorrow, ${{fmtShort(anchor)}}`;
       }} else if (timeFilter === 'weekend') {{
-        label = 'This Weekend';
+        const todayDate = parseISO(todayISO);
+        const dayOfWeek = todayDate.getDay();
+        let daysToSat = (6 - dayOfWeek + 7) % 7;
+        if (dayOfWeek === 0) daysToSat = -1;
+        const sat = addDays(todayDate, daysToSat);
+        const sun = addDays(sat, 1);
+        label = `Weekend: ${{fmtShort(sat)}} – ${{fmtShort(sun)}}`;
       }} else if (timeFilter === 'day') {{
-        label = `${{fmtShort(anchor)}}, ${{anchor.getFullYear()}}`;
+        label = `${{DAYS_FULL[anchor.getDay()]}}, ${{fmtShort(anchor)}}, ${{anchor.getFullYear()}}`;
       }} else {{
-        const end = addDays(anchor, 6);
         label = `${{fmtShort(anchor)}} – ${{fmtShort(end)}}, ${{end.getFullYear()}}`;
       }}
       document.getElementById('week-label').textContent = label;
@@ -2683,6 +3810,64 @@ def render_page(results):
       stateToHash();
     }}
 
+    function shortenVenueName(name) {{
+      if (!name) return '';
+      const OVERRIDES = {{
+        'Lincoln Center for the Performing Arts': 'Lincoln Center',
+        'David Geffen Hall at Lincoln Center': 'David Geffen Hall',
+        'Alice Tully Hall at Lincoln Center': 'Alice Tully Hall',
+        'Metropolitan Museum of Art': 'The Met',
+        'The Metropolitan Museum of Art': 'The Met',
+        'Museum of Modern Art (MoMA)': 'MoMA',
+        'Museum of the Moving Image': 'Moving Image',
+        'American Folk Art Museum': 'Folk Art Museum',
+        'Brooklyn Academy of Music': 'BAM',
+        'Music Hall of Williamsburg': 'Music Hall of Wmsburg',
+        'Brooklyn Paramount Theater': 'BK Paramount',
+        'Brooklyn Museum': 'BK Museum',
+        'New York Public Library': 'NYPL',
+        'New York Botanical Garden': 'NYBG',
+        'Brooklyn Botanic Garden': 'BK Botanic',
+        'Madison Square Garden': 'MSG',
+        'Radio City Music Hall': 'Radio City',
+        'The Bell House': 'Bell House',
+        "Pete's Candy Store": "Pete's Candy",
+        "Baby's All Right": "Baby's All Right",
+        'Skinny Dennis': 'Skinny Dennis',
+        'Flop House Comedy Club': 'Flop House',
+        'Comedy Cellar': 'Comedy Cellar',
+        'Village Vanguard': 'Village Vanguard',
+        'Blue Note Jazz Club': 'Blue Note',
+        'Smalls Jazz Club': 'Smalls Jazz',
+        'Mezzrow Jazz Club': 'Mezzrow',
+        "S.O.B.'s": "S.O.B.'s",
+        'House of Yes': 'House of Yes',
+        'Brooklyn Steel': 'BK Steel',
+        'Brooklyn Monarch': 'BK Monarch',
+        'Webster Hall': 'Webster Hall',
+        'Mercury Lounge': 'Mercury Lounge',
+        'Bowery Ballroom': 'Bowery Ballroom',
+        'Irving Plaza': 'Irving Plaza',
+        'Gramercy Theatre': 'Gramercy',
+        'Kings Theatre': 'Kings Theatre',
+        'Knockdown Center': 'Knockdown Center',
+        'Carnegie Hall': 'Carnegie Hall',
+      }};
+      if (OVERRIDES[name]) return OVERRIDES[name];
+      let s = name;
+      s = s.replace(/\\s*\\((?:via\\s+[^)]+|NYC|New York)\\)/gi, '');
+      s = s.replace(/,?\\s*(?:New York|NYC|Brooklyn|Queens|Manhattan|Bronx|Staten Island)(?:,\\s*NY)?$/gi, '');
+      s = s.replace(/\\s+(?:Brewing(?:\\s+Co\\.?)?|Brewery|Booksellers(?:\\s*&\\s*Cafe)?|Music\\s+Hall|Jazz\\s+Club|Center\\s+for\\s+the\\s+Arts)$/gi, '');
+      s = s.trim();
+      if (s.length > 18 && s.startsWith('The ')) {{
+        s = s.slice(4).trim();
+      }}
+      if (s.length > 18) {{
+        s = s.slice(0, 16).trim() + '…';
+      }}
+      return s;
+    }}
+
     function updateMapMarkers() {{
       if (!leafletMap || !markersLayer) return;
       markersLayer.clearLayers();
@@ -2703,7 +3888,7 @@ def render_page(results):
             venueMap.set(key, {{
               lat, lng,
               name: vName,
-              neighborhood: li.dataset.neighborhood || '',
+              neighborhood: li.dataset.neighborhood || li.dataset.subareaName || '',
               events: []
             }});
           }}
@@ -2726,9 +3911,10 @@ def render_page(results):
 
       venueMap.forEach(v => {{
         const count = v.events.length;
+        const shortName = shortenVenueName(v.name);
         const icon = L.divIcon({{
           className: 'custom-venue-icon',
-          html: `<div class="venue-marker" title="${{escapeHTML(v.name)}} (${{count}} events)"><span class="pin-name">${{escapeHTML(v.name)}}</span><span class="pin-count">${{count}}</span></div>`,
+          html: `<div class="venue-marker" title="${{escapeHTML(v.name)}} (${{count}} event${{count === 1 ? '' : 's'}})"><span class="pin-name">${{escapeHTML(shortName)}}</span><span class="pin-count">${{count}}</span></div>`,
           iconSize: null,
           iconAnchor: [0, 0],
         }});
@@ -2800,6 +3986,53 @@ def render_page(results):
       }}
     }}
 
+    function renderSubareaChips(city) {{
+      if (!subareaBar) return;
+      if (!city || city === 'all' || !SUBAREAS_DATA[city]) {{
+        subareaBar.style.display = 'none';
+        subareaBar.innerHTML = '';
+        renderedSubareaCity = null;
+        activeSubarea = 'all';
+        return;
+      }}
+
+      if (renderedSubareaCity === city) {{
+        subareaBar.querySelectorAll('.sub-chip').forEach(b => {{
+          b.classList.toggle('active', b.dataset.subarea === activeSubarea);
+        }});
+        return;
+      }}
+
+      renderedSubareaCity = city;
+      const subs = SUBAREAS_DATA[city] || [];
+      const cityLabel = (CITY_LABELS_MAP && CITY_LABELS_MAP[city]) || city;
+      let html = `<button type="button" class="sub-chip ${{activeSubarea === 'all' ? 'active' : ''}}" data-subarea="all">📍 All ${{cityLabel}}</button>`;
+      subs.forEach(s => {{
+        const slug = s[0];
+        const name = s[1];
+        const icon = s[2] || '📍';
+        const isAct = (activeSubarea === slug);
+        html += `<button type="button" class="sub-chip ${{isAct ? 'active' : ''}}" data-subarea="${{slug}}">${{icon}} ${{name}}</button>`;
+      }});
+      subareaBar.innerHTML = html;
+      subareaBar.style.display = 'flex';
+
+      subareaBar.querySelectorAll('.sub-chip').forEach(btn => {{
+        btn.addEventListener('click', () => {{
+          const targetSub = btn.dataset.subarea;
+          if (activeSubarea === targetSub && targetSub !== 'all') {{
+            activeSubarea = 'all';
+          }} else {{
+            activeSubarea = targetSub;
+          }}
+          subareaBar.querySelectorAll('.sub-chip').forEach(b => {{
+            b.classList.toggle('active', b.dataset.subarea === activeSubarea);
+          }});
+          apply();
+        }});
+      }});
+    }}
+
     function updateLocChipsUI() {{
       const allCities = cityBoxes.length;
       const checkedCities = Array.from(cityBoxes).filter(b => b.checked).map(b => b.value);
@@ -2811,6 +4044,11 @@ def render_page(results):
           chip.classList.toggle('active', checkedCities.length === 1 && checkedCities[0] === city);
         }}
       }});
+      if (checkedCities.length === 1) {{
+        renderSubareaChips(checkedCities[0]);
+      }} else {{
+        renderSubareaChips('all');
+      }}
     }}
 
     function updateSearchUI() {{
@@ -2829,16 +4067,41 @@ def render_page(results):
     }}
 
     function updateMobileBadge() {{
-      if (!mobileBadge) return;
       const allCats = catBoxes.length;
       const chkCats = Array.from(catBoxes).filter(b => b.checked).length;
       const allVenues = venueBoxes.length;
       const chkVenues = Array.from(venueBoxes).filter(b => b.checked).length;
+      const allCities = cityBoxes.length;
+      const chkCities = Array.from(cityBoxes).filter(b => b.checked).length;
+      const allRecurs = recurBoxes.length;
+      const chkRecurs = Array.from(recurBoxes).filter(b => b.checked).length;
       const isFree = freeOnlyChk && freeOnlyChk.checked;
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
-      const isFiltered = (chkCats < allCats) || (chkVenues < allVenues) || isFree || isGuestlist || searchInput.value.trim();
-      mobileBadge.textContent = isFiltered ? 'Active' : 'All';
-      mobileBadge.style.color = isFiltered ? 'var(--accent)' : '';
+      const isFiltered = (chkCats < allCats) || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+
+      if (mobileBadge) {{
+        mobileBadge.textContent = isFiltered ? 'Active' : 'All';
+        mobileBadge.style.color = isFiltered ? 'var(--accent)' : '';
+      }}
+
+      const resetBar = document.getElementById('reset-filters-bar');
+      if (resetBar) {{
+        resetBar.style.display = isFiltered ? 'block' : 'none';
+      }}
+      const noEventsResetBtn = document.getElementById('no-events-reset-btn');
+      if (noEventsResetBtn) {{
+        noEventsResetBtn.style.display = isFiltered ? 'inline-block' : 'none';
+      }}
+
+      const venueFilterCount = document.getElementById('venue-filter-count');
+      if (venueFilterCount) {{
+        if (chkVenues > 0 && chkVenues < allVenues) {{
+          venueFilterCount.textContent = `${{chkVenues}} selected`;
+          venueFilterCount.style.display = 'inline';
+        }} else {{
+          venueFilterCount.style.display = 'none';
+        }}
+      }}
     }}
 
     function stateToHash() {{
@@ -2853,12 +4116,23 @@ def render_page(results):
       const allCities = Array.from(cityBoxes).map(b => b.value);
       const checkedCities = Array.from(cityBoxes).filter(b => b.checked).map(b => b.value);
       if (checkedCities.length > 0 && checkedCities.length < allCities.length) params.set('city', checkedCities.join(','));
+      if (activeSubarea && activeSubarea !== 'all') params.set('sub', activeSubarea);
+
+      const allRecurs = Array.from(recurBoxes).map(b => b.value);
+      const checkedRecurs = Array.from(recurBoxes).filter(b => b.checked).map(b => b.value);
+      if (checkedRecurs.length > 0 && checkedRecurs.length < allRecurs.length) params.set('recur', checkedRecurs.join(','));
+
+      const allVenues = Array.from(venueBoxes).map(b => b.value);
+      const checkedVenues = Array.from(venueBoxes).filter(b => b.checked).map(b => b.value);
+      if (checkedVenues.length > 0 && checkedVenues.length < allVenues.length) params.set('venues', checkedVenues.join(';'));
 
       if (freeOnlyChk && freeOnlyChk.checked) params.set('free', '1');
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
 
       if (timeFilter !== 'today') params.set('t', timeFilter);
-      if (!showAll && fmtISO(anchor) !== todayISO) params.set('d', fmtISO(anchor));
+      if ((timeFilter === 'day' || timeFilter === 'week') && fmtISO(anchor) !== todayISO) {{
+        params.set('d', fmtISO(anchor));
+      }}
       if (currentView !== 'list') params.set('v', currentView);
       if (showPastToday) params.set('past', '1');
 
@@ -2868,43 +4142,84 @@ def render_page(results):
 
     function hashToState() {{
       const hash = location.hash.slice(1);
-      if (!hash) return;
-      const params = new URLSearchParams(hash);
+      const params = hash ? new URLSearchParams(hash) : null;
 
-      if (params.has('q')) searchInput.value = params.get('q');
-      if (params.get('free') === '1' && freeOnlyChk) freeOnlyChk.checked = true;
-      if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
-      if (params.get('past') === '1') showPastToday = true;
-      if (params.get('v') === 'map') {{
-        switchView('map');
-      }}
-
-      if (params.has('t')) {{
-        timeFilter = params.get('t');
-        showAll = (timeFilter === 'all');
-      }}
-
-      if (params.has('cat')) {{
-        const vals = new Set(params.get('cat').split(','));
-        catBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
-      }}
-
-      if (params.has('city')) {{
-        const vals = new Set(params.get('city').split(','));
-        cityBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
-      }}
-
-      if (params.has('d')) {{
-        const d = params.get('d');
-        if (d === 'all') {{ showAll = true; timeFilter = 'all'; }}
-        else {{
-          anchor = parseISO(d);
-          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-          if (d === todayISO) timeFilter = 'today';
-          else if (d === fmtISO(addDays(parseISO(todayISO), 1))) timeFilter = 'tomorrow';
-          else timeFilter = 'day';
-          showAll = false;
+      if (params) {{
+        if (params.has('q')) searchInput.value = params.get('q');
+        if (params.get('free') === '1' && freeOnlyChk) freeOnlyChk.checked = true;
+        if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
+        if (params.get('past') === '1') showPastToday = true;
+        if (params.get('v') === 'map') {{
+          switchView('map');
         }}
+
+        if (params.has('t')) {{
+          timeFilter = params.get('t');
+          showAll = (timeFilter === 'all');
+        }}
+
+        if (params.has('cat')) {{
+          const vals = new Set(params.get('cat').split(','));
+          catBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
+        }}
+
+        if (params.has('city')) {{
+          const vals = new Set(params.get('city').split(','));
+          cityBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
+        }}
+
+        if (params.has('sub')) {{
+          activeSubarea = params.get('sub');
+        }} else {{
+          activeSubarea = 'all';
+        }}
+
+        if (params.has('recur')) {{
+          const vals = new Set(params.get('recur').split(','));
+          recurBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
+        }}
+
+        if (params.has('venues')) {{
+          const rawVenues = params.get('venues').split(';').map(s => s.trim()).filter(Boolean);
+          const vals = new Set(rawVenues);
+          venueBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
+          try {{
+            localStorage.setItem('nyc_saved_venues', JSON.stringify(Array.from(vals)));
+          }} catch (_) {{}}
+        }}
+
+        if (params.has('d')) {{
+          const d = params.get('d');
+          if (d === 'all') {{
+            showAll = true;
+            timeFilter = 'all';
+          }} else {{
+            anchor = parseISO(d);
+            calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+            if (!params.has('t')) {{
+              if (d === todayISO) {{
+                timeFilter = 'today';
+                showAll = false;
+              }} else if (d === fmtISO(addDays(parseISO(todayISO), 1))) {{
+                timeFilter = 'tomorrow';
+                showAll = false;
+              }} else {{
+                timeFilter = 'day';
+                showAll = false;
+              }}
+            }}
+          }}
+        }}
+      }}
+
+      if (!params || !params.has('venues')) {{
+        try {{
+          const saved = JSON.parse(localStorage.getItem('nyc_saved_venues') || 'null');
+          if (Array.isArray(saved) && saved.length > 0 && saved.length < venueBoxes.length) {{
+            const savedSet = new Set(saved);
+            venueBoxes.forEach(b => {{ b.checked = savedSet.has(b.value); }});
+          }}
+        }} catch (_) {{}}
       }}
     }}
 
@@ -2936,14 +4251,18 @@ def render_page(results):
         const venueOk = venues.has(li.dataset.venue) || (li.dataset.presenter && venues.has(li.dataset.presenter));
         const recurOk = recurs.has(li.dataset.recur);
         const cityOk = cities.has(li.dataset.city);
+        const subareaOk = (activeSubarea === 'all') || (li.dataset.subarea === activeSubarea);
         const freeOk = !freeOnly || li.dataset.free === 'true';
         const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
         const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
 
         const daySec = li.closest('.day');
-        const isToday = daySec && daySec.dataset.date === todayISO;
+        const dayDate = daySec ? daySec.dataset.date : '';
+        const isToday = daySec && dayDate === todayISO;
+        const isPastDay = dayDate && dayDate !== 'tba' && dayDate < todayISO;
         const epoch = li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0;
-        const isPast = isToday && epoch > 0 && epoch < twoHoursAgoEpoch;
+        const isPastTime = isToday && epoch > 0 && epoch < twoHoursAgoEpoch;
+        const isPast = isPastDay || isPastTime;
 
         if (isToday && epoch > 0) {{
           totalTodayEventsCount++;
@@ -2959,7 +4278,7 @@ def render_page(results):
           }}
         }}
 
-        const isVisible = catOk && venueOk && recurOk && cityOk && searchOk && freeOk && guestlistOk && timePastOk;
+        const isVisible = catOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && timePastOk;
         li.classList.toggle('hidden', !isVisible);
 
         if (isToday && isVisible && !isPast) {{
@@ -3021,8 +4340,8 @@ def render_page(results):
       const satISO = fmtISO(addDays(todayDate, daysToSat));
       const sunISO = fmtISO(addDays(todayDate, daysToSat + 1));
       const tomorrowISO = fmtISO(addDays(todayDate, 1));
+      const anchorISO = fmtISO(anchor);
 
-      let visibleDays = 0;
       daySections.forEach(day => {{
         const date = day.dataset.date;
         let inTime = true;
@@ -3032,10 +4351,10 @@ def render_page(results):
           inTime = (date === tomorrowISO);
         }} else if (timeFilter === 'weekend') {{
           inTime = (date === satISO || date === sunISO);
+        }} else if (timeFilter === 'day') {{
+          inTime = (date === anchorISO);
         }} else if (timeFilter === 'week') {{
           inTime = (date === 'tba' || week.has(date));
-        }} else if (timeFilter === 'day') {{
-          inTime = (date === fmtISO(anchor));
         }} else {{
           inTime = showAll || date === 'tba' || week.has(date);
         }}
@@ -3044,9 +4363,14 @@ def render_page(results):
         day.classList.toggle('empty', visible === 0);
         const headingCount = day.querySelector('h2 .count');
         if (headingCount) headingCount.textContent = visible;
-        if (inTime && visible > 0) visibleDays++;
       }});
 
+      const ongoingEl = document.querySelector('.ongoing');
+      if (ongoingEl) {{
+        ongoingEl.style.display = (timeFilter === 'all' || showAll) ? '' : 'none';
+      }}
+
+      const visibleDays = daySections.filter(d => !d.classList.contains('out-of-week') && !d.classList.contains('empty')).length;
       const noEventsEl = document.getElementById('no-events-msg');
       if (noEventsEl) {{
         noEventsEl.style.display = (visibleDays === 0) ? 'block' : 'none';
@@ -3057,6 +4381,19 @@ def render_page(results):
       updateQuickChipsUI();
       updateLocChipsUI();
       updateSearchUI();
+
+      const allVenues = venueBoxes.length;
+      const checkedVenuesList = Array.from(venueBoxes).filter(b => b.checked).map(b => b.value);
+      if (checkedVenuesList.length > 0 && checkedVenuesList.length < allVenues) {{
+        try {{
+          localStorage.setItem('nyc_saved_venues', JSON.stringify(checkedVenuesList));
+        }} catch (_) {{}}
+      }} else if (checkedVenuesList.length === allVenues) {{
+        try {{
+          localStorage.removeItem('nyc_saved_venues');
+        }} catch (_) {{}}
+      }}
+
       updateMobileBadge();
       if (currentView === 'map' && leafletMap) {{
         updateMapMarkers();
@@ -3295,14 +4632,61 @@ def render_page(results):
     searchInput.addEventListener('input', apply);
     document.getElementById('cat-all').addEventListener('click', () => {{ catBoxes.forEach(b => b.checked = true); apply(); }});
     document.getElementById('cat-none').addEventListener('click', () => {{ catBoxes.forEach(b => b.checked = false); apply(); }});
-    document.getElementById('venue-all').addEventListener('click', () => {{ venueBoxes.forEach(b => b.checked = true); apply(); }});
+    document.getElementById('venue-all').addEventListener('click', () => {{
+      venueBoxes.forEach(b => b.checked = true);
+      try {{ localStorage.removeItem('nyc_saved_venues'); }} catch (_) {{}}
+      apply();
+    }});
     document.getElementById('venue-none').addEventListener('click', () => {{ venueBoxes.forEach(b => b.checked = false); apply(); }});
-    document.getElementById('city-all').addEventListener('click', () => {{ cityBoxes.forEach(b => b.checked = true); apply(); }});
-    document.getElementById('city-none').addEventListener('click', () => {{ cityBoxes.forEach(b => b.checked = false); apply(); }});
+    document.getElementById('city-all').addEventListener('click', () => {{ activeSubarea = 'all'; cityBoxes.forEach(b => b.checked = true); apply(); }});
+    document.getElementById('city-none').addEventListener('click', () => {{ activeSubarea = 'all'; cityBoxes.forEach(b => b.checked = false); apply(); }});
+
+    function resetAllFilters() {{
+      if (searchInput) searchInput.value = '';
+      if (freeOnlyChk) freeOnlyChk.checked = false;
+      if (guestlistOnlyChk) guestlistOnlyChk.checked = false;
+      activeSubarea = 'all';
+      catBoxes.forEach(b => b.checked = true);
+      cityBoxes.forEach(b => b.checked = true);
+      recurBoxes.forEach(b => b.checked = true);
+      venueBoxes.forEach(b => b.checked = true);
+      try {{ localStorage.removeItem('nyc_saved_venues'); }} catch (_) {{}}
+      apply();
+    }}
+
+    const btnResetFilters = document.getElementById('btn-reset-filters');
+    if (btnResetFilters) btnResetFilters.addEventListener('click', resetAllFilters);
+
+    const noEventsResetBtn = document.getElementById('no-events-reset-btn');
+    if (noEventsResetBtn) noEventsResetBtn.addEventListener('click', resetAllFilters);
+
+    const btnShareFilter = document.getElementById('btn-share-filter');
+    if (btnShareFilter) {{
+      btnShareFilter.addEventListener('click', async () => {{
+        try {{
+          await navigator.clipboard.writeText(location.href);
+          const shareText = document.getElementById('share-btn-text');
+          if (shareText) shareText.textContent = '✓ Copied Link!';
+          btnShareFilter.classList.add('copied');
+          setTimeout(() => {{
+            if (shareText) shareText.textContent = 'Share View';
+            btnShareFilter.classList.remove('copied');
+          }}, 2000);
+        }} catch (_) {{
+          prompt('Copy this link to share your filtered view:', location.href);
+        }}
+      }});
+    }}
+
+    window.addEventListener('hashchange', () => {{
+      hashToState();
+      apply();
+    }});
 
     locChips.forEach(chip => {{
       chip.addEventListener('click', () => {{
         const targetCity = chip.dataset.city;
+        activeSubarea = 'all';
         if (targetCity === 'all') {{
           cityBoxes.forEach(b => {{ b.checked = true; }});
         }} else {{
@@ -3332,6 +4716,37 @@ def render_page(results):
           leafletMap.setView([40.7300, -73.9900], 12, {{ animate: true }});
         }}
       }});
+    }}
+
+    const mapLabelToggleBtn = document.getElementById('map-label-toggle-btn');
+    const mapEl = document.getElementById('leaflet-map');
+
+    function updateLabelToggleState() {{
+      if (!mapLabelToggleBtn || !mapEl) return;
+      const isMobile = window.innerWidth <= 860;
+      if (isMobile) {{
+        const namesOn = mapEl.classList.contains('show-pin-names-mobile');
+        mapLabelToggleBtn.textContent = namesOn ? '🏷️ Names: On' : '🔢 Numbers Only';
+        mapLabelToggleBtn.title = namesOn ? 'Switch to compact numbers only' : 'Show venue names on pins';
+      }} else {{
+        const namesOff = mapEl.classList.contains('hide-pin-names');
+        mapLabelToggleBtn.textContent = namesOff ? '🔢 Numbers Only' : '🏷️ Names: On';
+        mapLabelToggleBtn.title = namesOff ? 'Show venue names on pins' : 'Switch to compact numbers only';
+      }}
+    }}
+
+    if (mapLabelToggleBtn && mapEl) {{
+      mapLabelToggleBtn.addEventListener('click', () => {{
+        const isMobile = window.innerWidth <= 860;
+        if (isMobile) {{
+          mapEl.classList.toggle('show-pin-names-mobile');
+        }} else {{
+          mapEl.classList.toggle('hide-pin-names');
+        }}
+        updateLabelToggleState();
+      }});
+      window.addEventListener('resize', updateLabelToggleState);
+      updateLabelToggleState();
     }}
 
     const panelCloseBtn = document.getElementById('panel-close-btn');
@@ -3374,8 +4789,15 @@ def render_page(results):
     }});
 
     window.addEventListener('focus', () => {{
+      checkDayRollover();
       if (timeFilter === 'today' && !showPastToday) {{
         apply();
+      }}
+    }});
+
+    document.addEventListener('visibilitychange', () => {{
+      if (document.visibilityState === 'visible') {{
+        checkDayRollover();
       }}
     }});
 
@@ -3429,6 +4851,422 @@ def render_page(results):
       downloadICS(btn.dataset.title, btn.dataset.date, btn.dataset.venue, btn.dataset.url);
     }});
 
+    // --- Community Event & Venue Submission Modal Logic ---
+    const submitModal = document.getElementById('submit-event-modal');
+    const btnOpenSubmit = document.getElementById('btn-open-submit-modal');
+    const btnCloseSubmit = document.getElementById('btn-close-submit-modal');
+    const btnCancelSubmit = document.getElementById('btn-cancel-submit');
+    const communityForm = document.getElementById('community-event-form');
+    const evDateInput = document.getElementById('ev-date');
+    const btnQuickFree = document.getElementById('btn-quick-free');
+    const evPriceInput = document.getElementById('ev-price');
+    const formStatus = document.getElementById('form-submit-status');
+    const btnSubmitAction = document.getElementById('btn-submit-action');
+
+    const tabBtnEvent = document.getElementById('tab-btn-event');
+    const tabBtnVenue = document.getElementById('tab-btn-venue');
+    const modalViewEvent = document.getElementById('modal-view-event');
+    const modalViewVenue = document.getElementById('modal-view-venue');
+    const modalSubmitTitle = document.getElementById('modal-submit-title');
+    const modalSubmitSub = document.getElementById('modal-submit-sub');
+    const formVenueStatus = document.getElementById('form-venue-status');
+    const suggestVenueForm = document.getElementById('suggest-venue-form');
+    const btnCancelVenue = document.getElementById('btn-cancel-venue');
+    const btnSubmitVenue = document.getElementById('btn-submit-venue');
+
+    function switchModalTab(tab) {{
+      if (tab === 'venue') {{
+        if (tabBtnVenue) {{ tabBtnVenue.classList.add('active'); tabBtnVenue.setAttribute('aria-selected', 'true'); }}
+        if (tabBtnEvent) {{ tabBtnEvent.classList.remove('active'); tabBtnEvent.setAttribute('aria-selected', 'false'); }}
+        if (modalViewVenue) modalViewVenue.style.display = 'block';
+        if (modalViewEvent) modalViewEvent.style.display = 'none';
+        if (modalSubmitTitle) modalSubmitTitle.textContent = 'Suggest a Venue to Track';
+        if (modalSubmitSub) modalSubmitSub.textContent = 'Know a music venue, comedy club, theater, or community space we should automatically scrape?';
+        const vnInput = document.getElementById('vn-name');
+        if (vnInput) setTimeout(() => vnInput.focus(), 60);
+      }} else {{
+        if (tabBtnEvent) {{ tabBtnEvent.classList.add('active'); tabBtnEvent.setAttribute('aria-selected', 'true'); }}
+        if (tabBtnVenue) {{ tabBtnVenue.classList.remove('active'); tabBtnVenue.setAttribute('aria-selected', 'false'); }}
+        if (modalViewEvent) modalViewEvent.style.display = 'block';
+        if (modalViewVenue) modalViewVenue.style.display = 'none';
+        if (modalSubmitTitle) modalSubmitTitle.textContent = 'Add an Event to NYC Events';
+        if (modalSubmitSub) modalSubmitSub.textContent = 'Hosting a show, party, dance, meetup, or know of an event we missed? Submit it below.';
+        const evInput = document.getElementById('ev-title');
+        if (evInput) setTimeout(() => evInput.focus(), 60);
+      }}
+    }}
+
+    if (tabBtnEvent) tabBtnEvent.addEventListener('click', () => switchModalTab('event'));
+    if (tabBtnVenue) tabBtnVenue.addEventListener('click', () => switchModalTab('venue'));
+
+    function openSubmitModal(initialTab) {{
+      if (!submitModal) return;
+      submitModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      switchModalTab(initialTab === 'venue' ? 'venue' : 'event');
+      if (evDateInput && !evDateInput.value) {{
+        evDateInput.value = todayISO;
+      }}
+      if (formStatus) {{
+        formStatus.style.display = 'none';
+        formStatus.className = 'form-status';
+      }}
+      if (formVenueStatus) {{
+        formVenueStatus.style.display = 'none';
+        formVenueStatus.className = 'form-status';
+      }}
+    }}
+
+    function closeSubmitModal() {{
+      if (!submitModal) return;
+      submitModal.style.display = 'none';
+      document.body.style.overflow = '';
+      if (formStatus) formStatus.style.display = 'none';
+      if (formVenueStatus) formVenueStatus.style.display = 'none';
+    }}
+
+    if (btnOpenSubmit) btnOpenSubmit.addEventListener('click', () => openSubmitModal('event'));
+    if (btnCloseSubmit) btnCloseSubmit.addEventListener('click', closeSubmitModal);
+    if (btnCancelSubmit) btnCancelSubmit.addEventListener('click', closeSubmitModal);
+    if (btnCancelVenue) btnCancelVenue.addEventListener('click', closeSubmitModal);
+
+    if (submitModal) {{
+      submitModal.addEventListener('click', (e) => {{
+        if (e.target === submitModal) {{
+          closeSubmitModal();
+        }}
+      }});
+    }}
+
+    document.addEventListener('keydown', (e) => {{
+      if (e.key === 'Escape' && submitModal && submitModal.style.display === 'flex') {{
+        closeSubmitModal();
+      }}
+    }});
+
+    if (btnQuickFree && evPriceInput) {{
+      btnQuickFree.addEventListener('click', () => {{
+        evPriceInput.value = 'Free';
+      }});
+    }}
+
+    function injectUserEventIntoDOM(ev) {{
+      const dateKey = (ev.date || todayISO).slice(0, 10);
+      let daySection = document.querySelector(`.day[data-date="${{dateKey}}"]`);
+      if (!daySection) {{
+        daySection = document.querySelector(`.day[data-date="${{todayISO}}"]`) || document.querySelector('.day');
+      }}
+      if (!daySection) return;
+
+      const city = ev.city || 'manhattan';
+      let citySection = daySection.querySelector(`.city-section[data-city="${{city}}"]`);
+      if (!citySection) {{
+        citySection = daySection.querySelector('.city-section') || daySection;
+      }}
+
+      let bucketSection = citySection.querySelector('.bucket');
+      let targetUl = bucketSection ? bucketSection.querySelector('ul') : null;
+      if (!targetUl) {{
+        targetUl = daySection.querySelector('ul');
+      }}
+      if (!targetUl) return;
+
+      let timeStr = 'TBA';
+      try {{
+        const dt = new Date(ev.date);
+        if (!isNaN(dt)) {{
+          let h = dt.getHours();
+          const m = dt.getMinutes();
+          const ampm = h >= 12 ? 'pm' : 'am';
+          h = h % 12 || 12;
+          timeStr = `${{h}}:${{String(m).padStart(2, '0')}}${{ampm}}`;
+        }}
+      }} catch (_) {{}}
+
+      const priceTag = ev.price ? `<span class="price ticketed">${{escapeHTML(ev.price)}}</span>` : '<span class="price free">Free</span>';
+      const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${{encodeURIComponent(ev.venue + ', NY')}}`;
+
+      let evId = ev.id;
+      if (!evId) {{
+        const raw = `${{ev.venue || ''}}|${{ev.name || ''}}|${{dateKey}}`.toLowerCase();
+        let hash = 0;
+        for (let i = 0; i < raw.length; i++) {{
+          hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+          hash |= 0;
+        }}
+        evId = 'ev_' + (hash >>> 0).toString(16);
+      }}
+
+      const li = document.createElement('li');
+      li.className = 'event';
+      li.dataset.cat = ev.category || 'other';
+      li.dataset.bucket = 'Other';
+      li.dataset.venue = ev.venue;
+      li.dataset.city = city;
+      li.dataset.recur = 'once';
+      li.dataset.free = (!ev.price || ev.price.toLowerCase().includes('free')) ? 'true' : 'false';
+      li.dataset.guestlist = 'false';
+      li.dataset.eventId = evId;
+
+      li.innerHTML = `
+        <div class="when">${{timeStr}}</div>
+        <div class="what">
+          <a href="${{escapeHTML(ev.url || '#')}}" target="_blank" rel="noopener">${{escapeHTML(ev.name)}}</a>
+          ${{priceTag}}
+          <span class="cat-pill" style="--cat-c:#4ade80; background:#4ade8018; border-color:#4ade8033; color:#4ade80">✨ Added Just Now</span>
+          <div class="venue-tag">
+            <a class="venue-link" href="${{mapsUrl}}" target="_blank" rel="noopener">${{escapeHTML(ev.venue)}}</a>
+            <span class="badge-community">👤 Community</span>
+          </div>
+        </div>
+      `;
+
+      targetUl.prepend(li);
+    }}
+
+    function loadLocalCommunityEvents() {{
+      try {{
+        const raw = localStorage.getItem('nyc_community_events');
+        if (!raw) return;
+        const events = JSON.parse(raw);
+        if (!Array.isArray(events)) return;
+        const nowMs = Date.now();
+        events.forEach(ev => {{
+          try {{
+            const evMs = new Date(ev.date).getTime();
+            if (evMs >= nowMs - (24 * 3600 * 1000)) {{
+              injectUserEventIntoDOM(ev);
+            }}
+          }} catch (_) {{}}
+        }});
+      }} catch (_) {{}}
+    }}
+
+    if (communityForm) {{
+      communityForm.addEventListener('submit', async (e) => {{
+        e.preventDefault();
+
+        const hp = communityForm.querySelector('input[name="_hp_company"]');
+        if (hp && hp.value) {{
+          closeSubmitModal();
+          return;
+        }}
+
+        const nameInput = document.getElementById('ev-title');
+        const venueInput = document.getElementById('ev-venue');
+        const dateInput = document.getElementById('ev-date');
+        const timeInput = document.getElementById('ev-time');
+        const citySelect = document.getElementById('ev-city');
+        const categorySelect = document.getElementById('ev-category');
+        const priceInput = document.getElementById('ev-price');
+        const urlInput = document.getElementById('ev-url');
+        const descInput = document.getElementById('ev-desc');
+
+        const name = (nameInput.value || '').trim();
+        const venue = (venueInput.value || '').trim();
+        const dateVal = (dateInput.value || '').trim();
+        const timeVal = (timeInput.value || '19:00').trim();
+        const city = citySelect ? citySelect.value : 'manhattan';
+        const category = categorySelect ? categorySelect.value : 'other';
+        const price = (priceInput.value || '').trim();
+        const url = (urlInput.value || '').trim();
+        const desc = (descInput.value || '').trim();
+
+        const addressInput = document.getElementById('ev-address');
+        const address = (addressInput ? addressInput.value : '').trim();
+
+        if (!name || name.length < 2) {{
+          showFormStatus('Please enter an event title (at least 2 characters).', 'error');
+          nameInput.focus();
+          return;
+        }}
+        if (!venue || venue.length < 2) {{
+          showFormStatus('Please enter a venue or location.', 'error');
+          venueInput.focus();
+          return;
+        }}
+        if (!dateVal) {{
+          showFormStatus('Please choose an event date.', 'error');
+          dateInput.focus();
+          return;
+        }}
+        if (!url || !url.startsWith('http')) {{
+          showFormStatus('Please enter a valid website link (starting with http:// or https://).', 'error');
+          urlInput.focus();
+          return;
+        }}
+
+        const isoDate = `${{dateVal}}T${{timeVal}}:00-04:00`;
+
+        const newEvent = {{
+          name: name,
+          venue: venue,
+          date: isoDate,
+          url: url,
+          category: category,
+          city: city,
+          address: address,
+          price: price || null,
+          description: desc,
+          _is_community: true,
+          submitted_at: new Date().toISOString(),
+        }};
+
+        if (btnSubmitAction) {{
+          btnSubmitAction.disabled = true;
+          const btnText = btnSubmitAction.querySelector('.btn-text');
+          const btnSpinner = btnSubmitAction.querySelector('.btn-spinner');
+          if (btnText) btnText.style.display = 'none';
+          if (btnSpinner) btnSpinner.style.display = 'inline';
+        }}
+
+        try {{
+          const stored = JSON.parse(localStorage.getItem('nyc_community_events') || '[]');
+          stored.push(newEvent);
+          localStorage.setItem('nyc_community_events', JSON.stringify(stored.slice(-20)));
+        }} catch (_) {{}}
+
+        injectUserEventIntoDOM(newEvent);
+        apply();
+
+        const submitEndpoint = window.EVENT_SUBMISSION_ENDPOINT || '';
+        if (submitEndpoint) {{
+          try {{
+            await fetch(submitEndpoint, {{
+              method: 'POST',
+              headers: {{ 'Content-Type': 'application/json' }},
+              body: JSON.stringify(newEvent),
+            }});
+          }} catch (err) {{
+            console.warn('Backend submission failed, kept locally:', err);
+          }}
+        }}
+
+        showFormStatus('🎉 Event successfully added! It is now live in your feed.', 'success');
+
+        setTimeout(() => {{
+          closeSubmitModal();
+          communityForm.reset();
+          if (btnSubmitAction) {{
+            btnSubmitAction.disabled = false;
+            const btnText = btnSubmitAction.querySelector('.btn-text');
+            const btnSpinner = btnSubmitAction.querySelector('.btn-spinner');
+            if (btnText) btnText.style.display = 'inline';
+            if (btnSpinner) btnSpinner.style.display = 'none';
+          }}
+        }}, 1400);
+      }});
+    }}
+
+    function showFormStatus(msg, type) {{
+      if (!formStatus) return;
+      formStatus.textContent = msg;
+      formStatus.className = `form-status ${{type}}`;
+      formStatus.style.display = 'block';
+    }}
+
+    function showVenueFormStatus(msg, type) {{
+      if (!formVenueStatus) return;
+      formVenueStatus.textContent = msg;
+      formVenueStatus.className = `form-status ${{type}}`;
+      formVenueStatus.style.display = 'block';
+    }}
+
+    if (suggestVenueForm) {{
+      suggestVenueForm.addEventListener('submit', async (e) => {{
+        e.preventDefault();
+
+        const hp = suggestVenueForm.querySelector('input[name="_hp_company"]');
+        if (hp && hp.value) {{
+          closeSubmitModal();
+          return;
+        }}
+
+        const nameInput = document.getElementById('vn-name');
+        const urlInput = document.getElementById('vn-url');
+        const citySelect = document.getElementById('vn-city');
+        const catSelect = document.getElementById('vn-category');
+        const addrInput = document.getElementById('vn-address');
+        const notesInput = document.getElementById('vn-notes');
+
+        const name = (nameInput.value || '').trim();
+        const url = (urlInput.value || '').trim();
+        const city = citySelect ? citySelect.value : 'manhattan';
+        const category = catSelect ? catSelect.value : 'music';
+        const address = (addrInput ? addrInput.value : '').trim();
+        const notes = (notesInput ? notesInput.value : '').trim();
+
+        if (!name || name.length < 2) {{
+          showVenueFormStatus('Please enter a venue or space name.', 'error');
+          nameInput.focus();
+          return;
+        }}
+        if (!url || !url.startsWith('http')) {{
+          showVenueFormStatus('Please enter a valid website link (starting with http:// or https://).', 'error');
+          urlInput.focus();
+          return;
+        }}
+
+        const newVenue = {{
+          type: 'suggest_venue',
+          name: name,
+          url: url,
+          city: city,
+          category: category,
+          address: address,
+          notes: notes,
+          submitted_at: new Date().toISOString(),
+        }};
+
+        if (btnSubmitVenue) {{
+          btnSubmitVenue.disabled = true;
+          const btnText = btnSubmitVenue.querySelector('.btn-text');
+          const btnSpinner = btnSubmitVenue.querySelector('.btn-spinner');
+          if (btnText) btnText.style.display = 'none';
+          if (btnSpinner) btnSpinner.style.display = 'inline';
+        }}
+
+        try {{
+          const stored = JSON.parse(localStorage.getItem('nyc_suggested_venues') || '[]');
+          stored.push(newVenue);
+          localStorage.setItem('nyc_suggested_venues', JSON.stringify(stored.slice(-20)));
+        }} catch (_) {{}}
+
+        const submitEndpoint = window.EVENT_SUBMISSION_ENDPOINT || '';
+        if (submitEndpoint) {{
+          try {{
+            await fetch(submitEndpoint, {{
+              method: 'POST',
+              headers: {{ 'Content-Type': 'application/json' }},
+              body: JSON.stringify(newVenue),
+            }});
+          }} catch (err) {{
+            console.warn('Backend venue submission failed, kept locally:', err);
+          }}
+        }}
+
+        showVenueFormStatus('🎉 Venue suggestion received! Thank you for helping NYC Events grow.', 'success');
+
+        setTimeout(() => {{
+          closeSubmitModal();
+          suggestVenueForm.reset();
+          if (btnSubmitVenue) {{
+            btnSubmitVenue.disabled = false;
+            const btnText = btnSubmitVenue.querySelector('.btn-text');
+            const btnSpinner = btnSubmitVenue.querySelector('.btn-spinner');
+            if (btnText) btnText.style.display = 'inline';
+            if (btnSpinner) btnSpinner.style.display = 'none';
+          }}
+        }}, 1600);
+      }});
+    }}
+
+    repositionPastBanner();
+    updateDayHeadings();
+    scheduleMidnightRefresh();
+    setInterval(checkDayRollover, 60000);
+
+    loadLocalCommunityEvents();
     hashToState();
     apply();
   </script>
