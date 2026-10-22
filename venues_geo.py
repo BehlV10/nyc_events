@@ -426,6 +426,9 @@ VENUE_COORDINATES: Dict[str, Tuple[float, float, str, str, str]] = {
     "citi field": (40.7571, -73.8458, "Flushing", "41 Seaver Way, Queens, NY", "Citi Field"),
     "noguchi museum": (40.7674, -73.9376, "Long Island City / Astoria", "9-01 33rd Rd, Queens, NY", "The Noguchi Museum"),
     "the noguchi museum": (40.7674, -73.9376, "Long Island City / Astoria", "9-01 33rd Rd, Queens, NY", "The Noguchi Museum"),
+    "queens night market": (40.7476, -73.8519, "Flushing Meadows", "47-01 111th St, Queens, NY", "Queens Night Market"),
+    "new york hall of science": (40.7476, -73.8519, "Flushing Meadows", "47-01 111th St, Queens, NY", "New York Hall of Science"),
+    "hall of science": (40.7476, -73.8519, "Flushing Meadows", "47-01 111th St, Queens, NY", "New York Hall of Science"),
 
     # === THE BRONX ===
     "yankee stadium": (40.8296, -73.9262, "South Bronx", "1 E 161st St, Bronx, NY", "Yankee Stadium"),
@@ -706,6 +709,8 @@ VENUE_RULES = [
     ("forest hills stadium", (40.7202, -73.8447, "Forest Hills", "1 Tennis Pl, Queens, NY", "Forest Hills Stadium")),
     ("citi field", (40.7571, -73.8458, "Flushing", "41 Seaver Way, Queens, NY", "Citi Field")),
     ("noguchi museum", (40.7674, -73.9376, "Long Island City / Astoria", "9-01 33rd Rd, Queens, NY", "The Noguchi Museum")),
+    ("queens night market", (40.7476, -73.8519, "Flushing Meadows", "47-01 111th St, Queens, NY", "Queens Night Market")),
+    ("hall of science", (40.7476, -73.8519, "Flushing Meadows", "47-01 111th St, Queens, NY", "New York Hall of Science")),
 
     # Bronx & Staten Island Rules
     ("yankee stadium", (40.8296, -73.9262, "South Bronx", "1 E 161st St, Bronx, NY", "Yankee Stadium")),

@@ -452,6 +452,99 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(ev["neighborhood"], "Upper West Side")
         self.assertEqual(ev["city"], "manhattan")
 
+    def test_donyc_direct_link_resolution(self):
+        """scrape_donyc should extract direct ticket URLs and venue websites rather than donyc.com links."""
+        from unittest.mock import patch
+        from scrapers import scrape_donyc
+        from bs4 import BeautifulSoup
+
+        sample_html = """
+        <html>
+        <head>
+            <span class="ds-detail-website ds-meta-item">
+                <a href="http://www.brooklynbowl.com">Official Website</a>
+            </span>
+        </head>
+        <body>
+            <div itemscope itemtype="http://schema.org/Event" itemprop="event" data-permalink="/events/2026/10/25/great-concert-tickets">
+                <span itemprop="name">Great Concert</span>
+                <meta itemprop="startDate" content="2026-10-25T20:00:00-0400" />
+                <div itemprop="location" itemscope itemtype="http://schema.org/Place">
+                    <span itemprop="name">Brooklyn Bowl</span>
+                </div>
+                <span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                    <meta itemprop="url" content="https://ticketmaster.evyy.net/c/253185/264167/4272?SharedId=DoStuff&u=https%3A%2F%2Fwww.ticketmaster.com%2Fgreat-concert%2Fevent%2F123" />
+                    <a class="ds-buy-tix" href="https://ticketmaster.evyy.net/c/253185/264167/4272?SharedId=DoStuff&u=https%3A%2F%2Fwww.ticketmaster.com%2Fgreat-concert%2Fevent%2F123">Buy</a>
+                </span>
+            </div>
+            <div itemscope itemtype="http://schema.org/Event" itemprop="event" data-permalink="/events/2026/10/26/free-jam-tickets">
+                <span itemprop="name">Free Jam Night</span>
+                <meta itemprop="startDate" content="2026-10-26T20:00:00-0400" />
+                <div itemprop="location" itemscope itemtype="http://schema.org/Place">
+                    <span itemprop="name">Brooklyn Bowl</span>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        with patch("scrapers.fetch_soup") as mock_soup:
+            mock_soup.return_value = BeautifulSoup(sample_html, "html.parser")
+            events = scrape_donyc("https://donyc.com/venues/brooklyn-bowl", "TestUA")
+
+        self.assertEqual(len(events), 2)
+        # Event 1: has direct ticket link unpacked from affiliate
+        self.assertEqual(events[0]["url"], "https://www.ticketmaster.com/great-concert/event/123")
+        self.assertEqual(events[0]["ticket_url"], "https://www.ticketmaster.com/great-concert/event/123")
+        self.assertNotIn("donyc.com", events[0]["url"])
+
+        # Event 2: has no ticket link, should use official venue website
+        self.assertEqual(events[1]["url"], "http://www.brooklynbowl.com")
+        self.assertNotIn("donyc.com", events[1]["url"])
+
+    def test_dedupe_prefers_direct_url_over_donyc(self):
+        """_merge_duplicates should replace a doNYC URL with a direct ticketing or venue URL."""
+        fut = (datetime.now(EASTERN) + timedelta(days=2)).replace(hour=20, minute=0, second=0, microsecond=0)
+        e_donyc = {
+            "name": "Live Concert at Brooklyn Bowl",
+            "date": fut.isoformat(),
+            "_time": fut,
+            "venue": "Brooklyn Bowl",
+            "_source_venue": "DoNYC Citywide",
+            "url": "https://donyc.com/events/2026/10/24/live-concert-tickets",
+        }
+        e_direct = {
+            "name": "Live Concert at Brooklyn Bowl",
+            "date": fut.isoformat(),
+            "_time": fut,
+            "venue": "Brooklyn Bowl",
+            "_source_venue": "Brooklyn Bowl",
+            "url": "https://www.ticketmaster.com/event/999",
+            "price": "$25",
+        }
+        merged = _merge_duplicates([e_donyc, e_direct])
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]["url"], "https://www.ticketmaster.com/event/999")
+        self.assertNotIn("donyc.com", merged[0]["url"])
+
+    def test_dedicated_scrapers(self):
+        """Test The Stone, Grand Bazaar, and Queens Night Market scrapers."""
+        from scrapers import scrape_queens_night_market
+        from unittest.mock import patch, MagicMock
+
+        # Queens Night Market
+        qnm_html = "<html><body>NEXT NIGHT MARKET: OCT 24 NEW YORK HALL OF SCIENCE FLUSHING MEADOWS CORONA PARK FROM 4 PM UNTIL 12 AM</body></html>"
+        with patch("scrapers._SESSION.get") as mock_get:
+            m = MagicMock()
+            m.status_code = 200
+            m.text = qnm_html
+            mock_get.return_value = m
+            q_evs = scrape_queens_night_market("https://queensnightmarket.com/", "TestUA")
+        self.assertGreaterEqual(len(q_evs), 1)
+        self.assertIn("Queens Night Market", q_evs[0]["name"])
+        self.assertEqual(q_evs[0]["price"], "Free")
+        self.assertEqual(q_evs[0]["category"], "food")
+
 
 if __name__ == "__main__":
     unittest.main()
+
