@@ -2856,6 +2856,49 @@ def scrape_warsaw(url, ua):
     return events
 
 
+def scrape_diwali_times_square(url, ua):
+    """Diwali at Times Square — Official flagship cultural festival scraper."""
+    events = []
+    target_url = url or "https://diwalitimessquare.com/"
+    now = datetime.now(timezone.utc)
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        text = soup.get_text()
+
+        m_date = re.search(r"Event Date\s*([A-Za-z]+ \d{1,2}, \d{4})", text)
+        if not m_date:
+            m_date = re.search(r"(?:returns|back on)\s*([A-Za-z]+ \d{1,2},? \d{4})", text, re.I)
+
+        if m_date:
+            raw_date = m_date.group(1).replace(",", "")
+            dt_date = datetime.strptime(raw_date, "%B %d %Y").date()
+            event_dt = datetime(dt_date.year, dt_date.month, dt_date.day, 13, 0, tzinfo=EASTERN).astimezone(timezone.utc)
+            if event_dt >= now - timedelta(days=1):
+                og_img = soup.find("meta", property="og:image")
+                img_url = og_img.get("content") if og_img else None
+
+                events.append({
+                    "name": f"Diwali at Times Square {dt_date.year} (Free Cultural Festival)",
+                    "date": event_dt.isoformat(),
+                    "url": target_url,
+                    "venue": "Times Square (46th-48th St)",
+                    "price": "Free",
+                    "category": "community",
+                    "image": img_url,
+                    "lat": 40.7589,
+                    "lng": -73.9851,
+                    "address": "Broadway between 46th & 48th St, Times Square, New York, NY",
+                    "neighborhood": "Times Square",
+                    "description": "The largest Diwali festival outside India featuring cultural performances, Diwali Bazaar, Kids Zone, live concerts, and the signature Diya lighting countdown on One Times Square.",
+                })
+    except Exception as e:
+        print(f"Error scraping Diwali at Times Square: {e}")
+    return events
+
+
 # --- Curated Recurring NYC Events ---
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
@@ -3343,6 +3386,7 @@ _ALL_VENUES = [
     {"name": "Superior Ingredients (Williamsburg)", "url": "https://donyc.com/venues/superior-ingredients", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
 
     # Free Street Fairs, Cultural Fests & Outdoor Celebrations
+    {"name": "Diwali at Times Square Festival", "url": "https://diwalitimessquare.com/", "ua": UA_CHROME, "scraper": scrape_diwali_times_square, "default_category": "community"},
     {"name": "NYC Free Festivals & Celebrations", "url": "https://www.eventbrite.com/d/ny--new-york/free--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Street Fairs & Block Parties", "url": "https://www.eventbrite.com/d/ny--new-york/free--street-fair/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Free Community Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/free--community--events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
