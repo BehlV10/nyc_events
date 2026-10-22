@@ -187,6 +187,8 @@ VENUE_COORDINATES: Dict[str, Tuple[float, float, str, str, str]] = {
     "governors island": (40.6908, -74.0169, "Governors Island", "Governors Island, New York, NY", "Governors Island"),
     "times square": (40.7580, -73.9855, "Times Square", "Times Square & Broadway, New York, NY", "Times Square"),
     "times square district": (40.7580, -73.9855, "Times Square", "Times Square & Broadway, New York, NY", "Times Square"),
+    "times square (46th-48th st)": (40.7589, -73.9851, "Times Square", "Broadway between 46th & 48th St, New York, NY", "Times Square (46th-48th St)"),
+    "diwali at times square": (40.7589, -73.9851, "Times Square", "Broadway between 46th & 48th St, New York, NY", "Times Square (46th-48th St)"),
     "downtown brooklyn partnership": (40.6932, -73.9855, "Downtown Brooklyn", "Fulton St & Flatbush Ave, Brooklyn, NY", "Downtown Brooklyn"),
     "meatpacking district": (40.7408, -74.0080, "Meatpacking District", "Gansevoort St & 9th Ave, New York, NY", "Meatpacking District"),
     "radio city": (40.7599, -73.9799, "Midtown", "1260 6th Ave, New York, NY", "Radio City Music Hall"),
@@ -715,6 +717,7 @@ VENUE_RULES = [
     ("st. george theatre", (40.6424, -74.0772, "St. George", "35 Hyatt St, Staten Island, NY", "St. George Theatre")),
     ("snug harbor", (40.6438, -74.1018, "Livingston", "1000 Richmond Terrace, Staten Island, NY", "Snug Harbor")),
     ("conference house", (40.5034, -74.2531, "Tottenville", "298 Satterlee St, Staten Island, NY", "Conference House Park")),
+    ("diwali at times square", (40.7589, -73.9851, "Times Square", "Broadway between 46th & 48th St, New York, NY", "Times Square (46th-48th St)")),
 ]
 
 # Coordinate bounding box for valid NYC Metro area events

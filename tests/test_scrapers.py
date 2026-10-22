@@ -266,7 +266,8 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(_clean_event_url("https://boweryballroom.com/events"), "")
 
         # 2. Cross-source duplicate merge
-        dt_8pm = datetime(2026, 10, 20, 20, 0, tzinfo=EASTERN).astimezone(timezone.utc).isoformat()
+        future_day = (datetime.now(EASTERN) + timedelta(days=5)).date()
+        dt_8pm = datetime(future_day.year, future_day.month, future_day.day, 20, 0, tzinfo=EASTERN).astimezone(timezone.utc).isoformat()
         sample_events = [
             {
                 "name": "The Strokes Live",
@@ -292,14 +293,14 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(merged[0]["_alt_sources"][0]["source"], "donyc")
 
         # 3. Eastern timezone check in group_by_date
-        # 20:00 EDT = 00:00 UTC (next day). When grouped by date, it must resolve to 20:00 EDT on 2026-10-20.
+        # 20:00 EDT = 00:00 UTC (next day). When grouped by date, it must resolve to 20:00 EDT on future_day.
         venue_res = [{
             "venue": "Bowery Ballroom",
             "url": "https://boweryballroom.com",
             "events": [{"name": "The Strokes", "date": dt_8pm, "venue": "Bowery Ballroom"}]
         }]
         dated, _, _ = group_by_date(venue_res)
-        target_date = datetime(2026, 10, 20).date()
+        target_date = future_day
         date_map = dict(dated)
         self.assertIn(target_date, date_map)
         item = date_map[target_date][0]
@@ -385,6 +386,37 @@ class TestNYCEvents(unittest.TestCase):
         self.assertIsNotNone(geo)
         self.assertEqual(geo["venue"], "S.O.B.'s")
         self.assertEqual(geo["neighborhood"], "SoHo / Hudson Sq")
+
+    def test_diwali_times_square_scraper(self):
+        """Test Diwali at Times Square scraper and geo resolution."""
+        from unittest.mock import patch, MagicMock
+        from scrapers import scrape_diwali_times_square
+
+        sample_html = """
+        <html><body>
+            <div>Event Location 46th-48th Street & Broadway, Times Square, New York City, NY</div>
+            <div>Event Date October 24, 2026</div>
+            <meta property="og:image" content="https://diwalitimessquare.com/og-photo-dats-2026.webp" />
+        </body></html>
+        """
+        with patch("scrapers._SESSION.get") as mock_get:
+            mock_resp = MagicMock()
+            mock_resp.status_code = 200
+            mock_resp.text = sample_html
+            mock_get.return_value = mock_resp
+
+            events = scrape_diwali_times_square("https://diwalitimessquare.com/", "TestUA")
+
+        self.assertEqual(len(events), 1)
+        ev = events[0]
+        self.assertIn("Diwali at Times Square", ev["name"])
+        self.assertEqual(ev["price"], "Free")
+        self.assertEqual(ev["category"], "community")
+        self.assertEqual(ev["venue"], "Times Square (46th-48th St)")
+
+        geo = resolve_event_geo(ev)
+        self.assertIsNotNone(geo)
+        self.assertEqual(geo["neighborhood"], "Times Square")
 
 
 if __name__ == "__main__":
