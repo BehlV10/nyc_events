@@ -10,7 +10,7 @@ import time
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
-from urllib.parse import parse_qs, quote, urljoin, urlparse
+from urllib.parse import parse_qs, quote, quote_plus, urlencode, urljoin, urlparse, urlunparse
 from zoneinfo import ZoneInfo
 import warnings
 
@@ -71,6 +71,17 @@ def _load_venue_cache(vname, max_age=None):
             age = time.time() - cached.get("ts", 0)
             if age > max_age:
                 return None
+        # Upgrade any legacy cached events that still point to donyc.com
+        for ev in cached.get("events", []):
+            u = ev.get("url") or ""
+            if "donyc.com" in u:
+                t = ev.get("ticket_url")
+                if t and "donyc.com" not in t:
+                    ev["url"] = t
+                else:
+                    v_str = ev.get("venue") or vname or ""
+                    q_str = f"{ev.get('name', '')} {v_str} NYC".strip()
+                    ev["url"] = f"https://www.google.com/search?q={quote_plus(q_str)}"
         return cached
     except Exception:
         return None
@@ -382,7 +393,9 @@ def fetch_luckyseat_nyc():
 # --- Scrapers ---
 
 def scrape_donyc(url, ua):
-    """DoNYC venue & category scraper — parses Schema.org microdata with Cloudflare error shielding."""
+    """DoNYC venue & category scraper — parses Schema.org microdata with Cloudflare error shielding.
+    Resolves direct ticket links and official venue websites to prevent linking through doNYC.
+    """
     try:
         soup = fetch_soup(url, ua)
     except Exception:
@@ -390,6 +403,15 @@ def scrape_donyc(url, ua):
     events = []
     now = datetime.now(timezone.utc)
     seen = set()
+
+    # Discover official venue website if available on venue landing page
+    venue_site = None
+    site_el = soup.select_one(".ds-detail-website a, [itemprop='sameAs']")
+    if site_el and site_el.get("href"):
+        cand_site = site_el["href"].strip()
+        if cand_site.startswith("http") and not any(d in cand_site for d in ["donyc.com", "doubleclick.net"]):
+            venue_site = cand_site
+
     for card in soup.select('[itemprop="event"]'):
         name_el = card.find(itemprop="name")
         date_el = card.find(itemprop="startDate")
@@ -409,13 +431,11 @@ def scrape_donyc(url, ua):
         if loc_el:
             vn = loc_el.find(itemprop="name")
             venue_name = vn.get_text(strip=True) if vn else None
-        permalink = card.get("data-permalink", "")
-        event_url = f"https://donyc.com{permalink}" if permalink else url
 
         # Extract direct ticketing/source link
         ticket_url = None
         offer_el = card.find(itemprop="offers")
-        tix_btn = card.select_one(".ds-buy-tix, a[class*='buy-tix']")
+        tix_btn = card.select_one(".ds-buy-tix, a[class*='buy-tix'], a[class*='ticket']")
         raw_tix = ""
         if offer_el:
             meta_url = offer_el.find("meta", itemprop="url")
@@ -428,12 +448,27 @@ def scrape_donyc(url, ua):
             try:
                 parsed = urlparse(raw_tix)
                 qs = parse_qs(parsed.query)
-                if "u" in qs and qs["u"] and qs["u"][0].startswith("http"):
-                    ticket_url = qs["u"][0]
-                elif raw_tix.startswith("http") and not any(d in raw_tix for d in ["donyc.com", "doubleclick.net"]):
-                    ticket_url = raw_tix
+                for dest_key in ("u", "url", "redirect", "dest", "target"):
+                    if dest_key in qs and qs[dest_key] and qs[dest_key][0].startswith("http"):
+                        raw_tix = qs[dest_key][0]
+                        parsed = urlparse(raw_tix)
+                        qs = parse_qs(parsed.query)
+                        break
+                clean_qs = {k: v for k, v in qs.items() if not k.startswith("utm_") and k not in ("cid", "pid", "SharedId")}
+                new_q = urlencode(clean_qs, doseq=True)
+                cleaned = urlunparse((parsed.scheme, parsed.netloc, parsed.path, parsed.params, new_q, parsed.fragment))
+                if cleaned.startswith("http") and not any(d in cleaned for d in ["donyc.com", "doubleclick.net"]):
+                    ticket_url = cleaned
             except Exception:
-                pass
+                if raw_tix.startswith("http") and not any(d in raw_tix for d in ["donyc.com", "doubleclick.net"]):
+                    ticket_url = raw_tix
+
+        # Direct reference priority: direct ticket link > venue official website > search link
+        primary_url = ticket_url or venue_site
+        if not primary_url:
+            v_label = venue_name or ""
+            q_str = f"{name} {v_label} NYC".strip()
+            primary_url = f"https://www.google.com/search?q={quote_plus(q_str)}"
 
         key = (name.lower(), dt.date().isoformat())
         if key in seen:
@@ -442,7 +477,7 @@ def scrape_donyc(url, ua):
         ev_dict = {
             "name": name,
             "date": dt.isoformat(),
-            "url": event_url,
+            "url": primary_url,
             "venue": venue_name,
             "price": None,
         }
@@ -2976,6 +3011,409 @@ def scrape_clearview_festivals(url, ua):
     return events
 
 
+def scrape_the_stone(url, ua):
+    """The Stone at The New School — Official experimental music calendar curated by John Zorn."""
+    events = []
+    target_url = url or "http://thestonenyc.com/calendar.php"
+    now = datetime.now(EASTERN)
+    current_year = now.year
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        header = soup.find("span", class_="header")
+        if header:
+            m_yr = re.search(r"(\d{4})", header.get_text())
+            if m_yr:
+                current_year = int(m_yr.group(1))
+
+        for d_el in soup.find_all("span", class_="date"):
+            txt = d_el.get_text(strip=True)
+            m = re.match(r"(\d{1,2})/(\d{1,2})", txt)
+            if not m:
+                continue
+            month, day = int(m.group(1)), int(m.group(2))
+            curr = d_el.next_sibling
+            title = None
+            time_str = "8:30 pm"
+            musicians = ""
+            while curr:
+                if getattr(curr, "name", None) == "span":
+                    cls = curr.get("class", [])
+                    if "date" in cls:
+                        break
+                    if "time" in cls:
+                        time_str = curr.get_text(strip=True)
+                    elif "calendarname" in cls:
+                        title = curr.get_text(strip=True)
+                    elif "text" in cls and not musicians:
+                        musicians = curr.get_text(strip=True)
+                curr = curr.next_sibling
+            if not title:
+                continue
+
+            hour, minute = 20, 30
+            tm = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", time_str, re.I)
+            if tm:
+                h = int(tm.group(1))
+                minute = int(tm.group(2) or 0)
+                ampm = tm.group(3).lower()
+                if ampm == "pm" and h != 12:
+                    h += 12
+                elif ampm == "am" and h == 12:
+                    h = 0
+                hour = h
+
+            try:
+                dt = datetime(current_year, month, day, hour, minute, tzinfo=EASTERN)
+            except Exception:
+                continue
+
+            name = f"{title} ({musicians[:40]})" if musicians else title
+            events.append({
+                "name": name,
+                "date": dt.isoformat(),
+                "url": target_url,
+                "venue": "The Stone (The New School)",
+                "price": "$20",
+                "category": "music",
+                "lat": 40.7355,
+                "lng": -73.9961,
+                "address": "55 W 13th St, New York, NY",
+                "neighborhood": "Greenwich Village",
+            })
+    except Exception as e:
+        print(f"Error scraping The Stone: {e}")
+    return events
+
+
+def scrape_grand_bazaar_nyc(url, ua):
+    """Grand Bazaar NYC — Official weekly curated artisanal and street market on Upper West Side."""
+    events = []
+    target_url = url or "https://grandbazaarnyc.org/"
+    now = datetime.now(EASTERN)
+    month_map = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6, "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12}
+    seen = set()
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for a in soup.find_all("a", href=re.compile(r"/events/")):
+            txt = a.get_text(" ", strip=True)
+            href = a["href"]
+            if not href.startswith("http"):
+                href = f"https://grandbazaarnyc.org{href}"
+            m = re.search(r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*(\d{1,2})\s*(.+)", txt, re.I)
+            if not m:
+                continue
+            mon_str, day_str, title = m.group(1), m.group(2), m.group(3).strip()
+            month = month_map.get(mon_str.lower()[:3])
+            if not month:
+                continue
+            day = int(day_str)
+            yr = now.year if month >= now.month else now.year + 1
+            try:
+                dt = datetime(yr, month, day, 10, 0, tzinfo=EASTERN)
+            except Exception:
+                continue
+            key = (title.lower(), dt.date().isoformat())
+            if key in seen:
+                continue
+            seen.add(key)
+            events.append({
+                "name": f"Grand Bazaar NYC: {title}",
+                "date": dt.isoformat(),
+                "url": href,
+                "venue": "Grand Bazaar NYC (Upper West Side)",
+                "price": "Free",
+                "category": "community",
+                "lat": 40.7806,
+                "lng": -73.9767,
+                "address": "100 W 77th St at Columbus Ave, New York, NY",
+                "neighborhood": "Upper West Side",
+            })
+    except Exception as e:
+        print(f"Error scraping Grand Bazaar NYC: {e}")
+    return events
+
+
+def scrape_queens_night_market(url, ua):
+    """Queens Night Market — Official open-air Saturday food and cultural market at Flushing Meadows Corona Park."""
+    events = []
+    target_url = url or "https://queensnightmarket.com/"
+    now = datetime.now(EASTERN)
+    month_map = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6, "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12}
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        txt = soup.get_text(" ", strip=True)
+        m = re.search(r"NEXT NIGHT MARKET:\s*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s*(\d{1,2})", txt, re.I)
+        if m:
+            mon = month_map.get(m.group(1).lower()[:3])
+            day = int(m.group(2))
+            yr = now.year
+            try:
+                dt = datetime(yr, mon, day, 16, 0, tzinfo=EASTERN)
+                if dt >= now - timedelta(hours=12):
+                    events.append({
+                        "name": "Queens Night Market (Flushing Meadows Corona Park)",
+                        "date": dt.isoformat(),
+                        "url": target_url,
+                        "venue": "New York Hall of Science (Flushing Meadows)",
+                        "price": "Free",
+                        "category": "food",
+                        "lat": 40.7476,
+                        "lng": -73.8519,
+                        "address": "47-01 111th St, Queens, NY",
+                        "neighborhood": "Flushing Meadows",
+                        "description": "NYC's flagship family-friendly outdoor night market featuring 100+ independent food vendors, cultural performances, and games.",
+                    })
+            except Exception:
+                pass
+    except Exception as e:
+        print(f"Error scraping Queens Night Market: {e}")
+    return events
+
+
+def scrape_bryant_park(url, ua):
+    """Bryant Park Events — Official calendar of activities, concerts, classes, and celebrations."""
+    events = []
+    target_url = url or "https://bryantpark.org/calendar"
+    now = datetime.now(EASTERN)
+    seen = set()
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for a in soup.find_all("a", href=re.compile(r"/calendar/event/[^/]+/\d{4}-\d{2}-\d{2}")):
+            href = a["href"]
+            name = a.get_text(strip=True)
+            if not name or len(name) < 3 or name in ("Learn More", "Details", "View"):
+                continue
+            m = re.search(r"(\d{4}-\d{2}-\d{2})", href)
+            if not m:
+                continue
+            date_str = m.group(1)
+            full_url = f"https://bryantpark.org{href}" if href.startswith("/") else href
+            key = (name.lower(), date_str)
+            if key in seen:
+                continue
+            seen.add(key)
+            try:
+                dt = datetime.fromisoformat(f"{date_str}T12:00:00").replace(tzinfo=EASTERN)
+                if dt.date() >= now.date():
+                    events.append({
+                        "name": f"Bryant Park: {name}",
+                        "date": dt.isoformat(),
+                        "url": full_url,
+                        "venue": "Bryant Park (Midtown Manhattan)",
+                        "price": "Free",
+                        "category": "outdoors",
+                        "lat": 40.7536,
+                        "lng": -73.9832,
+                        "address": "Bryant Park, New York, NY",
+                        "neighborhood": "Midtown",
+                    })
+            except Exception:
+                continue
+    except Exception as e:
+        print(f"Error scraping Bryant Park: {e}")
+    return events
+
+
+def scrape_symphony_space(url, ua):
+    """Symphony Space — Official Upper West Side theater, literature, and concert calendar."""
+    events = []
+    target_url = url or "https://www.symphonyspace.org/events"
+    month_map = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6, "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12}
+    seen = set()
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for a in soup.select("a[href*='/events/']"):
+            href = a.get("href", "")
+            txt = a.get_text(" ", strip=True)
+            if not href or href.endswith("/events") or "/calendar" in href:
+                continue
+            m = re.search(r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2}),?\s+(\d{4})(?:\s*\|\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm))?", txt, re.I)
+            if not m:
+                continue
+            mon = month_map.get(m.group(1).lower()[:3])
+            if not mon:
+                continue
+            day = int(m.group(2))
+            yr = int(m.group(3))
+            hour = 19
+            minute = 30
+            if m.group(4):
+                h = int(m.group(4))
+                minute = int(m.group(5) or 0)
+                ampm = (m.group(6) or "pm").lower()
+                if ampm == "pm" and h != 12:
+                    h += 12
+                elif ampm == "am" and h == 12:
+                    h = 0
+                hour = h
+
+            title = txt[:m.start()].strip()
+            title = re.sub(r"^Symphony Space\s*", "", title)
+            title = re.sub(r"^(Revelry|Broadway on Screen|Theater on Screen|Artists in Exile|Silent Clowns Film Series|Selected Shorts Pop-Up):\s*", "", title)
+            if not title:
+                continue
+
+            try:
+                dt = datetime(yr, mon, day, hour, minute, tzinfo=EASTERN)
+            except Exception:
+                continue
+
+            full_url = href if href.startswith("http") else f"https://www.symphonyspace.org{href}"
+            key = (title.lower(), dt.date().isoformat())
+            if key in seen:
+                continue
+            seen.add(key)
+            events.append({
+                "name": title,
+                "date": dt.isoformat(),
+                "url": full_url,
+                "venue": "Symphony Space (Upper West Side)",
+                "price": None,
+                "category": "theater",
+                "lat": 40.7946,
+                "lng": -73.9723,
+                "address": "2537 Broadway, New York, NY",
+                "neighborhood": "Upper West Side",
+            })
+    except Exception as e:
+        print(f"Error scraping Symphony Space: {e}")
+    return events
+
+
+def scrape_smalls_live(url, ua):
+    """Smalls Jazz Club & Mezzrow — Official West Village live jazz schedule from SmallsLIVE."""
+    events = []
+    target_url = url or "https://www.smallslive.com/"
+    now = datetime.now(EASTERN)
+    month_map = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6, "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12}
+    seen = set()
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for a in soup.find_all("a", href=re.compile(r"/events/\d+-")):
+            href = a["href"]
+            parent = a.find_parent("article") or a.find_parent("div", class_=lambda c: c and any(k in c.lower() for k in ["event", "schedule", "item"])) or a.parent
+            txt = parent.get_text(" | ", strip=True) if parent else a.get_text(" ", strip=True)
+            slug = re.sub(r"^/events/\d+-", "", href).rstrip("/").replace("-", " ").title()
+
+            m_date = re.search(r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2})", txt, re.I)
+            m_time = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(AM|PM)", txt, re.I)
+
+            if m_date:
+                mon = month_map.get(m_date.group(1).lower()[:3], now.month)
+                day = int(m_date.group(2))
+                yr = now.year
+            else:
+                mon = now.month
+                day = now.day
+                yr = now.year
+
+            hour, minute = 19, 30
+            if m_time:
+                h = int(m_time.group(1))
+                minute = int(m_time.group(2) or 0)
+                ampm = m_time.group(3).lower()
+                if ampm == "pm" and h != 12:
+                    h += 12
+                elif ampm == "am" and h == 12:
+                    h = 0
+                hour = h
+
+            try:
+                dt = datetime(yr, mon, day, hour, minute, tzinfo=EASTERN)
+            except Exception:
+                continue
+
+            full_url = f"https://www.smallslive.com{href}" if href.startswith("/") else href
+            key = (slug.lower(), dt.date().isoformat())
+            if key in seen:
+                continue
+            seen.add(key)
+            events.append({
+                "name": f"Smalls Jazz: {slug}",
+                "date": dt.isoformat(),
+                "url": full_url,
+                "venue": "Smalls Jazz Club (West Village)",
+                "price": "$25",
+                "category": "music",
+                "lat": 40.7344,
+                "lng": -74.0033,
+                "address": "183 W 10th St, New York, NY",
+                "neighborhood": "Greenwich Village",
+            })
+    except Exception as e:
+        print(f"Error scraping Smalls Live: {e}")
+    return events
+
+
+def scrape_film_forum(url, ua):
+    """Film Forum — Official Greenwich Village repertory cinema and filmmaker event schedule."""
+    events = []
+    target_url = url or "https://filmforum.org/films/now_playing"
+    now = datetime.now(EASTERN)
+    month_map = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6, "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12}
+    seen = set()
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for a in soup.find_all("a", href=re.compile(r"/events/event/[^/]+")):
+            href = a["href"]
+            txt = a.get_text(" ", strip=True)
+            if not txt or len(txt) < 3:
+                continue
+            m_slug = re.search(r"/events/event/(.+)-(january|february|march|april|may|june|july|august|september|october|november|december)-(\d{1,2})", href, re.I)
+            if m_slug:
+                slug_title = m_slug.group(1).replace("-", " ").title()
+                mon = month_map.get(m_slug.group(2).lower()[:3])
+                if not mon:
+                    continue
+                day = int(m_slug.group(3))
+                yr = now.year
+                try:
+                    dt = datetime(yr, mon, day, 19, 0, tzinfo=EASTERN)
+                except Exception:
+                    continue
+                title = txt.split("Post-film")[0].split("Introduced")[0].strip() or slug_title
+                key = (title.lower(), dt.date().isoformat())
+                if key in seen:
+                    continue
+                seen.add(key)
+                events.append({
+                    "name": f"Film Forum: {title}",
+                    "date": dt.isoformat(),
+                    "url": f"https://filmforum.org{href}" if href.startswith("/") else href,
+                    "venue": "Film Forum (Greenwich Village)",
+                    "price": "$17",
+                    "category": "film",
+                    "lat": 40.7283,
+                    "lng": -74.0039,
+                    "address": "209 W Houston St, New York, NY",
+                    "neighborhood": "Greenwich Village",
+                })
+    except Exception as e:
+        print(f"Error scraping Film Forum: {e}")
+    return events
+
+
 # --- Curated Recurring NYC Events ---
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
@@ -3265,14 +3703,14 @@ _ALL_VENUES = [
     {"name": "Cafe Wha? (Greenwich Village)", "url": "https://donyc.com/venues/cafe-wha", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Club Cumming (East Village)", "url": "https://donyc.com/venues/club-cumming", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Rough Trade NYC", "url": "https://donyc.com/venues/rough-trade-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Bryant Park NYC", "url": "https://donyc.com/venues/bryant-park", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "outdoors"},
+    {"name": "Bryant Park NYC", "url": "https://bryantpark.org/calendar", "ua": UA_CHROME, "scraper": scrape_bryant_park, "default_category": "outdoors"},
     {"name": "Bowery Palace", "url": "https://donyc.com/venues/bowery-palace", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Pianos NYC (Lower East Side)", "url": "https://donyc.com/venues/pianos", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Rooftop at Pier 17", "url": "https://donyc.com/venues/the-rooftop-at-pier-17", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Palladium Times Square", "url": "https://donyc.com/venues/palladium-times-square", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Sid Gold's Request Room", "url": "https://donyc.com/venues/sid-gold-s-request-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Marquee New York", "url": "https://donyc.com/venues/marquee-new-york", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
-    {"name": "The Stone", "url": "https://donyc.com/venues/the-stone", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "The Stone", "url": "http://thestonenyc.com/calendar.php", "ua": UA_CHROME, "scraper": scrape_the_stone, "default_category": "music"},
     {"name": "The Center (LGBTQ+ Community Center)", "url": "https://donyc.com/venues/the-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "community"},
     {"name": "Groove", "url": "https://donyc.com/venues/groove", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "SoHo Playhouse", "url": "https://donyc.com/venues/soho-playhouse-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
@@ -3293,7 +3731,7 @@ _ALL_VENUES = [
     {"name": "Chamber Music Society of Lincoln Center", "url": "https://donyc.com/venues/chamber-music-society-of-lincoln-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "New York City Ballet", "url": "https://donyc.com/venues/new-york-city-ballet", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "dance"},
     {"name": "Lincoln Center Theater", "url": "https://donyc.com/venues/lincoln-center-theater", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
-    {"name": "Grand Bazaar NYC", "url": "https://donyc.com/venues/grand-bazaar-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "community"},
+    {"name": "Grand Bazaar NYC", "url": "https://grandbazaarnyc.org/", "ua": UA_CHROME, "scraper": scrape_grand_bazaar_nyc, "default_category": "community"},
     {"name": "New York Comedy Club Upper West Side", "url": "https://donyc.com/venues/new-york-comedy-club-upper-west-side", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Comic Strip Live NYC", "url": "https://donyc.com/venues/comic-strip-live-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Miller Theatre", "url": "https://donyc.com/venues/miller-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -3322,7 +3760,7 @@ _ALL_VENUES = [
     {"name": "NYC Trivia League", "url": "https://nyctrivialeague.com/jm-ajax/get_listings/", "ua": UA_CHROME, "scraper": scrape_nyc_trivia_league, "default_category": "gaming"},
 
     # Indie Cinemas, Micro-Theaters & Film Programs
-    {"name": "Film Forum", "url": "https://donyc.com/venues/film-forum", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
+    {"name": "Film Forum", "url": "https://filmforum.org/films/now_playing", "ua": UA_CHROME, "scraper": scrape_film_forum, "default_category": "film"},
     {"name": "Nitehawk Cinema", "url": "https://donyc.com/venues/nitehawk-cinema", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
     {"name": "IFC Center", "url": "https://donyc.com/venues/ifc-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
     {"name": "Film at Lincoln Center", "url": "https://donyc.com/venues/film-at-lincoln-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
@@ -3330,7 +3768,7 @@ _ALL_VENUES = [
     {"name": "Metrograph NYC Screenings", "url": "https://www.eventbrite.com/d/ny--new-york/metrograph/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
     {"name": "Rooftop Films & Outdoor Cinema", "url": "https://www.eventbrite.com/d/ny--new-york/rooftop-films/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
     {"name": "Union Hall Brooklyn", "url": "https://www.eventbrite.com/api/v3/organizers/17899496497/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
-    {"name": "Smalls Jazz Club", "url": "https://donyc.com/venues/smalls-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Smalls Jazz Club", "url": "https://www.smallslive.com/", "ua": UA_CHROME, "scraper": scrape_smalls_live, "default_category": "music"},
 
     # Legendary Greenwich Village & Lower East Side Music Halls
     {"name": "Joe's Pub (The Public Theater)", "url": "https://donyc.com/venues/joes-pub", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -3339,7 +3777,7 @@ _ALL_VENUES = [
     {"name": "Nublu 151 (Alphabet City)", "url": "https://donyc.com/venues/nublu-151", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Drom NYC (East Village Global Music)", "url": "https://donyc.com/venues/drom", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Terra Blues (Bleecker St)", "url": "https://donyc.com/venues/terra-blues", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Symphony Space (Upper West Side)", "url": "https://donyc.com/venues/symphony-space", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
+    {"name": "Symphony Space (Upper West Side)", "url": "https://www.symphonyspace.org/events", "ua": UA_CHROME, "scraper": scrape_symphony_space, "default_category": "theater"},
 
     # Comedy Clubs & Queens Performance Spaces
     {"name": "The Stand NYC", "url": "https://thestandnyc.com/shows", "ua": UA_CHROME, "scraper": scrape_the_stand_nyc, "default_category": "comedy"},
@@ -3481,6 +3919,14 @@ _ALL_VENUES = [
     {"name": "Queens Free Festivals & Markets", "url": "https://www.eventbrite.com/d/ny--queens/free--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "Bronx Cultural & Community Events", "url": "https://www.eventbrite.com/d/ny--bronx/free--events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Night Markets & Bazaars", "url": "https://www.eventbrite.com/d/ny--new-york/night-market/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
+    {"name": "Queens Night Market", "url": "https://queensnightmarket.com/", "ua": UA_CHROME, "scraper": scrape_queens_night_market, "default_category": "food"},
+    {"name": "NYC Street Fairs & Avenue Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/street-fair/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Neighborhood Block Parties", "url": "https://www.eventbrite.com/d/ny--new-york/block-party/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Public Parties & Nightlife", "url": "https://www.eventbrite.com/d/ny--new-york/parties/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "party"},
+    {"name": "NYC Halloween Celebrations & Parades", "url": "https://www.eventbrite.com/d/ny--new-york/halloween-parties/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "party"},
+    {"name": "NYC Food & Wine Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/food-festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
+    {"name": "NYC Art Festivals & Open Studios", "url": "https://www.eventbrite.com/d/ny--new-york/art-festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "art"},
+    {"name": "NYC Indie Craft Fairs & Pop-up Markets", "url": "https://www.eventbrite.com/d/ny--new-york/craft-fair/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
 
     # Area BIDs, Public Conservancies & Government Feeds
     {"name": "Lincoln Square BID (Columbus Circle)", "url": "https://www.lincolnsquarebid.org/events", "ua": UA_CHROME, "scraper": scrape_lincoln_square_bid, "default_category": "art"},

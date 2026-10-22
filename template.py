@@ -1103,10 +1103,14 @@ def _merge_duplicates(events):
                 if not any(a.get("url") == cand_t_url for a in match["_alt_sources"]):
                     match["_alt_sources"].append({"venue": t_label, "source": t_label, "url": cand_t_url, "price": e.get("price")})
 
-            # Upgrade primary source if newly arrived event has higher priority
+            # Upgrade primary source if newly arrived event has direct URL over doNYC aggregator, or has higher priority
+            cur_url = (match.get("url") or "").lower()
+            new_url = (e.get("url") or "").lower()
+            is_cur_donyc = "donyc.com" in cur_url
+            is_new_donyc = "donyc.com" in new_url
             cur_prio = _source_priority(match.get("_source_venue") or match.get("source"))
             new_prio = _source_priority(e.get("_source_venue") or e.get("source"))
-            if new_prio > cur_prio:
+            if (is_cur_donyc and not is_new_donyc and new_url) or (not is_cur_donyc and not is_new_donyc and new_prio > cur_prio):
                 old_url = match.get("url")
                 old_src = match.get("_source_venue") or match.get("source")
                 if old_url and not any(a.get("url") == old_url for a in match["_alt_sources"]):
