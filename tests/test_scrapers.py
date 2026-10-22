@@ -418,6 +418,40 @@ class TestNYCEvents(unittest.TestCase):
         self.assertIsNotNone(geo)
         self.assertEqual(geo["neighborhood"], "Times Square")
 
+    def test_clearview_festivals_scraper(self):
+        """Test Clearview street fairs scraper parsing and location resolution."""
+        from unittest.mock import patch, MagicMock
+        from scrapers import scrape_clearview_festivals
+
+        sample_html = """
+        <table>
+            <tr>
+                <td><span class="sponsor">10/25/2026 Upper Broadway Harvest Fair</span></td>
+            </tr>
+            <tr>
+                <td class="uctest">Broadway (W)</td>
+            </tr>
+            <tr>
+                <td class="uctest">96th St - 106th St</td>
+            </tr>
+        </table>
+        """
+        with patch("scrapers._SESSION.get") as mock_get:
+            mock_resp = MagicMock()
+            mock_resp.status_code = 200
+            mock_resp.text = sample_html
+            mock_get.return_value = mock_resp
+
+            events = scrape_clearview_festivals("https://vendors.clearviewfestival.com", "TestUA")
+
+        self.assertEqual(len(events), 1)
+        ev = events[0]
+        self.assertIn("Upper Broadway Harvest Fair", ev["name"])
+        self.assertEqual(ev["price"], "Free")
+        self.assertEqual(ev["category"], "community")
+        self.assertEqual(ev["neighborhood"], "Upper West Side")
+        self.assertEqual(ev["city"], "manhattan")
+
 
 if __name__ == "__main__":
     unittest.main()
