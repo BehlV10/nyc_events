@@ -2899,6 +2899,83 @@ def scrape_diwali_times_square(url, ua):
     return events
 
 
+def scrape_clearview_festivals(url, ua):
+    """Clearview Festival Productions — Official NYC weekend street fairs and avenue festivals."""
+    events = []
+    target_url = url or "https://vendors.clearviewfestival.com"
+    now = datetime.now(timezone.utc)
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        sponsors = soup.select("span.sponsor")
+        for sp in sponsors:
+            text = sp.get_text(strip=True)
+            m = re.match(r"(\d{1,2}/\d{1,2}/\d{4})\s+(.+)", text)
+            if not m:
+                continue
+            d_str, name = m.group(1), m.group(2).strip()
+            # Skip non-NYC suburban events if any (e.g. Islip Long Island)
+            if any(suburb in name.lower() for suburb in ("islip", "huntington", "smithtown", "oyster bay", "patchogue")):
+                continue
+
+            tr = sp.find_parent("tr")
+            venue_parts = []
+            if tr:
+                cur = tr.find_next_sibling("tr")
+                for _ in range(2):
+                    if cur:
+                        td = cur.find("td", class_="uctest")
+                        if td:
+                            venue_parts.append(td.get_text(" ", strip=True))
+                        cur = cur.find_next_sibling("tr")
+            street = venue_parts[0] if len(venue_parts) > 0 else ""
+            cross = venue_parts[1] if len(venue_parts) > 1 else ""
+            loc_str = f"{street} ({cross})".strip(" ()") or "NYC Street Fair"
+
+            dt_date = datetime.strptime(d_str, "%m/%d/%Y").date()
+            # NYC street fairs run ~10:00 AM - 6:00 PM Eastern
+            event_dt = datetime(dt_date.year, dt_date.month, dt_date.day, 10, 0, tzinfo=EASTERN).astimezone(timezone.utc)
+            if event_dt < now - timedelta(days=1):
+                continue
+
+            lat, lng, neigh, borough = None, None, "", "other"
+            low_loc = f"{name} {street} {cross}".lower()
+            if "broadway" in low_loc and ("96" in low_loc or "106" in low_loc):
+                lat, lng, neigh, borough = 40.7975, -73.9698, "Upper West Side", "manhattan"
+            elif "broadway" in low_loc and ("110" in low_loc or "116" in low_loc):
+                lat, lng, neigh, borough = 40.8068, -73.9645, "Morningside Heights", "manhattan"
+            elif "jerome" in low_loc or "mosholu" in low_loc:
+                lat, lng, neigh, borough = 40.8795, -73.8845, "Bedford Park / Norwood", "bronx"
+            elif "rego park" in low_loc or "63rd dr" in low_loc:
+                lat, lng, neigh, borough = 40.7295, -73.8615, "Rego Park", "queens"
+            elif "8th ave" in low_loc or "eighth ave" in low_loc:
+                lat, lng, neigh, borough = 40.7455, -73.9985, "Chelsea", "manhattan"
+            elif "3rd ave" in low_loc or "third ave" in low_loc:
+                lat, lng, neigh, borough = 40.7685, -73.9595, "Upper East Side", "manhattan"
+            elif "columbus" in low_loc:
+                lat, lng, neigh, borough = 40.7815, -73.9775, "Upper West Side", "manhattan"
+
+            events.append({
+                "name": f"{name} (NYC Street Fair)",
+                "date": event_dt.isoformat(),
+                "url": "https://www.clearviewfestival.com",
+                "venue": f"{name} ({street})",
+                "price": "Free",
+                "category": "community",
+                "lat": lat,
+                "lng": lng,
+                "address": loc_str,
+                "neighborhood": neigh,
+                "city": borough,
+                "description": f"Outdoor NYC street fair on {street} between {cross}. Free and open to the public featuring local food, merchandise, artisans, and family activities.",
+            })
+    except Exception as e:
+        print(f"Error scraping Clearview festivals: {e}")
+    return events
+
+
 # --- Curated Recurring NYC Events ---
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
@@ -3387,6 +3464,14 @@ _ALL_VENUES = [
 
     # Free Street Fairs, Cultural Fests & Outdoor Celebrations
     {"name": "Diwali at Times Square Festival", "url": "https://diwalitimessquare.com/", "ua": UA_CHROME, "scraper": scrape_diwali_times_square, "default_category": "community"},
+    {"name": "Clearview Festival Productions (NYC Street Fairs)", "url": "https://vendors.clearviewfestival.com", "ua": UA_CHROME, "scraper": scrape_clearview_festivals, "default_category": "community"},
+    {"name": "Diwali & South Asian Cultural Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/diwali/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Holi & Spring Heritage Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/holi/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Lunar New Year & Asian Heritage Fests", "url": "https://www.eventbrite.com/d/ny--new-york/lunar-new-year/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "NYC Parades & Processions", "url": "https://www.eventbrite.com/d/ny--new-york/parade/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Latin & Caribbean Cultural Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/latin-festival/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Asia Society NYC Cultural Events", "url": "https://www.eventbrite.com/d/ny--new-york/asia-society/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "art"},
+    {"name": "Japan Society NYC Cultural Programs", "url": "https://www.eventbrite.com/d/ny--new-york/japan-society/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "art"},
     {"name": "NYC Free Festivals & Celebrations", "url": "https://www.eventbrite.com/d/ny--new-york/free--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Street Fairs & Block Parties", "url": "https://www.eventbrite.com/d/ny--new-york/free--street-fair/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Free Community Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/free--community--events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
