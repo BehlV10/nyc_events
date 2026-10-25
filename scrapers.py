@@ -48,7 +48,7 @@ def _is_within_horizon(e, max_days=HORIZON_DAYS):
 
 def _get_venue_ttl(vname):
     low = vname.lower()
-    if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc", "the skint", "secret nyc", "greenpointers", "flop house", "sesh comedy"]):
+    if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc", "the skint", "secret nyc", "greenpointers", "flop house", "sesh comedy", "luma"]):
         return FAST_VENUE_TTL
     if any(k in low for k in ["parks", "trivia", "library", "flea", "greenmarket"]):
         return SLOW_VENUE_TTL
@@ -196,7 +196,7 @@ CATEGORY_KEYWORDS = [
     ("outdoors",  [r"\b(hike|walking tour|nature walk|birding|trail|kayak|park tour|outdoor)\b"]),
     ("sports",    [r"\b(yankees|mets|knicks|nets|rangers|islanders|soccer|5k|10k|marathon|hockey|basketball)\b"]),
     ("gaming",    [r"\b(board games?|trivia|arcade|esports|chess|magic the gathering|d&d|tabletop|video game|smash bros|gaming tournament|smash ultimate|melee|lan)\b"]),
-    ("community", [r"\b(talk|lecture|panel|discussion|networking|farmers market|flea market|artisan market|expo|festival|parade|sample sale|fashion|symposium|speed-dating|skip the small talk)\b"]),
+    ("community", [r"\b(talk|lecture|panel|discussion|networking|farmers market|flea market|artisan market|expo|festival|parade|sample sale|fashion|symposium|speed-dating|skip the small talk|tech|ai|hackathon|startup|pitch|coworking|founder|mixer)\b"]),
 ]
 
 CATEGORY_BUCKETS = [
@@ -2573,6 +2573,125 @@ def scrape_meetup(url, ua):
     return events
 
 
+def scrape_luma(url, ua):
+    """Scrape curated NYC tech, AI, startup, and community events from Luma."""
+    api_url = "https://api.lu.ma/discover/get-paginated-events?discover_place_api_id=discplace-Izx1rQVSh8njYpP"
+    headers = {
+        "User-Agent": ua,
+        "Accept": "application/json",
+    }
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    cursor = None
+
+    for _ in range(5):
+        req_url = api_url
+        if cursor:
+            req_url += f"&pagination_cursor={cursor}"
+        try:
+            resp = _SESSION.get(req_url, headers=headers, timeout=15)
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception:
+            break
+
+        entries = data.get("entries") or []
+        for entry in entries:
+            ev = entry.get("event") or {}
+            name = (ev.get("name") or "").strip()
+            if not name or is_placeholder_or_closed_event(name):
+                continue
+
+            start_at = ev.get("start_at")
+            if not start_at:
+                continue
+            try:
+                dt = datetime.fromisoformat(start_at.replace("Z", "+00:00"))
+                if dt.astimezone(timezone.utc) < now:
+                    continue
+                iso_date = dt.astimezone(timezone.utc).isoformat()
+            except Exception:
+                continue
+
+            slug = ev.get("url") or ""
+            link = slug if slug.startswith("http") else f"https://lu.ma/{slug}"
+
+            key = (name.lower(), iso_date[:10])
+            if key in seen:
+                continue
+            seen.add(key)
+
+            geo = ev.get("geo_address_info") or {}
+            cal = entry.get("calendar") or {}
+
+            if geo.get("mode") == "shown" and (geo.get("address") or geo.get("short_address")):
+                addr = geo.get("address") or geo.get("short_address")
+                city = geo.get("city") or "New York"
+                venue = addr if city.lower() in addr.lower() else f"{addr}, {city}"
+            elif geo.get("sublocality") or geo.get("city"):
+                subloc = geo.get("sublocality") or geo.get("city")
+                venue = f"{subloc} (RSVP for address)"
+            elif cal.get("name") and cal.get("name").lower() != "personal":
+                venue = cal.get("name")
+            else:
+                venue = "New York"
+
+            coord = ev.get("coordinate") or geo.get("place_coordinate") or {}
+            lat = coord.get("latitude")
+            lng = coord.get("longitude")
+            address = geo.get("full_address") or geo.get("address") or ""
+            neighborhood = geo.get("sublocality") or ""
+
+            t_info = entry.get("ticket_info") or {}
+            price = None
+            if t_info.get("is_free"):
+                price = "Free"
+            elif t_info.get("price"):
+                cents = t_info["price"].get("cents")
+                if cents == 0:
+                    price = "Free"
+                elif cents is not None:
+                    price = f"${cents / 100:.2f}".rstrip("0").rstrip(".")
+
+            hosts = [h.get("name") for h in (entry.get("hosts") or []) if h.get("name")]
+            cal_desc = cal.get("description_short")
+            desc_parts = []
+            if hosts:
+                h_str = ", ".join(hosts[:3])
+                desc_parts.append(f"Hosted by {h_str}")
+            if cal_desc:
+                desc_parts.append(cal_desc)
+            desc = " • ".join(desc_parts)[:250] if desc_parts else None
+
+            cat = guess_category(name, default="community", venue=venue)
+
+            ev_dict = {
+                "name": name,
+                "date": iso_date,
+                "url": link,
+                "venue": venue,
+                "price": price,
+                "category": cat,
+                "description": desc,
+            }
+            if lat is not None and lng is not None:
+                ev_dict["lat"] = lat
+                ev_dict["lng"] = lng
+            if address:
+                ev_dict["address"] = address
+            if neighborhood:
+                ev_dict["neighborhood"] = neighborhood
+
+            events.append(ev_dict)
+
+        if not data.get("has_more") or not data.get("next_cursor"):
+            break
+        cursor = data.get("next_cursor")
+
+    return events
+
+
 def scrape_thisweekinswingnyc(url, ua):
     """This Week in Swing NYC — comprehensive weekly calendar of Lindy Hop, Swing, Balboa & Blues dances."""
     events = []
@@ -4176,6 +4295,7 @@ _ALL_VENUES = [
     {"name": "Meetup: Tabletop & RPG Games", "url": "https://www.meetup.com/find/?keywords=tabletop%20games&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
     {"name": "Meetup: NYC Bar Trivia Nights", "url": "https://www.meetup.com/find/?keywords=trivia&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
     {"name": "Meetup: NYC Tech, AI & Developer Meetups", "url": "https://www.meetup.com/find/?keywords=tech&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Luma NYC", "url": "https://lu.ma/nyc", "ua": UA_CHROME, "scraper": scrape_luma, "default_category": "community"},
     {"name": "Meetup: NYC Language Exchange & Polyglot Socials", "url": "https://www.meetup.com/find/?keywords=language%20exchange&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
 
     # Nightlife, Immersive Spectacle & Theatrical Circus

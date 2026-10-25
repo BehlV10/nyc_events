@@ -934,6 +934,8 @@ def _url_priority(url, source=None):
         return 3
     if "eventbrite.com" in u or "eventbrite" in s:
         return 5
+    if "lu.ma" in u or "luma" in s:
+        return 7
     if any(k in u for k in ("ticketmaster.com", "livenation.com", "ticketweb.com", "universe.com")) or "ticketmaster" in s:
         return 8
     return 10
@@ -956,6 +958,8 @@ def _source_display_label(src, url=None):
         return "SeatGeek"
     if "eventbrite" in s_low:
         return "Eventbrite"
+    if "luma" in s_low or "lu.ma" in s_low:
+        return "Luma"
     if "donyc" in s_low:
         return "doNYC"
     return s or "Tickets"
@@ -994,6 +998,8 @@ def _ticket_source_name(url):
         return "SeeTickets"
     if "eventbrite.com" in low:
         return "Eventbrite"
+    if "lu.ma" in low or "luma" in low:
+        return "Luma"
     if "ticketweb.com" in low:
         return "Ticketweb"
     if "axs.com" in low:
