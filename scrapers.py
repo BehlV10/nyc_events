@@ -3575,10 +3575,268 @@ MANUAL_RECURRING_EVENTS = [
         ("Analog Synth & Underground DJ Night", "https://www.jupiterdisco.com/", 5, 20, 0, "No Cover"),
         ("Analog Synth & Underground DJ Night", "https://www.jupiterdisco.com/", 6, 20, 0, "No Cover"),
     ]),
+
+    # === NEIGHBORHOOD RUN CLUBS & SOCIAL WALKS ===
+    ("North Brooklyn Runners", "https://northbrooklynrunners.org/", "sports", [
+        ("NBR McCarren Park Track Tuesday Workout", "https://northbrooklynrunners.org/schedule/", 1, 19, 0, "Free"),
+        ("NBR Williamsburg Bridge Run & Social", "https://northbrooklynrunners.org/schedule/", 3, 19, 0, "Free"),
+        ("NBR Saturday Morning Long Run @ McCarren", "https://northbrooklynrunners.org/schedule/", 5, 8, 30, "Free"),
+    ]),
+    ("Midnight Runners NYC", "https://www.midnightrunners.com/cities/new-york", "sports", [
+        ("Midnight Runners 10K Music Run & Social (Tuesday Night)", "https://www.midnightrunners.com/cities/new-york", 1, 19, 0, "Free"),
+    ]),
+    ("City Girls Who Walk NYC", "https://www.instagram.com/citygirlswhowalk/", "outdoors", [
+        ("City Girls Who Walk Sunday Central Park Social Walk", "https://www.instagram.com/citygirlswhowalk/", 6, 12, 0, "Free"),
+    ]),
+    ("Queens Distance Runners", "https://qdrunners.org/", "sports", [
+        ("QDR Track Tuesday @ Astoria Park Track", "https://qdrunners.org/", 1, 19, 0, "Free"),
+        ("QDR Saturday Morning Queens Social Run", "https://qdrunners.org/", 5, 8, 0, "Free"),
+    ]),
+    ("Crown Heights Run Club", "https://www.instagram.com/crownheightsrunclub/", "sports", [
+        ("Crown Heights Tuesday Prospect Park Loop Run", "https://www.instagram.com/crownheightsrunclub/", 1, 18, 30, "Free"),
+        ("Crown Heights Saturday Morning Community Run", "https://www.instagram.com/crownheightsrunclub/", 5, 9, 0, "Free"),
+    ]),
+    ("Chinatown Runners", "https://www.instagram.com/chinatownrunners/", "sports", [
+        ("Chinatown Runners Thursday Evening Social Run", "https://www.instagram.com/chinatownrunners/", 3, 18, 30, "Free"),
+    ]),
+
+    # === INDEPENDENT BOOKSHOP BOOK CLUBS & READING CIRCLES ===
+    ("The Strand Book Store", "https://www.strandbooks.com/events", "books", [
+        ("Strand Fiction & Non-Fiction Book Club", "https://www.strandbooks.com/events", 2, 19, 0, "Free RSVP"),
+    ]),
+    ("Books Are Magic", "https://www.booksaremagic.net/events", "books", [
+        ("Books Are Magic Monthly Book Club (Cobble Hill)", "https://www.booksaremagic.net/events", 2, 19, 0, "Free RSVP"),
+        ("Speculative Fiction Book Club (Montague)", "https://www.booksaremagic.net/events", 3, 19, 0, "Free RSVP"),
+    ]),
+    ("Greenlight Bookstore", "https://www.greenlightbookstore.com/events", "books", [
+        ("Greenlight Fiction Book Club (Fort Greene)", "https://www.greenlightbookstore.com/events", 1, 19, 30, "Free"),
+        ("Greenlight Non-Fiction Book Club (Fort Greene)", "https://www.greenlightbookstore.com/events", 3, 19, 30, "Free"),
+    ]),
+    ("The Astoria Bookshop", "https://astoriabookshop.com/events", "books", [
+        ("Astoria Bookshop General Fiction Book Club", "https://astoriabookshop.com/events", 1, 19, 0, "Free"),
+        ("Astoria Bookshop Feminist Book Club", "https://astoriabookshop.com/events", 3, 19, 0, "Free"),
+    ]),
+    ("Community Bookstore", "https://www.communitybookstore.net/events", "books", [
+        ("Park Slope Community Book Club", "https://www.communitybookstore.net/events", 1, 19, 30, "Free"),
+    ]),
+    ("Yu & Me Books", "https://www.yuandmebooks.com/events", "books", [
+        ("Yu & Me Community Book Club & Discussion", "https://www.yuandmebooks.com/events", 2, 18, 30, "Free RSVP"),
+    ]),
+    ("Bluestockings Cooperative", "https://bluestockings.com/events/", "books", [
+        ("Bluestockings Queer & Feminist Reading Group", "https://bluestockings.com/events/", 3, 19, 0, "Free / Donation"),
+    ]),
+
+    # === BOARD GAME CLUBS, D&D & CHESS ===
+    ("Hex & Company", "https://www.hexnyc.com/", "gaming", [
+        ("Monday Night Open Board Game Social @ Hex & Co", "https://www.hexnyc.com/", 0, 18, 30, "$10 Game Pass"),
+        ("D&D Adventurers League Night", "https://www.hexnyc.com/", 2, 18, 30, "$15"),
+        ("Open Tabletop & RPG Social Night", "https://www.hexnyc.com/", 3, 18, 30, "$10"),
+    ]),
+    ("The Uncommons", "https://uncommonsnyc.com/", "gaming", [
+        ("Casual Open Board Games & Social Night", "https://uncommonsnyc.com/", 1, 18, 0, "$10"),
+        ("Magic: The Gathering Commander Night", "https://uncommonsnyc.com/", 3, 18, 30, "$10"),
+    ]),
+    ("The Brooklyn Strategist", "https://www.thebrooklynstrategist.com/", "gaming", [
+        ("Adult Board Game Social Night", "https://www.thebrooklynstrategist.com/", 2, 19, 0, "$10"),
+        ("Dungeons & Dragons Campaign Night", "https://www.thebrooklynstrategist.com/", 3, 19, 0, "$15"),
+        ("Brooklyn Chess Club Open Play", "https://www.thebrooklynstrategist.com/", 4, 18, 30, "$10"),
+    ]),
+    ("Sip & Play", "https://www.sipnplaynyc.com/", "gaming", [
+        ("Boba & Board Games Social Mixer", "https://www.sipnplaynyc.com/", 2, 18, 30, "$10"),
+        ("D&D One-Shot Adventures @ Sip & Play", "https://www.sipnplaynyc.com/", 3, 19, 0, "$15"),
+    ]),
+    ("Washington Square Park", "https://www.nycgovparks.org/parks/washington-square-park", "gaming", [
+        ("Washington Square Park Speed Chess & Casual Open Play", "https://www.nycgovparks.org/parks/washington-square-park", 5, 12, 0, "Free"),
+        ("Washington Square Park Speed Chess & Casual Open Play", "https://www.nycgovparks.org/parks/washington-square-park", 6, 12, 0, "Free"),
+    ]),
+    ("Bryant Park", "https://bryantpark.org/activities/games", "gaming", [
+        ("Bryant Park Outdoor Board Games & Ping Pong", "https://bryantpark.org/activities/games", 1, 12, 0, "Free"),
+        ("Bryant Park Outdoor Board Games & Ping Pong", "https://bryantpark.org/activities/games", 3, 12, 0, "Free"),
+        ("Bryant Park Outdoor Board Games & Ping Pong", "https://bryantpark.org/activities/games", 5, 12, 0, "Free"),
+    ]),
+
+    # === NYC PUB TRIVIA NIGHTS ===
+    ("Pete's Candy Store", "https://www.petescandystore.com/", "gaming", [
+        ("Pete's Quizzical Trivia Night (Williamsburg)", "https://www.petescandystore.com/", 2, 19, 30, "Free"),
+    ]),
+    ("The Craic", "https://www.thecraicbrooklyn.com/", "gaming", [
+        ("The Craic Irish Pub Trivia Night (Williamsburg)", "https://www.thecraicbrooklyn.com/", 1, 20, 0, "Free"),
+    ]),
+    ("Sunswick 35/35", "https://www.sunswick3535bar.com/", "gaming", [
+        ("Astoria Craft Beer Trivia @ Sunswick 35/35", "https://www.sunswick3535bar.com/", 2, 19, 30, "Free"),
+    ]),
+    ("The Boobie Trap", "https://www.instagram.com/theboobietrapbushwick/", "gaming", [
+        ("Bushwick Monday Night Bar Trivia", "https://www.instagram.com/theboobietrapbushwick/", 0, 20, 0, "Free"),
+    ]),
+    ("The Dead Poet", "https://www.thedeadpoet.com/", "gaming", [
+        ("Upper West Side Literary & Pop Trivia", "https://www.thedeadpoet.com/", 0, 20, 0, "Free"),
+    ]),
+    ("Slattery's Midtown Pub", "https://slatterysmidtownpub.com/", "gaming", [
+        ("Midtown Thursday Pop Culture Trivia", "https://slatterysmidtownpub.com/", 3, 20, 0, "Free"),
+    ]),
+
+    # === TRADITIONAL IRISH SESSIONS & OPEN JAZZ JAMS ===
+    ("The 11th St Bar", "https://11thstbar.com/", "music", [
+        ("Sunday Night Traditional Irish Session (since 2006)", "https://11thstbar.com/", 6, 21, 0, "Free"),
+    ]),
+    ("Paddy Reilly's Music Bar", "https://paddyreillysmusicbar.us/", "music", [
+        ("Thursday Night Live Irish Music Session", "https://paddyreillysmusicbar.us/", 3, 21, 0, "Free"),
+        ("Sunday Afternoon Traditional Irish Session", "https://paddyreillysmusicbar.us/", 6, 17, 0, "Free"),
+    ]),
+    ("Hartley's", "https://hartleysbrooklyn.com/", "music", [
+        ("Hartley's Sunday Traditional Irish Session (Clinton Hill)", "https://hartleysbrooklyn.com/", 6, 17, 0, "Free"),
+    ]),
+    ("An Beal Bocht Cafe", "https://anbealbochtcafe.com/", "music", [
+        ("Sunday Traditional Irish Music Session (Riverdale)", "https://anbealbochtcafe.com/", 6, 16, 0, "Free"),
+        ("Wednesday Night Open Mic Night", "https://anbealbochtcafe.com/", 2, 20, 0, "Free"),
+    ]),
+    ("The Ear Inn", "https://theearinn.com/", "music", [
+        ("The EarRegulars Classic Sunday Jazz Session", "https://theearinn.com/", 6, 20, 0, "No Cover"),
+        ("Wednesday Night Live Roots & Blues @ The Ear", "https://theearinn.com/", 2, 20, 0, "No Cover"),
+    ]),
+    ("Arthur's Tavern", "https://arthurstavern.nyc/", "music", [
+        ("Arthur's Historic Live Jazz & Blues Hang", "https://arthurstavern.nyc/", 0, 19, 0, "No Cover"),
+        ("Arthur's Historic Live Jazz & Blues Hang", "https://arthurstavern.nyc/", 1, 19, 0, "No Cover"),
+        ("Arthur's Historic Live Jazz & Blues Hang", "https://arthurstavern.nyc/", 2, 19, 0, "No Cover"),
+        ("Arthur's Historic Live Jazz & Blues Hang", "https://arthurstavern.nyc/", 3, 19, 0, "No Cover"),
+        ("Arthur's Historic Live Jazz & Blues Hang", "https://arthurstavern.nyc/", 4, 19, 0, "No Cover"),
+        ("Arthur's Historic Live Jazz & Blues Hang", "https://arthurstavern.nyc/", 5, 19, 0, "No Cover"),
+        ("Arthur's Historic Live Jazz & Blues Hang", "https://arthurstavern.nyc/", 6, 19, 0, "No Cover"),
+    ]),
+
+    # === SPEED-FRIENDING & SOCIAL CONNECTION ===
+    ("Skip the Small Talk NYC", "https://www.skipthesmalltalk.com/new-york-city", "community", [
+        ("Skip the Small Talk @ Talea Beer Co (Williamsburg)", "https://www.skipthesmalltalk.com/new-york-city", 2, 19, 0, "$17"),
+        ("Skip the Small Talk @ Torch & Crown Brewing (SoHo)", "https://www.skipthesmalltalk.com/new-york-city", 3, 19, 0, "$17"),
+    ]),
+
+    # === GROWNYC NEIGHBORHOOD GREENMARKETS ===
+    ("Grand Army Plaza Greenmarket", "https://www.grownyc.org/greenmarket/brooklyn-grand-army-plaza", "food", [
+        ("Grand Army Plaza Greenmarket (Prospect Park)", "https://www.grownyc.org/greenmarket/brooklyn-grand-army-plaza", 5, 8, 0, "Free"),
+    ]),
+    ("Fort Greene Park Greenmarket", "https://www.grownyc.org/greenmarket/brooklyn/fort-greene", "food", [
+        ("Fort Greene Park Greenmarket", "https://www.grownyc.org/greenmarket/brooklyn/fort-greene", 5, 8, 0, "Free"),
+    ]),
+    ("Tompkins Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan/tompkins-square", "food", [
+        ("Tompkins Square Greenmarket (East Village)", "https://www.grownyc.org/greenmarket/manhattan/tompkins-square", 6, 9, 0, "Free"),
+    ]),
+    ("Columbia University Greenmarket", "https://www.grownyc.org/greenmarket/manhattan/columbia-thurs", "food", [
+        ("Columbia University Greenmarket (Broadway & 114th St)", "https://www.grownyc.org/greenmarket/manhattan/columbia-thurs", 3, 8, 0, "Free"),
+        ("Columbia University Greenmarket (Broadway & 114th St)", "https://www.grownyc.org/greenmarket/manhattan/columbia-sun", 6, 8, 0, "Free"),
+    ]),
+    ("Jackson Heights Greenmarket", "https://www.grownyc.org/greenmarket/queens/jackson-heights", "food", [
+        ("Jackson Heights Greenmarket (Travers Park)", "https://www.grownyc.org/greenmarket/queens/jackson-heights", 6, 8, 0, "Free"),
+    ]),
+    ("Sunnyside Greenmarket", "https://www.grownyc.org/greenmarket/queens/sunnyside", "food", [
+        ("Sunnyside Greenmarket (Skillman Ave)", "https://www.grownyc.org/greenmarket/queens/sunnyside", 5, 8, 0, "Free"),
+    ]),
+    ("Forest Hills Greenmarket", "https://www.grownyc.org/greenmarket/queens/forest-hills", "food", [
+        ("Forest Hills Greenmarket (71st Ave)", "https://www.grownyc.org/greenmarket/queens/forest-hills", 6, 8, 0, "Free"),
+    ]),
+    ("Brooklyn Borough Hall Greenmarket", "https://www.grownyc.org/greenmarket/brooklyn/borough-hall-sat", "food", [
+        ("Brooklyn Borough Hall Greenmarket (Downtown Brooklyn)", "https://www.grownyc.org/greenmarket/brooklyn/borough-hall-sat", 5, 8, 0, "Free"),
+        ("Brooklyn Borough Hall Greenmarket (Downtown Brooklyn)", "https://www.grownyc.org/greenmarket/brooklyn/borough-hall-tue", 1, 8, 0, "Free"),
+    ]),
+    ("79th Street Greenmarket", "https://www.grownyc.org/greenmarket/manhattan/79th-street", "food", [
+        ("79th Street Greenmarket (Upper West Side @ AMNH)", "https://www.grownyc.org/greenmarket/manhattan/79th-street", 6, 9, 0, "Free"),
+    ]),
+]
+
+ANNUAL_LANDMARK_EVENTS = [
+    {
+        "name": "53rd Annual Village Halloween Parade",
+        "date": "2026-10-31T19:00:00-04:00",
+        "venue": "Greenwich Village (6th Ave & Spring St)",
+        "url": "https://halloween-nyc.com/",
+        "price": "Free",
+        "category": "party",
+        "description": "NYC's iconic world-famous Halloween parade along 6th Avenue from Spring St to 16th St. Costumed participants join open marching.",
+    },
+    {
+        "name": "Macy's Thanksgiving Day Balloon Inflation Event",
+        "date": "2026-11-26T12:00:00-05:00",
+        "venue": "American Museum of Natural History (Upper West Side)",
+        "url": "https://www.macys.com/s/parade/",
+        "price": "Free",
+        "category": "community",
+        "description": "Watch giant character balloons come to life the afternoon before the parade around the Museum of Natural History (77th to 81st St).",
+    },
+    {
+        "name": "100th Annual Macy's Thanksgiving Day Parade",
+        "date": "2026-11-27T08:30:00-05:00",
+        "venue": "Upper West Side to Herald Square (6th Ave)",
+        "url": "https://www.macys.com/s/parade/",
+        "price": "Free",
+        "category": "community",
+        "description": "The historic 100th anniversary of Macy's Thanksgiving Day Parade, stepping off at 77th & Central Park West down to 34th St.",
+    },
+    {
+        "name": "Rockefeller Center Christmas Tree Lighting Ceremony",
+        "date": "2026-12-02T19:00:00-05:00",
+        "venue": "Rockefeller Plaza",
+        "url": "https://www.rockefellercenter.com/events/rockefeller-center-christmas-tree-lighting/",
+        "price": "Free",
+        "category": "community",
+        "description": "Live musical performances and the ceremonial lighting of the world-famous Rockefeller Center Christmas Tree.",
+    },
+    {
+        "name": "Times Square New Year's Eve Ball Drop & Celebration",
+        "date": "2026-12-31T18:00:00-05:00",
+        "venue": "Times Square Plaza",
+        "url": "https://www.timessquarenyc.org/events/new-years-eve",
+        "price": "Free",
+        "category": "party",
+        "description": "The global New Year's Eve celebration featuring live star performances, commercial hourly countdowns, and the midnight crystal ball drop.",
+    },
+    {
+        "name": "Lunar New Year Chinatown Firecracker Ceremony & Cultural Festival",
+        "date": "2027-02-17T11:00:00-05:00",
+        "venue": "Sara D. Roosevelt Park (Chinatown)",
+        "url": "https://betterchinatown.com/",
+        "price": "Free",
+        "category": "community",
+        "description": "Traditional firecrackers to ward off evil spirits, lion dance troupes, martial arts, and cultural performances welcoming the New Year.",
+    },
+    {
+        "name": "266th New York City St. Patrick's Day Parade",
+        "date": "2027-03-17T11:00:00-04:00",
+        "venue": "Fifth Avenue (44th St to 79th St)",
+        "url": "https://www.nycstpatricksparade.org/",
+        "price": "Free",
+        "category": "community",
+        "description": "The world's oldest and largest civilian parade, marching up Fifth Avenue past St. Patrick's Cathedral with bands, bagpipes, and Irish societies.",
+    },
+    {
+        "name": "Museum Mile Festival 2027",
+        "date": "2027-06-08T18:00:00-04:00",
+        "venue": "Fifth Avenue (82nd St to 110th St)",
+        "url": "https://www.museummilefestival.org/",
+        "price": "Free",
+        "category": "art",
+        "description": "Fifth Avenue is closed to traffic for 28 blocks as 8 world-class museums (The Met, Guggenheim, Cooper Hewitt, El Museo, etc.) open free to the public.",
+    },
+    {
+        "name": "45th Annual Coney Island Mermaid Parade",
+        "date": "2027-06-19T13:00:00-04:00",
+        "venue": "Coney Island (Surf Ave)",
+        "url": "https://www.coneyisland.com/mermaidparade",
+        "price": "Free",
+        "category": "party",
+        "description": "The nation's largest art parade celebrating marine mythology and artistic self-expression on the historic Coney Island Boardwalk.",
+    },
+    {
+        "name": "NYC Pride March 2027",
+        "date": "2027-06-27T12:00:00-04:00",
+        "venue": "Fifth Avenue & Greenwich Village",
+        "url": "https://www.nycpride.org/",
+        "price": "Free",
+        "category": "community",
+        "description": "The monumental annual civil rights march from 25th St down 5th Ave past the Stonewall National Monument to 16th St.",
+    },
 ]
 
 
-def _expand_manual_recurring(weeks=2):
+def _expand_manual_recurring(weeks=8):
     today = datetime.now(EASTERN).date()
     results = []
     for venue, venue_url, default_cat, items in MANUAL_RECURRING_EVENTS:
@@ -3605,6 +3863,27 @@ def _expand_manual_recurring(weeks=2):
             "events": events,
             "error": None,
         })
+
+    # Append upcoming landmark annual NYC events
+    now_utc = datetime.now(timezone.utc)
+    annual_evs = []
+    for a in ANNUAL_LANDMARK_EVENTS:
+        try:
+            dt = datetime.fromisoformat(a["date"].replace("Z", "+00:00"))
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=EASTERN)
+            if dt.astimezone(timezone.utc) >= now_utc:
+                annual_evs.append(a.copy())
+        except Exception:
+            continue
+    if annual_evs:
+        results.append({
+            "venue": "NYC Landmark Celebrations & Annual Parades",
+            "url": "https://www.nycgo.com/events/",
+            "events": annual_evs,
+            "error": None,
+        })
+
     return results
 
 

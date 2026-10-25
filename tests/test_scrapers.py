@@ -535,7 +535,8 @@ class TestNYCEvents(unittest.TestCase):
         from unittest.mock import patch, MagicMock
 
         # Queens Night Market
-        qnm_html = "<html><body>NEXT NIGHT MARKET: OCT 24 NEW YORK HALL OF SCIENCE FLUSHING MEADOWS CORONA PARK FROM 4 PM UNTIL 12 AM</body></html>"
+        fut_qnm = (datetime.now(EASTERN) + timedelta(days=6)).strftime("%b %d").upper()
+        qnm_html = f"<html><body>NEXT NIGHT MARKET: {fut_qnm} NEW YORK HALL OF SCIENCE FLUSHING MEADOWS CORONA PARK FROM 4 PM UNTIL 12 AM</body></html>"
         with patch("scrapers._SESSION.get") as mock_get:
             m = MagicMock()
             m.status_code = 200
