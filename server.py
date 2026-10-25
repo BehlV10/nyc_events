@@ -167,12 +167,18 @@ if __name__ == "__main__":
         filter_arg = sys.argv[2] if len(sys.argv) > 2 else None
         run_diagnostics(filter_arg)
     elif len(sys.argv) > 1 and sys.argv[1] == "export":
-        out = sys.argv[2] if len(sys.argv) > 2 else "events.json"
-        if out.endswith(".html") or (len(sys.argv) > 2 and sys.argv[2] == "html"):
+        if len(sys.argv) > 2 and sys.argv[2] == "html":
             target = sys.argv[3] if len(sys.argv) > 3 else "events.html"
             export_html(target)
+        elif len(sys.argv) > 2 and sys.argv[2] == "json":
+            target = sys.argv[3] if len(sys.argv) > 3 else "events.json"
+            export_json(target)
         else:
-            export_json(out)
+            out = sys.argv[2] if len(sys.argv) > 2 else "events.json"
+            if out.endswith(".html"):
+                export_html(out)
+            else:
+                export_json(out)
     else:
         _start_background_refresher()
         host = "0.0.0.0" if os.environ.get("PORT") else "127.0.0.1"
