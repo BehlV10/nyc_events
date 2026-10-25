@@ -25,6 +25,8 @@ from template import (
     _merge_duplicates,
     _clean_event_url,
     _normalize_title_head,
+    _url_priority,
+    _build_compare_links,
     group_by_date,
     EASTERN,
 )
@@ -544,7 +546,85 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(q_evs[0]["price"], "Free")
         self.assertEqual(q_evs[0]["category"], "food")
 
+    def test_ticketmaster_and_direct_preferred_over_seatgeek(self):
+        """Ticketmaster and direct venue links must take priority over SeatGeek."""
+        fut = (datetime.now(EASTERN) + timedelta(days=3)).replace(hour=19, minute=30, second=0, microsecond=0)
+        e_sg = {
+            "name": "New York Knicks vs Boston Celtics",
+            "date": fut.isoformat(),
+            "_time": fut,
+            "venue": "Madison Square Garden",
+            "_source_venue": "SeatGeek NYC",
+            "url": "https://seatgeek.com/knicks-vs-celtics-tickets/111",
+            "price": "$120",
+        }
+        e_tm = {
+            "name": "New York Knicks vs Boston Celtics",
+            "date": fut.isoformat(),
+            "_time": fut,
+            "venue": "Madison Square Garden",
+            "_source_venue": "Ticketmaster NYC",
+            "url": "https://www.ticketmaster.com/event/222",
+            "price": "$95",
+        }
+        e_direct = {
+            "name": "New York Knicks vs Boston Celtics",
+            "date": fut.isoformat(),
+            "_time": fut,
+            "venue": "Madison Square Garden",
+            "_source_venue": "Madison Square Garden",
+            "url": "https://www.msg.com/events/knicks-celtics",
+            "price": "$95",
+        }
+
+        # Case 1: SeatGeek first, Ticketmaster second -> Ticketmaster becomes primary
+        m1 = _merge_duplicates([e_sg.copy(), e_tm.copy()])
+        self.assertEqual(len(m1), 1)
+        self.assertEqual(m1[0]["url"], "https://www.ticketmaster.com/event/222")
+        self.assertTrue(any(a["url"] == "https://seatgeek.com/knicks-vs-celtics-tickets/111" for a in m1[0]["_alt_sources"]))
+
+        # Case 2: Ticketmaster first, SeatGeek second -> Ticketmaster remains primary
+        m2 = _merge_duplicates([e_tm.copy(), e_sg.copy()])
+        self.assertEqual(len(m2), 1)
+        self.assertEqual(m2[0]["url"], "https://www.ticketmaster.com/event/222")
+        self.assertTrue(any(a["url"] == "https://seatgeek.com/knicks-vs-celtics-tickets/111" for a in m2[0]["_alt_sources"]))
+
+        # Case 3: SeatGeek first, Direct venue second -> Direct becomes primary
+        m3 = _merge_duplicates([e_sg.copy(), e_direct.copy()])
+        self.assertEqual(len(m3), 1)
+        self.assertEqual(m3[0]["url"], "https://www.msg.com/events/knicks-celtics")
+        self.assertTrue(any(a["url"] == "https://seatgeek.com/knicks-vs-celtics-tickets/111" for a in m3[0]["_alt_sources"]))
+
+        # Case 4: Ticketmaster first, Direct venue second -> Direct becomes primary
+        m4 = _merge_duplicates([e_tm.copy(), e_direct.copy()])
+        self.assertEqual(len(m4), 1)
+        self.assertEqual(m4[0]["url"], "https://www.msg.com/events/knicks-celtics")
+        self.assertTrue(any(a["url"] == "https://www.ticketmaster.com/event/222" for a in m4[0]["_alt_sources"]))
+
+    def test_compare_links_use_tickpick_and_stubhub(self):
+        """Compare links must use fast, reliable TickPick and StubHub, dropping Gametime."""
+        fut = (datetime.now(EASTERN) + timedelta(days=2)).replace(hour=20, minute=0, second=0, microsecond=0)
+        e = {
+            "name": "Radiohead Tribute Concert",
+            "date": fut.isoformat(),
+            "_time": fut,
+            "venue": "Brooklyn Steel",
+            "_source_venue": "The Bowery Presents",
+            "url": "https://www.ticketmaster.com/event/777",
+            "price": "$30",
+            "category": "music",
+        }
+        links_html = _build_compare_links(e, e["name"])
+        self.assertIn("TickPick", links_html)
+        self.assertIn("https://www.tickpick.com/search/?q=Radiohead+Tribute+Concert", links_html)
+        self.assertIn("StubHub", links_html)
+        self.assertIn("https://www.stubhub.com/search?q=Radiohead+Tribute+Concert", links_html)
+        self.assertIn("SeatGeek", links_html)
+        self.assertNotIn("Gametime", links_html)
+        self.assertNotIn("gametime.co", links_html)
+
 
 if __name__ == "__main__":
     unittest.main()
+
 

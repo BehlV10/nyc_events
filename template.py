@@ -893,19 +893,72 @@ def _build_compare_links(e, raw_title):
     if not q or len(q) < 3:
         return ""
     encoded_q = quote_plus(q)
-    gt_url = f"https://gametime.co/search?q={encoded_q}"
+    primary_url = (e.get("url") or "").lower()
+    alts = e.get("_alt_sources") or []
+    has_seatgeek = "seatgeek.com" in primary_url or any("seatgeek.com" in (a.get("url") or "").lower() for a in alts)
+    links = []
+    if not has_seatgeek:
+        sg_url = f"https://seatgeek.com/search?search={encoded_q}"
+        links.append(f'<a href="{escape(sg_url)}" target="_blank" rel="noopener">SeatGeek</a>')
     sh_url = f"https://www.stubhub.com/search?q={encoded_q}"
+    links.append(f'<a href="{escape(sh_url)}" target="_blank" rel="noopener">StubHub</a>')
+    tp_url = f"https://www.tickpick.com/search/?q={encoded_q}"
+    links.append(f'<a href="{escape(tp_url)}" target="_blank" rel="noopener">TickPick</a>')
     label = "compare prices" if e.get("price") else "tickets"
-    return f'<span class="compare-tickets">{label}: <a href="{escape(gt_url)}" target="_blank" rel="noopener">Gametime</a> · <a href="{escape(sh_url)}" target="_blank" rel="noopener">StubHub</a></span>'
+    return f'<span class="compare-tickets">{label}: {" · ".join(links)}</span>'
+
+
+def _url_priority(url, source=None):
+    """Calculate priority score for selecting primary event link.
+
+    Hierarchy:
+      10 = Direct venue websites & primary box offices (thestonenyc.com, boweryballroom.com,
+           dice.fm, axs.com, telecharge.com, shotgun.live, seetickets.us, etix.com, tixr.com,
+           ovationtix.com, ra.co, etc.)
+       8 = Ticketmaster / Live Nation / Ticketweb / Universe official ticketing
+       5 = Eventbrite
+       3 = Meetup
+       2 = SeatGeek (resale / secondary aggregator)
+       1 = Aggregators / search fallbacks (doNYC, google search)
+       0 = Blank / missing
+    """
+    if not url:
+        return 0
+    u = url.lower()
+    s = (source or "").lower()
+    if "donyc.com" in u or "google.com/search" in u:
+        return 1
+    if "seatgeek.com" in u or "seatgeek" in s:
+        return 2
+    if "meetup.com" in u or "meetup" in s:
+        return 3
+    if "eventbrite.com" in u or "eventbrite" in s:
+        return 5
+    if any(k in u for k in ("ticketmaster.com", "livenation.com", "ticketweb.com", "universe.com")) or "ticketmaster" in s:
+        return 8
+    return 10
 
 
 def _source_priority(s):
-    s = (s or "").lower()
-    if any(agg in s for agg in ("ticketmaster", "seatgeek", "eventbrite")):
-        return 1
-    if any(agg in s for agg in ("donyc", "the skint", "dice.fm", "resident advisor", "nyc parks", "meetup", "lottery", "lotteries")):
-        return 5
-    return 10
+    return _url_priority(None, source=s)
+
+
+def _source_display_label(src, url=None):
+    if url:
+        ts = _ticket_source_name(url)
+        if ts != "Official Site":
+            return ts
+    s = (src or "").strip()
+    s_low = s.lower()
+    if "ticketmaster" in s_low:
+        return "Ticketmaster"
+    if "seatgeek" in s_low:
+        return "SeatGeek"
+    if "eventbrite" in s_low:
+        return "Eventbrite"
+    if "donyc" in s_low:
+        return "doNYC"
+    return s or "Tickets"
 
 
 def _clean_event_url(u):
@@ -929,7 +982,7 @@ def _clean_event_url(u):
 
 def _ticket_source_name(url):
     if not url:
-        return "Official Tickets"
+        return "Official Site"
     low = url.lower()
     if "ticketmaster.com" in low:
         return "Ticketmaster"
@@ -957,7 +1010,13 @@ def _ticket_source_name(url):
         return "Telecharge"
     if "seatgeek.com" in low:
         return "SeatGeek"
-    return "Official Tickets"
+    if "tickpick.com" in low:
+        return "TickPick"
+    if "stubhub.com" in low:
+        return "StubHub"
+    if "donyc.com" in low:
+        return "doNYC"
+    return "Official Site"
 
 
 def _merge_duplicates(events):
@@ -1043,10 +1102,21 @@ def _merge_duplicates(events):
         # Normalize ticket_url
         t_url = e.get("ticket_url")
         if t_url and t_url != e.get("url"):
-            src_label = _ticket_source_name(t_url)
-            e.setdefault("_alt_sources", [])
-            if not any(a.get("url") == t_url for a in e["_alt_sources"]):
-                e["_alt_sources"].append({"venue": src_label, "url": t_url, "price": e.get("price")})
+            p_ticket = _url_priority(t_url)
+            p_curr = _url_priority(e.get("url"), e.get("_source_venue") or e.get("source"))
+            raw_src = e.get("_source_venue") or e.get("source") or e.get("venue") or "source"
+            if p_ticket > p_curr:
+                old_u = e.get("url")
+                old_s = _source_display_label(raw_src, old_u)
+                e["url"] = t_url
+                e.setdefault("_alt_sources", [])
+                if old_u and not any(a.get("url") == old_u for a in e["_alt_sources"]):
+                    e["_alt_sources"].append({"venue": old_s, "source": raw_src, "url": old_u, "price": e.get("price")})
+            else:
+                src_label = _source_display_label(raw_src, t_url)
+                e.setdefault("_alt_sources", [])
+                if not any(a.get("url") == t_url for a in e["_alt_sources"]):
+                    e["_alt_sources"].append({"venue": src_label, "source": raw_src, "url": t_url, "price": e.get("price")})
 
         raw_name = e.get("name") or ""
         full = re.sub(r"[^a-z0-9]+", " ", raw_name.lower()).strip()
@@ -1093,34 +1163,35 @@ def _merge_duplicates(events):
         if match:
             match.setdefault("_alt_sources", [])
             src_url = e.get("url")
-            src_name = e.get("_source_venue") or e.get("source") or e.get("venue") or "source"
+            raw_src = e.get("_source_venue") or e.get("source") or e.get("venue") or "source"
+            src_label = _source_display_label(raw_src, src_url)
             if src_url and not any(a.get("url") == src_url for a in match["_alt_sources"]) and src_url != match.get("url"):
-                match["_alt_sources"].append({"venue": src_name, "source": src_name, "url": src_url, "price": e.get("price")})
+                match["_alt_sources"].append({"venue": src_label, "source": raw_src, "url": src_url, "price": e.get("price")})
 
             cand_t_url = e.get("ticket_url")
             if cand_t_url and cand_t_url != match.get("url"):
-                t_label = _ticket_source_name(cand_t_url)
+                t_label = _source_display_label(raw_src, cand_t_url)
                 if not any(a.get("url") == cand_t_url for a in match["_alt_sources"]):
-                    match["_alt_sources"].append({"venue": t_label, "source": t_label, "url": cand_t_url, "price": e.get("price")})
+                    match["_alt_sources"].append({"venue": t_label, "source": raw_src, "url": cand_t_url, "price": e.get("price")})
 
-            # Upgrade primary source if newly arrived event has direct URL over doNYC aggregator, or has higher priority
-            cur_url = (match.get("url") or "").lower()
-            new_url = (e.get("url") or "").lower()
-            is_cur_donyc = "donyc.com" in cur_url
-            is_new_donyc = "donyc.com" in new_url
-            cur_prio = _source_priority(match.get("_source_venue") or match.get("source"))
-            new_prio = _source_priority(e.get("_source_venue") or e.get("source"))
-            if (is_cur_donyc and not is_new_donyc and new_url) or (not is_cur_donyc and not is_new_donyc and new_prio > cur_prio):
+            # Upgrade primary source if newly arrived event has higher URL priority
+            cur_prio = _url_priority(match.get("url"), match.get("_source_venue") or match.get("source"))
+            new_prio = _url_priority(e.get("url"), e.get("_source_venue") or e.get("source"))
+            if new_prio > cur_prio:
                 old_url = match.get("url")
-                old_src = match.get("_source_venue") or match.get("source")
+                old_src = match.get("_source_venue") or match.get("source") or "source"
+                old_label = _source_display_label(old_src, old_url)
                 if old_url and not any(a.get("url") == old_url for a in match["_alt_sources"]):
-                    match["_alt_sources"].append({"venue": old_src, "source": old_src, "url": old_url, "price": match.get("price")})
+                    match["_alt_sources"].append({"venue": old_label, "source": old_src, "url": old_url, "price": match.get("price")})
                 match["url"] = e.get("url")
                 match["name"] = e.get("name")
-                match["venue"] = e.get("venue")
+                if match.get("venue", "").lower() in generic_sources and e.get("venue"):
+                    match["venue"] = e.get("venue")
                 match["_source_venue"] = e.get("_source_venue") or e.get("source")
                 if e.get("_time") and (e["_time"].hour != 0 or e["_time"].minute != 0):
                     match["_time"] = e["_time"]
+                # Clean up _alt_sources so match["url"] is not duplicated in its own alt list
+                match["_alt_sources"] = [a for a in match["_alt_sources"] if a.get("url") != match.get("url")]
 
             # Presenter tag resolution
             cand_src = (match.get("_source_venue") or "").strip()
