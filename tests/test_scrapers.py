@@ -20,6 +20,7 @@ from scrapers import (
     UA_CHROME,
     is_placeholder_or_closed_event,
     scrape_luma,
+    scrape_skip_the_small_talk,
     BROADWAY_THEATRES,
     guess_category,
 )
@@ -403,10 +404,11 @@ class TestNYCEvents(unittest.TestCase):
         from unittest.mock import patch, MagicMock
         from scrapers import scrape_diwali_times_square
 
-        sample_html = """
+        future_date_str = (datetime.now(timezone.utc) + timedelta(days=5)).strftime("%B %d, %Y")
+        sample_html = f"""
         <html><body>
             <div>Event Location 46th-48th Street & Broadway, Times Square, New York City, NY</div>
-            <div>Event Date October 24, 2026</div>
+            <div>Event Date {future_date_str}</div>
             <meta property="og:image" content="https://diwalitimessquare.com/og-photo-dats-2026.webp" />
         </body></html>
         """
@@ -909,6 +911,58 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(merged[0]["url"], "https://www.ticketmaster.com/event/Z7r9jZ1A7P-qP")
         self.assertEqual(merged[0]["category"], "theater")
         self.assertTrue(any(a["url"] == "https://seatgeek.com/wanted-1-tickets/broadway/2026-10-25-1-pm/18470441" for a in merged[0]["_alt_sources"]))
+
+    def test_skip_the_small_talk_direct_scraper(self):
+        """Skip the Small Talk scraper parses official store items with venue, date, time, and pricing."""
+        mock_payload = {
+            "items": [
+                {
+                    "title": "Skip the Small Talk Night at McCarren Parkhouse: Tuesday, October 27, 2026",
+                    "fullUrl": "/store/skip-the-small-talk-night-at-mccarren-parkhouse-tuesday-october-27-2026",
+                    "categories": ["New York City"],
+                    "excerpt": "<p><strong>EVENT START-END TIME</strong> | 7:00 pm - 9:00 pm ET <br /><strong>WHERE</strong> | McCarren Parkhouse, 855 Lorimer St, Brooklyn, NY 11222 (<a href=\"#\">map</a>)</p>",
+                    "variants": [{"salePrice": 1500, "price": 2400}],
+                },
+                {
+                    "title": "Friendship Comedy Night at Flop House Comedy Club (East Village): Thursday, October 29, 2026",
+                    "fullUrl": "/store/friendship-comedy-night-at-flop-house-comedy-club-east-village-thursday-october-29-2026",
+                    "categories": ["New York City"],
+                    "excerpt": "<p><strong>EVENT START-END TIME</strong> | 7:00 pm - 9:00 pm ET <br /><strong>WHERE</strong> | Flop House Comedy Club, 312 E 14th St, New York, NY</p>",
+                    "variants": [{"salePrice": 1500, "price": 2000}],
+                },
+                {
+                    "title": "Skip the Small Talk Online: Wednesday, November 4, 2026",
+                    "fullUrl": "/store/online-stst",
+                    "categories": ["New York City", "Online"],
+                    "excerpt": "",
+                }
+            ]
+        }
+
+        from unittest.mock import patch, MagicMock
+        mock_resp = MagicMock()
+        mock_resp.json.return_value = mock_payload
+        mock_resp.raise_for_status = MagicMock()
+
+        with patch("scrapers._SESSION.get", return_value=mock_resp):
+            events = scrape_skip_the_small_talk("https://www.skipthesmalltalk.com/store?format=json", UA_CHROME)
+
+        # Online event must be excluded
+        self.assertEqual(len(events), 2)
+
+        # Tuesday event
+        self.assertEqual(events[0]["name"], "Skip the Small Talk Night at McCarren Parkhouse")
+        self.assertEqual(events[0]["venue"], "McCarren Parkhouse")
+        self.assertIn("855 Lorimer St", events[0]["address"])
+        self.assertEqual(events[0]["price"], "$15")
+        self.assertIn("2026-10-27T23:00:00", events[0]["date"])
+
+        # Thursday event
+        self.assertEqual(events[1]["name"], "Friendship Comedy Night at Flop House Comedy Club (East Village)")
+        self.assertEqual(events[1]["venue"], "Flop House Comedy Club")
+        self.assertIn("312 E 14th St", events[1]["address"])
+        self.assertEqual(events[1]["price"], "$15")
+        self.assertIn("2026-10-29T23:00:00", events[1]["date"])
 
 
 if __name__ == "__main__":

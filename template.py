@@ -1023,6 +1023,8 @@ def _ticket_source_name(url):
         return "StubHub"
     if "donyc.com" in low:
         return "doNYC"
+    if "skipthesmalltalk.com" in low:
+        return "Skip the Small Talk"
     return "Official Site"
 
 

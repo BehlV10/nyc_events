@@ -22,7 +22,7 @@ warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 CACHE_SECONDS = 15 * 60
 EASTERN = ZoneInfo("America/New_York")
-HORIZON_DAYS = 365
+HORIZON_DAYS = 35
 
 CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".cache", "venues")
 os.makedirs(CACHE_DIR, exist_ok=True)
@@ -2444,6 +2444,109 @@ def scrape_nyc_for_free(url, ua):
     return events
 
 
+def scrape_skip_the_small_talk(url, ua):
+    """Skip the Small Talk official NYC events calendar from their Squarespace store."""
+    api_url = "https://www.skipthesmalltalk.com/store?format=json"
+    headers = {"User-Agent": ua or UA_CHROME}
+    events = []
+    seen = set()
+    now = datetime.now(EASTERN)
+
+    try:
+        resp = _SESSION.get(api_url, headers=headers, timeout=12)
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception:
+        return []
+
+    for it in data.get("items") or []:
+        cats = it.get("categories") or []
+        if "New York City" not in cats or "Online" in cats:
+            continue
+        raw_title = (it.get("title") or "").strip()
+        if not raw_title or raw_title.startswith("[RESCHEDULED") or raw_title.startswith("[CANCELLED"):
+            continue
+
+        dm = re.search(r":\s*([A-Za-z]+,\s+[A-Za-z]+\s+\d{1,2},\s+\d{4})", raw_title)
+        if not dm:
+            dm = re.search(r"([A-Za-z]+,\s+[A-Za-z]+\s+\d{1,2},\s+\d{4})", raw_title)
+        if not dm:
+            continue
+        date_str = dm.group(1)
+
+        clean_title = raw_title[:dm.start()].strip().rstrip(":")
+        if not clean_title:
+            clean_title = raw_title
+
+        excerpt = it.get("excerpt") or ""
+        soup = BeautifulSoup(excerpt, "html.parser")
+        text = soup.get_text(separator="\n")
+
+        tm = re.search(r"EVENT START-END TIME\s*\|\s*(\d{1,2}):(\d{2})\s*(am|pm)", text, re.IGNORECASE)
+        wm = re.search(r"WHERE\s*\|\s*(.+)", text, re.IGNORECASE)
+
+        hour, minute = 19, 0
+        if tm:
+            h = int(tm.group(1))
+            m = int(tm.group(2))
+            ampm = tm.group(3).lower()
+            if ampm == "pm" and h != 12:
+                h += 12
+            elif ampm == "am" and h == 12:
+                h = 0
+            hour, minute = h, m
+
+        try:
+            dt_naive = datetime.strptime(date_str, "%A, %B %d, %Y")
+            dt = dt_naive.replace(hour=hour, minute=minute, tzinfo=EASTERN)
+        except Exception:
+            continue
+
+        if dt < now - timedelta(hours=3):
+            continue
+
+        venue = "Skip the Small Talk NYC"
+        address = None
+        if wm:
+            raw_where = wm.group(1).split("(")[0].strip()
+            parts = [p.strip() for p in raw_where.split(",") if p.strip()]
+            if parts:
+                venue = parts[0]
+                address = raw_where
+
+        price = "$15"
+        cents = it.get("salePriceCents") or it.get("priceCents")
+        if cents:
+            price = f"${cents / 100:.2f}".rstrip("0").rstrip(".")
+        else:
+            vars_list = it.get("variants") or []
+            if vars_list:
+                vp = vars_list[0].get("salePrice") or vars_list[0].get("price")
+                if vp:
+                    price = f"${vp / 100:.2f}".rstrip("0").rstrip(".")
+
+        full_url = "https://www.skipthesmalltalk.com" + it.get("fullUrl", "")
+        key = (clean_title.lower(), dt.strftime("%Y-%m-%d"))
+        if key in seen:
+            continue
+        seen.add(key)
+
+        ev_dict = {
+            "name": clean_title,
+            "date": dt.astimezone(timezone.utc).isoformat(),
+            "url": full_url,
+            "venue": venue,
+            "price": price,
+            "category": "community",
+            "description": f"Skip the Small Talk social connection event at {venue}. {price}.",
+        }
+        if address:
+            ev_dict["address"] = address
+        events.append(ev_dict)
+
+    return events
+
+
 def scrape_meetup(url, ua):
     """Meetup.com — in-person community events (board games, hikes, salsa, swing, trivia)."""
     events = []
@@ -3889,12 +3992,6 @@ MANUAL_RECURRING_EVENTS = [
         ("Arthur's Historic Live Jazz & Blues Hang", "https://arthurstavern.nyc/", 6, 19, 0, "No Cover"),
     ]),
 
-    # === SPEED-FRIENDING & SOCIAL CONNECTION ===
-    ("Skip the Small Talk NYC", "https://www.skipthesmalltalk.com/new-york-city", "community", [
-        ("Skip the Small Talk @ Talea Beer Co (Williamsburg)", "https://www.skipthesmalltalk.com/new-york-city", 2, 19, 0, "$17"),
-        ("Skip the Small Talk @ Torch & Crown Brewing (SoHo)", "https://www.skipthesmalltalk.com/new-york-city", 3, 19, 0, "$17"),
-    ]),
-
     # === GROWNYC NEIGHBORHOOD GREENMARKETS ===
     ("Grand Army Plaza Greenmarket", "https://www.grownyc.org/greenmarket/brooklyn-grand-army-plaza", "food", [
         ("Grand Army Plaza Greenmarket (Prospect Park)", "https://www.grownyc.org/greenmarket/brooklyn-grand-army-plaza", 5, 8, 0, "Free"),
@@ -4278,7 +4375,7 @@ _ALL_VENUES = [
     {"name": "NYC Fashion Shows & Runway", "url": "https://www.eventbrite.com/d/ny--new-york/fashion-show/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Talks & Lectures", "url": "https://www.eventbrite.com/d/ny--new-york/talks/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Panel Discussions & Symposiums", "url": "https://www.eventbrite.com/d/ny--new-york/panel-discussion/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
-    {"name": "Skip the Small Talk NYC", "url": "https://www.eventbrite.com/d/ny--new-york/skip-the-small-talk/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Skip the Small Talk NYC", "url": "https://www.skipthesmalltalk.com/store?format=json", "ua": UA_CHROME, "scraper": scrape_skip_the_small_talk, "default_category": "community"},
 
     # Literary Cafes, Book Bars, Breweries & Neighborhood Hubs
     {"name": "Bibliothèque Wine & Book Bar", "url": "https://www.eventbrite.com/d/ny--new-york/bibliotheque/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
