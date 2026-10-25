@@ -173,7 +173,11 @@ BROADWAY_THEATRES = {
     "cherry lane theatre", "daryl roth", "astor place theatre", "orpheum theatre",
     "westside theatre", "playwrights horizons", "signature theatre", "atlantic theater",
     "classic stage", "soho rep", "irish rep", "second stage", "manhattan theatre club",
-    "lincoln center theater", "new york city center", "city center"
+    "lincoln center theater", "new york city center", "city center",
+    "james earl jones", "james earl jones theatre", "cort theatre",
+    "lena horne", "lena horne theatre", "brooks atkinson",
+    "helen hayes", "hayes theater", "helen hayes theatre",
+    "palace theatre", "the palace theatre"
 }
 
 COMEDY_VENUES = {

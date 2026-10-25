@@ -21,6 +21,7 @@ from scrapers import (
     fetch_luckyseat_nyc,
     is_closed_show,
     is_placeholder_or_closed_event,
+    BROADWAY_THEATRES,
 )
 from venues_geo import resolve_event_geo
 
@@ -251,7 +252,7 @@ def resolve_subarea(city, event, geo=None):
             return ("East Village & LES", "les_ev")
         if any(k in blob for k in ["greenwich village", "west village", "soho", "noho", "nolita", "comedy cellar", "le poisson rouge", "lpr", "village vanguard", "blue note", "cafe wha", "pubkey", "houston hall", "bleecker", "the bitter end", "duane park", "angelika"]):
             return ("Greenwich Village & SoHo", "village_soho")
-        if any(k in blob for k in ["midtown", "chelsea", "hell's kitchen", "times square", "broadway", "hudson yards", "the shed", "high line", "madison square garden", "msg", "radio city", "carnegie hall", "sony hall", "town hall", "terminal 5", "irving plaza", "bryant park", "caveat", "asylum", "magnet", "cutting room"]):
+        if any(k in blob for k in ["midtown", "chelsea", "hell's kitchen", "times square", "broadway", "hudson yards", "the shed", "high line", "madison square garden", "msg", "radio city", "carnegie hall", "sony hall", "town hall", "terminal 5", "irving plaza", "bryant park", "caveat", "asylum", "magnet", "cutting room", "james earl jones", "cort theatre", "lena horne", "helen hayes", "hayes theater", "palace theatre"]):
             return ("Midtown & Chelsea", "midtown_chelsea")
         if any(k in blob for k in ["upper west side", "uws", "lincoln center", "lincoln square", "columbus circle", "david geffen", "alice tully", "merkin", "symphony space", "central park", "summerstage", "beacon theatre", "american folk art", "library for the performing arts"]):
             return ("Upper West & Lincoln Sq", "uws_lincoln")
@@ -1215,6 +1216,11 @@ def _merge_duplicates(events):
                 match["lng"] = e.get("lng")
             if (not match.get("category") or match.get("category") in ("other", "community")) and e.get("category") and e.get("category") not in ("other", "community"):
                 match["category"] = e["category"]
+            elif match.get("category") == "music" and e.get("category") == "theater":
+                m_venue = (match.get("venue") or "").lower()
+                e_url = (e.get("url") or "").lower()
+                if any(bt in m_venue for bt in BROADWAY_THEATRES) or "theatre" in m_venue or "theater" in m_venue or "broadway" in m_venue or "broadway" in e_url:
+                    match["category"] = "theater"
             if not match.get("description") and e.get("description"):
                 match["description"] = e["description"]
         else:

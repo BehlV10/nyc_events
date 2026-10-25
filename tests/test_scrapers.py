@@ -15,7 +15,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
-from scrapers import _ALL_VENUES, UA_CHROME, is_placeholder_or_closed_event, scrape_luma
+from scrapers import (
+    _ALL_VENUES,
+    UA_CHROME,
+    is_placeholder_or_closed_event,
+    scrape_luma,
+    BROADWAY_THEATRES,
+    guess_category,
+)
 from venues_geo import VENUE_COORDINATES, MIN_LAT, MAX_LAT, MIN_LNG, MAX_LNG, resolve_event_geo
 from template import (
     render_page,
@@ -850,6 +857,58 @@ class TestNYCEvents(unittest.TestCase):
         # Check URL priority and source naming
         self.assertEqual(_url_priority("https://lu.ma/nyc-ai-summit-2026"), 7)
         self.assertEqual(_ticket_source_name("https://lu.ma/nyc-ai-summit-2026"), "Luma")
+
+    def test_broadway_theatre_category_and_merge(self):
+        """Events at James Earl Jones Theatre and other Broadway houses must classify as theater."""
+        # 1. Verification of BROADWAY_THEATRES membership
+        self.assertIn("james earl jones", BROADWAY_THEATRES)
+        self.assertIn("cort theatre", BROADWAY_THEATRES)
+        self.assertIn("lena horne", BROADWAY_THEATRES)
+
+        # 2. Category guessing for ambiguous titles at Broadway theatres
+        cat = guess_category("Wanted", default="music", venue="James Earl Jones Theatre (New York, NY)")
+        self.assertEqual(cat, "theater", "Wanted at James Earl Jones Theatre should be theater")
+
+        # 3. Geo resolution for James Earl Jones Theatre
+        geo = resolve_event_geo({"venue": "James Earl Jones Theatre (New York, NY)"})
+        self.assertIsNotNone(geo)
+        self.assertEqual(geo["venue"], "James Earl Jones Theatre")
+        self.assertEqual(geo["neighborhood"], "Times Square")
+        self.assertAlmostEqual(geo["lat"], 40.7593, places=3)
+        self.assertAlmostEqual(geo["lng"], -73.9830, places=3)
+
+        # 4. Subarea mapping
+        subarea_label, subarea_key = resolve_subarea("manhattan", {"venue": "James Earl Jones Theatre (New York, NY)"})
+        self.assertEqual(subarea_label, "Midtown & Chelsea")
+        self.assertEqual(subarea_key, "midtown_chelsea")
+
+        # 5. Merging duplicate cross-source event stubs (Ticketmaster + SeatGeek)
+        tm_event = {
+            "name": "Wanted",
+            "date": "2026-10-25T17:00:00Z",
+            "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P-qP",
+            "venue": "James Earl Jones Theatre (New York, NY)",
+            "lat": 40.7593,
+            "lng": -73.990196,
+            "category": "theater",
+            "_source_venue": "Ticketmaster NYC",
+        }
+        sg_event = {
+            "name": "Wanted - New York",
+            "date": "2026-10-25T17:00:00Z",
+            "url": "https://seatgeek.com/wanted-1-tickets/broadway/2026-10-25-1-pm/18470441",
+            "venue": "James Earl Jones Theatre (New York, NY)",
+            "lat": 40.7592,
+            "lng": -73.983,
+            "category": "theater",
+            "_source_venue": "SeatGeek NYC",
+        }
+        merged = _merge_duplicates([tm_event, sg_event])
+        self.assertEqual(len(merged), 1)
+        self.assertEqual(merged[0]["name"], "Wanted")
+        self.assertEqual(merged[0]["url"], "https://www.ticketmaster.com/event/Z7r9jZ1A7P-qP")
+        self.assertEqual(merged[0]["category"], "theater")
+        self.assertTrue(any(a["url"] == "https://seatgeek.com/wanted-1-tickets/broadway/2026-10-25-1-pm/18470441" for a in merged[0]["_alt_sources"]))
 
 
 if __name__ == "__main__":
