@@ -250,6 +250,7 @@ VENUE_COORDINATES: Dict[str, Tuple[float, float, str, str, str]] = {
     "king jagiello": (40.7725, -73.9702, "Central Park", "Central Park East, New York, NY", "King Jagiello Monument (Central Park)"),
     "hex & company": (40.8062, -73.9645, "Morningside Heights", "2911 Broadway, New York, NY", "Hex & Company"),
     "miller theatre": (40.8080, -73.9634, "Morningside Heights", "2960 Broadway, New York, NY", "Miller Theatre at Columbia University"),
+    "miller theatre at columbia university": (40.8080, -73.9634, "Morningside Heights", "2960 Broadway, New York, NY", "Miller Theatre at Columbia University"),
     "shrine": (40.8143, -73.9443, "Harlem", "2271 Adam Clayton Powell Jr Blvd, New York, NY", "Shrine Harlem"),
     "shrine harlem": (40.8143, -73.9443, "Harlem", "2271 Adam Clayton Powell Jr Blvd, New York, NY", "Shrine Harlem"),
     "silvana": (40.8049, -73.9548, "Harlem", "300 W 116th St, New York, NY", "Silvana NYC"),

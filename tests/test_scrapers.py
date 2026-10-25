@@ -548,6 +548,66 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(q_evs[0]["price"], "Free")
         self.assertEqual(q_evs[0]["category"], "food")
 
+        # Miller Theatre
+        from scrapers import scrape_miller_theatre
+        import html as html_lib
+        fut_unix = int((datetime.now(timezone.utc) + timedelta(days=20)).timestamp())
+        mock_events_data = [{
+            "title": "Hub New Music",
+            "subtitle": "Contemporary Chamber Works",
+            "date": {"formatted": "Tuesday, Nov 15, 6PM", "unix": str(fut_unix)},
+            "price": "Free",
+            "category": {"title": "Pop-Up Concerts", "slug": "pop-up-concerts"},
+            "url": "https://www.millertheatre.com/events/hub-new-music"
+        }]
+        mock_attr = html_lib.escape(json.dumps(mock_events_data))
+        miller_html = f'<html><body><events :events="{mock_attr}"></events></body></html>'
+        with patch("scrapers._SESSION.get") as mock_get:
+            m = MagicMock()
+            m.status_code = 200
+            m.text = miller_html
+            mock_get.return_value = m
+            m_evs = scrape_miller_theatre("https://www.millertheatre.com/events", "TestUA")
+        self.assertEqual(len(m_evs), 1)
+        self.assertIn("Hub New Music", m_evs[0]["name"])
+        self.assertEqual(m_evs[0]["price"], "Free")
+        self.assertEqual(m_evs[0]["category"], "music")
+
+    def test_scrape_one_cache_preservation_on_empty(self):
+        """_scrape_one must not clobber existing cached events when a live scrape returns empty."""
+        from scrapers import _scrape_one, _save_venue_cache, _load_venue_cache
+
+        venue_name = "Mock Stale Resilience Venue"
+        test_url = "https://example.com/events"
+        fut_dt = (datetime.now(timezone.utc) + timedelta(days=10)).isoformat()
+        initial_events = [{
+            "name": "Resilient Community Gathering",
+            "date": fut_dt,
+            "url": test_url,
+            "venue": venue_name,
+            "price": "Free",
+            "category": "community"
+        }]
+        _save_venue_cache(venue_name, initial_events, duration=1.0)
+
+        mock_venue_spec = {
+            "name": venue_name,
+            "url": test_url,
+            "ua": "TestUA",
+            "scraper": lambda u, ua: [],
+            "default_category": "community"
+        }
+
+        # Force live scrape with empty result — should preserve existing events
+        res = _scrape_one(mock_venue_spec, force=True)
+        self.assertEqual(len(res["events"]), 1)
+        self.assertEqual(res["events"][0]["name"], "Resilient Community Gathering")
+
+        # Verify cache file still has the preserved event
+        cached = _load_venue_cache(venue_name, max_age=None)
+        self.assertIsNotNone(cached)
+        self.assertEqual(len(cached["events"]), 1)
+
     def test_ticketmaster_and_direct_preferred_over_seatgeek(self):
         """Ticketmaster and direct venue links must take priority over SeatGeek."""
         fut = (datetime.now(EASTERN) + timedelta(days=3)).replace(hour=19, minute=30, second=0, microsecond=0)
