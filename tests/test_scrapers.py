@@ -4,6 +4,7 @@ Run via:
   python -m unittest discover tests
 """
 
+import json
 import os
 import sys
 import unittest
@@ -622,6 +623,84 @@ class TestNYCEvents(unittest.TestCase):
         self.assertIn("SeatGeek", links_html)
         self.assertNotIn("Gametime", links_html)
         self.assertNotIn("gametime.co", links_html)
+
+    def test_meetup_and_eventbrite_scrapers(self):
+        """Verify that Meetup and Eventbrite scrapers accurately parse physical in-person events."""
+        from scrapers import scrape_meetup, scrape_eventbrite_jsonld
+        from unittest.mock import patch, MagicMock
+
+        # 1. Meetup test with physical and virtual events
+        meetup_jsonld = json.dumps([
+            {
+                "@type": "Event",
+                "name": "Central Park Board Game Picnic",
+                "startDate": (datetime.now(timezone.utc) + timedelta(days=2)).isoformat(),
+                "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+                "location": {
+                    "@type": "Place",
+                    "name": "Sheep Meadow, Central Park",
+                    "address": {"streetAddress": "Central Park", "addressLocality": "New York", "addressRegion": "NY"}
+                },
+                "url": "https://www.meetup.com/nyc-boardgames/events/12345"
+            },
+            {
+                "@type": "Event",
+                "name": "Zoom Virtual Trivia Night",
+                "startDate": (datetime.now(timezone.utc) + timedelta(days=2)).isoformat(),
+                "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+                "location": {"@type": "VirtualLocation", "url": "https://zoom.us/j/123"},
+                "url": "https://www.meetup.com/trivia/events/99999"
+            }
+        ])
+        meetup_html = f'<html><head><script type="application/ld+json">{meetup_jsonld}</script></head><body></body></html>'
+
+        with patch("scrapers._SESSION.get") as mock_get:
+            m = MagicMock()
+            m.status_code = 200
+            m.text = meetup_html
+            mock_get.return_value = m
+            m_events = scrape_meetup("https://www.meetup.com/find/?keywords=board%20games", "TestUA")
+
+        self.assertEqual(len(m_events), 1)
+        self.assertEqual(m_events[0]["name"], "Central Park Board Game Picnic")
+        self.assertEqual(m_events[0]["venue"], "Sheep Meadow, Central Park")
+        self.assertIn("meetup.com", m_events[0]["url"])
+
+        # 2. Eventbrite ItemList test
+        eb_jsonld = json.dumps({
+            "@type": "ItemList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "item": {
+                        "@type": "Event",
+                        "name": "Williamsburg Salsa Social",
+                        "startDate": (datetime.now(timezone.utc) + timedelta(days=3)).isoformat(),
+                        "url": "https://www.eventbrite.com/e/williamsburg-salsa-tickets-1111",
+                        "location": {
+                            "@type": "Place",
+                            "name": "Brooklyn Bowl",
+                            "address": {"streetAddress": "61 Wythe Ave", "addressLocality": "Brooklyn", "addressRegion": "NY"}
+                        },
+                        "offers": {"price": "0.00"}
+                    }
+                }
+            ]
+        })
+        eb_html = f'<html><head><script type="application/ld+json">{eb_jsonld}</script></head><body></body></html>'
+
+        with patch("scrapers._SESSION.get") as mock_get:
+            m = MagicMock()
+            m.status_code = 200
+            m.text = eb_html
+            mock_get.return_value = m
+            eb_events = scrape_eventbrite_jsonld("https://www.eventbrite.com/d/ny--brooklyn/salsa/", "TestUA")
+
+        self.assertEqual(len(eb_events), 1)
+        self.assertEqual(eb_events[0]["name"], "Williamsburg Salsa Social")
+        self.assertEqual(eb_events[0]["venue"], "Brooklyn Bowl")
+        self.assertEqual(eb_events[0]["price"], "Free")
+        self.assertIn("eventbrite.com", eb_events[0]["url"])
 
 
 if __name__ == "__main__":
