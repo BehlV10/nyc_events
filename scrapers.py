@@ -22,7 +22,7 @@ warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 CACHE_SECONDS = 15 * 60
 EASTERN = ZoneInfo("America/New_York")
-HORIZON_DAYS = 14
+HORIZON_DAYS = 365
 
 CACHE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".cache", "venues")
 os.makedirs(CACHE_DIR, exist_ok=True)
@@ -1087,12 +1087,12 @@ def scrape_sesh_comedy(url, ua):
     seen = set()
     now = datetime.now(EASTERN)
     try:
-        resp = _SESSION.get("https://seshcomedy.com/showcases.php", headers={"User-Agent": ua}, timeout=12)
+        resp = _SESSION.get("https://seshcomedy.com/showcases.php", headers={"User-Agent": ua}, timeout=10)
         if not resp.ok:
-            return events
+            raise RuntimeError(f"HTTP {resp.status_code}")
         soup = BeautifulSoup(resp.content, "html.parser")
     except Exception:
-        return events
+        raise
 
     for card in soup.find_all("div", class_="show"):
         title = card.get("data-title") or ""
@@ -3011,6 +3011,68 @@ def scrape_clearview_festivals(url, ua):
     return events
 
 
+
+def scrape_miller_theatre(url, ua):
+    """Miller Theatre at Columbia University — Official performing arts and concert calendar."""
+    events = []
+    target_url = url or "https://www.millertheatre.com/events"
+    now_utc = datetime.now(timezone.utc)
+    try:
+        resp = _SESSION.get(target_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+        if resp.status_code != 200:
+            return []
+        import html as html_lib
+        m = re.search(r"<events\s+:events=\"([^\"]+)\"", resp.text)
+        if not m:
+            return []
+        raw_json = html_lib.unescape(m.group(1))
+        items = json.loads(raw_json)
+        for it in items:
+            t = (it.get("title") or "").strip()
+            sub = (it.get("subtitle") or "").strip()
+            name = f"{t}: {sub}" if sub else t
+            if not name:
+                continue
+            ev_url = it.get("url") or target_url
+            price = it.get("price") or "$30"
+            cat_obj = it.get("category") or {}
+            cat_name = (cat_obj.get("title") or "music").lower()
+            category = "music"
+            if "jazz" in cat_name:
+                category = "music"
+            elif "opera" in cat_name or "theatre" in cat_name:
+                category = "theater"
+            elif "community" in cat_name:
+                category = "community"
+
+            unix_ts = it.get("date", {}).get("unix")
+            if not unix_ts:
+                continue
+            try:
+                dt = datetime.fromtimestamp(int(unix_ts), tz=timezone.utc)
+            except Exception:
+                continue
+            if dt < now_utc - timedelta(hours=6):
+                continue
+
+            events.append({
+                "name": name,
+                "date": dt.isoformat(),
+                "url": ev_url,
+                "venue": "Miller Theatre at Columbia University",
+                "price": price,
+                "category": category,
+                "lat": 40.8082,
+                "lng": -73.9634,
+                "address": "2960 Broadway, New York, NY",
+                "neighborhood": "Morningside Heights",
+                "description": f"Live performance at Columbia University's Miller Theatre ({cat_obj.get('title') or 'Concert'}). {price}.",
+            })
+    except Exception as e:
+        print(f"Error scraping Miller Theatre: {e}")
+    return events
+
+
 def scrape_the_stone(url, ua):
     """The Stone at The New School — Official experimental music calendar curated by John Zorn."""
     events = []
@@ -4013,7 +4075,7 @@ _ALL_VENUES = [
     {"name": "Grand Bazaar NYC", "url": "https://grandbazaarnyc.org/", "ua": UA_CHROME, "scraper": scrape_grand_bazaar_nyc, "default_category": "community"},
     {"name": "New York Comedy Club Upper West Side", "url": "https://donyc.com/venues/new-york-comedy-club-upper-west-side", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Comic Strip Live NYC", "url": "https://donyc.com/venues/comic-strip-live-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "Miller Theatre", "url": "https://donyc.com/venues/miller-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Miller Theatre at Columbia University", "url": "https://www.millertheatre.com/events", "ua": UA_CHROME, "scraper": scrape_miller_theatre, "default_category": "music"},
     {"name": "Shrine Harlem", "url": "https://donyc.com/venues/shrine", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Silvana NYC", "url": "https://donyc.com/venues/silvana-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "United Palace", "url": "https://donyc.com/venues/united-palace", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
@@ -4365,10 +4427,21 @@ def _scrape_one(v, force=False):
                 e["category"] = guess_category(e.get("name"), existing_cat, venue=e.get("venue"))
 
         dur = round(time.time() - t0, 2)
-        # Save raw parsed events to cache before horizon filtering
-        _save_venue_cache(vname, events, duration=dur)
+        if events:
+            _save_venue_cache(vname, events, duration=dur)
+        else:
+            # Scraper returned 0 events: preserve previous cached events if available
+            stale_cache = _load_venue_cache(vname, max_age=None)
+            if stale_cache and stale_cache.get("events"):
+                prev_evs = [e for e in stale_cache["events"] if not is_placeholder_or_closed_event(e.get("name")) and _is_within_horizon(e, max_days=HORIZON_DAYS)]
+                if prev_evs:
+                    events = prev_evs
+                else:
+                    _save_venue_cache(vname, events, duration=dur)
+            else:
+                _save_venue_cache(vname, events, duration=dur)
 
-        # Filter events to 14-day rolling window
+        # Filter events to rolling horizon window
         events = [e for e in events if _is_within_horizon(e, max_days=HORIZON_DAYS)]
         return {
             "venue": vname,
@@ -4451,8 +4524,8 @@ def get_all_events(force=False):
     with ThreadPoolExecutor(max_workers=10) as ex:
         results = list(ex.map(_worker, VENUES))
 
-    # Add recurring events (expanded for 2 weeks / 14 days)
-    results.extend(_expand_manual_recurring(weeks=2))
+    # Add recurring events (expanded for 8 weeks / 56 days)
+    results.extend(_expand_manual_recurring(weeks=8))
     results.extend(_load_community_events())
 
     payload = {
