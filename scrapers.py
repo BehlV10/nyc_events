@@ -3807,6 +3807,7 @@ _ALL_VENUES = [
     {"name": "Jazz at Lincoln Center", "url": "https://www.eventbrite.com/d/ny--new-york/jazz-at-lincoln-center/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
     {"name": "Meetup: NYC Hikes & Nature Walks", "url": "https://www.meetup.com/find/?keywords=hiking&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "outdoors"},
     {"name": "Meetup: Outdoor Hikes & Trails", "url": "https://www.meetup.com/find/?keywords=hike&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "outdoors"},
+    {"name": "Meetup: NYC Running Clubs & 5K Socials", "url": "https://www.meetup.com/find/?keywords=running&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "sports"},
 
     # Fashion, Sample Sales, Talks & Social Connection
     {"name": "NYC Fashion Events & Sample Sales", "url": "https://www.eventbrite.com/d/ny--new-york/sample-sale/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
@@ -3818,6 +3819,8 @@ _ALL_VENUES = [
     # Literary Cafes, Book Bars, Breweries & Neighborhood Hubs
     {"name": "Bibliothèque Wine & Book Bar", "url": "https://www.eventbrite.com/d/ny--new-york/bibliotheque/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
     {"name": "Liz's Book Bar (Carroll Gardens)", "url": "https://www.eventbrite.com/d/ny--brooklyn/lizs-book-bar/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "Meetup: NYC Book Clubs & Literature Discussions", "url": "https://www.meetup.com/find/?keywords=book%20club&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "books"},
+    {"name": "Meetup: NYC Writers & Creative Storytelling", "url": "https://www.meetup.com/find/?keywords=writing&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "books"},
     {"name": "Threes Brewing (Gowanus & Greenpoint)", "url": "https://www.eventbrite.com/d/ny--brooklyn/threes-brewing/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
     {"name": "Flop House Comedy Club", "url": "https://flophousecomedy.com/", "ua": UA_CHROME, "scraper": scrape_flophouse, "default_category": "comedy"},
     {"name": "Sesh Comedy (Chinatown / LES)", "url": "https://seshcomedy.com/showcases.php", "ua": UA_CHROME, "scraper": scrape_sesh_comedy, "default_category": "comedy"},
@@ -3831,6 +3834,8 @@ _ALL_VENUES = [
     {"name": "Meetup: NYC Board Game Nights", "url": "https://www.meetup.com/find/?keywords=board%20games&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
     {"name": "Meetup: Tabletop & RPG Games", "url": "https://www.meetup.com/find/?keywords=tabletop%20games&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
     {"name": "Meetup: NYC Bar Trivia Nights", "url": "https://www.meetup.com/find/?keywords=trivia&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: NYC Tech, AI & Developer Meetups", "url": "https://www.meetup.com/find/?keywords=tech&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: NYC Language Exchange & Polyglot Socials", "url": "https://www.meetup.com/find/?keywords=language%20exchange&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
 
     # Nightlife, Immersive Spectacle & Theatrical Circus
     {"name": "House of Yes (Circus & Dance)", "url": "https://donyc.com/venues/house-of-yes", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "party"},
@@ -3843,10 +3848,13 @@ _ALL_VENUES = [
     {"name": "Japan Fes NYC (Street Food)", "url": "https://www.eventbrite.com/d/ny--new-york/japan-fes/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
     {"name": "Midnight Runners NYC (Social Run Club)", "url": "https://www.eventbrite.com/d/ny--new-york/midnight-runners/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "sports"},
     {"name": "Brooklyn Brainery (Community Classes)", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-brainery/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Meetup: NYC Photography Walks & Photo Tours", "url": "https://www.meetup.com/find/?keywords=photography&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "art"},
+    {"name": "Meetup: NYC Art Gallery Crawls & Openings", "url": "https://www.meetup.com/find/?keywords=art%20gallery&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "art"},
 
     # Long-Form Improv, Sketch & Alternative Comedy
     {"name": "Magnet Theater (Improv & Sketch)", "url": "https://www.eventbrite.com/d/ny--new-york/magnet-theater/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
     {"name": "Asylum NYC (Alternative Comedy)", "url": "https://www.eventbrite.com/d/ny--new-york/asylum-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Meetup: NYC Comedy, Improv & Open Mics", "url": "https://www.meetup.com/find/?keywords=improv&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "comedy"},
 
     # Historic Cultural Music Halls
     {"name": "S.O.B.'s (Sounds of Brazil)", "url": "https://sobs.com/calendar/", "ua": UA_CHROME, "scraper": scrape_sobs, "default_category": "music"},
@@ -3869,6 +3877,7 @@ _ALL_VENUES = [
     {"name": "Frim Fram Jam (YSBD Swing)", "url": "https://www.eventbrite.com/d/ny--new-york/frim-fram-jam/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "Prohibition Productions (Gotham Jazz)", "url": "https://www.eventbrite.com/d/ny--new-york/prohibition-productions/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "dance"},
     {"name": "Meetup: NYC Swing Dancing", "url": "https://www.meetup.com/find/?keywords=swing%20dance&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "dance"},
+    {"name": "Meetup: NYC Live Jazz & Acoustic Sessions", "url": "https://www.meetup.com/find/?keywords=jazz&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "music"},
 
     # Queer Nightlife, Drag Shows & Cabaret
     {"name": "3 Dollar Bill (Queer & Drag Venue)", "url": "https://donyc.com/venues/3-dollar-bill", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
