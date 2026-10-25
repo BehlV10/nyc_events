@@ -15,7 +15,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
-from scrapers import _ALL_VENUES, UA_CHROME, is_placeholder_or_closed_event
+from scrapers import _ALL_VENUES, UA_CHROME, is_placeholder_or_closed_event, scrape_luma
 from venues_geo import VENUE_COORDINATES, MIN_LAT, MAX_LAT, MIN_LNG, MAX_LNG, resolve_event_geo
 from template import (
     render_page,
@@ -27,6 +27,7 @@ from template import (
     _clean_event_url,
     _normalize_title_head,
     _url_priority,
+    _ticket_source_name,
     _build_compare_links,
     group_by_date,
     EASTERN,
@@ -762,6 +763,93 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(eb_events[0]["venue"], "Brooklyn Bowl")
         self.assertEqual(eb_events[0]["price"], "Free")
         self.assertIn("eventbrite.com", eb_events[0]["url"])
+
+    def test_luma_scraper_and_geo(self):
+        """Luma NYC scraper should extract structured tech & community events with coordinates."""
+        mock_payload = {
+            "entries": [
+                {
+                    "api_id": "evt-mock1",
+                    "event": {
+                        "name": "NYC AI & Tech Summit",
+                        "start_at": (datetime.now(timezone.utc) + timedelta(days=2)).isoformat(),
+                        "url": "nyc-ai-summit-2026",
+                        "geo_address_info": {
+                            "mode": "shown",
+                            "address": "100 Broadway",
+                            "city": "New York",
+                            "full_address": "100 Broadway, New York, NY 10005",
+                            "sublocality": "Financial District",
+                        },
+                        "coordinate": {"latitude": 40.7081, "longitude": -74.0112},
+                    },
+                    "calendar": {
+                        "name": "NY Tech Hub",
+                        "description_short": "Premier community for builders and AI founders in Manhattan.",
+                    },
+                    "hosts": [{"name": "NY Tech Collective"}],
+                    "ticket_info": {"is_free": False, "price": {"cents": 1500}},
+                },
+                {
+                    "api_id": "evt-mock2",
+                    "event": {
+                        "name": "Brooklyn Tech Founder Mixer",
+                        "start_at": (datetime.now(timezone.utc) + timedelta(days=3)).isoformat(),
+                        "url": "bk-tech-mixer-oct",
+                        "geo_address_info": {
+                            "mode": "obfuscated",
+                            "city": "Brooklyn",
+                            "sublocality": "DUMBO",
+                        },
+                        "coordinate": {"latitude": 40.7033, "longitude": -73.9893},
+                    },
+                    "calendar": {"name": "Personal"},
+                    "hosts": [{"name": "Dumbo Founders"}],
+                    "ticket_info": {"is_free": True},
+                }
+            ],
+            "has_more": False,
+            "next_cursor": None,
+        }
+
+        from unittest.mock import patch, MagicMock
+        mock_resp = MagicMock()
+        mock_resp.json.return_value = mock_payload
+        mock_resp.raise_for_status = MagicMock()
+
+        with patch("scrapers._SESSION.get", return_value=mock_resp):
+            events = scrape_luma("https://lu.ma/nyc", UA_CHROME)
+
+        self.assertEqual(len(events), 2)
+        ev1, ev2 = events[0], events[1]
+
+        # Check event 1 (shown address, paid ticket, custom calendar)
+        self.assertEqual(ev1["name"], "NYC AI & Tech Summit")
+        self.assertEqual(ev1["venue"], "100 Broadway, New York")
+        self.assertEqual(ev1["price"], "$15")
+        self.assertEqual(ev1["url"], "https://lu.ma/nyc-ai-summit-2026")
+        self.assertEqual(ev1["category"], "community")
+        self.assertEqual(ev1["lat"], 40.7081)
+        self.assertEqual(ev1["lng"], -74.0112)
+        self.assertIn("Hosted by NY Tech Collective", ev1["description"])
+        self.assertIn("Premier community", ev1["description"])
+
+        # Check event 2 (obfuscated RSVP address, free ticket)
+        self.assertEqual(ev2["name"], "Brooklyn Tech Founder Mixer")
+        self.assertEqual(ev2["venue"], "DUMBO (RSVP for address)")
+        self.assertEqual(ev2["price"], "Free")
+        self.assertEqual(ev2["category"], "community")
+
+        # Check geo resolution
+        geo1 = resolve_event_geo(ev1)
+        self.assertIsNotNone(geo1)
+        self.assertEqual(geo1["lat"], 40.7081)
+        self.assertEqual(geo1["lng"], -74.0112)
+        self.assertEqual(geo1["neighborhood"], "Financial District")
+
+        # Check URL priority and source naming
+        self.assertEqual(_url_priority("https://lu.ma/nyc-ai-summit-2026"), 7)
+        self.assertEqual(_ticket_source_name("https://lu.ma/nyc-ai-summit-2026"), "Luma")
 
 
 if __name__ == "__main__":
