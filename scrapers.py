@@ -3736,6 +3736,282 @@ def scrape_film_forum(url, ua):
     return events
 
 
+def scrape_qed_astoria(url, ua):
+    """Scrape Q.E.D. Astoria's Evey Events calendar JSON API."""
+    import subprocess
+    events = []
+    seen = set()
+    now_et = datetime.now(EASTERN)
+    start_str = now_et.strftime("%Y-%m-%d")
+    end_str = (now_et + timedelta(days=HORIZON_DAYS)).strftime("%Y-%m-%d")
+    api_url = (
+        f"https://api.eveyevents.com/production-v2/storefront/calendar"
+        f"?shop=qed-astoria.myshopify.com&startDate={start_str}&endDate={end_str}&currentDate={start_str}&lang=en"
+    )
+    try:
+        try:
+            resp = _SESSION.get(api_url, headers={"User-Agent": ua}, timeout=12)
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception:
+            out = subprocess.check_output(["curl", "-sL", api_url], timeout=12)
+            data = json.loads(out.decode("utf-8", errors="ignore"))
+
+        sched = data.get("schedule", []) if isinstance(data, dict) else []
+        for item in sched:
+            raw_title = (item.get("title") or "").strip()
+            title = html.unescape(raw_title)
+            if not title or is_placeholder_or_closed_event(title):
+                continue
+            start_iso = item.get("start")
+            if not start_iso:
+                continue
+            try:
+                dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
+            except Exception:
+                continue
+
+            key = (title.lower(), dt.strftime("%Y-%m-%d %H:%M"))
+            if key in seen:
+                continue
+            seen.add(key)
+
+            ev_url = (item.get("url") or "https://qedastoria.com/apps/events/calendar").strip()
+            if ev_url.startswith("http://qedastoria.com"):
+                ev_url = "https://" + ev_url[len("http://"):]
+
+            src_data = item.get("source_data") or {}
+            min_p = src_data.get("min_price")
+            max_p = src_data.get("max_price")
+            price = None
+            if "free" in title.lower():
+                price = "Free"
+            elif min_p is not None:
+                try:
+                    fmin = float(min_p)
+                    fmax = float(max_p) if max_p is not None else fmin
+                    price = "Free" if fmax == 0 else _format_price_range(fmin, fmax)
+                except Exception:
+                    pass
+
+            desc_html = src_data.get("description") or ""
+            desc = ""
+            if desc_html:
+                desc = BeautifulSoup(desc_html, "html.parser").get_text(" ", strip=True)[:240]
+
+            events.append({
+                "name": title,
+                "date": dt.astimezone(timezone.utc).isoformat(),
+                "url": ev_url,
+                "venue": "Q.E.D. Astoria",
+                "price": price,
+                "category": guess_category(f"{title} {desc}", "comedy"),
+                "description": desc,
+                "lat": 40.7749,
+                "lng": -73.9118,
+                "address": "27-16 23rd Ave, Queens, NY",
+                "neighborhood": "Astoria",
+            })
+    except Exception as e:
+        print(f"Error scraping Q.E.D. Astoria: {e}")
+    return events
+
+
+_TRIBE_VENUE_DEFAULTS = {
+    "movingimage.org": ("Museum of the Moving Image", "36-01 35th Ave, Queens, NY", "Astoria", 40.7563, -73.9239, "film"),
+    "queensbotanical.org": ("Queens Botanical Garden", "43-50 Main St, Queens, NY", "Flushing", 40.7510, -73.8290, "outdoors"),
+    "queensfarm.org": ("Queens County Farm Museum", "73-50 Little Neck Pkwy, Queens, NY", "Floral Park / Glen Oaks", 40.7478, -73.7244, "outdoors"),
+    "louisarmstronghouse.org": ("Louis Armstrong House Museum", "34-56 107th St, Queens, NY", "Corona", 40.7556, -73.8614, "music"),
+}
+
+
+def scrape_tribe_events_api(url, ua):
+    """Scrape WordPress Tribe Events v1 REST API endpoints (/wp-json/tribe/events/v1/events)."""
+    events = []
+    seen = set()
+    now_et = datetime.now(EASTERN)
+    req_url = url
+    if "start_date=" not in req_url:
+        sep = "&" if "?" in req_url else "?"
+        req_url = f"{req_url}{sep}start_date={now_et.strftime('%Y-%m-%d')}"
+
+    default_vname = "Queens Cultural Center"
+    default_addr = "Queens, NY"
+    default_hood = "Queens"
+    default_lat = None
+    default_lng = None
+    default_cat = "community"
+    for dom, meta in _TRIBE_VENUE_DEFAULTS.items():
+        if dom in url:
+            default_vname, default_addr, default_hood, default_lat, default_lng, default_cat = meta
+            break
+
+    try:
+        resp = _SESSION.get(req_url, headers={"User-Agent": ua}, timeout=15)
+        resp.raise_for_status()
+        data = resp.json()
+        raw_events = data.get("events", []) if isinstance(data, dict) else []
+        for item in raw_events:
+            raw_title = item.get("title") or ""
+            title = BeautifulSoup(html.unescape(raw_title), "html.parser").get_text(" ", strip=True)
+            if not title or is_placeholder_or_closed_event(title):
+                continue
+
+            start_str = item.get("start_date") or ""
+            if not start_str:
+                continue
+            try:
+                dt_naive = datetime.strptime(start_str[:19], "%Y-%m-%d %H:%M:%S")
+                dt = dt_naive.replace(tzinfo=EASTERN)
+            except Exception:
+                continue
+
+            key = (title.lower(), dt.strftime("%Y-%m-%d %H:%M"))
+            if key in seen:
+                continue
+            seen.add(key)
+
+            ev_url = (item.get("url") or url).strip()
+            cost = BeautifulSoup(html.unescape(str(item.get("cost") or "")), "html.parser").get_text(" ", strip=True)
+            if cost.lower() in ("free", "$0", "0", "$0.00", "free with admission"):
+                price = "Free"
+            else:
+                price = cost or None
+
+            desc_raw = item.get("excerpt") or item.get("description") or ""
+            desc = BeautifulSoup(html.unescape(desc_raw), "html.parser").get_text(" ", strip=True)[:240]
+
+            v_obj = item.get("venue")
+            v_name = default_vname
+            if isinstance(v_obj, dict) and v_obj.get("venue"):
+                cand_v = BeautifulSoup(html.unescape(v_obj["venue"]), "html.parser").get_text(" ", strip=True)
+                if cand_v and default_vname.lower() not in cand_v.lower():
+                    v_name = f"{default_vname} ({cand_v})"
+
+            ev_dict = {
+                "name": title,
+                "date": dt.astimezone(timezone.utc).isoformat(),
+                "url": ev_url,
+                "venue": v_name,
+                "price": price,
+                "category": guess_category(f"{title} {desc}", default_cat, venue=default_vname),
+                "description": desc,
+                "address": default_addr,
+                "neighborhood": default_hood,
+            }
+            if default_lat is not None and default_lng is not None:
+                ev_dict["lat"] = default_lat
+                ev_dict["lng"] = default_lng
+            events.append(ev_dict)
+    except Exception as e:
+        print(f"Error scraping Tribe Events API ({url}): {e}")
+    return events
+
+
+def scrape_queens_theatre(url, ua):
+    """Scrape Queens Theatre in Flushing Meadows Corona Park (https://queenstheatre.org/events/)."""
+    events = []
+    seen = set()
+    now_et = datetime.now(EASTERN)
+
+    def _parse_qt_dt(date_text, time_text):
+        # e.g. date_text="Thu Oct  29" or "Oct 29", time_text="8:00 PM"
+        m_d = re.search(r"([A-Za-z]{3})\s+(\d{1,2})", date_text or "")
+        if not m_d:
+            return None
+        mon_str, day_str = m_d.group(1), m_d.group(2)
+        hour, minute = 19, 30
+        m_t = re.search(r"(\d{1,2}):(\d{2})\s*(AM|PM)", time_text or "", re.I)
+        if m_t:
+            hour = int(m_t.group(1))
+            minute = int(m_t.group(2))
+            ampm = m_t.group(3).upper()
+            if ampm == "PM" and hour != 12:
+                hour += 12
+            elif ampm == "AM" and hour == 12:
+                hour = 0
+        try:
+            cand = datetime.strptime(f"{now_et.year} {mon_str} {int(day_str)}", "%Y %b %d")
+            if cand.date() < (now_et.date() - timedelta(days=30)):
+                cand = datetime.strptime(f"{now_et.year + 1} {mon_str} {int(day_str)}", "%Y %b %d")
+            return datetime(cand.year, cand.month, cand.day, hour, minute, tzinfo=EASTERN)
+        except Exception:
+            return None
+
+    try:
+        resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+
+        for wrapper in soup.select(".listItemWrapper"):
+            a_desc = wrapper.select_one("a.desc")
+            if not a_desc:
+                continue
+            t_el = a_desc.select_one("h3.title")
+            if not t_el:
+                continue
+            title = t_el.get_text(" ", strip=True)
+            if not title or is_placeholder_or_closed_event(title):
+                continue
+
+            sub_el = a_desc.select_one(".subtitle")
+            subtitle = sub_el.get_text(" ", strip=True) if sub_el else ""
+            href = a_desc.get("href") or "/events/"
+            ev_url = urljoin("https://queenstheatre.org", href)
+
+            genres = " ".join(g.get_text(" ", strip=True) for g in wrapper.select(".genres__link"))
+            cat = guess_category(f"{title} {subtitle} {genres}", "theater")
+
+            # Check if multi-date subshows exist via button[aria-controls]
+            btn = wrapper.select_one("button[aria-controls]")
+            sub_id = btn.get("aria-controls") if btn else None
+            sub_container = soup.find(id=sub_id) if sub_id else None
+            sub_items = sub_container.select("li.subshow") if sub_container else []
+
+            dt_list = []
+            if sub_items:
+                for sub in sub_items:
+                    d_el = sub.select_one(".date .start")
+                    tm_el = sub.select_one(".time .start")
+                    dt_val = _parse_qt_dt(
+                        d_el.get_text(" ", strip=True) if d_el else "",
+                        tm_el.get_text(" ", strip=True) if tm_el else "",
+                    )
+                    if dt_val:
+                        dt_list.append(dt_val)
+            if not dt_list:
+                d_el = a_desc.select_one(".top-date .start")
+                tm_el = a_desc.select_one(".top-date .time")
+                dt_val = _parse_qt_dt(
+                    d_el.get_text(" ", strip=True) if d_el else "",
+                    tm_el.get_text(" ", strip=True) if tm_el else "",
+                )
+                if dt_val:
+                    dt_list.append(dt_val)
+
+            for dt in dt_list:
+                key = (title.lower(), dt.strftime("%Y-%m-%d %H:%M"))
+                if key in seen:
+                    continue
+                seen.add(key)
+                events.append({
+                    "name": title,
+                    "date": dt.astimezone(timezone.utc).isoformat(),
+                    "url": ev_url,
+                    "venue": "Queens Theatre",
+                    "price": None,
+                    "category": cat,
+                    "description": subtitle,
+                    "lat": 40.7443,
+                    "lng": -73.8444,
+                    "address": "14 United Nations Ave S, Flushing Meadows Corona Park, Queens, NY",
+                    "neighborhood": "Flushing Meadows",
+                })
+    except Exception as e:
+        print(f"Error scraping Queens Theatre: {e}")
+    return events
+
+
 # --- Curated Recurring NYC Events ---
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
@@ -4056,6 +4332,92 @@ MANUAL_RECURRING_EVENTS = [
     ("79th Street Greenmarket", "https://www.grownyc.org/greenmarket/manhattan/79th-street", "food", [
         ("79th Street Greenmarket (Upper West Side @ AMNH)", "https://www.grownyc.org/greenmarket/manhattan/79th-street", 6, 9, 0, "Free"),
     ]),
+
+    # === QUEENS NEIGHBORHOOD SPOTS: LIVE MUSIC, BREWERIES, COMEDY, BOOKSHOPS & OPEN STREETS ===
+    ("Terraza 7", "https://terraza7.com/", "music", [
+        ("Terraza 7 Open Mic Poetry & Acoustic Jam (Elmhurst / Jackson Heights)", "https://terraza7.com/", 1, 20, 0, "$10"),
+        ("Terraza 7 Afro-Colombian & Latin Jazz Night", "https://terraza7.com/", 4, 21, 0, "$15–$20"),
+        ("Terraza 7 Live Cumbia & Latin Folklore Night", "https://terraza7.com/", 5, 21, 0, "$15–$20"),
+        ("Terraza 7 Sunday Jazz Jam Session", "https://terraza7.com/", 6, 20, 30, "$15"),
+    ]),
+    ("Bohemian Hall & Beer Garden", "https://bohemianhall.com/", "community", [
+        ("Bohemian Hall Beer Garden Trivia Night (Astoria)", "https://bohemianhall.com/", 3, 19, 30, "Free"),
+        ("Bohemian Hall Weekend Live Music in the Garden", "https://bohemianhall.com/", 5, 18, 0, "Free entry"),
+        ("Bohemian Hall Sunday Beer Garden Hang & Acoustic Music", "https://bohemianhall.com/", 6, 15, 0, "Free entry"),
+    ]),
+    ("Grove 34", "https://www.grove34.com/", "comedy", [
+        ("Grove 34 Astoria Stand-Up Comedy Showcase", "https://www.grove34.com/", 3, 20, 0, "$12–$15"),
+        ("Grove 34 Friday Night Astoria Headliner Comedy", "https://www.grove34.com/", 4, 20, 0, "$15–$20"),
+        ("Grove 34 Saturday Night Astoria Stand-Up & Improv", "https://www.grove34.com/", 5, 20, 0, "$15–$20"),
+    ]),
+    ("Fifth Hammer Brewing Co.", "https://www.fifthhammerbrewing.com/", "gaming", [
+        ("Fifth Hammer LIC Taproom Run Club (Long Island City)", "https://www.fifthhammerbrewing.com/", 1, 19, 0, "Free"),
+        ("Fifth Hammer Brewing Wednesday Taproom Trivia (LIC)", "https://www.fifthhammerbrewing.com/", 2, 19, 0, "Free"),
+        ("Fifth Hammer Thursday Live Taproom Jazz & Funk Jam", "https://www.fifthhammerbrewing.com/", 3, 19, 0, "Free"),
+    ]),
+    ("Focal Point Beer Co.", "https://www.focalpointbeer.com/", "gaming", [
+        ("Focal Point Beer Co. Taproom Trivia Night (Long Island City)", "https://www.focalpointbeer.com/", 3, 19, 0, "Free"),
+    ]),
+    ("SingleCut Beersmiths QNS", "https://singlecut.com/", "gaming", [
+        ("SingleCut Beersmiths Rock & Pop Culture Trivia (Astoria)", "https://singlecut.com/", 3, 19, 30, "Free"),
+        ("SingleCut QNS Saturday Taproom Live Vinyl & Bands", "https://singlecut.com/", 5, 17, 0, "Free"),
+    ]),
+    ("Alewife Brewing", "https://www.alewife.beer/", "gaming", [
+        ("Alewife Brewing Sunnyside Taproom Trivia Night", "https://www.alewife.beer/", 2, 19, 0, "Free"),
+        ("Alewife Brewing Friday Live Music & Craft Beer Night (Sunnyside)", "https://www.alewife.beer/", 4, 19, 30, "Free"),
+    ]),
+    ("Bar Freda", "https://www.instagram.com/barfredanyc/", "comedy", [
+        ("Bar Freda Ridgewood Stand-Up Comedy & Drink Specials", "https://www.instagram.com/barfredanyc/", 2, 20, 0, "Free"),
+        ("Bar Freda Ridgewood Underground DJ & Dance Party", "https://www.instagram.com/barfredanyc/", 4, 22, 0, "No Cover / $10"),
+        ("Bar Freda Ridgewood Karaoke & Late Night Party", "https://www.instagram.com/barfredanyc/", 6, 21, 0, "Free"),
+    ]),
+    ("Nowadays", "https://nowadays.nyc/", "clubbing", [
+        ("Nowadays Nonstop Saturday Night Dance Marathon (Ridgewood)", "https://nowadays.nyc/", 5, 22, 0, "$20–$30"),
+        ("Mister Sunday @ Nowadays Backyard (Ridgewood)", "https://nowadays.nyc/", 6, 15, 0, "$20–$30"),
+    ]),
+    ("The Windjammer", "https://www.instagram.com/thewindjammerny/", "music", [
+        ("The Windjammer Ridgewood Indie & Punk Showcase", "https://www.instagram.com/thewindjammerny/", 4, 20, 30, "$10–$15"),
+        ("The Windjammer Ridgewood Late-Night Karaoke", "https://www.instagram.com/thewindjammerny/", 6, 21, 30, "Free"),
+    ]),
+    ("Albatross Bar", "https://www.albatrossastoria.com/", "theater", [
+        ("Albatross Astoria Drag Bingo & Trivia Night", "https://www.albatrossastoria.com/", 3, 20, 30, "Free"),
+        ("Albatross Astoria Weekend Drag Show & Karaoke", "https://www.albatrossastoria.com/", 4, 21, 30, "No Cover"),
+        ("Albatross Astoria Saturday Night Drag Spectacular", "https://www.albatrossastoria.com/", 5, 22, 0, "No Cover"),
+    ]),
+    ("Donovan's Pub", "https://donovansny.com/", "music", [
+        ("Woodside Traditional Irish Music & Pub Session @ Donovan's", "https://donovansny.com/", 3, 20, 0, "Free"),
+    ]),
+    ("The Wolfhound", "https://wolfhoundbar.com/", "gaming", [
+        ("The Wolfhound Astoria Pub Trivia Night", "https://wolfhoundbar.com/", 1, 20, 0, "Free"),
+        ("The Wolfhound Live Irish & Indie Music Night (Astoria)", "https://wolfhoundbar.com/", 5, 21, 0, "No Cover"),
+    ]),
+    ("The World's Borough Bookshop", "https://www.theworldsboroughbookshop.com/", "books", [
+        ("World's Borough Bookshop Jackson Heights Reading Group", "https://www.theworldsboroughbookshop.com/", 3, 19, 0, "Free RSVP"),
+        ("Saturday Bilingual Storytime & Author Talk @ World's Borough Bookshop", "https://www.theworldsboroughbookshop.com/", 5, 11, 0, "Free"),
+    ]),
+    ("Topos Bookstore Cafe", "https://www.toposbookstore.com/", "books", [
+        ("Topos Bookstore Ridgewood Poetry & Author Reading Night", "https://www.toposbookstore.com/", 3, 19, 30, "Free"),
+    ]),
+    ("34th Avenue Open Street", "https://34aveopenstreets.com/", "community", [
+        ("34th Ave Open Street Community Zumba & Fitness (Jackson Heights)", "https://34aveopenstreets.com/", 5, 10, 30, "Free"),
+        ("34th Ave Open Street Chess, Crafts & Family Programming", "https://34aveopenstreets.com/", 6, 12, 0, "Free"),
+    ]),
+    ("31st Avenue Open Street", "https://31staveopenstreet.org/", "community", [
+        ("31st Ave Open Street Astoria Weekend Market & Lawn Games", "https://31staveopenstreet.org/", 5, 12, 0, "Free"),
+        ("31st Ave Open Street Astoria Community Music & Social", "https://31staveopenstreet.org/", 6, 13, 0, "Free"),
+    ]),
+    ("Woodside-Sunnyside Runners", "https://www.woodsidesunnysiderunners.com/", "sports", [
+        ("Woodside-Sunnyside Runners Tuesday Evening Group Run", "https://www.woodsidesunnysiderunners.com/", 1, 19, 0, "Free"),
+        ("Woodside-Sunnyside Runners Thursday Skillman Ave Social Run", "https://www.woodsidesunnysiderunners.com/", 3, 19, 0, "Free"),
+        ("Woodside-Sunnyside Runners Saturday Morning Queens Bridge Run", "https://www.woodsidesunnysiderunners.com/", 5, 8, 30, "Free"),
+    ]),
+    ("Hellgate Road Runners", "https://www.hrronline.org/", "sports", [
+        ("Hellgate Road Runners Astoria Park Evening Workout", "https://www.hrronline.org/", 2, 19, 0, "Free"),
+        ("Hellgate Road Runners Saturday Astoria Park Long Run", "https://www.hrronline.org/", 5, 8, 0, "Free"),
+    ]),
+    ("Rockaway Track Club", "https://www.rockawaytc.org/", "sports", [
+        ("Rockaway Beach Boardwalk Saturday Morning 5K & Social Run", "https://www.rockawaytc.org/", 5, 8, 30, "Free"),
+    ]),
 ]
 
 ANNUAL_LANDMARK_EVENTS = [
@@ -4269,6 +4631,22 @@ _ALL_VENUES = [
     # Queens
     {"name": "Forest Hills Stadium", "url": "https://donyc.com/venues/forest-hills-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Noguchi Museum", "url": "https://donyc.com/venues/noguchi-museum", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
+    {"name": "Museum of the Moving Image", "url": "https://movingimage.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "film"},
+    {"name": "Queens Botanical Garden", "url": "https://queensbotanical.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
+    {"name": "Queens County Farm Museum", "url": "https://www.queensfarm.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
+    {"name": "Louis Armstrong House Museum", "url": "https://www.louisarmstronghouse.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
+    {"name": "Queens Theatre", "url": "https://queenstheatre.org/events/", "ua": UA_CHROME, "scraper": scrape_queens_theatre, "default_category": "theater"},
+    {"name": "Flushing Town Hall", "url": "https://donyc.com/venues/flushing-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "MoMA PS1", "url": "https://donyc.com/venues/moma-ps1", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
+    {"name": "Grove 34 Astoria", "url": "https://www.eventbrite.com/d/ny--astoria/grove-34/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Culture Lab LIC", "url": "https://www.eventbrite.com/d/ny--long-island-city/culture-lab-lic/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
+    {"name": "Bohemian Hall & Beer Garden (Astoria)", "url": "https://www.eventbrite.com/d/ny--astoria/bohemian-hall/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Astoria Queens Events", "url": "https://www.eventbrite.com/d/ny--new-york/astoria-queens/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Long Island City Queens Events", "url": "https://www.eventbrite.com/d/ny--new-york/long-island-city/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Ridgewood Queens Events", "url": "https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Jackson Heights & Elmhurst Events", "url": "https://www.eventbrite.com/d/ny--new-york/jackson-heights/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Sunnyside & Woodside Queens Events", "url": "https://www.eventbrite.com/d/ny--new-york/sunnyside-queens/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Forest Hills Queens Events", "url": "https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
 
     # The Bronx
     {"name": "Yankee Stadium", "url": "https://donyc.com/venues/yankee-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "sports"},
@@ -4382,7 +4760,7 @@ _ALL_VENUES = [
     {"name": "Greenwich Village Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/greenwich-village-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
     {"name": "The Grisly Pear Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/grisly-pear-comedy/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
     {"name": "St. Marks Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
-    {"name": "Q.E.D. Astoria (Comedy & Arts)", "url": "https://www.eventbrite.com/d/ny--astoria/qed/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Q.E.D. Astoria (Comedy & Arts)", "url": "https://qedastoria.com/apps/events/calendar", "ua": UA_CHROME, "scraper": scrape_qed_astoria, "default_category": "comedy"},
     {"name": "New York Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/new-york-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
     {"name": "The Tiny Cupboard (Bushwick Rooftop Comedy)", "url": "https://www.thetinycupboard.com/calendar", "ua": UA_CHROME, "scraper": scrape_tiny_cupboard, "default_category": "comedy"},
     {"name": "Brooklyn Comedy Collective (Eris Mainstage)", "url": "https://www.eventbrite.com/api/v3/organizers/27620063469/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},

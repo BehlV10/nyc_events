@@ -439,10 +439,11 @@ class TestNYCEvents(unittest.TestCase):
         from unittest.mock import patch, MagicMock
         from scrapers import scrape_clearview_festivals
 
-        sample_html = """
+        fut_str = (datetime.now(EASTERN) + timedelta(days=5)).strftime("%m/%d/%Y")
+        sample_html = f"""
         <table>
             <tr>
-                <td><span class="sponsor">10/25/2026 Upper Broadway Harvest Fair</span></td>
+                <td><span class="sponsor">{fut_str} Upper Broadway Harvest Fair</span></td>
             </tr>
             <tr>
                 <td class="uctest">Broadway (W)</td>
@@ -1072,8 +1073,58 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(events[0]["price"], "$10.00")
         self.assertIn("100 Grand St", events[0]["address"])
 
+    def test_queens_borough_classification_and_scrapers(self):
+        """Verify Long Island City, Wyckoff Ave Ridgewood, and Queens venues classify as Queens and test direct Queens scrapers."""
+        from template import _event_city, resolve_subarea
+        from venues_geo import resolve_event_geo
+        from scrapers import scrape_tribe_events_api, scrape_queens_theatre, scrape_qed_astoria
+        from unittest.mock import patch, MagicMock
+
+        # 1. Long Island City must NEVER be misclassified as Tri-State ("other")
+        lic_ev = {"venue": "Culture Lab LIC (Long Island City)", "address": "5-25 46th Ave, Long Island City, NY"}
+        lic_geo = resolve_event_geo(lic_ev)
+        self.assertEqual(_event_city(lic_ev["venue"], "The Skint NYC", geo=lic_geo, event=lic_ev), "queens")
+        self.assertEqual(resolve_subarea("queens", lic_ev, geo=lic_geo)[1], "astoria_lic")
+
+        # 2. Wyckoff Ave in Ridgewood, Queens must classify as Queens, not Wyckoff, NJ
+        h0l0_ev = {"venue": "H0L0", "address": "1090 Wyckoff Ave, Ridgewood, NY 11385"}
+        h0l0_geo = resolve_event_geo(h0l0_ev)
+        self.assertEqual(_event_city(h0l0_ev["venue"], "Resident Advisor NYC", geo=h0l0_geo, event=h0l0_ev), "queens")
+        self.assertEqual(resolve_subarea("queens", h0l0_ev, geo=h0l0_geo)[1], "flushing_ridgewood")
+
+        # 3. Queens Botanical Garden must resolve to Flushing, Queens (not NYBG in Bronx)
+        qbg_ev = {"venue": "Queens Botanical Garden"}
+        qbg_geo = resolve_event_geo(qbg_ev)
+        self.assertIsNotNone(qbg_geo)
+        self.assertEqual(qbg_geo["neighborhood"], "Flushing")
+        self.assertEqual(_event_city(qbg_ev["venue"], "Queens Botanical Garden", geo=qbg_geo, event=qbg_ev), "queens")
+
+        # 4. Event with Queens address but unmapped venue name
+        jh_ev = {"venue": "P.S. 149 Christa McAuliffe", "address": "93-11 34th Avenue, Jackson Heights, Queens, NY"}
+        self.assertEqual(_event_city(jh_ev["venue"], "Eventbrite", geo=None, event=jh_ev), "queens")
+        self.assertEqual(resolve_subarea("queens", jh_ev, geo=None)[1], "jh_sunnyside")
+
+        # 5. Tribe Events API scraper (e.g. Museum of the Moving Image)
+        fut_str = (datetime.now(EASTERN) + timedelta(days=3)).strftime("%Y-%m-%d 18:30:00")
+        mock_tribe_resp = MagicMock()
+        mock_tribe_resp.json.return_value = {
+            "events": [{
+                "title": "Jim Henson&#8217;s Labyrinth 35mm Screening",
+                "start_date": fut_str,
+                "url": "https://movingimage.org/event/labyrinth/",
+                "cost": "$15",
+                "excerpt": "<p>Special screening in Astoria.</p>",
+                "venue": {"venue": "Redstone Theater"}
+            }]
+        }
+        mock_tribe_resp.raise_for_status = MagicMock()
+        with patch("scrapers._SESSION.get", return_value=mock_tribe_resp):
+            momi_evs = scrape_tribe_events_api("https://movingimage.org/wp-json/tribe/events/v1/events?per_page=50", "TestUA")
+        self.assertEqual(len(momi_evs), 1)
+        self.assertEqual(momi_evs[0]["name"], "Jim Henson’s Labyrinth 35mm Screening")
+        self.assertEqual(momi_evs[0]["neighborhood"], "Astoria")
+        self.assertEqual(momi_evs[0]["price"], "$15")
+
 
 if __name__ == "__main__":
     unittest.main()
-
-
