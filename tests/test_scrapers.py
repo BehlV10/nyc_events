@@ -322,7 +322,7 @@ class TestNYCEvents(unittest.TestCase):
     def test_venue_ttl_and_disk_cache(self):
         """Test per-venue TTL categorization, cache saving, and loading."""
         from scrapers import (
-            _get_venue_ttl, FAST_VENUE_TTL, SLOW_VENUE_TTL, DEFAULT_VENUE_TTL,
+            _get_venue_ttl, FAST_VENUE_TTL, SLOW_VENUE_TTL, DEFAULT_VENUE_TTL, EVENTBRITE_TTL,
             _venue_cache_path, _save_venue_cache, _load_venue_cache, _scrape_one
         )
 
@@ -331,10 +331,13 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(_get_venue_ttl("DoNYC"), FAST_VENUE_TTL)
         self.assertEqual(_get_venue_ttl("NYC Parks & Recreation"), SLOW_VENUE_TTL)
         self.assertEqual(_get_venue_ttl("Bowery Ballroom"), DEFAULT_VENUE_TTL)
+        self.assertEqual(_get_venue_ttl("NYC Salsa (Eventbrite)"), EVENTBRITE_TTL)
+        self.assertEqual(_get_venue_ttl("Brooklyn Made", {"url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-made/"}), EVENTBRITE_TTL)
 
         # 2. Cache save and load
+        fut_date = (datetime.now(EASTERN) + timedelta(days=5)).strftime("%Y-%m-%dT20:00:00Z")
         test_vname = "Test NYC Venue TTL"
-        test_events = [{"name": "Test Band NYC", "date": "2026-10-25T20:00:00Z"}]
+        test_events = [{"name": "Test Band NYC", "date": fut_date}]
         cpath = _venue_cache_path(test_vname)
 
         try:
@@ -471,7 +474,9 @@ class TestNYCEvents(unittest.TestCase):
         from scrapers import scrape_donyc
         from bs4 import BeautifulSoup
 
-        sample_html = """
+        d1 = (datetime.now(EASTERN) + timedelta(days=2)).strftime("%Y-%m-%dT20:00:00-0400")
+        d2 = (datetime.now(EASTERN) + timedelta(days=3)).strftime("%Y-%m-%dT20:00:00-0400")
+        sample_html = f"""
         <html>
         <head>
             <span class="ds-detail-website ds-meta-item">
@@ -481,7 +486,7 @@ class TestNYCEvents(unittest.TestCase):
         <body>
             <div itemscope itemtype="http://schema.org/Event" itemprop="event" data-permalink="/events/2026/10/25/great-concert-tickets">
                 <span itemprop="name">Great Concert</span>
-                <meta itemprop="startDate" content="2026-10-25T20:00:00-0400" />
+                <meta itemprop="startDate" content="{d1}" />
                 <div itemprop="location" itemscope itemtype="http://schema.org/Place">
                     <span itemprop="name">Brooklyn Bowl</span>
                 </div>
@@ -492,7 +497,7 @@ class TestNYCEvents(unittest.TestCase):
             </div>
             <div itemscope itemtype="http://schema.org/Event" itemprop="event" data-permalink="/events/2026/10/26/free-jam-tickets">
                 <span itemprop="name">Free Jam Night</span>
-                <meta itemprop="startDate" content="2026-10-26T20:00:00-0400" />
+                <meta itemprop="startDate" content="{d2}" />
                 <div itemprop="location" itemscope itemtype="http://schema.org/Place">
                     <span itemprop="name">Brooklyn Bowl</span>
                 </div>
@@ -963,6 +968,109 @@ class TestNYCEvents(unittest.TestCase):
         self.assertIn("312 E 14th St", events[1]["address"])
         self.assertEqual(events[1]["price"], "$15")
         self.assertIn("2026-10-29T23:00:00", events[1]["date"])
+
+    def test_warm_cache_and_scrape_fallbacks(self):
+        """Test warm cache fallback when scraper raises exception or returns empty."""
+        from unittest.mock import MagicMock
+        from scrapers import _scrape_one, _last_known_good, _save_venue_cache, _venue_cache_path
+
+        test_venue_name = "Resilient Warm Cache Venue"
+        fut_date = (datetime.now(EASTERN) + timedelta(days=6)).strftime("%Y-%m-%dT20:00:00Z")
+        saved_evs = [{"name": "Existing Concert", "date": fut_date, "venue": test_venue_name}]
+        _save_venue_cache(test_venue_name, saved_evs)
+        _last_known_good[test_venue_name] = saved_evs
+        cpath = _venue_cache_path(test_venue_name)
+
+        try:
+            # Case 1: Scraper throws HTTPError/Exception (e.g. Cloudflare 403)
+            failing_venue = {
+                "name": test_venue_name,
+                "url": "https://www.eventbrite.com/d/ny--new-york/test/",
+                "ua": "TestUA",
+                "scraper": MagicMock(side_effect=Exception("403 Client Error: Forbidden")),
+                "default_category": "music"
+            }
+            res_fail = _scrape_one(failing_venue, force=True)
+            self.assertTrue(res_fail.get("cached"))
+            self.assertEqual(len(res_fail["events"]), 1)
+            self.assertEqual(res_fail["events"][0]["name"], "Existing Concert")
+            self.assertIn("403 Client Error", res_fail.get("error", ""))
+
+            # Case 2: Scraper returns empty [] - must NOT wipe out cache
+            empty_venue = {
+                "name": test_venue_name,
+                "url": "https://www.eventbrite.com/d/ny--new-york/test/",
+                "ua": "TestUA",
+                "scraper": MagicMock(return_value=[]),
+                "default_category": "music"
+            }
+            res_empty = _scrape_one(empty_venue, force=True)
+            self.assertEqual(len(res_empty["events"]), 1)
+            self.assertEqual(res_empty["events"][0]["name"], "Existing Concert")
+        finally:
+            if os.path.exists(cpath):
+                os.remove(cpath)
+            _last_known_good.pop(test_venue_name, None)
+
+    def test_eventbrite_jsonld_headers_and_parsing(self):
+        """Test scrape_eventbrite_jsonld sends full browser headers and parses ItemList."""
+        from scrapers import scrape_eventbrite_jsonld, UA_CHROME
+        from unittest.mock import patch, MagicMock
+
+        fut_date = (datetime.now(EASTERN) + timedelta(days=7)).strftime("%Y-%m-%dT19:00:00-04:00")
+        sample_html = f"""
+        <html>
+        <head>
+            <script type="application/ld+json">
+            {{
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "itemListElement": [
+                    {{
+                        "@type": "ListItem",
+                        "position": 1,
+                        "item": {{
+                            "@type": "Event",
+                            "name": "Brooklyn Salsa Social",
+                            "startDate": "{fut_date}",
+                            "url": "https://www.eventbrite.com/e/brooklyn-salsa-social-12345",
+                            "location": {{
+                                "@type": "Place",
+                                "name": "Williamsburg Dance Studio",
+                                "address": {{
+                                    "streetAddress": "100 Grand St",
+                                    "addressLocality": "Brooklyn",
+                                    "addressRegion": "NY"
+                                }}
+                            }},
+                            "offers": {{
+                                "price": "10.00"
+                            }}
+                        }}
+                    }}
+                ]
+            }}
+            </script>
+        </head>
+        </html>
+        """
+        mock_resp = MagicMock()
+        mock_resp.text = sample_html
+        mock_resp.raise_for_status = MagicMock()
+
+        with patch("scrapers._SESSION.get", return_value=mock_resp) as mock_get:
+            events = scrape_eventbrite_jsonld("https://www.eventbrite.com/d/ny--brooklyn/salsa/", UA_CHROME)
+            mock_get.assert_called_once()
+            call_headers = mock_get.call_args[1].get("headers", {})
+            self.assertIn("Sec-Ch-Ua", call_headers)
+            self.assertIn("Upgrade-Insecure-Requests", call_headers)
+            self.assertEqual(call_headers["User-Agent"], UA_CHROME)
+
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "Brooklyn Salsa Social")
+        self.assertEqual(events[0]["venue"], "Williamsburg Dance Studio")
+        self.assertEqual(events[0]["price"], "$10.00")
+        self.assertIn("100 Grand St", events[0]["address"])
 
 
 if __name__ == "__main__":

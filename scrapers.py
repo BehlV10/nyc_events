@@ -30,6 +30,7 @@ os.makedirs(CACHE_DIR, exist_ok=True)
 DEFAULT_VENUE_TTL = 3 * 3600    # 3 hours for standard venue feeds
 FAST_VENUE_TTL = 1 * 3600       # 1 hour for high-turnover feeds (Ticketmaster, SeatGeek, RA, Dice, DoNYC)
 SLOW_VENUE_TTL = 12 * 3600      # 12 hours for evergreen/slow feeds (NYC Parks XML, Trivia, Bookstores)
+EVENTBRITE_TTL = 6 * 3600       # 6 hours for Eventbrite feeds to prevent Cloudflare bot blocking
 
 
 def _is_within_horizon(e, max_days=HORIZON_DAYS):
@@ -46,8 +47,11 @@ def _is_within_horizon(e, max_days=HORIZON_DAYS):
         return True
 
 
-def _get_venue_ttl(vname):
-    low = vname.lower()
+def _get_venue_ttl(vname, v=None):
+    low = (vname or "").lower()
+    url = (v.get("url") if isinstance(v, dict) else "") or ""
+    if "eventbrite.com" in url or "eventbrite" in low:
+        return EVENTBRITE_TTL
     if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc", "the skint", "secret nyc", "greenpointers", "flop house", "sesh comedy", "luma"]):
         return FAST_VENUE_TTL
     if any(k in low for k in ["parks", "trivia", "library", "flea", "greenmarket"]):
@@ -1841,19 +1845,45 @@ def scrape_eventbrite_jsonld(url, ua):
     events = []
     seen = set()
     now = datetime.now(timezone.utc)
-    try:
-        resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=12)
-        resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "html.parser")
-        for s in soup.find_all("script", type="application/ld+json"):
-            if not s.string:
-                continue
-            try:
-                data = json.loads(s.string)
-                if not isinstance(data, dict) or data.get("@type") != "ItemList":
-                    continue
-                for el in data.get("itemListElement", []):
-                    item = el.get("item", {})
+    headers = {
+        "User-Agent": ua or UA_CHROME,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Sec-Ch-Ua": '"Chromium";v="124", "Google Chrome";v="124"',
+        "Sec-Ch-Ua-Mobile": "?0",
+        "Sec-Ch-Ua-Platform": '"macOS"',
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Upgrade-Insecure-Requests": "1",
+    }
+    resp = _SESSION.get(url, headers=headers, timeout=12)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
+    for s in soup.find_all("script", type="application/ld+json"):
+        if not s.string:
+            continue
+        try:
+            data = json.loads(s.string)
+            items_to_check = []
+            if isinstance(data, dict):
+                if data.get("@type") == "ItemList":
+                    items_to_check.append(data)
+                elif "@graph" in data and isinstance(data["@graph"], list):
+                    for g in data["@graph"]:
+                        if isinstance(g, dict) and g.get("@type") == "ItemList":
+                            items_to_check.append(g)
+            elif isinstance(data, list):
+                for g in data:
+                    if isinstance(g, dict) and g.get("@type") == "ItemList":
+                        items_to_check.append(g)
+
+            for d_item in items_to_check:
+                for el in d_item.get("itemListElement", []):
+                    item = el.get("item", {}) if isinstance(el, dict) else {}
+                    if not item and isinstance(el, dict) and el.get("@type") == "Event":
+                        item = el
                     name = item.get("name")
                     start = item.get("startDate")
                     event_url = item.get("url") or url
@@ -1919,10 +1949,8 @@ def scrape_eventbrite_jsonld(url, ua):
                     if neigh_str:
                         ev_dict["neighborhood"] = neigh_str
                     events.append(ev_dict)
-            except Exception:
-                continue
-    except Exception:
-        pass
+        except Exception:
+            continue
     return events
 
 
@@ -1936,61 +1964,67 @@ def scrape_eventbrite_organizer(url, ua):
     seen = set()
     now = datetime.now(timezone.utc)
     api_url = f"https://www.eventbrite.com/api/v3/organizers/{org_id}/events/?order_by=start_asc&expand=venue"
-    try:
-        resp = _SESSION.get(api_url, headers={"User-Agent": ua}, timeout=12)
-        resp.raise_for_status()
-        data = resp.json()
-        for ev in data.get("events", []):
-            name = (ev.get("name") or {}).get("text")
-            start = (ev.get("start") or {}).get("utc")
-            event_url = ev.get("url")
-            if not name or not start:
-                continue
-            try:
-                dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
-            except Exception:
-                continue
-            if dt < now:
-                continue
-            key = (name.lower(), dt.date().isoformat())
-            if key in seen:
-                continue
-            seen.add(key)
-            is_free = ev.get("is_free", False)
-            price = "Free" if is_free else None
-            desc = (ev.get("summary") or "").strip()
-            vname = None
-            lat = None
-            lng = None
-            vobj = ev.get("venue")
-            if isinstance(vobj, dict):
-                vname = vobj.get("name")
-                addr_obj = vobj.get("address") or {}
-                loc_disp = addr_obj.get("localized_area_display") or addr_obj.get("city")
-                if vname and loc_disp and loc_disp.lower() not in vname.lower():
-                    vname = f"{vname} ({loc_disp})"
-                if vobj.get("latitude"):
-                    try:
-                        lat = float(vobj["latitude"])
-                        lng = float(vobj["longitude"])
-                    except Exception:
-                        pass
-            if not vname:
-                m_at = re.search(r"\bat\s+([A-Z0-9][^|(,\n]+)", name)
-                if m_at:
-                    vname = m_at.group(1).strip()
-            events.append({
-                "name": name,
-                "date": dt.isoformat(),
-                "url": event_url or f"https://www.eventbrite.com/o/{org_id}",
-                "venue": vname,
-                "lat": lat,
-                "lng": lng,
-                "price": price,
-                "description": desc,
-            })
-    except Exception:
-        pass
+    headers = {
+        "User-Agent": ua or UA_CHROME,
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": f"https://www.eventbrite.com/o/{org_id}",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin",
+    }
+    resp = _SESSION.get(api_url, headers=headers, timeout=12)
+    resp.raise_for_status()
+    data = resp.json()
+    for ev in data.get("events", []):
+        name = (ev.get("name") or {}).get("text")
+        start = (ev.get("start") or {}).get("utc")
+        event_url = ev.get("url")
+        if not name or not start:
+            continue
+        try:
+            dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
+        except Exception:
+            continue
+        if dt < now:
+            continue
+        key = (name.lower(), dt.date().isoformat())
+        if key in seen:
+            continue
+        seen.add(key)
+        is_free = ev.get("is_free", False)
+        price = "Free" if is_free else None
+        desc = (ev.get("summary") or "").strip()
+        vname = None
+        lat = None
+        lng = None
+        vobj = ev.get("venue")
+        if isinstance(vobj, dict):
+            vname = vobj.get("name")
+            addr_obj = vobj.get("address") or {}
+            loc_disp = addr_obj.get("localized_area_display") or addr_obj.get("city")
+            if vname and loc_disp and loc_disp.lower() not in vname.lower():
+                vname = f"{vname} ({loc_disp})"
+            if vobj.get("latitude"):
+                try:
+                    lat = float(vobj["latitude"])
+                    lng = float(vobj["longitude"])
+                except Exception:
+                    pass
+        if not vname:
+            m_at = re.search(r"\bat\s+([A-Z0-9][^|(,\n]+)", name)
+            if m_at:
+                vname = m_at.group(1).strip()
+        events.append({
+            "name": name,
+            "date": dt.isoformat(),
+            "url": event_url or f"https://www.eventbrite.com/o/{org_id}",
+            "venue": vname,
+            "lat": lat,
+            "lng": lng,
+            "price": price,
+            "description": desc,
+        })
     return events
 
 
@@ -4612,12 +4646,60 @@ DEAL_LINKS = [
 
 
 # --- Cache & Scraper Aggregator ---
+_last_known_good = {}
 _cache = {"ts": 0, "data": None}
+
+
+def _init_warm_cache():
+    """Warm last-known-good map and disk venue cache from events.json on disk if available."""
+    json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "events.json")
+    if not os.path.exists(json_path):
+        return
+
+    try:
+        with open(json_path, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+        venues = payload.get("venues") if isinstance(payload, dict) else payload
+        generated_at = payload.get("generated_at") if isinstance(payload, dict) else None
+
+        file_ts = os.path.getmtime(json_path)
+        if generated_at:
+            try:
+                dt = datetime.fromisoformat(generated_at.replace("Z", "+00:00"))
+                file_ts = dt.timestamp()
+            except Exception:
+                pass
+
+        if venues and isinstance(venues, list):
+            for v in venues:
+                vname = v.get("venue")
+                evs = v.get("events")
+                if vname and evs is not None:
+                    valid_evs = [e for e in evs if not is_placeholder_or_closed_event(e.get("name"))]
+                    _last_known_good[vname] = valid_evs
+                    # If venue cache does not exist on disk, seed it with events and timestamp from events.json
+                    cpath = _venue_cache_path(vname)
+                    if not os.path.exists(cpath):
+                        try:
+                            with open(cpath, "w", encoding="utf-8") as cf:
+                                json.dump({
+                                    "ts": file_ts,
+                                    "venue": vname,
+                                    "duration": v.get("duration", 0.0),
+                                    "events": valid_evs
+                                }, cf, ensure_ascii=False)
+                        except Exception:
+                            pass
+    except Exception:
+        pass
+
+
+_init_warm_cache()
 
 
 def _scrape_one(v, force=False):
     vname = v["name"]
-    ttl = _get_venue_ttl(vname)
+    ttl = _get_venue_ttl(vname, v=v)
 
     # 1. Check if cached data exists and is within TTL
     if not force:
@@ -4649,16 +4731,15 @@ def _scrape_one(v, force=False):
 
         dur = round(time.time() - t0, 2)
         if events:
+            _last_known_good[vname] = events
             _save_venue_cache(vname, events, duration=dur)
         else:
             # Scraper returned 0 events: preserve previous cached events if available
             stale_cache = _load_venue_cache(vname, max_age=None)
-            if stale_cache and stale_cache.get("events"):
-                prev_evs = [e for e in stale_cache["events"] if not is_placeholder_or_closed_event(e.get("name")) and _is_within_horizon(e, max_days=HORIZON_DAYS)]
-                if prev_evs:
-                    events = prev_evs
-                else:
-                    _save_venue_cache(vname, events, duration=dur)
+            prev = (stale_cache.get("events") if stale_cache else None) or _last_known_good.get(vname, [])
+            prev_evs = [e for e in prev if not is_placeholder_or_closed_event(e.get("name")) and _is_within_horizon(e, max_days=HORIZON_DAYS)]
+            if prev_evs:
+                events = prev_evs
             else:
                 _save_venue_cache(vname, events, duration=dur)
 
@@ -4673,10 +4754,11 @@ def _scrape_one(v, force=False):
             "cached": False,
         }
     except Exception as exc:
-        # Error resilience: fall back to existing cache if network/Cloudflare fails
+        # Error resilience: fall back to existing cache or last known good if network/Cloudflare fails
         stale_cache = _load_venue_cache(vname, max_age=None)
-        if stale_cache and stale_cache.get("events"):
-            events = [e for e in stale_cache["events"] if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_placeholder_or_closed_event(e.get("name"))]
+        prev = (stale_cache.get("events") if stale_cache else None) or _last_known_good.get(vname, [])
+        if prev:
+            events = [e for e in prev if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_placeholder_or_closed_event(e.get("name"))]
             return {
                 "venue": vname,
                 "url": v["url"],
