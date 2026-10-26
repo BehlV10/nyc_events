@@ -4549,6 +4549,7 @@ _ALL_VENUES = [
     {"name": "NYC Improv & Alternative Comedy", "url": "https://www.eventbrite.com/d/ny--new-york/improv/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
 
     # Board Game Clubs, Tabletop RPGs & Social Meetups
+    {"name": "Chess Place NYC", "url": "https://www.eventbrite.com/api/v3/organizers/115357260611/events/?order_by=start_asc&expand=venue", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "gaming"},
     {"name": "NYC Board Games & Tabletop", "url": "https://www.eventbrite.com/d/ny--new-york/board-games/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
     {"name": "Brooklyn Board Games & Socials", "url": "https://www.eventbrite.com/d/ny--brooklyn/board-games/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
     {"name": "NYC Tabletop RPG & D&D", "url": "https://www.eventbrite.com/d/ny--new-york/tabletop/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
