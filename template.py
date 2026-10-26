@@ -31,7 +31,8 @@ TRISTATE_NEEDLES = (
     "new jersey", ", nj", " nj ", " nj,", "hoboken", "jersey city", "newark", "asbury park",
     "montclair", "paramus", "hackensack", "westwood", "maywood", "weehawken", "secaucus",
     "englewood", "fort lee", "edgewater", "morristown", "lyndhurst", "wanaque", "loch arbour",
-    "wyckoff", "west orange", "paterson", "clifton", "passaic", "teaneck", "ridgefield",
+    "wyckoff, nj", "wyckoff nj", "ridgewood, nj", "ridgewood nj",
+    "west orange", "paterson", "clifton", "passaic", "teaneck", "ridgefield",
     # Connecticut markers & towns
     "connecticut", ", ct", " ct ", " ct,", "stamford", "greenwich, ct", "greenwich ct",
     "norwalk", "new haven", "bridgeport", "darien", "westport",
@@ -40,7 +41,7 @@ TRISTATE_NEEDLES = (
     "scarsdale", "mount vernon", "peekskill", "ossining", "mamaroneck", "rye, ny", "rye ny",
     "bethel woods", "hudson valley", "woodbury", "poughkeepsie", "beacon, ny", "sleepy hollow",
     # Long Island (Nassau / Suffolk)
-    "long island", "nassau", "suffolk", "huntington", "garden city", "hempstead",
+    "long island", "nassau county", "suffolk county", "huntington", "garden city", "hempstead",
     "patchogue", "babylon", "montauk", "hamptons", "riverhead", "westbury, ny",
 )
 
@@ -83,8 +84,8 @@ CITY_RULES = [
         "vanderbilt open streets", "vanderbilt ave open streets", "abolitionist place", "abolitionist place park", "domino park",
         "mccarren parkhouse", "flop house", "flop house comedy", "liz's book bar", "lizs book bar", "threes brewing",
         "silo brooklyn", "silo", "avant gardner", "brooklyn mirage", "the brooklyn mirage", "brooklyn made", "spectacle theater",
-        "h0l0", "paragon", "honey's", "honeys", "gabriela", "mood ring", "prospect park alliance", "brooklyn bridge park",
-        "brooklyn trivia", "4th ave", "prospect park board", "jalsa",
+        "paragon", "honey's", "honeys", "gabriela", "mood ring", "prospect park alliance", "brooklyn bridge park",
+        "brooklyn trivia", "265 4th ave", "prospect park board", "jalsa",
         "brooklyn", "bklyn", "williamsburg", "bushwick", "greenpoint", "dumbo",
         "bed-stuy", "bedford-stuyvesant", "crown heights", "prospect heights",
         "park slope", "gowanus", "red hook", "flatbush", "bay ridge",
@@ -93,21 +94,39 @@ CITY_RULES = [
     )),
     ("queens", (
         "knockdown center", "tv eye", "trans-pecos", "nowadays", "basement ny", "basement",
+        "h0l0", "bar freda", "the windjammer", "windjammer", "gottscheer hall", "gottscheer",
+        "topos bookstore", "topos",
         "forest hills stadium", "forest hills", "citi field", "flushing meadows",
-        "moma ps1", "museum of the moving image", "socrates sculpture",
-        "kaufman astoria", "terrasa 7", "queens public library", "qpl",
-        "q.e.d.", "qed astoria", "qed",
-        "the last word", "last word", "astoria swing",
-        "the gaf astoria", "the gaf", "small change", "the ditty",
+        "moma ps1", "museum of the moving image", "socrates sculpture", "noguchi museum", "noguchi",
+        "culture lab lic", "culture lab", "fifth hammer", "focal point beer", "focal point",
+        "rockaway brewing", "gantry plaza",
+        "kaufman astoria", "terraza 7", "terrasa 7", "queens public library", "qpl",
+        "q.e.d.", "qed astoria", "qed", "grove 34", "bohemian hall", "bohemian beer garden",
+        "the last word", "last word", "astoria swing", "astoria bookshop", "astoria park",
+        "the gaf astoria", "the gaf", "small change", "the ditty", "albatross bar", "albatross",
+        "sek'end sun", "sekend sun", "madam marie's", "madam marie", "heart of gold",
+        "sweet afton", "the wolfhound", "wolfhound", "diamond dogs", "dominie's", "dominies",
         "judy & punch", "judy and punch", "mosaic", "31st avenue open street", "corner bistro east", "on the 7",
         "mom's astoria", "mom’s astoria", "oliver's astoria", "oliver’s astoria",
         "the bier & cheese collective", "bar dalia", "singlecut beersmiths", "singlecut",
-        "sanger hall", "the skillman", "sunswick astoria",
+        "sanger hall", "the skillman", "sunswick astoria", "sunswick", "alewife brewing", "alewife",
+        "donovan's pub", "donovans pub", "claran's", "clarans",
+        "34th avenue open street", "diversity plaza", "world's borough bookshop", "worlds borough",
+        "flushing town hall", "queens museum", "queens theatre", "queens botanical garden", "queens botanical",
+        "queens county farm", "queens farm", "louis armstrong house", "louis armstrong",
+        "kupferberg center", "kupferberg", "colden auditorium", "lefrak concert hall",
+        "new york hall of science", "hall of science", "nysci", "queens night market",
+        "jamaica center for arts", "jcal", "jamaica performing arts", "jpac", "king manor",
         "hunters point south park", "hunters point waterfront", "hunters point",
         "astoria trivia", "queens trivia",
         "queens", "astoria", "long island city", "lic", "flushing",
         "ridgewood", "sunnyside", "jackson heights", "woodside",
-        "bayside", "jamaica, ny", "rockaway", "far rockaway",
+        "elmhurst", "east elmhurst", "corona", "rego park", "kew gardens", "briarwood",
+        "maspeth", "middle village", "glendale", "woodhaven", "ozone park", "richmond hill",
+        "howard beach", "broad channel", "fresh meadows", "oakland gardens", "floral park", "glen oaks",
+        "college point", "whitestone", "douglaston", "little neck", "bellerose",
+        "hollis", "st. albans", "queens village", "laurelton", "rosedale", "cambria heights",
+        "bayside", "jamaica, ny", "jamaica ave", "rockaway", "far rockaway", "arverne", "jacob riis", "fort totten",
     )),
     ("manhattan", (
         "bowery ballroom", "mercury lounge", "webster hall", "terminal 5",
@@ -222,6 +241,8 @@ SUBAREAS_BY_CITY = {
     "queens": [
         ("astoria_lic", "Astoria & Long Island City", "🍺"),
         ("flushing_ridgewood", "Flushing & Ridgewood", "🍜"),
+        ("jh_sunnyside", "Jackson Heights, Sunnyside & Woodside", "🌮"),
+        ("forest_hills_rockaway", "Forest Hills, Jamaica & Rockaways", "🌳"),
         ("queens_other", "Other Queens", "📍"),
     ],
     "bronx": [
@@ -267,7 +288,7 @@ def resolve_subarea(city, event, geo=None):
     elif city == "brooklyn":
         if any(k in blob for k in ["williamsburg", "greenpoint", "brooklyn steel", "brooklyn bowl", "music hall of williamsburg", "baby's all right", "warsaw", "pete's candy store", "skinny dennis", "union pool", "nitehawk", "flop house", "national sawdust"]):
             return ("Williamsburg & Greenpoint", "williamsburg_gp")
-        if any(k in blob for k in ["bushwick", "east williamsburg", "elsewhere", "avant gardner", "brooklyn mirage", "house of yes", "market hotel", "sultan room", "brooklyn monarch", "the meadows", "tv eye", "h0l0"]):
+        if any(k in blob for k in ["bushwick", "east williamsburg", "elsewhere", "avant gardner", "brooklyn mirage", "house of yes", "market hotel", "sultan room", "brooklyn monarch", "the meadows"]):
             return ("Bushwick & E. Williamsburg", "bushwick_ew")
         if any(k in blob for k in ["dumbo", "downtown brooklyn", "fort greene", "brooklyn navy yard", "brooklyn academy of music", "bam", "st. ann's", "transit museum", "barclays center"]):
             return ("DUMBO & Downtown BK", "dumbo_downtown")
@@ -280,10 +301,14 @@ def resolve_subarea(city, event, geo=None):
         return ("Other Brooklyn", "brooklyn_other")
 
     elif city == "queens":
-        if any(k in blob for k in ["astoria", "lic", "long island city", "knockdown center", "q.e.d.", "qed", "moma ps1", "museum of the moving image", "socrates"]):
+        if any(k in blob for k in ["astoria", "lic", "long island city", "q.e.d.", "qed", "moma ps1", "museum of the moving image", "moving image", "socrates", "noguchi", "grove 34", "culture lab", "bohemian hall", "fifth hammer", "focal point", "singlecut", "hunters point", "gantry", "albatross", "the ditty", "judy & punch", "sek'end sun", "madam marie", "sunswick", "last word", "31st avenue"]):
             return ("Astoria & Long Island City", "astoria_lic")
-        if any(k in blob for k in ["flushing", "ridgewood", "forest hills", "citi field"]):
+        if any(k in blob for k in ["flushing", "ridgewood", "maspeth", "corona", "citi field", "tv eye", "trans-pecos", "nowadays", "h0l0", "knockdown center", "basement", "bar freda", "windjammer", "gottscheer", "topos", "flushing town hall", "queens museum", "queens theatre", "queens botanical", "hall of science", "queens night market", "louis armstrong", "kupferberg"]):
             return ("Flushing & Ridgewood", "flushing_ridgewood")
+        if any(k in blob for k in ["jackson heights", "sunnyside", "woodside", "elmhurst", "terraza 7", "terrasa 7", "alewife", "sanger hall", "the skillman", "donovan's", "34th avenue", "diversity plaza", "world's borough"]):
+            return ("Jackson Heights, Sunnyside & Woodside", "jh_sunnyside")
+        if any(k in blob for k in ["forest hills", "rego park", "kew gardens", "jamaica", "jcal", "rockaway", "far rockaway", "arverne", "bayside", "floral park", "queens farm", "queens county farm", "alley pond", "fort totten"]):
+            return ("Forest Hills, Jamaica & Rockaways", "forest_hills_rockaway")
         return ("Other Queens", "queens_other")
 
     elif city == "bronx":
@@ -306,7 +331,8 @@ def _event_stable_id(e):
 
 
 def _is_tristate(hay):
-    h = f" {hay.lower()} "
+    # Strip "long island city" so Long Island City, Queens is never mistaken for Long Island (Nassau/Suffolk)
+    h = f" {hay.lower()} ".replace("long island city", "")
     for n in TRISTATE_NEEDLES:
         if n in h:
             return True
@@ -314,7 +340,7 @@ def _is_tristate(hay):
 
 
 def _city_from_zip(hay):
-    m = re.search(r"\b(10[0-2]\d{2}|103\d{2}|104\d{2}|112\d{2}|11[1346]\d{2})\b", hay)
+    m = re.search(r"\b(10[0-2]\d{2}|103\d{2}|104\d{2}|112\d{2}|1100[45]|11[1346]\d{2})\b", hay)
     if not m:
         return None
     zip_code = int(m.group(1))
@@ -331,11 +357,13 @@ def _city_from_zip(hay):
     return None
 
 
-def _event_city(venue, source, geo=None):
+def _event_city(venue, source, geo=None, event=None):
     v = (venue or "").strip().lower()
     hay = f"{v} {(source or '').strip().lower()}"
     if geo:
         hay = f"{hay} {(geo.get('neighborhood') or '').lower()} {(geo.get('address') or '').lower()}"
+    if event:
+        hay = f"{hay} {(event.get('neighborhood') or '').lower()} {(event.get('address') or '').lower()} {(event.get('location') or '').lower()}"
     # 1. Definitively outside NYC
     if _is_tristate(hay):
         return "other"
@@ -1329,7 +1357,7 @@ def render_page(results):
             geo_attrs = f' data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue-name="{escape(geo["venue"])}" data-neighborhood="{escape(geo["neighborhood"])}"'
             geo_btn = f' <button type="button" class="venue-map-jump" data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue="{escape(geo["venue"])}" title="View {escape(geo["venue"])} on Map">📍</button>'
 
-        city = _event_city(venue, source, geo=geo)
+        city = _event_city(venue, source, geo=geo, event=e)
         sub_name, sub_slug = resolve_subarea(city, e, geo=geo)
         subarea_tag = f' <span class="subarea-tag">· {escape(sub_name)}</span>' if sub_name and not sub_name.startswith("Other ") else ""
         recurring = is_recurring(e)
@@ -1429,7 +1457,7 @@ def render_page(results):
         by_city = {c: [] for c in city_day_order}
         for e in events:
             geo = resolve_event_geo(e)
-            c = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo)
+            c = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo, event=e)
             by_city.setdefault(c, []).append(e)
         city_blocks = []
         for cname in city_day_order:
@@ -1629,7 +1657,7 @@ def render_page(results):
     city_counts = {c: 0 for c in city_order}
     for e in all_events_flat:
         geo = resolve_event_geo(e)
-        c = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo)
+        c = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo, event=e)
         city_counts[c] = city_counts.get(c, 0) + 1
 
     city_boxes = "\n".join(
