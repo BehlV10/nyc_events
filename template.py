@@ -38,7 +38,7 @@ TRISTATE_NEEDLES = (
     "norwalk", "new haven", "bridgeport", "darien", "westport",
     # Westchester, Hudson Valley & Upstate NY
     "new rochelle", "white plains", "yonkers", "port chester", "tarrytown", "nyack",
-    "scarsdale", "mount vernon", "peekskill", "ossining", "mamaroneck", "rye, ny", "rye ny",
+    "scarsdale", "mount vernon, ny", "mount vernon ny", "peekskill", "ossining", "mamaroneck", "rye, ny", "rye ny",
     "bethel woods", "hudson valley", "woodbury", "poughkeepsie", "beacon, ny", "sleepy hollow",
     # Long Island (Nassau / Suffolk)
     "long island", "nassau county", "suffolk county", "huntington", "garden city", "hempstead",
@@ -54,7 +54,7 @@ CITY_RULES = [
         "fordham", "pelham", "mott haven", "city island", "bronx",
     )),
     ("staten_island", (
-        "snug harbor", "st. george theatre", "richmond county bank",
+        "snug harbor", "st. george theatre", "richmond county bank", "richmond county",
         "conference house",
         "staten island", "st. george", "tompkinsville", "new brighton",
     )),
@@ -85,7 +85,10 @@ CITY_RULES = [
         "mccarren parkhouse", "flop house", "flop house comedy", "liz's book bar", "lizs book bar", "threes brewing",
         "silo brooklyn", "silo", "avant gardner", "brooklyn mirage", "the brooklyn mirage", "brooklyn made", "spectacle theater",
         "paragon", "honey's", "honeys", "gabriela", "mood ring", "prospect park alliance", "brooklyn bridge park",
-        "brooklyn trivia", "265 4th ave", "prospect park board", "jalsa",
+        "brooklyn trivia", "265 4th ave", "269 4th ave", "prospect park board", "jalsa",
+        "nyc resistor", "twenty sided store", "twenty sided", "brooklan", "spritzenhaus33", "spritzenhaus",
+        "kent ale house", "old stone house", "ethical culture", "whoopsie daisy", "ange noir",
+        "city league coffee", "center for fiction", "sip & play", "sip and play", "farm.one", "kings county",
         "brooklyn", "bklyn", "williamsburg", "bushwick", "greenpoint", "dumbo",
         "bed-stuy", "bedford-stuyvesant", "crown heights", "prospect heights",
         "park slope", "gowanus", "red hook", "flatbush", "bay ridge",
@@ -118,6 +121,9 @@ CITY_RULES = [
         "new york hall of science", "hall of science", "nysci", "queens night market",
         "jamaica center for arts", "jcal", "jamaica performing arts", "jpac", "king manor",
         "hunters point south park", "hunters point waterfront", "hunters point",
+        "kew & willow", "kew and willow", "astoria food pantry", "cobblestones pub",
+        "pete's grill", "the queensboro", "bratwurst und bier", "queens college",
+        "cucala dance", "cucala", "queens county",
         "astoria trivia", "queens trivia",
         "queens", "astoria", "long island city", "lic", "flushing",
         "ridgewood", "sunnyside", "jackson heights", "woodside",
@@ -174,13 +180,13 @@ CITY_RULES = [
         "gramercy ale house", "e's bar", "e’s bar", "captain's bar", "captain’s bar",
         "phoenix bar", "the hunterian", "the five lamps", "the hairy lemon", "ryan maguire's", "ryan maguire’s",
         "the winslow", "scrappleland", "rose's r&r bar", "roses r&r bar", "sadie's ward", "sadie’s ward",
-        "lily's", "lily’s", "ella's cafe", "ella’s cafe", "farm.one",
+        "lily's", "lily’s", "ella's cafe", "ella’s cafe",
         "broadway", "off-broadway", "theater district", "theatre district",
         "gonzalez y gonzalez", "swing 46", "the back room", "back room",
         "mona's", "monas", "pieces bar", "the stonewall inn", "stonewall inn", "stonewall",
         "trivia a.d.", "trivia ad", "barcade",
         "somewhere nowhere", "the dl", "harbor nyc", "harbor new york", "230 fifth", "slate nyc", "slate ny", "nebula",
-        "taj lounge", "taj ii", "club cache", "cache", "iguana nyc", "iguana", "cucala dance", "cucala",
+        "taj lounge", "taj ii", "club cache", "cache", "iguana nyc", "iguana",
         "ysbd", "you should be dancing", "frim fram", "danznik", "midtown swings", "hungarian house", "estonian house",
         "good shepherd", "kilowatt", "mehanata", "pangea", "connolly's", "connollys", "connolly",
         "ripley-grier", "prince george ballroom", "sara d roosevelt", "harlem swing dance", "harlem swing",
@@ -364,6 +370,8 @@ def _event_city(venue, source, geo=None, event=None):
         hay = f"{hay} {(geo.get('neighborhood') or '').lower()} {(geo.get('address') or '').lower()}"
     if event:
         hay = f"{hay} {(event.get('neighborhood') or '').lower()} {(event.get('address') or '').lower()} {(event.get('location') or '').lower()}"
+        if not v or v in ("nyc community location", "tba", "tbd", "various") or v.startswith("nyc meetup"):
+            hay = f"{hay} {(event.get('name') or '').lower()}"
     # 1. Definitively outside NYC
     if _is_tristate(hay):
         return "other"

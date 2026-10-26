@@ -1125,6 +1125,88 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(momi_evs[0]["neighborhood"], "Astoria")
         self.assertEqual(momi_evs[0]["price"], "$15")
 
+    def test_meetup_apollo_and_brooklyn_brainery(self):
+        """Verify Meetup __NEXT_DATA__ Apollo state scraping, Brooklyn Brainery scraper, and Brooklyn/Queens meetup classification."""
+        from template import _event_city
+        from scrapers import scrape_meetup, scrape_brooklyn_brainery
+        from unittest.mock import patch, MagicMock
+        import json
+
+        fut_iso = (datetime.now(EASTERN) + timedelta(days=4)).isoformat()
+        apollo_payload = {
+            "props": {
+                "pageProps": {
+                    "__APOLLO_STATE__": {
+                        "Venue:101": {
+                            "__typename": "Venue",
+                            "id": "101",
+                            "name": "Cobblestones Pub",
+                            "address": "117-18 Queens Blvd",
+                            "city": "Forest Hills",
+                            "state": "NY",
+                        },
+                        "Group:202": {
+                            "__typename": "Group",
+                            "id": "202",
+                            "name": "Queens Board Gamers Group",
+                        },
+                        "Event:303": {
+                            "__typename": "Event",
+                            "id": "303",
+                            "title": "Tuesday Night Weekly Game Night - Forest Hills Edition",
+                            "dateTime": fut_iso,
+                            "eventType": "PHYSICAL",
+                            "eventUrl": "https://www.meetup.com/queens-board-gamers-group/events/303/",
+                            "description": "Board games in Forest Hills!",
+                            "venue": {"__ref": "Venue:101"},
+                            "group": {"__ref": "Group:202"},
+                            "feeSettings": None,
+                        },
+                    }
+                }
+            }
+        }
+        mock_meetup_resp = MagicMock()
+        mock_meetup_resp.text = f'<html><body><script id="__NEXT_DATA__" type="application/json">{json.dumps(apollo_payload)}</script></body></html>'
+        mock_meetup_resp.raise_for_status = MagicMock()
+        with patch("scrapers._SESSION.get", return_value=mock_meetup_resp):
+            m_evs = scrape_meetup("https://www.meetup.com/queens-board-gamers-group/events/", "TestUA")
+        self.assertEqual(len(m_evs), 1)
+        self.assertIn("Forest Hills", m_evs[0]["venue"])
+        self.assertEqual(_event_city(m_evs[0]["venue"], "Meetup: Queens Board Gamers Group", event=m_evs[0]), "queens")
+
+        # Kings County and title fallback when venue is hidden
+        kc_ev = {"name": "Sketch Prospect Park's Fall Leaves!", "venue": "Lincoln Road & Ocean Avenue (Kings County, NY)"}
+        self.assertEqual(_event_city(kc_ev["venue"], "Meetup", event=kc_ev), "brooklyn")
+        hidden_ev = {"name": "Non Alcoholic Happy Hour in Brooklyn", "venue": "NYC Community Location"}
+        self.assertEqual(_event_city(hidden_ev["venue"], "Meetup", event=hidden_ev), "brooklyn")
+
+        # Brooklyn Brainery scraper (filters out online courses)
+        fut_dt = datetime.now(EASTERN) + timedelta(days=5)
+        mon_name = fut_dt.strftime("%B")
+        day_num = fut_dt.day
+        bb_html = f"""
+        <html><body>
+          <div class="course-info">
+            <h3><a href="/courses/watercolor-food-illustration">Watercolor Food Illustration</a></h3>
+            <p><a href="/courses/watercolor-food-illustration">Tue. {mon_name} {day_num}, 6pm</a></p>
+          </div>
+          <div class="course-info">
+            <h3><a href="/courses/history-talk-online">History Talk (Online)</a></h3>
+            <p><a href="/courses/history-talk-online">Tue. {mon_name} {day_num}, 8pm</a></p>
+          </div>
+        </body></html>
+        """
+        mock_bb_resp = MagicMock()
+        mock_bb_resp.text = bb_html
+        mock_bb_resp.raise_for_status = MagicMock()
+        with patch("scrapers._SESSION.get", return_value=mock_bb_resp):
+            bb_evs = scrape_brooklyn_brainery("https://brooklynbrainery.com/courses", "TestUA")
+        self.assertEqual(len(bb_evs), 1)
+        self.assertEqual(bb_evs[0]["name"], "Watercolor Food Illustration")
+        self.assertEqual(bb_evs[0]["venue"], "Brooklyn Brainery")
+
 
 if __name__ == "__main__":
     unittest.main()
+

@@ -2582,10 +2582,14 @@ def scrape_skip_the_small_talk(url, ua):
 
 
 def scrape_meetup(url, ua):
-    """Meetup.com — in-person community events (board games, hikes, salsa, swing, trivia)."""
+    """Meetup.com — in-person community events (search pages and direct group pages)."""
     events = []
     seen = set()
     now = datetime.now(timezone.utc)
+    spam_words = [
+        "zoom", "webinar", "virtual", "online event", "from home",
+        "speed dating from home", "instant zoom", "match from home"
+    ]
     try:
         resp = _SESSION.get(
             url,
@@ -2599,6 +2603,44 @@ def scrape_meetup(url, ua):
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
 
+        def _format_meetup_venue(vname, street, city_hint, region_hint, org_name):
+            vname = (vname or "").strip()
+            street = (street or "").strip()
+            city_hint = (city_hint or "").strip()
+            region_hint = (region_hint or "").strip()
+            org_name = (org_name or "").strip()
+
+            full_addr_parts = [p for p in (street, city_hint, region_hint) if p]
+            full_addr = ", ".join(full_addr_parts)
+
+            invalid_v = not vname or vname.lower() in [
+                "none", "see event description", "view point", "null", "needs a location", "tbd", "tba"
+            ]
+            if invalid_v:
+                if street:
+                    vname = f"{street}, {city_hint}" if city_hint and city_hint.lower() not in street.lower() else street
+                elif org_name and city_hint:
+                    vname = f"{org_name} ({city_hint})"
+                elif org_name:
+                    vname = org_name
+                elif city_hint:
+                    vname = f"NYC Meetup ({city_hint})"
+                else:
+                    vname = "NYC Community Location"
+            else:
+                if street and street.lower() not in vname.lower():
+                    if city_hint and city_hint.lower() not in ("new york", "new york city", "nyc") and city_hint.lower() not in street.lower() and city_hint.lower() not in vname.lower():
+                        vname = f"{vname} ({street}, {city_hint})"
+                    else:
+                        vname = f"{vname} ({street})"
+                elif city_hint and city_hint.lower() not in ("new york", "new york city", "nyc") and city_hint.lower() not in vname.lower():
+                    vname = f"{vname} ({city_hint})"
+
+            if not full_addr and org_name:
+                full_addr = org_name
+            return vname, full_addr
+
+        # 1. Parse Schema.org JSON-LD blocks
         for s in soup.find_all("script", type="application/ld+json"):
             try:
                 data = json.loads(s.string)
@@ -2612,7 +2654,6 @@ def scrape_meetup(url, ua):
                     if not isinstance(ev, dict) or ev.get("@type") != "Event":
                         continue
 
-                    # Strict filter for in-person physical events only
                     mode = (ev.get("eventAttendanceMode") or "").lower()
                     if "online" in mode:
                         continue
@@ -2625,12 +2666,8 @@ def scrape_meetup(url, ua):
                     if not name:
                         continue
 
-                    # Filter out spam / virtual events masquerading as offline
                     name_lower = name.lower()
-                    if any(w in name_lower for w in [
-                        "zoom", "webinar", "virtual", "online event", "from home",
-                        "speed dating from home", "instant zoom", "match from home"
-                    ]):
+                    if any(w in name_lower for w in spam_words):
                         continue
 
                     raw_date = ev.get("startDate")
@@ -2644,12 +2681,12 @@ def scrape_meetup(url, ua):
                     if dt < now:
                         continue
 
-                    key = (name_lower, raw_date[:10])
+                    key = (name_lower, dt.isoformat()[:10])
                     if key in seen:
                         continue
                     seen.add(key)
 
-                    vname = (loc.get("name") or "").strip()
+                    vname_raw = (loc.get("name") or "").strip()
                     addr = loc.get("address")
                     city_hint = ""
                     region_hint = ""
@@ -2658,13 +2695,10 @@ def scrape_meetup(url, ua):
                         street = (addr.get("streetAddress") or "").strip()
                         city_hint = (addr.get("addressLocality") or "").strip()
                         region_hint = (addr.get("addressRegion") or "").strip()
-                        if not vname and street:
-                            vname = f"{street}, {city_hint}" if city_hint else street
-                        elif vname and street and street not in vname:
-                            vname = f"{vname} ({street})"
 
-                    if not vname or vname.lower() in ["none", "see event description", "view point", "null"]:
-                        vname = f"NYC Meetup ({city_hint})" if city_hint else "NYC Community Location"
+                    org = ev.get("organizer")
+                    org_name = org.get("name", "") if isinstance(org, dict) else ""
+                    vname, full_addr = _format_meetup_venue(vname_raw, street, city_hint, region_hint, org_name)
 
                     lat = None
                     lng = None
@@ -2676,23 +2710,16 @@ def scrape_meetup(url, ua):
                         except Exception:
                             pass
 
-                    # Price extraction
-                    price = None
+                    price = "Free"
                     offers = ev.get("offers")
                     if isinstance(offers, dict):
                         p = str(offers.get("price", "")).strip()
-                        if p in ["0", "0.00", "0.0", ""]:
-                            price = "Free"
-                        elif p:
+                        if p and p not in ["0", "0.00", "0.0"]:
                             price = f"${p}"
                     elif isinstance(offers, list) and offers:
                         p = str(offers[0].get("price", "")).strip()
-                        if p in ["0", "0.00", "0.0", ""]:
-                            price = "Free"
-                        elif p:
+                        if p and p not in ["0", "0.00", "0.0"]:
                             price = f"${p}"
-                    else:
-                        price = "Free"
 
                     desc = (ev.get("description") or "").strip()[:250]
                     event_url = ev.get("url") or url
@@ -2702,6 +2729,90 @@ def scrape_meetup(url, ua):
                         "date": dt.isoformat(),
                         "url": event_url,
                         "venue": vname,
+                        "address": full_addr,
+                        "lat": lat,
+                        "lng": lng,
+                        "price": price,
+                        "description": desc,
+                    })
+            except Exception:
+                pass
+
+        # 2. Parse __NEXT_DATA__ Apollo state (captures group event pages & additional search results)
+        nd = soup.find("script", id="__NEXT_DATA__")
+        if nd and nd.string:
+            try:
+                apollo = json.loads(nd.string).get("props", {}).get("pageProps", {}).get("__APOLLO_STATE__", {})
+                for k, ev in apollo.items():
+                    if not k.startswith("Event:") or not isinstance(ev, dict):
+                        continue
+                    if ev.get("eventType") != "PHYSICAL":
+                        continue
+
+                    name = (ev.get("title") or "").strip()
+                    if not name:
+                        continue
+                    name_lower = name.lower()
+                    if any(w in name_lower for w in spam_words):
+                        continue
+
+                    raw_date = ev.get("dateTime")
+                    if not raw_date:
+                        continue
+                    try:
+                        dt = datetime.fromisoformat(raw_date.replace("Z", "+00:00")).astimezone(timezone.utc)
+                    except Exception:
+                        continue
+                    if dt < now:
+                        continue
+
+                    key = (name_lower, dt.isoformat()[:10])
+                    if key in seen:
+                        continue
+                    seen.add(key)
+
+                    v_obj = ev.get("venue") or {}
+                    if isinstance(v_obj, dict) and "__ref" in v_obj:
+                        v_obj = apollo.get(v_obj["__ref"], {}) or {}
+                    g_obj = ev.get("group") or {}
+                    if isinstance(g_obj, dict) and "__ref" in g_obj:
+                        g_obj = apollo.get(g_obj["__ref"], {}) or {}
+
+                    vname_raw = (v_obj.get("name") or "").strip() if isinstance(v_obj, dict) else ""
+                    street = (v_obj.get("address") or "").strip() if isinstance(v_obj, dict) else ""
+                    city_hint = (v_obj.get("city") or "").strip() if isinstance(v_obj, dict) else ""
+                    region_hint = (v_obj.get("state") or "").strip() if isinstance(v_obj, dict) else ""
+                    org_name = (g_obj.get("name") or "").strip() if isinstance(g_obj, dict) else ""
+
+                    vname, full_addr = _format_meetup_venue(vname_raw, street, city_hint, region_hint, org_name)
+
+                    lat = None
+                    lng = None
+                    if isinstance(v_obj, dict):
+                        try:
+                            if v_obj.get("lat") is not None and v_obj.get("lng") is not None:
+                                lat = float(v_obj["lat"])
+                                lng = float(v_obj["lng"])
+                            elif v_obj.get("lat") is not None and v_obj.get("lon") is not None:
+                                lat = float(v_obj["lat"])
+                                lng = float(v_obj["lon"])
+                        except Exception:
+                            pass
+
+                    price = "Free"
+                    fee = ev.get("feeSettings")
+                    if isinstance(fee, dict) and fee.get("amount"):
+                        price = f"${fee['amount']}"
+
+                    desc = (ev.get("description") or "").strip()[:250]
+                    event_url = ev.get("eventUrl") or url
+
+                    events.append({
+                        "name": name,
+                        "date": dt.isoformat(),
+                        "url": event_url,
+                        "venue": vname,
+                        "address": full_addr,
                         "lat": lat,
                         "lng": lng,
                         "price": price,
@@ -2712,6 +2823,7 @@ def scrape_meetup(url, ua):
     except Exception:
         pass
     return events
+
 
 
 def scrape_luma(url, ua):
@@ -4012,6 +4124,78 @@ def scrape_queens_theatre(url, ua):
     return events
 
 
+def scrape_brooklyn_brainery(url, ua):
+    """Scrape in-person community classes and workshops from Brooklyn Brainery (Prospect Heights, Brooklyn)."""
+    events = []
+    seen = set()
+    ny_tz = ZoneInfo("America/New_York")
+    now = datetime.now(ny_tz)
+    try:
+        resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for info in soup.select("div.course-info"):
+            h3 = info.find("h3")
+            p = info.find("p")
+            if not h3 or not p:
+                continue
+            a = h3.find("a", href=True)
+            if not a:
+                continue
+            title = (a.get_text(" ", strip=True) or "").strip()
+            href = a["href"]
+            if not title or "online" in title.lower() or "-online" in href.lower():
+                continue
+
+            dt_text = p.get_text(" ", strip=True)
+            m = re.search(r"([A-Za-z]+)\s+(\d{1,2}),\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)", dt_text, re.I)
+            if not m:
+                continue
+            mon_str, day_str, hr_str, min_str, ampm = m.groups()
+            try:
+                mon_num = datetime.strptime(mon_str[:3], "%b").month
+            except ValueError:
+                continue
+            hr = int(hr_str)
+            mn = int(min_str or 0)
+            if ampm.lower() == "pm" and hr != 12:
+                hr += 12
+            elif ampm.lower() == "am" and hr == 12:
+                hr = 0
+            yr = now.year
+            try:
+                dt = datetime(yr, mon_num, int(day_str), hr, mn, tzinfo=ny_tz)
+                if (now - dt).days > 60:
+                    dt = datetime(yr + 1, mon_num, int(day_str), hr, mn, tzinfo=ny_tz)
+            except ValueError:
+                continue
+            if dt < now:
+                continue
+
+            iso_dt = dt.astimezone(timezone.utc).isoformat()
+            key = (title.lower(), iso_dt[:10])
+            if key in seen:
+                continue
+            seen.add(key)
+
+            ev_url = href if href.startswith("http") else f"https://brooklynbrainery.com{href}"
+            events.append({
+                "name": title,
+                "date": iso_dt,
+                "url": ev_url,
+                "venue": "Brooklyn Brainery",
+                "address": "190 Underhill Ave, Brooklyn, NY 11238",
+                "neighborhood": "Prospect Heights",
+                "lat": 40.6761,
+                "lng": -73.9652,
+                "price": None,
+                "category": "community",
+            })
+    except Exception as e:
+        print(f"Error scraping Brooklyn Brainery: {e}")
+    return events
+
+
 # --- Curated Recurring NYC Events ---
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
@@ -4418,6 +4602,40 @@ MANUAL_RECURRING_EVENTS = [
     ("Rockaway Track Club", "https://www.rockawaytc.org/", "sports", [
         ("Rockaway Beach Boardwalk Saturday Morning 5K & Social Run", "https://www.rockawaytc.org/", 5, 8, 30, "Free"),
     ]),
+    ("NYC Resistor", "https://www.nycresistor.com/", "community", [
+        ("NYC Resistor Hackerspace Public Craft Night (Boerum Hill)", "https://www.nycresistor.com/", 0, 19, 0, "Free"),
+        ("NYC Resistor Open Make & Electronics Night (Brooklyn)", "https://www.nycresistor.com/", 3, 19, 0, "Free"),
+    ]),
+    ("Twenty Sided Store", "https://twentysidedstore.com/", "gaming", [
+        ("Twenty Sided Store Williamsburg Board Game & RPG Meetup", "https://twentysidedstore.com/", 2, 18, 30, "$10"),
+        ("Twenty Sided Store Friday Night Magic & Tabletop Social", "https://twentysidedstore.com/", 4, 18, 30, "$10–$15"),
+        ("Twenty Sided Store Weekend Dungeons & Dragons One-Shots", "https://twentysidedstore.com/", 5, 13, 0, "$15"),
+    ]),
+    ("BrookLAN", "https://www.brooklan.com/", "gaming", [
+        ("BrookLAN Bushwick Smash Bros & Fighting Game Community Night", "https://www.brooklan.com/", 2, 19, 0, "$10"),
+        ("BrookLAN Bushwick Board Games, Trivia & Esports Social", "https://www.brooklan.com/", 3, 19, 30, "Free"),
+    ]),
+    ("Nook", "https://www.nookbk.com/", "gaming", [
+        ("Nook Bushwick Community Board Game & Chess Meetup", "https://www.nookbk.com/", 1, 19, 0, "Free"),
+        ("Nook Bushwick Neighborhood Trivia Night", "https://www.nookbk.com/", 2, 20, 0, "Free"),
+    ]),
+    ("McCarren Parkhouse", "https://www.mccarrenparkhouse.com/", "gaming", [
+        ("North Brooklyn Chess Club Meetup @ McCarren Parkhouse", "https://www.mccarrenparkhouse.com/", 2, 18, 0, "Free"),
+        ("McCarren Parkhouse Williamsburg Social Run & Coffee Club", "https://www.mccarrenparkhouse.com/", 5, 9, 30, "Free"),
+    ]),
+    ("The Center for Fiction", "https://centerforfiction.org/", "books", [
+        ("Center for Fiction Fort Greene Literary Discussion & Reading", "https://centerforfiction.org/", 1, 19, 0, "Free RSVP"),
+        ("Center for Fiction Bookstore Cafe Community Writing & Reading", "https://centerforfiction.org/", 3, 19, 0, "Free RSVP"),
+    ]),
+    ("Kew & Willow Books", "https://www.kewandwillow.com/", "books", [
+        ("Kew & Willow Books Queens Indie Book Club Meetup (Kew Gardens)", "https://www.kewandwillow.com/", 2, 19, 0, "Free"),
+    ]),
+    ("Astoria Food Pantry", "https://www.astoriafoodpantry.com/", "gaming", [
+        ("Astoria Food Pantry Thursday Community Board Game Night", "https://www.astoriafoodpantry.com/", 3, 18, 45, "Free"),
+    ]),
+    ("Cobblestones Pub", "https://cobblestonespub.com/", "gaming", [
+        ("Queens Board Gamers Weekly Game Night @ Cobblestones Pub (Forest Hills)", "https://cobblestonespub.com/", 1, 18, 0, "Free"),
+    ]),
 ]
 
 ANNUAL_LANDMARK_EVENTS = [
@@ -4821,7 +5039,7 @@ _ALL_VENUES = [
     {"name": "Chelsea Art Gallery Openings", "url": "https://www.eventbrite.com/d/ny--new-york/chelsea-art-gallery/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "art"},
     {"name": "Japan Fes NYC (Street Food)", "url": "https://www.eventbrite.com/d/ny--new-york/japan-fes/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
     {"name": "Midnight Runners NYC (Social Run Club)", "url": "https://www.eventbrite.com/d/ny--new-york/midnight-runners/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "sports"},
-    {"name": "Brooklyn Brainery (Community Classes)", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-brainery/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Brooklyn Brainery (Community Classes)", "url": "https://brooklynbrainery.com/courses", "ua": UA_CHROME, "scraper": scrape_brooklyn_brainery, "default_category": "community"},
     {"name": "Meetup: NYC Photography Walks & Photo Tours", "url": "https://www.meetup.com/find/?keywords=photography&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "art"},
     {"name": "Meetup: NYC Art Gallery Crawls & Openings", "url": "https://www.meetup.com/find/?keywords=art%20gallery&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "art"},
 
@@ -4898,9 +5116,9 @@ _ALL_VENUES = [
     {"name": "NYC Free Community Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/free--community--events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Cultural & Heritage Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/cultural-festival/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Free Food & Night Markets", "url": "https://www.eventbrite.com/d/ny--new-york/free--food-and-drink--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
-    {"name": "Brooklyn Free Festivals & Fairs", "url": "https://www.eventbrite.com/d/ny--brooklyn/free--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
-    {"name": "Queens Free Festivals & Markets", "url": "https://www.eventbrite.com/d/ny--queens/free--festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
-    {"name": "Bronx Cultural & Community Events", "url": "https://www.eventbrite.com/d/ny--bronx/free--events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Brooklyn Free Festivals & Fairs", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-free-festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Queens Free Festivals & Markets", "url": "https://www.eventbrite.com/d/ny--queens/queens-free-festivals/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Bronx Cultural & Community Events", "url": "https://www.eventbrite.com/d/ny--bronx/bronx-free-events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Night Markets & Bazaars", "url": "https://www.eventbrite.com/d/ny--new-york/night-market/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
     {"name": "Queens Night Market", "url": "https://queensnightmarket.com/", "ua": UA_CHROME, "scraper": scrape_queens_night_market, "default_category": "food"},
     {"name": "NYC Street Fairs & Avenue Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/street-fair/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
@@ -4929,15 +5147,60 @@ _ALL_VENUES = [
     # Board Game Clubs, Tabletop RPGs & Social Meetups
     {"name": "Chess Place NYC", "url": "https://www.eventbrite.com/api/v3/organizers/115357260611/events/?order_by=start_asc&expand=venue", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "gaming"},
     {"name": "NYC Board Games & Tabletop", "url": "https://www.eventbrite.com/d/ny--new-york/board-games/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
-    {"name": "Brooklyn Board Games & Socials", "url": "https://www.eventbrite.com/d/ny--brooklyn/board-games/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "Brooklyn Board Games & Socials", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-board-games/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
     {"name": "NYC Tabletop RPG & D&D", "url": "https://www.eventbrite.com/d/ny--new-york/tabletop/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
     {"name": "NYC Social Meetups & Mixers", "url": "https://www.eventbrite.com/d/ny--new-york/meetup/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Language Exchange & Culture Meetups", "url": "https://www.eventbrite.com/d/ny--new-york/language-exchange/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
 
     # Live Jazz Clubs, Acoustic Sessions & Historic Bars
     {"name": "NYC Live Jazz Sessions", "url": "https://www.eventbrite.com/d/ny--new-york/jazz/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
-    {"name": "Brooklyn Live Jazz & Blues", "url": "https://www.eventbrite.com/d/ny--brooklyn/jazz/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
+    {"name": "Brooklyn Live Jazz & Blues", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-jazz/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
     {"name": "NYC Speakeasy & Acoustic Sessions", "url": "https://www.eventbrite.com/d/ny--new-york/acoustic/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
+
+    # Brooklyn & Queens Local Meetups, Book Clubs, Board Games & Community Groups
+    {"name": "Brooklyn Social Meetups & Mixers", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-meetup/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Brooklyn Book Clubs & Literary Nights", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-book-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "books"},
+    {"name": "Brooklyn Run Clubs & Fitness Meetups", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-run-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "sports"},
+    {"name": "Brooklyn Bar Trivia & Game Nights", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-trivia/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "Queens Social Meetups & Mixers", "url": "https://www.eventbrite.com/d/ny--queens/queens-meetup/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Queens Trivia & Game Nights", "url": "https://www.eventbrite.com/d/ny--queens/queens-trivia/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
+    {"name": "Meetup: Brooklyn Social & Neighborhood Mixers", "url": "https://www.meetup.com/find/?keywords=Brooklyn&location=us--ny--Brooklyn&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Brooklyn Book Clubs & Reading Groups", "url": "https://www.meetup.com/find/?keywords=Brooklyn%20book%20club&location=us--ny--Brooklyn&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "books"},
+    {"name": "Meetup: Brooklyn Board Games & Tabletop", "url": "https://www.meetup.com/find/?keywords=Brooklyn%20board%20games&location=us--ny--Brooklyn&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Brooklyn Running & Walking Clubs", "url": "https://www.meetup.com/find/?keywords=Brooklyn%20run&location=us--ny--Brooklyn&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "sports"},
+    {"name": "Meetup: Brooklyn Tech, AI & Developers", "url": "https://www.meetup.com/find/?keywords=Brooklyn%20tech&location=us--ny--Brooklyn&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Williamsburg & Greenpoint Socials", "url": "https://www.meetup.com/find/?keywords=Williamsburg&location=us--ny--Brooklyn&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Park Slope & Prospect Park Community", "url": "https://www.meetup.com/find/?keywords=Park%20Slope&location=us--ny--Brooklyn&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Bushwick Creative & Social Meetups", "url": "https://www.meetup.com/find/?keywords=Bushwick&location=us--ny--Brooklyn&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Queens Neighborhood Socials & Mixers", "url": "https://www.meetup.com/find/?keywords=Queens&location=us--ny--Astoria&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Astoria Community & Social Meetups", "url": "https://www.meetup.com/find/?keywords=Astoria&location=us--ny--Astoria&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Flushing Tech, Food & Language Meetups", "url": "https://www.meetup.com/find/?keywords=Flushing&location=us--ny--Flushing&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Sunnyside, Woodside & Jackson Heights", "url": "https://www.meetup.com/find/?keywords=Sunnyside&location=us--ny--Sunnyside&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Queens Board Gamers Group", "url": "https://www.meetup.com/queens-board-gamers-group/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Tabletop Tuesday Sunnyside Game Night", "url": "https://www.meetup.com/tabletop-tuesday/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Prospect Park Board Gaming Club", "url": "https://www.meetup.com/prospect-park-board-gaming-club/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: The Brooklyn Board Games Group", "url": "https://www.meetup.com/the-brooklyn-board-games-meetup-group/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Brooklyn Strategist Evening Games", "url": "https://www.meetup.com/Brooklyn-Strategist-Evening-Events-Games-Meetup/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Astoria Runners", "url": "https://www.meetup.com/astoriarunners/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "sports"},
+    {"name": "Meetup: RUN LIC (Long Island City Runners)", "url": "https://www.meetup.com/longislandcity-runners/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "sports"},
+    {"name": "Meetup: Woodside-Sunnyside Runners", "url": "https://www.meetup.com/woodside-sunnyside-runners/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "sports"},
+    {"name": "Meetup: CALLEFUT Queens Soccer Community", "url": "https://www.meetup.com/new-york-nyc-soccer-meetup-group/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "sports"},
+    {"name": "Meetup: Queens Futsal Club", "url": "https://www.meetup.com/queensfutsalclub/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "sports"},
+    {"name": "Meetup: Brooklyn / Queens Coed Soccer Club", "url": "https://www.meetup.com/Bushwick-Inlet-Brooklyn-Coed-Soccer-Meetup/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "sports"},
+    {"name": "Meetup: Flushing Tech Hackathons & Meetups", "url": "https://www.meetup.com/flushingtech/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Astoria Tech Meetup", "url": "https://www.meetup.com/astoria-tech-meetup/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Brooklyn Women's Writing Group", "url": "https://www.meetup.com/bkwomenswritinggroup/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "books"},
+    {"name": "Meetup: Bushwick Writers Group", "url": "https://www.meetup.com/Bushwick-Writers-Meetup/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "books"},
+    {"name": "Meetup: Forest Hills Book Group", "url": "https://www.meetup.com/forest-hills-book-group/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "books"},
+    {"name": "Meetup: Silent Book Club NYC & Brooklyn", "url": "https://www.meetup.com/silentbookclubnyc/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "books"},
+    {"name": "Meetup: Shut Up & Write! NYC (Brooklyn & Queens)", "url": "https://www.meetup.com/shutupandwritenyc/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "books"},
+    {"name": "Meetup: Williamsburg French & Spanish Conversations", "url": "https://www.meetup.com/williamsburg-french-conversation-meetup/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Conversation française à Brooklyn", "url": "https://www.meetup.com/conversation-francaise-a-brooklyn/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Brooklyn Traditional Slow Jam (Park Slope)", "url": "https://www.meetup.com/brooklyn-traditional-slow-jam/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "music"},
+    {"name": "Meetup: Brooklyn Ethical Culture Community (Park Slope)", "url": "https://www.meetup.com/brooklyn-society-for-ethical-culture/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Mindful Astoria Meditation Community", "url": "https://www.meetup.com/Mindful-Astoria/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Friends from Bayside & Queens Socials", "url": "https://www.meetup.com/hangout-in-queens/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Cucala Dance LIC Salsa Classes & Socials", "url": "https://www.meetup.com/cucala-dance-company/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "dance"},
 ]
 
 VENUES = _ALL_VENUES
