@@ -1083,6 +1083,24 @@ def _merge_duplicates(events):
         "nyc parks department", "meetup nyc", "nyc broadway lotteries", "luckyseat nyc broadway lotteries"
     }
 
+    def _is_generic_feed(ev):
+        if not isinstance(ev, dict):
+            return False
+        v_url = (ev.get("venue_url") or "").lower()
+        if "/find/?keywords=" in v_url or "/d/ny--" in v_url or "donyc.com/events" in v_url:
+            return True
+        src = (ev.get("_source_venue") or ev.get("source") or "").strip().lower()
+        if src in generic_sources:
+            return True
+        if any(src.startswith(p) for p in ("meetup: nyc", "meetup: brooklyn", "meetup: queens")) and ("/find" in v_url or not v_url):
+            return True
+        return False
+
+    def _source_score(ev):
+        spec = 0 if _is_generic_feed(ev) else 20
+        prio = _url_priority(ev.get("url"), ev.get("_source_venue") or ev.get("source"))
+        return spec + prio
+
     def _is_different_show(e1, e2):
         t1 = e1.get("_time")
         t2 = e2.get("_time")
@@ -1124,7 +1142,7 @@ def _merge_duplicates(events):
             return True
         v1_low = v1.lower()
         v2_low = v2.lower()
-        if v1_low in generic_sources or v2_low in generic_sources:
+        if v1_low in generic_sources or v2_low in generic_sources or _is_generic_feed(e1) or _is_generic_feed(e2):
             return True
         if v1_low == v2_low:
             return True
@@ -1220,9 +1238,9 @@ def _merge_duplicates(events):
                 if not any(a.get("url") == cand_t_url for a in match["_alt_sources"]):
                     match["_alt_sources"].append({"venue": t_label, "source": raw_src, "url": cand_t_url, "price": e.get("price")})
 
-            # Upgrade primary source if newly arrived event has higher URL priority
-            cur_prio = _url_priority(match.get("url"), match.get("_source_venue") or match.get("source"))
-            new_prio = _url_priority(e.get("url"), e.get("_source_venue") or e.get("source"))
+            # Upgrade primary source if newly arrived event has higher source specificity or URL priority
+            cur_prio = _source_score(match)
+            new_prio = _source_score(e)
             if new_prio > cur_prio:
                 old_url = match.get("url")
                 old_src = match.get("_source_venue") or match.get("source") or "source"
@@ -1231,22 +1249,29 @@ def _merge_duplicates(events):
                     match["_alt_sources"].append({"venue": old_label, "source": old_src, "url": old_url, "price": match.get("price")})
                 match["url"] = e.get("url")
                 match["name"] = e.get("name")
-                if match.get("venue", "").lower() in generic_sources and e.get("venue"):
+                if match.get("venue", "").lower() in generic_sources or _is_generic_feed(match) or (e.get("venue") and not _is_generic_feed(e)):
                     match["venue"] = e.get("venue")
                 match["_source_venue"] = e.get("_source_venue") or e.get("source")
+                if e.get("venue_url"):
+                    match["venue_url"] = e.get("venue_url")
                 if e.get("_time") and (e["_time"].hour != 0 or e["_time"].minute != 0):
                     match["_time"] = e["_time"]
                 # Clean up _alt_sources so match["url"] is not duplicated in its own alt list
                 match["_alt_sources"] = [a for a in match["_alt_sources"] if a.get("url") != match.get("url")]
 
-            # Presenter tag resolution
+            # Presenter tag resolution: only real non-generic co-presenters
             cand_src = (match.get("_source_venue") or "").strip()
             e_src = (e.get("_source_venue") or "").strip()
             v_name = (match.get("venue") or "").strip().lower()
-            if e_src and e_src.lower() not in generic_sources and e_src.lower() not in v_name:
+            if e_src and not _is_generic_feed(e) and e_src.lower() not in generic_sources and e_src.lower() not in v_name and e_src.lower() != cand_src.lower():
                 match["_presenter"] = e_src
-            elif cand_src and cand_src.lower() not in generic_sources and cand_src.lower() not in v_name:
-                match["_presenter"] = cand_src
+            elif cand_src and not _is_generic_feed(match) and cand_src.lower() not in generic_sources and cand_src.lower() not in v_name and cand_src.lower() != (e_src or "").lower():
+                if cand_src.lower() != (match.get("_source_venue") or "").lower():
+                    match["_presenter"] = cand_src
+                else:
+                    match["_presenter"] = None
+            else:
+                match["_presenter"] = None
 
             if not match.get("price") and e.get("price"):
                 match["price"] = e["price"]
