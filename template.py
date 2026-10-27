@@ -89,6 +89,7 @@ CITY_RULES = [
         "nyc resistor", "twenty sided store", "twenty sided", "brooklan", "spritzenhaus33", "spritzenhaus",
         "kent ale house", "old stone house", "ethical culture", "whoopsie daisy", "ange noir",
         "city league coffee", "center for fiction", "sip & play", "sip and play", "farm.one", "kings county",
+        "royal palms", "barcade brooklyn", "jackbar", "sunshine laundromat", "chilo's", "chilos",
         "brooklyn", "bklyn", "williamsburg", "bushwick", "greenpoint", "dumbo",
         "bed-stuy", "bedford-stuyvesant", "crown heights", "prospect heights",
         "park slope", "gowanus", "red hook", "flatbush", "bay ridge",
@@ -123,7 +124,7 @@ CITY_RULES = [
         "hunters point south park", "hunters point waterfront", "hunters point",
         "kew & willow", "kew and willow", "astoria food pantry", "cobblestones pub",
         "pete's grill", "the queensboro", "bratwurst und bier", "queens college",
-        "cucala dance", "cucala", "queens county",
+        "cucala dance", "cucala", "queens county", "break bar", "pig beach",
         "astoria trivia", "queens trivia",
         "queens", "astoria", "long island city", "lic", "flushing",
         "ridgewood", "sunnyside", "jackson heights", "woodside",
@@ -184,7 +185,7 @@ CITY_RULES = [
         "broadway", "off-broadway", "theater district", "theatre district",
         "gonzalez y gonzalez", "swing 46", "the back room", "back room",
         "mona's", "monas", "pieces bar", "the stonewall inn", "stonewall inn", "stonewall",
-        "trivia a.d.", "trivia ad", "barcade",
+        "trivia a.d.", "trivia ad", "barcade", "galway hooker", "cellar dog", "juilliard",
         "somewhere nowhere", "the dl", "harbor nyc", "harbor new york", "230 fifth", "slate nyc", "slate ny", "nebula",
         "taj lounge", "taj ii", "club cache", "cache", "iguana nyc", "iguana",
         "ysbd", "you should be dancing", "frim fram", "danznik", "midtown swings", "hungarian house", "estonian house",
@@ -277,11 +278,11 @@ def resolve_subarea(city, event, geo=None):
     if city == "manhattan":
         if any(k in blob for k in ["east village", "lower east side", "les", "bowery", "mercury lounge", "rockwood", "pianos", "drom", "nublu", "berlin", "webster hall", "st. marks"]):
             return ("East Village & LES", "les_ev")
-        if any(k in blob for k in ["greenwich village", "west village", "soho", "noho", "nolita", "comedy cellar", "le poisson rouge", "lpr", "village vanguard", "blue note", "cafe wha", "pubkey", "houston hall", "bleecker", "the bitter end", "duane park", "angelika"]):
+        if any(k in blob for k in ["greenwich village", "west village", "soho", "noho", "nolita", "comedy cellar", "le poisson rouge", "lpr", "village vanguard", "blue note", "cafe wha", "pubkey", "houston hall", "bleecker", "the bitter end", "duane park", "angelika", "galway hooker", "cellar dog"]):
             return ("Greenwich Village & SoHo", "village_soho")
-        if any(k in blob for k in ["midtown", "chelsea", "hell's kitchen", "times square", "broadway", "hudson yards", "the shed", "high line", "madison square garden", "msg", "radio city", "carnegie hall", "sony hall", "town hall", "terminal 5", "irving plaza", "bryant park", "caveat", "asylum", "magnet", "cutting room", "james earl jones", "cort theatre", "lena horne", "helen hayes", "hayes theater", "palace theatre"]):
+        if any(k in blob for k in ["midtown", "chelsea", "hell's kitchen", "times square", "broadway", "hudson yards", "the shed", "high line", "madison square garden", "msg", "radio city", "carnegie hall", "sony hall", "town hall", "terminal 5", "irving plaza", "bryant park", "caveat", "asylum", "magnet", "cutting room", "james earl jones", "cort theatre", "lena horne", "helen hayes", "hayes theater", "palace theatre", "barcade chelsea"]):
             return ("Midtown & Chelsea", "midtown_chelsea")
-        if any(k in blob for k in ["upper west side", "uws", "lincoln center", "lincoln square", "columbus circle", "david geffen", "alice tully", "merkin", "symphony space", "central park", "summerstage", "beacon theatre", "american folk art", "library for the performing arts"]):
+        if any(k in blob for k in ["upper west side", "uws", "lincoln center", "lincoln square", "columbus circle", "david geffen", "alice tully", "merkin", "symphony space", "central park", "summerstage", "beacon theatre", "american folk art", "library for the performing arts", "juilliard"]):
             return ("Upper West & Lincoln Sq", "uws_lincoln")
         if any(k in blob for k in ["upper east side", "ues", "metropolitan museum", "the met", "guggenheim", "comic strip", "hungarian house", "frick", "cooper hewitt", "92ny", "92nd street y"]):
             return ("Upper East & Museums", "ues_museums")
@@ -292,22 +293,22 @@ def resolve_subarea(city, event, geo=None):
         return ("Other Manhattan", "manhattan_other")
 
     elif city == "brooklyn":
-        if any(k in blob for k in ["williamsburg", "greenpoint", "brooklyn steel", "brooklyn bowl", "music hall of williamsburg", "baby's all right", "warsaw", "pete's candy store", "skinny dennis", "union pool", "nitehawk", "flop house", "national sawdust"]):
+        if any(k in blob for k in ["williamsburg", "greenpoint", "brooklyn steel", "brooklyn bowl", "music hall of williamsburg", "baby's all right", "warsaw", "pete's candy store", "skinny dennis", "union pool", "nitehawk", "flop house", "national sawdust", "barcade brooklyn", "jackbar", "sunshine laundromat"]):
             return ("Williamsburg & Greenpoint", "williamsburg_gp")
         if any(k in blob for k in ["bushwick", "east williamsburg", "elsewhere", "avant gardner", "brooklyn mirage", "house of yes", "market hotel", "sultan room", "brooklyn monarch", "the meadows"]):
             return ("Bushwick & E. Williamsburg", "bushwick_ew")
         if any(k in blob for k in ["dumbo", "downtown brooklyn", "fort greene", "brooklyn navy yard", "brooklyn academy of music", "bam", "st. ann's", "transit museum", "barclays center"]):
             return ("DUMBO & Downtown BK", "dumbo_downtown")
-        if any(k in blob for k in ["park slope", "gowanus", "prospect heights", "the bell house", "littlefield", "union hall", "public records", "brooklyn museum", "prospect park", "barbes"]):
+        if any(k in blob for k in ["park slope", "gowanus", "prospect heights", "the bell house", "littlefield", "union hall", "public records", "brooklyn museum", "prospect park", "barbes", "royal palms"]):
             return ("Park Slope & Gowanus", "park_slope_gowanus")
-        if any(k in blob for k in ["bed-stuy", "bedstuy", "crown heights", "flatbush", "kings theatre", "c'mon everybody"]):
+        if any(k in blob for k in ["bed-stuy", "bedstuy", "crown heights", "flatbush", "kings theatre", "c'mon everybody", "chilo's", "chilos"]):
             return ("Bed-Stuy & Crown Heights", "bedstuy_crown")
         if any(k in blob for k in ["coney island", "bay ridge", "sunset park", "industry city", "ford amphitheater"]):
             return ("Coney Island & Bay Ridge", "south_bk")
         return ("Other Brooklyn", "brooklyn_other")
 
     elif city == "queens":
-        if any(k in blob for k in ["astoria", "lic", "long island city", "q.e.d.", "qed", "moma ps1", "museum of the moving image", "moving image", "socrates", "noguchi", "grove 34", "culture lab", "bohemian hall", "fifth hammer", "focal point", "singlecut", "hunters point", "gantry", "albatross", "the ditty", "judy & punch", "sek'end sun", "madam marie", "sunswick", "last word", "31st avenue"]):
+        if any(k in blob for k in ["astoria", "lic", "long island city", "q.e.d.", "qed", "moma ps1", "museum of the moving image", "moving image", "socrates", "noguchi", "grove 34", "culture lab", "bohemian hall", "fifth hammer", "focal point", "singlecut", "hunters point", "gantry", "albatross", "the ditty", "judy & punch", "sek'end sun", "madam marie", "sunswick", "last word", "31st avenue", "break bar", "pig beach"]):
             return ("Astoria & Long Island City", "astoria_lic")
         if any(k in blob for k in ["flushing", "ridgewood", "maspeth", "corona", "citi field", "tv eye", "trans-pecos", "nowadays", "h0l0", "knockdown center", "basement", "bar freda", "windjammer", "gottscheer", "topos", "flushing town hall", "queens museum", "queens theatre", "queens botanical", "hall of science", "queens night market", "louis armstrong", "kupferberg"]):
             return ("Flushing & Ridgewood", "flushing_ridgewood")
@@ -2123,7 +2124,7 @@ def render_page(results):
   }}
 
   /* Day Section */
-  .day {{ background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 18px 12px; }}
+  .day {{ background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 18px 12px; content-visibility: auto; contain-intrinsic-size: auto 500px; }}
   .day h2 {{ margin: 0 0 12px; font-size: 17px; font-weight: 700; display:flex; align-items:center; gap:8px; color: var(--fg); position: sticky; top: 0; background: var(--card); padding: 4px 0 8px; z-index: 2; }}
   .count {{ background: rgba(255, 255, 255, 0.06); color: var(--muted); font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 500; }}
   .cities {{ display: flex; flex-direction: column; gap: 14px; }}
@@ -4181,7 +4182,7 @@ def render_page(results):
       if (searchKbd) searchKbd.hidden = !!val;
       if (searchStatus && searchCount) {{
         if (val) {{
-          const matched = document.querySelectorAll('.event:not(.hidden)').length;
+          const matched = document.querySelectorAll('.day:not(.out-of-week) .event:not(.hidden)').length;
           searchCount.textContent = matched;
           searchStatus.hidden = false;
         }} else {{
@@ -4366,61 +4367,94 @@ def render_page(results):
         minute: '2-digit'
       }});
 
+      const todayDate = parseISO(todayISO);
+      const dayOfWeek = todayDate.getDay();
+      let daysToSat = (6 - dayOfWeek + 7) % 7;
+      if (dayOfWeek === 0) daysToSat = -1;
+      const satISO = fmtISO(addDays(todayDate, daysToSat));
+      const sunISO = fmtISO(addDays(todayDate, daysToSat + 1));
+      const tomorrowISO = fmtISO(addDays(todayDate, 1));
+      const anchorISO = fmtISO(anchor);
+
       let hiddenPastCount = 0;
       let totalTodayEventsCount = 0;
       let visibleTonightCount = 0;
 
-      document.querySelectorAll('.event').forEach(li => {{
-        const catOk = cats.has(li.dataset.bucket);
-        const venueOk = venues.has(li.dataset.venue) || (li.dataset.presenter && venues.has(li.dataset.presenter));
-        const recurOk = recurs.has(li.dataset.recur);
-        const cityOk = cities.has(li.dataset.city);
-        const subareaOk = (activeSubarea === 'all') || (li.dataset.subarea === activeSubarea);
-        const freeOk = !freeOnly || li.dataset.free === 'true';
-        const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
-        const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
-
-        const daySec = li.closest('.day');
-        const dayDate = daySec ? daySec.dataset.date : '';
-        const isToday = daySec && dayDate === todayISO;
-        const isPastDay = dayDate && dayDate !== 'tba' && dayDate < todayISO;
-        const epoch = li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0;
-        const isPastTime = isToday && epoch > 0 && epoch < twoHoursAgoEpoch;
-        const isPast = isPastDay || isPastTime;
-
-        if (isToday && epoch > 0) {{
-          totalTodayEventsCount++;
+      // Determine active days first so we only filter DOM nodes inside visible days
+      daySections.forEach(day => {{
+        const date = day.dataset.date;
+        let inTime = true;
+        if (timeFilter === 'today') {{
+          inTime = (date === todayISO);
+        }} else if (timeFilter === 'tomorrow') {{
+          inTime = (date === tomorrowISO);
+        }} else if (timeFilter === 'weekend') {{
+          inTime = (date === satISO || date === sunISO);
+        }} else if (timeFilter === 'day') {{
+          inTime = (date === anchorISO);
+        }} else if (timeFilter === 'week') {{
+          inTime = (date === 'tba' || week.has(date));
+        }} else {{
+          inTime = showAll || date === 'tba' || week.has(date);
         }}
+        day.classList.toggle('out-of-week', !inTime);
+        if (!inTime) return;
 
-        li.classList.toggle('past-time', isPast);
+        const isToday = (date === todayISO);
+        const isPastDay = Boolean(date && date !== 'tba' && date < todayISO);
 
-        let timePastOk = true;
-        if (isPast) {{
-          if (!showPastToday) {{
+        day.querySelectorAll('.event').forEach(li => {{
+          const catOk = cats.has(li.dataset.bucket);
+          const venueOk = venues.has(li.dataset.venue) || (li.dataset.presenter && venues.has(li.dataset.presenter));
+          const recurOk = recurs.has(li.dataset.recur);
+          const cityOk = cities.has(li.dataset.city);
+          const subareaOk = (activeSubarea === 'all') || (li.dataset.subarea === activeSubarea);
+          const freeOk = !freeOnly || li.dataset.free === 'true';
+          const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
+          const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
+
+          const epoch = li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0;
+          const isPastTime = isToday && epoch > 0 && epoch < twoHoursAgoEpoch;
+          const isPast = isPastDay || isPastTime;
+
+          if (isToday && epoch > 0) {{
+            totalTodayEventsCount++;
+          }}
+
+          li.classList.toggle('past-time', isPast);
+
+          let timePastOk = true;
+          if (isPast && !showPastToday) {{
             timePastOk = false;
             hiddenPastCount++;
           }}
-        }}
 
-        const isVisible = catOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && timePastOk;
-        li.classList.toggle('hidden', !isVisible);
+          const isVisible = catOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && timePastOk;
+          li.classList.toggle('hidden', !isVisible);
 
-        if (isToday && isVisible && !isPast) {{
-          visibleTonightCount++;
-        }}
-      }});
+          if (isToday && isVisible && !isPast) {{
+            visibleTonightCount++;
+          }}
+        }});
 
-      document.querySelectorAll('.bucket').forEach(b => {{
-        const visible = b.querySelectorAll('.event:not(.hidden)').length;
-        b.classList.toggle('empty', visible === 0);
-        const countSpan = b.querySelector('.bucket-head .count');
-        if (countSpan) countSpan.textContent = visible;
-      }});
-      document.querySelectorAll('.city-section').forEach(sec => {{
-        const visible = sec.querySelectorAll('.event:not(.hidden)').length;
-        sec.classList.toggle('empty', visible === 0);
-        const countSpan = sec.querySelector('.city-head .count');
-        if (countSpan) countSpan.textContent = visible;
+        day.querySelectorAll('.bucket').forEach(b => {{
+          const visible = b.querySelectorAll('.event:not(.hidden)').length;
+          b.classList.toggle('empty', visible === 0);
+          const countSpan = b.querySelector('.bucket-head .count');
+          if (countSpan) countSpan.textContent = visible;
+        }});
+
+        day.querySelectorAll('.city-section').forEach(sec => {{
+          const visible = sec.querySelectorAll('.event:not(.hidden)').length;
+          sec.classList.toggle('empty', visible === 0);
+          const countSpan = sec.querySelector('.city-head .count');
+          if (countSpan) countSpan.textContent = visible;
+        }});
+
+        const visible = day.querySelectorAll('.event:not(.hidden)').length;
+        day.classList.toggle('empty', visible === 0);
+        const headingCount = day.querySelector('h2 .count');
+        if (headingCount) headingCount.textContent = visible;
       }});
 
       // Update past events notice banner
@@ -4457,41 +4491,24 @@ def render_page(results):
         }}
       }}
 
-      const todayDate = parseISO(todayISO);
-      const dayOfWeek = todayDate.getDay();
-      let daysToSat = (6 - dayOfWeek + 7) % 7;
-      if (dayOfWeek === 0) daysToSat = -1;
-      const satISO = fmtISO(addDays(todayDate, daysToSat));
-      const sunISO = fmtISO(addDays(todayDate, daysToSat + 1));
-      const tomorrowISO = fmtISO(addDays(todayDate, 1));
-      const anchorISO = fmtISO(anchor);
-
-      daySections.forEach(day => {{
-        const date = day.dataset.date;
-        let inTime = true;
-        if (timeFilter === 'today') {{
-          inTime = (date === todayISO);
-        }} else if (timeFilter === 'tomorrow') {{
-          inTime = (date === tomorrowISO);
-        }} else if (timeFilter === 'weekend') {{
-          inTime = (date === satISO || date === sunISO);
-        }} else if (timeFilter === 'day') {{
-          inTime = (date === anchorISO);
-        }} else if (timeFilter === 'week') {{
-          inTime = (date === 'tba' || week.has(date));
-        }} else {{
-          inTime = showAll || date === 'tba' || week.has(date);
-        }}
-        day.classList.toggle('out-of-week', !inTime);
-        const visible = day.querySelectorAll('.event:not(.hidden)').length;
-        day.classList.toggle('empty', visible === 0);
-        const headingCount = day.querySelector('h2 .count');
-        if (headingCount) headingCount.textContent = visible;
-      }});
-
       const ongoingEl = document.querySelector('.ongoing');
       if (ongoingEl) {{
-        ongoingEl.style.display = (timeFilter === 'all' || showAll) ? '' : 'none';
+        const showOngoing = (timeFilter === 'all' || showAll);
+        ongoingEl.style.display = showOngoing ? '' : 'none';
+        if (showOngoing) {{
+          ongoingEl.querySelectorAll('.event').forEach(li => {{
+            const catOk = cats.has(li.dataset.bucket);
+            const venueOk = venues.has(li.dataset.venue) || (li.dataset.presenter && venues.has(li.dataset.presenter));
+            const recurOk = recurs.has(li.dataset.recur);
+            const cityOk = cities.has(li.dataset.city);
+            const subareaOk = (activeSubarea === 'all') || (li.dataset.subarea === activeSubarea);
+            const freeOk = !freeOnly || li.dataset.free === 'true';
+            const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
+            const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
+            const isVisible = catOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk;
+            li.classList.toggle('hidden', !isVisible);
+          }});
+        }}
       }}
 
       const visibleDays = daySections.filter(d => !d.classList.contains('out-of-week') && !d.classList.contains('empty')).length;

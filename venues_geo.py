@@ -573,6 +573,21 @@ VENUE_COORDINATES: Dict[str, Tuple[float, float, str, str, str]] = {
     "the queensboro": (40.7556, -73.8869, "Jackson Heights", "80-02 Northern Blvd, Queens, NY", "The Queensboro"),
     "maxs bratwurst und bier": (40.7595, -73.9112, "Astoria", "47-02 30th Ave, Queens, NY", "Max Bratwurst und Bier"),
     "tech incubator at queens college": (40.7367, -73.8202, "Flushing", "65-30 Kissena Blvd, Queens, NY", "Tech Incubator at Queens College"),
+    "downtown galway hooker": (40.7347, -74.0016, "West Village", "133 7th Ave S, New York, NY", "Downtown Galway Hooker"),
+    "cellar dog": (40.7336, -74.0036, "West Village", "75 Christopher St, New York, NY", "Cellar Dog"),
+    "royal palms shuffleboard club": (40.6788, -73.9875, "Gowanus", "514 Union St, Brooklyn, NY", "Royal Palms Shuffleboard Club"),
+    "the royal palms shuffleboard club": (40.6788, -73.9875, "Gowanus", "514 Union St, Brooklyn, NY", "Royal Palms Shuffleboard Club"),
+    "barcade brooklyn": (40.7121, -73.9511, "Williamsburg", "388 Union Ave, Brooklyn, NY", "Barcade Brooklyn"),
+    "barcade chelsea": (40.7448, -73.9949, "Chelsea", "148 W 24th St, New York, NY", "Barcade Chelsea"),
+    "jackbar": (40.7115, -73.9565, "Williamsburg", "143 Havemeyer St, Brooklyn, NY", "Jackbar"),
+    "sunshine laundromat & pinball": (40.7294, -73.9538, "Greenpoint", "860 Manhattan Ave, Brooklyn, NY", "Sunshine Laundromat & Pinball"),
+    "sunshine laundromat": (40.7294, -73.9538, "Greenpoint", "860 Manhattan Ave, Brooklyn, NY", "Sunshine Laundromat & Pinball"),
+    "break bar & billiards": (40.7615, -73.9242, "Astoria", "32-04 Broadway, Queens, NY", "Break Bar & Billiards"),
+    "break bar": (40.7615, -73.9242, "Astoria", "32-04 Broadway, Queens, NY", "Break Bar & Billiards"),
+    "pig beach bbq queens": (40.7554, -73.9261, "Astoria", "35-37 36th St, Queens, NY", "Pig Beach BBQ Queens"),
+    "chilo's": (40.6889, -73.9571, "Bed-Stuy", "323 Franklin Ave, Brooklyn, NY", "Chilo's"),
+    "chilos": (40.6889, -73.9571, "Bed-Stuy", "323 Franklin Ave, Brooklyn, NY", "Chilo's"),
+    "the juilliard school": (40.7737, -73.9832, "Lincoln Square", "60 Lincoln Center Plaza, New York, NY", "The Juilliard School"),
 }
 
 # Substring needle rules for matching venues in event or source titles
@@ -949,6 +964,17 @@ VENUE_RULES = [
     ("snug harbor", (40.6438, -74.1018, "Livingston", "1000 Richmond Terrace, Staten Island, NY", "Snug Harbor")),
     ("conference house", (40.5034, -74.2531, "Tottenville", "298 Satterlee St, Staten Island, NY", "Conference House Park")),
     ("diwali at times square", (40.7589, -73.9851, "Times Square", "Broadway between 46th & 48th St, New York, NY", "Times Square (46th-48th St)")),
+    ("galway hooker", (40.7347, -74.0016, "West Village", "133 7th Ave S, New York, NY", "Downtown Galway Hooker")),
+    ("cellar dog", (40.7336, -74.0036, "West Village", "75 Christopher St, New York, NY", "Cellar Dog")),
+    ("royal palms", (40.6788, -73.9875, "Gowanus", "514 Union St, Brooklyn, NY", "Royal Palms Shuffleboard Club")),
+    ("barcade brooklyn", (40.7121, -73.9511, "Williamsburg", "388 Union Ave, Brooklyn, NY", "Barcade Brooklyn")),
+    ("barcade chelsea", (40.7448, -73.9949, "Chelsea", "148 W 24th St, New York, NY", "Barcade Chelsea")),
+    ("jackbar", (40.7115, -73.9565, "Williamsburg", "143 Havemeyer St, Brooklyn, NY", "Jackbar")),
+    ("sunshine laundromat", (40.7294, -73.9538, "Greenpoint", "860 Manhattan Ave, Brooklyn, NY", "Sunshine Laundromat & Pinball")),
+    ("break bar", (40.7615, -73.9242, "Astoria", "32-04 Broadway, Queens, NY", "Break Bar & Billiards")),
+    ("pig beach", (40.7554, -73.9261, "Astoria", "35-37 36th St, Queens, NY", "Pig Beach BBQ Queens")),
+    ("chilo's", (40.6889, -73.9571, "Bed-Stuy", "323 Franklin Ave, Brooklyn, NY", "Chilo's")),
+    ("juilliard", (40.7737, -73.9832, "Lincoln Square", "60 Lincoln Center Plaza, New York, NY", "The Juilliard School")),
 ]
 
 # Coordinate bounding box for valid NYC Metro area events
