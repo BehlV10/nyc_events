@@ -1407,13 +1407,7 @@ def render_page(results):
         else:
             venue_html = f'{community_badge}{subarea_tag}'.strip()
 
-        gcal_url = _build_gcal_link(e, raw_title, venue, city)
-        cal_actions = []
-        if gcal_url:
-            cal_actions.append(f'<a class="cal-btn" href="{escape(gcal_url)}" target="_blank" rel="noopener" title="Add to Google Calendar">+ GCal</a>')
-        if e.get("date"):
-            cal_actions.append(f'<button type="button" class="cal-btn ics-btn" data-title="{escape(raw_title)}" data-date="{escape(e["date"])}" data-venue="{escape(venue)}" data-url="{escape(e.get("url") or "")}" title="Download .ics for Apple/Outlook">+ .ics</button>')
-        cal_html = f'<span class="cal-links">{" ".join(cal_actions)}</span>' if cal_actions else ""
+        cal_html = '<span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span>' if e.get("date") else ""
 
         raw_desc = (e.get("description") or "").replace("***", "").replace("**", "").replace("__", "").replace("`", "").strip()
         desc = raw_desc[:180]
@@ -1498,11 +1492,18 @@ def render_page(results):
           <div class="cities">{"".join(city_blocks)}</div>
         </section>'''
 
-    sections = []
-    for date_obj, events in dated:
-        sections.append(_render_day_section(escape(format_date_heading(date_obj)), events, date_obj.isoformat()))
+    initial_sections = []
+    deferred_sections = []
+    for idx, (date_obj, events) in enumerate(dated):
+        sec_html = _render_day_section(escape(format_date_heading(date_obj)), events, date_obj.isoformat())
+        if idx < 7:
+            initial_sections.append(sec_html)
+        else:
+            deferred_sections.append(sec_html)
     if tba:
-        sections.append(_render_day_section("Date TBA", tba, "tba"))
+        deferred_sections.append(_render_day_section("Date TBA", tba, "tba"))
+
+    all_event_dates = [d.isoformat() for d, _ in dated]
 
     useful_sidebar = ""
     if STATIC_LINKS or DEAL_LINKS:
@@ -3407,7 +3408,10 @@ def render_page(results):
           <button type="button" class="chip" id="no-events-reset-btn" style="display: none;">↺ Reset All Filters</button>
         </div>
       </div>
-      {"".join(sections)}
+      {"".join(initial_sections)}
+      <template id="deferred-days">
+      {"".join(deferred_sections)}
+      </template>
       <div class="week-nav bottom">
         <button type="button" id="week-prev-b" aria-label="Previous week">← prev</button>
         <span id="week-label-b"></span>
@@ -3677,10 +3681,24 @@ def render_page(results):
     const sidebarFilters = document.getElementById('sidebar-filters');
     const mobileBadge = document.getElementById('mobile-filter-badge');
 
-    const daySections = Array.from(document.querySelectorAll('.day[data-date]'));
-    const eventDates = new Set(
-      daySections.map(d => d.dataset.date).filter(s => s && s !== 'tba')
-    );
+    let daySections = Array.from(document.querySelectorAll('.day[data-date]'));
+    const ALL_EVENT_DATES = {json.dumps(all_event_dates)};
+    const eventDates = new Set(ALL_EVENT_DATES);
+
+    let deferredHydrated = false;
+    function ensureDeferredDaysHydrated() {{
+      if (deferredHydrated) return;
+      deferredHydrated = true;
+      const tmpl = document.getElementById('deferred-days');
+      if (!tmpl) return;
+      const bottomNav = document.querySelector('.week-nav.bottom');
+      if (bottomNav && bottomNav.parentNode) {{
+        bottomNav.parentNode.insertBefore(tmpl.content, bottomNav);
+      }}
+      tmpl.remove();
+      daySections = Array.from(document.querySelectorAll('.day[data-date]'));
+      updateDayHeadings();
+    }}
     function parseISO(s) {{ const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }}
     function fmtISO(d) {{
       const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), da = String(d.getDate()).padStart(2, '0');
@@ -4380,6 +4398,28 @@ def render_page(results):
       let totalTodayEventsCount = 0;
       let visibleTonightCount = 0;
 
+      // Hydrate deferred days if needed
+      let needsHydration = (
+        timeFilter === 'all' ||
+        showAll ||
+        searchText.length > 0
+      );
+      if (!needsHydration) {{
+        if (timeFilter === 'day') {{
+          needsHydration = !daySections.some(d => d.dataset.date === anchorISO);
+        }} else if (timeFilter === 'week') {{
+          for (const wDate of week) {{
+            if (!daySections.some(d => d.dataset.date === wDate)) {{
+              needsHydration = true;
+              break;
+            }}
+          }}
+        }}
+      }}
+      if (needsHydration) {{
+        ensureDeferredDaysHydrated();
+      }}
+
       // Determine active days first so we only filter DOM nodes inside visible days
       daySections.forEach(day => {{
         const date = day.dataset.date;
@@ -4985,11 +5025,67 @@ def render_page(results):
       document.body.removeChild(link);
     }}
 
+    function extractEventMetaFromLi(li) {{
+      const a = li.querySelector('.what a');
+      const title = a ? a.textContent.trim() : 'Event';
+      const url = a ? a.href : '';
+      const vLink = li.querySelector('.venue-link');
+      const venue = vLink ? vLink.textContent.trim() : (li.dataset.venue || '');
+      const city = li.dataset.city || 'nyc';
+      const daySec = li.closest('.day');
+      const dayDate = daySec ? daySec.dataset.date : '';
+      const whenText = (li.querySelector('.when')?.textContent || '').trim();
+      let dt = null;
+      if (dayDate && dayDate !== 'tba') {{
+        const timeMatch = whenText.match(/(\d{{1,2}})(?::(\d{{2}}))?\s*(am|pm)/i);
+        let h = 19, m = 0;
+        if (timeMatch) {{
+          h = parseInt(timeMatch[1], 10);
+          m = timeMatch[2] ? parseInt(timeMatch[2], 10) : 0;
+          const ap = timeMatch[3].toLowerCase();
+          if (ap === 'pm' && h < 12) h += 12;
+          if (ap === 'am' && h === 12) h = 0;
+        }}
+        const [y, mo, da] = dayDate.split('-').map(Number);
+        dt = new Date(y, mo - 1, da, h, m);
+      }}
+      return {{ title, url, venue, city, dt, dayDate }};
+    }}
+
+    function toCalUTC(d) {{
+      function p(n) {{ return String(n).padStart(2, '0'); }}
+      return d.getUTCFullYear() + p(d.getUTCMonth()+1) + p(d.getUTCDate()) + 'T' +
+             p(d.getUTCHours()) + p(d.getUTCMinutes()) + p(d.getUTCSeconds()) + 'Z';
+    }}
+
     document.addEventListener('click', (e) => {{
-      const btn = e.target.closest('.ics-btn');
-      if (!btn) return;
-      e.preventDefault();
-      downloadICS(btn.dataset.title, btn.dataset.date, btn.dataset.venue, btn.dataset.url);
+      const gBtn = e.target.closest('.gcal-btn');
+      if (gBtn) {{
+        e.preventDefault();
+        const li = gBtn.closest('.event');
+        if (!li) return;
+        const m = extractEventMetaFromLi(li);
+        if (!m.dt) return;
+        const start = toCalUTC(m.dt);
+        const end = toCalUTC(new Date(m.dt.getTime() + 2 * 3600 * 1000));
+        const loc = `${{m.venue}}, ${{m.city.charAt(0).toUpperCase() + m.city.slice(1)}}, NY`;
+        const nl = String.fromCharCode(10);
+        const details = `Details & Tickets: ${{m.url}}` + nl + nl + `Discovered on NYC Events`;
+        const gUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${{encodeURIComponent(m.title)}}&dates=${{start}}/${{end}}&details=${{encodeURIComponent(details)}}&location=${{encodeURIComponent(loc)}}`;
+        window.open(gUrl, '_blank', 'noopener');
+        return;
+      }}
+
+      const icsBtn = e.target.closest('.ics-btn');
+      if (icsBtn) {{
+        e.preventDefault();
+        const li = icsBtn.closest('.event');
+        if (!li) return;
+        const m = extractEventMetaFromLi(li);
+        if (!m.dayDate) return;
+        downloadICS(m.title, m.dayDate, m.venue, m.url);
+        return;
+      }}
     }});
 
     // --- Community Event & Venue Submission Modal Logic ---
@@ -5410,6 +5506,12 @@ def render_page(results):
     loadLocalCommunityEvents();
     hashToState();
     apply();
+
+    if ('requestIdleCallback' in window) {{
+      requestIdleCallback(() => {{ ensureDeferredDaysHydrated(); }}, {{ timeout: 2500 }});
+    }} else {{
+      setTimeout(() => {{ ensureDeferredDaysHydrated(); }}, 2500);
+    }}
   </script>
 </body>
 </html>"""
