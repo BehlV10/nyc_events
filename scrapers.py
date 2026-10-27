@@ -203,7 +203,7 @@ CATEGORY_KEYWORDS = [
     ("food",      [r"\b(tasting|wine dinner|beer release|food tour|brewery|pop-up dinner|pairing|culinary)\b"]),
     ("outdoors",  [r"\b(hike|walking tour|nature walk|birding|trail|kayak|park tour|outdoor)\b"]),
     ("sports",    [r"\b(yankees|mets|knicks|nets|rangers|islanders|soccer|5k|10k|marathon|hockey|basketball)\b"]),
-    ("gaming",    [r"\b(board games?|trivia|arcade|esports|chess|magic the gathering|d&d|tabletop|video game|smash bros|gaming tournament|smash ultimate|melee|lan)\b"]),
+    ("gaming",    [r"\b(board games?|trivia|arcade|esports|chess|magic the gathering|d&d|tabletop|video game|smash bros|gaming tournament|smash ultimate|melee|lan|pinball|shuffleboard|billiards|ping-?pong|backgammon|mahjong|loter[ií]a|bingo)\b"]),
     ("community", [r"\b(talk|lecture|panel|discussion|networking|farmers market|flea market|artisan market|expo|festival|parade|sample sale|fashion|symposium|speed-dating|skip the small talk|tech|ai|hackathon|startup|pitch|coworking|founder|mixer)\b"]),
 ]
 
@@ -4259,30 +4259,30 @@ MANUAL_RECURRING_EVENTS = [
         ("Brooklyn Salsa Social & Practice Party", "https://www.instagram.com/salsasalsanyc/", 4, 20, 0, "Practice Social"),
     ]),
     ("Washington Square Park (Garibaldi Plaza)", "https://www.nycgovparks.org/events/dance", "dance", [
-        ("Garibaldi Plaza Salsa Social (Free Lesson & Open Dance)", "https://www.nycgovparks.org/events/dance", 2, 18, 0, "Free"),
-        ("Washington Square Park Sunday Salsa & Latin Social", "https://www.nycgovparks.org/events/dance", 6, 16, 0, "Free"),
+        ("Garibaldi Plaza Salsa Social (Free Lesson & Open Dance)", "https://www.nycgovparks.org/events/dance", 2, 18, 0, "Free", (5, 9)),
+        ("Washington Square Park Sunday Salsa & Latin Social", "https://www.nycgovparks.org/events/dance", 6, 16, 0, "Free", (5, 9)),
     ]),
     ("Hudson River Park (Pier 45 & Pier 76)", "https://hudsonriverpark.org/event-series/dance-in-hrpk/", "dance", [
-        ("Sunset Salsa with Talía Castro-Pozo @ Pier 45", "https://hudsonriverpark.org/event-series/dance-in-hrpk/", 3, 18, 30, "Free"),
-        ("Sunset Salsa @ Pier 76 (Waterfront Social & Lesson)", "https://hudsonriverpark.org/event-series/dance-in-hrpk/", 1, 18, 30, "Free"),
+        ("Sunset Salsa with Talía Castro-Pozo @ Pier 45", "https://hudsonriverpark.org/event-series/dance-in-hrpk/", 3, 18, 30, "Free", (6, 9)),
+        ("Sunset Salsa @ Pier 76 (Waterfront Social & Lesson)", "https://hudsonriverpark.org/event-series/dance-in-hrpk/", 1, 18, 30, "Free", (6, 9)),
     ]),
     ("Bryant Park", "https://bryantpark.org/activities/dance-party", "dance", [
-        ("Bryant Park Dance Party (Live Band & Outdoor Salsa)", "https://bryantpark.org/activities/dance-party", 2, 18, 0, "Free"),
+        ("Bryant Park Dance Party (Live Band & Outdoor Salsa)", "https://bryantpark.org/activities/dance-party", 2, 18, 0, "Free", (5, 7)),
     ]),
     ("Bella Abzug Park (Hudson Yards)", "https://www.somoslatindance.com/palacallenyc", "dance", [
-        ("Pa' La Calle NYC Latin Dance Social (Intro Lesson & Open Dancing)", "https://www.somoslatindance.com/palacallenyc", 6, 16, 0, "Free"),
+        ("Pa' La Calle NYC Latin Dance Social (Intro Lesson & Open Dancing)", "https://www.somoslatindance.com/palacallenyc", 6, 16, 0, "Free", (6, 9)),
     ]),
     ("Vanderbilt Open Streets (Brooklyn)", "https://www.instagram.com/salsasalsanyc/", "dance", [
-        ("Salsa Salsa on Vanderbilt Open Streets (Free Class & Social)", "https://www.instagram.com/salsasalsanyc/", 5, 17, 0, "Free"),
+        ("Salsa Salsa on Vanderbilt Open Streets (Free Class & Social)", "https://www.instagram.com/salsasalsanyc/", 5, 17, 0, "Free", (5, 9)),
     ]),
     ("Abolitionist Place Park (Downtown Brooklyn)", "https://www.instagram.com/salsasalsanyc/", "dance", [
-        ("Abolitionist Place Park Outdoor Salsa & Bachata Social", "https://www.instagram.com/salsasalsanyc/", 6, 16, 0, "Free"),
+        ("Abolitionist Place Park Outdoor Salsa & Bachata Social", "https://www.instagram.com/salsasalsanyc/", 6, 16, 0, "Free", (6, 9)),
     ]),
     ("Hunters Point South Park (Long Island City)", "https://www.hunterspointparks.org/", "dance", [
-        ("Hunters Point Waterfront Salsa Social (Free Lesson & Sunset Dance)", "https://www.hunterspointparks.org/", 6, 17, 0, "Free"),
+        ("Hunters Point Waterfront Salsa Social (Free Lesson & Sunset Dance)", "https://www.hunterspointparks.org/", 6, 17, 0, "Free", (6, 9)),
     ]),
     ("Domino Park (Williamsburg Waterfront)", "https://www.dominopark.com/", "dance", [
-        ("Domino Park Waterfront Latin & Salsa Social", "https://www.dominopark.com/", 5, 17, 0, "Free"),
+        ("Domino Park Waterfront Latin & Salsa Social", "https://www.dominopark.com/", 5, 17, 0, "Free", (6, 9)),
     ]),
     ("The Back Room", "https://www.backroomnyc.com/", "dance", [
         ("Monday Night Live Jazz & Swing Dancing", "https://www.backroomnyc.com/", 0, 20, 30, "No Cover"),
@@ -4636,6 +4636,46 @@ MANUAL_RECURRING_EVENTS = [
     ("Cobblestones Pub", "https://cobblestonespub.com/", "gaming", [
         ("Queens Board Gamers Weekly Game Night @ Cobblestones Pub (Forest Hills)", "https://cobblestonespub.com/", 1, 18, 0, "Free"),
     ]),
+    ("Downtown Galway Hooker", "https://www.meetup.com/nycboardgames/events/", "gaming", [
+        ("NYC 20s & 30s Weekly Board Game Night @ Downtown Galway Hooker (West Village)", "https://www.meetup.com/nycboardgames/events/", 1, 18, 30, "Free"),
+    ]),
+    ("Cellar Dog", "https://www.cellardog.net/", "gaming", [
+        ("Cellar Dog West Village Live Jazz, Billiards, Ping Pong, Chess & Board Games", "https://www.cellardog.net/", 1, 19, 0, "$5–$10"),
+        ("Cellar Dog West Village Live Jazz, Billiards, Ping Pong, Chess & Board Games", "https://www.cellardog.net/", 3, 19, 0, "$5–$10"),
+        ("Cellar Dog West Village Weekend Jazz & Games Hall", "https://www.cellardog.net/", 4, 20, 0, "$10"),
+        ("Cellar Dog West Village Saturday Night Jazz & Games Hall", "https://www.cellardog.net/", 5, 20, 0, "$10"),
+    ]),
+    ("Royal Palms Shuffleboard Club", "https://www.royalpalmsshuffle.com/", "gaming", [
+        ("Royal Palms Gowanus Shuffleboard, Board Games & Food Truck Night", "https://www.royalpalmsshuffle.com/", 2, 18, 0, "Free entry"),
+        ("Royal Palms Gowanus Friday Shuffleboard & DJ Social", "https://www.royalpalmsshuffle.com/", 4, 19, 0, "Free entry"),
+        ("Royal Palms Gowanus Weekend Shuffleboard & Board Games", "https://www.royalpalmsshuffle.com/", 5, 14, 0, "Free entry"),
+    ]),
+    ("Barcade Brooklyn", "https://barcade.com/brooklyn/", "gaming", [
+        ("Barcade Williamsburg Classic Arcade & Pinball Social Night", "https://barcade.com/brooklyn/", 2, 19, 0, "No Cover"),
+        ("Barcade Williamsburg Friday Retro Arcade & Craft Beer Night", "https://barcade.com/brooklyn/", 4, 20, 0, "No Cover"),
+    ]),
+    ("Barcade Chelsea", "https://barcade.com/newyork/", "gaming", [
+        ("Barcade Chelsea Classic Arcade & Pinball Night", "https://barcade.com/newyork/", 3, 19, 0, "No Cover"),
+    ]),
+    ("Jackbar", "https://www.jackbarbrooklyn.com/", "gaming", [
+        ("Jackbar Williamsburg Weekly Pinball Tournament & League Night", "https://www.jackbarbrooklyn.com/", 1, 19, 30, "No Cover"),
+        ("Jackbar Williamsburg Friday Night Pinball & Craft Beer", "https://www.jackbarbrooklyn.com/", 4, 20, 0, "No Cover"),
+    ]),
+    ("Sunshine Laundromat & Pinball", "https://www.sunshinelaundromat.com/", "gaming", [
+        ("Sunshine Laundromat Greenpoint Speakeasy Pinball & Craft Beer Night", "https://www.sunshinelaundromat.com/", 3, 19, 30, "No Cover"),
+        ("Sunshine Laundromat Greenpoint Weekend Pinball Speakeasy", "https://www.sunshinelaundromat.com/", 5, 19, 0, "No Cover"),
+    ]),
+    ("Break Bar & Billiards", "https://www.break-ny.com/", "gaming", [
+        ("Break Bar Astoria Pub Trivia, Billiards, Ping Pong & Board Games", "https://www.break-ny.com/", 2, 20, 0, "Free"),
+        ("Break Bar Astoria Weekend Billiards, Ping Pong & Arcade Social", "https://www.break-ny.com/", 4, 20, 0, "Free entry"),
+    ]),
+    ("Pig Beach BBQ Queens", "https://www.pigbeachnyc.com/", "gaming", [
+        ("Pig Beach BBQ Astoria Beer Garden Trivia & Game Night", "https://www.pigbeachnyc.com/", 3, 19, 0, "Free"),
+    ]),
+    ("Chilo's", "https://www.chilosbk.com/", "gaming", [
+        ("Chilo's Bed-Stuy Mezcal, Tacos & Trivia Night", "https://www.chilosbk.com/", 2, 19, 30, "Free"),
+        ("Chilo's Bed-Stuy Lotería & Patio Social Night", "https://www.chilosbk.com/", 3, 19, 30, "Free"),
+    ]),
 ]
 
 ANNUAL_LANDMARK_EVENTS = [
@@ -4740,10 +4780,17 @@ def _expand_manual_recurring(weeks=8):
         for item in items:
             name, url, weekday, hour, minute = item[:5]
             price = item[5] if len(item) > 5 else None
+            season = item[6] if len(item) > 6 else None
             ahead = (weekday - today.weekday()) % 7
             first_day = today + timedelta(days=ahead)
             for w in range(weeks):
                 d = first_day + timedelta(weeks=w)
+                if season:
+                    sm, em = season
+                    if sm <= em and not (sm <= d.month <= em):
+                        continue
+                    if sm > em and not (d.month >= sm or d.month <= em):
+                        continue
                 dt = datetime(d.year, d.month, d.day, hour, minute, tzinfo=EASTERN)
                 events.append({
                     "name": name,
@@ -5201,6 +5248,18 @@ _ALL_VENUES = [
     {"name": "Meetup: Mindful Astoria Meditation Community", "url": "https://www.meetup.com/Mindful-Astoria/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
     {"name": "Meetup: Friends from Bayside & Queens Socials", "url": "https://www.meetup.com/hangout-in-queens/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
     {"name": "Meetup: Cucala Dance LIC Salsa Classes & Socials", "url": "https://www.meetup.com/cucala-dance-company/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "dance"},
+    {"name": "Meetup: NYC 20s & 30s Board Game Group", "url": "https://www.meetup.com/nycboardgames/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Borough Hoppers NYC", "url": "https://www.meetup.com/borough-hoppers/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
+    {"name": "Meetup: Victory Pints Board Games & Beer", "url": "https://www.meetup.com/VictoryPints/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: NYC Social Board Game Events", "url": "https://www.meetup.com/nyc-social-board-game-events/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Tuesday Board Games NYC", "url": "https://www.meetup.com/tuesday-board-games/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Brooklyn Table-Top Games Meetup", "url": "https://www.meetup.com/Brooklyn-Table-Top-Games-Meetup/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Astoria Board Game Club", "url": "https://www.meetup.com/astoria-board-game-club/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: New York LGBT Board Games Group", "url": "https://www.meetup.com/NYCgamers/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: Backgammon New York City (BGNYC)", "url": "https://www.meetup.com/backgammon-new-york-city-bgnyc/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
+    {"name": "Meetup: NYC Foodies Club", "url": "https://www.meetup.com/nycfoodiesclub/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "food"},
+    {"name": "Meetup: Exploring NYC History & Neighborhoods", "url": "https://www.meetup.com/exploring-nyc-history-and-neighborhoods/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "outdoors"},
+    {"name": "Meetup: New York City Young Adults", "url": "https://www.meetup.com/new-york-city-young-adult-meet-up/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
 ]
 
 VENUES = _ALL_VENUES
@@ -5466,7 +5525,7 @@ def get_all_events(force=False):
     def _worker(v):
         return _scrape_one(v, force=force)
 
-    with ThreadPoolExecutor(max_workers=10) as ex:
+    with ThreadPoolExecutor(max_workers=24) as ex:
         results = list(ex.map(_worker, VENUES))
 
     # Add recurring events (expanded for 8 weeks / 56 days)
@@ -5482,3 +5541,4 @@ def get_all_events(force=False):
     _cache["ts"] = now
     _cache["data"] = payload
     return payload
+

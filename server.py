@@ -30,7 +30,9 @@ def _load_dotenv():
 _load_dotenv()
 
 from scrapers import (  # noqa: E402
+    CACHE_SECONDS,
     VENUES,
+    _cache,
     get_all_events,
     fetch_nyc_weather,
     fetch_luckyseat_nyc,
@@ -40,6 +42,48 @@ from template import render_page  # noqa: E402
 PORT = int(os.environ.get("PORT", 3001))
 
 app = Flask(__name__)
+
+_bg_refresh_lock = threading.Lock()
+_bg_refreshing = False
+
+
+def _get_events_nonblocking(force=False):
+    """Return cached events immediately (or from events.json on cold start) and revalidate in background if stale."""
+    global _bg_refreshing
+    if force:
+        return get_all_events(force=True)
+
+    now = time.time()
+    if _cache["data"] is None:
+        json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "events.json")
+        if os.path.exists(json_path):
+            try:
+                with open(json_path, "r", encoding="utf-8") as f:
+                    payload = json.load(f)
+                if isinstance(payload, dict) and payload.get("venues"):
+                    _cache["data"] = payload
+                    _cache["ts"] = os.path.getmtime(json_path)
+            except Exception:
+                pass
+
+    if _cache["data"] is not None:
+        if (now - _cache["ts"]) >= CACHE_SECONDS:
+            with _bg_refresh_lock:
+                if not _bg_refreshing:
+                    _bg_refreshing = True
+
+                    def _bg_worker():
+                        global _bg_refreshing
+                        try:
+                            get_all_events(force=False)
+                        finally:
+                            with _bg_refresh_lock:
+                                _bg_refreshing = False
+
+                    threading.Thread(target=_bg_worker, daemon=True).start()
+        return _cache["data"]
+
+    return get_all_events(force=False)
 
 
 @app.get("/banner.jpg")
@@ -53,12 +97,12 @@ def banner_img():
 
 @app.get("/")
 def index():
-    return render_page(get_all_events(force="refresh" in request.args))
+    return render_page(_get_events_nonblocking(force="refresh" in request.args))
 
 
 @app.get("/api/events")
 def api_events():
-    return jsonify(get_all_events(force="refresh" in request.args))
+    return jsonify(_get_events_nonblocking(force="refresh" in request.args))
 
 
 def export_json(dest="events.json"):
