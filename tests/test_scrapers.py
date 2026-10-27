@@ -1206,7 +1206,38 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(bb_evs[0]["name"], "Watercolor Food Illustration")
         self.assertEqual(bb_evs[0]["venue"], "Brooklyn Brainery")
 
+    def test_seasonal_recurring_events(self):
+        """Verify outdoor summer dance series (like Hudson River Park Sunset Salsa) automatically turn off in fall/winter and turn on next summer."""
+        from scrapers import _expand_manual_recurring
+
+        # Current late October date: outdoor summer salsa series must produce 0 events
+        winter_res = _expand_manual_recurring(weeks=8)
+        hrp_winter = next((v for v in winter_res if "Hudson River Park (Pier 45 & Pier 76)" in v["venue"]), None)
+        self.assertIsNotNone(hrp_winter)
+        self.assertEqual(len(hrp_winter["events"]), 0, "Outdoor Sunset Salsa must not generate dates during late fall/winter")
+
+        # Simulate June next summer: outdoor summer salsa series must generate weekly occurrences
+        import scrapers
+        class MockJuneDateTime(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return datetime(2027, 6, 15, tzinfo=tz)
+
+        orig_dt = scrapers.datetime
+        try:
+            scrapers.datetime = MockJuneDateTime
+            summer_res = scrapers._expand_manual_recurring(weeks=8)
+            hrp_summer = next((v for v in summer_res if "Hudson River Park (Pier 45 & Pier 76)" in v["venue"]), None)
+            self.assertIsNotNone(hrp_summer)
+            self.assertGreaterEqual(len(hrp_summer["events"]), 8, "Sunset Salsa must automatically generate weekly dates next summer")
+            salsa_names = [e["name"] for e in hrp_summer["events"]]
+            self.assertTrue(any("Pier 76" in n for n in salsa_names))
+            self.assertTrue(any("Pier 45" in n for n in salsa_names))
+        finally:
+            scrapers.datetime = orig_dt
+
 
 if __name__ == "__main__":
     unittest.main()
+
 
