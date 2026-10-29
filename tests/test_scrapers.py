@@ -945,12 +945,17 @@ class TestNYCEvents(unittest.TestCase):
             ]
         }
 
+        from datetime import datetime
+        from scrapers import EASTERN
         from unittest.mock import patch, MagicMock
         mock_resp = MagicMock()
         mock_resp.json.return_value = mock_payload
         mock_resp.raise_for_status = MagicMock()
 
-        with patch("scrapers._SESSION.get", return_value=mock_resp):
+        fake_now = datetime(2026, 10, 27, 10, 0, tzinfo=EASTERN)
+        with patch("scrapers.datetime") as mock_dt, patch("scrapers._SESSION.get", return_value=mock_resp):
+            mock_dt.now.return_value = fake_now
+            mock_dt.strptime = datetime.strptime
             events = scrape_skip_the_small_talk("https://www.skipthesmalltalk.com/store?format=json", UA_CHROME)
 
         # Online event must be excluded
