@@ -55,6 +55,8 @@ VENUE_COORDINATES: Dict[str, Tuple[float, float, str, str, str]] = {
     "alice tully hall": (40.7735, -73.9825, "Lincoln Square", "1941 Broadway, New York, NY", "Alice Tully Hall"),
     "lincoln center": (40.7725, -73.9835, "Lincoln Square", "Lincoln Center Plaza, New York, NY", "Lincoln Center"),
     "grace church": (40.7320, -73.9918, "East Village", "802 Broadway, New York, NY", "Grace Church"),
+    "elizabeth street garden": (40.7214, -73.9942, "Nolita / SoHo", "211 Elizabeth St, New York, NY", "Elizabeth Street Garden"),
+    "prospect park boathouse": (40.6617, -73.9669, "Prospect Park", "101 Ocean Ave, Brooklyn, NY", "Prospect Park Boathouse"),
     "the pit loft": (40.7480, -73.9922, "Chelsea", "154 W 29th St, New York, NY", "The PIT Loft"),
     "the pit": (40.7480, -73.9922, "Chelsea", "154 W 29th St, New York, NY", "The PIT Loft"),
     "peoples improv theater": (40.7480, -73.9922, "Chelsea", "154 W 29th St, New York, NY", "The PIT Loft"),
