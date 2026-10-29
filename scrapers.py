@@ -4740,6 +4740,56 @@ MANUAL_RECURRING_EVENTS = [
         ("Chilo's Bed-Stuy Mezcal, Tacos & Trivia Night", "https://www.chilosbk.com/", 2, 19, 30, "Free"),
         ("Chilo's Bed-Stuy Lotería & Patio Social Night", "https://www.chilosbk.com/", 3, 19, 30, "Free"),
     ]),
+    ("Grace Church", "https://gracechurchnyc.org/music/bach-at-noon/", "music", [
+        ("Bach at Noon (Free Organ Meditation)", "https://gracechurchnyc.org/music/bach-at-noon/", 1, 12, 20, "Free", (9, 5)),
+        ("Bach at Noon (Free Organ Meditation)", "https://gracechurchnyc.org/music/bach-at-noon/", 2, 12, 20, "Free", (9, 5)),
+        ("Bach at Noon (Free Organ Meditation)", "https://gracechurchnyc.org/music/bach-at-noon/", 3, 12, 20, "Free", (9, 5)),
+        ("Bach at Noon (Free Organ Meditation)", "https://gracechurchnyc.org/music/bach-at-noon/", 4, 12, 20, "Free", (9, 5)),
+    ]),
+    ("The Juilliard School", "https://www.juilliard.edu/stage-beyond/performance-calendar", "music", [
+        ("Wednesdays at One: Music for Piano & Chamber Ensembles", "https://www.juilliard.edu/stage-beyond/performance-calendar", 2, 13, 0, "Free", (9, 5)),
+    ]),
+    ("The PIT Loft", "https://thepit-nyc.com/", "comedy", [
+        ("The Wednesday Show MIC (Open Variety & Comedy Mic)", "https://thepit-nyc.com/", 2, 16, 0, "Free"),
+    ]),
+    ("Museum of the City of New York", "https://www.mcny.org/", "art", [
+        ("Free Late-Night Wednesday at MCNY (Pop-Up Bar & Galleries)", "https://www.mcny.org/", 2, 17, 0, "Free"),
+    ]),
+    ("Tomi Jazz", "https://www.tomijazz.com/", "music", [
+        ("Live Jazz at Tomi Jazz Speakeasy", "https://www.tomijazz.com/", 2, 18, 0, "$10–$15"),
+        ("Live Jazz at Tomi Jazz Speakeasy (Late Set)", "https://www.tomijazz.com/", 2, 21, 0, "$10–$15"),
+        ("Live Jazz at Tomi Jazz Speakeasy", "https://www.tomijazz.com/", 3, 18, 0, "$10–$15"),
+        ("Live Jazz at Tomi Jazz Speakeasy", "https://www.tomijazz.com/", 4, 17, 30, "$15"),
+        ("Live Jazz at Tomi Jazz Speakeasy", "https://www.tomijazz.com/", 5, 17, 30, "$15"),
+    ]),
+    ("Squarrel Cafe", "https://www.squarrelcafe.com/", "gaming", [
+        ("D&D One-Shot Night & Board Games @ Squarrel Cafe (Brooklyn)", "https://www.squarrelcafe.com/", 2, 18, 0, "$10"),
+    ]),
+    ("Gamestoria", "https://gamestoria.com/", "gaming", [
+        ("Gamestoria Astoria Wednesday Dungeons & Dragons Campaign Night", "https://gamestoria.com/", 2, 19, 0, "$10–$15"),
+    ]),
+    ("Black Cat LES", "https://www.eventbrite.com/d/ny--new-york/baby-shoes/", "comedy", [
+        ("Baby Shoes Stand-Up Comedy Show @ Black Cat LES", "https://www.eventbrite.com/d/ny--new-york/baby-shoes/", 2, 19, 0, "Free"),
+    ]),
+    ("Kills Boro Brewing Company", "https://www.killsboro.com/", "music", [
+        ("Lofi Jazz Night @ Kills Boro Brewing Taproom (Staten Island)", "https://www.killsboro.com/", 2, 19, 0, "Free"),
+    ]),
+    ("David Rubenstein Atrium", "https://www.lincolncenter.org/series/atrium-presents", "music", [
+        ("David Rubenstein Atrium Free Live Performance @ Lincoln Center", "https://www.lincolncenter.org/series/atrium-presents", 2, 19, 30, "Free"),
+        ("David Rubenstein Atrium Free Live Performance @ Lincoln Center", "https://www.lincolncenter.org/series/atrium-presents", 3, 19, 30, "Free"),
+    ]),
+    ("Brooklyn Music Kitchen", "https://www.brooklynmusickitchen.com/", "music", [
+        ("Legendary Locals Open Mic with Live House Band @ Brooklyn Music Kitchen", "https://www.brooklynmusickitchen.com/", 2, 20, 0, "Free / $10"),
+    ]),
+    ("Sanger Hall", "https://sangerhall.com/", "film", [
+        ("Sunnyside Horror Society Cult Movie Screening @ Sanger Hall (Queens)", "https://sangerhall.com/", 2, 20, 0, "Free"),
+    ]),
+    ("Prohibition", "https://prohibition.net/", "music", [
+        ("Live Music at Prohibition Supper Club (Upper West Side)", "https://prohibition.net/", 2, 20, 30, "Free entry"),
+        ("Live Music at Prohibition Supper Club (Upper West Side)", "https://prohibition.net/", 3, 20, 30, "Free entry"),
+        ("Live Music at Prohibition Supper Club (Upper West Side)", "https://prohibition.net/", 4, 21, 0, "Free entry"),
+        ("Live Music at Prohibition Supper Club (Upper West Side)", "https://prohibition.net/", 5, 21, 0, "Free entry"),
+    ]),
 ]
 
 ANNUAL_LANDMARK_EVENTS = [
@@ -4994,6 +5044,11 @@ _ALL_VENUES = [
     {"name": "Le Poisson Rouge", "url": "https://donyc.com/venues/le-poisson-rouge", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Blue Note Jazz Club", "url": "https://donyc.com/venues/blue-note-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Caveat NYC", "url": "https://donyc.com/venues/caveat", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
+    {"name": "David Rubenstein Atrium (Lincoln Center)", "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Brooklyn Music Kitchen", "url": "https://donyc.com/venues/brooklyn-music-kitchen", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Sugar Mouse NYC", "url": "https://www.eventbrite.com/api/v3/organizers/121119407255/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "gaming"},
+    {"name": "The New School", "url": "https://donyc.com/venues/the-new-school", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Mannes School of Music", "url": "https://donyc.com/venues/mannes-school-of-music", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Apollo Theater", "url": "https://donyc.com/venues/apollo-theater", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Madison Square Garden", "url": "https://donyc.com/venues/madison-square-garden", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Radio City Music Hall", "url": "https://donyc.com/venues/radio-city-music-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
