@@ -1241,6 +1241,59 @@ class TestNYCEvents(unittest.TestCase):
         finally:
             scrapers.datetime = orig_dt
 
+    def test_curated_cultural_recurring_events(self):
+        """Verify quintessential NYC recurring series (Grace Church, Juilliard, MCNY, Tomi Jazz, Gamestoria, etc.) are generated."""
+        from scrapers import _expand_manual_recurring
+        from venues_geo import resolve_event_geo
+
+        venues = _expand_manual_recurring(weeks=4)
+        venue_dict = {v["venue"]: v["events"] for v in venues}
+
+        # 1. Grace Church Bach at Noon
+        self.assertIn("Grace Church", venue_dict)
+        bach_events = venue_dict["Grace Church"]
+        self.assertGreaterEqual(len(bach_events), 4)
+        self.assertTrue(any("Bach at Noon" in e["name"] for e in bach_events))
+        geo_grace = resolve_event_geo({"venue": "Grace Church"})
+        self.assertIsNotNone(geo_grace)
+        self.assertAlmostEqual(geo_grace["lat"], 40.7320, places=2)
+
+        # 2. Juilliard Wednesdays at One
+        self.assertIn("The Juilliard School", venue_dict)
+        juilliard_events = venue_dict["The Juilliard School"]
+        self.assertGreaterEqual(len(juilliard_events), 1)
+        self.assertTrue(any("Wednesdays at One" in e["name"] for e in juilliard_events))
+
+        # 3. Museum of the City of New York (MCNY)
+        self.assertIn("Museum of the City of New York", venue_dict)
+        mcny_events = venue_dict["Museum of the City of New York"]
+        self.assertGreaterEqual(len(mcny_events), 1)
+        self.assertTrue(any("Free Late-Night Wednesday" in e["name"] for e in mcny_events))
+
+        # 4. Gamestoria in Queens (Astoria)
+        self.assertIn("Gamestoria", venue_dict)
+        gamestoria_events = venue_dict["Gamestoria"]
+        self.assertGreaterEqual(len(gamestoria_events), 1)
+        self.assertTrue(any("Dungeons & Dragons" in e["name"] for e in gamestoria_events))
+        geo_gamestoria = resolve_event_geo({"venue": "Gamestoria"})
+        self.assertIsNotNone(geo_gamestoria)
+        self.assertEqual(geo_gamestoria["neighborhood"], "Astoria")
+
+        # 5. Tomi Jazz
+        self.assertIn("Tomi Jazz", venue_dict)
+        tomi_events = venue_dict["Tomi Jazz"]
+        self.assertGreaterEqual(len(tomi_events), 5)
+        self.assertTrue(any("Live Jazz" in e["name"] for e in tomi_events))
+
+        # 6. Kills Boro Brewing Company (Staten Island)
+        self.assertIn("Kills Boro Brewing Company", venue_dict)
+        killsboro_events = venue_dict["Kills Boro Brewing Company"]
+        self.assertGreaterEqual(len(killsboro_events), 1)
+        self.assertTrue(any("Lofi Jazz Night" in e["name"] for e in killsboro_events))
+        geo_killsboro = resolve_event_geo({"venue": "Kills Boro Brewing Company"})
+        self.assertIsNotNone(geo_killsboro)
+        self.assertEqual(geo_killsboro["neighborhood"], "Staten Island")
+
 
 if __name__ == "__main__":
     unittest.main()
