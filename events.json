@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-29T19:31:33.097605+00:00",
+  "generated_at": "2026-10-29T20:04:07.632074+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -13638,7 +13638,7 @@
         }
       ],
       "error": null,
-      "duration": 23.24,
+      "duration": 39.36,
       "cached": false
     },
     {
@@ -13704,7 +13704,7 @@
       ],
       "error": null,
       "duration": 1.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Secret NYC",
@@ -13721,7 +13721,7 @@
       ],
       "error": null,
       "duration": 0.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenpointers Brooklyn",
@@ -13746,7 +13746,7 @@
       ],
       "error": null,
       "duration": 0.43,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Ticketmaster NYC",
@@ -14525,7 +14525,7 @@
       ],
       "error": null,
       "duration": 0.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "SeatGeek NYC",
@@ -16434,7 +16434,7 @@
       ],
       "error": null,
       "duration": 0.9,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Resident Advisor NYC",
@@ -17243,7 +17243,7 @@
       ],
       "error": null,
       "duration": 0.77,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Dice.fm NYC",
@@ -17476,7 +17476,7 @@
       ],
       "error": null,
       "duration": 0.96,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Bowl",
@@ -17709,7 +17709,7 @@
         }
       ],
       "error": null,
-      "duration": 1.26,
+      "duration": 1.11,
       "cached": false
     },
     {
@@ -18079,7 +18079,7 @@
       ],
       "error": null,
       "duration": 1.08,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Knockdown Center",
@@ -18186,7 +18186,7 @@
         }
       ],
       "error": null,
-      "duration": 1.21,
+      "duration": 1.62,
       "cached": false
     },
     {
@@ -18303,7 +18303,7 @@
         }
       ],
       "error": null,
-      "duration": 1.42,
+      "duration": 1.13,
       "cached": false
     },
     {
@@ -18537,7 +18537,7 @@
         }
       ],
       "error": null,
-      "duration": 1.16,
+      "duration": 1.94,
       "cached": false
     },
     {
@@ -18767,7 +18767,7 @@
         }
       ],
       "error": null,
-      "duration": 1.41,
+      "duration": 1.1,
       "cached": false
     },
     {
@@ -19137,7 +19137,7 @@
       ],
       "error": null,
       "duration": 0.9,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Littlefield Brooklyn",
@@ -19706,7 +19706,7 @@
         }
       ],
       "error": null,
-      "duration": 1.15,
+      "duration": 1.05,
       "cached": false
     },
     {
@@ -19904,7 +19904,7 @@
         }
       ],
       "error": null,
-      "duration": 1.32,
+      "duration": 1.11,
       "cached": false
     },
     {
@@ -20013,7 +20013,7 @@
       ],
       "error": null,
       "duration": 1.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Barclays Center",
@@ -20201,7 +20201,7 @@
         }
       ],
       "error": null,
-      "duration": 1.17,
+      "duration": 1.31,
       "cached": false
     },
     {
@@ -20307,7 +20307,7 @@
         }
       ],
       "error": null,
-      "duration": 1.15,
+      "duration": 1.31,
       "cached": false
     },
     {
@@ -20538,7 +20538,7 @@
         }
       ],
       "error": null,
-      "duration": 1.13,
+      "duration": 1.21,
       "cached": false
     },
     {
@@ -20769,7 +20769,7 @@
         }
       ],
       "error": null,
-      "duration": 1.3,
+      "duration": 1.28,
       "cached": false
     },
     {
@@ -20859,7 +20859,7 @@
         }
       ],
       "error": null,
-      "duration": 1.13,
+      "duration": 1.75,
       "cached": false
     },
     {
@@ -21093,7 +21093,7 @@
         }
       ],
       "error": null,
-      "duration": 1.25,
+      "duration": 1.97,
       "cached": false
     },
     {
@@ -21330,7 +21330,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-made/ (serving stale cache)",
-      "duration": 0.12,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -21339,7 +21339,7 @@
       "events": [],
       "error": null,
       "duration": 0.85,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "SILO Brooklyn",
@@ -21500,7 +21500,7 @@
         }
       ],
       "error": null,
-      "duration": 0.72,
+      "duration": 1.19,
       "cached": false
     },
     {
@@ -21599,7 +21599,7 @@
         }
       ],
       "error": null,
-      "duration": 0.4,
+      "duration": 1.15,
       "cached": false
     },
     {
@@ -21698,7 +21698,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 1.81,
       "cached": false
     },
     {
@@ -21725,7 +21725,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 1.92,
       "cached": false
     },
     {
@@ -21869,7 +21869,7 @@
         }
       ],
       "error": null,
-      "duration": 0.37,
+      "duration": 1.39,
       "cached": false
     },
     {
@@ -22040,7 +22040,7 @@
         }
       ],
       "error": null,
-      "duration": 0.26,
+      "duration": 1.02,
       "cached": false
     },
     {
@@ -22274,7 +22274,7 @@
         }
       ],
       "error": null,
-      "duration": 0.31,
+      "duration": 1.81,
       "cached": false
     },
     {
@@ -22319,7 +22319,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 1.2,
       "cached": false
     },
     {
@@ -22487,7 +22487,7 @@
         }
       ],
       "error": null,
-      "duration": 0.29,
+      "duration": 1.97,
       "cached": false
     },
     {
@@ -22649,7 +22649,7 @@
         }
       ],
       "error": null,
-      "duration": 0.37,
+      "duration": 1.32,
       "cached": false
     },
     {
@@ -22883,7 +22883,7 @@
         }
       ],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.85,
       "cached": false
     },
     {
@@ -23034,7 +23034,7 @@
         }
       ],
       "error": null,
-      "duration": 0.45,
+      "duration": 0.51,
       "cached": false
     },
     {
@@ -23268,7 +23268,7 @@
         }
       ],
       "error": null,
-      "duration": 0.55,
+      "duration": 0.79,
       "cached": false
     },
     {
@@ -23502,7 +23502,7 @@
         }
       ],
       "error": null,
-      "duration": 0.63,
+      "duration": 0.45,
       "cached": false
     },
     {
@@ -23610,7 +23610,7 @@
         }
       ],
       "error": null,
-      "duration": 0.47,
+      "duration": 0.36,
       "cached": false
     },
     {
@@ -23844,7 +23844,7 @@
         }
       ],
       "error": null,
-      "duration": 0.56,
+      "duration": 0.5,
       "cached": false
     },
     {
@@ -24078,7 +24078,7 @@
         }
       ],
       "error": null,
-      "duration": 0.31,
+      "duration": 0.43,
       "cached": false
     },
     {
@@ -24312,7 +24312,7 @@
         }
       ],
       "error": null,
-      "duration": 0.71,
+      "duration": 0.62,
       "cached": false
     },
     {
@@ -24433,7 +24433,7 @@
         }
       ],
       "error": null,
-      "duration": 0.73,
+      "duration": 0.5,
       "cached": false
     },
     {
@@ -24531,7 +24531,7 @@
         }
       ],
       "error": null,
-      "duration": 0.29,
+      "duration": 0.45,
       "cached": false
     },
     {
@@ -24761,7 +24761,7 @@
         }
       ],
       "error": null,
-      "duration": 0.6,
+      "duration": 1.07,
       "cached": false
     },
     {
@@ -24833,7 +24833,7 @@
         }
       ],
       "error": null,
-      "duration": 0.71,
+      "duration": 0.93,
       "cached": false
     },
     {
@@ -25031,7 +25031,7 @@
         }
       ],
       "error": null,
-      "duration": 0.5,
+      "duration": 0.63,
       "cached": false
     },
     {
@@ -25144,7 +25144,7 @@
         }
       ],
       "error": null,
-      "duration": 0.59,
+      "duration": 0.88,
       "cached": false
     },
     {
@@ -25270,7 +25270,7 @@
         }
       ],
       "error": null,
-      "duration": 0.83,
+      "duration": 0.59,
       "cached": false
     },
     {
@@ -25342,7 +25342,7 @@
         }
       ],
       "error": null,
-      "duration": 0.45,
+      "duration": 0.67,
       "cached": false
     },
     {
@@ -25431,7 +25431,7 @@
         }
       ],
       "error": null,
-      "duration": 0.55,
+      "duration": 0.58,
       "cached": false
     },
     {
@@ -25467,7 +25467,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.38,
       "cached": false
     },
     {
@@ -25494,7 +25494,7 @@
         }
       ],
       "error": null,
-      "duration": 0.57,
+      "duration": 0.48,
       "cached": false
     },
     {
@@ -25728,7 +25728,7 @@
         }
       ],
       "error": null,
-      "duration": 0.41,
+      "duration": 0.8,
       "cached": false
     },
     {
@@ -25737,7 +25737,7 @@
       "events": [],
       "error": null,
       "duration": 0.66,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Noguchi Museum",
@@ -25853,7 +25853,7 @@
         }
       ],
       "error": null,
-      "duration": 0.56,
+      "duration": 0.65,
       "cached": false
     },
     {
@@ -26512,7 +26512,7 @@
         }
       ],
       "error": null,
-      "duration": 0.37,
+      "duration": 0.43,
       "cached": false
     },
     {
@@ -26964,7 +26964,7 @@
       ],
       "error": null,
       "duration": 0.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens County Farm Museum",
@@ -27337,7 +27337,7 @@
       ],
       "error": null,
       "duration": 2.14,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Louis Armstrong House Museum",
@@ -27372,7 +27372,7 @@
       ],
       "error": null,
       "duration": 0.85,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens Theatre",
@@ -27602,7 +27602,7 @@
       ],
       "error": null,
       "duration": 3.78,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Flushing Town Hall",
@@ -27654,7 +27654,7 @@
         }
       ],
       "error": null,
-      "duration": 0.45,
+      "duration": 0.48,
       "cached": false
     },
     {
@@ -27681,7 +27681,7 @@
         }
       ],
       "error": null,
-      "duration": 0.32,
+      "duration": 0.59,
       "cached": false
     },
     {
@@ -27882,7 +27882,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--astoria/grove-34/ (serving stale cache)",
-      "duration": 0.23,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -28083,7 +28083,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--long-island-city/culture-lab-lic/ (serving stale cache)",
-      "duration": 0.09,
+      "duration": 0.51,
       "cached": true
     },
     {
@@ -28272,7 +28272,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--astoria/bohemian-hall/ (serving stale cache)",
-      "duration": 0.09,
+      "duration": 0.47,
       "cached": true
     },
     {
@@ -28521,7 +28521,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/astoria-queens/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.12,
       "cached": true
     },
     {
@@ -28626,7 +28626,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/long-island-city/ (serving stale cache)",
-      "duration": 0.2,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -28779,7 +28779,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/ (serving stale cache)",
-      "duration": 0.13,
+      "duration": 0.34,
       "cached": true
     },
     {
@@ -28956,7 +28956,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jackson-heights/ (serving stale cache)",
-      "duration": 0.09,
+      "duration": 0.46,
       "cached": true
     },
     {
@@ -29157,7 +29157,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sunnyside-queens/ (serving stale cache)",
-      "duration": 0.19,
+      "duration": 0.41,
       "cached": true
     },
     {
@@ -29334,7 +29334,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/ (serving stale cache)",
-      "duration": 0.12,
+      "duration": 0.39,
       "cached": true
     },
     {
@@ -29568,7 +29568,7 @@
         }
       ],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -29612,7 +29612,7 @@
         }
       ],
       "error": null,
-      "duration": 0.35,
+      "duration": 0.6,
       "cached": false
     },
     {
@@ -29702,7 +29702,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.87,
       "cached": false
     },
     {
@@ -29936,7 +29936,7 @@
         }
       ],
       "error": null,
-      "duration": 0.69,
+      "duration": 0.86,
       "cached": false
     },
     {
@@ -30170,7 +30170,7 @@
         }
       ],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.68,
       "cached": false
     },
     {
@@ -30395,7 +30395,7 @@
         }
       ],
       "error": null,
-      "duration": 0.42,
+      "duration": 0.36,
       "cached": false
     },
     {
@@ -30566,7 +30566,7 @@
         }
       ],
       "error": null,
-      "duration": 0.57,
+      "duration": 0.49,
       "cached": false
     },
     {
@@ -30800,7 +30800,7 @@
         }
       ],
       "error": null,
-      "duration": 0.23,
+      "duration": 0.52,
       "cached": false
     },
     {
@@ -30989,7 +30989,7 @@
         }
       ],
       "error": null,
-      "duration": 0.44,
+      "duration": 0.6,
       "cached": false
     },
     {
@@ -31223,7 +31223,7 @@
         }
       ],
       "error": null,
-      "duration": 0.26,
+      "duration": 0.81,
       "cached": false
     },
     {
@@ -31403,7 +31403,7 @@
         }
       ],
       "error": null,
-      "duration": 0.42,
+      "duration": 0.87,
       "cached": false
     },
     {
@@ -31637,7 +31637,7 @@
         }
       ],
       "error": null,
-      "duration": 0.54,
+      "duration": 0.46,
       "cached": false
     },
     {
@@ -31646,7 +31646,7 @@
       "events": [],
       "error": null,
       "duration": 0.4,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Music Kitchen",
@@ -31694,7 +31694,7 @@
         }
       ],
       "error": null,
-      "duration": 0.35,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -31833,7 +31833,7 @@
       "events": [],
       "error": null,
       "duration": 0.44,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Mannes School of Music",
@@ -31841,7 +31841,7 @@
       "events": [],
       "error": null,
       "duration": 0.6,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Apollo Theater",
@@ -31867,7 +31867,7 @@
         }
       ],
       "error": null,
-      "duration": 0.59,
+      "duration": 0.78,
       "cached": false
     },
     {
@@ -32065,7 +32065,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.56,
       "cached": false
     },
     {
@@ -32182,7 +32182,7 @@
         }
       ],
       "error": null,
-      "duration": 0.56,
+      "duration": 0.81,
       "cached": false
     },
     {
@@ -32308,7 +32308,7 @@
         }
       ],
       "error": null,
-      "duration": 0.41,
+      "duration": 0.56,
       "cached": false
     },
     {
@@ -32398,7 +32398,7 @@
       ],
       "error": null,
       "duration": 0.63,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Town Hall",
@@ -32622,7 +32622,7 @@
         }
       ],
       "error": null,
-      "duration": 0.41,
+      "duration": 0.72,
       "cached": false
     },
     {
@@ -32793,7 +32793,7 @@
         }
       ],
       "error": null,
-      "duration": 0.43,
+      "duration": 0.99,
       "cached": false
     },
     {
@@ -33027,7 +33027,7 @@
         }
       ],
       "error": null,
-      "duration": 0.72,
+      "duration": 6.77,
       "cached": false
     },
     {
@@ -33159,7 +33159,7 @@
         }
       ],
       "error": null,
-      "duration": 0.36,
+      "duration": 3.15,
       "cached": false
     },
     {
@@ -33254,7 +33254,7 @@
         }
       ],
       "error": null,
-      "duration": 0.35,
+      "duration": 1.21,
       "cached": false
     },
     {
@@ -33389,7 +33389,7 @@
         }
       ],
       "error": null,
-      "duration": 0.22,
+      "duration": 0.83,
       "cached": false
     },
     {
@@ -33447,7 +33447,7 @@
       ],
       "error": null,
       "duration": 0.92,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bowery Palace",
@@ -33680,7 +33680,7 @@
         }
       ],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.52,
       "cached": false
     },
     {
@@ -33752,7 +33752,7 @@
         }
       ],
       "error": null,
-      "duration": 0.37,
+      "duration": 0.71,
       "cached": false
     },
     {
@@ -33788,7 +33788,7 @@
         }
       ],
       "error": null,
-      "duration": 0.48,
+      "duration": 0.6,
       "cached": false
     },
     {
@@ -33905,7 +33905,7 @@
         }
       ],
       "error": null,
-      "duration": 0.25,
+      "duration": 0.68,
       "cached": false
     },
     {
@@ -34022,7 +34022,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.49,
       "cached": false
     },
     {
@@ -34139,7 +34139,7 @@
         }
       ],
       "error": null,
-      "duration": 0.41,
+      "duration": 0.66,
       "cached": false
     },
     {
@@ -34185,7 +34185,7 @@
       ],
       "error": null,
       "duration": 1.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Center (LGBTQ+ Community Center)",
@@ -34418,7 +34418,7 @@
         }
       ],
       "error": null,
-      "duration": 0.54,
+      "duration": 0.82,
       "cached": false
     },
     {
@@ -34598,7 +34598,7 @@
         }
       ],
       "error": null,
-      "duration": 0.44,
+      "duration": 0.66,
       "cached": false
     },
     {
@@ -34832,7 +34832,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53,
+      "duration": 0.55,
       "cached": false
     },
     {
@@ -35066,7 +35066,7 @@
         }
       ],
       "error": null,
-      "duration": 0.45,
+      "duration": 0.67,
       "cached": false
     },
     {
@@ -35183,7 +35183,7 @@
         }
       ],
       "error": null,
-      "duration": 0.35,
+      "duration": 0.36,
       "cached": false
     },
     {
@@ -35372,7 +35372,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.71,
       "cached": false
     },
     {
@@ -35444,7 +35444,7 @@
         }
       ],
       "error": null,
-      "duration": 0.32,
+      "duration": 0.81,
       "cached": false
     },
     {
@@ -35660,7 +35660,7 @@
         }
       ],
       "error": null,
-      "duration": 0.47,
+      "duration": 0.72,
       "cached": false
     },
     {
@@ -35757,7 +35757,7 @@
         }
       ],
       "error": null,
-      "duration": 0.43,
+      "duration": 0.71,
       "cached": false
     },
     {
@@ -35766,7 +35766,7 @@
       "events": [],
       "error": null,
       "duration": 0.34,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club Midtown",
@@ -35909,7 +35909,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.78,
       "cached": false
     },
     {
@@ -35999,7 +35999,7 @@
         }
       ],
       "error": null,
-      "duration": 0.44,
+      "duration": 0.77,
       "cached": false
     },
     {
@@ -36062,7 +36062,7 @@
         }
       ],
       "error": null,
-      "duration": 0.32,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -36089,7 +36089,7 @@
         }
       ],
       "error": null,
-      "duration": 0.28,
+      "duration": 0.58,
       "cached": false
     },
     {
@@ -36221,7 +36221,7 @@
         }
       ],
       "error": null,
-      "duration": 0.31,
+      "duration": 0.72,
       "cached": false
     },
     {
@@ -36401,7 +36401,7 @@
         }
       ],
       "error": null,
-      "duration": 0.25,
+      "duration": 0.81,
       "cached": false
     },
     {
@@ -36527,7 +36527,7 @@
         }
       ],
       "error": null,
-      "duration": 0.3,
+      "duration": 0.51,
       "cached": false
     },
     {
@@ -36536,7 +36536,7 @@
       "events": [],
       "error": null,
       "duration": 0.34,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Lincoln Center Theater",
@@ -36742,7 +36742,7 @@
         }
       ],
       "error": null,
-      "duration": 0.39,
+      "duration": 0.69,
       "cached": false
     },
     {
@@ -36788,7 +36788,7 @@
       ],
       "error": null,
       "duration": 1.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club Upper West Side",
@@ -36958,7 +36958,7 @@
         }
       ],
       "error": null,
-      "duration": 0.41,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -37165,7 +37165,7 @@
         }
       ],
       "error": null,
-      "duration": 0.48,
+      "duration": 0.7,
       "cached": false
     },
     {
@@ -37266,7 +37266,7 @@
       ],
       "error": null,
       "duration": 1.95,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Shrine Harlem",
@@ -37402,7 +37402,7 @@
         }
       ],
       "error": null,
-      "duration": 0.64,
+      "duration": 1.73,
       "cached": false
     },
     {
@@ -37411,7 +37411,7 @@
       "events": [],
       "error": null,
       "duration": 0.25,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "United Palace",
@@ -37446,7 +37446,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.56,
       "cached": false
     },
     {
@@ -38683,7 +38683,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/ (serving stale cache)",
-      "duration": 0.11,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -38740,7 +38740,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bluestockings/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.13,
       "cached": true
     },
     {
@@ -38861,7 +38861,7 @@
         }
       ],
       "error": null,
-      "duration": 0.37,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -39110,7 +39110,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nypl/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -39584,7 +39584,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-public-library/ (serving stale cache)",
-      "duration": 0.09,
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -40554,7 +40554,7 @@
       ],
       "error": null,
       "duration": 2.17,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Skinny Dennis",
@@ -40883,7 +40883,7 @@
       ],
       "error": null,
       "duration": 0.72,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Trivia League",
@@ -42892,7 +42892,7 @@
       ],
       "error": null,
       "duration": 1.18,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Film Forum",
@@ -42937,7 +42937,7 @@
       ],
       "error": null,
       "duration": 1.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Nitehawk Cinema",
@@ -43170,7 +43170,7 @@
         }
       ],
       "error": null,
-      "duration": 0.4,
+      "duration": 0.66,
       "cached": false
     },
     {
@@ -43260,7 +43260,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.46,
       "cached": false
     },
     {
@@ -43494,7 +43494,7 @@
         }
       ],
       "error": null,
-      "duration": 0.37,
+      "duration": 0.74,
       "cached": false
     },
     {
@@ -43719,7 +43719,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/indie-film/ (serving stale cache)",
-      "duration": 0.12,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -43968,7 +43968,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rooftop-films/ (serving stale cache)",
-      "duration": 0.1,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -44666,7 +44666,7 @@
       ],
       "error": null,
       "duration": 1.39,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Joe's Pub (The Public Theater)",
@@ -44870,7 +44870,7 @@
         }
       ],
       "error": null,
-      "duration": 0.5,
+      "duration": 1.03,
       "cached": false
     },
     {
@@ -45104,7 +45104,7 @@
         }
       ],
       "error": null,
-      "duration": 0.35,
+      "duration": 0.47,
       "cached": false
     },
     {
@@ -45338,7 +45338,7 @@
         }
       ],
       "error": null,
-      "duration": 0.5,
+      "duration": 0.75,
       "cached": false
     },
     {
@@ -45563,7 +45563,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.31,
       "cached": false
     },
     {
@@ -45797,7 +45797,7 @@
         }
       ],
       "error": null,
-      "duration": 0.4,
+      "duration": 0.6,
       "cached": false
     },
     {
@@ -46031,7 +46031,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.27,
       "cached": false
     },
     {
@@ -46197,7 +46197,7 @@
       ],
       "error": null,
       "duration": 0.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Stand NYC",
@@ -46235,7 +46235,7 @@
         }
       ],
       "error": "403 Client Error: Forbidden for url: https://thestandnyc.com/shows (serving stale cache)",
-      "duration": 0.47,
+      "duration": 0.58,
       "cached": true
     },
     {
@@ -46515,7 +46515,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/broadway-comedy-club/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -46749,7 +46749,7 @@
         }
       ],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.44,
       "cached": false
     },
     {
@@ -46998,7 +46998,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/greenwich-village-comedy-club/ (serving stale cache)",
-      "duration": 0.17,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -47436,7 +47436,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/ (serving stale cache)",
-      "duration": 0.08,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -49045,7 +49045,7 @@
       ],
       "error": null,
       "duration": 3.0,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club",
@@ -49293,7 +49293,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/new-york-comedy-club/ (serving stale cache)",
-      "duration": 0.11,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -49403,7 +49403,7 @@
       ],
       "error": null,
       "duration": 1.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Comedy Collective (Eris Mainstage)",
@@ -54845,7 +54845,7 @@
         }
       ],
       "error": null,
-      "duration": 0.19,
+      "duration": 0.44,
       "cached": false
     },
     {
@@ -55058,7 +55058,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/central-park/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -55544,7 +55544,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-bridge-park/ (serving stale cache)",
-      "duration": 0.09,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -55781,7 +55781,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hudson-river-park/ (serving stale cache)",
-      "duration": 0.08,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -56455,7 +56455,7 @@
       ],
       "error": null,
       "duration": 0.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Pop-Up Experiences & Activations",
@@ -56631,7 +56631,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pop-up/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -56868,7 +56868,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hudson-yards/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -57105,7 +57105,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-shed/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -57330,7 +57330,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/union-square/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -57543,7 +57543,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/lincoln-center/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -57780,7 +57780,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jazz-at-lincoln-center/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -58066,7 +58066,7 @@
       ],
       "error": null,
       "duration": 2.72,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Outdoor Hikes & Trails",
@@ -58363,7 +58363,7 @@
       ],
       "error": null,
       "duration": 2.99,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Running Clubs & 5K Socials",
@@ -58732,7 +58732,7 @@
       ],
       "error": null,
       "duration": 3.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Fashion Events & Sample Sales",
@@ -58944,7 +58944,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sample-sale/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.25,
       "cached": true
     },
     {
@@ -59097,7 +59097,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/fashion-show/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -59334,7 +59334,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/talks/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -59583,7 +59583,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/panel-discussion/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.16,
       "cached": true
     },
     {
@@ -59703,7 +59703,7 @@
       ],
       "error": null,
       "duration": 0.69,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bibliothèque Wine & Book Bar",
@@ -59915,7 +59915,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bibliotheque/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -60152,7 +60152,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/lizs-book-bar/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -60486,7 +60486,7 @@
       ],
       "error": null,
       "duration": 2.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Writers & Creative Storytelling",
@@ -60807,7 +60807,7 @@
       ],
       "error": null,
       "duration": 2.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Threes Brewing (Gowanus & Greenpoint)",
@@ -61043,7 +61043,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/threes-brewing/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -61621,7 +61621,7 @@
       ],
       "error": null,
       "duration": 0.14,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Sesh Comedy (Chinatown / LES)",
@@ -61669,7 +61669,7 @@
         }
       ],
       "error": "HTTPSConnectionPool(host='seshcomedy.com', port=443): Read timed out. (read timeout=10) (serving stale cache)",
-      "duration": 10.13,
+      "duration": 10.35,
       "cached": true
     },
     {
@@ -61863,7 +61863,7 @@
       ],
       "error": null,
       "duration": 0.4,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Wonderville (Indie Arcade & Smashville)",
@@ -62256,7 +62256,7 @@
       ],
       "error": null,
       "duration": 7.63,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Hex & Company (Board Games & RPG)",
@@ -62492,7 +62492,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hex-and-company/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -62717,7 +62717,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-uncommons/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -62854,7 +62854,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/the-brooklyn-strategist/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -63212,7 +63212,7 @@
       ],
       "error": null,
       "duration": 3.26,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tabletop & RPG Games",
@@ -63569,7 +63569,7 @@
       ],
       "error": null,
       "duration": 3.12,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Bar Trivia Nights",
@@ -63710,7 +63710,7 @@
       ],
       "error": null,
       "duration": 4.82,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Tech, AI & Developer Meetups",
@@ -63899,7 +63899,7 @@
       ],
       "error": null,
       "duration": 2.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Luma NYC",
@@ -64853,7 +64853,7 @@
       ],
       "error": null,
       "duration": 0.5,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Language Exchange & Polyglot Socials",
@@ -65174,7 +65174,7 @@
       ],
       "error": null,
       "duration": 2.73,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "House of Yes (Circus & Dance)",
@@ -65317,7 +65317,7 @@
         }
       ],
       "error": null,
-      "duration": 0.19,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -65542,7 +65542,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/house-of-yes/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -65767,7 +65767,7 @@
         }
       ],
       "error": null,
-      "duration": 0.17,
+      "duration": 0.58,
       "cached": false
     },
     {
@@ -66004,7 +66004,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/burlesque/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -66241,7 +66241,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/chelsea-art-gallery/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -66454,7 +66454,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/japan-fes/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -66655,7 +66655,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/midnight-runners/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -66917,7 +66917,7 @@
       ],
       "error": null,
       "duration": 0.39,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Photography Walks & Photo Tours",
@@ -67238,7 +67238,7 @@
       ],
       "error": null,
       "duration": 2.05,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Art Gallery Crawls & Openings",
@@ -67571,7 +67571,7 @@
       ],
       "error": null,
       "duration": 2.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Magnet Theater (Improv & Sketch)",
@@ -67759,7 +67759,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/magnet-theater/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -68008,7 +68008,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/asylum-nyc/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -68210,7 +68210,7 @@
       ],
       "error": null,
       "duration": 2.21,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "S.O.B.'s (Sounds of Brazil)",
@@ -68582,7 +68582,7 @@
       ],
       "error": null,
       "duration": 3.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Salsa & Bachata Socials",
@@ -68830,7 +68830,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/salsa-dancing/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -69055,7 +69055,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bachata/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -69292,7 +69292,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/taj-lounge-salsa/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.23,
       "cached": true
     },
     {
@@ -69517,7 +69517,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/club-cache-salsa/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -69754,7 +69754,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/salsa-social/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -69967,7 +69967,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/washington-square-park-salsa/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.15,
       "cached": true
     },
     {
@@ -70180,7 +70180,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sunset-salsa/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -70393,7 +70393,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pa-la-calle/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -70642,7 +70642,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -71000,7 +71000,7 @@
       ],
       "error": null,
       "duration": 3.43,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "This Week in Swing NYC",
@@ -71674,7 +71674,7 @@
         }
       ],
       "error": null,
-      "duration": 0.11,
+      "duration": 0.5,
       "cached": false
     },
     {
@@ -71875,7 +71875,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/swing-dancing/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.24,
       "cached": true
     },
     {
@@ -72112,7 +72112,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/frim-fram-jam/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -72361,7 +72361,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/prohibition-productions/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -72527,7 +72527,7 @@
       ],
       "error": null,
       "duration": 2.01,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Live Jazz & Acoustic Sessions",
@@ -72704,7 +72704,7 @@
       ],
       "error": null,
       "duration": 1.78,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "3 Dollar Bill (Queer & Drag Venue)",
@@ -72856,7 +72856,7 @@
         }
       ],
       "error": null,
-      "duration": 0.18,
+      "duration": 0.49,
       "cached": false
     },
     {
@@ -73093,7 +73093,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/drag-show/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -73342,7 +73342,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -73579,7 +73579,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pieces-bar/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -73804,7 +73804,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/video-game-tournament/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -74017,7 +74017,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/smash-bros/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -74254,7 +74254,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/barcade/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -74487,7 +74487,7 @@
         }
       ],
       "error": null,
-      "duration": 0.24,
+      "duration": 0.27,
       "cached": false
     },
     {
@@ -74724,7 +74724,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -74961,7 +74961,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/live-music-bar/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -75582,7 +75582,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-guestlist/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -75831,7 +75831,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nightclub-guestlist/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -76080,7 +76080,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-rsvp-party/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -76329,7 +76329,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rooftop-party/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -76566,7 +76566,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/somewhere-nowhere/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -76779,7 +76779,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-dl/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -77016,7 +77016,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/harbor-nyc/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -77241,7 +77241,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/230-fifth/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -77490,7 +77490,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/slate-nyc/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -77715,7 +77715,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nebula/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -77814,7 +77814,7 @@
         }
       ],
       "error": null,
-      "duration": 0.18,
+      "duration": 0.33,
       "cached": false
     },
     {
@@ -77823,7 +77823,7 @@
       "events": [],
       "error": null,
       "duration": 0.22,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Clearview Festival Productions (NYC Street Fairs)",
@@ -77860,7 +77860,7 @@
       ],
       "error": null,
       "duration": 0.54,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Diwali & South Asian Cultural Festivals",
@@ -78108,7 +78108,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/diwali/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -78297,7 +78297,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/holi/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -78318,7 +78318,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/lunar-new-year/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -78519,7 +78519,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/parade/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -78756,7 +78756,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/latin-festival/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -78969,7 +78969,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/asia-society/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -79194,7 +79194,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/japan-society/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -79395,7 +79395,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -79632,7 +79632,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--street-fair/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -79869,7 +79869,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--community--events/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -80010,7 +80010,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/cultural-festival/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -80223,7 +80223,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--food-and-drink--festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -80472,7 +80472,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-free-festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -80697,7 +80697,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-free-festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -80922,7 +80922,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--bronx/bronx-free-events/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -81135,7 +81135,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/night-market/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -81158,7 +81158,7 @@
       ],
       "error": null,
       "duration": 1.27,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Street Fairs & Avenue Festivals",
@@ -81406,7 +81406,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/street-fair/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -81643,7 +81643,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/block-party/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -81880,7 +81880,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/parties/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -82129,7 +82129,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/halloween-parties/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -82366,7 +82366,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/food-festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -82603,7 +82603,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/art-festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -82828,7 +82828,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/craft-fair/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -82846,7 +82846,7 @@
       ],
       "error": null,
       "duration": 2.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Columbus Circle District Events",
@@ -83082,7 +83082,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/columbus-circle/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -83295,7 +83295,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/downtown-brooklyn-partnership/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -83436,7 +83436,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/meatpacking-district/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -83625,7 +83625,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/governors-island/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -83790,7 +83790,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/times-square/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -84027,7 +84027,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/battery-park-city/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -84252,7 +84252,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/off-broadway/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -84417,7 +84417,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/musical/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -84654,7 +84654,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/plays/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -84879,7 +84879,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/improv/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -85147,7 +85147,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/board-games/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -85384,7 +85384,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-board-games/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -85633,7 +85633,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/tabletop/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -85882,7 +85882,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/meetup/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -86095,7 +86095,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/language-exchange/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -86320,7 +86320,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jazz/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -86569,7 +86569,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-jazz/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -86770,7 +86770,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/acoustic/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -86983,7 +86983,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-meetup/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -87208,7 +87208,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-book-club/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -87433,7 +87433,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-run-club/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -87574,7 +87574,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-trivia/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -87775,7 +87775,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-meetup/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -87976,7 +87976,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-trivia/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -88322,7 +88322,7 @@
       ],
       "error": null,
       "duration": 3.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Book Clubs & Reading Groups",
@@ -88643,7 +88643,7 @@
       ],
       "error": null,
       "duration": 2.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Board Games & Tabletop",
@@ -89000,7 +89000,7 @@
       ],
       "error": null,
       "duration": 3.33,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Running & Walking Clubs",
@@ -89153,7 +89153,7 @@
       ],
       "error": null,
       "duration": 1.36,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Tech, AI & Developers",
@@ -89294,7 +89294,7 @@
       ],
       "error": null,
       "duration": 2.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Williamsburg & Greenpoint Socials",
@@ -89435,7 +89435,7 @@
       ],
       "error": null,
       "duration": 1.37,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Park Slope & Prospect Park Community",
@@ -89588,7 +89588,7 @@
       ],
       "error": null,
       "duration": 1.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bushwick Creative & Social Meetups",
@@ -89741,7 +89741,7 @@
       ],
       "error": null,
       "duration": 1.23,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Neighborhood Socials & Mixers",
@@ -89918,7 +89918,7 @@
       ],
       "error": null,
       "duration": 2.54,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Community & Social Meetups",
@@ -90143,7 +90143,7 @@
       ],
       "error": null,
       "duration": 1.55,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Flushing Tech, Food & Language Meetups",
@@ -90296,7 +90296,7 @@
       ],
       "error": null,
       "duration": 1.96,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Sunnyside, Woodside & Jackson Heights",
@@ -90437,7 +90437,7 @@
       ],
       "error": null,
       "duration": 1.55,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Board Gamers Group",
@@ -90722,7 +90722,7 @@
       ],
       "error": null,
       "duration": 0.1,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tabletop Tuesday Sunnyside Game Night",
@@ -90743,7 +90743,7 @@
       ],
       "error": null,
       "duration": 0.14,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Prospect Park Board Gaming Club",
@@ -90788,7 +90788,7 @@
       ],
       "error": null,
       "duration": 0.64,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: The Brooklyn Board Games Group",
@@ -90857,7 +90857,7 @@
       ],
       "error": null,
       "duration": 0.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Strategist Evening Games",
@@ -90938,7 +90938,7 @@
       ],
       "error": null,
       "duration": 0.16,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Runners",
@@ -91139,7 +91139,7 @@
       ],
       "error": null,
       "duration": 1.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: RUN LIC (Long Island City Runners)",
@@ -91460,7 +91460,7 @@
       ],
       "error": null,
       "duration": 3.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Woodside-Sunnyside Runners",
@@ -91673,7 +91673,7 @@
       ],
       "error": null,
       "duration": 4.36,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: CALLEFUT Queens Soccer Community",
@@ -91742,7 +91742,7 @@
       ],
       "error": null,
       "duration": 0.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Futsal Club",
@@ -91943,7 +91943,7 @@
       ],
       "error": null,
       "duration": 0.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn / Queens Coed Soccer Club",
@@ -92012,7 +92012,7 @@
       ],
       "error": null,
       "duration": 0.14,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Flushing Tech Hackathons & Meetups",
@@ -92057,7 +92057,7 @@
       ],
       "error": null,
       "duration": 0.08,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Tech Meetup",
@@ -92126,7 +92126,7 @@
       ],
       "error": null,
       "duration": 0.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Women's Writing Group",
@@ -92291,7 +92291,7 @@
       ],
       "error": null,
       "duration": 1.54,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bushwick Writers Group",
@@ -92420,7 +92420,7 @@
       ],
       "error": null,
       "duration": 2.61,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Forest Hills Book Group",
@@ -92441,7 +92441,7 @@
       ],
       "error": null,
       "duration": 0.17,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Silent Book Club NYC & Brooklyn",
@@ -92498,7 +92498,7 @@
       ],
       "error": null,
       "duration": 0.91,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Shut Up & Write! NYC (Brooklyn & Queens)",
@@ -92843,7 +92843,7 @@
       ],
       "error": null,
       "duration": 0.08,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Williamsburg French & Spanish Conversations",
@@ -92912,7 +92912,7 @@
       ],
       "error": null,
       "duration": 0.1,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Conversation française à Brooklyn",
@@ -92957,7 +92957,7 @@
       ],
       "error": null,
       "duration": 0.64,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Traditional Slow Jam (Park Slope)",
@@ -93002,7 +93002,7 @@
       ],
       "error": null,
       "duration": 0.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Ethical Culture Community (Park Slope)",
@@ -93047,7 +93047,7 @@
       ],
       "error": null,
       "duration": 0.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Mindful Astoria Meditation Community",
@@ -93116,7 +93116,7 @@
       ],
       "error": null,
       "duration": 0.13,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Friends from Bayside & Queens Socials",
@@ -93401,7 +93401,7 @@
       ],
       "error": null,
       "duration": 0.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Cucala Dance LIC Salsa Classes & Socials",
@@ -93662,7 +93662,7 @@
       ],
       "error": null,
       "duration": 0.13,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC 20s & 30s Board Game Group",
@@ -93695,7 +93695,7 @@
       ],
       "error": null,
       "duration": 0.1,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Borough Hoppers NYC",
@@ -93884,7 +93884,7 @@
       ],
       "error": null,
       "duration": 0.7,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Victory Pints Board Games & Beer",
@@ -93953,7 +93953,7 @@
       ],
       "error": null,
       "duration": 0.16,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Social Board Game Events",
@@ -93974,7 +93974,7 @@
       ],
       "error": null,
       "duration": 0.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tuesday Board Games NYC",
@@ -94007,7 +94007,7 @@
       ],
       "error": null,
       "duration": 0.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Table-Top Games Meetup",
@@ -94015,7 +94015,7 @@
       "events": [],
       "error": null,
       "duration": 0.15,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Board Game Club",
@@ -94023,7 +94023,7 @@
       "events": [],
       "error": null,
       "duration": 0.08,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: New York LGBT Board Games Group",
@@ -94044,7 +94044,7 @@
       ],
       "error": null,
       "duration": 0.2,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Backgammon New York City (BGNYC)",
@@ -94065,7 +94065,7 @@
       ],
       "error": null,
       "duration": 0.14,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Foodies Club",
@@ -94086,7 +94086,7 @@
       ],
       "error": null,
       "duration": 0.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Exploring NYC History & Neighborhoods",
@@ -94167,7 +94167,7 @@
       ],
       "error": null,
       "duration": 0.23,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: New York City Young Adults",
@@ -94200,7 +94200,7 @@
       ],
       "error": null,
       "duration": 0.48,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Union Square Greenmarket",
