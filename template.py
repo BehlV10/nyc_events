@@ -6,7 +6,8 @@ import os
 import re
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
-from html import escape
+import html
+from html import escape, unescape
 from urllib.parse import quote, quote_plus
 
 from scrapers import (
@@ -1435,6 +1436,14 @@ def render_page(results):
         cal_html = '<span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span>' if e.get("date") else ""
 
         raw_desc = (e.get("description") or "").replace("***", "").replace("**", "").replace("__", "").replace("`", "").strip()
+        if "[" in raw_desc:
+            raw_desc = re.sub(r'\[/?[a-zA-Z0-9_-]+[^\]]*\]?', ' ', raw_desc)
+            raw_desc = re.sub(r'\[(?:>>\s*)?(?:please\s+)?(?:register|rsvp|ticket)[^\]]*\]\([^)]+\)', '', raw_desc, flags=re.I)
+            raw_desc = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', raw_desc)
+        if "<" in raw_desc:
+            raw_desc = re.sub(r'<[^>]+>', ' ', raw_desc)
+        raw_desc = unescape(raw_desc)
+        raw_desc = re.sub(r'\s+', ' ', raw_desc).strip()
         desc = raw_desc[:180]
         desc_html = f'<div class="desc">{escape(desc)}</div>' if desc else ""
         is_guestlist = _is_event_guestlist(e)

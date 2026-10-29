@@ -363,36 +363,100 @@ def fetch_nyc_weather():
     return out
 
 
+# --- Description Sanitizer ---
+
+def clean_description(desc):
+    if not desc:
+        return None
+    # Strip WordPress / WPBakery / Visual Composer shortcodes like [vc_row ...], [/vc_row]
+    text = re.sub(r'\[/?[a-zA-Z0-9_-]+[^\]]*\]', ' ', desc)
+    # Strip markdown registration / RSVP links like [>> REGISTER HERE <<](...)
+    text = re.sub(r'\[(?:>>\s*)?(?:please\s+)?(?:register|rsvp|ticket)[^\]]*\]\([^)]+\)', '', text, flags=re.I)
+    # Convert remaining markdown links [label](url) -> label
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+    # Strip any remaining unclosed or broken brackets
+    text = re.sub(r'\[[^\]]*\]?', ' ', text)
+    # Strip HTML tags
+    text = re.sub(r'<[^>]+>', ' ', text)
+    # Clean unescaped iCal backslashes
+    text = text.replace(r'\,', ',').replace(r'\;', ';').replace(r'\n', ' ')
+    text = html.unescape(text)
+    # Strip markdown emphasis
+    text = text.replace("***", "").replace("**", "").replace("__", "").replace("`", "")
+    # Normalize whitespace
+    text = re.sub(r'\s+', ' ', text).strip()
+    return text[:250] if text else None
+
+
 # --- NYC Broadway Lotteries ---
 _luckyseat_cache = {"ts": 0, "data": None}
+LUCKYSEAT_CACHE_FILE = os.path.join(CACHE_DIR, "luckyseat_shows.json")
 
 
 def fetch_luckyseat_nyc():
-    """Fetch LuckySeat Broadway lotteries for NYC."""
+    """Fetch LuckySeat Broadway lotteries for NYC.
+    Cached for 15 min with persistent disk backup so transient WAF blocks never wipe listings."""
     if _luckyseat_cache["data"] is not None and time.time() - _luckyseat_cache["ts"] < CACHE_SECONDS:
         return _luckyseat_cache["data"]
+
+    disk_data = None
+    if os.path.exists(LUCKYSEAT_CACHE_FILE):
+        try:
+            with open(LUCKYSEAT_CACHE_FILE, "r", encoding="utf-8") as f:
+                disk_data = json.load(f)
+        except Exception:
+            disk_data = None
+
     shows = []
     try:
+        headers = {
+            "User-Agent": UA_CHROME,
+            "Accept": "application/json, text/plain, */*",
+            "Referer": "https://www.luckyseat.com/",
+            "Origin": "https://www.luckyseat.com",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
         resp = _SESSION.get(
             "https://www.luckyseat.com/api/showmanagement/getshowlist",
-            headers={"User-Agent": UA_SAFARI, "Accept": "application/json"},
+            headers=headers,
             timeout=10,
         )
         resp.raise_for_status()
-        for s in resp.json():
-            city = (s.get("city") or "").lower()
-            if "new york" not in city and "broadway" not in city and "ny" not in city:
-                continue
-            if not s.get("isActive") or s.get("isTempClosed"):
-                continue
-            shows.append({
-                "name": s.get("showName"),
-                "venue": s.get("eventLocation"),
-                "price": s.get("priceAndFeesTotal"),
-                "url": f"https://www.luckyseat.com/shows/{s.get('showAlias')}" if s.get("showAlias") else "https://www.luckyseat.com/",
-            })
+        raw_shows = resp.json()
+        if isinstance(raw_shows, list) and len(raw_shows) > 0:
+            for s in raw_shows:
+                city = (s.get("city") or "").lower()
+                if "new york" not in city and "broadway" not in city and "ny" not in city:
+                    continue
+                if not s.get("isActive") or s.get("isTempClosed"):
+                    continue
+                shows.append({
+                    "name": s.get("showName"),
+                    "venue": s.get("eventLocation"),
+                    "price": s.get("priceAndFeesTotal"),
+                    "url": f"https://www.luckyseat.com/shows/{s.get('showAlias')}" if s.get("showAlias") else "https://www.luckyseat.com/",
+                })
+            if shows:
+                try:
+                    with open(LUCKYSEAT_CACHE_FILE, "w", encoding="utf-8") as f:
+                        json.dump(shows, f)
+                except Exception:
+                    pass
     except Exception:
-        shows = []
+        if disk_data:
+            shows = disk_data
+        else:
+            try:
+                events_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "events.json")
+                if os.path.exists(events_json_path):
+                    with open(events_json_path, "r", encoding="utf-8") as f:
+                        shows = json.load(f).get("luckyseat") or []
+            except Exception:
+                shows = []
+
+    if not shows and disk_data:
+        shows = disk_data
+
     _luckyseat_cache["data"] = shows
     _luckyseat_cache["ts"] = time.time()
     return shows
@@ -2023,7 +2087,7 @@ def scrape_eventbrite_organizer(url, ua):
             "lat": lat,
             "lng": lng,
             "price": price,
-            "description": desc,
+            "description": clean_description(desc),
         })
     return events
 
@@ -2733,7 +2797,7 @@ def scrape_meetup(url, ua):
                         "lat": lat,
                         "lng": lng,
                         "price": price,
-                        "description": desc,
+                        "description": clean_description(desc),
                     })
             except Exception:
                 pass
@@ -2816,7 +2880,7 @@ def scrape_meetup(url, ua):
                         "lat": lat,
                         "lng": lng,
                         "price": price,
-                        "description": desc,
+                        "description": clean_description(desc),
                     })
             except Exception:
                 pass
@@ -2926,7 +2990,7 @@ def scrape_luma(url, ua):
                 "venue": venue,
                 "price": price,
                 "category": cat,
-                "description": desc,
+                "description": clean_description(desc),
             }
             if lat is not None and lng is not None:
                 ev_dict["lat"] = lat
@@ -3991,7 +4055,7 @@ def scrape_tribe_events_api(url, ua):
                 price = cost or None
 
             desc_raw = item.get("excerpt") or item.get("description") or ""
-            desc = BeautifulSoup(html.unescape(desc_raw), "html.parser").get_text(" ", strip=True)[:240]
+            desc = clean_description(desc_raw)
 
             v_obj = item.get("venue")
             v_name = default_vname
