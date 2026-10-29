@@ -110186,6 +110186,120 @@
         }
       ],
       "error": null
+    },
+    {
+      "venue": "Annual Landmarks & Traditions",
+      "url": "https://www.nyc.gov",
+      "events": [
+        {
+          "name": "Zombie Disco Block Party @ Elizabeth Street Garden",
+          "date": "2026-10-30T18:30:00-04:00",
+          "venue": "Elizabeth Street Garden (211 Elizabeth St)",
+          "url": "https://www.elizabethstreetgarden.com/",
+          "price": "Free",
+          "category": "party",
+          "description": "Annual outdoor Halloween-season community block party on Elizabeth Street outside Elizabeth Street Garden with DJs, open dance floors, and costumes."
+        },
+        {
+          "name": "Brooklyn FAM: Festival of Arts & Music",
+          "date": "2026-11-01T11:00:00-05:00",
+          "venue": "Prospect Park Boathouse (Brooklyn)",
+          "url": "https://www.prospectpark.org/",
+          "price": "Free",
+          "category": "community",
+          "description": "Annual free family-friendly festival featuring live music and dance performances, interactive workshops, and public art celebrating diverse diasporic voices."
+        },
+        {
+          "name": "53rd Annual Village Halloween Parade",
+          "date": "2026-10-31T19:00:00-04:00",
+          "venue": "Greenwich Village (6th Ave & Spring St)",
+          "url": "https://halloween-nyc.com/",
+          "price": "Free",
+          "category": "party",
+          "description": "NYC's iconic world-famous Halloween parade along 6th Avenue from Spring St to 16th St. Costumed participants join open marching."
+        },
+        {
+          "name": "Macy's Thanksgiving Day Balloon Inflation Event",
+          "date": "2026-11-26T12:00:00-05:00",
+          "venue": "American Museum of Natural History (Upper West Side)",
+          "url": "https://www.macys.com/s/parade/",
+          "price": "Free",
+          "category": "community",
+          "description": "Watch giant character balloons come to life the afternoon before the parade around the Museum of Natural History (77th to 81st St)."
+        },
+        {
+          "name": "100th Annual Macy's Thanksgiving Day Parade",
+          "date": "2026-11-27T08:30:00-05:00",
+          "venue": "Upper West Side to Herald Square (6th Ave)",
+          "url": "https://www.macys.com/s/parade/",
+          "price": "Free",
+          "category": "community",
+          "description": "The historic 100th anniversary of Macy's Thanksgiving Day Parade, stepping off at 77th & Central Park West down to 34th St."
+        },
+        {
+          "name": "Rockefeller Center Christmas Tree Lighting Ceremony",
+          "date": "2026-12-02T19:00:00-05:00",
+          "venue": "Rockefeller Plaza",
+          "url": "https://www.rockefellercenter.com/events/rockefeller-center-christmas-tree-lighting/",
+          "price": "Free",
+          "category": "community",
+          "description": "Live musical performances and the ceremonial lighting of the world-famous Rockefeller Center Christmas Tree."
+        },
+        {
+          "name": "Times Square New Year's Eve Ball Drop & Celebration",
+          "date": "2026-12-31T18:00:00-05:00",
+          "venue": "Times Square Plaza",
+          "url": "https://www.timessquarenyc.org/events/new-years-eve",
+          "price": "Free",
+          "category": "party",
+          "description": "The global New Year's Eve celebration featuring live star performances, commercial hourly countdowns, and the midnight crystal ball drop."
+        },
+        {
+          "name": "Lunar New Year Chinatown Firecracker Ceremony & Cultural Festival",
+          "date": "2027-02-17T11:00:00-05:00",
+          "venue": "Sara D. Roosevelt Park (Chinatown)",
+          "url": "https://betterchinatown.com/",
+          "price": "Free",
+          "category": "community",
+          "description": "Traditional firecrackers to ward off evil spirits, lion dance troupes, martial arts, and cultural performances welcoming the New Year."
+        },
+        {
+          "name": "266th New York City St. Patrick's Day Parade",
+          "date": "2027-03-17T11:00:00-04:00",
+          "venue": "Fifth Avenue (44th St to 79th St)",
+          "url": "https://www.nycstpatricksparade.org/",
+          "price": "Free",
+          "category": "community",
+          "description": "The world's oldest and largest civilian parade, marching up Fifth Avenue past St. Patrick's Cathedral with bands, bagpipes, and Irish societies."
+        },
+        {
+          "name": "Museum Mile Festival 2027",
+          "date": "2027-06-08T18:00:00-04:00",
+          "venue": "Fifth Avenue (82nd St to 110th St)",
+          "url": "https://www.museummilefestival.org/",
+          "price": "Free",
+          "category": "art",
+          "description": "Fifth Avenue is closed to traffic for 28 blocks as 8 world-class museums (The Met, Guggenheim, Cooper Hewitt, El Museo, etc.) open free to the public."
+        },
+        {
+          "name": "45th Annual Coney Island Mermaid Parade",
+          "date": "2027-06-19T13:00:00-04:00",
+          "venue": "Coney Island (Surf Ave)",
+          "url": "https://www.coneyisland.com/mermaidparade",
+          "price": "Free",
+          "category": "party",
+          "description": "The nation's largest art parade celebrating marine mythology and artistic self-expression on the historic Coney Island Boardwalk."
+        },
+        {
+          "name": "NYC Pride March 2027",
+          "date": "2027-06-27T12:00:00-04:00",
+          "venue": "Fifth Avenue & Greenwich Village",
+          "url": "https://www.nycpride.org/",
+          "price": "Free",
+          "category": "community",
+          "description": "The monumental annual civil rights march from 25th St down 5th Ave past the Stonewall National Monument to 16th St."
+        }
+      ]
     }
   ],
   "weather": {

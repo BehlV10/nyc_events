@@ -4794,6 +4794,24 @@ MANUAL_RECURRING_EVENTS = [
 
 ANNUAL_LANDMARK_EVENTS = [
     {
+        "name": "Zombie Disco Block Party @ Elizabeth Street Garden",
+        "date": "2026-10-30T18:30:00-04:00",
+        "venue": "Elizabeth Street Garden (211 Elizabeth St)",
+        "url": "https://www.elizabethstreetgarden.com/",
+        "price": "Free",
+        "category": "party",
+        "description": "Annual outdoor Halloween-season community block party on Elizabeth Street outside Elizabeth Street Garden with DJs, open dance floors, and costumes.",
+    },
+    {
+        "name": "Brooklyn FAM: Festival of Arts & Music",
+        "date": "2026-11-01T11:00:00-05:00",
+        "venue": "Prospect Park Boathouse (Brooklyn)",
+        "url": "https://www.prospectpark.org/",
+        "price": "Free",
+        "category": "community",
+        "description": "Annual free family-friendly festival featuring live music and dance performances, interactive workshops, and public art celebrating diverse diasporic voices.",
+    },
+    {
         "name": "53rd Annual Village Halloween Parade",
         "date": "2026-10-31T19:00:00-04:00",
         "venue": "Greenwich Village (6th Ave & Spring St)",
