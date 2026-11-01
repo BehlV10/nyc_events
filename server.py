@@ -122,6 +122,11 @@ def export_json(dest="events.json"):
         except Exception:
             pass
 
+    if "luckyseat" not in data or not data.get("luckyseat"):
+        data["luckyseat"] = fetch_luckyseat_nyc()
+    if "weather" not in data or not data.get("weather"):
+        data["weather"] = fetch_nyc_weather()
+
     with open(dest, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"wrote {dest}: {new_total} events across {len(data.get('venues', []))} venues")
@@ -138,14 +143,22 @@ def export_html(dest="index.html", source_json="events.json"):
             data = None
     if not data:
         data = get_all_events(force=True)
-    if "weather" not in data or not data["weather"]:
+    if "weather" not in data or not data.get("weather"):
         data["weather"] = fetch_nyc_weather()
-    if "luckyseat" not in data:
+    if "luckyseat" not in data or not data.get("luckyseat"):
         data["luckyseat"] = fetch_luckyseat_nyc()
     html = render_page(data)
     with open(dest, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"wrote {dest}: {len(html.encode('utf-8')):,} bytes")
+    if dest in ("index.html", "events.html"):
+        other = "events.html" if dest == "index.html" else "index.html"
+        try:
+            with open(other, "w", encoding="utf-8") as f2:
+                f2.write(html)
+            print(f"wrote {other}: {len(html.encode('utf-8')):,} bytes")
+        except Exception:
+            pass
 
 
 def run_diagnostics(filter_name=None):

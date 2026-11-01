@@ -1260,6 +1260,15 @@ def _merge_duplicates(events):
                 # Clean up _alt_sources so match["url"] is not duplicated in its own alt list
                 match["_alt_sources"] = [a for a in match["_alt_sources"] if a.get("url") != match.get("url")]
 
+            # If match has 19:00:00 (Eventbrite discovery fallback) while e has a real/earlier time, prefer e
+            m_time = match.get("_time")
+            e_time = e.get("_time")
+            m_src = (match.get("_source_venue") or match.get("venue") or "").lower()
+            if "eventbrite" in m_src and m_time and m_time.hour == 19 and m_time.minute == 0 and e_time and not (e_time.hour == 19 and e_time.minute == 0):
+                match["_time"] = e_time
+                if e.get("date"):
+                    match["date"] = e["date"]
+
             # Presenter tag resolution: only real non-generic co-presenters
             cand_src = (match.get("_source_venue") or "").strip()
             e_src = (e.get("_source_venue") or "").strip()
@@ -1276,9 +1285,9 @@ def _merge_duplicates(events):
 
             if not match.get("price") and e.get("price"):
                 match["price"] = e["price"]
-            if not match.get("lat") and e.get("lat"):
+            if (not match.get("lat") or not match.get("lng")) and e.get("lat") and e.get("lng"):
                 match["lat"] = e["lat"]
-                match["lng"] = e.get("lng")
+                match["lng"] = e["lng"]
             if (not match.get("category") or match.get("category") in ("other", "community")) and e.get("category") and e.get("category") not in ("other", "community"):
                 match["category"] = e["category"]
             elif match.get("category") == "music" and e.get("category") == "theater":
@@ -1382,7 +1391,7 @@ def render_page(results):
         cat = e.get("category") or "other"
         bucket = category_bucket(cat)
         color, icon = CATEGORY_STYLES.get(cat, CATEGORY_STYLES["other"])
-        cat_tag = f'<span class="cat-pill" style="--cat-c:{color}; background:{color}18; border-color:{color}33; color:{color}">{icon} {escape(cat)}</span>'
+        cat_tag = f'<span class="cat-pill" style="--cat-c:{color}; background:{color}18; border-color:{color}33; color:{color}"><span class="chip-icon">{icon} </span>{escape(cat)}</span>'
         venue = e.get("venue") or ""
         source = e.get("_source_venue") or ""
         geo = resolve_event_geo(e)
@@ -1451,10 +1460,18 @@ def render_page(results):
         guestlist_badge = '<span class="badge-guestlist" title="Free club guestlist or RSVP entry">🎟️ Guestlist</span>' if is_guestlist else ""
         free_flag = "true" if (is_free or is_guestlist) else "false"
         epoch_attr = f' data-epoch="{int(e["_time"].timestamp())}"' if e.get("_time") else ''
+        t_obj = e.get("_time")
+        raw_date = e.get("date") or ""
+        is_date_only = len(raw_date) == 10 or ("T00:00:00" in raw_date and not (t_obj and (t_obj.hour != 0 or t_obj.minute != 0)))
+        if t_obj and not is_date_only:
+            time_mins = t_obj.hour * 60 + t_obj.minute
+            time_attr = f' data-time-mins="{time_mins}" data-time-str="{t_obj.strftime("%H:%M")}"'
+        else:
+            time_attr = ' data-time-mins="-1"'
         extra_html = f' · {compare_html}' if compare_html else ''
         pres_attr = f' data-presenter="{escape(presenter)}"' if presenter else ''
         ev_id = _event_stable_id(e)
-        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-subarea-name="{escape(sub_name)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}" data-event-id="{ev_id}"{epoch_attr}{geo_attrs}>
+        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-subarea-name="{escape(sub_name)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}" data-event-id="{ev_id}"{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
           <div class="what">{link}{price_tag}{guestlist_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
@@ -1523,6 +1540,7 @@ def render_page(results):
         <section class="{day_class}" data-date="{date_attr}">
           <h2>{heading_html}<span class="count">{len(events)}</span></h2>
           {past_banner_html}
+          <div class="near-me-stream" style="display: none;"></div>
           <div class="cities">{"".join(city_blocks)}</div>
         </section>'''
 
@@ -1665,7 +1683,7 @@ def render_page(results):
     bucket_boxes = "\n".join(
         f'''<label class="chk">
             <input type="checkbox" class="cat-chk" value="{escape(b)}" checked>
-            <span>{_bucket_icon_row(b)} {escape(b)} <span class="count">{bucket_counts.get(b, 0)}</span></span>
+            <span><span class="chip-icon">{_bucket_icon_row(b)} </span>{escape(b)} <span class="count">{bucket_counts.get(b, 0)}</span></span>
           </label>'''
         for b in bucket_order
     )
@@ -2485,6 +2503,142 @@ def render_page(results):
     background: rgba(35, 134, 54, 0.2);
     border-color: #238636;
     color: #3fb950;
+  }}
+  .dist-badge {{
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: rgba(46, 160, 67, 0.15);
+    color: #3fb950;
+    border: 1px solid rgba(46, 160, 67, 0.35);
+    margin-left: 6px;
+    vertical-align: middle;
+  }}
+  [data-theme="indie"] .dist-badge {{
+    background: rgba(56, 189, 248, 0.12);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.3);
+  }}
+  [data-theme="anime"] .dist-badge {{
+    background: rgba(255, 75, 147, 0.15);
+    color: #ff79c6;
+    border-color: rgba(255, 75, 147, 0.35);
+  }}
+  [data-theme="halloween"] .dist-badge {{
+    background: rgba(255, 121, 63, 0.18);
+    color: #ff9f43;
+    border-color: rgba(255, 121, 63, 0.4);
+    box-shadow: 0 0 8px rgba(255, 121, 63, 0.2);
+  }}
+  .near-stream-banner {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    font-size: 13px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }}
+  .near-stream-info {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg);
+  }}
+  .near-stream-clear-btn {{
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }}
+  .near-stream-clear-btn:hover {{
+    background: var(--accent);
+    color: #0c0e14;
+  }}
+  .near-events-list {{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }}
+  .time-select-row {{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }}
+  .time-input-wrap {{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }}
+  .time-input-wrap label {{
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }}
+  .time-dropdown {{
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 5px 6px;
+    border-radius: var(--radius-sm);
+    font-size: 11.5px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }}
+  .time-dropdown:focus {{
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+  }}
+  .time-range-arrow {{
+    color: var(--muted);
+    font-size: 13px;
+    padding-top: 14px;
+    user-select: none;
+  }}
+  .time-range-active-indicator {{
+    margin-top: 6px;
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    line-height: 1.3;
+  }}
+  .chip-time-custom {{
+    background: rgba(255, 121, 63, 0.15) !important;
+    border-color: #ff793f !important;
+    color: #ff9f43 !important;
+  }}
+
+  /* Classic Dark: remove distracting emojis from category badges and category filters */
+  :root .cat-pill .chip-icon,
+  [data-theme="classic"] .cat-pill .chip-icon,
+  :root .cat-pill.genre-pill .chip-icon,
+  [data-theme="classic"] .cat-pill.genre-pill .chip-icon,
+  :root .chk-grid .cat-chk ~ span .chip-icon,
+  [data-theme="classic"] .chk-grid .cat-chk ~ span .chip-icon {{
+    display: none !important;
   }}
   .map-venue-stat {{
     font-size: 12px;
@@ -3331,12 +3485,32 @@ def render_page(results):
       <div class="filter-group">
         <label class="free-toggle" for="free-only-chk">
           <input type="checkbox" id="free-only-chk">
-          <span>✨ Free events only</span>
+          <span><span class="chip-icon">✨ </span>Free events only</span>
         </label>
         <label class="free-toggle" for="guestlist-only-chk" style="margin-top:6px;">
           <input type="checkbox" id="guestlist-only-chk">
-          <span>🎟️ Free club guestlists only</span>
+          <span><span class="chip-icon">🎟️ </span>Free club guestlists only</span>
         </label>
+        <div class="timeframe-toggle-wrap" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);">
+          <label class="timeframe-toggle" for="timeframe-enable-chk">
+            <input type="checkbox" id="timeframe-enable-chk">
+            <span><span class="chip-icon">⏱️ </span>Set timeframe window</span>
+          </label>
+          <div class="custom-time-range" id="custom-time-range" style="display: none; margin-top: 10px;">
+            <div class="time-select-row">
+              <div class="time-input-wrap">
+                <label for="time-from-select">From</label>
+                <select id="time-from-select" class="time-dropdown"></select>
+              </div>
+              <div class="time-range-arrow">→</div>
+              <div class="time-input-wrap">
+                <label for="time-to-select">To</label>
+                <select id="time-to-select" class="time-dropdown"></select>
+              </div>
+            </div>
+            <div class="time-range-active-indicator" id="time-range-active-indicator" style="display:none;"></div>
+          </div>
+        </div>
       </div>
       <div class="filter-group">
         <h3>Category <span class="spacer"></span> <button type="button" id="cat-all">all</button> <button type="button" id="cat-none">none</button></h3>
@@ -3359,15 +3533,18 @@ def render_page(results):
       <div class="view-switch-bar">
         <div class="view-toggle" role="group" aria-label="View mode">
           <button type="button" class="view-btn active" id="btn-view-list" data-view="list">
-            <span>📋</span> List View
+            <span><span class="chip-icon">📋 </span>List View</span>
           </button>
           <button type="button" class="view-btn" id="btn-view-map" data-view="map">
-            <span>🗺️</span> Map View
+            <span><span class="chip-icon">🗺️ </span>Map View</span>
+          </button>
+          <button type="button" class="view-btn" id="btn-near-me" data-view="near" title="Sort events on visible day by distance to your current location">
+            <span><span class="chip-icon">📍 </span><span id="near-me-btn-label">Near Me</span></span>
           </button>
         </div>
         <div class="view-switch-right">
           <button type="button" id="btn-share-filter" class="share-filter-btn" title="Copy shareable link with current filters">
-            <span>🔗</span> <span id="share-btn-text">Share View</span>
+            <span class="chip-icon">🔗 </span><span id="share-btn-text">Share View</span>
           </button>
           <span id="map-venue-stat" class="map-venue-stat" style="display: none;">
             <strong id="map-venue-count">0</strong> venues on map
@@ -3385,14 +3562,15 @@ def render_page(results):
       </div>
       <div class="subarea-chips-bar" id="subarea-chips-bar" style="display: none;"></div>
       <div class="quick-chips-bar" id="quick-chips">
-        <button type="button" class="chip active" data-time="today">⚡ Today</button>
+        <button type="button" class="chip active" data-time="today"><span class="chip-icon">⚡ </span>Today</button>
         <button type="button" class="chip" data-time="tomorrow">Tomorrow</button>
-        <button type="button" class="chip" data-time="weekend">🎉 This Weekend</button>
-        <button type="button" class="chip" data-time="week">📅 Next 7 Days</button>
+        <button type="button" class="chip" data-time="weekend"><span class="chip-icon">🎉 </span>This Weekend</button>
+        <button type="button" class="chip" data-time="week"><span class="chip-icon">📅 </span>Next 7 Days</button>
         <button type="button" class="chip" data-time="all">All Upcoming</button>
-        <button type="button" class="chip chip-guestlist" id="quick-guestlist-chip">🎟️ Guestlists</button>
-        <button type="button" class="chip chip-free" id="quick-free-chip">✨ Free Only</button>
-        <button type="button" class="chip chip-theater" id="quick-theater-chip">🎭 Theater</button>
+        <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
+        <button type="button" class="chip chip-guestlist" id="quick-guestlist-chip"><span class="chip-icon">🎟️ </span>Guestlists</button>
+        <button type="button" class="chip chip-free" id="quick-free-chip"><span class="chip-icon">✨ </span>Free Only</button>
+        <button type="button" class="chip chip-theater" id="quick-theater-chip"><span class="chip-icon">🎭 </span>Theater</button>
       </div>
       <div class="week-nav" id="week-nav">
         <button type="button" id="week-prev" aria-label="Previous">← prev</button>
@@ -3703,12 +3881,266 @@ def render_page(results):
     const quickFreeChip = document.getElementById('quick-free-chip');
     const quickGuestlistChip = document.getElementById('quick-guestlist-chip');
     const quickTheaterChip = document.getElementById('quick-theater-chip');
+    const quickCustomTimeChip = document.getElementById('quick-custom-time-chip');
+    const activeTimeframeLabel = document.getElementById('active-timeframe-label');
+    const timeFromSelect = document.getElementById('time-from-select');
+    const timeToSelect = document.getElementById('time-to-select');
+    const timeframeEnableChk = document.getElementById('timeframe-enable-chk');
+    const customTimeRangeDiv = document.getElementById('custom-time-range');
+    const timeRangeIndicator = document.getElementById('time-range-active-indicator');
+    let timeFrom = null;
+    let timeTo = null;
     let timeFilter = 'today';
     let currentView = 'list';
     let showPastToday = false;
     let leafletMap = null;
     let markersLayer = null;
     let mapLoading = false;
+    let nearMeActive = false;
+    let userCoords = null;
+
+    const HOURLY_TIMES = [
+      {{ val: '00:00', mins: 0, label: '12:00 AM (Midnight)' }},
+      {{ val: '01:00', mins: 60, label: '1:00 AM' }},
+      {{ val: '02:00', mins: 120, label: '2:00 AM' }},
+      {{ val: '03:00', mins: 180, label: '3:00 AM' }},
+      {{ val: '04:00', mins: 240, label: '4:00 AM' }},
+      {{ val: '05:00', mins: 300, label: '5:00 AM' }},
+      {{ val: '06:00', mins: 360, label: '6:00 AM' }},
+      {{ val: '07:00', mins: 420, label: '7:00 AM' }},
+      {{ val: '08:00', mins: 480, label: '8:00 AM' }},
+      {{ val: '09:00', mins: 540, label: '9:00 AM' }},
+      {{ val: '10:00', mins: 600, label: '10:00 AM' }},
+      {{ val: '11:00', mins: 660, label: '11:00 AM' }},
+      {{ val: '12:00', mins: 720, label: '12:00 PM (Noon)' }},
+      {{ val: '13:00', mins: 780, label: '1:00 PM' }},
+      {{ val: '14:00', mins: 840, label: '2:00 PM' }},
+      {{ val: '15:00', mins: 900, label: '3:00 PM' }},
+      {{ val: '16:00', mins: 960, label: '4:00 PM' }},
+      {{ val: '17:00', mins: 1020, label: '5:00 PM' }},
+      {{ val: '18:00', mins: 1080, label: '6:00 PM' }},
+      {{ val: '19:00', mins: 1140, label: '7:00 PM' }},
+      {{ val: '20:00', mins: 1200, label: '8:00 PM' }},
+      {{ val: '21:00', mins: 1260, label: '9:00 PM' }},
+      {{ val: '22:00', mins: 1320, label: '10:00 PM' }},
+      {{ val: '23:00', mins: 1380, label: '11:00 PM' }},
+      {{ val: '24:00', mins: 1440, label: '12:00 AM (Next Midnight)' }},
+      {{ val: '26:00', mins: 1560, label: '2:00 AM (Late Night)' }}
+    ];
+
+    function initTimeDropdowns() {{
+      if (!timeFromSelect) return;
+      timeFromSelect.innerHTML = '';
+      HOURLY_TIMES.slice(0, 24).forEach(item => {{
+        const opt = document.createElement('option');
+        opt.value = item.val;
+        opt.textContent = item.label;
+        if (item.val === '20:00') opt.selected = true;
+        timeFromSelect.appendChild(opt);
+      }});
+      syncToOptions(timeFromSelect.value, '24:00');
+    }}
+
+    function syncToOptions(fromVal, preferredToVal) {{
+      if (!timeToSelect) return;
+      const fromMins = parseTimeToMinutes(fromVal) ?? 1200;
+      const targetToMins = parseTimeToMinutes(preferredToVal);
+
+      let validOptions = HOURLY_TIMES.filter(item => item.mins > fromMins);
+      if (validOptions.length === 0) {{
+        validOptions = HOURLY_TIMES.slice(24);
+      }}
+
+      timeToSelect.innerHTML = '';
+      validOptions.forEach(item => {{
+        const opt = document.createElement('option');
+        opt.value = item.val;
+        opt.textContent = item.label;
+        timeToSelect.appendChild(opt);
+      }});
+
+      const hasTarget = validOptions.some(item => item.mins === targetToMins);
+      if (hasTarget && targetToMins !== null) {{
+        timeToSelect.value = formatMinutesToHHMM(targetToMins);
+      }} else {{
+        timeToSelect.value = validOptions[0].val;
+      }}
+    }}
+
+    function parseTimeToMinutes(str) {{
+      if (!str || typeof str !== 'string') return null;
+      str = str.trim().toLowerCase();
+      if (str === 'midnight' || str === '24:00') return 1440;
+      if (str === 'noon' || str === '12:00') return 720;
+
+      const ampmMatch = str.match(/^(\d{{1,2}})(?::(\d{{2}}))?\s*(am|pm)$/);
+      if (ampmMatch) {{
+        let h = parseInt(ampmMatch[1], 10);
+        const m = ampmMatch[2] ? parseInt(ampmMatch[2], 10) : 0;
+        const ampm = ampmMatch[3];
+        if (ampm === 'pm' && h < 12) h += 12;
+        if (ampm === 'am' && h === 12) h = 0;
+        return h * 60 + m;
+      }}
+
+      const colonMatch = str.match(/^(\d{{1,2}}):(\d{{2}})$/);
+      if (colonMatch) {{
+        const h = parseInt(colonMatch[1], 10);
+        const m = parseInt(colonMatch[2], 10);
+        return h * 60 + m;
+      }}
+
+      const numMatch = str.match(/^(\d{{1,2}})$/);
+      if (numMatch) {{
+        const n = parseInt(numMatch[1], 10);
+        return n * 60;
+      }}
+
+      return null;
+    }}
+
+    function formatMinutesToHHMM(mins) {{
+      if (mins === null || mins === undefined) return '';
+      if (mins === 1440) return '24:00';
+      if (mins === 1560) return '26:00';
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return `${{String(h).padStart(2, '0')}}:${{String(m).padStart(2, '0')}}`;
+    }}
+
+    function formatMinutesToLabel(mins) {{
+      if (mins === null || mins === undefined) return '';
+      if (mins === 1440) return 'Midnight';
+      if (mins === 1560) return '2:00 AM';
+      if (mins === 720) return '12:00 PM';
+      const h24 = Math.floor(mins / 60) % 24;
+      const m = mins % 60;
+      const ampm = (Math.floor(mins / 60) >= 12 && Math.floor(mins / 60) < 24) ? 'PM' : 'AM';
+      let h12 = h24 % 12;
+      if (h12 === 0) h12 = 12;
+      return m > 0 ? `${{h12}}:${{String(m).padStart(2, '0')}} ${{ampm}}` : `${{h12}} ${{ampm}}`;
+    }}
+
+    function updateTimeUI() {{
+      const isCustomActive = (timeFrom !== null || timeTo !== null);
+      if (timeframeEnableChk) {{
+        timeframeEnableChk.checked = isCustomActive;
+      }}
+      if (customTimeRangeDiv) {{
+        customTimeRangeDiv.style.display = isCustomActive ? 'block' : 'none';
+      }}
+
+      if (timeFromSelect && timeFrom !== null) {{
+        timeFromSelect.value = formatMinutesToHHMM(timeFrom);
+      }}
+      const curFrom = (timeFromSelect && timeFromSelect.value) ? timeFromSelect.value : (timeFrom !== null ? formatMinutesToHHMM(timeFrom) : '20:00');
+      const curTo = (timeTo !== null) ? formatMinutesToHHMM(timeTo) : (timeToSelect ? timeToSelect.value : '24:00');
+      syncToOptions(curFrom, curTo);
+
+      if (timeToSelect && timeTo !== null) {{
+        timeToSelect.value = formatMinutesToHHMM(timeTo);
+      }}
+
+      if (timeRangeIndicator) {{
+        if (isCustomActive) {{
+          let desc = '';
+          if (timeFrom !== null && timeTo !== null) {{
+            desc = `Active: ${{formatMinutesToLabel(timeFrom)}} – ${{formatMinutesToLabel(timeTo)}}`;
+          }} else if (timeFrom !== null) {{
+            desc = `Active: From ${{formatMinutesToLabel(timeFrom)}} onwards`;
+          }} else if (timeTo !== null) {{
+            desc = `Active: Until ${{formatMinutesToLabel(timeTo)}}`;
+          }}
+          timeRangeIndicator.textContent = desc;
+          timeRangeIndicator.style.display = 'block';
+        }} else {{
+          timeRangeIndicator.style.display = 'none';
+        }}
+      }}
+
+      if (quickCustomTimeChip && activeTimeframeLabel) {{
+        if (isCustomActive) {{
+          let label = '';
+          if (timeFrom !== null && timeTo !== null) {{
+            label = `${{formatMinutesToLabel(timeFrom)}} – ${{formatMinutesToLabel(timeTo)}}`;
+          }} else if (timeFrom !== null) {{
+            label = `From ${{formatMinutesToLabel(timeFrom)}}`;
+          }} else if (timeTo !== null) {{
+            label = `Until ${{formatMinutesToLabel(timeTo)}}`;
+          }}
+          activeTimeframeLabel.textContent = `⏱️ ${{label}}`;
+          quickCustomTimeChip.style.display = 'inline-flex';
+        }} else {{
+          quickCustomTimeChip.style.display = 'none';
+        }}
+      }}
+    }}
+
+    function setTimeRange(fromVal, toVal, skipApply = false) {{
+      timeFrom = parseTimeToMinutes(fromVal);
+      timeTo = parseTimeToMinutes(toVal);
+      if (timeFrom !== null && timeTo !== null && timeTo <= timeFrom) {{
+        timeTo = (timeFrom < 1440) ? 1440 : timeFrom + 60;
+      }}
+      if (timeFrom !== null && timeFrom < 720 && timeFilter === 'today') {{
+        showPastToday = true;
+      }}
+      updateTimeUI();
+      if (!skipApply) {{
+        apply();
+        stateToHash();
+      }}
+    }}
+
+    function haversineMiles(lat1, lon1, lat2, lon2) {{
+      const R = 3958.8;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }}
+
+    function toggleNearMe() {{
+      if (nearMeActive) {{
+        setNearMe(false);
+        return;
+      }}
+      if (userCoords && userCoords.lat && userCoords.lng) {{
+        setNearMe(true);
+        return;
+      }}
+      const label = document.getElementById('near-me-btn-label');
+      if (label) label.textContent = 'Locating...';
+      if (!navigator.geolocation) {{
+        alert('Geolocation is not supported by your browser.');
+        if (label) label.textContent = 'Near Me';
+        return;
+      }}
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {{
+          userCoords = {{ lat: pos.coords.latitude, lng: pos.coords.longitude }};
+          if (label) label.textContent = 'Near Me';
+          setNearMe(true);
+        }},
+        (err) => {{
+          if (label) label.textContent = 'Near Me';
+          alert('Could not determine your location (' + (err.message || 'permission denied') + '). Please ensure location permissions are allowed in your browser.');
+        }},
+        {{ timeout: 10000, enableHighAccuracy: false, maximumAge: 60000 }}
+      );
+    }}
+
+    function setNearMe(active) {{
+      nearMeActive = !!active;
+      const nearBtn = document.getElementById('btn-near-me');
+      const listBtn = document.getElementById('btn-view-list');
+      if (nearBtn) nearBtn.classList.toggle('active', nearMeActive);
+      if (listBtn) listBtn.classList.toggle('active', !nearMeActive && currentView === 'list');
+      apply();
+    }}
 
     const mobileToggle = document.getElementById('mobile-filter-toggle');
     const mobileClose = document.getElementById('mobile-filter-close');
@@ -3984,6 +4416,9 @@ def render_page(results):
           }}
         }});
       }}
+      if (mode === 'list' && nearMeActive) {{
+        setNearMe(false);
+      }}
       stateToHash();
     }}
 
@@ -4254,7 +4689,8 @@ def render_page(results):
       const chkRecurs = Array.from(recurBoxes).filter(b => b.checked).length;
       const isFree = freeOnlyChk && freeOnlyChk.checked;
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
-      const isFiltered = (chkCats < allCats) || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isTimeFiltered = (timeFrom !== null || timeTo !== null);
+      const isFiltered = (chkCats < allCats) || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -4305,6 +4741,10 @@ def render_page(results):
 
       if (freeOnlyChk && freeOnlyChk.checked) params.set('free', '1');
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
+      if (timeFrom !== null || timeTo !== null) {{
+        if (timeFrom !== null) params.set('from', formatMinutesToHHMM(timeFrom));
+        if (timeTo !== null) params.set('to', formatMinutesToHHMM(timeTo));
+      }}
 
       if (timeFilter !== 'today') params.set('t', timeFilter);
       if ((timeFilter === 'day' || timeFilter === 'week') && fmtISO(anchor) !== todayISO) {{
@@ -4328,6 +4768,14 @@ def render_page(results):
         if (params.get('past') === '1') showPastToday = true;
         if (params.get('v') === 'map') {{
           switchView('map');
+        }}
+
+        if (params.has('from') || params.has('tfrom') || params.has('to') || params.has('tto')) {{
+          const f = params.get('from') || params.get('tfrom');
+          const t = params.get('to') || params.get('tto');
+          setTimeRange(f, t, true);
+        }} else {{
+          setTimeRange(null, null, true);
         }}
 
         if (params.has('t')) {{
@@ -4455,7 +4903,7 @@ def render_page(results):
       }}
 
       // Determine active days first so we only filter DOM nodes inside visible days
-      daySections.forEach(day => {{
+      const activeDays = daySections.filter(day => {{
         const date = day.dataset.date;
         let inTime = true;
         if (timeFilter === 'today') {{
@@ -4472,8 +4920,11 @@ def render_page(results):
           inTime = showAll || date === 'tba' || week.has(date);
         }}
         day.classList.toggle('out-of-week', !inTime);
-        if (!inTime) return;
+        return inTime;
+      }});
 
+      activeDays.forEach(day => {{
+        const date = day.dataset.date;
         const isToday = (date === todayISO);
         const isPastDay = Boolean(date && date !== 'tba' && date < todayISO);
 
@@ -4486,6 +4937,17 @@ def render_page(results):
           const freeOk = !freeOnly || li.dataset.free === 'true';
           const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
           const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
+
+          let todOk = true;
+          if (timeFrom !== null || timeTo !== null) {{
+            const tm = parseInt(li.dataset.timeMins || '-1', 10);
+            if (tm >= 0) {{
+              if (timeFrom !== null && tm < timeFrom) todOk = false;
+              if (timeTo !== null && tm > timeTo) todOk = false;
+            }} else {{
+              todOk = false;
+            }}
+          }}
 
           const epoch = li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0;
           const isPastTime = isToday && epoch > 0 && epoch < twoHoursAgoEpoch;
@@ -4503,7 +4965,7 @@ def render_page(results):
             hiddenPastCount++;
           }}
 
-          const isVisible = catOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && timePastOk;
+          const isVisible = catOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && todOk && timePastOk;
           li.classList.toggle('hidden', !isVisible);
 
           if (isToday && isVisible && !isPast) {{
@@ -4529,6 +4991,96 @@ def render_page(results):
         day.classList.toggle('empty', visible === 0);
         const headingCount = day.querySelector('h2 .count');
         if (headingCount) headingCount.textContent = visible;
+
+        // Proximity calculation & Near Me sorting (only when Near Me button was clicked)
+        const nearStream = day.querySelector('.near-me-stream');
+        const citiesDiv = day.querySelector('.cities');
+
+        if (nearStream && citiesDiv) {{
+          if (nearMeActive && userCoords && userCoords.lat && userCoords.lng) {{
+            citiesDiv.style.display = 'none';
+            nearStream.style.display = 'block';
+
+            // Always query the master list of visible events in citiesDiv
+            const visibleEvents = Array.from(citiesDiv.querySelectorAll('.event:not(.hidden)'));
+
+            const eventDistances = [];
+            visibleEvents.forEach(ev => {{
+              const lat = parseFloat(ev.dataset.lat);
+              const lng = parseFloat(ev.dataset.lng);
+              let dist = 99999;
+              if (!isNaN(lat) && !isNaN(lng)) {{
+                dist = haversineMiles(userCoords.lat, userCoords.lng, lat, lng);
+              }}
+              const timeMins = parseInt(ev.dataset.timeMins || '9999', 10);
+              eventDistances.push({{ ev: ev, dist: dist, timeMins: timeMins }});
+            }});
+
+            eventDistances.sort((a, b) => {{
+              if (a.dist !== b.dist) return a.dist - b.dist;
+              return a.timeMins - b.timeMins;
+            }});
+
+            const locatedCount = eventDistances.filter(item => item.dist < 9999).length;
+
+            let banner = nearStream.querySelector('.near-stream-banner');
+            if (!banner) {{
+              banner = document.createElement('div');
+              banner.className = 'near-stream-banner';
+              nearStream.appendChild(banner);
+            }}
+            banner.innerHTML = `
+              <div class="near-stream-info">
+                <span class="chip-icon">📍 </span>
+                <span><strong>Sorted by distance from your location</strong> (${{locatedCount}} events nearby)</span>
+              </div>
+              <button type="button" class="near-stream-clear-btn" id="btn-reset-near">Reset to Category View</button>
+            `;
+
+            let list = nearStream.querySelector('.near-events-list');
+            if (!list) {{
+              list = document.createElement('ul');
+              list.className = 'near-events-list';
+              nearStream.appendChild(list);
+            }}
+            list.innerHTML = '';
+
+            eventDistances.forEach(item => {{
+              // Clone the element so the master list in citiesDiv remains 100% intact
+              const clone = item.ev.cloneNode(true);
+              clone.classList.remove('hidden');
+
+              if (item.dist < 9999) {{
+                const dStr = item.dist < 0.1 ? '< 0.1 mi away' : `${{item.dist.toFixed(1)}} mi away`;
+                let badge = clone.querySelector('.dist-badge');
+                if (!badge) {{
+                  badge = document.createElement('span');
+                  badge.className = 'dist-badge';
+                  const vTag = clone.querySelector('.venue-tag');
+                  if (vTag) vTag.appendChild(badge);
+                }}
+                badge.title = `${{item.dist.toFixed(2)}} miles away`;
+                badge.innerHTML = `<span class="chip-icon">📍 </span>${{dStr}}`;
+              }}
+
+              list.appendChild(clone);
+            }});
+          }} else {{
+            nearStream.style.display = 'none';
+            nearStream.innerHTML = '';
+            citiesDiv.style.display = 'block';
+          }}
+        }}
+      }});
+
+      daySections.filter(d => !activeDays.includes(d)).forEach(day => {{
+        const nearStream = day.querySelector('.near-me-stream');
+        const citiesDiv = day.querySelector('.cities');
+        if (nearStream && citiesDiv) {{
+          nearStream.style.display = 'none';
+          nearStream.innerHTML = '';
+          citiesDiv.style.display = 'block';
+        }}
       }});
 
       // Update past events notice banner
@@ -4860,6 +5412,11 @@ def render_page(results):
       if (searchInput) searchInput.value = '';
       if (freeOnlyChk) freeOnlyChk.checked = false;
       if (guestlistOnlyChk) guestlistOnlyChk.checked = false;
+      timeFrom = null;
+      timeTo = null;
+      if (timeframeEnableChk) timeframeEnableChk.checked = false;
+      if (customTimeRangeDiv) customTimeRangeDiv.style.display = 'none';
+      updateTimeUI();
       activeSubarea = 'all';
       catBoxes.forEach(b => b.checked = true);
       cityBoxes.forEach(b => b.checked = true);
@@ -4918,11 +5475,55 @@ def render_page(results):
       }});
     }});
 
+    if (quickCustomTimeChip) {{
+      quickCustomTimeChip.addEventListener('click', () => {{
+        if (timeframeEnableChk) timeframeEnableChk.checked = false;
+        if (customTimeRangeDiv) customTimeRangeDiv.style.display = 'none';
+        setTimeRange(null, null);
+      }});
+    }}
+
+    if (timeframeEnableChk) {{
+      timeframeEnableChk.addEventListener('change', () => {{
+        if (timeframeEnableChk.checked) {{
+          if (customTimeRangeDiv) customTimeRangeDiv.style.display = 'block';
+          const f = (timeFromSelect && timeFromSelect.value) ? timeFromSelect.value : '20:00';
+          const t = (timeToSelect && timeToSelect.value) ? timeToSelect.value : '24:00';
+          setTimeRange(f, t);
+        }} else {{
+          if (customTimeRangeDiv) customTimeRangeDiv.style.display = 'none';
+          setTimeRange(null, null);
+        }}
+      }});
+    }}
+
+    if (timeFromSelect) {{
+      timeFromSelect.addEventListener('change', () => {{
+        const f = timeFromSelect.value;
+        const currentTo = timeToSelect ? timeToSelect.value : '24:00';
+        syncToOptions(f, currentTo);
+        const t = timeToSelect ? timeToSelect.value : '24:00';
+        if (timeframeEnableChk) timeframeEnableChk.checked = true;
+        setTimeRange(f, t);
+      }});
+    }}
+    if (timeToSelect) {{
+      timeToSelect.addEventListener('change', () => {{
+        const f = timeFromSelect ? timeFromSelect.value : '20:00';
+        const t = timeToSelect.value;
+        if (timeframeEnableChk) timeframeEnableChk.checked = true;
+        setTimeRange(f, t);
+      }});
+    }}
+
     const btnViewList = document.getElementById('btn-view-list');
     if (btnViewList) btnViewList.addEventListener('click', () => switchView('list'));
 
     const btnViewMap = document.getElementById('btn-view-map');
     if (btnViewMap) btnViewMap.addEventListener('click', () => switchView('map'));
+
+    const btnNearMe = document.getElementById('btn-near-me');
+    if (btnNearMe) btnNearMe.addEventListener('click', () => toggleNearMe());
 
     const mapRecenterBtn = document.getElementById('map-recenter-btn');
     if (mapRecenterBtn) {{
@@ -4992,7 +5593,9 @@ def render_page(results):
     }});
 
     document.addEventListener('click', (e) => {{
-      if (e.target && e.target.id === 'btn-toggle-past') {{
+      if (e.target && e.target.id === 'btn-reset-near') {{
+        setNearMe(false);
+      }} else if (e.target && e.target.id === 'btn-toggle-past') {{
         showPastToday = !showPastToday;
         apply();
       }} else if (e.target && e.target.id === 'btn-banner-tomorrow') {{
@@ -5538,14 +6141,9 @@ def render_page(results):
     setInterval(checkDayRollover, 60000);
 
     loadLocalCommunityEvents();
+    initTimeDropdowns();
     hashToState();
     apply();
-
-    if ('requestIdleCallback' in window) {{
-      requestIdleCallback(() => {{ ensureDeferredDaysHydrated(); }}, {{ timeout: 2500 }});
-    }} else {{
-      setTimeout(() => {{ ensureDeferredDaysHydrated(); }}, 2500);
-    }}
   </script>
 </body>
 </html>"""

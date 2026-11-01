@@ -389,23 +389,74 @@ def clean_description(desc):
 
 
 # --- NYC Broadway Lotteries ---
+# --- NYC Broadway Lotteries ---
+LUCKYSEAT_FALLBACK_SHOWS = [
+    {
+        "name": "Hadestown",
+        "venue": "Walter Kerr Theatre",
+        "price": 49.0,
+        "url": "https://www.luckyseat.com/shows/hadestown-newyork",
+    },
+    {
+        "name": "The Book of Mormon",
+        "venue": "Eugene O'Neill Theatre",
+        "price": 49.0,
+        "url": "https://www.luckyseat.com/shows/thebookofmormon-newyork",
+    },
+    {
+        "name": "Other Desert Cities",
+        "venue": "Hudson Theatre",
+        "price": 49.0,
+        "url": "https://www.luckyseat.com/shows/otherdesertcities-newyork-2026Sep",
+    },
+    {
+        "name": "Paranormal Activity",
+        "venue": "August Wilson Theatre",
+        "price": 40.0,
+        "url": "https://www.luckyseat.com/shows/paranormalactivity-newyork-2026Jul",
+    },
+    {
+        "name": "Pre-Existing Condition",
+        "venue": "Greenwich House Theater",
+        "price": 39.0,
+        "url": "https://www.luckyseat.com/shows/pre-existingcondition-newyork-2026Oct",
+    },
+    {
+        "name": "Friends! The Musical Parody",
+        "venue": "The Theater Center",
+        "price": 39.0,
+        "url": "https://www.luckyseat.com/shows/friends!themusicalparodynewyork-newyork-2025Apr",
+    },
+    {
+        "name": "Perfect Crime",
+        "venue": "The Theater Center",
+        "price": 39.0,
+        "url": "https://www.luckyseat.com/shows/perfectcrime-newyork-2025Apr",
+    },
+]
+
 _luckyseat_cache = {"ts": 0, "data": None}
 LUCKYSEAT_CACHE_FILE = os.path.join(CACHE_DIR, "luckyseat_shows.json")
+LUCKYSEAT_COMMITTED_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "luckyseat_shows.json")
 
 
 def fetch_luckyseat_nyc():
     """Fetch LuckySeat Broadway lotteries for NYC.
-    Cached for 15 min with persistent disk backup so transient WAF blocks never wipe listings."""
+    Cached for 15 min with multi-tier disk and hardcoded fallbacks so Cloudflare blocks never wipe listings."""
     if _luckyseat_cache["data"] is not None and time.time() - _luckyseat_cache["ts"] < CACHE_SECONDS:
         return _luckyseat_cache["data"]
 
     disk_data = None
-    if os.path.exists(LUCKYSEAT_CACHE_FILE):
-        try:
-            with open(LUCKYSEAT_CACHE_FILE, "r", encoding="utf-8") as f:
-                disk_data = json.load(f)
-        except Exception:
-            disk_data = None
+    for candidate_path in (LUCKYSEAT_CACHE_FILE, LUCKYSEAT_COMMITTED_FILE):
+        if os.path.exists(candidate_path):
+            try:
+                with open(candidate_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                    if isinstance(data, list) and len(data) > 0:
+                        disk_data = data
+                        break
+            except Exception:
+                pass
 
     shows = []
     try:
@@ -437,25 +488,32 @@ def fetch_luckyseat_nyc():
                     "url": f"https://www.luckyseat.com/shows/{s.get('showAlias')}" if s.get("showAlias") else "https://www.luckyseat.com/",
                 })
             if shows:
-                try:
-                    with open(LUCKYSEAT_CACHE_FILE, "w", encoding="utf-8") as f:
-                        json.dump(shows, f)
-                except Exception:
-                    pass
+                for save_path in (LUCKYSEAT_CACHE_FILE, LUCKYSEAT_COMMITTED_FILE):
+                    try:
+                        os.makedirs(os.path.dirname(save_path), exist_ok=True)
+                        with open(save_path, "w", encoding="utf-8") as f:
+                            json.dump(shows, f, indent=2)
+                    except Exception:
+                        pass
     except Exception:
-        if disk_data:
-            shows = disk_data
-        else:
-            try:
-                events_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "events.json")
-                if os.path.exists(events_json_path):
-                    with open(events_json_path, "r", encoding="utf-8") as f:
-                        shows = json.load(f).get("luckyseat") or []
-            except Exception:
-                shows = []
+        pass
 
     if not shows and disk_data:
         shows = disk_data
+
+    if not shows:
+        try:
+            events_json_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "events.json")
+            if os.path.exists(events_json_path):
+                with open(events_json_path, "r", encoding="utf-8") as f:
+                    candidate = json.load(f).get("luckyseat")
+                    if isinstance(candidate, list) and len(candidate) > 0:
+                        shows = candidate
+        except Exception:
+            pass
+
+    if not shows:
+        shows = list(LUCKYSEAT_FALLBACK_SHOWS)
 
     _luckyseat_cache["data"] = shows
     _luckyseat_cache["ts"] = time.time()
@@ -1957,7 +2015,7 @@ def scrape_eventbrite_jsonld(url, ua):
                         if "T" in start:
                             dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
                         else:
-                            dt = datetime.fromisoformat(f"{start}T19:00:00").replace(tzinfo=EASTERN).astimezone(timezone.utc)
+                            dt = datetime.fromisoformat(f"{start}T00:00:00").replace(tzinfo=EASTERN).astimezone(timezone.utc)
                     except Exception:
                         continue
                     if dt < now:
