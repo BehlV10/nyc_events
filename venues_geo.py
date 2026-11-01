@@ -999,11 +999,53 @@ VENUE_RULES = [
     ("pig beach", (40.7554, -73.9261, "Astoria", "35-37 36th St, Queens, NY", "Pig Beach BBQ Queens")),
     ("chilo's", (40.6889, -73.9571, "Bed-Stuy", "323 Franklin Ave, Brooklyn, NY", "Chilo's")),
     ("juilliard", (40.7737, -73.9832, "Lincoln Square", "60 Lincoln Center Plaza, New York, NY", "The Juilliard School")),
+    ("gramercy theatre", (40.7397, -73.9845, "Gramercy", "127 E 23rd St, New York, NY", "Gramercy Theatre")),
+    ("the gramercy theatre", (40.7397, -73.9845, "Gramercy", "127 E 23rd St, New York, NY", "Gramercy Theatre")),
+    ("nublu 151", (40.7262, -73.9785, "Alphabet City", "151 Ave C, New York, NY", "Nublu 151")),
+    ("union square greenmarket", (40.7359, -73.9911, "Union Square", "Union Square W & E 17th St, New York, NY", "Union Square Greenmarket")),
+    ("columbia university greenmarket", (40.8075, -73.9626, "Morningside Heights", "Broadway & W 116th St, New York, NY", "Columbia University Greenmarket")),
+    ("brooklyn borough hall greenmarket", (40.6928, -73.9903, "Downtown Brooklyn", "Court St & Montague St, Brooklyn, NY", "Brooklyn Borough Hall Greenmarket")),
+    ("borough hall greenmarket", (40.6928, -73.9903, "Downtown Brooklyn", "Court St & Montague St, Brooklyn, NY", "Brooklyn Borough Hall Greenmarket")),
+    ("brooklyn flea", (40.7032, -73.9892, "DUMBO", "80 Pearl St, Brooklyn, NY", "Brooklyn Flea")),
+    ("smorgasburg", (40.7214, -73.9626, "Williamsburg", "90 Kent Ave, Brooklyn, NY", "Smorgasburg Williamsburg")),
+    ("smorgasburg nyc", (40.7214, -73.9626, "Williamsburg", "90 Kent Ave, Brooklyn, NY", "Smorgasburg Williamsburg")),
+    ("smorgasburg williamsburg", (40.7214, -73.9626, "Williamsburg", "90 Kent Ave, Brooklyn, NY", "Smorgasburg Williamsburg")),
+    ("smorgasburg prospect park", (40.6602, -73.9689, "Prospect Park", "Breeze Hill, Brooklyn, NY", "Smorgasburg Prospect Park")),
+    ("north brooklyn runners", (40.7209, -73.9515, "Williamsburg", "McCarren Park Track, Brooklyn, NY", "North Brooklyn Runners")),
+    ("woodside-sunnyside runners", (40.7445, -73.9065, "Woodside", "Windmuller Park, 52-40 39th Dr, Queens, NY", "Woodside-Sunnyside Runners")),
+    ("woodside sunnyside runners", (40.7445, -73.9065, "Woodside", "Windmuller Park, 52-40 39th Dr, Queens, NY", "Woodside-Sunnyside Runners")),
+    ("lou lodati", (40.7446, -73.9213, "Sunnyside", "41-15 Skillman Ave, Sunnyside, NY", "Lou Lodati Park")),
+    ("lou lodati park", (40.7446, -73.9213, "Sunnyside", "41-15 Skillman Ave, Sunnyside, NY", "Lou Lodati Park")),
+    ("queens distance runners", (40.7490, -73.8465, "Flushing Meadows", "Flushing Meadows Corona Park, Queens, NY", "Queens Distance Runners")),
+    ("crown heights run club", (40.6738, -73.9701, "Crown Heights", "Grand Army Plaza, Brooklyn, NY", "Crown Heights Run Club")),
+    ("hellgate road runners", (40.7785, -73.9238, "Astoria", "Astoria Park Track, Astoria, NY", "Hellgate Road Runners")),
+    ("lost battalion hall", (40.7291, -73.8647, "Rego Park", "93-29 Queens Blvd, Rego Park, NY", "Lost Battalion Hall Recreation Center")),
+    ("cassette", (40.7303, -73.9582, "Greenpoint", "113 Franklin St, Brooklyn, NY", "Cassette")),
+    ("ifc center", (40.7310, -74.0006, "Greenwich Village", "323 6th Ave, New York, NY", "IFC Center")),
+    ("chelsea recreation center", (40.7487, -74.0007, "Chelsea", "430 W 25th St, New York, NY", "Chelsea Recreation Center")),
+    ("midnight runners", (40.7308, -73.9973, "Greenwich Village", "Washington Square Park, New York, NY", "Midnight Runners NYC")),
+    ("city girls who walk", (40.7690, -73.9740, "Central Park", "Central Park South, New York, NY", "City Girls Who Walk NYC")),
+    ("chinatown runners", (40.7145, -73.9996, "Chinatown", "Columbus Park, New York, NY", "Chinatown Runners")),
+    ("williamsbridge oval", (40.8778, -73.8777, "Norwood", "3225 Reservoir Oval E, Bronx, NY", "Williamsbridge Oval")),
+    ("bowne park", (40.7694, -73.8093, "Flushing", "29th Ave & 155th St, Flushing, NY", "Bowne Park")),
+    ("thomas jefferson park", (40.7925, -73.9378, "East Harlem", "2180 1st Ave, New York, NY", "Thomas Jefferson Park")),
+    ("harlem swing dance", (40.8123, -73.9398, "Harlem", "34 W 134th St, New York, NY", "Harlem Swing Dance Society")),
+    ("this week in swing", (40.7495, -73.9905, "Midtown", "New York, NY", "This Week in Swing NYC")),
+    ("ubs arena", (40.7230, -73.7262, "Elmont", "2400 Hempstead Turnpike, Elmont, NY", "UBS Arena")),
+    ("the capitol theatre", (41.0014, -73.6644, "Port Chester", "149 Westchester Ave, Port Chester, NY", "The Capitol Theatre")),
+    ("capitol theatre", (41.0014, -73.6644, "Port Chester", "149 Westchester Ave, Port Chester, NY", "The Capitol Theatre")),
+    ("starland ballroom", (40.4461, -74.3414, "Sayreville", "570 Jernee Mill Rd, Sayreville, NJ", "Starland Ballroom")),
+    ("tarrytown music hall", (41.0768, -73.8584, "Tarrytown", "13 Main St, Tarrytown, NY", "Tarrytown Music Hall")),
+    ("garcia's at the cap", (41.0014, -73.6644, "Port Chester", "149 Westchester Ave, Port Chester, NY", "Garcia's at The Capitol Theatre")),
+    ("daryl's house", (41.5173, -73.5786, "Pawling", "130 NY-22, Pawling, NY", "Daryl's House")),
+    ("bethel woods", (41.7001, -74.8812, "Bethel", "200 Hurd Rd, Bethel, NY", "Bethel Woods Center for the Arts")),
+    ("pacha nyc", (40.7631, -73.9967, "Hell's Kitchen", "618 W 46th St, New York, NY", "Pacha NYC")),
+    ("pacha", (40.7631, -73.9967, "Hell's Kitchen", "618 W 46th St, New York, NY", "Pacha NYC")),
 ]
 
-# Coordinate bounding box for valid NYC Metro area events
-MIN_LAT, MAX_LAT = 40.48, 40.95
-MIN_LNG, MAX_LNG = -74.30, -73.65
+# Coordinate bounding box for valid NYC Metro area & Tri-State events
+MIN_LAT, MAX_LAT = 40.35, 41.85
+MIN_LNG, MAX_LNG = -75.05, -73.50
 
 
 def resolve_event_geo(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
