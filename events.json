@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-01T15:44:36.110542+00:00",
+  "generated_at": "2026-11-01T18:15:51.363622+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -12467,7 +12467,7 @@
         }
       ],
       "error": null,
-      "duration": 25.37,
+      "duration": 19.54,
       "cached": false
     },
     {
@@ -12580,7 +12580,7 @@
         }
       ],
       "error": null,
-      "duration": 1.17,
+      "duration": 1.21,
       "cached": false
     },
     {
@@ -12621,7 +12621,7 @@
         }
       ],
       "error": null,
-      "duration": 1.11,
+      "duration": 1.06,
       "cached": false
     },
     {
@@ -12630,7 +12630,7 @@
       "events": [
         {
           "name": "The Annual NYC Marathon Runs Through Williamsburg and Greenpoint This Sunday",
-          "date": "2026-11-01T15:44:10.651224+00:00",
+          "date": "2026-11-01T18:15:31.776226+00:00",
           "venue": "Greenpoint & Williamsburg (Brooklyn)",
           "url": "https://greenpointers.com/2026/10/30/the-annual-nyc-marathon-runs-through-williamsburg-and-greenpoint-this-sunday/",
           "price": "Free / Various",
@@ -12638,7 +12638,7 @@
         }
       ],
       "error": null,
-      "duration": 0.22,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -12647,7 +12647,7 @@
       "events": [
         {
           "name": "DAYDREAM | Air Becomes Art - Balloon Museum",
-          "date": "2026-11-01T15:45:00Z",
+          "date": "2026-11-01T18:30:00Z",
           "url": "https://www.universe.com/events/daydream-air-becomes-art-balloon-museum-tickets-Y5HV92?ref=ticketmaster",
           "venue": "Balloon Museum NYC (New York City, NY)",
           "lat": 40.70623961,
@@ -12657,7 +12657,7 @@
         },
         {
           "name": "The Banksy Museum New York!",
-          "date": "2026-11-01T16:00:00Z",
+          "date": "2026-11-01T18:30:00Z",
           "url": "https://www.universe.com/events/the-banksy-museum-new-york-tickets-5PKNY0?ref=ticketmaster",
           "venue": "Banksy Museum New York",
           "lat": 40.7196025,
@@ -12666,222 +12666,12 @@
           "category": "theater"
         },
         {
-          "name": "Museum of Chinese in America General Admission",
-          "date": "2026-11-01T16:00:00Z",
-          "url": "https://www.universe.com/events/museum-of-chinese-in-america-general-admission-tickets-PZ7R68?ref=ticketmaster",
-          "venue": "Museum of Chinese in America (New York, NY)",
-          "lat": 40.71953297,
-          "lng": -73.99902914,
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "Candy Crafting at Cricket's Candy Creations at One Times Square",
-          "date": "2026-11-01T16:00:00Z",
-          "url": "https://www.universe.com/events/candy-crafting-at-crickets-candy-creations-at-one-times-square-tickets-JVML6P?ref=ticketmaster",
-          "venue": "Cricket's Candy Creations (New York, NY)",
-          "lat": 40.72314889,
-          "lng": -74.00787454,
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Belmont Park - General Admission",
-          "date": "2026-11-01T16:00:00Z",
-          "url": "https://www.ticketmaster.com/belmont-park-general-admission-elmont-new-york-11-01-2026/event/0000654F861E63C3",
-          "venue": "Belmont Park",
-          "lat": 40.708328,
-          "lng": -73.717618,
-          "price": null,
-          "category": "sports"
-        },
-        {
           "name": "The Very Hungry Caterpillar Show",
-          "date": "2026-11-01T16:30:00Z",
-          "url": "https://www.ticketmaster.com/the-very-hungry-caterpillar-show-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZ8_e",
+          "date": "2026-11-01T18:30:00Z",
+          "url": "https://www.ticketmaster.com/the-very-hungry-caterpillar-show-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZ8_8",
           "venue": "DR2 (New York, NY)",
           "lat": 40.7351015,
           "lng": -73.9895091,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Circoloco Halloween - Ages 21+",
-          "date": "2026-11-01T17:00:00Z",
-          "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAeKqE",
-          "venue": "Broolyn Storehouse (Brooklyn, NY)",
-          "lat": 40.694,
-          "lng": -73.964203,
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Jamie Allan's Amaze",
-          "date": "2026-11-01T17:00:00Z",
-          "url": "https://www.ticketmaster.com/jamie-allans-amaze-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZkOS",
-          "venue": "New World Stages - Stage 5 (New York, NY)",
-          "lat": 40.76301415,
-          "lng": -73.9876273,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Gazillion Bubble Show",
-          "date": "2026-11-01T17:00:00Z",
-          "url": "https://www.ticketmaster.com/the-gazillion-bubble-show-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZo0E",
-          "venue": "New World Stages - Stage 2 (New York, NY)",
-          "lat": 40.76301415,
-          "lng": -73.9876273,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Songwriters Mic ",
-          "date": "2026-11-01T17:30:00Z",
-          "url": "https://www.ticketweb.com/event/songwriters-mic-lucindas-tickets/15053253",
-          "venue": "Lucinda's (New York, NY)",
-          "lat": 40.728329,
-          "lng": -73.982199,
-          "price": "$0",
-          "category": "music"
-        },
-        {
-          "name": "Banksy Museum NY - REBEL STENCIL WORKSHOP",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.universe.com/events/banksy-museum-ny-rebel-stencil-workshop-tickets-SGPY20?ref=ticketmaster",
-          "venue": "Banksy Museum New York",
-          "lat": 40.7196025,
-          "lng": -74.00135811,
-          "price": null,
-          "category": "art"
-        },
-        {
-          "name": "The Curious Case of the Curse of Benjamin Button",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P8a9",
-          "venue": "Public Theater - Newman Theater (New York, NY)",
-          "lat": 40.731602,
-          "lng": -73.989098,
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "Aladdin",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/aladdin-new-york-new-york-11-01-2026/event/030064AEEBB81C6B",
-          "venue": "New Amsterdam Theatre (New York, NY)",
-          "lat": 40.75605705,
-          "lng": -73.98792867,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Lion King (New York, NY)",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/the-lion-king-new-york-ny-new-york-new-york-11-01-2026/event/Z1r9uZrrZbpZ1Ae787y",
-          "venue": "Minskoff Theatre (New York, NY)",
-          "lat": 40.757986,
-          "lng": -73.98577175,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Downstate",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/downstate-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZ3uF",
-          "venue": "Booth Theatre (New York, NY)",
-          "lat": 40.758343,
-          "lng": -73.987032,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Lion King",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70Sxe",
-          "venue": "Minskoff Theatre (New York, NY)",
-          "lat": 40.7593,
-          "lng": -73.990196,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Wanted",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P-qS",
-          "venue": "James Earl Jones Theatre (New York, NY)",
-          "lat": 40.7593,
-          "lng": -73.990196,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Stranger Things: The First Shadow",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA7fvx",
-          "venue": "Marquis Theatre - NY (New York, NY)",
-          "lat": 40.7593,
-          "lng": -73.990196,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Hamilton",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAvfqz",
-          "venue": "Richard Rodgers Theatre-NY (New York, NY)",
-          "lat": 40.7593,
-          "lng": -73.990196,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "& Juliet",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAvfu8",
-          "venue": "Stephen Sondheim Theatre (New York, NY)",
-          "lat": 40.7593,
-          "lng": -73.990196,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Hamilton (NY)",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/hamilton-ny-new-york-new-york-11-01-2026/event/Z1r9uZrrZbpZ1AvjV8O",
-          "venue": "Richard Rodgers Theatre (New York, NY)",
-          "lat": 40.75920382,
-          "lng": -73.98676323,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Singfeld! A Musical About Nothing!",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/singfeld-a-musical-about-nothing-new-york-new-york-11-01-2026/event/300064F795BB3A45",
-          "venue": "The Theater Center (New York, NY)",
-          "lat": 40.761604,
-          "lng": -73.9846,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "New York Jets v. Las Vegas Raiders",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/new-york-jets-v-las-vegas-east-rutherford-new-jersey-11-01-2026/event/00006488E1880E4F",
-          "venue": "MetLife Stadium (East Rutherford, NJ)",
-          "lat": 40.81359,
-          "lng": -74.074493,
-          "price": null,
-          "category": "sports"
-        },
-        {
-          "name": "Chicka Chicka Boom Boom The Musical 1 PM",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://www.ticketmaster.com/chicka-chicka-boom-boom-the-musical-englewood-new-jersey-11-01-2026/event/0000648E8B194F53",
-          "venue": "Bergen Performing Arts Center (Englewood, NJ)",
-          "lat": 40.895358,
-          "lng": -73.97511,
           "price": null,
           "category": "theater"
         },
@@ -13156,6 +12946,16 @@
           "category": "music"
         },
         {
+          "name": "Candy Crafting at Cricket's Candy Creations at One Times Square",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.universe.com/events/candy-crafting-at-crickets-candy-creations-at-one-times-square-tickets-JVML6P?ref=ticketmaster",
+          "venue": "Cricket's Candy Creations (New York, NY)",
+          "lat": 40.72314889,
+          "lng": -74.00787454,
+          "price": null,
+          "category": "music"
+        },
+        {
           "name": "A Ghost in Your Ear",
           "date": "2026-11-01T20:00:00Z",
           "url": "https://www.ticketmaster.com/a-ghost-in-your-ear-new-york-new-york-11-01-2026/event/300064F5DFAFA346",
@@ -13264,10 +13064,240 @@
           "lng": -73.990196,
           "price": null,
           "category": "theater"
+        },
+        {
+          "name": "Soon",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAvJF-",
+          "venue": "St. Luke's Theatre (New York, NY)",
+          "lat": 40.7593,
+          "lng": -73.990196,
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Billy Crystal: 860",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/billy-crystal-860-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZaba",
+          "venue": "Imperial Theatre (New York, NY)",
+          "lat": 40.759102,
+          "lng": -73.987106,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "The Lost Boys",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/the-lost-boys-new-york-new-york-11-01-2026/event/Z1r9uZrrZbpZ1AvOA_Y",
+          "venue": "Palace Theatre New York",
+          "lat": 40.7591003,
+          "lng": -73.9846789,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Perfect Crime",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/perfect-crime-new-york-new-york-11-01-2026/event/300064F793AB3716",
+          "venue": "The Theater Center (New York, NY)",
+          "lat": 40.761604,
+          "lng": -73.9846,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Just In Time",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/just-in-time-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZ8FA",
+          "venue": "Circle In The Square Theatre (New York, NY)",
+          "lat": 40.762173,
+          "lng": -73.985349,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Jamie Allan's Amaze",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/jamie-allans-amaze-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZk-K",
+          "venue": "New World Stages - Stage 5 (New York, NY)",
+          "lat": 40.76301415,
+          "lng": -73.9876273,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "The Gazillion Bubble Show",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/the-gazillion-bubble-show-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZo0I",
+          "venue": "New World Stages - Stage 2 (New York, NY)",
+          "lat": 40.76301415,
+          "lng": -73.9876273,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "MJ",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/mj-new-york-new-york-11-01-2026/event/Z1r9uZrrZbpZ1Av09vA",
+          "venue": "Neil Simon Theatre (New York, NY)",
+          "lat": 40.76314609,
+          "lng": -73.98399646,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Jamie Allan",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70-Jb",
+          "venue": "New World Stages - Stage 5 (New York, NY)",
+          "lat": 40.765202,
+          "lng": -73.985298,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "MJ (NY)",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7xFus",
+          "venue": "Neil Simon Theatre (New York, NY)",
+          "lat": 40.765202,
+          "lng": -73.985298,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "A Few Good Men",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/a-few-good-men-new-york-new-york-11-01-2026/event/Z1r9uZruZqGZ1AvZ81K",
+          "venue": "Lincoln Center - Vivian Beaumont Theater (New York, NY)",
+          "lat": 40.77392329,
+          "lng": -73.98436028,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Marie Antoinette - QC Theatre, Dance & Fashion Dept.",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://www.ticketmaster.com/marie-antoinette-qc-theatre-dance-fashion-flushing-new-york-11-01-2026/event/1D006536D2D38880",
+          "venue": "Goldstein Theatre at Kupferberg Center for the Arts (Flushing, NY)",
+          "lat": 40.737663,
+          "lng": -73.815605,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Friends! The Musical Parody (New York)",
+          "date": "2026-11-01T20:30:00Z",
+          "url": "https://www.ticketmaster.com/friends-the-musical-parody-new-york-new-york-new-york-11-01-2026/event/300064F7950E392A",
+          "venue": "The Theater Center (New York, NY)",
+          "lat": 40.761604,
+          "lng": -73.9846,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Hair of the Dog Hootenanny",
+          "date": "2026-11-01T21:00:00Z",
+          "url": "https://www.ticketweb.com/event/hair-of-the-dog-hootenanny-wild-horses-tickets/14334154",
+          "venue": "Wild Horses (New York, NY)",
+          "lat": 40.725689,
+          "lng": -73.991692,
+          "price": "$0",
+          "category": "music"
+        },
+        {
+          "name": "BrownstoneJAZZ  SUNDAY AFTER BRUNCH TRIO",
+          "date": "2026-11-01T21:00:00Z",
+          "url": "https://www.ticketweb.com/event/brownstonejazz-sunday-after-brunch-brownstonejazz-tickets/14194124",
+          "venue": "BrownstoneJAZZ (Brooklyn , NY)",
+          "lat": 40.6815228,
+          "lng": -73.947016,
+          "price": "$54.27",
+          "category": "music"
+        },
+        {
+          "name": "The Rocky Horror Show",
+          "date": "2026-11-01T21:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70p04",
+          "venue": "Studio 54 (New York, NY)",
+          "lat": 40.765202,
+          "lng": -73.985298,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Chicka Chicka Boom Boom The Musical 4 PM",
+          "date": "2026-11-01T21:00:00Z",
+          "url": "https://www.ticketmaster.com/chicka-chicka-boom-boom-the-musical-englewood-new-jersey-11-01-2026/event/0000648E8C3A517E",
+          "venue": "Bergen Performing Arts Center (Englewood, NJ)",
+          "lat": 40.895358,
+          "lng": -73.97511,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "ZAUNTEE: God Remembers Tour",
+          "date": "2026-11-01T22:00:00Z",
+          "url": "https://www.ticketmaster.com/zauntee-god-remembers-tour-new-york-new-york-11-01-2026/event/000064EEB1CBEA47",
+          "venue": "Mercury Lounge (New York, NY)",
+          "lat": 40.722036,
+          "lng": -73.986806,
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Drunk Dracula",
+          "date": "2026-11-01T22:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Pypa",
+          "venue": "The Ruby Theatre (New York, NY)",
+          "lat": 40.755699,
+          "lng": -73.996696,
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "CATS: The Jellicle Ball",
+          "date": "2026-11-01T22:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P_8E",
+          "venue": "Broadhurst Theatre (New York, NY)",
+          "lat": 40.7593,
+          "lng": -73.990196,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "NJ/NY Gotham FC vs. Utah Royals FC",
+          "date": "2026-11-01T22:00:00Z",
+          "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Oxfs",
+          "venue": "Sports Illustrated Stadium (Harrison, NJ)",
+          "lat": 40.744202,
+          "lng": -74.151703,
+          "price": null,
+          "category": "sports"
+        },
+        {
+          "name": "McCabe & Mrs. Miller (1971)",
+          "date": "2026-11-01T22:15:00Z",
+          "url": "https://www.ticketweb.com/event/mccabe-mrs-miller-1971-williams-center-cinema-tickets/14374784",
+          "venue": "Williams Center - Cinema Underground - Rutherford",
+          "lat": 40.82711,
+          "lng": -74.10333,
+          "price": "$13.63–15.69",
+          "category": "music"
+        },
+        {
+          "name": "The Crow (1994)",
+          "date": "2026-11-01T22:20:00Z",
+          "url": "https://www.ticketweb.com/event/the-crow-1994-williams-center-cinema-tickets/14374924",
+          "venue": "Williams Center - Cinema Underground - Rutherford",
+          "lat": 40.82711,
+          "lng": -74.10333,
+          "price": "$13.63–15.69",
+          "category": "music"
         }
       ],
       "error": null,
-      "duration": 1.05,
+      "duration": 1.33,
       "cached": false
     },
     {
@@ -13275,164 +13305,14 @@
       "url": "https://api.seatgeek.com/2/events",
       "events": [
         {
-          "name": "Belmont Racing - Fall Meet",
-          "date": "2026-11-01T16:00:00Z",
-          "url": "https://seatgeek.com/belmont-racing-tickets/horse-racing/2026-11-01-11-am/18548610",
-          "venue": "Belmont Park - New York",
-          "lat": 40.7092,
-          "lng": -73.7216,
-          "price": null,
-          "category": "sports"
-        },
-        {
           "name": "The Very Hungry Caterpillar Show - New York",
-          "date": "2026-11-01T16:30:00Z",
-          "url": "https://seatgeek.com/the-very-hungry-caterpillar-show-tickets/family/2026-11-01-11-30-am/18539527",
+          "date": "2026-11-01T18:30:00Z",
+          "url": "https://seatgeek.com/the-very-hungry-caterpillar-show-tickets/family/2026-11-01-1-30-pm/18539522",
           "venue": "DR2 Theatre (New York, NY)",
           "lat": 40.7353,
           "lng": -73.9894,
           "price": null,
           "category": "theater"
-        },
-        {
-          "name": "Jamie Allan's Amaze - New York",
-          "date": "2026-11-01T17:00:00Z",
-          "url": "https://seatgeek.com/jamie-allan-s-amaze-tickets/entertainment/2026-11-01-12-pm/18408270",
-          "venue": "New World Stages - Stage 5 (New York, NY)",
-          "lat": 40.7628,
-          "lng": -73.9874,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Gazillion Bubble Show - New York",
-          "date": "2026-11-01T17:00:00Z",
-          "url": "https://seatgeek.com/the-gazillion-bubble-show-tickets/family/2026-11-01-12-pm/18472649",
-          "venue": "New World Stages - Stage 2 (New York, NY)",
-          "lat": 40.7628,
-          "lng": -73.9874,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Chicka Chicka Boom Boom: The Musical - Englewood",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/chicka-chicka-boom-boom-tickets/theater/2026-11-01-1-pm/18270825",
-          "venue": "Bergen Performing Arts Center (Englewood, NJ)",
-          "lat": 40.8953,
-          "lng": -73.9749,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Circus Vazquez - Bronx",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/circus-vazquez-tickets/circus/2026-11-01-1-pm/18203065",
-          "venue": "Yankee Stadium (Bronx, NY)",
-          "lat": 40.8296,
-          "lng": -73.9262,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Lion King - New York",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/the-lion-king-tickets/broadway/2026-11-01-1-pm/18262710",
-          "venue": "Minskoff Theatre (New York, NY)",
-          "lat": 40.7579,
-          "lng": -73.9862,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Singfeld! A Musical About Nothing! - New York",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/singfeld-a-musical-about-nothing-tickets/broadway/2026-11-01-1-pm/18411398",
-          "venue": "The Theater Center (New York, NY)",
-          "lat": 40.7615,
-          "lng": -73.9845,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "& Juliet - New York",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/juliet-tickets/broadway/2026-11-01-1-pm/18302849",
-          "venue": "Stephen Sondheim Theatre - New York",
-          "lat": 40.7559,
-          "lng": -73.9849,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Wanted - New York",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/wanted-1-tickets/broadway/2026-11-01-1-pm/18470457",
-          "venue": "James Earl Jones Theatre (New York, NY)",
-          "lat": 40.7592,
-          "lng": -73.983,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Aladdin - New York",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/aladdin-tickets/theater/2026-11-01-1-pm/18260400",
-          "venue": "New Amsterdam Theatre (New York, NY)",
-          "lat": 40.7563,
-          "lng": -73.9877,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Stranger Things: The First Shadow - New York",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/stranger-things-the-first-shadow-tickets/broadway/2026-11-01-1-pm/18298164",
-          "venue": "Marquis Theatre - New York",
-          "lat": 40.7584,
-          "lng": -73.9855,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Hamilton - New York",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/hamilton-tickets/broadway/2026-11-01-1-pm/18141261",
-          "venue": "Richard Rodgers Theatre (New York, NY)",
-          "lat": 40.7592,
-          "lng": -73.9866,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Curious Case of Benjamin Button - New York",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/the-curious-case-of-benjamin-button-tickets/theater/2026-11-01-1-pm/18655212",
-          "venue": "Public Theater - Newman Theater (New York, NY)",
-          "lat": 40.729,
-          "lng": -73.9918,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Downstate - New York",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/downstate-play-tickets/theater/2026-11-01-1-pm/18583536",
-          "venue": "Booth Theatre - New York",
-          "lat": 40.7583,
-          "lng": -73.9863,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Las Vegas Raiders at New York Jets",
-          "date": "2026-11-01T18:00:00Z",
-          "url": "https://seatgeek.com/new-york-jets-tickets/11-1-2026-east-rutherford-new-jersey-metlife-stadium/nfl/18014032",
-          "venue": "MetLife Stadium (East Rutherford, NJ)",
-          "lat": 40.8142,
-          "lng": -74.0737,
-          "price": null,
-          "category": "sports"
         },
         {
           "name": "The Book of Mormon - New York",
@@ -13455,22 +13335,22 @@
           "category": "theater"
         },
         {
-          "name": "Wicked - New York",
-          "date": "2026-11-01T19:00:00Z",
-          "url": "https://seatgeek.com/wicked-tickets/broadway/2026-11-01-2-pm/17898686",
-          "venue": "Gershwin Theatre (New York, NY)",
-          "lat": 40.7624,
-          "lng": -73.9851,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "The Great Gatsby - The Musical - New York",
           "date": "2026-11-01T19:00:00Z",
           "url": "https://seatgeek.com/the-great-gatsby-the-musical-tickets/broadway/2026-11-01-2-pm/18048726",
           "venue": "Broadway Theatre - New York",
           "lat": 40.7632,
           "lng": -73.9829,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Wicked - New York",
+          "date": "2026-11-01T19:00:00Z",
+          "url": "https://seatgeek.com/wicked-tickets/broadway/2026-11-01-2-pm/17898686",
+          "venue": "Gershwin Theatre (New York, NY)",
+          "lat": 40.7624,
+          "lng": -73.9851,
           "price": null,
           "category": "theater"
         },
@@ -13505,6 +13385,16 @@
           "category": "theater"
         },
         {
+          "name": "Chicago - The Musical - New York",
+          "date": "2026-11-01T19:00:00Z",
+          "url": "https://seatgeek.com/chicago-the-musical-tickets/broadway/2026-11-01-2-pm/18187844",
+          "venue": "Ambassador Theatre - New York",
+          "lat": 40.7613,
+          "lng": -73.985,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "Slam Frank - New York",
           "date": "2026-11-01T19:00:00Z",
           "url": "https://seatgeek.com/slam-frank-tickets/theater/2026-11-01-2-pm/18526975",
@@ -13521,16 +13411,6 @@
           "venue": "Longacre Theatre (New York, NY)",
           "lat": 40.7605,
           "lng": -73.9857,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Chicago - The Musical - New York",
-          "date": "2026-11-01T19:00:00Z",
-          "url": "https://seatgeek.com/chicago-the-musical-tickets/broadway/2026-11-01-2-pm/18187844",
-          "venue": "Ambassador Theatre - New York",
-          "lat": 40.7613,
-          "lng": -73.985,
           "price": null,
           "category": "theater"
         },
@@ -13565,22 +13445,22 @@
           "category": "theater"
         },
         {
-          "name": "Operation Mincemeat - New York",
-          "date": "2026-11-01T19:00:00Z",
-          "url": "https://seatgeek.com/operation-mincemeat-tickets/theater/2026-11-01-2-pm/18149129",
-          "venue": "John Golden Theatre (New York, NY)",
-          "lat": 40.7589,
-          "lng": -73.9878,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "Maybe Happy Ending - New York",
           "date": "2026-11-01T19:00:00Z",
           "url": "https://seatgeek.com/maybe-happy-ending-tickets/broadway/2026-11-01-2-pm/18096014",
           "venue": "Belasco Theatre - NY (New York, NY)",
           "lat": 40.7563,
           "lng": -73.9836,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Operation Mincemeat - New York",
+          "date": "2026-11-01T19:00:00Z",
+          "url": "https://seatgeek.com/operation-mincemeat-tickets/theater/2026-11-01-2-pm/18149129",
+          "venue": "John Golden Theatre (New York, NY)",
+          "lat": 40.7589,
+          "lng": -73.9878,
           "price": null,
           "category": "theater"
         },
@@ -13605,22 +13485,22 @@
           "category": "theater"
         },
         {
+          "name": "Just In Time - New York",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://seatgeek.com/just-in-time-tickets/broadway/2026-11-01-3-pm/18471925",
+          "venue": "Circle In The Square Theatre (New York, NY)",
+          "lat": 40.7623,
+          "lng": -73.9852,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "Perfect Crime - New York",
           "date": "2026-11-01T20:00:00Z",
           "url": "https://seatgeek.com/perfect-crime-tickets/broadway/2026-11-01-3-pm/18411467",
           "venue": "The Theater Center (New York, NY)",
           "lat": 40.7615,
           "lng": -73.9845,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "A Ghost in Your Ear - New York",
-          "date": "2026-11-01T20:00:00Z",
-          "url": "https://seatgeek.com/a-ghost-in-your-ear-tickets/theater/2026-11-01-3-pm/18584739",
-          "venue": "Minetta Lane Theatre (New York, NY)",
-          "lat": 40.7303,
-          "lng": -74.0011,
           "price": null,
           "category": "theater"
         },
@@ -13635,12 +13515,12 @@
           "category": "theater"
         },
         {
-          "name": "Just In Time - New York",
+          "name": "A Ghost in Your Ear - New York",
           "date": "2026-11-01T20:00:00Z",
-          "url": "https://seatgeek.com/just-in-time-tickets/broadway/2026-11-01-3-pm/18471925",
-          "venue": "Circle In The Square Theatre (New York, NY)",
-          "lat": 40.7623,
-          "lng": -73.9852,
+          "url": "https://seatgeek.com/a-ghost-in-your-ear-tickets/theater/2026-11-01-3-pm/18584739",
+          "venue": "Minetta Lane Theatre (New York, NY)",
+          "lat": 40.7303,
+          "lng": -74.0011,
           "price": null,
           "category": "theater"
         },
@@ -13651,16 +13531,6 @@
           "venue": "Hudson Theatre - New York",
           "lat": 40.7569,
           "lng": -73.9848,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Imaginary Invalid - New York",
-          "date": "2026-11-01T20:00:00Z",
-          "url": "https://seatgeek.com/the-imaginary-invalid-tickets/broadway/2026-11-01-3-pm/18470281",
-          "venue": "Todd Haimes Theatre (New York, NY)",
-          "lat": 40.7566,
-          "lng": -73.9883,
           "price": null,
           "category": "theater"
         },
@@ -13685,6 +13555,16 @@
           "category": "theater"
         },
         {
+          "name": "The Imaginary Invalid - New York",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://seatgeek.com/the-imaginary-invalid-tickets/broadway/2026-11-01-3-pm/18470281",
+          "venue": "Todd Haimes Theatre (New York, NY)",
+          "lat": 40.7566,
+          "lng": -73.9883,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "MJ - The Musical - New York",
           "date": "2026-11-01T20:00:00Z",
           "url": "https://seatgeek.com/mj-the-musical-tickets/broadway/2026-11-01-3-pm/18037700",
@@ -13701,6 +13581,16 @@
           "venue": "Palace Theatre - New York",
           "lat": 40.7589,
           "lng": -73.9846,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Jamie Allan's Amaze - New York",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://seatgeek.com/jamie-allan-s-amaze-tickets/entertainment/2026-11-01-3-pm/18408274",
+          "venue": "New World Stages - Stage 5 (New York, NY)",
+          "lat": 40.7628,
+          "lng": -73.9874,
           "price": null,
           "category": "theater"
         },
@@ -13735,21 +13625,21 @@
           "category": "theater"
         },
         {
+          "name": "The Gazillion Bubble Show - New York",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://seatgeek.com/the-gazillion-bubble-show-tickets/family/2026-11-01-3-pm/18472631",
+          "venue": "New World Stages - Stage 2 (New York, NY)",
+          "lat": 40.7628,
+          "lng": -73.9874,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "Harry Potter and the Cursed Child - New York",
           "date": "2026-11-01T20:00:00Z",
           "url": "https://seatgeek.com/harry-potter-and-the-cursed-child-tickets/theater/2026-11-01-3-pm/18519025",
           "venue": "Lyric Theatre - New York",
           "lat": 40.7565,
-          "lng": -73.9878,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "The Outsiders - New York",
-          "date": "2026-11-01T20:00:00Z",
-          "url": "https://seatgeek.com/the-outsiders-1-tickets/broadway/2026-11-01-3-pm/18149476",
-          "venue": "Bernard B. Jacobs Theatre (New York, NY)",
-          "lat": 40.7586,
           "lng": -73.9878,
           "price": null,
           "category": "theater"
@@ -13765,6 +13655,16 @@
           "category": "theater"
         },
         {
+          "name": "The Outsiders - New York",
+          "date": "2026-11-01T20:00:00Z",
+          "url": "https://seatgeek.com/the-outsiders-1-tickets/broadway/2026-11-01-3-pm/18149476",
+          "venue": "Bernard B. Jacobs Theatre (New York, NY)",
+          "lat": 40.7586,
+          "lng": -73.9878,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "Friends! The Musical Parody - New York",
           "date": "2026-11-01T20:30:00Z",
           "url": "https://seatgeek.com/friends-the-musical-parody-tickets/theater/2026-11-01-3-30-pm/18411536",
@@ -13775,12 +13675,32 @@
           "category": "theater"
         },
         {
+          "name": "Circus Vazquez - Bronx",
+          "date": "2026-11-01T21:00:00Z",
+          "url": "https://seatgeek.com/circus-vazquez-tickets/circus/2026-11-01-4-pm/18203067",
+          "venue": "Yankee Stadium (Bronx, NY)",
+          "lat": 40.8296,
+          "lng": -73.9262,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "Richard O'Brien's Rocky Horror Show - New York",
           "date": "2026-11-01T21:00:00Z",
           "url": "https://seatgeek.com/richard-o-brien-s-rocky-horror-show-tickets/theater/2026-11-01-4-pm/18310481",
           "venue": "Studio 54 - New York",
           "lat": 40.764313,
           "lng": -73.9838,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Chicka Chicka Boom Boom: The Musical - Englewood",
+          "date": "2026-11-01T21:00:00Z",
+          "url": "https://seatgeek.com/chicka-chicka-boom-boom-tickets/theater/2026-11-01-4-pm/18270827",
+          "venue": "Bergen Performing Arts Center (Englewood, NJ)",
+          "lat": 40.8953,
+          "lng": -73.9749,
           "price": null,
           "category": "theater"
         },
@@ -13825,16 +13745,6 @@
           "category": "sports"
         },
         {
-          "name": "Kaiju Big Battel",
-          "date": "2026-11-01T23:00:00Z",
-          "url": "https://seatgeek.com/kaiju-big-battel-tickets/brooklyn-new-york-the-bell-house-2026-11-01-6-pm/concert/18550050",
-          "venue": "The Bell House (Brooklyn, NY)",
-          "lat": 40.6735,
-          "lng": -73.9916,
-          "price": null,
-          "category": "music"
-        },
-        {
           "name": "Christian Johnson",
           "date": "2026-11-01T23:00:00Z",
           "url": "https://seatgeek.com/christian-johnson-tickets/comedy/2026-11-01-6-pm/18373076",
@@ -13845,12 +13755,42 @@
           "category": "comedy"
         },
         {
+          "name": "Kaiju Big Battel",
+          "date": "2026-11-01T23:00:00Z",
+          "url": "https://seatgeek.com/kaiju-big-battel-tickets/brooklyn-new-york-the-bell-house-2026-11-01-6-pm/concert/18550050",
+          "venue": "The Bell House (Brooklyn, NY)",
+          "lat": 40.6735,
+          "lng": -73.9916,
+          "price": null,
+          "category": "music"
+        },
+        {
           "name": "Mariza - Newark",
           "date": "2026-11-01T23:00:00Z",
           "url": "https://seatgeek.com/mariza-tickets/classical/2026-11-01-6-pm/18101999",
           "venue": "Prudential Hall at New Jersey Performing Arts Center (Newark, NJ)",
           "lat": 40.7402,
           "lng": -74.1673,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Aladdin - New York",
+          "date": "2026-11-01T23:30:00Z",
+          "url": "https://seatgeek.com/aladdin-tickets/theater/2026-11-01-6-30-pm/18260401",
+          "venue": "New Amsterdam Theatre (New York, NY)",
+          "lat": 40.7563,
+          "lng": -73.9877,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "& Juliet - New York",
+          "date": "2026-11-01T23:30:00Z",
+          "url": "https://seatgeek.com/juliet-tickets/broadway/2026-11-01-6-30-pm/18302850",
+          "venue": "Stephen Sondheim Theatre - New York",
+          "lat": 40.7559,
+          "lng": -73.9849,
           "price": null,
           "category": "theater"
         },
@@ -13875,12 +13815,22 @@
           "category": "music"
         },
         {
-          "name": "The Book of Mormon - New York",
-          "date": "2026-11-02T00:00:00Z",
-          "url": "https://seatgeek.com/the-book-of-mormon-tickets/broadway/2026-11-01-7-pm/18128172",
-          "venue": "Eugene O'Neill Theatre (New York, NY)",
-          "lat": 40.7611,
-          "lng": -73.9857,
+          "name": "Downstate - New York",
+          "date": "2026-11-01T23:30:00Z",
+          "url": "https://seatgeek.com/downstate-play-tickets/theater/2026-11-01-6-30-pm/18583522",
+          "venue": "Booth Theatre - New York",
+          "lat": 40.7583,
+          "lng": -73.9863,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "The Lion King - New York",
+          "date": "2026-11-01T23:30:00Z",
+          "url": "https://seatgeek.com/the-lion-king-tickets/broadway/2026-11-01-6-30-pm/18262663",
+          "venue": "Minskoff Theatre (New York, NY)",
+          "lat": 40.7579,
+          "lng": -73.9862,
           "price": null,
           "category": "theater"
         },
@@ -13901,6 +13851,16 @@
           "venue": "Marquis Theatre - New York",
           "lat": 40.7584,
           "lng": -73.9855,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "The Book of Mormon - New York",
+          "date": "2026-11-02T00:00:00Z",
+          "url": "https://seatgeek.com/the-book-of-mormon-tickets/broadway/2026-11-01-7-pm/18128172",
+          "venue": "Eugene O'Neill Theatre (New York, NY)",
+          "lat": 40.7611,
+          "lng": -73.9857,
           "price": null,
           "category": "theater"
         },
@@ -13945,14 +13905,14 @@
           "category": "music"
         },
         {
-          "name": "Slam Frank - New York",
+          "name": "Yana with Ethan Regan",
           "date": "2026-11-02T00:00:00Z",
-          "url": "https://seatgeek.com/slam-frank-tickets/theater/2026-11-01-7-pm/18526977",
-          "venue": "Orpheum Theatre - NY (New York, NY)",
-          "lat": 40.7282,
-          "lng": -73.9875,
+          "url": "https://seatgeek.com/yana-tickets/new-york-new-york-bowery-ballroom-2026-11-01-7-pm/concert/18392562",
+          "venue": "Bowery Ballroom (New York, NY)",
+          "lat": 40.7204,
+          "lng": -73.9934,
           "price": null,
-          "category": "theater"
+          "category": "music"
         },
         {
           "name": "Circus Vazquez - Bronx",
@@ -13965,22 +13925,22 @@
           "category": "theater"
         },
         {
-          "name": "Yana with Ethan Regan",
-          "date": "2026-11-02T00:00:00Z",
-          "url": "https://seatgeek.com/yana-tickets/new-york-new-york-bowery-ballroom-2026-11-01-7-pm/concert/18392562",
-          "venue": "Bowery Ballroom (New York, NY)",
-          "lat": 40.7204,
-          "lng": -73.9934,
-          "price": null,
-          "category": "music"
-        },
-        {
           "name": "Wanted - New York",
           "date": "2026-11-02T00:00:00Z",
           "url": "https://seatgeek.com/wanted-1-tickets/broadway/2026-11-01-7-pm/18470458",
           "venue": "James Earl Jones Theatre (New York, NY)",
           "lat": 40.7592,
           "lng": -73.983,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Slam Frank - New York",
+          "date": "2026-11-02T00:00:00Z",
+          "url": "https://seatgeek.com/slam-frank-tickets/theater/2026-11-01-7-pm/18526977",
+          "venue": "Orpheum Theatre - NY (New York, NY)",
+          "lat": 40.7282,
+          "lng": -73.9875,
           "price": null,
           "category": "theater"
         },
@@ -14075,22 +14035,22 @@
           "category": "theater"
         },
         {
-          "name": "Midnight",
-          "date": "2026-11-02T00:30:00Z",
-          "url": "https://seatgeek.com/midnight-tickets/new-york-new-york-daryl-roth-theatre-2026-11-01-7-30-pm/concert/18426246",
-          "venue": "Daryl Roth Theatre (New York, NY)",
-          "lat": 40.7353,
-          "lng": -73.9897,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "Paranormal Activity - New York",
           "date": "2026-11-02T00:30:00Z",
           "url": "https://seatgeek.com/paranormal-activity-1-tickets/theater/2026-11-01-7-30-pm/18245529",
           "venue": "August Wilson Theatre (New York, NY)",
           "lat": 40.7629,
           "lng": -73.9837,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Midnight",
+          "date": "2026-11-02T00:30:00Z",
+          "url": "https://seatgeek.com/midnight-tickets/new-york-new-york-daryl-roth-theatre-2026-11-01-7-30-pm/concert/18426246",
+          "venue": "Daryl Roth Theatre (New York, NY)",
+          "lat": 40.7353,
+          "lng": -73.9897,
           "price": null,
           "category": "theater"
         },
@@ -14105,22 +14065,22 @@
           "category": "music"
         },
         {
-          "name": "Boney James",
-          "date": "2026-11-02T01:00:00Z",
-          "url": "https://seatgeek.com/boney-james-tickets/new-york-new-york-sony-hall-2026-11-01-8-pm/concert/18268447",
-          "venue": "Sony Hall (New York, NY)",
-          "lat": 40.7596,
-          "lng": -73.987,
-          "price": null,
-          "category": "music"
-        },
-        {
           "name": "Blade Runner Live In Concert",
           "date": "2026-11-02T01:00:00Z",
           "url": "https://seatgeek.com/blade-runner-live-in-concert-tickets/brooklyn-new-york-kings-theatre-brooklyn-2026-11-01-8-pm/concert/18665340",
           "venue": "Kings Theatre - Brooklyn",
           "lat": 40.646,
           "lng": -73.9573,
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Boney James",
+          "date": "2026-11-02T01:00:00Z",
+          "url": "https://seatgeek.com/boney-james-tickets/new-york-new-york-sony-hall-2026-11-01-8-pm/concert/18268447",
+          "venue": "Sony Hall (New York, NY)",
+          "lat": 40.7596,
+          "lng": -73.987,
           "price": null,
           "category": "music"
         },
@@ -14265,24 +14225,14 @@
           "category": "music"
         },
         {
-          "name": "Cortland Red Dragons at Wagner Seahawks Womens Basketball",
+          "name": "Harry Potter and The Cursed Child - New York",
           "date": "2026-11-03T00:00:00Z",
-          "url": "https://seatgeek.com/wagner-seahawks-womens-basketball-tickets/ncaa-womens-basketball/2026-11-02-7-pm/18675394",
-          "venue": "Spiro Sports Center (Staten Island, NY)",
-          "lat": 40.6124,
-          "lng": -74.0921,
+          "url": "https://seatgeek.com/harry-potter-and-the-cursed-child-tickets/theater/2026-11-02-7-pm/17958414",
+          "venue": "Lyric Theatre - New York",
+          "lat": 40.7565,
+          "lng": -73.9878,
           "price": null,
-          "category": "sports"
-        },
-        {
-          "name": "Blake Whiten",
-          "date": "2026-11-03T00:00:00Z",
-          "url": "https://seatgeek.com/blake-whiten-tickets/new-york-new-york-bowery-ballroom-2026-11-02-7-pm/concert/18222333",
-          "venue": "Bowery Ballroom (New York, NY)",
-          "lat": 40.7204,
-          "lng": -73.9934,
-          "price": null,
-          "category": "music"
+          "category": "theater"
         },
         {
           "name": "Edgar Alejandro",
@@ -14295,14 +14245,14 @@
           "category": "music"
         },
         {
-          "name": "Harry Potter and The Cursed Child - New York",
+          "name": "Blake Whiten",
           "date": "2026-11-03T00:00:00Z",
-          "url": "https://seatgeek.com/harry-potter-and-the-cursed-child-tickets/theater/2026-11-02-7-pm/17958414",
-          "venue": "Lyric Theatre - New York",
-          "lat": 40.7565,
-          "lng": -73.9878,
+          "url": "https://seatgeek.com/blake-whiten-tickets/new-york-new-york-bowery-ballroom-2026-11-02-7-pm/concert/18222333",
+          "venue": "Bowery Ballroom (New York, NY)",
+          "lat": 40.7204,
+          "lng": -73.9934,
           "price": null,
-          "category": "theater"
+          "category": "music"
         },
         {
           "name": "Six the Musical - New York",
@@ -14315,14 +14265,14 @@
           "category": "theater"
         },
         {
-          "name": "Yebba",
+          "name": "Cortland Red Dragons at Wagner Seahawks Womens Basketball",
           "date": "2026-11-03T00:00:00Z",
-          "url": "https://seatgeek.com/yebba-tickets/brooklyn-new-york-brooklyn-paramount-2026-11-02-7-pm/concert/18613084",
-          "venue": "Brooklyn Paramount",
-          "lat": 40.6917,
-          "lng": -73.9815,
+          "url": "https://seatgeek.com/wagner-seahawks-womens-basketball-tickets/ncaa-womens-basketball/2026-11-02-7-pm/18675394",
+          "venue": "Spiro Sports Center (Staten Island, NY)",
+          "lat": 40.6124,
+          "lng": -74.0921,
           "price": null,
-          "category": "music"
+          "category": "sports"
         },
         {
           "name": "Holywatr",
@@ -14335,6 +14285,16 @@
           "category": "music"
         },
         {
+          "name": "Yebba",
+          "date": "2026-11-03T00:00:00Z",
+          "url": "https://seatgeek.com/yebba-tickets/brooklyn-new-york-brooklyn-paramount-2026-11-02-7-pm/concert/18613084",
+          "venue": "Brooklyn Paramount",
+          "lat": 40.6917,
+          "lng": -73.9815,
+          "price": null,
+          "category": "music"
+        },
+        {
           "name": "Pace University Setters at Manhattan Jaspers Womens Basketball",
           "date": "2026-11-03T00:00:00Z",
           "url": "https://seatgeek.com/manhattan-jaspers-womens-basketball-tickets/ncaa-womens-basketball/2026-11-02-7-pm/18540494",
@@ -14343,16 +14303,6 @@
           "lng": -73.9008,
           "price": null,
           "category": "sports"
-        },
-        {
-          "name": "The Lion King - New York",
-          "date": "2026-11-03T00:00:00Z",
-          "url": "https://seatgeek.com/the-lion-king-tickets/broadway/2026-11-02-7-pm/18262772",
-          "venue": "Minskoff Theatre (New York, NY)",
-          "lat": 40.7579,
-          "lng": -73.9862,
-          "price": null,
-          "category": "theater"
         },
         {
           "name": "Vermont Catamounts at Iona Gaels Mens Basketball",
@@ -14375,12 +14325,12 @@
           "category": "theater"
         },
         {
-          "name": "Jamie Allan's Amaze - New York",
+          "name": "The Lion King - New York",
           "date": "2026-11-03T00:00:00Z",
-          "url": "https://seatgeek.com/jamie-allan-s-amaze-tickets/entertainment/2026-11-02-7-pm/18408276",
-          "venue": "New World Stages - Stage 5 (New York, NY)",
-          "lat": 40.7628,
-          "lng": -73.9874,
+          "url": "https://seatgeek.com/the-lion-king-tickets/broadway/2026-11-02-7-pm/18262772",
+          "venue": "Minskoff Theatre (New York, NY)",
+          "lat": 40.7579,
+          "lng": -73.9862,
           "price": null,
           "category": "theater"
         },
@@ -14403,6 +14353,16 @@
           "lng": -73.9618,
           "price": null,
           "category": "sports"
+        },
+        {
+          "name": "Jamie Allan's Amaze - New York",
+          "date": "2026-11-03T00:00:00Z",
+          "url": "https://seatgeek.com/jamie-allan-s-amaze-tickets/entertainment/2026-11-02-7-pm/18408276",
+          "venue": "New World Stages - Stage 5 (New York, NY)",
+          "lat": 40.7628,
+          "lng": -73.9874,
+          "price": null,
+          "category": "theater"
         },
         {
           "name": "Slam Frank - New York",
@@ -14445,22 +14405,22 @@
           "category": "theater"
         },
         {
-          "name": "Pivot Podcast - Kara Swisher and Scott Galloway",
-          "date": "2026-11-03T00:30:00Z",
-          "url": "https://seatgeek.com/pivot-podcast-kara-swisher-and-scott-galloway-tickets/entertainment/2026-11-02-7-30-pm/18689567",
-          "venue": "Beacon Theatre - New York",
-          "lat": 40.7805,
-          "lng": -73.981,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "Here There Are Blueberries - New York",
           "date": "2026-11-03T00:30:00Z",
           "url": "https://seatgeek.com/here-there-are-blueberries-tickets/theater/2026-11-02-7-30-pm/18584517",
           "venue": "Barrymore Theatre - New York",
           "lat": 40.7602,
           "lng": -73.9862,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Pivot Podcast - Kara Swisher and Scott Galloway",
+          "date": "2026-11-03T00:30:00Z",
+          "url": "https://seatgeek.com/pivot-podcast-kara-swisher-and-scott-galloway-tickets/entertainment/2026-11-02-7-30-pm/18689567",
+          "venue": "Beacon Theatre - New York",
+          "lat": 40.7805,
+          "lng": -73.981,
           "price": null,
           "category": "theater"
         },
@@ -14605,6 +14565,16 @@
           "category": "music"
         },
         {
+          "name": "Harry Potter and the Cursed Child",
+          "date": "2026-11-04T00:00:00Z",
+          "url": "https://seatgeek.com/harry-potter-and-the-cursed-child-tickets/theater/2026-11-03-7-pm/18170497",
+          "venue": "Lyric Theatre - New York",
+          "lat": 40.7565,
+          "lng": -73.9878,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "The Heart - The Musical - New York",
           "date": "2026-11-04T00:00:00Z",
           "url": "https://seatgeek.com/the-heart-the-musical-tickets/theater/2026-11-03-7-pm/18538695",
@@ -14615,31 +14585,21 @@
           "category": "theater"
         },
         {
-          "name": "Maybe Happy Ending - New York",
+          "name": "Paranormal Activity - New York",
           "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/maybe-happy-ending-tickets/broadway/2026-11-03-7-pm/18096078",
-          "venue": "Belasco Theatre - NY (New York, NY)",
-          "lat": 40.7563,
-          "lng": -73.9836,
+          "url": "https://seatgeek.com/paranormal-activity-1-tickets/theater/2026-11-03-7-pm/18245511",
+          "venue": "August Wilson Theatre (New York, NY)",
+          "lat": 40.7629,
+          "lng": -73.9837,
           "price": null,
           "category": "theater"
         },
         {
-          "name": "Hamilton - New York",
+          "name": "The Outsiders - New York",
           "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/hamilton-tickets/broadway/2026-11-03-7-pm/18141322",
-          "venue": "Richard Rodgers Theatre (New York, NY)",
-          "lat": 40.7592,
-          "lng": -73.9866,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Harry Potter and the Cursed Child",
-          "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/harry-potter-and-the-cursed-child-tickets/theater/2026-11-03-7-pm/18170497",
-          "venue": "Lyric Theatre - New York",
-          "lat": 40.7565,
+          "url": "https://seatgeek.com/the-outsiders-1-tickets/broadway/2026-11-03-7-pm/18149358",
+          "venue": "Bernard B. Jacobs Theatre (New York, NY)",
+          "lat": 40.7586,
           "lng": -73.9878,
           "price": null,
           "category": "theater"
@@ -14655,22 +14615,22 @@
           "category": "theater"
         },
         {
-          "name": "The Outsiders - New York",
+          "name": "Schmigadoon! - New York",
           "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/the-outsiders-1-tickets/broadway/2026-11-03-7-pm/18149358",
-          "venue": "Bernard B. Jacobs Theatre (New York, NY)",
-          "lat": 40.7586,
-          "lng": -73.9878,
+          "url": "https://seatgeek.com/schmigadoon-tickets/theater/2026-11-03-7-pm/18229828",
+          "venue": "Nederlander Theatre - NY (New York, NY)",
+          "lat": 40.7557,
+          "lng": -73.9882,
           "price": null,
           "category": "theater"
         },
         {
-          "name": "Paranormal Activity - New York",
+          "name": "Maybe Happy Ending - New York",
           "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/paranormal-activity-1-tickets/theater/2026-11-03-7-pm/18245511",
-          "venue": "August Wilson Theatre (New York, NY)",
-          "lat": 40.7629,
-          "lng": -73.9837,
+          "url": "https://seatgeek.com/maybe-happy-ending-tickets/broadway/2026-11-03-7-pm/18096078",
+          "venue": "Belasco Theatre - NY (New York, NY)",
+          "lat": 40.7563,
+          "lng": -73.9836,
           "price": null,
           "category": "theater"
         },
@@ -14685,12 +14645,22 @@
           "category": "theater"
         },
         {
-          "name": "Schmigadoon! - New York",
+          "name": "Hamilton - New York",
           "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/schmigadoon-tickets/theater/2026-11-03-7-pm/18229828",
-          "venue": "Nederlander Theatre - NY (New York, NY)",
-          "lat": 40.7557,
-          "lng": -73.9882,
+          "url": "https://seatgeek.com/hamilton-tickets/broadway/2026-11-03-7-pm/18141322",
+          "venue": "Richard Rodgers Theatre (New York, NY)",
+          "lat": 40.7592,
+          "lng": -73.9866,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Hadestown - New York",
+          "date": "2026-11-04T00:00:00Z",
+          "url": "https://seatgeek.com/hadestown-tickets/broadway/2026-11-03-7-pm/18221717",
+          "venue": "Walter Kerr Theatre (New York, NY)",
+          "lat": 40.7605,
+          "lng": -73.9857,
           "price": null,
           "category": "theater"
         },
@@ -14705,14 +14675,14 @@
           "category": "theater"
         },
         {
-          "name": "Hadestown - New York",
+          "name": "Billy Eichner",
           "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/hadestown-tickets/broadway/2026-11-03-7-pm/18221717",
-          "venue": "Walter Kerr Theatre (New York, NY)",
-          "lat": 40.7605,
-          "lng": -73.9857,
+          "url": "https://seatgeek.com/billy-eichner-tickets/comedy/2026-11-03-7-pm/18372153",
+          "venue": "The Town Hall - New York",
+          "lat": 40.7561,
+          "lng": -73.9845,
           "price": null,
-          "category": "theater"
+          "category": "comedy"
         },
         {
           "name": "Billy Crystal: 860 - New York",
@@ -14731,6 +14701,16 @@
           "venue": "John Golden Theatre (New York, NY)",
           "lat": 40.7589,
           "lng": -73.9878,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "Stranger Things: The First Shadow - New York",
+          "date": "2026-11-04T00:00:00Z",
+          "url": "https://seatgeek.com/stranger-things-the-first-shadow-tickets/broadway/2026-11-03-7-pm/18298134",
+          "venue": "Marquis Theatre - New York",
+          "lat": 40.7584,
+          "lng": -73.9855,
           "price": null,
           "category": "theater"
         },
@@ -14755,26 +14735,6 @@
           "category": "theater"
         },
         {
-          "name": "Stranger Things: The First Shadow - New York",
-          "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/stranger-things-the-first-shadow-tickets/broadway/2026-11-03-7-pm/18298134",
-          "venue": "Marquis Theatre - New York",
-          "lat": 40.7584,
-          "lng": -73.9855,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Billy Eichner",
-          "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/billy-eichner-tickets/comedy/2026-11-03-7-pm/18372153",
-          "venue": "The Town Hall - New York",
-          "lat": 40.7561,
-          "lng": -73.9845,
-          "price": null,
-          "category": "comedy"
-        },
-        {
           "name": "St. Louis Blues at New York Rangers",
           "date": "2026-11-04T00:00:00Z",
           "url": "https://seatgeek.com/new-york-rangers-tickets/11-3-2026-new-york-new-york-madison-square-garden/nhl/18377608",
@@ -14783,36 +14743,6 @@
           "lng": -73.9943,
           "price": null,
           "category": "sports"
-        },
-        {
-          "name": "Baby Bugs (21+)",
-          "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/baby-bugs-tickets/ridgewood-new-york-tv-eye-2026-11-03-7-pm/concert/18583711",
-          "venue": "TV Eye (Ridgewood, NY)",
-          "lat": 40.6979,
-          "lng": -73.9052,
-          "price": null,
-          "category": "music"
-        },
-        {
-          "name": "The Curious Case of Benjamin Button - New York",
-          "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/the-curious-case-of-benjamin-button-tickets/theater/2026-11-03-7-pm/18655214",
-          "venue": "Public Theater - Newman Theater (New York, NY)",
-          "lat": 40.729,
-          "lng": -73.9918,
-          "price": null,
-          "category": "theater"
-        },
-        {
-          "name": "Circus Vazquez - Bronx",
-          "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/circus-vazquez-tickets/circus/2026-11-03-7-pm/18203074",
-          "venue": "Yankee Stadium (Bronx, NY)",
-          "lat": 40.8296,
-          "lng": -73.9262,
-          "price": null,
-          "category": "theater"
         },
         {
           "name": "The Imaginary Invalid - New York",
@@ -14825,6 +14755,36 @@
           "category": "theater"
         },
         {
+          "name": "Baby Bugs (21+)",
+          "date": "2026-11-04T00:00:00Z",
+          "url": "https://seatgeek.com/baby-bugs-tickets/ridgewood-new-york-tv-eye-2026-11-03-7-pm/concert/18583711",
+          "venue": "TV Eye (Ridgewood, NY)",
+          "lat": 40.6979,
+          "lng": -73.9052,
+          "price": null,
+          "category": "music"
+        },
+        {
+          "name": "Circus Vazquez - Bronx",
+          "date": "2026-11-04T00:00:00Z",
+          "url": "https://seatgeek.com/circus-vazquez-tickets/circus/2026-11-03-7-pm/18203074",
+          "venue": "Yankee Stadium (Bronx, NY)",
+          "lat": 40.8296,
+          "lng": -73.9262,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "The Curious Case of Benjamin Button - New York",
+          "date": "2026-11-04T00:00:00Z",
+          "url": "https://seatgeek.com/the-curious-case-of-benjamin-button-tickets/theater/2026-11-03-7-pm/18655214",
+          "venue": "Public Theater - Newman Theater (New York, NY)",
+          "lat": 40.729,
+          "lng": -73.9918,
+          "price": null,
+          "category": "theater"
+        },
+        {
           "name": "MJ - The Musical - New York",
           "date": "2026-11-04T00:00:00Z",
           "url": "https://seatgeek.com/mj-the-musical-tickets/broadway/2026-11-03-7-pm/18037701",
@@ -14833,16 +14793,6 @@
           "lng": -73.9845,
           "price": null,
           "category": "theater"
-        },
-        {
-          "name": "Yebba",
-          "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/yebba-tickets/brooklyn-new-york-brooklyn-paramount-2026-11-03-7-pm/concert/18534703",
-          "venue": "Brooklyn Paramount",
-          "lat": 40.6917,
-          "lng": -73.9815,
-          "price": null,
-          "category": "music"
         },
         {
           "name": "The Book of Mormon - New York",
@@ -14865,6 +14815,16 @@
           "category": "theater"
         },
         {
+          "name": "Yebba",
+          "date": "2026-11-04T00:00:00Z",
+          "url": "https://seatgeek.com/yebba-tickets/brooklyn-new-york-brooklyn-paramount-2026-11-03-7-pm/concert/18534703",
+          "venue": "Brooklyn Paramount",
+          "lat": 40.6917,
+          "lng": -73.9815,
+          "price": null,
+          "category": "music"
+        },
+        {
           "name": "Mercyhurst Lakers at Seton Hall Pirates Womens Basketball",
           "date": "2026-11-04T00:00:00Z",
           "url": "https://seatgeek.com/seton-hall-pirates-womens-basketball-tickets/ncaa-womens-basketball/2026-11-03-7-pm/18519837",
@@ -14875,22 +14835,22 @@
           "category": "sports"
         },
         {
-          "name": "School Girls: Or, The African Mean Girls - New York",
-          "date": "2026-11-04T00:00:00Z",
-          "url": "https://seatgeek.com/school-girls-or-the-african-mean-girls-tickets/theater/2026-11-03-7-pm/18634115",
-          "venue": "Samuel J. Friedman Theatre (New York, NY)",
-          "lat": 40.7602,
-          "lng": -73.9868,
-          "price": null,
-          "category": "theater"
-        },
-        {
           "name": "Richard O'Brien's Rocky Horror Show - New York",
           "date": "2026-11-04T00:00:00Z",
           "url": "https://seatgeek.com/richard-o-brien-s-rocky-horror-show-tickets/theater/2026-11-03-7-pm/18310480",
           "venue": "Studio 54 - New York",
           "lat": 40.764313,
           "lng": -73.9838,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "School Girls: Or, The African Mean Girls - New York",
+          "date": "2026-11-04T00:00:00Z",
+          "url": "https://seatgeek.com/school-girls-or-the-african-mean-girls-tickets/theater/2026-11-03-7-pm/18634115",
+          "venue": "Samuel J. Friedman Theatre (New York, NY)",
+          "lat": 40.7602,
+          "lng": -73.9868,
           "price": null,
           "category": "theater"
         },
@@ -15035,16 +14995,6 @@
           "category": "music"
         },
         {
-          "name": "Joshua Bell",
-          "date": "2026-11-04T01:00:00Z",
-          "url": "https://seatgeek.com/joshua-bell-tickets/englewood-new-jersey-bergen-performing-arts-center-2026-11-03-8-pm/concert/18241716",
-          "venue": "Bergen Performing Arts Center (Englewood, NJ)",
-          "lat": 40.8953,
-          "lng": -73.9749,
-          "price": null,
-          "category": "music"
-        },
-        {
           "name": "The Fantasticks - New York",
           "date": "2026-11-04T01:00:00Z",
           "url": "https://seatgeek.com/the-fantasticks-tickets/broadway/2026-11-03-8-pm/18395382",
@@ -15053,6 +15003,16 @@
           "lng": -73.9878,
           "price": null,
           "category": "theater"
+        },
+        {
+          "name": "Joshua Bell",
+          "date": "2026-11-04T01:00:00Z",
+          "url": "https://seatgeek.com/joshua-bell-tickets/englewood-new-jersey-bergen-performing-arts-center-2026-11-03-8-pm/concert/18241716",
+          "venue": "Bergen Performing Arts Center (Englewood, NJ)",
+          "lat": 40.8953,
+          "lng": -73.9749,
+          "price": null,
+          "category": "music"
         },
         {
           "name": "Ethan Regan (16+)",
@@ -15113,10 +15073,30 @@
           "lng": -73.9753,
           "price": null,
           "category": "music"
+        },
+        {
+          "name": "Wanted - New York",
+          "date": "2026-11-04T19:00:00Z",
+          "url": "https://seatgeek.com/wanted-1-tickets/broadway/2026-11-04-2-pm/18470464",
+          "venue": "James Earl Jones Theatre (New York, NY)",
+          "lat": 40.7592,
+          "lng": -73.983,
+          "price": null,
+          "category": "theater"
+        },
+        {
+          "name": "The Lost Boys - New York",
+          "date": "2026-11-04T19:00:00Z",
+          "url": "https://seatgeek.com/the-lost-boys-tickets/broadway/2026-11-04-2-pm/18313039",
+          "venue": "Palace Theatre - New York",
+          "lat": 40.7589,
+          "lng": -73.9846,
+          "price": null,
+          "category": "theater"
         }
       ],
       "error": null,
-      "duration": 1.84,
+      "duration": 1.35,
       "cached": false
     },
     {
@@ -15861,7 +15841,7 @@
         }
       ],
       "error": null,
-      "duration": 0.54,
+      "duration": 0.78,
       "cached": false
     },
     {
@@ -15869,19 +15849,19 @@
       "url": "https://dice.fm/browse/new-york",
       "events": [
         {
+          "name": "Teksupport: Circoloco Halloween (Sunday)",
+          "date": "2026-11-01T14:00:00-05:00",
+          "url": "https://dice.fm/browse/new-york",
+          "venue": "Brooklyn Storehouse (New York)",
+          "price": "$32.96",
+          "category": "music"
+        },
+        {
           "name": "Neurosis + High On Fire",
           "date": "2026-11-01T18:00:00-05:00",
           "url": "https://dice.fm/browse/new-york",
           "venue": "Saint Vitus (New York)",
           "price": "$72",
-          "category": "music"
-        },
-        {
-          "name": "Teksupport: Circoloco Halloween (Sunday)",
-          "date": "2026-11-01T14:00:00-05:00",
-          "url": "https://dice.fm/browse/new-york",
-          "venue": "Brooklyn Storehouse (New York)",
-          "price": "$30.9",
           "category": "music"
         },
         {
@@ -15901,12 +15881,12 @@
           "category": "music"
         },
         {
-          "name": "David Kushner Live + Signing",
-          "date": "2026-11-15T15:00:00-05:00",
+          "name": "40+ Years of REGGAE \"To the Foundation\" by Sting International (dance party)",
+          "date": "2026-11-01T16:00:00-05:00",
           "url": "https://dice.fm/browse/new-york",
-          "venue": "Rough Trade Below (New York)",
-          "price": "$21",
-          "category": "music"
+          "venue": "Xanadu (New York)",
+          "price": "$38.63",
+          "category": "clubbing"
         },
         {
           "name": "B3K INVITES NY: Brutalismus 3000, SPFDJ, Dorian Electra, more",
@@ -15917,20 +15897,12 @@
           "category": "music"
         },
         {
-          "name": "Karachi Community Radio Presents YOUNG STUNNERS w/ Jokhay",
-          "date": "2026-11-15T19:30:00-05:00",
+          "name": "David Kushner Live + Signing",
+          "date": "2026-11-15T15:00:00-05:00",
           "url": "https://dice.fm/browse/new-york",
-          "venue": "SILO Brooklyn (New York)",
-          "price": "$81.37",
+          "venue": "Rough Trade Below (New York)",
+          "price": "$21",
           "category": "music"
-        },
-        {
-          "name": "40+ Years of REGGAE \"To the Foundation\" by Sting International (dance party)",
-          "date": "2026-11-01T16:00:00-05:00",
-          "url": "https://dice.fm/browse/new-york",
-          "venue": "Xanadu (New York)",
-          "price": "$38.63",
-          "category": "clubbing"
         },
         {
           "name": "Royalty at The Crown",
@@ -15946,6 +15918,14 @@
           "url": "https://dice.fm/browse/new-york",
           "venue": "Duggal Greenhouse (Brooklyn Navy Yard) (New York)",
           "price": "$104.99",
+          "category": "music"
+        },
+        {
+          "name": "Karachi Community Radio Presents YOUNG STUNNERS w/ Jokhay",
+          "date": "2026-11-15T19:30:00-05:00",
+          "url": "https://dice.fm/browse/new-york",
+          "venue": "SILO Brooklyn (New York)",
+          "price": "$81.37",
           "category": "music"
         },
         {
@@ -15989,20 +15969,20 @@
           "category": "music"
         },
         {
-          "name": "Silhouette \"An Exotic R&B + Hip-Hop Party\"",
-          "date": "2026-11-06T22:00:00-05:00",
-          "url": "https://dice.fm/browse/new-york",
-          "venue": "Deluxx Fluxx (New York)",
-          "price": "Free",
-          "category": "clubbing"
-        },
-        {
           "name": "Brutalismus 3000 'Harmony' Album Signing",
           "date": "2026-11-06T14:00:00-05:00",
           "url": "https://dice.fm/browse/new-york",
           "venue": "Rough Trade Below (New York)",
           "price": "$20",
           "category": "music"
+        },
+        {
+          "name": "Silhouette \"An Exotic R&B + Hip-Hop Party\"",
+          "date": "2026-11-06T22:00:00-05:00",
+          "url": "https://dice.fm/browse/new-york",
+          "venue": "Deluxx Fluxx (New York)",
+          "price": "Free",
+          "category": "clubbing"
         },
         {
           "name": "DURATIONS: Breadtree Farms presents Remember, We Are Born In The Garden with Meredith Graves",
@@ -16013,22 +15993,6 @@
           "category": "music"
         },
         {
-          "name": "Cosmic Gate *3hr Set* w. Sinca & Guests",
-          "date": "2026-11-08T14:00:00-05:00",
-          "url": "https://dice.fm/browse/new-york",
-          "venue": "The Roof at Superior Ingredients (New York)",
-          "price": "$29.62",
-          "category": "music"
-        },
-        {
-          "name": "Scorpio Stings: Junior Sanchez, Ultra Violet and DJ Guari",
-          "date": "2026-11-07T22:00:00-05:00",
-          "url": "https://dice.fm/browse/new-york",
-          "venue": "House of Yes (Brooklyn)",
-          "price": "Free",
-          "category": "clubbing"
-        },
-        {
           "name": "Gyalhattan : A Dancehall/Hip-Hop Party",
           "date": "2026-11-14T22:00:00-05:00",
           "url": "https://dice.fm/browse/new-york",
@@ -16037,16 +16001,40 @@
           "category": "clubbing"
         },
         {
+          "name": "Cosmic Gate *3hr Set* w. Sinca & Guests",
+          "date": "2026-11-08T14:00:00-05:00",
+          "url": "https://dice.fm/browse/new-york",
+          "venue": "The Roof at Superior Ingredients (New York)",
+          "price": "$29.62",
+          "category": "music"
+        },
+        {
           "name": "Headache",
           "date": "2026-11-12T19:00:00-05:00",
           "url": "https://dice.fm/browse/new-york",
           "venue": "Knockdown Center (New York)",
           "price": "$38.17",
           "category": "music"
+        },
+        {
+          "name": "ELY OAKS",
+          "date": "2026-11-20T22:00:00-05:00",
+          "url": "https://dice.fm/browse/new-york",
+          "venue": "99 Scott - Main Room (New York)",
+          "price": "$36.57",
+          "category": "music"
+        },
+        {
+          "name": "R2R Moe",
+          "date": "2026-11-19T19:00:00-05:00",
+          "url": "https://dice.fm/browse/new-york",
+          "venue": "NUBLU (New York)",
+          "price": "$32.58",
+          "category": "music"
         }
       ],
       "error": null,
-      "duration": 0.87,
+      "duration": 1.29,
       "cached": false
     },
     {
@@ -16262,7 +16250,7 @@
         }
       ],
       "error": null,
-      "duration": 0.62,
+      "duration": 2.48,
       "cached": false
     },
     {
@@ -16622,7 +16610,7 @@
       ],
       "error": null,
       "duration": 1.49,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Knockdown Center",
@@ -16720,7 +16708,7 @@
         }
       ],
       "error": null,
-      "duration": 0.69,
+      "duration": 1.62,
       "cached": false
     },
     {
@@ -16810,7 +16798,7 @@
         }
       ],
       "error": null,
-      "duration": 0.54,
+      "duration": 1.46,
       "cached": false
     },
     {
@@ -17017,7 +17005,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61,
+      "duration": 1.61,
       "cached": false
     },
     {
@@ -17195,7 +17183,7 @@
         }
       ],
       "error": null,
-      "duration": 0.73,
+      "duration": 1.67,
       "cached": false
     },
     {
@@ -17565,7 +17553,7 @@
       ],
       "error": null,
       "duration": 0.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Littlefield Brooklyn",
@@ -17893,7 +17881,7 @@
       ],
       "error": null,
       "duration": 0.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Music Hall of Williamsburg",
@@ -18072,7 +18060,7 @@
         }
       ],
       "error": null,
-      "duration": 0.79,
+      "duration": 1.56,
       "cached": false
     },
     {
@@ -18261,7 +18249,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 2.47,
       "cached": false
     },
     {
@@ -18381,7 +18369,7 @@
       ],
       "error": null,
       "duration": 1.66,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Barclays Center",
@@ -18560,7 +18548,7 @@
         }
       ],
       "error": null,
-      "duration": 0.57,
+      "duration": 1.4,
       "cached": false
     },
     {
@@ -18667,7 +18655,7 @@
         }
       ],
       "error": null,
-      "duration": 0.48,
+      "duration": 2.52,
       "cached": false
     },
     {
@@ -18856,7 +18844,7 @@
         }
       ],
       "error": null,
-      "duration": 0.77,
+      "duration": 1.53,
       "cached": false
     },
     {
@@ -19042,7 +19030,7 @@
         }
       ],
       "error": null,
-      "duration": 0.65,
+      "duration": 1.71,
       "cached": false
     },
     {
@@ -19114,7 +19102,7 @@
         }
       ],
       "error": null,
-      "duration": 0.74,
+      "duration": 1.41,
       "cached": false
     },
     {
@@ -19303,7 +19291,7 @@
         }
       ],
       "error": null,
-      "duration": 0.47,
+      "duration": 1.5,
       "cached": false
     },
     {
@@ -19444,7 +19432,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-made/ (serving stale cache)",
-      "duration": 0.21,
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -19453,7 +19441,7 @@
       "events": [],
       "error": null,
       "duration": 0.28,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "SILO Brooklyn",
@@ -19605,7 +19593,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34,
+      "duration": 1.58,
       "cached": false
     },
     {
@@ -19686,7 +19674,7 @@
         }
       ],
       "error": null,
-      "duration": 0.76,
+      "duration": 1.61,
       "cached": false
     },
     {
@@ -19767,7 +19755,7 @@
         }
       ],
       "error": null,
-      "duration": 0.62,
+      "duration": 2.15,
       "cached": false
     },
     {
@@ -19776,7 +19764,7 @@
       "events": [],
       "error": null,
       "duration": 0.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Brooklyn Monarch",
@@ -19901,7 +19889,7 @@
         }
       ],
       "error": null,
-      "duration": 0.59,
+      "duration": 1.61,
       "cached": false
     },
     {
@@ -20063,7 +20051,7 @@
         }
       ],
       "error": null,
-      "duration": 0.43,
+      "duration": 1.66,
       "cached": false
     },
     {
@@ -20261,7 +20249,7 @@
         }
       ],
       "error": null,
-      "duration": 0.22,
+      "duration": 0.58,
       "cached": false
     },
     {
@@ -20297,7 +20285,7 @@
         }
       ],
       "error": null,
-      "duration": 0.55,
+      "duration": 0.71,
       "cached": false
     },
     {
@@ -20474,7 +20462,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53,
+      "duration": 0.17,
       "cached": false
     },
     {
@@ -20645,7 +20633,7 @@
         }
       ],
       "error": null,
-      "duration": 0.85,
+      "duration": 0.26,
       "cached": false
     },
     {
@@ -20825,7 +20813,7 @@
         }
       ],
       "error": null,
-      "duration": 0.4,
+      "duration": 0.16,
       "cached": false
     },
     {
@@ -20974,7 +20962,7 @@
         }
       ],
       "error": null,
-      "duration": 0.6,
+      "duration": 0.44,
       "cached": false
     },
     {
@@ -21181,7 +21169,7 @@
         }
       ],
       "error": null,
-      "duration": 0.54,
+      "duration": 0.34,
       "cached": false
     },
     {
@@ -21388,7 +21376,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61,
+      "duration": 0.24,
       "cached": false
     },
     {
@@ -21469,7 +21457,7 @@
         }
       ],
       "error": null,
-      "duration": 0.62,
+      "duration": 0.31,
       "cached": false
     },
     {
@@ -21667,7 +21655,7 @@
         }
       ],
       "error": null,
-      "duration": 0.75,
+      "duration": 0.86,
       "cached": false
     },
     {
@@ -21847,7 +21835,7 @@
         }
       ],
       "error": null,
-      "duration": 0.84,
+      "duration": 0.25,
       "cached": false
     },
     {
@@ -22045,7 +22033,7 @@
         }
       ],
       "error": null,
-      "duration": 0.8,
+      "duration": 0.6,
       "cached": false
     },
     {
@@ -22142,7 +22130,7 @@
         }
       ],
       "error": null,
-      "duration": 0.73,
+      "duration": 0.67,
       "cached": false
     },
     {
@@ -22216,7 +22204,7 @@
         }
       ],
       "error": null,
-      "duration": 0.56,
+      "duration": 0.53,
       "cached": false
     },
     {
@@ -22411,7 +22399,7 @@
         }
       ],
       "error": null,
-      "duration": 0.74,
+      "duration": 0.3,
       "cached": false
     },
     {
@@ -22420,7 +22408,7 @@
       "events": [],
       "error": null,
       "duration": 0.62,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Old Man Hustle BKLYN Comedy Club",
@@ -22554,7 +22542,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53,
+      "duration": 0.55,
       "cached": false
     },
     {
@@ -22659,7 +22647,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61,
+      "duration": 0.67,
       "cached": false
     },
     {
@@ -22767,7 +22755,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61,
+      "duration": 0.88,
       "cached": false
     },
     {
@@ -22830,7 +22818,7 @@
         }
       ],
       "error": null,
-      "duration": 0.47,
+      "duration": 0.62,
       "cached": false
     },
     {
@@ -22895,7 +22883,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.47,
       "cached": false
     },
     {
@@ -22913,7 +22901,7 @@
         }
       ],
       "error": null,
-      "duration": 0.55,
+      "duration": 0.51,
       "cached": false
     },
     {
@@ -22940,7 +22928,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.64,
       "cached": false
     },
     {
@@ -23147,7 +23135,7 @@
         }
       ],
       "error": null,
-      "duration": 0.48,
+      "duration": 1.04,
       "cached": false
     },
     {
@@ -23156,7 +23144,7 @@
       "events": [],
       "error": null,
       "duration": 0.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Noguchi Museum",
@@ -23299,7 +23287,7 @@
         }
       ],
       "error": null,
-      "duration": 0.48,
+      "duration": 0.82,
       "cached": false
     },
     {
@@ -23959,7 +23947,7 @@
       ],
       "error": null,
       "duration": 2.3,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens Botanical Garden",
@@ -24371,7 +24359,7 @@
       ],
       "error": null,
       "duration": 0.96,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens County Farm Museum",
@@ -24809,7 +24797,7 @@
       ],
       "error": null,
       "duration": 1.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Louis Armstrong House Museum",
@@ -24844,7 +24832,7 @@
       ],
       "error": null,
       "duration": 0.75,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens Theatre",
@@ -25022,7 +25010,7 @@
       ],
       "error": null,
       "duration": 3.78,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Flushing Town Hall",
@@ -25066,7 +25054,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -25093,7 +25081,7 @@
         }
       ],
       "error": null,
-      "duration": 0.29,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -25234,7 +25222,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--astoria/grove-34/ (serving stale cache)",
-      "duration": 0.21,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -25387,7 +25375,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--long-island-city/culture-lab-lic/ (serving stale cache)",
-      "duration": 0.2,
+      "duration": 0.13,
       "cached": true
     },
     {
@@ -25456,7 +25444,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--astoria/bohemian-hall/ (serving stale cache)",
-      "duration": 0.1,
+      "duration": 0.36,
       "cached": true
     },
     {
@@ -25513,7 +25501,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/astoria-queens/ (serving stale cache)",
-      "duration": 0.16,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -25546,7 +25534,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/long-island-city/ (serving stale cache)",
-      "duration": 0.17,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -25627,7 +25615,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/ (serving stale cache)",
-      "duration": 0.16,
+      "duration": 0.13,
       "cached": true
     },
     {
@@ -25720,7 +25708,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jackson-heights/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.33,
       "cached": true
     },
     {
@@ -25801,7 +25789,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sunnyside-queens/ (serving stale cache)",
-      "duration": 0.08,
+      "duration": 0.16,
       "cached": true
     },
     {
@@ -25870,7 +25858,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/ (serving stale cache)",
-      "duration": 0.07,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -26077,7 +26065,7 @@
         }
       ],
       "error": null,
-      "duration": 0.2,
+      "duration": 0.42,
       "cached": false
     },
     {
@@ -26113,7 +26101,7 @@
         }
       ],
       "error": null,
-      "duration": 0.31,
+      "duration": 0.36,
       "cached": false
     },
     {
@@ -26203,7 +26191,7 @@
         }
       ],
       "error": null,
-      "duration": 0.19,
+      "duration": 0.3,
       "cached": false
     },
     {
@@ -26410,7 +26398,7 @@
         }
       ],
       "error": null,
-      "duration": 1.19,
+      "duration": 0.76,
       "cached": false
     },
     {
@@ -26590,7 +26578,7 @@
         }
       ],
       "error": null,
-      "duration": 0.37,
+      "duration": 1.05,
       "cached": false
     },
     {
@@ -26788,7 +26776,7 @@
         }
       ],
       "error": null,
-      "duration": 0.42,
+      "duration": 0.68,
       "cached": false
     },
     {
@@ -26941,7 +26929,7 @@
         }
       ],
       "error": null,
-      "duration": 0.32,
+      "duration": 1.08,
       "cached": false
     },
     {
@@ -27139,7 +27127,7 @@
         }
       ],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.71,
       "cached": false
     },
     {
@@ -27337,7 +27325,7 @@
         }
       ],
       "error": null,
-      "duration": 0.65,
+      "duration": 0.43,
       "cached": false
     },
     {
@@ -27535,7 +27523,7 @@
         }
       ],
       "error": null,
-      "duration": 0.27,
+      "duration": 0.35,
       "cached": false
     },
     {
@@ -27688,7 +27676,7 @@
         }
       ],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -27859,7 +27847,7 @@
         }
       ],
       "error": null,
-      "duration": 0.4,
+      "duration": 1.27,
       "cached": false
     },
     {
@@ -27868,7 +27856,7 @@
       "events": [],
       "error": null,
       "duration": 0.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Music Kitchen",
@@ -27916,7 +27904,7 @@
         }
       ],
       "error": null,
-      "duration": 0.54,
+      "duration": 1.18,
       "cached": false
     },
     {
@@ -28025,7 +28013,7 @@
       ],
       "error": null,
       "duration": 0.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The New School",
@@ -28033,7 +28021,7 @@
       "events": [],
       "error": null,
       "duration": 0.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Mannes School of Music",
@@ -28041,7 +28029,7 @@
       "events": [],
       "error": null,
       "duration": 0.43,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Apollo Theater",
@@ -28067,7 +28055,7 @@
         }
       ],
       "error": null,
-      "duration": 0.43,
+      "duration": 1.13,
       "cached": false
     },
     {
@@ -28247,7 +28235,7 @@
         }
       ],
       "error": null,
-      "duration": 0.47,
+      "duration": 0.76,
       "cached": false
     },
     {
@@ -28364,7 +28352,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.76,
       "cached": false
     },
     {
@@ -28508,7 +28496,7 @@
         }
       ],
       "error": null,
-      "duration": 0.36,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -28608,7 +28596,7 @@
       ],
       "error": null,
       "duration": 0.56,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Town Hall",
@@ -28814,7 +28802,7 @@
         }
       ],
       "error": null,
-      "duration": 0.37,
+      "duration": 1.01,
       "cached": false
     },
     {
@@ -28994,7 +28982,7 @@
         }
       ],
       "error": null,
-      "duration": 0.42,
+      "duration": 0.79,
       "cached": false
     },
     {
@@ -29201,7 +29189,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61,
+      "duration": 1.01,
       "cached": false
     },
     {
@@ -29301,7 +29289,7 @@
         }
       ],
       "error": null,
-      "duration": 0.26,
+      "duration": 0.99,
       "cached": false
     },
     {
@@ -29364,7 +29352,7 @@
         }
       ],
       "error": null,
-      "duration": 0.35,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -29472,7 +29460,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.67,
       "cached": false
     },
     {
@@ -29518,7 +29506,7 @@
       ],
       "error": null,
       "duration": 1.04,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bowery Palace",
@@ -29715,7 +29703,7 @@
         }
       ],
       "error": null,
-      "duration": 0.39,
+      "duration": 1.0,
       "cached": false
     },
     {
@@ -29769,7 +29757,7 @@
         }
       ],
       "error": null,
-      "duration": 0.43,
+      "duration": 0.7,
       "cached": false
     },
     {
@@ -29787,7 +29775,7 @@
         }
       ],
       "error": null,
-      "duration": 0.69,
+      "duration": 0.9,
       "cached": false
     },
     {
@@ -29886,7 +29874,7 @@
         }
       ],
       "error": null,
-      "duration": 0.41,
+      "duration": 0.95,
       "cached": false
     },
     {
@@ -29967,7 +29955,7 @@
         }
       ],
       "error": null,
-      "duration": 0.52,
+      "duration": 0.58,
       "cached": false
     },
     {
@@ -30084,7 +30072,7 @@
         }
       ],
       "error": null,
-      "duration": 0.42,
+      "duration": 0.91,
       "cached": false
     },
     {
@@ -30250,7 +30238,7 @@
       ],
       "error": null,
       "duration": 1.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Center (LGBTQ+ Community Center)",
@@ -30438,7 +30426,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.7,
       "cached": false
     },
     {
@@ -30564,7 +30552,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.65,
       "cached": false
     },
     {
@@ -30780,7 +30768,7 @@
         }
       ],
       "error": null,
-      "duration": 0.41,
+      "duration": 1.1,
       "cached": false
     },
     {
@@ -30978,7 +30966,7 @@
         }
       ],
       "error": null,
-      "duration": 0.29,
+      "duration": 0.67,
       "cached": false
     },
     {
@@ -31077,7 +31065,7 @@
         }
       ],
       "error": null,
-      "duration": 0.39,
+      "duration": 0.6,
       "cached": false
     },
     {
@@ -31239,7 +31227,7 @@
         }
       ],
       "error": null,
-      "duration": 0.36,
+      "duration": 0.55,
       "cached": false
     },
     {
@@ -31302,7 +31290,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.88,
       "cached": false
     },
     {
@@ -31482,7 +31470,7 @@
         }
       ],
       "error": null,
-      "duration": 0.4,
+      "duration": 0.82,
       "cached": false
     },
     {
@@ -31571,7 +31559,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.61,
       "cached": false
     },
     {
@@ -31580,7 +31568,7 @@
       "events": [],
       "error": null,
       "duration": 0.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club Midtown",
@@ -31678,7 +31666,7 @@
         }
       ],
       "error": null,
-      "duration": 0.36,
+      "duration": 0.95,
       "cached": false
     },
     {
@@ -31759,7 +31747,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.66,
       "cached": false
     },
     {
@@ -31831,7 +31819,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53,
+      "duration": 0.61,
       "cached": false
     },
     {
@@ -31840,7 +31828,7 @@
       "events": [],
       "error": null,
       "duration": 0.38,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Paley Center for Media",
@@ -31929,7 +31917,7 @@
         }
       ],
       "error": null,
-      "duration": 0.36,
+      "duration": 0.66,
       "cached": false
     },
     {
@@ -31962,7 +31950,7 @@
         }
       ],
       "error": null,
-      "duration": 0.43,
+      "duration": 0.44,
       "cached": false
     },
     {
@@ -32151,7 +32139,7 @@
         }
       ],
       "error": null,
-      "duration": 0.64,
+      "duration": 0.97,
       "cached": false
     },
     {
@@ -32286,7 +32274,7 @@
         }
       ],
       "error": null,
-      "duration": 0.42,
+      "duration": 0.96,
       "cached": false
     },
     {
@@ -32295,7 +32283,7 @@
       "events": [],
       "error": null,
       "duration": 0.42,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Lincoln Center Theater",
@@ -32447,7 +32435,7 @@
         }
       ],
       "error": null,
-      "duration": 0.6,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -32493,7 +32481,7 @@
       ],
       "error": null,
       "duration": 1.5,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club Upper West Side",
@@ -32618,7 +32606,7 @@
         }
       ],
       "error": null,
-      "duration": 0.4,
+      "duration": 0.6,
       "cached": false
     },
     {
@@ -32807,7 +32795,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61,
+      "duration": 0.89,
       "cached": false
     },
     {
@@ -32908,7 +32896,7 @@
       ],
       "error": null,
       "duration": 2.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Shrine Harlem",
@@ -32964,7 +32952,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.91,
       "cached": false
     },
     {
@@ -32973,7 +32961,7 @@
       "events": [],
       "error": null,
       "duration": 0.4,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "United Palace",
@@ -33017,7 +33005,7 @@
         }
       ],
       "error": null,
-      "duration": 0.39,
+      "duration": 0.59,
       "cached": false
     },
     {
@@ -33203,7 +33191,7 @@
       ],
       "error": null,
       "duration": 0.55,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Books Are Magic",
@@ -33443,7 +33431,7 @@
       ],
       "error": null,
       "duration": 0.68,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenlight Bookstore",
@@ -33705,7 +33693,7 @@
       ],
       "error": null,
       "duration": 0.6,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "P&T Knitwear Books & Podcasts",
@@ -33967,7 +33955,7 @@
       ],
       "error": null,
       "duration": 0.72,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Housing Works Bookstore Cafe",
@@ -33975,7 +33963,7 @@
       "events": [],
       "error": null,
       "duration": 0.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "McNally Jackson Books",
@@ -34127,7 +34115,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/ (serving stale cache)",
-      "duration": 0.24,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -34176,7 +34164,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bluestockings/ (serving stale cache)",
-      "duration": 0.16,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -34281,7 +34269,7 @@
         }
       ],
       "error": null,
-      "duration": 0.32,
+      "duration": 0.55,
       "cached": false
     },
     {
@@ -34434,7 +34422,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nypl/ (serving stale cache)",
-      "duration": 0.14,
+      "duration": 0.24,
       "cached": true
     },
     {
@@ -34776,7 +34764,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-public-library/ (serving stale cache)",
-      "duration": 0.09,
+      "duration": 0.29,
       "cached": true
     },
     {
@@ -35690,7 +35678,7 @@
       ],
       "error": null,
       "duration": 1.95,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Skinny Dennis",
@@ -35987,7 +35975,7 @@
       ],
       "error": null,
       "duration": 0.68,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Trivia League",
@@ -38041,7 +38029,7 @@
       ],
       "error": null,
       "duration": 0.95,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Nitehawk Cinema",
@@ -38193,7 +38181,7 @@
         }
       ],
       "error": null,
-      "duration": 0.58,
+      "duration": 0.47,
       "cached": false
     },
     {
@@ -38256,7 +38244,7 @@
         }
       ],
       "error": null,
-      "duration": 0.31,
+      "duration": 0.36,
       "cached": false
     },
     {
@@ -38391,7 +38379,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53,
+      "duration": 0.85,
       "cached": false
     },
     {
@@ -38544,7 +38532,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/indie-film/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -38577,7 +38565,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rooftop-films/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -39049,7 +39037,7 @@
       ],
       "error": null,
       "duration": 0.82,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Smalls Jazz Club",
@@ -39274,7 +39262,7 @@
       ],
       "error": null,
       "duration": 1.33,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Joe's Pub (The Public Theater)",
@@ -39442,7 +39430,7 @@
         }
       ],
       "error": null,
-      "duration": 0.44,
+      "duration": 0.92,
       "cached": false
     },
     {
@@ -39640,7 +39628,7 @@
         }
       ],
       "error": null,
-      "duration": 0.35,
+      "duration": 0.48,
       "cached": false
     },
     {
@@ -39847,7 +39835,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.62,
       "cached": false
     },
     {
@@ -40054,7 +40042,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.58,
       "cached": false
     },
     {
@@ -40252,7 +40240,7 @@
         }
       ],
       "error": null,
-      "duration": 0.39,
+      "duration": 0.48,
       "cached": false
     },
     {
@@ -40432,7 +40420,7 @@
         }
       ],
       "error": null,
-      "duration": 0.39,
+      "duration": 0.69,
       "cached": false
     },
     {
@@ -40586,7 +40574,7 @@
       ],
       "error": null,
       "duration": 0.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Stand NYC",
@@ -40795,7 +40783,7 @@
       ],
       "error": null,
       "duration": 1.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Tight Pants Comedy",
@@ -40815,7 +40803,7 @@
       ],
       "error": null,
       "duration": 0.54,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Broadway Comedy Club",
@@ -40955,7 +40943,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/broadway-comedy-club/ (serving stale cache)",
-      "duration": 0.11,
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -41027,7 +41015,7 @@
         }
       ],
       "error": null,
-      "duration": 0.25,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -41180,7 +41168,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/greenwich-village-comedy-club/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -41261,7 +41249,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/grisly-pear-comedy/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -41378,7 +41366,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -42922,7 +42910,7 @@
       ],
       "error": null,
       "duration": 2.95,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club",
@@ -43050,7 +43038,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/new-york-comedy-club/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -44060,7 +44048,7 @@
       ],
       "error": null,
       "duration": 1.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Comedy Collective (Eris Mainstage)",
@@ -44553,7 +44541,7 @@
       ],
       "error": null,
       "duration": 0.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Parks Free Public Events",
@@ -47593,7 +47581,7 @@
         }
       ],
       "error": null,
-      "duration": 0.32,
+      "duration": 0.39,
       "cached": false
     },
     {
@@ -47770,7 +47758,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/central-park/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -47899,7 +47887,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/prospect-park/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -48004,7 +47992,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-bridge-park/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -48085,7 +48073,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hudson-river-park/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.31,
       "cached": true
     },
     {
@@ -48359,7 +48347,7 @@
       ],
       "error": null,
       "duration": 0.28,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Pop-Up Experiences & Activations",
@@ -48475,7 +48463,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pop-up/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -48769,7 +48757,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-shed/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -48898,7 +48886,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/union-square/ (serving stale cache)",
-      "duration": 0.07,
+      "duration": 0.21,
       "cached": true
     },
     {
@@ -49099,7 +49087,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/lincoln-center/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -49312,7 +49300,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jazz-at-lincoln-center/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -49610,7 +49598,7 @@
       ],
       "error": null,
       "duration": 4.01,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Outdoor Hikes & Trails",
@@ -49919,7 +49907,7 @@
       ],
       "error": null,
       "duration": 2.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Running Clubs & 5K Socials",
@@ -50228,7 +50216,7 @@
       ],
       "error": null,
       "duration": 2.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Fashion Events & Sample Sales",
@@ -50428,7 +50416,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sample-sale/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -50521,7 +50509,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/fashion-show/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.15,
       "cached": true
     },
     {
@@ -50746,7 +50734,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/talks/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.16,
       "cached": true
     },
     {
@@ -50959,7 +50947,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/panel-discussion/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -51069,7 +51057,7 @@
       ],
       "error": null,
       "duration": 0.66,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bibliothèque Wine & Book Bar",
@@ -51257,7 +51245,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bibliotheque/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -51458,7 +51446,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/lizs-book-bar/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -51792,7 +51780,7 @@
       ],
       "error": null,
       "duration": 3.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Writers & Creative Storytelling",
@@ -52065,7 +52053,7 @@
       ],
       "error": null,
       "duration": 4.27,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Threes Brewing (Gowanus & Greenpoint)",
@@ -52229,7 +52217,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/threes-brewing/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -52742,7 +52730,7 @@
         }
       ],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.39,
       "cached": false
     },
     {
@@ -52863,7 +52851,7 @@
         }
       ],
       "error": "HTTPSConnectionPool(host='seshcomedy.com', port=443): Read timed out. (read timeout=10) (serving stale cache)",
-      "duration": 10.18,
+      "duration": 10.26,
       "cached": true
     },
     {
@@ -53017,7 +53005,7 @@
       ],
       "error": null,
       "duration": 0.61,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Wonderville (Indie Arcade & Smashville)",
@@ -53386,7 +53374,7 @@
       ],
       "error": null,
       "duration": 1.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Hex & Company (Board Games & RPG)",
@@ -53538,7 +53526,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hex-and-company/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -53727,7 +53715,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-uncommons/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -53856,7 +53844,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/the-brooklyn-strategist/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -54214,7 +54202,7 @@
       ],
       "error": null,
       "duration": 3.23,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tabletop & RPG Games",
@@ -54583,7 +54571,7 @@
       ],
       "error": null,
       "duration": 2.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Bar Trivia Nights",
@@ -54985,7 +54973,7 @@
       ],
       "error": null,
       "duration": 2.83,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Luma NYC",
@@ -55974,7 +55962,7 @@
         }
       ],
       "error": null,
-      "duration": 0.7,
+      "duration": 0.77,
       "cached": false
     },
     {
@@ -56308,7 +56296,7 @@
       ],
       "error": null,
       "duration": 3.22,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "House of Yes (Circus & Dance)",
@@ -56433,7 +56421,7 @@
         }
       ],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.14,
       "cached": false
     },
     {
@@ -56514,7 +56502,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/house-of-yes/ (serving stale cache)",
-      "duration": 0.07,
+      "duration": 0.13,
       "cached": true
     },
     {
@@ -56694,7 +56682,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.28,
       "cached": false
     },
     {
@@ -56835,7 +56823,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/burlesque/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -57012,7 +57000,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/chelsea-art-gallery/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.13,
       "cached": true
     },
     {
@@ -57189,7 +57177,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/japan-fes/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.12,
       "cached": true
     },
     {
@@ -57258,7 +57246,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/midnight-runners/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.15,
       "cached": true
     },
     {
@@ -57532,7 +57520,7 @@
       ],
       "error": null,
       "duration": 0.45,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Photography Walks & Photo Tours",
@@ -57853,7 +57841,7 @@
       ],
       "error": null,
       "duration": 1.81,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Art Gallery Crawls & Openings",
@@ -58198,7 +58186,7 @@
       ],
       "error": null,
       "duration": 5.04,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Magnet Theater (Improv & Sketch)",
@@ -58350,7 +58338,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/magnet-theater/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -58443,7 +58431,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/asylum-nyc/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -58669,7 +58657,7 @@
       ],
       "error": null,
       "duration": 2.17,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "S.O.B.'s (Sounds of Brazil)",
@@ -58997,7 +58985,7 @@
       ],
       "error": null,
       "duration": 3.61,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Salsa & Bachata Socials",
@@ -59149,7 +59137,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/salsa-dancing/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.21,
       "cached": true
     },
     {
@@ -59266,7 +59254,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bachata/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.21,
       "cached": true
     },
     {
@@ -59371,7 +59359,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/taj-lounge-salsa/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -59452,7 +59440,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/club-cache-salsa/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -59569,7 +59557,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/salsa-social/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -59650,7 +59638,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/washington-square-park-salsa/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -59893,7 +59881,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -60263,7 +60251,7 @@
       ],
       "error": null,
       "duration": 4.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "This Week in Swing NYC",
@@ -60875,7 +60863,7 @@
       ],
       "error": null,
       "duration": 2.73,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Swing Dancing & Lindy Hop",
@@ -60991,7 +60979,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/swing-dancing/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -61108,7 +61096,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/frim-fram-jam/ (serving stale cache)",
-      "duration": 0.07,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -61273,7 +61261,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/prohibition-productions/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -61439,7 +61427,7 @@
       ],
       "error": null,
       "duration": 1.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Live Jazz & Acoustic Sessions",
@@ -61628,7 +61616,7 @@
       ],
       "error": null,
       "duration": 2.05,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "3 Dollar Bill (Queer & Drag Venue)",
@@ -61753,7 +61741,7 @@
         }
       ],
       "error": null,
-      "duration": 0.31,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -61858,7 +61846,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/drag-show/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -62047,7 +62035,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/ (serving stale cache)",
-      "duration": 0.06,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -62116,7 +62104,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pieces-bar/ (serving stale cache)",
-      "duration": 0.13,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -62245,7 +62233,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/video-game-tournament/ (serving stale cache)",
-      "duration": 0.12,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -62362,7 +62350,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/smash-bros/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -62455,7 +62443,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/barcade/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -62661,7 +62649,7 @@
         }
       ],
       "error": null,
-      "duration": 0.2,
+      "duration": 0.35,
       "cached": false
     },
     {
@@ -62778,7 +62766,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -62907,7 +62895,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/live-music-bar/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -63291,7 +63279,7 @@
       ],
       "error": null,
       "duration": 0.82,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Free Club Guestlists",
@@ -63311,7 +63299,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-guestlist/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.01,
       "cached": true
     },
     {
@@ -63518,7 +63506,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rooftop-party/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -63683,7 +63671,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/somewhere-nowhere/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.01,
       "cached": true
     },
     {
@@ -63848,7 +63836,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-dl/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.01,
       "cached": true
     },
     {
@@ -63977,7 +63965,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/harbor-nyc/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -64154,7 +64142,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/230-fifth/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.01,
       "cached": true
     },
     {
@@ -64412,7 +64400,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nebula/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -64484,7 +64472,7 @@
         }
       ],
       "error": null,
-      "duration": 0.24,
+      "duration": 0.34,
       "cached": false
     },
     {
@@ -64493,7 +64481,7 @@
       "events": [],
       "error": null,
       "duration": 0.21,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Clearview Festival Productions (NYC Street Fairs)",
@@ -64516,7 +64504,7 @@
       ],
       "error": null,
       "duration": 0.51,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Diwali & South Asian Cultural Festivals",
@@ -64764,7 +64752,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/diwali/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -64857,7 +64845,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/holi/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -64878,7 +64866,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/lunar-new-year/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -65019,7 +65007,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/parade/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.08,
       "cached": true
     },
     {
@@ -65160,7 +65148,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/latin-festival/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -65313,7 +65301,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/asia-society/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -65502,7 +65490,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/japan-society/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -65571,7 +65559,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--festivals/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -65736,7 +65724,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--street-fair/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -66018,7 +66006,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/cultural-festival/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.04,
       "cached": true
     },
     {
@@ -66123,7 +66111,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--food-and-drink--festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -66228,7 +66216,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-free-festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -66285,7 +66273,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-free-festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -66390,7 +66378,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--bronx/bronx-free-events/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -66495,7 +66483,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/night-market/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -66504,7 +66492,7 @@
       "events": [],
       "error": null,
       "duration": 0.48,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Street Fairs & Avenue Festivals",
@@ -66704,7 +66692,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/street-fair/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -66821,7 +66809,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/block-party/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -66862,7 +66850,7 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/halloween-parties/",
       "events": [],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/halloween-parties/",
-      "duration": 0.02,
+      "duration": 0.03,
       "cached": false
     },
     {
@@ -67003,7 +66991,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/food-festivals/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -67447,7 +67435,7 @@
       ],
       "error": null,
       "duration": 2.2,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Columbus Circle District Events",
@@ -67635,7 +67623,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/columbus-circle/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -67728,7 +67716,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/downtown-brooklyn-partnership/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -67797,7 +67785,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/meatpacking-district/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -67890,7 +67878,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/governors-island/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -67898,7 +67886,7 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/times-square/",
       "events": [],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/times-square/",
-      "duration": 0.05,
+      "duration": 0.02,
       "cached": false
     },
     {
@@ -68063,7 +68051,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/battery-park-city/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.01,
       "cached": true
     },
     {
@@ -68357,7 +68345,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/musical/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -68594,7 +68582,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/plays/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -68771,7 +68759,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/improv/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -68792,7 +68780,7 @@
       ],
       "error": null,
       "duration": 0.48,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Board Games & Tabletop",
@@ -68968,7 +68956,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/board-games/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.03,
       "cached": true
     },
     {
@@ -69310,7 +69298,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/tabletop/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -69688,7 +69676,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/language-exchange/ (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -69793,7 +69781,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jazz/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -69922,7 +69910,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-jazz/ (serving stale cache)",
-      "duration": 0.02,
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -70180,7 +70168,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-meetup/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.01,
       "cached": true
     },
     {
@@ -70393,7 +70381,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-book-club/ (serving stale cache)",
-      "duration": 0.05,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -70498,7 +70486,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-run-club/ (serving stale cache)",
-      "duration": 0.03,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -70660,7 +70648,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-meetup/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -70741,7 +70729,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-trivia/ (serving stale cache)",
-      "duration": 0.04,
+      "duration": 0.16,
       "cached": true
     },
     {
@@ -71099,7 +71087,7 @@
       ],
       "error": null,
       "duration": 3.56,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Book Clubs & Reading Groups",
@@ -71444,7 +71432,7 @@
       ],
       "error": null,
       "duration": 2.64,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Board Games & Tabletop",
@@ -71813,7 +71801,7 @@
       ],
       "error": null,
       "duration": 2.84,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Running & Walking Clubs",
@@ -71954,7 +71942,7 @@
       ],
       "error": null,
       "duration": 1.36,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Tech, AI & Developers",
@@ -72107,7 +72095,7 @@
       ],
       "error": null,
       "duration": 2.98,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Williamsburg & Greenpoint Socials",
@@ -72248,7 +72236,7 @@
       ],
       "error": null,
       "duration": 1.16,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Park Slope & Prospect Park Community",
@@ -72401,7 +72389,7 @@
       ],
       "error": null,
       "duration": 1.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bushwick Creative & Social Meetups",
@@ -72554,7 +72542,7 @@
       ],
       "error": null,
       "duration": 1.38,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Neighborhood Socials & Mixers",
@@ -72743,7 +72731,7 @@
       ],
       "error": null,
       "duration": 2.43,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Community & Social Meetups",
@@ -72956,7 +72944,7 @@
       ],
       "error": null,
       "duration": 1.81,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Flushing Tech, Food & Language Meetups",
@@ -73109,7 +73097,7 @@
       ],
       "error": null,
       "duration": 1.75,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Sunnyside, Woodside & Jackson Heights",
@@ -73238,7 +73226,7 @@
       ],
       "error": null,
       "duration": 1.75,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Board Gamers Group",
@@ -73511,7 +73499,7 @@
       ],
       "error": null,
       "duration": 0.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tabletop Tuesday Sunnyside Game Night",
@@ -73532,7 +73520,7 @@
       ],
       "error": null,
       "duration": 0.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Prospect Park Board Gaming Club",
@@ -73565,7 +73553,7 @@
       ],
       "error": null,
       "duration": 0.64,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: The Brooklyn Board Games Group",
@@ -73634,7 +73622,7 @@
       ],
       "error": null,
       "duration": 0.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Strategist Evening Games",
@@ -73715,7 +73703,7 @@
       ],
       "error": null,
       "duration": 0.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Runners",
@@ -73916,7 +73904,7 @@
       ],
       "error": null,
       "duration": 1.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: RUN LIC (Long Island City Runners)",
@@ -74213,7 +74201,7 @@
       ],
       "error": null,
       "duration": 2.39,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Woodside-Sunnyside Runners",
@@ -74402,7 +74390,7 @@
       ],
       "error": null,
       "duration": 0.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: CALLEFUT Queens Soccer Community",
@@ -74471,7 +74459,7 @@
       ],
       "error": null,
       "duration": 1.38,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Futsal Club",
@@ -74660,7 +74648,7 @@
       ],
       "error": null,
       "duration": 0.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn / Queens Coed Soccer Club",
@@ -74729,7 +74717,7 @@
       ],
       "error": null,
       "duration": 0.54,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Flushing Tech Hackathons & Meetups",
@@ -74762,7 +74750,7 @@
       ],
       "error": null,
       "duration": 0.03,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Tech Meetup",
@@ -74819,7 +74807,7 @@
       ],
       "error": null,
       "duration": 0.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Women's Writing Group",
@@ -74996,7 +74984,7 @@
       ],
       "error": null,
       "duration": 0.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bushwick Writers Group",
@@ -75137,7 +75125,7 @@
       ],
       "error": null,
       "duration": 3.91,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Forest Hills Book Group",
@@ -75158,7 +75146,7 @@
       ],
       "error": null,
       "duration": 0.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Silent Book Club NYC & Brooklyn",
@@ -75215,7 +75203,7 @@
       ],
       "error": null,
       "duration": 0.81,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Shut Up & Write! NYC (Brooklyn & Queens)",
@@ -75572,7 +75560,7 @@
       ],
       "error": null,
       "duration": 0.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Williamsburg French & Spanish Conversations",
@@ -75641,7 +75629,7 @@
       ],
       "error": null,
       "duration": 1.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Conversation française à Brooklyn",
@@ -75674,7 +75662,7 @@
       ],
       "error": null,
       "duration": 1.92,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Traditional Slow Jam (Park Slope)",
@@ -75719,7 +75707,7 @@
       ],
       "error": null,
       "duration": 0.05,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Ethical Culture Community (Park Slope)",
@@ -75764,7 +75752,7 @@
       ],
       "error": null,
       "duration": 0.07,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Mindful Astoria Meditation Community",
@@ -75833,7 +75821,7 @@
       ],
       "error": null,
       "duration": 0.23,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Friends from Bayside & Queens Socials",
@@ -76046,7 +76034,7 @@
       ],
       "error": null,
       "duration": 0.17,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Cucala Dance LIC Salsa Classes & Socials",
@@ -76295,7 +76283,7 @@
       ],
       "error": null,
       "duration": 0.17,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC 20s & 30s Board Game Group",
@@ -76328,7 +76316,7 @@
       ],
       "error": null,
       "duration": 1.01,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Borough Hoppers NYC",
@@ -76601,7 +76589,7 @@
       ],
       "error": null,
       "duration": 0.9,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Victory Pints Board Games & Beer",
@@ -76670,7 +76658,7 @@
       ],
       "error": null,
       "duration": 1.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Social Board Game Events",
@@ -76691,7 +76679,7 @@
       ],
       "error": null,
       "duration": 0.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tuesday Board Games NYC",
@@ -76724,7 +76712,7 @@
       ],
       "error": null,
       "duration": 0.04,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Table-Top Games Meetup",
@@ -76732,7 +76720,7 @@
       "events": [],
       "error": null,
       "duration": 0.07,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Board Game Club",
@@ -76740,7 +76728,7 @@
       "events": [],
       "error": null,
       "duration": 0.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: New York LGBT Board Games Group",
@@ -76761,7 +76749,7 @@
       ],
       "error": null,
       "duration": 1.79,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Backgammon New York City (BGNYC)",
@@ -76782,7 +76770,7 @@
       ],
       "error": null,
       "duration": 0.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Foodies Club",
@@ -76803,7 +76791,7 @@
       ],
       "error": null,
       "duration": 2.17,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Exploring NYC History & Neighborhoods",
@@ -76860,7 +76848,7 @@
       ],
       "error": null,
       "duration": 0.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: New York City Young Adults",
@@ -76893,7 +76881,7 @@
       ],
       "error": null,
       "duration": 0.74,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Union Square Greenmarket",
@@ -93297,15 +93285,6 @@
       "url": "https://www.nycgo.com/events/",
       "events": [
         {
-          "name": "Brooklyn FAM: Festival of Arts & Music",
-          "date": "2026-11-01T11:00:00-05:00",
-          "venue": "Prospect Park Boathouse (Brooklyn)",
-          "url": "https://www.prospectpark.org/",
-          "price": "Free",
-          "category": "community",
-          "description": "Annual free family-friendly festival featuring live music and dance performances, interactive workshops, and public art celebrating diverse diasporic voices."
-        },
-        {
           "name": "Macy's Thanksgiving Day Balloon Inflation Event",
           "date": "2026-11-26T12:00:00-05:00",
           "venue": "American Museum of Natural History (Upper West Side)",
@@ -93391,9 +93370,9 @@
     }
   ],
   "weather": {
-    "temp": 54,
-    "icon": "🌤️",
-    "label": "Mainly clear"
+    "temp": 60,
+    "icon": "☀️",
+    "label": "Clear"
   },
   "luckyseat": [
     {
@@ -93439,6 +93418,12 @@
       "url": "https://www.luckyseat.com/shows/perfectcrime-newyork-2025Apr"
     },
     {
+      "name": "Pre-Existing Condition",
+      "venue": "Greenwich House Theater",
+      "price": 39.0,
+      "url": "https://www.luckyseat.com/shows/pre-existingcondition-newyork-2026Oct"
+    },
+    {
       "name": "Shake Rattle & Roll Dueling Pianos",
       "venue": "Chelsea Table & Stage",
       "price": 24.0,
@@ -93461,12 +93446,6 @@
       "venue": "Eugene O'Neill Theatre",
       "price": 49.0,
       "url": "https://www.luckyseat.com/shows/thebookofmormon-newyork"
-    },
-    {
-      "name": "Traitorz",
-      "venue": "St. Luke's Theatre",
-      "price": 39.0,
-      "url": "https://www.luckyseat.com/shows/traitorz-newyork-2026Oct"
     }
   ]
 }
