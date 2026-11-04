@@ -666,19 +666,6 @@
     "id": "auto-2026-11-07-51",
     "auto": true,
     "match": {
-      "name_contains": "Scorpio Stings: Junior Sanchez, Ultra Violet and More!",
-      "venue_contains": "House of Yes"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Listed on 3 calendars; headline room at House of Yes; prime-time start.",
-    "score": 16.0,
-    "start_date": "2026-11-07",
-    "expires": "2026-11-07"
-  },
-  {
-    "id": "auto-2026-11-07-52",
-    "auto": true,
-    "match": {
       "name_contains": "Nathan Fielder Look-Alike Contest",
       "venue_contains": "Washington Square Park"
     },
@@ -689,7 +676,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-53",
+    "id": "auto-2026-11-07-52",
     "auto": true,
     "match": {
       "name_contains": "Ginuwine",
@@ -698,6 +685,19 @@
     "badge": "🪩 Nightlife Pick",
     "note": "Listed on 4 calendars; prime-time start.",
     "score": 14.0,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-53",
+    "auto": true,
+    "match": {
+      "name_contains": "Flava D, Don-Ri, Made to Order: Dendi's Dad, EJWIZE, Imbueless",
+      "venue_contains": "Elsewhere Brooklyn"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Listed on 3 calendars; prime-time start.",
+    "score": 13.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
