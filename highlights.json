@@ -3,6 +3,19 @@
     "id": "auto-2026-11-04-0",
     "auto": true,
     "match": {
+      "name_contains": "Brooklyn Nets vs. Charlotte Hornets",
+      "venue_contains": "Barclays Center"
+    },
+    "badge": "🏃 Active Pick",
+    "note": "Listed on 5 calendars; headline room at Barclays Center; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-04",
+    "expires": "2026-11-04"
+  },
+  {
+    "id": "auto-2026-11-04-1",
+    "auto": true,
+    "match": {
       "name_contains": "Bryant Park: Ice Skating",
       "venue_contains": "Bryant Park"
     },
@@ -13,7 +26,33 @@
     "expires": "2026-11-04"
   },
   {
-    "id": "auto-2026-11-04-1",
+    "id": "auto-2026-11-04-2",
+    "auto": true,
+    "match": {
+      "name_contains": "Jeff Tweedy",
+      "venue_contains": "Music Hall of Williamsburg"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; headline room at Music Hall of Williamsburg; prime-time start.",
+    "score": 17.0,
+    "start_date": "2026-11-04",
+    "expires": "2026-11-04"
+  },
+  {
+    "id": "auto-2026-11-04-3",
+    "auto": true,
+    "match": {
+      "name_contains": "Smalls Jazz: David Ambrosio Quartet",
+      "venue_contains": "Smalls Jazz Club"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; prime-time start.",
+    "score": 17.0,
+    "start_date": "2026-11-04",
+    "expires": "2026-11-04"
+  },
+  {
+    "id": "auto-2026-11-04-4",
     "auto": true,
     "match": {
       "name_contains": "Bad Gyal",
@@ -26,7 +65,20 @@
     "expires": "2026-11-04"
   },
   {
-    "id": "auto-2026-11-04-2",
+    "id": "auto-2026-11-04-5",
+    "auto": true,
+    "match": {
+      "name_contains": "New York Knicks vs. Chicago Bulls",
+      "venue_contains": "Madison Square Garden"
+    },
+    "badge": "🏃 Active Pick",
+    "note": "Listed on 3 calendars; headline room at Madison Square Garden; prime-time start.",
+    "score": 16.0,
+    "start_date": "2026-11-04",
+    "expires": "2026-11-04"
+  },
+  {
+    "id": "auto-2026-11-04-6",
     "auto": true,
     "match": {
       "name_contains": "NYC Trivia Night @ Finback Brewery — LIC",
@@ -39,7 +91,7 @@
     "expires": "2026-11-04"
   },
   {
-    "id": "auto-2026-11-04-3",
+    "id": "auto-2026-11-04-7",
     "auto": true,
     "match": {
       "name_contains": "Hell Yeah! Comedy",
@@ -52,7 +104,7 @@
     "expires": "2026-11-04"
   },
   {
-    "id": "auto-2026-11-04-4",
+    "id": "auto-2026-11-04-8",
     "auto": true,
     "match": {
       "name_contains": "Frank Maza Featuring Javier Limon Present: Back Then",
@@ -65,33 +117,7 @@
     "expires": "2026-11-04"
   },
   {
-    "id": "auto-2026-11-04-5",
-    "auto": true,
-    "match": {
-      "name_contains": "Hovvdy",
-      "venue_contains": "Webster Hall"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; headline room at Webster Hall; prime-time start.",
-    "score": 13.0,
-    "start_date": "2026-11-04",
-    "expires": "2026-11-04"
-  },
-  {
-    "id": "auto-2026-11-04-6",
-    "auto": true,
-    "match": {
-      "name_contains": "Jeff Tweedy",
-      "venue_contains": "Music Hall of Williamsburg"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; headline room at Music Hall of Williamsburg; prime-time start.",
-    "score": 13.0,
-    "start_date": "2026-11-04",
-    "expires": "2026-11-04"
-  },
-  {
-    "id": "auto-2026-11-04-7",
+    "id": "auto-2026-11-04-9",
     "auto": true,
     "match": {
       "name_contains": "The Moth StorySLAM",
@@ -104,20 +130,7 @@
     "expires": "2026-11-04"
   },
   {
-    "id": "auto-2026-11-04-8",
-    "auto": true,
-    "match": {
-      "name_contains": "Brooklyn Nets vs. Charlotte Hornets",
-      "venue_contains": "Barclays Center"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Listed on 2 calendars; headline room at Barclays Center; prime-time start.",
-    "score": 12.0,
-    "start_date": "2026-11-04",
-    "expires": "2026-11-04"
-  },
-  {
-    "id": "auto-2026-11-04-9",
+    "id": "auto-2026-11-04-10",
     "auto": true,
     "match": {
       "name_contains": "Christmas Spectacular Starring The Radio City Rockettes",
@@ -130,7 +143,7 @@
     "expires": "2026-11-04"
   },
   {
-    "id": "auto-2026-11-04-10",
+    "id": "auto-2026-11-04-11",
     "auto": true,
     "match": {
       "name_contains": "Lucy Darling",
@@ -143,24 +156,11 @@
     "expires": "2026-11-04"
   },
   {
-    "id": "auto-2026-11-04-11",
-    "auto": true,
-    "match": {
-      "name_contains": "New York Knicks vs. Chicago Bulls",
-      "venue_contains": "Madison Square Garden"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Listed on 2 calendars; headline room at Madison Square Garden; prime-time start.",
-    "score": 12.0,
-    "start_date": "2026-11-04",
-    "expires": "2026-11-04"
-  },
-  {
     "id": "auto-2026-11-04-12",
     "auto": true,
     "match": {
-      "name_contains": "The Lion King (New York, NY)",
-      "venue_contains": "Minskoff Theatre"
+      "name_contains": "Hamilton",
+      "venue_contains": "Richard Rodgers Theatre-NY"
     },
     "badge": "🎭 Stage Pick",
     "note": "Listed on 3 calendars; prime-time start.",
@@ -276,12 +276,12 @@
     "id": "auto-2026-11-05-21",
     "auto": true,
     "match": {
-      "name_contains": "Salsa Classes for  Advanced Beginners Level 1 on Thursdays",
-      "venue_contains": "Houghton Hall Arts Community"
+      "name_contains": "Dirty Magazine's Lingerie Skate (skate all night)",
+      "venue_contains": "Xanadu"
     },
-    "badge": "💃 Dance Pick",
-    "note": "Free; listed on 4 calendars; prime-time start.",
-    "score": 13.5,
+    "badge": "🪩 Nightlife Pick",
+    "note": "Listed on 3 calendars; prime-time start.",
+    "score": 13.0,
     "start_date": "2026-11-05",
     "expires": "2026-11-05"
   },
@@ -393,6 +393,19 @@
     "id": "auto-2026-11-06-30",
     "auto": true,
     "match": {
+      "name_contains": "B3K INVITES NY: Brutalismus 3000, SPFDJ, Dorian Electra, & More!",
+      "venue_contains": "Knockdown Center"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; headline room at Knockdown Center; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-31",
+    "auto": true,
+    "match": {
       "name_contains": "20s Skip the Small Talk Night at Bibliotheque NYC with SaySimons",
       "venue_contains": "Bibliotheque NYC"
     },
@@ -403,7 +416,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-31",
+    "id": "auto-2026-11-06-32",
     "auto": true,
     "match": {
       "name_contains": "Tokyo Kanpai Boys Presented by the New York Comedy Festival",
@@ -416,33 +429,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-32",
-    "auto": true,
-    "match": {
-      "name_contains": "Bayside Queens Speed dating Men 30s & 40s & Women ages 30s & 40s",
-      "venue_contains": "One Station Plaza"
-    },
-    "badge": "🎲 Game Night Pick",
-    "note": "Free; listed on 4 calendars; prime-time start.",
-    "score": 16.5,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
     "id": "auto-2026-11-06-33",
-    "auto": true,
-    "match": {
-      "name_contains": "B3K INVITES NY: Brutalismus 3000, SPFDJ, Dorian Electra, & More!",
-      "venue_contains": "Knockdown Center"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; headline room at Knockdown Center; prime-time start.",
-    "score": 16.0,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-34",
     "auto": true,
     "match": {
       "name_contains": "Comedy Cellar Showcase",
@@ -455,7 +442,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-35",
+    "id": "auto-2026-11-06-34",
     "auto": true,
     "match": {
       "name_contains": "Friday Late Night Comedy Show NYC",
@@ -464,6 +451,19 @@
     "badge": "😂 Comedy Pick",
     "note": "Free; listed on 4 calendars.",
     "score": 14.5,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-35",
+    "auto": true,
+    "match": {
+      "name_contains": "Kate Nash",
+      "venue_contains": "Joe's Pub"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; prime-time start.",
+    "score": 14.0,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
@@ -484,8 +484,8 @@
     "id": "auto-2026-11-06-37",
     "auto": true,
     "match": {
-      "name_contains": "AEREA, Alex Farell, Julia Govor, Vyper, Machine Thirst: Firebunny + Nikitau",
-      "venue_contains": "Elsewhere Brooklyn"
+      "name_contains": "Adult Skate Night ft. DJ Suave (skate)",
+      "venue_contains": "Xanadu"
     },
     "badge": "🪩 Nightlife Pick",
     "note": "Listed on 3 calendars; prime-time start.",
@@ -497,11 +497,11 @@
     "id": "auto-2026-11-06-38",
     "auto": true,
     "match": {
-      "name_contains": "Adult Skate Night ft. DJ Suave (skate)",
-      "venue_contains": "Xanadu"
+      "name_contains": "Friday Night Salsa Social & Workshops",
+      "venue_contains": "Cucala Dance Company"
     },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Listed on 3 calendars; prime-time start.",
+    "badge": "💃 Dance Pick",
+    "note": "Listed on 5 calendars; prime-time start.",
     "score": 13.0,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
@@ -510,12 +510,12 @@
     "id": "auto-2026-11-06-39",
     "auto": true,
     "match": {
-      "name_contains": "Friday Night Salsa Social & Workshops",
-      "venue_contains": "Cucala Dance Company"
+      "name_contains": "Bayside Queens Speed dating Men 30s & 40s & Women ages 30s & 40s",
+      "venue_contains": "One Station Plaza"
     },
-    "badge": "💃 Dance Pick",
-    "note": "Listed on 5 calendars; prime-time start.",
-    "score": 13.0,
+    "badge": "🎲 Game Night Pick",
+    "note": "Free; listed on 3 calendars; prime-time start.",
+    "score": 12.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
@@ -536,6 +536,32 @@
     "id": "auto-2026-11-06-41",
     "auto": true,
     "match": {
+      "name_contains": "A Few Good Men",
+      "venue_contains": "Lincoln Center Theater"
+    },
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 2 calendars; headline room at Lincoln Center Theater; prime-time start.",
+    "score": 12.0,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-42",
+    "auto": true,
+    "match": {
+      "name_contains": "Christmas Spectacular Starring The Radio City Rockettes",
+      "venue_contains": "Radio City Music Hall"
+    },
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 2 calendars; headline room at Radio City Music Hall; prime-time start.",
+    "score": 12.0,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-43",
+    "auto": true,
+    "match": {
       "name_contains": "Fridays at Kimoto Rooftop in Brooklyn",
       "venue_contains": "Kimoto Rooftop Restaurant & Garden Lounge"
     },
@@ -546,7 +572,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-42",
+    "id": "auto-2026-11-06-44",
     "auto": true,
     "match": {
       "name_contains": "Friday Night Lights Everyone FREE B4 12am w/RSVP At Mama Taco",
@@ -555,32 +581,6 @@
     "badge": "🏃 Active Pick",
     "note": "Free; listed on 3 calendars.",
     "score": 10.0,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-43",
-    "auto": true,
-    "match": {
-      "name_contains": "Horsehell w/ Postmark + Slowpoke",
-      "venue_contains": "The Broadway"
-    },
-    "badge": "🎭 Stage Pick",
-    "note": "Listed on 2 calendars; prime-time start.",
-    "score": 9.0,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-44",
-    "auto": true,
-    "match": {
-      "name_contains": "A Few Good Men",
-      "venue_contains": "Lincoln Center Theater"
-    },
-    "badge": "🎭 Stage Pick",
-    "note": "Headline room at Lincoln Center Theater; prime-time start.",
-    "score": 8.0,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
@@ -813,7 +813,7 @@
       "venue_contains": "Houghton Hall Arts Community"
     },
     "badge": "💃 Dance Pick",
-    "note": "Free; listed on 4 calendars; weekend daytime.",
+    "note": "Free; listed on 5 calendars; weekend daytime.",
     "score": 13.0,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
