@@ -217,6 +217,23 @@ CITY_RULES = [
     )),
 ]
 
+# Outer-borough parks and neighborhoods that NYC Parks / Meetup listings name without an address.
+_EXTRA_CITY_NEEDLES = {
+    "brooklyn": ("canarsie", "flatlands", "marine park", "sheepshead", "dyker", "bensonhurst", "gravesend",
+                 "brighton beach", "east new york", "brownsville", "bergen beach", "mill basin", "owls head",
+                 "mccarren", "fort greene park", "sunset park", "kaiser park", "floyd bennett"),
+    "queens": ("forest park", "alley pond", "cunningham park", "kissena", "fort totten", "juniper valley",
+               "baisley", "rockaway beach", "jacob riis", "astoria park", "gantry plaza"),
+    "bronx": ("van cortlandt", "crotona", "orchard beach", "soundview", "pelham bay", "ferry point",
+              "bronx park", "st. mary's park", "claremont park", "starlight park", "concrete plant park"),
+    "staten_island": ("greenbelt", "high rock", "clove lakes", "great kills", "wolfe's pond", "wolfes pond",
+                      "tottenville", "silver lake park", "conference house", "freshkills", "fresh kills",
+                      "willowbrook park", "lemon creek", "blue heron park", "staten island"),
+    "manhattan": ("fort tryon", "highbridge park", "randall's island", "randalls island", "marcus garvey",
+                  "tompkins square", "inwood hill", "morningside park", "riverside park", "carl schurz"),
+}
+CITY_RULES = [(city, tuple(needles) + _EXTRA_CITY_NEEDLES.get(city, ())) for city, needles in CITY_RULES]
+
 CITY_LABELS = {
     "manhattan": "Manhattan",
     "brooklyn": "Brooklyn",
@@ -375,6 +392,16 @@ def _city_from_zip(hay):
 
 
 def _event_city(venue, source, geo=None, event=None):
+    """Borough for an event. The event's own venue/address/neighborhood are matched first; the
+    source's name is only a last resort (a feed called "NYC Parks ..." used to put every
+    unaddressed park event in Manhattan via the "nyc" needle)."""
+    city = _event_city_from(venue, "", geo, event)
+    if city == "other" and source:
+        city = _event_city_from(venue, source, geo, event)
+    return city
+
+
+def _event_city_from(venue, source, geo=None, event=None):
     v = (venue or "").strip().lower()
     hay = f"{v} {(source or '').strip().lower()}"
     if geo:
@@ -1198,6 +1225,8 @@ def _event_local_time(e):
     return t
 
 
+_TICKET_SELLER_RE = re.compile(r"ticketmaster\.com|seatgeek\.com|axs\.com|livenation\.com|telecharge\.com|stubhub\.com|tickpick\.com|vividseats\.com", re.I)
+_RSVP_HOST_RE = re.compile(r"meetup\.com|partiful\.com|lu\.ma|luma\.com", re.I)
 _STEP4_STOPWORDS = {
     "free", "night", "show", "shows", "live", "session", "comedy", "party", "dance", "dancing", "class",
     "social", "meetup", "open", "with", "presents", "featuring", "late", "early", "edition", "special",
@@ -1535,7 +1564,10 @@ def _merge_duplicates(events):
                 match["_presenter"] = None
 
             if not match.get("price") and e.get("price"):
-                match["price"] = e["price"]
+                # A free Meetup/RSVP listing for a group outing doesn't make a ticketed show free.
+                free_claim = bool(re.search(r"\bfree\b|^\$?0(\.00)?$", str(e["price"]).strip(), re.I))
+                if not (free_claim and _TICKET_SELLER_RE.search(match.get("url") or "")):
+                    match["price"] = e["price"]
             if (not match.get("lat") or not match.get("lng")) and e.get("lat") and e.get("lng"):
                 match["lat"] = e["lat"]
                 match["lng"] = e["lng"]
@@ -1560,6 +1592,12 @@ def _merge_duplicates(events):
     for ev in out:
         for k in _MEMO_KEYS:
             ev.pop(k, None)
+        # An RSVP-platform group outing ("Free" on Meetup) merged with a ticketed show must not
+        # advertise the show itself as free.
+        if re.search(r"\bfree\b", str(ev.get("price") or ""), re.I):
+            urls = [ev.get("url") or ""] + [a.get("url") or "" for a in ev.get("_alt_sources") or []]
+            if any(_RSVP_HOST_RE.search(u) for u in urls) and any(_TICKET_SELLER_RE.search(u) for u in urls):
+                ev["price"] = None
     return out
 
 
@@ -1606,8 +1644,68 @@ def group_by_date(results):
     return sorted(buckets.items()), tba, ongoing
 
 
-def render_page(results, split_deferred=False):
-    """Render the full page. With split_deferred=True, days beyond the first week are left
+def get_seasonal_theme(dt):
+    """(theme_key, icon, label) when dt falls on a seasonal NYC moment, else (None, None, None).
+    Mirrors getClientSeasonalTheme() in the page so the server-rendered picker matches."""
+    y, m, d = dt.year, dt.month, dt.day
+    if (m == 10 and d >= 29) or (m == 11 and d <= 1):
+        return ("halloween", "🎃", "Village Halloween Parade")
+    if m == 11:
+        first_mon = next(day for day in range(1, 8) if datetime(y, 11, day).weekday() == 0)
+        if d == first_mon + 1:
+            return ("election", "🗳️", "Election Day")
+        if d == 11:
+            return ("veterans", "🎖️", "Veterans Day Parade")
+        first_thu = next(day for day in range(1, 8) if datetime(y, 11, day).weekday() == 3)
+        thanksgiving = first_thu + 21
+        if d in (thanksgiving - 1, thanksgiving):
+            return ("thanksgiving", "🦃", "Thanksgiving Parade")
+        if d in (thanksgiving + 1, thanksgiving + 2):
+            return ("blackfriday", "🏷️", "Black Friday")
+        if d == thanksgiving + 4:
+            return ("cybermonday", "⚡", "Cyber Monday")
+    return (None, None, None)
+
+
+def _load_highlights():
+    """Editor's picks from highlights.json (written by scripts/curate_highlights.py or by hand).
+    Each entry: {"match": {"name_contains", "venue_contains"}, "badge", "note", "start_date", "expires"}."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "highlights.json")
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return []
+    today = datetime.now(EASTERN).date().isoformat()
+    return [h for h in data if isinstance(h, dict) and not (h.get("expires") and h["expires"] < today)] if isinstance(data, list) else []
+
+
+def _get_event_highlight(e, highlights):
+    if not highlights:
+        return None
+    name = (e.get("name") or "").lower()
+    venue = f"{e.get('venue') or ''} {e.get('_source_venue') or ''}".lower()
+    t = e.get("_time")
+    date_str = t.date().isoformat() if t else (e.get("date") or "")[:10]
+    for h in highlights:
+        m = h.get("match") or {}
+        nc = (m.get("name_contains") or "").lower()
+        vc = (m.get("venue_contains") or "").lower()
+        if not nc and not vc:
+            continue
+        if (nc and nc not in name) or (vc and vc not in venue):
+            continue
+        if h.get("start_date") and date_str and h["start_date"] > date_str:
+            continue
+        if h.get("expires") and date_str and h["expires"] < date_str:
+            continue
+        return h
+    return None
+
+
+def render_page(results, split_deferred=False, context_out=None):
+    """Render the full page. If context_out is a dict, it receives the deduplicated `dated`
+    events plus totals, so the exporter can build SEO pages and feeds without re-merging. With split_deferred=True, days beyond the first week are left
     out of the HTML and returned separately as (page_html, deferred_html); the page fetches
     them from deferred_days.html after first paint, keeping index.html small."""
     if isinstance(results, dict):
@@ -1615,8 +1713,24 @@ def render_page(results, split_deferred=False):
     else:
         venue_list = results or []
     dated, tba, ongoing = group_by_date(venue_list)
+    highlights = _load_highlights()
+    picks_chip_html = ('<button type="button" class="chip chip-picks" id="quick-picks-chip" title="Editor\'s picks for each day">'
+                       '<span class="chip-icon">⭐ </span>Picks</button>') if highlights else ""
     recurring_keys = compute_recurring(dated)
     total = sum(len(v) for _, v in dated) + len(tba)
+    seasonal_key, seasonal_icon, seasonal_label = get_seasonal_theme(datetime.now(EASTERN))
+    default_theme = seasonal_key or "classic"
+    seasonal_btn_html = (
+        f'<button type="button" class="theme-pill-btn active" data-theme="{seasonal_key}" role="radio" '
+        f'aria-checked="true" title="{escape(seasonal_label)} theme">{seasonal_icon}</button>'
+    ) if seasonal_key else ""
+    import seo  # local import: seo lazily imports template helpers
+    site_url = seo.get_site_url()
+    seo_head = seo.build_seo_meta_tags(description=seo.default_description(total), site_url=site_url)
+    json_ld = seo.build_json_ld(dated, total, site_url=site_url)
+    seo_directory_html = seo.build_seo_directory_html()
+    if isinstance(context_out, dict):
+        context_out.update({"dated": dated, "total": total, "n_sources": len(venue_list), "site_url": site_url})
     failed = [r for r in venue_list if r.get("error")]
     all_venue_names = sorted(list({r["venue"] for r in venue_list if r.get("venue")}))
 
@@ -1742,11 +1856,23 @@ def render_page(results, split_deferred=False):
         extra_html = f' · {compare_html}' if compare_html else ''
         pres_attr = f' data-presenter="{escape(presenter)}"' if presenter else ''
         ev_id = _event_stable_id(e)
-        return f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-subarea-name="{escape(sub_name)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}" data-event-id="{ev_id}"{epoch_attr}{time_attr}{geo_attrs}>
+        hl = _get_event_highlight(e, highlights)
+        hl_class = " highlighted" if hl else ""
+        hl_attr = ' data-highlight="true"' if hl else ""
+        hl_badge = ""
+        note_html = ""
+        if hl:
+            b_text = hl.get("badge") or "Editor's Pick"
+            note = hl.get("note")
+            tooltip = f"{b_text} — {note}" if note else b_text
+            hl_badge = f' <span class="badge-highlight" title="{escape(tooltip)}">{escape(b_text)}</span>'
+            if note:
+                note_html = f'<div class="curator-note"><span class="note-label">Why it\'s a pick:</span> {escape(note)}</div>'
+        return f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-subarea-name="{escape(sub_name)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}"{hl_attr} data-event-id="{ev_id}"{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
-          <div class="what">{link}{price_tag}{guestlist_badge}{recur_badge}
+          <div class="what">{link}{price_tag}{guestlist_badge}{hl_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
-            {desc_html}
+            {note_html}{desc_html}
           </div>
         </li>'''
 
@@ -2012,8 +2138,34 @@ def render_page(results, split_deferred=False):
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>NYC Events</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+{seo_head}
+{json_ld}
+<script>
+  // Seasonal themes switch on automatically unless the visitor picked one themselves.
+  function getClientSeasonalTheme(dt) {{
+    var y = dt.getFullYear(), m = dt.getMonth() + 1, d = dt.getDate();
+    if ((m === 10 && d >= 29) || (m === 11 && d <= 1)) return 'halloween';
+    if (m === 11) {{
+      var firstMon = 1; while (new Date(y, 10, firstMon).getDay() !== 1) firstMon++;
+      if (d === firstMon + 1) return 'election';
+      if (d === 11) return 'veterans';
+      var firstThu = 1; while (new Date(y, 10, firstThu).getDay() !== 4) firstThu++;
+      var tDay = firstThu + 21;
+      if (d === tDay - 1 || d === tDay) return 'thanksgiving';
+      if (d === tDay + 1 || d === tDay + 2) return 'blackfriday';
+      if (d === tDay + 4) return 'cybermonday';
+    }}
+    return null;
+  }}
+  try {{
+    var manualTheme = localStorage.getItem('nyc_events_theme_manual');
+    var storedTheme = localStorage.getItem('nyc_events_theme');
+    var seasonalTheme = getClientSeasonalTheme(new Date());
+    var t = (!manualTheme && seasonalTheme) ? seasonalTheme : (storedTheme || seasonalTheme || 'classic');
+    document.documentElement.setAttribute('data-theme', t);
+  }} catch (e) {{}}
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230c0e14'/%3E%3Crect x='3' y='3' width='58' height='58' rx='13' fill='none' stroke='%23ffcc00' stroke-width='3'/%3E%3Ctext x='32' y='46' font-family='Impact, Arial Black, sans-serif' font-weight='900' font-size='34' fill='%235d9bff' text-anchor='middle'%3ENYC%3C/text%3E%3C/svg%3E">
 <style>
   :root {{
@@ -2438,6 +2590,18 @@ def render_page(results, split_deferred=False):
     font-weight: 700;
     box-shadow: 0 2px 10px rgba(255, 118, 172, 0.35);
   }}
+  .badge-highlight {{
+    display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.02em; vertical-align: middle; margin-left: 6px;
+    background: rgba(255, 184, 0, 0.16); border: 1px solid rgba(255, 184, 0, 0.45); color: #ffd866;
+  }}
+  .event.highlighted {{ box-shadow: inset 3px 0 0 #ffd866; }}
+  .curator-note {{
+    font-size: 12.5px; color: #ffebb8; background: rgba(255, 184, 0, 0.08);
+    border: 1px solid rgba(255, 184, 0, 0.2); border-radius: 8px; padding: 6px 10px; margin-top: 6px;
+  }}
+  .curator-note .note-label {{ font-weight: 700; color: #ffd866; }}
+  .chip.chip-picks.active {{ background: rgba(255, 184, 0, 0.2); border-color: #ffd866; color: #ffd866; }}
   .badge-guestlist {{
     display: inline-flex;
     align-items: center;
@@ -2607,6 +2771,12 @@ def render_page(results, split_deferred=False):
   .mini-cal-grid .d.in-week {{ background: rgba(93,155,255,0.12); color: var(--fg); }}
   .mini-cal-grid .d.anchor {{ background: var(--accent); color: #0c0e14; font-weight: 700; }}
   .mini-cal-grid .d.anchor::after {{ background: #0c0e14; }}
+  .mini-cal-grid .d.range-start {{ background: var(--accent); color: #0c0e14; font-weight: 700; border-radius: 6px 0 0 6px; }}
+  .mini-cal-grid .d.range-end {{ background: var(--accent); color: #0c0e14; font-weight: 700; border-radius: 0 6px 6px 0; }}
+  .mini-cal-grid .d.range-start.range-end {{ border-radius: 6px; }}
+  .mini-cal-grid .d.range-start::after, .mini-cal-grid .d.range-end::after {{ background: #0c0e14; }}
+  .mini-cal-grid .d.in-range {{ background: rgba(93,155,255,0.22); color: var(--fg); border-radius: 0; }}
+  .mini-cal-hint {{ font-size: 11px; color: var(--muted); text-align: center; margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--border); }}
   .mini-cal-grid .d.blank {{ cursor: default; }}
   .mini-cal-grid .d:not(.blank):hover {{ border-color: var(--accent); }}
   .event.hidden {{ display: none; }}
@@ -3279,6 +3449,11 @@ def render_page(results, split_deferred=False):
   .ongoing ul {{ list-style: none; padding: 14px 18px; margin: 0; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); max-height: 420px; overflow-y: auto; }}
   .ongoing .event {{ padding: 8px 12px; }}
   footer {{ max-width: 1320px; margin: 0 auto; padding: 0 24px 32px; color: var(--muted); font-size: 12px; text-align: center; }}
+  .seo-directory {{ margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); line-height: 1.9; }}
+  .seo-directory h2 {{ font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; margin: 0 0 6px; color: var(--fg); }}
+  .seo-directory p {{ margin: 0 auto; max-width: 980px; }}
+  .seo-directory a {{ color: var(--muted); text-decoration: none; white-space: nowrap; }}
+  .seo-directory a:hover {{ color: var(--accent); text-decoration: underline; }}
 
   /* Mobile Responsive */
   .mobile-filter-bar {{ display: none; }}
@@ -3744,10 +3919,950 @@ def render_page(results, split_deferred=False):
     text-align: center;
     margin-top: 4px;
   }}
+  /* ---- Visual themes (ported from Boston events) ---- */
+  .banner-theme-slot {{ position: absolute; top: 14px; right: 16px; z-index: 5; }}
+  .theme-toggle-wrap {{
+    display: inline-flex;
+    align-items: center;
+    background: rgba(15, 18, 25, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    padding: 2px;
+    margin-left: auto;
+  }}
+  .theme-toggle-label {{
+    display: none;
+  }}
+  .theme-toggle-pills {{
+    display: inline-flex;
+    gap: 1px;
+    background: transparent;
+    border-radius: 999px;
+    padding: 0;
+  }}
+  .theme-pill-btn {{
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+    line-height: 1.35;
+  }}
+  .theme-pill-btn:hover {{
+    color: #fff;
+  }}
+  .theme-pill-btn.active {{
+    background: #f4f5f8;
+    color: #0c0e14;
+    font-weight: 700;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }}
+
+  [data-theme="indie"] {{
+    --bg: #0e1014;
+    --card: #15181e;
+    --card-hover: #1c2028;
+    --fg: #f4f5f8;
+    --muted: #8c93a4;
+    --accent: #e2a85a;
+    --accent-glow: transparent;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.16);
+    --green: #48bb78;
+    --green-bg: rgba(72, 187, 120, 0.12);
+    --green-border: rgba(72, 187, 120, 0.25);
+    --warn: #e07a5f;
+    --radius-lg: 10px;
+    --radius-md: 6px;
+    --radius-sm: 4px;
+  }}
+  [data-theme="anime"] {{
+    --bg: #0d0a1c;
+    --card: #17122e;
+    --card-hover: #211a42;
+    --fg: #f5f0ff;
+    --muted: #a49abf;
+    --accent: #ff4b93;
+    --accent-glow: rgba(255, 75, 147, 0.4);
+    --border: rgba(255, 107, 181, 0.22);
+    --border-hover: rgba(0, 240, 255, 0.45);
+    --green: #00f0ff;
+    --green-bg: rgba(0, 240, 255, 0.14);
+    --green-border: rgba(0, 240, 255, 0.38);
+    --warn: #ff758f;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+  }}
+  [data-theme="indie"] .dist-badge {{
+    background: rgba(56, 189, 248, 0.12);
+    color: #38bdf8;
+    border-color: rgba(56, 189, 248, 0.3);
+  }}
+  [data-theme="anime"] .dist-badge {{
+    background: rgba(255, 75, 147, 0.15);
+    color: #ff79c6;
+    border-color: rgba(255, 75, 147, 0.35);
+  }}
+  [data-theme="halloween"] .dist-badge {{
+    background: rgba(255, 121, 63, 0.18);
+    color: #ff9f43;
+    border-color: rgba(255, 121, 63, 0.4);
+    box-shadow: 0 0 8px rgba(255, 121, 63, 0.2);
+  }}
+  [data-theme="anime"] .theme-pill-btn.active {{
+    background: linear-gradient(135deg, #ff4b93 0%, #a855f7 100%);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 75, 147, 0.5);
+  }}
+  [data-theme="halloween"] .theme-pill-btn.active {{
+    background: linear-gradient(135deg, #ff793f 0%, #ff4757 100%);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 121, 63, 0.5);
+  }}
+  [data-theme="election"] .theme-pill-btn.active {{
+    background: linear-gradient(135deg, #2563eb 0%, #dc2626 100%);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+  }}
+  [data-theme="veterans"] .theme-pill-btn.active {{
+    background: linear-gradient(135deg, #d4af37 0%, #1e3a8a 100%);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  }}
+  [data-theme="thanksgiving"] .theme-pill-btn.active {{
+    background: linear-gradient(135deg, #ea580c 0%, #be123c 100%);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(234, 88, 12, 0.5);
+  }}
+  [data-theme="blackfriday"] .theme-pill-btn.active {{
+    background: linear-gradient(135deg, #facc15 0%, #eab308 100%);
+    color: #000000;
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+  }}
+  [data-theme="cybermonday"] .theme-pill-btn.active {{
+    background: linear-gradient(135deg, #06b6d4 0%, #9333ea 100%);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+  }}
+  [data-theme="indie"] .chip-icon,
+  [data-theme="indie"] .live-pulse {{
+    display: none !important;
+  }}
+  [data-theme="indie"] .banner {{
+    background-color: #0b0d11;
+    background-image:
+      linear-gradient(180deg, rgba(11, 13, 17, 0.35) 0%, rgba(11, 13, 17, 0.82) 60%, rgba(11, 13, 17, 0.98) 100%);
+    min-height: 250px;
+    padding: 34px 24px 26px;
+  }}
+  [data-theme="indie"] .banner-top-tag {{
+    color: #cbd5e1;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    font-weight: 650;
+    text-shadow: none;
+  }}
+  [data-theme="indie"] .banner-title {{
+    font-size: 42px;
+    letter-spacing: -0.04em;
+    font-weight: 850;
+  }}
+  [data-theme="indie"] .banner-meta-pill {{
+    background: rgba(18, 21, 28, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 6px 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+  }}
+  [data-theme="indie"] .pill-submit-btn {{
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #f4f5f8;
+    box-shadow: none;
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 4px 11px;
+  }}
+  [data-theme="indie"] .pill-submit-btn:hover {{
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: none;
+    filter: none;
+    box-shadow: none;
+  }}
+  [data-theme="indie"] .chip,
+  [data-theme="indie"] .loc-chip,
+  [data-theme="indie"] .genre-chip,
+  [data-theme="indie"] .transit-chip,
+  [data-theme="indie"] .sub-chip {{
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 6px 13px;
+  }}
+  [data-theme="indie"] .chip.active,
+  [data-theme="indie"] .loc-chip.active,
+  [data-theme="indie"] .genre-chip.active,
+  [data-theme="indie"] .sub-chip.active {{
+    background: rgba(226, 168, 90, 0.14);
+    border-color: #e2a85a;
+    color: #f6c888;
+    font-weight: 600;
+  }}
+  [data-theme="indie"] .chip:hover,
+  [data-theme="indie"] .loc-chip:hover,
+  [data-theme="indie"] .genre-chip:hover,
+  [data-theme="indie"] .transit-chip:hover,
+  [data-theme="indie"] .sub-chip:hover {{
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #fff;
+  }}
+  [data-theme="indie"] .day {{
+    border-radius: 8px;
+    padding: 16px 18px 14px;
+    background: var(--card);
+  }}
+  [data-theme="indie"] .day h2 {{
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }}
+  [data-theme="indie"] .event {{
+    padding: 9px 12px;
+    border-radius: 4px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    margin-bottom: 2px;
+  }}
+  [data-theme="indie"] .event:hover {{
+    background: rgba(255, 255, 255, 0.035);
+    border-color: rgba(255, 255, 255, 0.08);
+    transform: none;
+    box-shadow: none;
+  }}
+  [data-theme="indie"] .event .when {{
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    color: #9aa1b2;
+    font-weight: 500;
+  }}
+  [data-theme="indie"] .event .what a {{
+    color: #f4f5f8;
+    font-weight: 600;
+  }}
+  [data-theme="indie"] .event .what a:hover {{
+    color: #e2a85a;
+    text-decoration: underline;
+  }}
+  [data-theme="indie"] .cat-pill {{
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #b5bcc9 !important;
+  }}
+  [data-theme="indie"] .cal-btn {{
+    border-radius: 4px;
+    font-size: 11px;
+    padding: 1px 7px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+    color: var(--muted);
+  }}
+  [data-theme="indie"] .cal-btn:hover {{
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+  }}
+  [data-theme="indie"] .view-toggle {{
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 2px;
+  }}
+  [data-theme="indie"] .view-btn {{
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+  }}
+  [data-theme="indie"] .view-btn.active {{
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    box-shadow: none;
+  }}
+  [data-theme="indie"] .share-filter-btn {{
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+  }}
+  [data-theme="indie"] .past-events-banner {{
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    box-shadow: none;
+    color: var(--muted);
+  }}
+  [data-theme="indie"] .past-banner-badge {{
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2a85a;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    border-radius: 3px;
+    padding: 2px 7px;
+  }}
+  [data-theme="indie"] .past-banner-btn {{
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    color: #eef1f8;
+    font-weight: 500;
+  }}
+  [data-theme="indie"] .past-banner-btn:hover {{
+    background: rgba(255, 255, 255, 0.12);
+  }}
+  [data-theme="indie"] .indie-jump-label {{
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+    padding: 1px 5px;
+    line-height: 1.2;
+    vertical-align: middle;
+  }}
+  [data-theme="indie"] .venue-map-jump:hover .indie-jump-label {{
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.3);
+  }}
+  [data-theme="anime"] .banner {{
+    background-color: #110d28;
+    background-image:
+      linear-gradient(180deg, rgba(30, 15, 60, 0.45) 0%, rgba(18, 12, 40, 0.78) 58%, rgba(13, 10, 28, 0.98) 100%);
+    border-bottom: 2px solid rgba(255, 75, 147, 0.3);
+    box-shadow: 0 4px 30px rgba(168, 85, 247, 0.18);
+  }}
+  [data-theme="anime"] .banner-top-tag {{
+    color: #00f0ff;
+    text-shadow: 0 0 12px rgba(0, 240, 255, 0.7);
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }}
+  [data-theme="anime"] .banner-title {{
+    background: linear-gradient(135deg, #ffffff 20%, #ff79c6 60%, #00f0ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 25px rgba(255, 75, 147, 0.35));
+    letter-spacing: -0.02em;
+  }}
+  [data-theme="anime"] .banner-meta-pill {{
+    background: rgba(28, 20, 56, 0.85);
+    border: 1px solid rgba(255, 107, 181, 0.35);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 18px rgba(255, 75, 147, 0.22);
+    border-radius: 999px;
+  }}
+  [data-theme="anime"] .pill-submit-btn {{
+    background: linear-gradient(135deg, #ff4b93 0%, #9333ea 100%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(255, 75, 147, 0.45);
+    font-weight: 700;
+    border-radius: 999px;
+  }}
+  [data-theme="anime"] .pill-submit-btn:hover {{
+    filter: brightness(1.2);
+    box-shadow: 0 0 20px rgba(255, 75, 147, 0.7);
+    transform: translateY(-1px) scale(1.02);
+  }}
+  [data-theme="anime"] .live-pulse {{
+    background: #00f0ff;
+    box-shadow: 0 0 10px #00f0ff, 0 0 20px #00f0ff;
+  }}
+  [data-theme="anime"] .chip,
+  [data-theme="anime"] .loc-chip,
+  [data-theme="anime"] .genre-chip,
+  [data-theme="anime"] .transit-chip,
+  [data-theme="anime"] .sub-chip {{
+    border-radius: 999px;
+    background: rgba(30, 22, 60, 0.65);
+    border: 1px solid rgba(255, 107, 181, 0.22);
+    color: #d1c7e8;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }}
+  [data-theme="anime"] .chip:hover,
+  [data-theme="anime"] .loc-chip:hover,
+  [data-theme="anime"] .genre-chip:hover,
+  [data-theme="anime"] .transit-chip:hover,
+  [data-theme="anime"] .sub-chip:hover {{
+    border-color: #00f0ff;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
+    transform: translateY(-2px);
+  }}
+  [data-theme="anime"] .chip.active,
+  [data-theme="anime"] .loc-chip.active,
+  [data-theme="anime"] .genre-chip.active,
+  [data-theme="anime"] .sub-chip.active {{
+    background: linear-gradient(135deg, rgba(255, 75, 147, 0.3) 0%, rgba(168, 85, 247, 0.3) 100%);
+    border-color: #ff4b93;
+    color: #fff;
+    box-shadow: 0 0 14px rgba(255, 75, 147, 0.4);
+    font-weight: 700;
+  }}
+  [data-theme="anime"] .day {{
+    background: rgba(23, 18, 46, 0.7);
+    border: 1px solid rgba(255, 107, 181, 0.18);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-lg);
+  }}
+  [data-theme="anime"] .day h2 {{
+    color: #fce7f3;
+    border-bottom: 1px solid rgba(255, 107, 181, 0.18);
+  }}
+  [data-theme="anime"] .day h2 .count {{
+    background: rgba(255, 75, 147, 0.2);
+    border: 1px solid rgba(255, 75, 147, 0.45);
+    color: #ff85be;
+    border-radius: 999px;
+  }}
+  [data-theme="anime"] .event {{
+    background: rgba(30, 24, 62, 0.55);
+    border: 1px solid rgba(255, 107, 181, 0.15);
+    border-radius: var(--radius-md);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }}
+  [data-theme="anime"] .event:hover {{
+    background: rgba(42, 34, 88, 0.85);
+    border-color: rgba(255, 75, 147, 0.5);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 14px rgba(255, 75, 147, 0.3);
+    transform: translateY(-2px);
+  }}
+  [data-theme="anime"] .event .what a {{
+    color: #f5f0ff;
+  }}
+  [data-theme="anime"] .event .what a:hover {{
+    color: #00f0ff;
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+  }}
+  [data-theme="anime"] .cat-pill {{
+    border-radius: 999px;
+    font-weight: 700;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+  }}
+  [data-theme="anime"] .star-btn:hover,
+  [data-theme="anime"] .star-btn.starred {{
+    color: #ff4b93;
+    text-shadow: 0 0 12px rgba(255, 75, 147, 0.8);
+  }}
+  [data-theme="anime"] .view-toggle {{
+    border-radius: 999px;
+    background: rgba(30, 22, 60, 0.65);
+    border: 1px solid rgba(255, 107, 181, 0.25);
+    padding: 3px;
+  }}
+  [data-theme="anime"] .view-btn {{
+    border-radius: 999px;
+  }}
+  [data-theme="anime"] .view-btn.active {{
+    background: linear-gradient(135deg, #ff4b93 0%, #9333ea 100%);
+    color: #fff;
+    box-shadow: 0 0 12px rgba(255, 75, 147, 0.45);
+  }}
+  [data-theme="anime"] .share-filter-btn {{
+    border-radius: 999px;
+    background: rgba(30, 22, 60, 0.65);
+    border: 1px solid rgba(255, 107, 181, 0.25);
+  }}
+  [data-theme="halloween"] {{
+    --bg: #09050e;
+    --card: #130a1c;
+    --card-hover: #1c1028;
+    --fg: #fffcf6;
+    --muted: #a395b5;
+    --accent: #ff793f;
+    --accent-glow: rgba(255, 121, 63, 0.35);
+    --border: rgba(255, 121, 63, 0.22);
+    --border-hover: rgba(255, 121, 63, 0.45);
+    --green: #00d2d3;
+    --green-bg: rgba(0, 210, 211, 0.14);
+    --green-border: rgba(0, 210, 211, 0.35);
+    --warn: #ff9f43;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+  }}
+  [data-theme="halloween"] body {{
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 121, 63, 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 90% 40%, rgba(142, 68, 173, 0.06) 0%, transparent 60%);
+    background-attachment: fixed;
+    color: var(--fg);
+  }}
+  [data-theme="halloween"] .banner {{
+    background-color: #0d0617;
+    background-image:
+      linear-gradient(180deg, rgba(13, 6, 23, 0.45) 0%, rgba(20, 9, 34, 0.75) 55%, rgba(9, 5, 14, 0.98) 100%);
+    background-position: center 85%;
+    background-size: cover;
+    border-bottom: 2px solid rgba(255, 121, 63, 0.45);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 121, 63, 0.15);
+  }}
+  [data-theme="halloween"] .banner-top-tag {{
+    color: #ff9f43;
+    text-shadow: 0 0 14px rgba(255, 159, 67, 0.7);
+    letter-spacing: 0.18em;
+    font-weight: 800;
+  }}
+  [data-theme="halloween"] .live-pulse {{
+    background: #ff793f;
+    box-shadow: 0 0 10px #ff793f, 0 0 20px #ff793f;
+  }}
+  [data-theme="halloween"] .banner-title {{
+    background: linear-gradient(135deg, #ffffff 15%, #ff9f43 55%, #ff5252 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 25px rgba(255, 121, 63, 0.4));
+    letter-spacing: -0.02em;
+  }}
+  [data-theme="halloween"] .banner-meta-pill {{
+    background: rgba(22, 11, 36, 0.88);
+    border: 1px solid rgba(255, 121, 63, 0.4);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 16px rgba(255, 121, 63, 0.18);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+  }}
+  [data-theme="halloween"] .pill-submit-btn {{
+    background: linear-gradient(135deg, #ff4757 0%, #ff793f 60%, #f39c12 100%);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(255, 121, 63, 0.5);
+    font-weight: 800;
+    border-radius: 999px;
+  }}
+  [data-theme="halloween"] .pill-submit-btn:hover {{
+    filter: brightness(1.15);
+    box-shadow: 0 0 22px rgba(255, 121, 63, 0.75);
+    transform: translateY(-1px) scale(1.02);
+  }}
+  [data-theme="halloween"] .chip,
+  [data-theme="halloween"] .loc-chip,
+  [data-theme="halloween"] .genre-chip,
+  [data-theme="halloween"] .transit-chip,
+  [data-theme="halloween"] .sub-chip {{
+    border-radius: 999px;
+    background: rgba(26, 14, 42, 0.7);
+    border: 1px solid rgba(255, 121, 63, 0.25);
+    color: #d8cde8;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }}
+  [data-theme="halloween"] .chip:hover,
+  [data-theme="halloween"] .loc-chip:hover,
+  [data-theme="halloween"] .genre-chip:hover,
+  [data-theme="halloween"] .transit-chip:hover,
+  [data-theme="halloween"] .sub-chip:hover {{
+    border-color: #ff9f43;
+    color: #ffffff;
+    box-shadow: 0 0 14px rgba(255, 159, 67, 0.4);
+    transform: translateY(-2px);
+  }}
+  [data-theme="halloween"] .chip.active,
+  [data-theme="halloween"] .loc-chip.active,
+  [data-theme="halloween"] .genre-chip.active,
+  [data-theme="halloween"] .sub-chip.active {{
+    background: linear-gradient(135deg, rgba(255, 121, 63, 0.4) 0%, rgba(224, 86, 253, 0.28) 100%);
+    border-color: #ff793f;
+    color: #ffeaa7;
+    box-shadow: 0 0 14px rgba(255, 121, 63, 0.4);
+    font-weight: 700;
+  }}
+  [data-theme="halloween"] .day {{
+    background: rgba(19, 10, 31, 0.75);
+    border: 1px solid rgba(255, 121, 63, 0.22);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    border-radius: var(--radius-lg);
+  }}
+  [data-theme="halloween"] .day h2 {{
+    color: #fff2df;
+    border-bottom: 1px solid rgba(255, 121, 63, 0.22);
+  }}
+  [data-theme="halloween"] .day h2 .count {{
+    background: rgba(255, 121, 63, 0.2);
+    border: 1px solid rgba(255, 121, 63, 0.5);
+    color: #ff9f43;
+    border-radius: 999px;
+  }}
+  [data-theme="halloween"] .event {{
+    background: rgba(26, 14, 42, 0.6);
+    border: 1px solid rgba(255, 121, 63, 0.18);
+    border-radius: var(--radius-md);
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }}
+  [data-theme="halloween"] .event:hover {{
+    background: rgba(36, 20, 58, 0.9);
+    border-color: rgba(255, 121, 63, 0.6);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(255, 121, 63, 0.3);
+    transform: translateY(-2px);
+  }}
+  [data-theme="halloween"] .event .what a {{
+    color: #ffffff;
+  }}
+  [data-theme="halloween"] .event .what a:hover {{
+    color: #ff9f43;
+    text-shadow: 0 0 10px rgba(255, 159, 67, 0.6);
+  }}
+  [data-theme="halloween"] .filter-group {{
+    background: rgba(19, 10, 31, 0.85);
+    border: 1px solid rgba(255, 121, 63, 0.25);
+  }}
+  [data-theme="halloween"] .badge-highlight {{
+    background: linear-gradient(135deg, rgba(255, 121, 63, 0.25) 0%, rgba(243, 156, 18, 0.35) 100%);
+    border: 1px solid #ff793f;
+    color: #ffeaa7;
+    box-shadow: 0 0 10px rgba(255, 121, 63, 0.25);
+  }}
+  [data-theme="election"] {{
+    --bg: #090d16;
+    --card: #121826;
+    --card-hover: #1b2438;
+    --fg: #f1f5f9;
+    --muted: #94a3b8;
+    --accent: #3b82f6;
+    --accent-glow: rgba(59, 130, 246, 0.35);
+    --border: rgba(59, 130, 246, 0.22);
+    --border-hover: rgba(59, 130, 246, 0.45);
+    --green: #22c55e;
+    --green-bg: rgba(34, 197, 94, 0.14);
+    --green-border: rgba(34, 197, 94, 0.35);
+    --warn: #ef4444;
+    --radius-lg: 14px;
+    --radius-md: 8px;
+    --radius-sm: 5px;
+  }}
+  [data-theme="election"] body {{
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(59, 130, 246, 0.10) 0%, transparent 65%),
+      radial-gradient(ellipse 70% 40% at 85% 20%, rgba(239, 68, 68, 0.08) 0%, transparent 60%);
+    background-attachment: fixed;
+  }}
+  [data-theme="election"] .banner {{
+    background-color: #0c1220;
+    border-bottom: 2px solid rgba(59, 130, 246, 0.45);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(59, 130, 246, 0.15);
+  }}
+  [data-theme="election"] .banner-top-tag {{
+    color: #60a5fa;
+    text-shadow: 0 0 12px rgba(96, 165, 250, 0.6);
+  }}
+  [data-theme="election"] .live-pulse {{
+    background: #3b82f6;
+    box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6;
+  }}
+  [data-theme="election"] .banner-title {{
+    background: linear-gradient(135deg, #ffffff 15%, #93c5fd 60%, #fca5a5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.35));
+  }}
+  [data-theme="election"] .pill-submit-btn {{
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #dc2626 100%);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(37, 99, 235, 0.45);
+    border-radius: 999px;
+  }}
+  [data-theme="election"] .chip.active,
+  [data-theme="election"] .loc-chip.active,
+  [data-theme="election"] .genre-chip.active,
+  [data-theme="election"] .sub-chip.active {{
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.35) 0%, rgba(220, 38, 38, 0.25) 100%);
+    border-color: #3b82f6;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.35);
+  }}
+  [data-theme="veterans"] {{
+    --bg: #090d18;
+    --card: #111a2e;
+    --card-hover: #182542;
+    --fg: #f8fafc;
+    --muted: #94a3b8;
+    --accent: #d4af37;
+    --accent-glow: rgba(212, 175, 55, 0.35);
+    --border: rgba(212, 175, 55, 0.25);
+    --border-hover: rgba(212, 175, 55, 0.50);
+    --green: #38bdf8;
+    --green-bg: rgba(56, 189, 248, 0.14);
+    --green-border: rgba(56, 189, 248, 0.35);
+    --warn: #f59e0b;
+    --radius-lg: 14px;
+    --radius-md: 8px;
+    --radius-sm: 5px;
+  }}
+  [data-theme="veterans"] body {{
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212, 175, 55, 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 90% 40%, rgba(30, 58, 138, 0.16) 0%, transparent 60%);
+    background-attachment: fixed;
+  }}
+  [data-theme="veterans"] .banner {{
+    background-color: #0c1322;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.45);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(212, 175, 55, 0.15);
+  }}
+  [data-theme="veterans"] .banner-top-tag {{
+    color: #fbbf24;
+    text-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
+  }}
+  [data-theme="veterans"] .live-pulse {{
+    background: #d4af37;
+    box-shadow: 0 0 10px #d4af37, 0 0 20px #d4af37;
+  }}
+  [data-theme="veterans"] .banner-title {{
+    background: linear-gradient(135deg, #ffffff 20%, #fde047 65%, #60a5fa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.35));
+  }}
+  [data-theme="veterans"] .pill-submit-btn {{
+    background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #1e3a8a 100%);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+    border-radius: 999px;
+  }}
+  [data-theme="veterans"] .chip.active,
+  [data-theme="veterans"] .loc-chip.active,
+  [data-theme="veterans"] .genre-chip.active,
+  [data-theme="veterans"] .sub-chip.active {{
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.35) 0%, rgba(30, 58, 138, 0.35) 100%);
+    border-color: #d4af37;
+    color: #fef08a;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.35);
+  }}
+  [data-theme="thanksgiving"] {{
+    --bg: #100b08;
+    --card: #1a120c;
+    --card-hover: #261b12;
+    --fg: #fef7ed;
+    --muted: #bfa094;
+    --accent: #ea580c;
+    --accent-glow: rgba(234, 88, 12, 0.35);
+    --border: rgba(234, 88, 12, 0.22);
+    --border-hover: rgba(234, 88, 12, 0.45);
+    --green: #84cc16;
+    --green-bg: rgba(132, 204, 22, 0.14);
+    --green-border: rgba(132, 204, 22, 0.35);
+    --warn: #f59e0b;
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+  }}
+  [data-theme="thanksgiving"] body {{
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(234, 88, 12, 0.09) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 85% 35%, rgba(190, 18, 60, 0.07) 0%, transparent 60%);
+    background-attachment: fixed;
+  }}
+  [data-theme="thanksgiving"] .banner {{
+    background-color: #170f0a;
+    border-bottom: 2px solid rgba(234, 88, 12, 0.45);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(234, 88, 12, 0.15);
+  }}
+  [data-theme="thanksgiving"] .banner-top-tag {{
+    color: #fb923c;
+    text-shadow: 0 0 12px rgba(251, 146, 60, 0.6);
+  }}
+  [data-theme="thanksgiving"] .live-pulse {{
+    background: #ea580c;
+    box-shadow: 0 0 10px #ea580c, 0 0 20px #ea580c;
+  }}
+  [data-theme="thanksgiving"] .banner-title {{
+    background: linear-gradient(135deg, #fffbeb 20%, #fb923c 60%, #e11d48 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(234, 88, 12, 0.35));
+  }}
+  [data-theme="thanksgiving"] .pill-submit-btn {{
+    background: linear-gradient(135deg, #c2410c 0%, #ea580c 50%, #be123c 100%);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(234, 88, 12, 0.5);
+    border-radius: 999px;
+  }}
+  [data-theme="thanksgiving"] .chip.active,
+  [data-theme="thanksgiving"] .loc-chip.active,
+  [data-theme="thanksgiving"] .genre-chip.active,
+  [data-theme="thanksgiving"] .sub-chip.active {{
+    background: linear-gradient(135deg, rgba(234, 88, 12, 0.4) 0%, rgba(190, 18, 60, 0.3) 100%);
+    border-color: #ea580c;
+    color: #ffedd5;
+    box-shadow: 0 0 12px rgba(234, 88, 12, 0.4);
+  }}
+  [data-theme="blackfriday"] {{
+    --bg: #050608;
+    --card: #0f1116;
+    --card-hover: #181c24;
+    --fg: #fafafa;
+    --muted: #a1a1aa;
+    --accent: #facc15;
+    --accent-glow: rgba(250, 204, 21, 0.35);
+    --border: rgba(250, 204, 21, 0.22);
+    --border-hover: rgba(250, 204, 21, 0.45);
+    --green: #22c55e;
+    --green-bg: rgba(34, 197, 94, 0.14);
+    --green-border: rgba(34, 197, 94, 0.35);
+    --warn: #f97316;
+    --radius-lg: 12px;
+    --radius-md: 8px;
+    --radius-sm: 4px;
+  }}
+  [data-theme="blackfriday"] body {{
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(250, 204, 21, 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 10% 40%, rgba(239, 68, 68, 0.06) 0%, transparent 60%);
+    background-attachment: fixed;
+  }}
+  [data-theme="blackfriday"] .banner {{
+    background-color: #07090f;
+    border-bottom: 2px solid rgba(250, 204, 21, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(250, 204, 21, 0.2);
+  }}
+  [data-theme="blackfriday"] .banner-top-tag {{
+    color: #facc15;
+    text-shadow: 0 0 14px rgba(250, 204, 21, 0.7);
+  }}
+  [data-theme="blackfriday"] .live-pulse {{
+    background: #facc15;
+    box-shadow: 0 0 10px #facc15, 0 0 20px #facc15;
+  }}
+  [data-theme="blackfriday"] .banner-title {{
+    background: linear-gradient(135deg, #ffffff 20%, #fde047 60%, #f97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 22px rgba(250, 204, 21, 0.4));
+  }}
+  [data-theme="blackfriday"] .pill-submit-btn {{
+    background: linear-gradient(135deg, #ca8a04 0%, #eab308 50%, #dc2626 100%);
+    color: #000;
+    font-weight: 800;
+    box-shadow: 0 0 16px rgba(250, 204, 21, 0.5);
+    border-radius: 999px;
+  }}
+  [data-theme="blackfriday"] .chip.active,
+  [data-theme="blackfriday"] .loc-chip.active,
+  [data-theme="blackfriday"] .genre-chip.active,
+  [data-theme="blackfriday"] .sub-chip.active {{
+    background: linear-gradient(135deg, rgba(250, 204, 21, 0.35) 0%, rgba(249, 115, 22, 0.25) 100%);
+    border-color: #facc15;
+    color: #fef08a;
+    box-shadow: 0 0 12px rgba(250, 204, 21, 0.35);
+  }}
+  [data-theme="cybermonday"] {{
+    --bg: #050811;
+    --card: #0c1222;
+    --card-hover: #131c35;
+    --fg: #f0fdf4;
+    --muted: #7dd3fc;
+    --accent: #06b6d4;
+    --accent-glow: rgba(6, 182, 212, 0.45);
+    --border: rgba(6, 182, 212, 0.25);
+    --border-hover: rgba(6, 182, 212, 0.55);
+    --green: #10b981;
+    --green-bg: rgba(16, 185, 129, 0.14);
+    --green-border: rgba(16, 185, 129, 0.35);
+    --warn: #ec4899;
+    --radius-lg: 14px;
+    --radius-md: 8px;
+    --radius-sm: 5px;
+  }}
+  [data-theme="cybermonday"] body {{
+    background-color: var(--bg);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(6, 182, 212, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 85% 30%, rgba(168, 85, 247, 0.10) 0%, transparent 60%);
+    background-attachment: fixed;
+  }}
+  [data-theme="cybermonday"] .banner {{
+    background-color: #070e1c;
+    border-bottom: 2px solid rgba(6, 182, 212, 0.5);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(6, 182, 212, 0.2);
+  }}
+  [data-theme="cybermonday"] .banner-top-tag {{
+    color: #22d3ee;
+    text-shadow: 0 0 14px rgba(34, 211, 238, 0.7);
+  }}
+  [data-theme="cybermonday"] .live-pulse {{
+    background: #06b6d4;
+    box-shadow: 0 0 10px #06b6d4, 0 0 20px #06b6d4;
+  }}
+  [data-theme="cybermonday"] .banner-title {{
+    background: linear-gradient(135deg, #ffffff 20%, #22d3ee 60%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.4));
+  }}
+  [data-theme="cybermonday"] .pill-submit-btn {{
+    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 50%, #9333ea 100%);
+    color: #fff;
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.5);
+    border-radius: 999px;
+  }}
+  [data-theme="cybermonday"] .chip.active,
+  [data-theme="cybermonday"] .loc-chip.active,
+  [data-theme="cybermonday"] .genre-chip.active,
+  [data-theme="cybermonday"] .sub-chip.active {{
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.35) 0%, rgba(168, 85, 247, 0.25) 100%);
+    border-color: #06b6d4;
+    color: #cffafe;
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+  }}
+  [data-theme="classic"] .theme-pill-btn.active {{
+    background: var(--accent);
+    color: #0c0e14;
+  }}
 </style>
 </head>
 <body>
   <div class="banner">
+    <div class="banner-theme-slot">
+      <div class="theme-toggle-wrap">
+        <div class="theme-toggle-pills" role="radiogroup" aria-label="Visual theme">
+          {seasonal_btn_html}
+          <button type="button" class="theme-pill-btn{' active' if default_theme == 'classic' else ''}" data-theme="classic" role="radio" aria-checked="{'true' if default_theme == 'classic' else 'false'}" title="Classic dark theme">🌙</button>
+          <button type="button" class="theme-pill-btn" data-theme="indie" role="radio" aria-checked="false" title="Indie guide theme">📰</button>
+          <button type="button" class="theme-pill-btn" data-theme="anime" role="radio" aria-checked="false" title="Anime theme">🌸</button>
+        </div>
+      </div>
+    </div>
     <div class="banner-svg-wrap">
       {BANNER_SVG}
     </div>
@@ -3876,6 +4991,7 @@ def render_page(results, split_deferred=False):
         <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
         <button type="button" class="chip chip-guestlist" id="quick-guestlist-chip"><span class="chip-icon">🎟️ </span>Guestlists</button>
         <button type="button" class="chip chip-free" id="quick-free-chip"><span class="chip-icon">✨ </span>Free Only</button>
+        {picks_chip_html}
         <button type="button" class="chip chip-theater" id="quick-theater-chip"><span class="chip-icon">🎭 </span>Theater</button>
       </div>
       <div class="week-nav" id="week-nav">
@@ -3893,6 +5009,7 @@ def render_page(results, split_deferred=False):
           <button type="button" id="cal-next-month" aria-label="Next month">›</button>
         </div>
         <div class="mini-cal-grid" id="mini-cal-grid"></div>
+        <div class="mini-cal-hint" id="cal-hint">Pick a date, or click a second date for a range</div>
       </div>
       <div id="map-view-wrapper" class="map-view-wrapper" style="display: none;">
         <div class="map-header">
@@ -3940,6 +5057,7 @@ def render_page(results, split_deferred=False):
   <footer>
     <p>NYC Events · Live local music, comedy, arts, outdoors &amp; community events across New York City.</p>
     <p style="margin-top:6px; font-size:11px; opacity:0.85;">Data compiled directly from venue calendars and official local community feeds. Not affiliated with any commercial ticketing broker.</p>
+    {seo_directory_html}
   </footer>
 
   <!-- Community Event & Venue Submission Modal -->
@@ -4187,6 +5305,8 @@ def render_page(results, split_deferred=False):
     const quickChips = document.querySelectorAll('#quick-chips .chip[data-time]');
     const quickFreeChip = document.getElementById('quick-free-chip');
     const quickGuestlistChip = document.getElementById('quick-guestlist-chip');
+    const quickPicksChip = document.getElementById('quick-picks-chip');
+    let picksOnly = false;
     const quickTheaterChip = document.getElementById('quick-theater-chip');
     const quickCustomTimeChip = document.getElementById('quick-custom-time-chip');
     const activeTimeframeLabel = document.getElementById('active-timeframe-label');
@@ -4531,6 +5651,16 @@ def render_page(results, split_deferred=False):
     let anchor = parseISO(todayISO);
     let showAll = false;
     let calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+    // Date range from the mini calendar: first click picks a day, a second click sets the range.
+    let rangeStart = null;
+    let rangeEnd = null;
+    function clearRange() {{ rangeStart = null; rangeEnd = null; }}
+    function rangeDates() {{
+      const out = [];
+      if (!rangeStart || !rangeEnd) return out;
+      for (let d = parseISO(rangeStart); fmtISO(d) <= rangeEnd; d = addDays(d, 1)) out.push(fmtISO(d));
+      return out;
+    }}
 
     function updateDayHeadings() {{
       const tDate = parseISO(todayISO);
@@ -4651,12 +5781,23 @@ def render_page(results, split_deferred=False):
         const sat = addDays(todayDate, daysToSat);
         const sun = addDays(sat, 1);
         label = `Weekend: ${{fmtShort(sat)}} – ${{fmtShort(sun)}}`;
+      }} else if (timeFilter === 'range' && rangeStart && rangeEnd) {{
+        const rs = parseISO(rangeStart), re_ = parseISO(rangeEnd);
+        label = `${{fmtShort(rs)}} – ${{fmtShort(re_)}}, ${{re_.getFullYear()}}`;
       }} else if (timeFilter === 'day') {{
         label = `${{DAYS_FULL[anchor.getDay()]}}, ${{fmtShort(anchor)}}, ${{anchor.getFullYear()}}`;
       }} else {{
         label = `${{fmtShort(anchor)}} – ${{fmtShort(end)}}, ${{end.getFullYear()}}`;
       }}
       document.getElementById('week-label').textContent = label;
+      const calToggle = document.getElementById('cal-toggle');
+      if (calToggle) {{
+        const picked = (timeFilter === 'range' && rangeStart && rangeEnd)
+          ? `${{fmtShort(parseISO(rangeStart))}} – ${{fmtShort(parseISO(rangeEnd))}}`
+          : (timeFilter === 'day' ? fmtShort(anchor) : '');
+        calToggle.textContent = picked ? `📅 ${{picked}}` : '📅 pick date';
+        calToggle.classList.toggle('active', !!picked);
+      }}
       const b = document.getElementById('week-label-b');
       if (b) b.textContent = label;
       const btn = document.getElementById('week-all');
@@ -4933,6 +6074,7 @@ def render_page(results, split_deferred=False):
       if (quickGuestlistChip) {{
         quickGuestlistChip.classList.toggle('active', guestlistOnlyChk ? guestlistOnlyChk.checked : false);
       }}
+      if (quickPicksChip) quickPicksChip.classList.toggle('active', picksOnly);
     }}
 
     function renderSubareaChips(city) {{
@@ -5026,7 +6168,7 @@ def render_page(results, split_deferred=False):
       const isFree = freeOnlyChk && freeOnlyChk.checked;
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
-      const isFiltered = isCatFiltered || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isFiltered = isCatFiltered || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -5079,13 +6221,17 @@ def render_page(results, split_deferred=False):
 
       if (freeOnlyChk && freeOnlyChk.checked) params.set('free', '1');
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
+      if (picksOnly) params.set('picks', '1');
       if (timeFrom !== null || timeTo !== null) {{
         if (timeFrom !== null) params.set('from', formatMinutesToHHMM(timeFrom));
         if (timeTo !== null) params.set('to', formatMinutesToHHMM(timeTo));
       }}
 
       if (timeFilter !== 'today') params.set('t', timeFilter);
-      if ((timeFilter === 'day' || timeFilter === 'week') && fmtISO(anchor) !== todayISO) {{
+      if (timeFilter === 'range' && rangeStart && rangeEnd) {{
+        params.set('d', rangeStart);
+        params.set('d_end', rangeEnd);
+      }} else if ((timeFilter === 'day' || timeFilter === 'week') && fmtISO(anchor) !== todayISO) {{
         params.set('d', fmtISO(anchor));
       }}
       if (currentView !== 'list') params.set('v', currentView);
@@ -5103,6 +6249,7 @@ def render_page(results, split_deferred=False):
         if (params.has('q')) searchInput.value = params.get('q');
         if (params.get('free') === '1' && freeOnlyChk) freeOnlyChk.checked = true;
         if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
+        if (params.get('picks') === '1') picksOnly = true;
         if (params.get('past') === '1') showPastToday = true;
         if (params.get('v') === 'map') {{
           switchView('map');
@@ -5161,6 +6308,13 @@ def render_page(results, split_deferred=False):
           if (d === 'all') {{
             showAll = true;
             timeFilter = 'all';
+          }} else if (params.has('d_end')) {{
+            rangeStart = d;
+            rangeEnd = params.get('d_end');
+            timeFilter = 'range';
+            showAll = false;
+            anchor = parseISO(rangeStart);
+            calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
           }} else {{
             anchor = parseISO(d);
             calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
@@ -5235,6 +6389,7 @@ def render_page(results, split_deferred=False):
           : timeFilter === 'tomorrow' ? [tomorrowISO]
           : timeFilter === 'weekend' ? [satISO, sunISO]
           : timeFilter === 'day' ? [anchorISO]
+          : timeFilter === 'range' ? rangeDates()
           : Array.from(week || []);
         const loaded = new Set(daySections.map(d => d.dataset.date));
         needsHydration = wanted.some(dt => eventDates.has(dt) && !loaded.has(dt));
@@ -5258,7 +6413,9 @@ def render_page(results, split_deferred=False):
         }} else if (timeFilter === 'week') {{
           inTime = (date === 'tba' || week.has(date));
         }} else {{
-          inTime = showAll || date === 'tba' || week.has(date);
+          inTime = (timeFilter === 'range' && rangeStart && rangeEnd)
+            ? (date >= rangeStart && date <= rangeEnd)
+            : (showAll || date === 'tba' || week.has(date));
         }}
         day.classList.toggle('out-of-week', !inTime);
         return inTime;
@@ -5269,69 +6426,111 @@ def render_page(results, split_deferred=False):
         const isToday = (date === todayISO);
         const isPastDay = Boolean(date && date !== 'tba' && date < todayISO);
 
-        day.querySelectorAll('.event').forEach(li => {{
-          const catOk = cats.has(li.dataset.bucket);
-          const venueOk = venues.has(li.dataset.venue) || (li.dataset.presenter && venues.has(li.dataset.presenter));
-          const recurOk = recurs.has(li.dataset.recur);
-          const cityOk = cities.has(li.dataset.city);
-          const subareaOk = (activeSubarea === 'all') || (li.dataset.subarea === activeSubarea);
-          const freeOk = !freeOnly || li.dataset.free === 'true';
-          const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
-          const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
-
-          let todOk = true;
-          if (timeFrom !== null || timeTo !== null) {{
-            const tm = parseInt(li.dataset.timeMins || '-1', 10);
-            if (tm >= 0) {{
-              if (timeFrom !== null && tm < timeFrom) todOk = false;
-              if (timeTo !== null && tm > timeTo) todOk = false;
-            }} else {{
-              todOk = false;
+        // Walk day -> borough section -> category bucket, skipping whole containers that are
+        // filtered out, caching each card's parsed attributes, and touching the DOM only when a
+        // card's visibility or a count actually changes.
+        const setCount = (el, n) => {{ if (el && el._val !== n) {{ el._val = n; el.textContent = n; }} }};
+        const pruneEvents = (container, events) => {{
+          if (container._pruned) return;
+          container._pruned = true;
+          events.forEach(li => {{ if (li._meta && !li._meta.hidden) {{ li._meta.hidden = true; li.classList.add('hidden'); }} else if (!li._meta) li.classList.add('hidden'); }});
+        }};
+        let dayVisible = 0;
+        const citySections = day._citySections || (day._citySections = Array.from(day.querySelectorAll('.cities .city-section')));
+        citySections.forEach(sec => {{
+          const buckets = sec._buckets || (sec._buckets = Array.from(sec.querySelectorAll('.bucket')));
+          const secEvents = sec._events || (sec._events = Array.from(sec.querySelectorAll('.event')));
+          const secCity = sec.dataset.city;
+          if (secCity && !cities.has(secCity)) {{
+            pruneEvents(sec, secEvents);
+            buckets.forEach(b => {{ b._pruned = true; b.classList.add('empty'); setCount(b._countEl || (b._countEl = b.querySelector('.bucket-head .count')), 0); }});
+            sec.classList.add('empty');
+            setCount(sec._countEl || (sec._countEl = sec.querySelector('.city-head .count')), 0);
+            return;
+          }}
+          sec._pruned = false;
+          let cityVisible = 0;
+          buckets.forEach(b => {{
+            const events = b._events || (b._events = Array.from(b.querySelectorAll('.event')));
+            const countEl = b._countEl || (b._countEl = b.querySelector('.bucket-head .count'));
+            if (!cats.has(b.dataset.bucket)) {{
+              pruneEvents(b, events);
+              b.classList.add('empty');
+              setCount(countEl, 0);
+              return;
             }}
-          }}
+            b._pruned = false;
+            let bucketVisible = 0;
+            events.forEach(li => {{
+              let m = li._meta;
+              if (!m) {{
+                const tm = li.dataset.timeMins;
+                m = li._meta = {{
+                  bucket: li.dataset.bucket,
+                  venue: li.dataset.venue,
+                  presenter: li.dataset.presenter || '',
+                  recur: li.dataset.recur,
+                  city: li.dataset.city,
+                  subarea: li.dataset.subarea,
+                  free: li.dataset.free === 'true',
+                  guestlist: li.dataset.guestlist === 'true',
+                  featured: li.dataset.highlight === 'true',
+                  timeMins: tm ? parseInt(tm, 10) : -1,
+                  epoch: li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0,
+                  text: null,
+                  hidden: li.classList.contains('hidden'),
+                  past: li.classList.contains('past-time'),
+                }};
+              }}
+              const venueOk = venues.has(m.venue) || (m.presenter && venues.has(m.presenter));
+              const recurOk = recurs.has(m.recur);
+              const cityOk = cities.has(m.city);
+              const subareaOk = (activeSubarea === 'all') || (m.subarea === activeSubarea);
+              const freeOk = !freeOnly || m.free;
+              const guestlistOk = !guestlistOnly || m.guestlist;
+              const picksOk = !picksOnly || m.featured;
+              const searchOk = !searchText || (m.text || (m.text = li.textContent.toLowerCase())).includes(searchText);
 
-          const epoch = li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0;
-          const isPastTime = isToday && epoch > 0 && epoch < twoHoursAgoEpoch;
-          const isPast = isPastDay || isPastTime;
+              let todOk = true;
+              if (timeFrom !== null || timeTo !== null) {{
+                if (m.timeMins >= 0) {{
+                  if (timeFrom !== null && m.timeMins < timeFrom) todOk = false;
+                  if (timeTo !== null && m.timeMins > timeTo) todOk = false;
+                }} else {{
+                  todOk = false;
+                }}
+              }}
 
-          if (isToday && epoch > 0) {{
-            totalTodayEventsCount++;
-          }}
+              const isPastTime = isToday && m.epoch > 0 && m.epoch < twoHoursAgoEpoch;
+              const isPast = isPastDay || isPastTime;
+              if (isToday && m.epoch > 0) totalTodayEventsCount++;
+              if (m.past !== isPast) {{ m.past = isPast; li.classList.toggle('past-time', isPast); }}
 
-          li.classList.toggle('past-time', isPast);
+              let timePastOk = true;
+              if (isPast && !showPastToday) {{
+                timePastOk = false;
+                hiddenPastCount++;
+              }}
 
-          let timePastOk = true;
-          if (isPast && !showPastToday) {{
-            timePastOk = false;
-            hiddenPastCount++;
-          }}
-
-          const isVisible = catOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && todOk && timePastOk;
-          li.classList.toggle('hidden', !isVisible);
-
-          if (isToday && isVisible && !isPast) {{
-            visibleTonightCount++;
-          }}
+              const isVisible = venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && picksOk && todOk && timePastOk;
+              if (m.hidden === isVisible) {{ m.hidden = !isVisible; li.classList.toggle('hidden', !isVisible); }}
+              if (isVisible) {{
+                bucketVisible++;
+                if (isToday && !isPast) visibleTonightCount++;
+              }}
+            }});
+            b.classList.toggle('empty', bucketVisible === 0);
+            setCount(countEl, bucketVisible);
+            cityVisible += bucketVisible;
+          }});
+          sec.classList.toggle('empty', cityVisible === 0);
+          setCount(sec._countEl || (sec._countEl = sec.querySelector('.city-head .count')), cityVisible);
+          dayVisible += cityVisible;
         }});
 
-        day.querySelectorAll('.bucket').forEach(b => {{
-          const visible = b.querySelectorAll('.event:not(.hidden)').length;
-          b.classList.toggle('empty', visible === 0);
-          const countSpan = b.querySelector('.bucket-head .count');
-          if (countSpan) countSpan.textContent = visible;
-        }});
-
-        day.querySelectorAll('.city-section').forEach(sec => {{
-          const visible = sec.querySelectorAll('.event:not(.hidden)').length;
-          sec.classList.toggle('empty', visible === 0);
-          const countSpan = sec.querySelector('.city-head .count');
-          if (countSpan) countSpan.textContent = visible;
-        }});
-
-        const visible = day.querySelectorAll('.event:not(.hidden)').length;
+        const visible = dayVisible;
         day.classList.toggle('empty', visible === 0);
-        const headingCount = day.querySelector('h2 .count');
-        if (headingCount) headingCount.textContent = visible;
+        setCount(day._countEl || (day._countEl = day.querySelector('h2 .count')), visible);
 
         // Proximity calculation & Near Me sorting (only when Near Me button was clicked)
         const nearStream = day.querySelector('.near-me-stream');
@@ -5525,14 +6724,37 @@ def render_page(results, split_deferred=False):
         const classes = ['d'];
         if (eventDates.has(iso)) classes.push('has-events');
         if (iso === todayISO) classes.push('today');
-        if (!showAll && timeFilter === 'week' && week.has(iso)) classes.push('in-week');
-        if (iso === fmtISO(anchor)) classes.push('anchor');
+        if (timeFilter === 'range' && rangeStart && rangeEnd) {{
+          if (iso === rangeStart) classes.push('range-start');
+          if (iso === rangeEnd) classes.push('range-end');
+          if (iso > rangeStart && iso < rangeEnd) classes.push('in-range');
+        }} else {{
+          if (!showAll && timeFilter === 'week' && week.has(iso)) classes.push('in-week');
+          if (iso === fmtISO(anchor)) classes.push(rangeStart && !rangeEnd ? 'range-start' : 'anchor');
+        }}
         html += `<div class="${{classes.join(' ')}}" data-date="${{iso}}">${{d}}</div>`;
       }}
       grid.innerHTML = html;
+      const hint = document.getElementById('cal-hint');
+      if (hint) {{
+        if (timeFilter === 'range' && rangeStart && rangeEnd) hint.textContent = `${{fmtShort(parseISO(rangeStart))}} – ${{fmtShort(parseISO(rangeEnd))}} · click any date to start over`;
+        else if (rangeStart && !rangeEnd) hint.textContent = `${{fmtShort(parseISO(rangeStart))}} selected · click a second date for a range`;
+        else hint.textContent = 'Pick a date, or click a second date for a range';
+      }}
     }}
 
     function shiftNav(delta) {{
+      if (timeFilter === 'range' && rangeStart && rangeEnd) {{
+        const span = rangeDates().length;
+        rangeStart = fmtISO(addDays(parseISO(rangeStart), delta * span));
+        rangeEnd = fmtISO(addDays(parseISO(rangeEnd), delta * span));
+        anchor = parseISO(rangeStart);
+        showAll = false;
+        calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+        apply();
+        return;
+      }}
+      clearRange();
       if (timeFilter === 'week') {{
         anchor = addDays(anchor, delta * 7);
       }} else if (timeFilter === 'today' || timeFilter === 'tomorrow' || timeFilter === 'day') {{
@@ -5574,6 +6796,7 @@ def render_page(results, split_deferred=False):
 
     quickChips.forEach(chip => {{
       chip.addEventListener('click', () => {{
+        clearRange();
         timeFilter = chip.dataset.time;
         const todayDate = parseISO(todayISO);
         const dayOfWeek = todayDate.getDay();
@@ -5625,6 +6848,7 @@ def render_page(results, split_deferred=False):
       }});
     }}
     if (quickGuestlistChip && guestlistOnlyChk) {{
+      if (quickPicksChip) quickPicksChip.addEventListener('click', () => {{ picksOnly = !picksOnly; apply(); stateToHash(); }});
       quickGuestlistChip.addEventListener('click', () => {{
         guestlistOnlyChk.checked = !guestlistOnlyChk.checked;
         apply();
@@ -5674,6 +6898,7 @@ def render_page(results, split_deferred=False):
     const nextB = document.getElementById('week-next-b');
     if (nextB) nextB.addEventListener('click', () => shiftNav(1));
     document.getElementById('week-today').addEventListener('click', () => {{
+      clearRange();
       timeFilter = 'today';
       showAll = false;
       anchor = parseISO(todayISO);
@@ -5681,6 +6906,7 @@ def render_page(results, split_deferred=False):
       apply();
     }});
     document.getElementById('week-all').addEventListener('click', () => {{
+      clearRange();
       if (showAll || timeFilter === 'all') {{
         showAll = false;
         timeFilter = 'today';
@@ -5729,7 +6955,19 @@ def render_page(results, split_deferred=False):
     document.getElementById('mini-cal-grid').addEventListener('click', (e) => {{
       const cell = e.target.closest('.d:not(.blank)');
       if (!cell || !cell.dataset.date) return;
-      setAnchor(cell.dataset.date);
+      const iso = cell.dataset.date;
+      if (rangeStart && !rangeEnd && iso !== rangeStart) {{
+        rangeEnd = iso > rangeStart ? iso : rangeStart;
+        rangeStart = iso > rangeStart ? rangeStart : iso;
+        timeFilter = 'range';
+        showAll = false;
+        anchor = parseISO(rangeStart);
+        apply();
+        return;
+      }}
+      rangeStart = iso;
+      rangeEnd = null;
+      setAnchor(iso);
     }});
 
     if (freeOnlyChk) freeOnlyChk.addEventListener('change', apply);
@@ -5753,6 +6991,8 @@ def render_page(results, split_deferred=False):
       if (searchInput) searchInput.value = '';
       if (freeOnlyChk) freeOnlyChk.checked = false;
       if (guestlistOnlyChk) guestlistOnlyChk.checked = false;
+      picksOnly = false;
+      clearRange();
       timeFrom = null;
       timeTo = null;
       if (timeframeEnableChk) timeframeEnableChk.checked = false;
@@ -6483,6 +7723,24 @@ def render_page(results, split_deferred=False):
 
     loadLocalCommunityEvents();
     initTimeDropdowns();
+    const THEME_KEY = 'nyc_events_theme';
+    const THEME_MANUAL_KEY = 'nyc_events_theme_manual';
+    const VALID_THEMES = ['classic', 'indie', 'anime', 'halloween', 'election', 'veterans', 'thanksgiving', 'blackfriday', 'cybermonday'];
+    function setTheme(t, save) {{
+      const theme = VALID_THEMES.includes(t) ? t : 'classic';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-pill-btn').forEach(b => {{
+        const on = b.dataset.theme === theme;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-checked', on ? 'true' : 'false');
+      }});
+      if (save) {{
+        try {{ localStorage.setItem(THEME_KEY, theme); localStorage.setItem(THEME_MANUAL_KEY, '1'); }} catch (_) {{}}
+      }}
+    }}
+    document.querySelectorAll('.theme-pill-btn').forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.theme, true)));
+    setTheme(document.documentElement.getAttribute('data-theme') || '{default_theme}', false);
+
     hashToState();
     apply();
   </script>
