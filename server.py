@@ -100,6 +100,11 @@ def index():
     return render_page(_get_events_nonblocking(force="refresh" in request.args))
 
 
+@app.get("/deferred_days.html")
+def deferred_days_html():
+    return send_from_directory(os.path.dirname(os.path.abspath(__file__)), "deferred_days.html")
+
+
 @app.get("/api/events")
 def api_events():
     return jsonify(_get_events_nonblocking(force="refresh" in request.args))
@@ -147,10 +152,15 @@ def export_html(dest="index.html", source_json="events.json"):
         data["weather"] = fetch_nyc_weather()
     if "luckyseat" not in data or not data.get("luckyseat"):
         data["luckyseat"] = fetch_luckyseat_nyc()
-    html = render_page(data)
+    html, deferred_html = render_page(data, split_deferred=True)
     with open(dest, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"wrote {dest}: {len(html.encode('utf-8')):,} bytes")
+    # Days past the first week load on demand from a sibling file (see render_page).
+    deferred_path = os.path.join(os.path.dirname(os.path.abspath(dest)), "deferred_days.html")
+    with open(deferred_path, "w", encoding="utf-8") as f:
+        f.write(deferred_html)
+    print(f"wrote {deferred_path}: {len(deferred_html.encode('utf-8')):,} bytes")
     if dest in ("index.html", "events.html"):
         other = "events.html" if dest == "index.html" else "index.html"
         try:

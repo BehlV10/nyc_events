@@ -213,6 +213,8 @@ CATEGORY_BUCKETS = [
     ("Outdoors & active",  ["outdoors", "sports"]),
     ("Social & community", ["community", "food", "gaming", "other"]),
     ("Theater",            ["theater"]),
+    ("Classes & Services", ["services"]),
+    ("Kids & Family",      ["family", "kids"]),
 ]
 
 CATEGORY_STYLES = {
@@ -229,6 +231,8 @@ CATEGORY_STYLES = {
     "sports":    ("#2ac3de", "⚽"),
     "gaming":    ("#b4f9f8", "🎲"),
     "community": ("#c0caf5", "👥"),
+    "services":  ("#8fa1b3", "🛠"),
+    "family":    ("#ffb8d1", "✦"),
     "other":     ("#6b7280", "·"),
 }
 
@@ -241,6 +245,10 @@ def category_bucket(cat):
 
 
 def guess_category(text, default="community", venue=None):
+    if is_utility_event(text):
+        return "services"
+    if is_kid_family_event(text, venue):
+        return "family"
     if venue:
         v_low = venue.lower()
         if any(cv in v_low for cv in COMEDY_VENUES):
@@ -292,6 +300,10 @@ def is_placeholder_or_closed_event(title: str) -> bool:
         if not re.search(r"\bno\s+(cover|bad|pressure|static|relation|doubt|friends|more|guarantee|limit|worries|regrets|stopping)\b", t, re.I):
             return True
 
+    # 2b. Relocated shows: "[moved to Brooklyn Steel!] Artist" — the new venue lists it too
+    if re.match(r"^\s*[\[\(]?\s*(moved|relocated)\s+to\b", t, re.I):
+        return True
+
     # 3. Check calendar placeholder
     if re.search(r"\bcheck\s+(our\s+)?calendar\b", t, re.I):
         return True
@@ -314,7 +326,142 @@ def is_placeholder_or_closed_event(title: str) -> bool:
     if t.lower() in ("tba", "tbd", "to be announced", "placeholder", "no title", "closed", "dark"):
         return True
 
+    # 7. Standing "everyday" listings that are not events you attend at a time
+    if re.search(r"\bvolunteer\s+opportunities\s+every\s?day\b", t, re.I):
+        return True
+
     return False
+
+
+_DOUBLED_URL_SPLIT_RE = re.compile(r"(?<=[A-Za-z0-9/])(?=https?://)")
+
+
+def fix_doubled_url(url):
+    """Repair URLs where two absolute URLs got glued together
+    (e.g. 'https://venue.comhttps://venue.com/events/x'). Keeps the last full URL.
+
+    Only splits where the second scheme directly follows an alphanumeric or '/', so
+    legitimate redirect/share links ('?u=https://...') are left untouched.
+    """
+    if not url or url.count("://") < 2:
+        return url
+    parts = [p for p in _DOUBLED_URL_SPLIT_RE.split(url) if p]
+    return parts[-1] if len(parts) > 1 else url
+
+
+# Domains that have lapsed or been taken over by unrelated sites (verified redirect targets).
+DEAD_EVENT_DOMAINS = set()
+
+
+def sanitize_event_url(url, fallback=None):
+    """Return a usable absolute event URL, or `fallback` when the scraped link is broken:
+    Cloudflare email-obfuscation paths, relative paths, or known-dead domains."""
+    if not url:
+        return fallback
+    u = url.strip()
+    if not re.match(r"^https?://", u, re.I) or "/cdn-cgi/l/email-protection" in u:
+        return fallback
+    host = re.sub(r"^https?://(?:www\.)?", "", u, flags=re.I).split("/")[0].split("?")[0].lower()
+    if host in DEAD_EVENT_DOMAINS:
+        return fallback
+    return u
+
+
+_MUSEUMISH_VENUE_RE = re.compile(r"museum|gallery|historical\s+society|botanic|library|exhibit", re.I)
+_GENERIC_CAMPAIGN_RE = re.compile(r"^\s*(?:winter\s+)?coat\s+drive\s*!?\s*$", re.I)
+
+
+def is_standing_exhibit(e: dict) -> bool:
+    """Detect permanent/long-running exhibits and campaigns that sources list as if they were
+    daily events (an exhibit page is not something you attend at a specific time).
+
+    Signals (any one):
+      1. DoNYC listing whose URL start-date is >21 days before this occurrence, at a
+         museum-type venue (a months-long run, e.g. a photography exhibition).
+      2. Generic donation-campaign title with no specific time/place (e.g. "Winter Coat Drive").
+    """
+    url = e.get("url") or ""
+    name = (e.get("name") or "").strip()
+    if _GENERIC_CAMPAIGN_RE.match(name):
+        return True
+    m = re.search(r"donyc\.com/events/(\d{4})/(\d{1,2})/(\d{1,2})/", url)
+    raw = e.get("date")
+    if m and raw and _MUSEUMISH_VENUE_RE.search(e.get("venue") or ""):
+        try:
+            start = datetime(int(m.group(1)), int(m.group(2)), int(m.group(3))).date()
+            occ = datetime.fromisoformat(str(raw).replace("Z", "+00:00")).astimezone(EASTERN).date()
+        except ValueError:
+            return False
+        if (occ - start).days > 21:
+            return True
+    return False
+
+
+# --- Classes & Services / Kids & Family classification ---
+# These buckets are hidden by default in the sidebar so library ESL classes, job fairs,
+# and toddler storytimes don't crowd out nightlife and culture listings.
+EXCLUDE_UTILITY_RE = re.compile(
+    r"\b(world class|jam session|music sessions?|sunday sessions?|recording session)\b",
+    re.IGNORECASE,
+)
+
+UTILITY_EVENT_RE = re.compile(
+    r"\b("
+    r"esol|esl|ell\b|ell class(?:es)?|ell conversation|english class(?:es)?|beginning english|language class(?:es)?|"
+    r"language courses?|spanish class(?:es)?|portuguese class(?:es)?|french class(?:es)?|italian class(?:es)?|german class(?:es)?|"
+    r"citizenship class(?:es)?|citizenship preparation|citizenship prep|"
+    r"homework help|drop-in tutoring|tutoring for teens|tutoring|"
+    r"tech help|device clinic|computer basics|digital literacy|meet your device|one-on-one tech help|"
+    r"safety training|3d printing 101|vinyl cutting 101|laser cutting 101|sewing 101|"
+    r"job seekers?|job application|career exploration|career coaching|resume and job|resume help|job fairs?|career fairs?|"
+    r"teacher training|coach certification|food safety|first aid|cpr course|cpr class|cpr certification|overdose prevention|"
+    r"machine maintenance|machine clinic|"
+    r"\d+[- ]sessions|\d+-(?:week|month)|"
+    r"social work|city council meeting|community board meeting|school committee|zoning board|"
+    r"council on aging|tax prep|tax assistance|medicare|snap enrollment|health insurance enrollment"
+    r")\b|"
+    r"english for speakers of[\s\xa0]+other[\s\xa0]+languages|english for u\.s\. citizenship|"
+    r"english conversation|conversation practice|conversation group|conversational group|english grammar|accent improvement",
+    re.IGNORECASE,
+)
+
+
+def is_utility_event(name):
+    """Return True if an event is an instructional, vocational, or civic service event."""
+    if not name:
+        return False
+    if EXCLUDE_UTILITY_RE.search(name):
+        return False
+    return bool(UTILITY_EVENT_RE.search(name))
+
+
+EXCLUDE_KID_FAMILY_RE = re.compile(
+    r"\b("
+    r"dababy|frost children|wild child|childish gambino|fat baby|"
+    r"destiny's child|child's play|children of bodom|indiana jones|"
+    r"r&b sing-?along|beatles singalong|sing-?along bar|piano bar"
+    r")\b",
+    re.IGNORECASE,
+)
+
+KID_FAMILY_EVENT_RE = re.compile(
+    r"\b("
+    r"baby|babies|lapsit|storytime|story time|toddler|toddlers|"
+    r"preschool|preschooler|preschoolers|infant|infants|"
+    r"children|child(?:ren)?'s|for kids|for children|kid's|kids\b|"
+    r"pajama story|baby rave|kids yoga|family day|family fun day"
+    r")\b",
+    re.IGNORECASE,
+)
+
+
+def is_kid_family_event(name, venue=None):
+    """Return True if an event is meant for infants, toddlers, kids, or family storytimes."""
+    if not name:
+        return False
+    if EXCLUDE_KID_FAMILY_RE.search(name):
+        return False
+    return bool(KID_FAMILY_EVENT_RE.search(name))
 
 
 # --- NYC Weather ---
@@ -1771,8 +1918,8 @@ def scrape_resident_advisor(url, ua):
     month_str = (now + timedelta(days=HORIZON_DAYS)).strftime("%Y-%m-%dT23:59:59.999Z")
 
     query = '''
-    query GetEvents($pageSize: Int, $filters: FilterInputDtoInput) {
-      eventListings(pageSize: $pageSize, filters: $filters) {
+    query GetEvents($pageSize: Int, $page: Int, $filters: FilterInputDtoInput) {
+      eventListings(pageSize: $pageSize, page: $page, filters: $filters) {
         totalResults
         data {
           event {
@@ -1794,7 +1941,8 @@ def scrape_resident_advisor(url, ua):
     }
     events = []
     seen = set()
-    for page in range(1, 3):
+    # RA caps pageSize at 100; NYC typically has 500-700 listings over the horizon.
+    for page in range(1, 9):
         try:
             r = _SESSION.post(
                 "https://ra.co/graphql",
@@ -1814,7 +1962,10 @@ def scrape_resident_advisor(url, ua):
             )
             r.raise_for_status()
             data = r.json().get("data", {}).get("eventListings", {})
-            for item in data.get("data", []):
+            items = data.get("data") or []
+            if not items:
+                break
+            for item in items:
                 ev = item.get("event") or {}
                 title = (ev.get("title") or "").strip()
                 start = ev.get("startTime")
@@ -1839,87 +1990,113 @@ def scrape_resident_advisor(url, ua):
                 content_url = ev.get("contentUrl") or ""
                 ev_url = f"https://ra.co{content_url}" if content_url.startswith("/") else (content_url or "https://ra.co/events/us/newyorkcity")
 
-                iso = start
-                if not iso.endswith("Z") and "+" not in iso:
-                    iso = iso + "Z"
+                # RA startTime is the venue's local wall-clock time with no offset
+                # ("2026-11-05T22:00:00.000"); treating it as UTC shifted every party 5h early.
+                try:
+                    dt = datetime.fromisoformat(start.replace("Z", "+00:00"))
+                    if dt.tzinfo is None:
+                        dt = dt.replace(tzinfo=EASTERN)
+                    iso = dt.astimezone(timezone.utc).isoformat()
+                except ValueError:
+                    continue
 
                 key = (title.lower(), iso[:10])
                 if key in seen:
                     continue
                 seen.add(key)
 
-                events.append({
+                entry = {
                     "name": title,
                     "date": iso,
                     "url": ev_url,
                     "venue": venue,
                     "price": price,
                     "category": guess_category(title, "clubbing"),
-                })
+                }
+                if vaddr:
+                    entry["address"] = vaddr.replace(";", ",")
+                events.append(entry)
+            if page * 100 >= (data.get("totalResults") or 0):
+                break
         except Exception:
             break
     return events
 
 
+DICE_NYC_BASE = "https://dice.fm/browse/new_york-5bbf4db0f06331478e9b2c59"
+# Each Dice browse filter server-renders a different ~25-event slice of the NYC listings.
+DICE_NYC_FILTERS = (
+    "", "/music/gig", "/music/dj", "/music/party", "/culture/film", "/culture/comedy",
+    "/culture/social", "/culture/theatre", "/culture/sport", "/culture/talks", "/culture/art",
+    "/culture/foodanddrink", "/culture/wellbeing", "/culture/workshop",
+)
+
+
+def _dice_events_from_page(page_url, ua):
+    resp = _SESSION.get(page_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
+    resp.raise_for_status()
+    tag = BeautifulSoup(resp.text, "html.parser").find("script", id="__NEXT_DATA__")
+    if not tag or not tag.string:
+        return []
+    return (json.loads(tag.string).get("props", {}).get("pageProps", {}) or {}).get("events") or []
+
+
 def scrape_dice_nyc(url, ua):
-    """Dice.fm — curated NYC live concerts, underground electronic, and club events."""
+    """Dice.fm — NYC gigs, DJ sets, parties, comedy, film, talks, and social events
+    (one request per browse filter)."""
     events = []
     seen = set()
-    try:
-        resp = _SESSION.get(url or "https://dice.fm/browse/new-york", headers={"User-Agent": ua or UA_CHROME}, timeout=12)
-        resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "html.parser")
-        tag = soup.find("script", id="__NEXT_DATA__")
-        if not tag or not tag.string:
-            return []
-        data = json.loads(tag.string)
-        props = data.get("props", {}).get("pageProps", {})
-        raw_events = props.get("events", [])
+    for suffix in DICE_NYC_FILTERS:
+        try:
+            raw_events = _dice_events_from_page(DICE_NYC_BASE + suffix, ua)
+        except Exception:
+            continue
         for ev in raw_events:
             name = (ev.get("name") or "").strip()
             dates = ev.get("dates") or {}
             start = dates.get("event_start_date")
             if not name or not start:
                 continue
+            try:
+                iso = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc).isoformat()
+            except ValueError:
+                continue
+            key = (name.lower(), iso[:10])
+            if key in seen:
+                continue
+            seen.add(key)
 
             venues = ev.get("venues") or []
             vobj = venues[0] if venues else {}
             vname = (vobj.get("name") or "NYC Venue").strip()
             vcity_raw = vobj.get("city")
-            if isinstance(vcity_raw, dict):
-                vcity = (vcity_raw.get("name") or "").strip()
-            elif isinstance(vcity_raw, str):
-                vcity = vcity_raw.strip()
-            else:
-                vcity = ""
+            vcity = (vcity_raw.get("name") or "").strip() if isinstance(vcity_raw, dict) else (vcity_raw or "").strip()
             venue = f"{vname} ({vcity})" if vcity and vcity.lower() not in vname.lower() else vname
 
             price = None
             pr_obj = ev.get("price") or {}
-            amt = pr_obj.get("amount") or pr_obj.get("amount_from")
-            if amt == 0 or amt == "0":
+            amt = pr_obj.get("amount") if pr_obj.get("amount") is not None else pr_obj.get("amount_from")
+            if amt in (0, "0"):
                 price = "Free"
-            elif amt:
-                price = f"${amt / 100:.2f}".rstrip("0").rstrip(".") if isinstance(amt, (int, float)) and amt > 100 else f"${amt}"
+            elif isinstance(amt, (int, float)) and amt > 0:
+                price = f"${amt / 100:.2f}".replace(".00", "")  # Dice prices are in cents
 
-            perm_name = ev.get("perm_name")
-            event_url = f"https://dice.fm/event/{perm_name}" if perm_name else (url or "https://dice.fm/browse/new-york")
-
-            key = (name.lower(), start[:10])
-            if key in seen:
-                continue
-            seen.add(key)
-
-            events.append({
+            # Browse payloads carry only the event id; dice.fm/event/<id> redirects to the event page.
+            ev_key = ev.get("perm_name") or ev.get("id")
+            event_url = f"https://dice.fm/event/{ev_key}" if ev_key else DICE_NYC_BASE + suffix
+            default_cat = "comedy" if "comedy" in suffix else "film" if "film" in suffix else "theater" if "theatre" in suffix else "clubbing" if suffix in ("/music/dj", "/music/party") else "music" if suffix.startswith("/music") or not suffix else "community"
+            entry = {
                 "name": name,
-                "date": start,
+                "date": iso,
                 "url": event_url,
                 "venue": venue,
                 "price": price,
-                "category": guess_category(name, "music"),
-            })
-    except Exception:
-        pass
+                "category": guess_category(name, default_cat, venue=venue),
+            }
+            if vobj.get("address"):
+                entry["address"] = vobj["address"]
+            events.append(entry)
+        time.sleep(0.2)
     return events
 
 
@@ -1962,8 +2139,53 @@ def scrape_tablelist(url, ua):
     return events
 
 
+def _parse_eventbrite_server_data(page_html):
+    """Exact start times from Eventbrite's embedded window.__SERVER_DATA__, keyed by event id.
+
+    Discovery-page JSON-LD only carries a date ("2026-11-22"), which used to be stored as
+    midnight UTC, i.e. 7-8pm the *previous* evening in New York. The server state has the
+    real local start_date + start_time + timezone."""
+    m = re.search(r'window\.__SERVER_DATA__\s*=\s*(\{.*?\});\s*(?:window\.|</script>)', page_html, re.DOTALL)
+    if not m:
+        return {}
+    try:
+        data = json.loads(m.group(1))
+    except Exception:
+        return {}
+    out = {}
+    stack = [data]
+    while stack:
+        obj = stack.pop()
+        if isinstance(obj, list):
+            stack.extend(obj)
+            continue
+        if not isinstance(obj, dict):
+            continue
+        eid = obj.get("eventbrite_event_id") or (obj.get("id") if obj.get("start_date") and obj.get("start_time") else None)
+        if eid and obj.get("start_date"):
+            try:
+                tz = ZoneInfo(obj.get("timezone") or "America/New_York")
+            except Exception:
+                tz = EASTERN
+            try:
+                local = datetime.strptime(f"{obj['start_date']} {obj.get('start_time') or '19:00'}", "%Y-%m-%d %H:%M")
+                out[str(eid)] = local.replace(tzinfo=tz).astimezone(timezone.utc)
+            except (ValueError, TypeError):
+                pass
+        for v in obj.values():
+            if isinstance(v, (dict, list)):
+                stack.append(v)
+    return out
+
+
+def _eventbrite_event_id(event_url):
+    m = re.search(r"-(\d{9,14})(?:[/?#]|$)", event_url or "") or re.search(r"/e/(\d{9,14})", event_url or "")
+    return m.group(1) if m else None
+
+
 def scrape_eventbrite_jsonld(url, ua):
-    """Scrape Eventbrite search and organizer pages using Schema.org ItemList JSON-LD."""
+    """Scrape Eventbrite search and organizer pages using Schema.org ItemList JSON-LD, with
+    exact start times from the embedded server state."""
     events = []
     seen = set()
     now = datetime.now(timezone.utc)
@@ -1982,6 +2204,7 @@ def scrape_eventbrite_jsonld(url, ua):
     }
     resp = _SESSION.get(url, headers=headers, timeout=12)
     resp.raise_for_status()
+    exact_starts = _parse_eventbrite_server_data(resp.text)
     soup = BeautifulSoup(resp.text, "html.parser")
     for s in soup.find_all("script", type="application/ld+json"):
         if not s.string:
@@ -2011,11 +2234,16 @@ def scrape_eventbrite_jsonld(url, ua):
                     event_url = item.get("url") or url
                     if not name or not start:
                         continue
+                    exact = exact_starts.get(_eventbrite_event_id(event_url) or "")
                     try:
-                        if "T" in start:
+                        if exact is not None:
+                            dt = exact
+                        elif "T" in start:
                             dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
                         else:
-                            dt = datetime.fromisoformat(f"{start}T00:00:00").replace(tzinfo=EASTERN).astimezone(timezone.utc)
+                            # Date-only with no server state: assume a 7pm Eastern start on that
+                            # date rather than midnight (which renders as the prior evening).
+                            dt = datetime.fromisoformat(f"{start}T19:00:00").replace(tzinfo=EASTERN).astimezone(timezone.utc)
                     except Exception:
                         continue
                     if dt < now:
@@ -2501,6 +2729,89 @@ def scrape_nyc_parks(url, ua):
     return events
 
 
+# NYC Parks category listings (schema.org microdata, paginated /pN). The XML feed above is
+# capped at the next 300 events (~9 days); these pages reach the full horizon. Class-heavy
+# categories (Shape Up NYC, rec centers, kids, seniors, online) are deliberately left out.
+NYC_PARKS_CATEGORIES = {
+    "hiking": "outdoors", "urbanparkrangers": "outdoors", "birding": "outdoors",
+    "nature": "outdoors", "wildlife": "outdoors", "astronomy": "outdoors",
+    "kayaking": "outdoors", "waterfront": "outdoors", "tours": "outdoors",
+    "outdoor-fitness": "sports", "concerts": "music", "dance": "dance",
+    "film": "film", "theater": "theater", "festivals": "community",
+}
+
+
+def scrape_nyc_parks_categories(url, ua, max_pages=4):
+    """NYC Parks free hikes, ranger walks, birding, kayaking, concerts, dance, film, and
+    festivals across all five boroughs."""
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    horizon = now + timedelta(days=HORIZON_DAYS)
+    for slug, default_cat in NYC_PARKS_CATEGORIES.items():
+        for page in range(1, max_pages + 1):
+            page_url = f"https://www.nycgovparks.org/events/{slug}" + (f"/p{page}" if page > 1 else "")
+            try:
+                soup = fetch_soup(page_url, ua)
+            except Exception:
+                break
+            rows = soup.select('div[itemtype="http://schema.org/Event"]')
+            if not rows:
+                break
+            reached_horizon = False
+            for row in rows:
+                a = row.select_one('[itemprop="name"] a')
+                start_el = row.select_one('meta[itemprop="startDate"]')
+                if not a or not start_el:
+                    continue
+                dt = _local_iso_to_utc(start_el.get("content"))
+                if dt is None or dt < now:
+                    continue
+                if dt > horizon:
+                    reached_horizon = True
+                    continue
+                title = html.unescape(a.get_text(" ", strip=True))
+                key = (title.lower(), dt.isoformat())
+                if key in seen:
+                    continue
+                seen.add(key)
+                loc = row.select_one('[itemprop="location"]')
+                place = loc.select_one('[itemprop="name"]') if loc else None
+                park = None
+                if loc:
+                    m_park = re.search(r"\(in ([^)]+)\)", loc.get_text(" ", strip=True))
+                    park = m_park.group(1).strip() if m_park else None
+                venue = place.get_text(" ", strip=True) if place else (park or "NYC Parks")
+                if park and park.lower() not in venue.lower():
+                    venue = f"{venue} ({park})"
+                street = row.select_one('meta[itemprop="streetAddress"]')
+                locality = row.select_one('[itemprop="addressLocality"]')
+                address = ", ".join(x for x in (
+                    street.get("content", "").strip() if street else "",
+                    locality.get_text(strip=True) if locality else "",
+                ) if x)
+                desc_el = row.select_one('[itemprop="description"]')
+                body = row.get_text(" ", strip=True)
+                entry = {
+                    "name": title,
+                    "date": dt.isoformat(),
+                    "url": urljoin("https://www.nycgovparks.org", a.get("href", "")),
+                    "venue": venue,
+                    "price": "Free" if re.search(r"\bFree!?\b", body) else None,
+                    "category": guess_category(title, default_cat, venue=venue),
+                    "description": clean_description(desc_el.get_text(" ", strip=True)) if desc_el else None,
+                }
+                if address:
+                    entry["address"] = address
+                if locality:
+                    entry["neighborhood"] = locality.get_text(strip=True)
+                events.append(entry)
+            if reached_horizon:
+                break
+            time.sleep(0.2)
+    return events
+
+
 def scrape_nyc_for_free(url, ua):
     """NYC for FREE — curated free pop-up experiences, brand activations, and giveaways."""
     events = []
@@ -2950,7 +3261,7 @@ def scrape_meetup(url, ua):
 
 def scrape_luma(url, ua):
     """Scrape curated NYC tech, AI, startup, and community events from Luma."""
-    api_url = "https://api.lu.ma/discover/get-paginated-events?discover_place_api_id=discplace-Izx1rQVSh8njYpP"
+    api_url = "https://api.lu.ma/discover/get-paginated-events?discover_place_api_id=discplace-Izx1rQVSh8njYpP&pagination_limit=50"
     headers = {
         "User-Agent": ua,
         "Accept": "application/json",
@@ -2960,7 +3271,7 @@ def scrape_luma(url, ua):
     now = datetime.now(timezone.utc)
     cursor = None
 
-    for _ in range(5):
+    for _ in range(12):
         req_url = api_url
         if cursor:
             req_url += f"&pagination_cursor={cursor}"
@@ -4319,6 +4630,404 @@ def scrape_brooklyn_brainery(url, ua):
 
 
 # --- Curated Recurring NYC Events ---
+# --- Generic feed engines (ported from Boston events + new high-yield NYC aggregators) ---
+
+def _local_iso_to_utc(raw, tz=EASTERN):
+    """Parse an ISO timestamp; naive values are the venue's local wall-clock time."""
+    if not raw:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=tz)
+    return dt.astimezone(timezone.utc)
+
+
+def _jsonld_address(loc):
+    """Flatten a schema.org Place address into 'street, locality, region zip'."""
+    if not isinstance(loc, dict):
+        return ""
+    addr = loc.get("address")
+    if isinstance(addr, str):
+        return addr.strip()
+    if not isinstance(addr, dict):
+        return ""
+    street = (addr.get("streetAddress") or "").strip()
+    city = (addr.get("addressLocality") or "").strip()
+    region = (addr.get("addressRegion") or "").strip()
+    postal = (addr.get("postalCode") or "").strip()
+    tail = " ".join(p for p in (region, postal) if p)
+    return ", ".join(p for p in (street, city, tail) if p)
+
+
+def _extract_jsonld_events(soup, base_url=None):
+    """Walk JSON-LD blocks and yield schema.org Event dicts (handles ItemList/@graph wrappers
+    and Event subtypes like MusicEvent, ComedyEvent, TheaterEvent)."""
+    for block in soup.find_all("script", type="application/ld+json"):
+        raw = block.get_text() or ""
+        try:
+            d = json.loads(raw.strip(), strict=False)
+        except Exception:
+            continue
+        stack = [d]
+        while stack:
+            node = stack.pop()
+            if isinstance(node, list):
+                stack.extend(node)
+            elif isinstance(node, dict):
+                t = node.get("@type")
+                types = t if isinstance(t, list) else [t]
+                if any(isinstance(x, str) and x.endswith("Event") for x in types) and node.get("startDate"):
+                    yield node
+                    continue
+                for v in node.values():
+                    if isinstance(v, (dict, list)):
+                        stack.append(v)
+
+
+def _jsonld_event_to_entry(ev, base_url=None):
+    dt = _local_iso_to_utc(ev.get("startDate"))
+    if dt is None:
+        return None
+    mode = str(ev.get("eventAttendanceMode") or "").lower()
+    loc = ev.get("location") or {}
+    if isinstance(loc, list):
+        loc = next((x for x in loc if isinstance(x, dict) and x.get("@type") != "VirtualLocation"), {})
+    if "online" in mode and "mixed" not in mode:
+        return None
+    if isinstance(loc, dict) and loc.get("@type") == "VirtualLocation":
+        return None
+    status = str(ev.get("eventStatus") or "").lower()
+    if "cancelled" in status or "canceled" in status:
+        return None
+    venue = (loc.get("name") if isinstance(loc, dict) else None) or None
+    offers = ev.get("offers") or {}
+    if isinstance(offers, list):
+        offers = offers[0] if offers else {}
+    url = ev.get("url") or (offers.get("url") if isinstance(offers, dict) else None) or base_url
+    if url and base_url:
+        url = urljoin(base_url, url)
+    price = None
+    if isinstance(offers, dict):
+        def _num(x):
+            try:
+                return float(x)
+            except (TypeError, ValueError):
+                return None
+        lo, hi = _num(offers.get("lowPrice") if offers.get("lowPrice") is not None else offers.get("price")), _num(offers.get("highPrice"))
+        if lo == 0 and not hi:
+            price = "Free"
+        elif lo or hi:
+            price = _format_price_range(lo or None, hi, offers.get("priceCurrency") or "USD")
+    entry = {
+        "name": html.unescape(str(ev.get("name") or "")).strip(),
+        "date": dt.isoformat(),
+        "url": url,
+        "venue": html.unescape(venue).strip() if venue else None,
+        "price": price,
+    }
+    address = _jsonld_address(loc)
+    if address:
+        entry["address"] = address
+    geo = loc.get("geo") if isinstance(loc, dict) else None
+    if isinstance(geo, dict):
+        try:
+            entry["lat"], entry["lng"] = float(geo["latitude"]), float(geo["longitude"])
+        except (KeyError, TypeError, ValueError):
+            pass
+    desc = ev.get("description")
+    if isinstance(desc, str) and desc.strip():
+        entry["description"] = clean_description(html.unescape(desc[:600]))
+    return entry
+
+
+def scrape_jsonld(url, ua):
+    """Generic schema.org JSON-LD Event scraper for any page that embeds Events."""
+    soup = fetch_soup(url, ua)
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    for ev in _extract_jsonld_events(soup, url):
+        entry = _jsonld_event_to_entry(ev, url)
+        if not entry or not entry.get("name"):
+            continue
+        if entry["date"] < now.isoformat():
+            continue
+        key = (entry["name"].lower(), entry["date"])
+        if key in seen:
+            continue
+        seen.add(key)
+        events.append(entry)
+    return events
+
+
+def scrape_songkick_metro(url, ua, max_pages=25):
+    """Songkick metro-area concert listings (50 per page, chronological JSON-LD MusicEvents with
+    venue address and coordinates). Pages until the listing passes the horizon."""
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    horizon = now + timedelta(days=HORIZON_DAYS)
+    base = url.split("?")[0]
+    for page in range(1, max_pages + 1):
+        try:
+            soup = fetch_soup(f"{base}?page={page}" if page > 1 else base, ua)
+        except Exception:
+            break
+        batch = list(_extract_jsonld_events(soup, base))
+        if not batch:
+            break
+        past_horizon = False
+        for ev in batch:
+            entry = _jsonld_event_to_entry(ev, base)
+            if not entry or not entry["name"]:
+                continue
+            dt = datetime.fromisoformat(entry["date"])
+            if dt > horizon:
+                past_horizon = True
+                continue
+            if dt < now - timedelta(hours=6):
+                continue
+            # "YEBBA @ Brooklyn Paramount" -> "YEBBA" (the venue is its own field)
+            name = re.sub(r"\s+@\s+.+$", "", entry["name"]).strip() or entry["name"]
+            entry["name"] = name
+            entry["url"] = (entry.get("url") or base).split("?")[0]
+            entry["category"] = "music"
+            key = (name.lower(), entry["date"][:13])
+            if key in seen:
+                continue
+            seen.add(key)
+            events.append(entry)
+        if past_horizon:
+            break
+        time.sleep(0.4)
+    return events
+
+
+def scrape_eventbrite_pages(url, ua, pages=3):
+    """Eventbrite topic/discovery page plus its next pages (?page=2..N); each page is ~20 events."""
+    events = []
+    seen = set()
+    sep = "&" if "?" in url else "?"
+    for page in range(1, pages + 1):
+        target = url if page == 1 else f"{url}{sep}page={page}"
+        try:
+            batch = scrape_eventbrite_jsonld(target, ua)
+        except Exception:
+            if page == 1:
+                raise
+            break
+        fresh = 0
+        for e in batch:
+            key = (e["name"].lower(), e.get("date"))
+            if key in seen:
+                continue
+            seen.add(key)
+            events.append(e)
+            fresh += 1
+        if not fresh:
+            break
+        time.sleep(0.5)
+    return events
+
+
+PARTIFUL_SOURCES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "partiful_sources.json")
+
+
+def _get_partiful_targets(primary_url):
+    targets = [primary_url] if primary_url else []
+    if os.path.exists(PARTIFUL_SOURCES_FILE):
+        try:
+            with open(PARTIFUL_SOURCES_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            for u in data if isinstance(data, list) else []:
+                if isinstance(u, str) and u.startswith("https://partiful.com/") and u not in targets:
+                    targets.append(u)
+        except Exception:
+            pass
+    return targets
+
+
+def _partiful_entry(ev, fallback_url):
+    title = (ev.get("title") or "").strip()
+    start_iso = ev.get("startDate")
+    if not title or not start_iso or is_placeholder_or_closed_event(title):
+        return None
+    dt = _local_iso_to_utc(start_iso)
+    if dt is None:
+        return None
+    loc = ev.get("locationInfo") or {}
+    maps = loc.get("mapsInfo") or {}
+    vname = loc.get("displayName") or maps.get("name") or loc.get("approximateLocation") or "New York"
+    entry = {
+        "name": html.unescape(title)[:160],
+        "date": dt.isoformat(),
+        "url": f"https://partiful.com/e/{ev['id']}" if ev.get("id") else fallback_url,
+        "venue": vname,
+        "price": None,
+        "category": guess_category(title, "community", venue=vname),
+    }
+    addr_lines = maps.get("addressLines")
+    if isinstance(addr_lines, list) and addr_lines:
+        entry["address"] = ", ".join(str(x) for x in addr_lines)
+    elif loc.get("approximateLocation"):
+        entry["neighborhood"] = loc["approximateLocation"]
+    return entry
+
+
+def scrape_partiful(url, ua):
+    """Partiful public NYC events: the city explore feed, plus organizer profiles and single
+    event pages listed in partiful_sources.json."""
+    headers = {"User-Agent": ua or UA_CHROME, "Accept": "text/html,application/xhtml+xml,*/*;q=0.8"}
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    for target_url in _get_partiful_targets(url):
+        try:
+            r = _SESSION.get(target_url, headers=headers, timeout=12)
+            if r.status_code != 200:
+                continue
+            tag = BeautifulSoup(r.text, "html.parser").select_one("script#__NEXT_DATA__")
+            props = json.loads(tag.string).get("props", {}).get("pageProps", {}) if tag and tag.string else {}
+        except Exception:
+            continue
+        raw = [(it.get("item") or {}).get("event") or {} for it in props.get("items") or []]  # explore feed
+        if isinstance(props.get("event"), dict):
+            raw.append(props["event"])  # single event page
+        raw.extend(props.get("initialPublishedEvents") or [])  # organizer profile
+        for ev in raw:
+            entry = _partiful_entry(ev, target_url)
+            if not entry or entry["date"] < now.isoformat():
+                continue
+            key = (entry["name"].lower(), entry["date"][:10])
+            if key in seen:
+                continue
+            seen.add(key)
+            events.append(entry)
+    return events
+
+
+def _ical_events(text):
+    events = []
+    current = None
+    in_alarm = False
+    lines = []
+    for raw in text.splitlines():
+        if raw[:1] in (" ", "\t") and lines:
+            lines[-1] += raw[1:]
+        else:
+            lines.append(raw)
+    for line in lines:
+        if line == "BEGIN:VEVENT":
+            current = {}
+        elif line == "END:VEVENT":
+            if current is not None:
+                events.append(current)
+            current = None
+        elif line == "BEGIN:VALARM":
+            in_alarm = True
+        elif line == "END:VALARM":
+            in_alarm = False
+        elif current is not None and not in_alarm and ":" in line:
+            head, _, val = line.partition(":")
+            current.setdefault(head.split(";")[0].upper(), []).append((head, val))
+    return events
+
+
+def _ical_parse_dt(head, value):
+    params = head.split(";")[1:]
+    value = value.strip()
+    if len(value) == 8:
+        return datetime.strptime(value, "%Y%m%d").replace(tzinfo=EASTERN)
+    if value.endswith("Z"):
+        return datetime.strptime(value, "%Y%m%dT%H%M%SZ").replace(tzinfo=timezone.utc)
+    tz = EASTERN
+    for p in params:
+        if p.upper().startswith("TZID="):
+            try:
+                tz = ZoneInfo(p[5:].strip('"'))
+            except Exception:
+                tz = EASTERN
+    return datetime.strptime(value, "%Y%m%dT%H%M%S").replace(tzinfo=tz)
+
+
+def _ical_text(event, key):
+    vals = event.get(key)
+    if not vals:
+        return ""
+    return vals[0][1].replace("\\n", " ").replace("\\,", ",").replace("\\;", ";").strip()
+
+
+def scrape_ical(url, ua):
+    """Public iCal (.ics) feed — Google Calendar, Squarespace, WordPress, etc. Expands RRULEs
+    over the horizon and honors EXDATE / RECURRENCE-ID overrides and cancellations."""
+    from dateutil.rrule import rrulestr
+
+    resp = _SESSION.get(url, headers={"User-Agent": ua or UA_CHROME, "Accept": "text/calendar,*/*"}, timeout=15)
+    if resp.status_code in (429, 403):
+        return []
+    resp.raise_for_status()
+    now = datetime.now(timezone.utc)
+    cutoff = now + timedelta(days=HORIZON_DAYS)
+    vevents = _ical_events(resp.text)
+    overridden = {}
+    for ev in vevents:
+        if "RECURRENCE-ID" in ev:
+            try:
+                rid = _ical_parse_dt(*ev["RECURRENCE-ID"][0])
+            except ValueError:
+                continue
+            overridden.setdefault(_ical_text(ev, "UID"), set()).add(rid.astimezone(timezone.utc))
+    events = []
+    for ev in vevents:
+        summary = _ical_text(ev, "SUMMARY")
+        if not summary or "DTSTART" not in ev or _ical_text(ev, "STATUS").upper() == "CANCELLED":
+            continue
+        try:
+            start = _ical_parse_dt(*ev["DTSTART"][0])
+        except ValueError:
+            continue
+        starts = [start]
+        if "RRULE" in ev and "RECURRENCE-ID" not in ev:
+            excluded = set(overridden.get(_ical_text(ev, "UID"), ()))
+            for head, val in ev.get("EXDATE", []):
+                for part in val.split(","):
+                    try:
+                        excluded.add(_ical_parse_dt(head, part).astimezone(timezone.utc))
+                    except ValueError:
+                        continue
+            try:
+                rule = rrulestr(ev["RRULE"][0][1], dtstart=start)
+                starts = rule.between(now.astimezone(start.tzinfo), cutoff.astimezone(start.tzinfo), inc=True)
+            except (ValueError, TypeError):
+                pass
+            starts = [d for d in starts if d.astimezone(timezone.utc) not in excluded]
+        event_url = _ical_text(ev, "URL")
+        if not event_url.startswith("http") or "google.com/calendar" in event_url or event_url.endswith(".ics"):
+            event_url = url
+        desc = clean_description(re.sub(r"<[^>]+>", " ", _ical_text(ev, "DESCRIPTION")))
+        price = "Free" if re.search(r"\bfree\b", summary, re.I) else None
+        location = _ical_text(ev, "LOCATION")
+        for dt in starts:
+            dt_utc = dt.astimezone(timezone.utc)
+            if dt_utc < now or dt_utc > cutoff:
+                continue
+            entry = {
+                "name": summary,
+                "date": dt_utc.isoformat(),
+                "url": event_url,
+                "venue": None,
+                "price": price,
+                "description": desc,
+            }
+            if location:
+                entry["address"] = location
+            events.append(entry)
+    return events
+
+
 MANUAL_RECURRING_EVENTS = [
     ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
         ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", 0, 8, 0, "Free"),
@@ -5030,7 +5739,13 @@ _ALL_VENUES = [
     {"name": "Ticketmaster NYC", "url": "https://www.ticketmaster.com/", "ua": UA_CHROME, "scraper": scrape_ticketmaster_nyc, "default_category": "music"},
     {"name": "SeatGeek NYC", "url": "https://api.seatgeek.com/2/events", "ua": UA_CHROME, "scraper": scrape_seatgeek_nyc, "default_category": None},
     {"name": "Resident Advisor NYC", "url": "https://ra.co/events/us/newyorkcity", "ua": UA_CHROME, "scraper": scrape_resident_advisor, "default_category": "clubbing"},
-    {"name": "Dice.fm NYC", "url": "https://dice.fm/browse/new-york", "ua": UA_CHROME, "scraper": scrape_dice_nyc, "default_category": "music"},
+    {"name": "Dice.fm NYC", "url": "https://dice.fm/browse/new_york-5bbf4db0f06331478e9b2c59", "ua": UA_CHROME, "scraper": scrape_dice_nyc, "default_category": "music"},
+    {"name": "Songkick NYC Concerts", "url": "https://www.songkick.com/metro-areas/7644-us-new-york-nyc", "ua": UA_CHROME, "scraper": scrape_songkick_metro, "default_category": "music"},
+    {"name": "Partiful NYC", "url": "https://partiful.com/explore/l/nyc/events", "ua": UA_CHROME, "scraper": scrape_partiful, "default_category": "community"},
+    {"name": "NYC Parks Hikes, Rangers & Outdoor Programs", "url": "https://www.nycgovparks.org/events/hiking", "ua": UA_CHROME, "scraper": scrape_nyc_parks_categories, "default_category": "outdoors"},
+    {"name": "Riverside Park Conservancy", "url": "https://www.riversideparknyc.org/events", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
+    {"name": "Prospect Park Alliance", "url": "https://www.prospectpark.org/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
+    {"name": "Brooklyn Paramount (Official Calendar)", "url": "https://www.brooklynparamount.com/shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
 
     # Brooklyn Music & Nightlife
     {"name": "Brooklyn Bowl", "url": "https://donyc.com/venues/brooklyn-bowl", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -5456,6 +6171,76 @@ _ALL_VENUES = [
     {"name": "Meetup: New York City Young Adults", "url": "https://www.meetup.com/new-york-city-young-adult-meet-up/events/", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
 ]
 
+# --- Topic searches: in-person Meetup and Eventbrite listings by activity ---
+# Each (label, query, default_category) becomes one source. Category is still inferred from
+# each event's title first; the default only applies when nothing more specific matches.
+_MEETUP_TOPICS = [
+    # Running, hiking & outdoors
+    ("Run Clubs", "run club", "sports"), ("Social Runs", "social run", "sports"),
+    ("Trail Running", "trail running", "outdoors"), ("Outdoor Adventures", "outdoors", "outdoors"),
+    ("Nature Walks", "nature walk", "outdoors"), ("Walking Groups", "walking", "outdoors"),
+    ("Kayaking & Paddling", "kayaking", "outdoors"), ("Birding", "birding", "outdoors"),
+    ("Camping", "camping", "outdoors"), ("Cycling", "cycling", "sports"), ("Bike Rides", "bike ride", "sports"),
+    ("Rock Climbing", "rock climbing", "sports"), ("Bouldering", "bouldering", "sports"),
+    ("Climbing", "climbing", "sports"), ("Skating", "skating", "sports"), ("Yoga", "yoga", "sports"),
+    ("Pickleball", "pickleball", "sports"), ("Volleyball", "volleyball", "sports"), ("Tennis", "tennis", "sports"),
+    # Dance, DJ & music
+    ("Dance", "dance", "dance"), ("Bachata", "bachata", "dance"), ("Tango", "tango", "dance"),
+    ("DJ Nights", "dj", "clubbing"), ("Techno", "techno", "clubbing"), ("House Music", "house music", "clubbing"),
+    ("Dance Parties", "dance party", "clubbing"), ("Karaoke", "karaoke", "music"), ("Open Mics", "open mic", "music"),
+    ("Music Jams", "music jam", "music"), ("Choirs & Singing", "choir", "music"),
+    # Performance & arts
+    ("Comedy", "comedy", "comedy"), ("Theater", "theater", "theater"), ("Poetry", "poetry", "books"),
+    ("Film", "film", "film"), ("Drawing & Sketching", "drawing", "art"),
+    # Social
+    ("Make Friends", "make friends", "community"), ("New in Town", "new in town", "community"),
+    ("20s & 30s", "20s 30s", "community"), ("Social Events", "social", "community"),
+    ("Singles", "singles", "community"), ("LGBTQ+", "lgbtq", "community"), ("Volunteering", "volunteer", "community"),
+    ("Meditation", "meditation", "community"), ("Chess", "chess", "gaming"),
+    ("Happy Hours", "happy hour", "food"), ("Brunch", "brunch", "food"), ("Wine Tasting", "wine tasting", "food"),
+    ("Foodies", "foodie", "food"),
+]
+
+_EVENTBRITE_TOPICS = [
+    # Running, hiking & active
+    ("Run Clubs", "run-club", "sports"), ("Running Clubs", "running-club", "sports"), ("5K Races", "5k", "sports"),
+    ("Hiking", "hiking", "outdoors"), ("Hikes", "hike", "outdoors"), ("Outdoor Adventures", "outdoor-adventure", "outdoors"),
+    ("Walking Tours", "walking-tour", "outdoors"), ("Bike Rides", "bike-ride", "sports"), ("Cycling", "cycling", "sports"),
+    ("Rock Climbing", "rock-climbing", "sports"), ("Roller Skating", "roller-skating", "sports"), ("Yoga", "yoga", "sports"),
+    ("Pickleball", "pickleball", "sports"), ("Volleyball", "volleyball", "sports"), ("Kickball", "kickball", "sports"),
+    # DJ, nightlife & parties
+    ("DJ Sets", "dj", "clubbing"), ("Techno", "techno", "clubbing"), ("House Music", "house-music", "clubbing"),
+    ("Dance Parties", "dance-party", "clubbing"), ("Day Parties", "day-party", "clubbing"), ("Raves", "rave", "clubbing"),
+    ("Afrobeats", "afrobeats", "clubbing"), ("Reggaeton", "reggaeton", "clubbing"), ("Hip-Hop Parties", "hip-hop-party", "clubbing"),
+    ("Latin Parties", "latin-party", "dance"), ("Silent Discos", "silent-disco", "clubbing"), ("Brunch Parties", "brunch-party", "food"),
+    # Live music & performance
+    ("Live Music", "live-music", "music"), ("Concerts", "concerts", "music"), ("Singer-Songwriters", "singer-songwriter", "music"),
+    ("Karaoke", "karaoke", "music"), ("Open Mics", "open-mic", "music"), ("Poetry", "poetry", "books"),
+    ("Comedy Shows", "comedy-show", "comedy"), ("Stand-Up Comedy", "stand-up-comedy", "comedy"),
+    ("Theater", "theater", "theater"), ("Immersive Theater", "immersive-theater", "theater"), ("Cabaret", "cabaret", "theater"),
+    ("Dance Performances", "dance-performance", "dance"), ("Film Screenings", "film-screening", "film"),
+    # Arts & social
+    ("Art Shows", "art-show", "art"), ("Gallery Openings", "gallery-opening", "art"), ("Paint & Sip", "paint-and-sip", "art"),
+    ("Workshops", "workshops", "community"), ("Social Mixers", "social-mixer", "community"), ("Singles Events", "singles", "community"),
+    ("Speed Dating", "speed-dating", "community"), ("Wine Tastings", "wine-tasting", "food"),
+]
+
+_ALL_VENUES += [
+    {
+        "name": f"Meetup: {label}",
+        "url": f"https://www.meetup.com/find/?keywords={quote(query)}&location=us--ny--New%20York&source=EVENTS",
+        "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": cat,
+    }
+    for label, query, cat in _MEETUP_TOPICS
+] + [
+    {
+        "name": f"Eventbrite: {label}",
+        "url": f"https://www.eventbrite.com/d/ny--new-york/{slug}/",
+        "ua": UA_CHROME, "scraper": scrape_eventbrite_pages, "default_category": cat,
+    }
+    for label, slug, cat in _EVENTBRITE_TOPICS
+]
+
 VENUES = _ALL_VENUES
 
 
@@ -5592,6 +6377,40 @@ def _init_warm_cache():
 _init_warm_cache()
 
 
+_ONLINE_TITLE_RE = re.compile(
+    r"\bonline\b|\bvirtual\b(?!\s+reality)|\b(?:on|via|over)\s+zoom\b|\bzoom\s+(?:meeting|call|session|meetup)\b", re.I)
+_VIRTUAL_VENUES = {"online", "online event", "virtual", "zoom", "virtual event", "livestream", "online only"}
+
+
+def _clean_scraped_events(events):
+    """Normalize one source's events: unescape HTML entities in titles ("Rock &amp; Roll"),
+    repair glued-together URLs, drop virtual/online events and placeholders, and collapse
+    exact repeats (same title and start time) that a source lists twice."""
+    out = []
+    seen = set()
+    for e in events or []:
+        name = html.unescape(e.get("name") or "").strip()
+        if not name or is_placeholder_or_closed_event(name):
+            continue
+        e["name"] = name
+        v_low = (e.get("venue") or "").strip().lower()
+        n_low = name.lower()
+        if v_low in _VIRTUAL_VENUES or "(virtual)" in v_low or n_low.startswith(("virtual -", "virtual:", "online -", "online:", "[virtual]", "[online]")):
+            continue
+        # "NYC Online Speed Dating", "AfroDance Online Experience" — but keep hybrid
+        # listings like "Writing Workshop (In-Person & Online)".
+        if _ONLINE_TITLE_RE.search(n_low) and not re.search(r"in[- ]person|hybrid|\birl\b", n_low):
+            continue
+        if e.get("url"):
+            e["url"] = fix_doubled_url(e["url"])
+        key = (n_low, e.get("date") or "")
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(e)
+    return out
+
+
 def _scrape_one(v, force=False):
     vname = v["name"]
     ttl = _get_venue_ttl(vname, v=v)
@@ -5600,7 +6419,7 @@ def _scrape_one(v, force=False):
     if not force:
         cached = _load_venue_cache(vname, max_age=ttl)
         if cached and cached.get("events") is not None:
-            events = [e for e in cached["events"] if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_closed_show(e.get("name"))]
+            events = [e for e in _clean_scraped_events(cached["events"]) if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_closed_show(e.get("name"))]
             return {
                 "venue": vname,
                 "url": v["url"],
@@ -5613,8 +6432,7 @@ def _scrape_one(v, force=False):
     # 2. Scrape live from external endpoint
     t0 = time.time()
     try:
-        events = v["scraper"](v["url"], v["ua"])
-        events = [e for e in events if not is_placeholder_or_closed_event(e.get("name"))]
+        events = _clean_scraped_events(v["scraper"](v["url"], v["ua"]))
         for e in events:
             if not e.get("venue"):
                 e["venue"] = vname
