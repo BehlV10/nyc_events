@@ -131,8 +131,39 @@ def _make_session():
 _SESSION = _make_session()
 
 
+class FetchDeadlineExceeded(requests.exceptions.Timeout):
+    """The whole download took longer than its wall-clock budget."""
+
+
+def fetch_text(url, headers=None, timeout=15, max_seconds=30, max_bytes=8_000_000):
+    """GET a page with a hard wall-clock deadline and return (status_code, text).
+
+    requests' `timeout` bounds each socket read, not the whole download, so a throttling
+    server that trickles a few bytes at a time can hold a thread forever (this froze full
+    scrapes once Eventbrite started rate-limiting). Streaming with a total deadline caps it.
+    """
+    started = time.monotonic()
+    resp = _SESSION.get(url, headers=headers or {}, timeout=(min(timeout, 10), timeout), stream=True)
+    if not isinstance(resp, requests.Response):
+        # Already-buffered duck-typed response (test doubles); nothing to stream.
+        resp.raise_for_status()
+        return resp.status_code, resp.text
+    with resp:
+        resp.raise_for_status()
+        chunks, size = [], 0
+        for chunk in resp.iter_content(chunk_size=65536):
+            chunks.append(chunk)
+            size += len(chunk)
+            if time.monotonic() - started > max_seconds:
+                raise FetchDeadlineExceeded(f"{url} took over {max_seconds}s")
+            if size > max_bytes:
+                break
+        encoding = resp.encoding or resp.apparent_encoding or "utf-8"
+        return resp.status_code, b"".join(chunks).decode(encoding, errors="replace")
+
+
 def fetch_soup(url, ua=UA_CHROME, timeout=15):
-    resp = _SESSION.get(
+    _status, text = fetch_text(
         url,
         headers={
             "User-Agent": ua,
@@ -141,8 +172,7 @@ def fetch_soup(url, ua=UA_CHROME, timeout=15):
         },
         timeout=timeout,
     )
-    resp.raise_for_status()
-    return BeautifulSoup(resp.text, "html.parser")
+    return BeautifulSoup(text, "html.parser")
 
 
 def _format_price_range(lo, hi, curr="USD"):
@@ -2205,19 +2235,18 @@ def scrape_eventbrite_jsonld(url, ua):
         "Sec-Fetch-User": "?1",
         "Upgrade-Insecure-Requests": "1",
     }
-    resp = None
+    page = ""
     for attempt in range(2):
-        resp = _SESSION.get(url, headers=headers, timeout=12)
-        resp.raise_for_status()
-        if "application/ld+json" in resp.text or "__SERVER_DATA__" in resp.text:
+        _status, page = fetch_text(url, headers=headers, timeout=12, max_seconds=25)
+        if "application/ld+json" in page or "__SERVER_DATA__" in page:
             break
         time.sleep(3 + attempt * 4)  # throttled / challenge page: back off once and retry
     else:
         # Raise instead of returning [] so the pipeline reports it and keeps the last good
         # data visibly ("serving stale cache") rather than silently.
         raise RuntimeError("Eventbrite returned a page without event data (likely rate-limited)")
-    exact_starts = _parse_eventbrite_server_data(resp.text)
-    soup = BeautifulSoup(resp.text, "html.parser")
+    exact_starts = _parse_eventbrite_server_data(page)
+    soup = BeautifulSoup(page, "html.parser")
     for s in soup.find_all("script", type="application/ld+json"):
         if not s.string:
             continue
@@ -5204,9 +5233,9 @@ MANUAL_RECURRING_EVENTS = [
 
     # === NEIGHBORHOOD RUN CLUBS & SOCIAL WALKS ===
     ("North Brooklyn Runners", "https://northbrooklynrunners.org/", "sports", [
-        ("NBR McCarren Park Track Tuesday Workout", "https://northbrooklynrunners.org/schedule/", 1, 19, 0, "Free"),
-        ("NBR Williamsburg Bridge Run & Social", "https://northbrooklynrunners.org/schedule/", 3, 19, 0, "Free"),
-        ("NBR Saturday Morning Long Run @ McCarren", "https://northbrooklynrunners.org/schedule/", 5, 8, 30, "Free"),
+        ("NBR McCarren Park Track Tuesday Workout", "https://northbrooklynrunners.org/", 1, 19, 0, "Free"),
+        ("NBR Williamsburg Bridge Run & Social", "https://northbrooklynrunners.org/", 3, 19, 0, "Free"),
+        ("NBR Saturday Morning Long Run @ McCarren", "https://northbrooklynrunners.org/", 5, 8, 30, "Free"),
     ]),
     ("Midnight Runners NYC", "https://www.midnightrunners.com/cities/new-york", "sports", [
         ("Midnight Runners 10K Music Run & Social (Tuesday Night)", "https://www.midnightrunners.com/cities/new-york", 1, 19, 0, "Free"),
@@ -5498,8 +5527,8 @@ MANUAL_RECURRING_EVENTS = [
         ("Barcade Williamsburg Classic Arcade & Pinball Social Night", "https://barcade.com/brooklyn/", 2, 19, 0, "No Cover"),
         ("Barcade Williamsburg Friday Retro Arcade & Craft Beer Night", "https://barcade.com/brooklyn/", 4, 20, 0, "No Cover"),
     ]),
-    ("Barcade Chelsea", "https://barcade.com/newyork/", "gaming", [
-        ("Barcade Chelsea Classic Arcade & Pinball Night", "https://barcade.com/newyork/", 3, 19, 0, "No Cover"),
+    ("Barcade Chelsea", "https://barcade.com/", "gaming", [
+        ("Barcade Chelsea Classic Arcade & Pinball Night", "https://barcade.com/", 3, 19, 0, "No Cover"),
     ]),
     ("Jackbar", "https://www.jackbarbrooklyn.com/", "gaming", [
         ("Jackbar Williamsburg Weekly Pinball Tournament & League Night", "https://www.jackbarbrooklyn.com/", 1, 19, 30, "No Cover"),
@@ -6448,19 +6477,44 @@ _HOST_LIMITS = {"eventbrite.": 4, "meetup.com": 6, "donyc.com": 6}
 _HOST_SEMAPHORES = {k: threading.BoundedSemaphore(n) for k, n in _HOST_LIMITS.items()}
 
 
-def _host_slot(url):
-    for key, sem in _HOST_SEMAPHORES.items():
+# Per-host circuit breaker: once a host fails this many times in a row during one run, its
+# remaining sources fail fast (and serve their cached data) instead of each waiting out
+# timeouts and retries while holding scarce per-host slots.
+HOST_FAILURE_LIMIT = 6
+_host_failures = {}
+_host_failures_lock = threading.Lock()
+
+
+def _host_key(url):
+    for key in _HOST_SEMAPHORES:
         if key in (url or ""):
-            return sem
+            return key
     return None
 
 
+def _reset_host_breakers():
+    with _host_failures_lock:
+        _host_failures.clear()
+
+
 def _run_scraper(v):
-    sem = _host_slot(v.get("url"))
-    if sem is None:
+    key = _host_key(v.get("url"))
+    if key is None:
         return v["scraper"](v["url"], v["ua"])
-    with sem:
-        return v["scraper"](v["url"], v["ua"])
+    with _HOST_SEMAPHORES[key]:
+        with _host_failures_lock:
+            tripped = _host_failures.get(key, 0) >= HOST_FAILURE_LIMIT
+        if tripped:
+            raise RuntimeError(f"skipped: {key} failed {HOST_FAILURE_LIMIT}+ times in a row this run")
+        try:
+            result = v["scraper"](v["url"], v["ua"])
+        except Exception:
+            with _host_failures_lock:
+                _host_failures[key] = _host_failures.get(key, 0) + 1
+            raise
+        with _host_failures_lock:
+            _host_failures[key] = 0
+        return result
 
 
 def _scrape_one(v, force=False):
@@ -6593,6 +6647,8 @@ def get_all_events(force=False):
     now = time.time()
     if not force and _cache["data"] and (now - _cache["ts"] < CACHE_SECONDS):
         return _cache["data"]
+
+    _reset_host_breakers()
 
     def _worker(v):
         return _scrape_one(v, force=force)

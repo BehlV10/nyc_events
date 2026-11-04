@@ -271,3 +271,45 @@ class TestScripts(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestFetchResilience(unittest.TestCase):
+    def test_trickling_server_hits_wall_clock_deadline(self):
+        import time as _time
+
+        import requests
+
+        class Trickle:
+            def read(self, amt=None, decode_content=True):
+                _time.sleep(0.02)
+                return b"x" * 10
+
+            def close(self):
+                pass
+
+            def release_conn(self):
+                pass
+
+        resp = requests.Response()
+        resp.status_code = 200
+        resp.raw = Trickle()
+        with patch("scrapers._SESSION.get", return_value=resp):
+            start = _time.monotonic()
+            with self.assertRaises(scrapers.FetchDeadlineExceeded):
+                scrapers.fetch_text("https://slow.example", max_seconds=0.3)
+            self.assertLess(_time.monotonic() - start, 2)
+
+    def test_host_circuit_breaker_fails_fast(self):
+        calls = []
+
+        def failing(url, ua):
+            calls.append(url)
+            raise RuntimeError("throttled")
+
+        v = {"url": "https://www.eventbrite.com/d/ny--new-york/dj/", "ua": "x", "scraper": failing}
+        scrapers._reset_host_breakers()
+        for _ in range(scrapers.HOST_FAILURE_LIMIT + 3):
+            with self.assertRaises(RuntimeError):
+                scrapers._run_scraper(v)
+        self.assertEqual(len(calls), scrapers.HOST_FAILURE_LIMIT)
+        scrapers._reset_host_breakers()
