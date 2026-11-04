@@ -31,6 +31,10 @@ DEFAULT_VENUE_TTL = 3 * 3600    # 3 hours for standard venue feeds
 FAST_VENUE_TTL = 1 * 3600       # 1 hour for high-turnover feeds (Ticketmaster, SeatGeek, RA, Dice, DoNYC)
 SLOW_VENUE_TTL = 12 * 3600      # 12 hours for evergreen/slow feeds (NYC Parks XML, Trivia, Bookstores)
 EVENTBRITE_TTL = 6 * 3600       # 6 hours for Eventbrite feeds to prevent Cloudflare bot blocking
+# Eventbrite answers 429 after ~30 page loads in a burst, and the scrape runs every 30 min.
+# Each run refreshes at most this many Eventbrite sources (never-fetched first, then the
+# least recently attempted); the rest serve their cached copy. ~180 sources rotate in ~8h.
+EVENTBRITE_PER_RUN = 12
 
 
 def _is_within_horizon(e, max_days=HORIZON_DAYS):
@@ -5484,10 +5488,6 @@ MANUAL_RECURRING_EVENTS = [
         ("Twenty Sided Store Friday Night Magic & Tabletop Social", "https://twentysidedstore.com/", 4, 18, 30, "$10–$15"),
         ("Twenty Sided Store Weekend Dungeons & Dragons One-Shots", "https://twentysidedstore.com/", 5, 13, 0, "$15"),
     ]),
-    ("BrookLAN", "https://www.brooklan.com/", "gaming", [
-        ("BrookLAN Bushwick Smash Bros & Fighting Game Community Night", "https://www.brooklan.com/", 2, 19, 0, "$10"),
-        ("BrookLAN Bushwick Board Games, Trivia & Esports Social", "https://www.brooklan.com/", 3, 19, 30, "Free"),
-    ]),
     ("Nook", "https://www.nookbk.com/", "gaming", [
         ("Nook Bushwick Community Board Game & Chess Meetup", "https://www.nookbk.com/", 1, 19, 0, "Free"),
         ("Nook Bushwick Neighborhood Trivia Night", "https://www.nookbk.com/", 2, 20, 0, "Free"),
@@ -5807,7 +5807,6 @@ _ALL_VENUES = [
     {"name": "The Sultan Room Bushwick", "url": "https://donyc.com/venues/the-sultan-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Pioneer Works Red Hook", "url": "https://donyc.com/venues/pioneer-works", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
     {"name": "C'mon Everybody Bed-Stuy", "url": "https://donyc.com/venues/c-mon-everybody", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Brooklyn Made", "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-made/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
     {"name": "Market Hotel", "url": "https://donyc.com/venues/market-hotel", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "SILO Brooklyn", "url": "https://donyc.com/venues/silo-brooklyn", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Avant Gardner", "url": "https://donyc.com/venues/avant-gardner", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
@@ -5850,9 +5849,9 @@ _ALL_VENUES = [
     {"name": "Queens Theatre", "url": "https://queenstheatre.org/events/", "ua": UA_CHROME, "scraper": scrape_queens_theatre, "default_category": "theater"},
     {"name": "Flushing Town Hall", "url": "https://donyc.com/venues/flushing-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "MoMA PS1", "url": "https://donyc.com/venues/moma-ps1", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
-    {"name": "Grove 34 Astoria", "url": "https://www.eventbrite.com/d/ny--astoria/grove-34/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
-    {"name": "Culture Lab LIC", "url": "https://www.eventbrite.com/d/ny--long-island-city/culture-lab-lic/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
-    {"name": "Bohemian Hall & Beer Garden (Astoria)", "url": "https://www.eventbrite.com/d/ny--astoria/bohemian-hall/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
+    {"name": "Grove 34 Astoria", "url": "https://www.eventbrite.com/d/ny--new-york/grove-34/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Culture Lab LIC", "url": "https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
+    {"name": "Bohemian Hall & Beer Garden (Astoria)", "url": "https://www.eventbrite.com/d/ny--new-york/bohemian-hall/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "Astoria Queens Events", "url": "https://www.eventbrite.com/d/ny--new-york/astoria-queens/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "Long Island City Queens Events", "url": "https://www.eventbrite.com/d/ny--new-york/long-island-city/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "Ridgewood Queens Events", "url": "https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
@@ -6473,7 +6472,7 @@ def _clean_scraped_events(events):
 
 # Per-host concurrency caps for the 24-worker scrape. Bursting ~220 Eventbrite pages at once
 # gets challenge pages back, which used to silently fall back to stale cached events.
-_HOST_LIMITS = {"eventbrite.": 4, "meetup.com": 6, "donyc.com": 6}
+_HOST_LIMITS = {"eventbrite.": 2, "meetup.com": 6, "donyc.com": 6}
 _HOST_SEMAPHORES = {k: threading.BoundedSemaphore(n) for k, n in _HOST_LIMITS.items()}
 
 
@@ -6517,9 +6516,69 @@ def _run_scraper(v):
         return result
 
 
-def _scrape_one(v, force=False):
+def _serve_cache(v, max_age):
+    cached = _load_venue_cache(v["name"], max_age=max_age)
+    if not cached or cached.get("events") is None:
+        return None
+    events = [e for e in _clean_scraped_events(cached["events"]) if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_closed_show(e.get("name"))]
+    return {
+        "venue": v["name"],
+        "url": v["url"],
+        "events": events,
+        "error": None,
+        "duration": cached.get("duration", 0.0),
+        "cached": True,
+    }
+
+
+def _eventbrite_attempts_path():
+    return os.path.join(CACHE_DIR, "_eventbrite_attempts.json")
+
+
+def _pick_eventbrite_refreshes(venues, force=False, limit=EVENTBRITE_PER_RUN, now=None):
+    """Choose which Eventbrite sources may fetch live this run, and record the attempt so a
+    source that keeps failing goes to the back of the line instead of being retried (and
+    re-triggering Eventbrite's rate limit) on every run."""
+    now = now or time.time()
+    try:
+        with open(_eventbrite_attempts_path(), "r", encoding="utf-8") as f:
+            attempts = json.load(f)
+    except Exception:
+        attempts = {}
+    due = []
+    for v in venues:
+        if _host_key(v.get("url")) != "eventbrite.":
+            continue
+        name = v["name"]
+        cached = _load_venue_cache(name, max_age=None)
+        cache_ts = cached.get("ts", 0) if cached else 0
+        if not force and cached and now - cache_ts <= EVENTBRITE_TTL:
+            continue
+        last = max(cache_ts, attempts.get(name, 0))
+        due.append((cached is not None, last, name))
+    due.sort()
+    picked = {name for _, _, name in due[:limit]}
+    for name in picked:
+        attempts[name] = now
+    try:
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        with open(_eventbrite_attempts_path(), "w", encoding="utf-8") as f:
+            json.dump(attempts, f)
+    except Exception:
+        pass
+    return picked
+
+
+def _scrape_one(v, force=False, allow_live=True):
     vname = v["name"]
     ttl = _get_venue_ttl(vname, v=v)
+
+    if not allow_live:
+        # Rate-limited host and not this source's turn: keep its last good copy, any age.
+        served = _serve_cache(v, max_age=None)
+        if served is not None:
+            return served
+        return {"venue": vname, "url": v["url"], "events": [], "error": None, "duration": 0.0, "cached": True}
 
     # 1. Check if cached data exists and is within TTL
     if not force:
@@ -6649,9 +6708,11 @@ def get_all_events(force=False):
         return _cache["data"]
 
     _reset_host_breakers()
+    eventbrite_live = _pick_eventbrite_refreshes(VENUES, force=force)
 
     def _worker(v):
-        return _scrape_one(v, force=force)
+        allow = _host_key(v.get("url")) != "eventbrite." or v["name"] in eventbrite_live
+        return _scrape_one(v, force=force, allow_live=allow)
 
     with ThreadPoolExecutor(max_workers=24) as ex:
         results = list(ex.map(_worker, VENUES))
