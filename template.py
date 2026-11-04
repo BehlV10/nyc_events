@@ -1714,7 +1714,7 @@ def render_page(results, split_deferred=False, context_out=None):
         venue_list = results or []
     dated, tba, ongoing = group_by_date(venue_list)
     highlights = _load_highlights()
-    picks_chip_html = ('<button type="button" class="chip chip-picks" id="quick-picks-chip" title="Editor\'s picks for each day">'
+    picks_chip_html = ('<button type="button" class="chip-picks" id="quick-picks-chip" aria-pressed="false" title="Editor\'s picks for each day">'
                        '<span class="chip-icon">⭐ </span>Picks</button>') if highlights else ""
     recurring_keys = compute_recurring(dated)
     total = sum(len(v) for _, v in dated) + len(tba)
@@ -2513,17 +2513,6 @@ def render_page(results, split_deferred=False, context_out=None):
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   }}
 
-  /* Quick-Access Chips Bar */
-  .quick-chips-bar {{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 8px 12px;
-  }}
   .chip {{
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);
@@ -2548,48 +2537,6 @@ def render_page(results, split_deferred=False, context_out=None):
     font-weight: 700;
     box-shadow: 0 2px 10px var(--accent-glow);
   }}
-  .chip-free {{
-    color: var(--green);
-    border-color: var(--green-border);
-    background: var(--green-bg);
-  }}
-  .chip-free.active {{
-    background: var(--green);
-    color: #08200f;
-    border-color: var(--green);
-    font-weight: 700;
-    box-shadow: 0 2px 10px rgba(74, 222, 128, 0.3);
-  }}
-  .chip-theater {{
-    color: #f7d794;
-    border-color: rgba(224, 175, 104, 0.4);
-    background: rgba(224, 175, 104, 0.12);
-  }}
-  .chip-theater:hover {{
-    background: rgba(224, 175, 104, 0.22);
-    border-color: #e0af68;
-    color: #fff;
-  }}
-  .chip-theater.active {{
-    background: #e0af68;
-    color: #1a1406;
-    border-color: #e0af68;
-    font-weight: 700;
-    box-shadow: 0 2px 10px rgba(224, 175, 104, 0.35);
-  }}
-  .chip-guestlist {{
-    color: #ff76ac;
-    border-color: rgba(255, 118, 172, 0.35);
-    background: rgba(255, 118, 172, 0.12);
-    margin-left: auto;
-  }}
-  .chip-guestlist.active {{
-    background: #ff76ac;
-    color: #1a0612;
-    border-color: #ff76ac;
-    font-weight: 700;
-    box-shadow: 0 2px 10px rgba(255, 118, 172, 0.35);
-  }}
   .badge-highlight {{
     display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px;
     font-size: 11px; font-weight: 700; letter-spacing: 0.02em; vertical-align: middle; margin-left: 6px;
@@ -2601,7 +2548,7 @@ def render_page(results, split_deferred=False, context_out=None):
     border: 1px solid rgba(255, 184, 0, 0.2); border-radius: 8px; padding: 6px 10px; margin-top: 6px;
   }}
   .curator-note .note-label {{ font-weight: 700; color: #ffd866; }}
-  .chip.chip-picks.active {{ background: rgba(255, 184, 0, 0.2); border-color: #ffd866; color: #ffd866; }}
+  .week-nav button.chip-picks.active {{ background: rgba(255, 184, 0, 0.2); border-color: #ffd866; color: #ffd866; }}
   .badge-guestlist {{
     display: inline-flex;
     align-items: center;
@@ -3537,25 +3484,11 @@ def render_page(results, split_deferred=False, context_out=None):
       padding: 3px 9px;
       font-size: 11px;
     }}
-    .quick-chips-bar {{
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      padding: 8px 10px;
-      gap: 6px;
-    }}
-    .quick-chips-bar::-webkit-scrollbar {{
-      display: none;
-    }}
     .chip {{
       flex-shrink: 0;
       padding: 5px 12px;
       font-size: 12px;
     }}
-    .chip-free {{ margin-left: 0; }}
 
     .week-nav {{
       justify-content: space-between;
@@ -4982,18 +4915,6 @@ def render_page(results, split_deferred=False, context_out=None):
         <button type="button" class="loc-chip" data-city="other"><span class="city-dot" style="background:#9aa3b2"></span>Tri-State</button>
       </div>
       <div class="subarea-chips-bar" id="subarea-chips-bar" style="display: none;"></div>
-      <div class="quick-chips-bar" id="quick-chips">
-        <button type="button" class="chip active" data-time="today"><span class="chip-icon">⚡ </span>Today</button>
-        <button type="button" class="chip" data-time="tomorrow">Tomorrow</button>
-        <button type="button" class="chip" data-time="weekend"><span class="chip-icon">🎉 </span>This Weekend</button>
-        <button type="button" class="chip" data-time="week"><span class="chip-icon">📅 </span>Next 7 Days</button>
-        <button type="button" class="chip" data-time="all">All Upcoming</button>
-        <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
-        <button type="button" class="chip chip-guestlist" id="quick-guestlist-chip"><span class="chip-icon">🎟️ </span>Guestlists</button>
-        <button type="button" class="chip chip-free" id="quick-free-chip"><span class="chip-icon">✨ </span>Free Only</button>
-        {picks_chip_html}
-        <button type="button" class="chip chip-theater" id="quick-theater-chip"><span class="chip-icon">🎭 </span>Theater</button>
-      </div>
       <div class="week-nav" id="week-nav">
         <button type="button" id="week-prev" aria-label="Previous">← prev</button>
         <span id="week-label">Today, {today.strftime("%b %d")}</span>
@@ -5001,6 +4922,8 @@ def render_page(results, split_deferred=False, context_out=None):
         <button type="button" id="week-today">today</button>
         <button type="button" id="week-all" data-mode="week">show all</button>
         <button type="button" id="cal-toggle" aria-expanded="false">📅 pick date</button>
+        {picks_chip_html}
+        <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
       </div>
       <div class="mini-cal" id="mini-cal" hidden>
         <div class="mini-cal-head">
@@ -5302,12 +5225,8 @@ def render_page(results, split_deferred=False, context_out=None):
     const CITY_LABELS_MAP = {json.dumps(CITY_LABELS)};
     let activeSubarea = 'all';
     let renderedSubareaCity = null;
-    const quickChips = document.querySelectorAll('#quick-chips .chip[data-time]');
-    const quickFreeChip = document.getElementById('quick-free-chip');
-    const quickGuestlistChip = document.getElementById('quick-guestlist-chip');
     const quickPicksChip = document.getElementById('quick-picks-chip');
     let picksOnly = false;
-    const quickTheaterChip = document.getElementById('quick-theater-chip');
     const quickCustomTimeChip = document.getElementById('quick-custom-time-chip');
     const activeTimeframeLabel = document.getElementById('active-timeframe-label');
     const timeFromSelect = document.getElementById('time-from-select');
@@ -5800,6 +5719,8 @@ def render_page(results, split_deferred=False, context_out=None):
       }}
       const b = document.getElementById('week-label-b');
       if (b) b.textContent = label;
+      const todayBtn = document.getElementById('week-today');
+      if (todayBtn) todayBtn.classList.toggle('active', !showAll && timeFilter === 'today');
       const btn = document.getElementById('week-all');
       if (btn) {{
         btn.textContent = (timeFilter === 'all' || showAll) ? 'today view' : 'show all';
@@ -6061,20 +5982,10 @@ def render_page(results, split_deferred=False, context_out=None):
     }}
 
     function updateQuickChipsUI() {{
-      quickChips.forEach(chip => {{
-        chip.classList.toggle('active', chip.dataset.time === timeFilter);
-      }});
-      if (quickTheaterChip) {{
-        const checked = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
-        quickTheaterChip.classList.toggle('active', checked.length === 1 && checked[0] === 'Theater');
+      if (quickPicksChip) {{
+        quickPicksChip.classList.toggle('active', picksOnly);
+        quickPicksChip.setAttribute('aria-pressed', picksOnly ? 'true' : 'false');
       }}
-      if (quickFreeChip) {{
-        quickFreeChip.classList.toggle('active', freeOnlyChk ? freeOnlyChk.checked : false);
-      }}
-      if (quickGuestlistChip) {{
-        quickGuestlistChip.classList.toggle('active', guestlistOnlyChk ? guestlistOnlyChk.checked : false);
-      }}
-      if (quickPicksChip) quickPicksChip.classList.toggle('active', picksOnly);
     }}
 
     function renderSubareaChips(city) {{
@@ -6794,66 +6705,7 @@ def render_page(results, split_deferred=False, context_out=None):
       apply();
     }}
 
-    quickChips.forEach(chip => {{
-      chip.addEventListener('click', () => {{
-        clearRange();
-        timeFilter = chip.dataset.time;
-        const todayDate = parseISO(todayISO);
-        const dayOfWeek = todayDate.getDay();
-        let daysToSat = (6 - dayOfWeek + 7) % 7;
-        if (dayOfWeek === 0) daysToSat = -1;
-
-        if (timeFilter === 'all') {{
-          showAll = true;
-        }} else if (timeFilter === 'today') {{
-          showAll = false;
-          anchor = parseISO(todayISO);
-          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-        }} else if (timeFilter === 'tomorrow') {{
-          showAll = false;
-          anchor = addDays(parseISO(todayISO), 1);
-          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-        }} else if (timeFilter === 'weekend') {{
-          showAll = false;
-          anchor = addDays(todayDate, daysToSat);
-          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-        }} else if (timeFilter === 'week') {{
-          showAll = false;
-          anchor = parseISO(todayISO);
-          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-        }}
-        apply();
-      }});
-    }});
-
-    if (quickTheaterChip) {{
-      quickTheaterChip.addEventListener('click', () => {{
-        const checked = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
-        if (checked.length === 1 && checked[0] === 'Theater') {{
-          catBoxes.forEach(b => {{ b.checked = isDefaultCat(b); }});
-        }} else {{
-          catBoxes.forEach(b => {{
-            b.checked = (b.value === 'Theater');
-          }});
-        }}
-        apply();
-        stateToHash();
-      }});
-    }}
-
-    if (quickFreeChip && freeOnlyChk) {{
-      quickFreeChip.addEventListener('click', () => {{
-        freeOnlyChk.checked = !freeOnlyChk.checked;
-        apply();
-      }});
-    }}
-    if (quickGuestlistChip && guestlistOnlyChk) {{
-      if (quickPicksChip) quickPicksChip.addEventListener('click', () => {{ picksOnly = !picksOnly; apply(); stateToHash(); }});
-      quickGuestlistChip.addEventListener('click', () => {{
-        guestlistOnlyChk.checked = !guestlistOnlyChk.checked;
-        apply();
-      }});
-    }}
+    if (quickPicksChip) quickPicksChip.addEventListener('click', () => {{ picksOnly = !picksOnly; apply(); stateToHash(); }});
     if (guestlistOnlyChk) guestlistOnlyChk.addEventListener('change', apply);
 
     document.addEventListener('keydown', (e) => {{
@@ -7180,10 +7032,12 @@ def render_page(results, split_deferred=False, context_out=None):
         showPastToday = !showPastToday;
         apply();
       }} else if (e.target && e.target.id === 'btn-banner-tomorrow') {{
-        const tomorrowChip = document.querySelector('#quick-chips .chip[data-time="tomorrow"]');
-        if (tomorrowChip) {{
-          tomorrowChip.click();
-        }}
+        clearRange();
+        timeFilter = 'tomorrow';
+        showAll = false;
+        anchor = addDays(parseISO(todayISO), 1);
+        calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+        apply();
       }}
     }});
 
