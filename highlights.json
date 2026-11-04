@@ -159,12 +159,12 @@
     "id": "auto-2026-11-04-12",
     "auto": true,
     "match": {
-      "name_contains": "Grapevine Comedy - NYC Stand Up",
-      "venue_contains": "Flop House Comedy"
+      "name_contains": "The Lion King (New York, NY)",
+      "venue_contains": "Minskoff Theatre"
     },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 2 calendars; prime-time start.",
-    "score": 9.5,
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 3 calendars; prime-time start.",
+    "score": 10.0,
     "start_date": "2026-11-04",
     "expires": "2026-11-04"
   },
@@ -172,8 +172,8 @@
     "id": "auto-2026-11-04-13",
     "auto": true,
     "match": {
-      "name_contains": "LPR Presents: Las Migas",
-      "venue_contains": "littlefield"
+      "name_contains": "Grapevine Comedy - NYC Stand Up",
+      "venue_contains": "Flop House Comedy"
     },
     "badge": "😂 Comedy Pick",
     "note": "Listed on 2 calendars; prime-time start.",
@@ -185,10 +185,10 @@
     "id": "auto-2026-11-04-14",
     "auto": true,
     "match": {
-      "name_contains": "Skip the Small Talk Night at Threes Brewing Greenpoint",
-      "venue_contains": "Threes Brewing Greenpoint"
+      "name_contains": "LPR Presents: Las Migas",
+      "venue_contains": "littlefield"
     },
-    "badge": "🤝 Community Pick",
+    "badge": "😂 Comedy Pick",
     "note": "Listed on 2 calendars; prime-time start.",
     "score": 9.5,
     "start_date": "2026-11-04",
@@ -484,6 +484,19 @@
     "id": "auto-2026-11-06-37",
     "auto": true,
     "match": {
+      "name_contains": "AEREA, Alex Farell, Julia Govor, Vyper, Machine Thirst: Firebunny + Nikitau",
+      "venue_contains": "Elsewhere Brooklyn"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Listed on 3 calendars; prime-time start.",
+    "score": 13.0,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-38",
+    "auto": true,
+    "match": {
       "name_contains": "Adult Skate Night ft. DJ Suave (skate)",
       "venue_contains": "Xanadu"
     },
@@ -494,7 +507,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-38",
+    "id": "auto-2026-11-06-39",
     "auto": true,
     "match": {
       "name_contains": "Friday Night Salsa Social & Workshops",
@@ -507,26 +520,13 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-39",
-    "auto": true,
-    "match": {
-      "name_contains": "Lime Garden, Nine Perfect Lives",
-      "venue_contains": "Elsewhere Brooklyn"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; prime-time start.",
-    "score": 13.0,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
     "id": "auto-2026-11-06-40",
     "auto": true,
     "match": {
-      "name_contains": "40s & Over Mixer (Free Drink For Women)",
-      "venue_contains": "The Cloud One Hotel New York-Downtown"
+      "name_contains": "Friday Improv Jam 6:30-8:30pm ($10)",
+      "venue_contains": "330 7th Ave #804"
     },
-    "badge": "🤝 Community Pick",
+    "badge": "😂 Comedy Pick",
     "note": "Free; listed on 3 calendars; prime-time start.",
     "score": 12.5,
     "start_date": "2026-11-06",
@@ -536,12 +536,12 @@
     "id": "auto-2026-11-06-41",
     "auto": true,
     "match": {
-      "name_contains": "Friday Improv Jam 6:30-8:30pm ($10)",
-      "venue_contains": "330 7th Ave #804"
+      "name_contains": "Fridays at Kimoto Rooftop in Brooklyn",
+      "venue_contains": "Kimoto Rooftop Restaurant & Garden Lounge"
     },
-    "badge": "😂 Comedy Pick",
-    "note": "Free; listed on 3 calendars; prime-time start.",
-    "score": 12.5,
+    "badge": "🎲 Game Night Pick",
+    "note": "Listed on 18 calendars.",
+    "score": 12.0,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
@@ -666,6 +666,19 @@
     "id": "auto-2026-11-07-51",
     "auto": true,
     "match": {
+      "name_contains": "Scorpio Stings: Junior Sanchez, Ultra Violet and More!",
+      "venue_contains": "House of Yes"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Listed on 3 calendars; headline room at House of Yes; prime-time start.",
+    "score": 16.0,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-52",
+    "auto": true,
+    "match": {
       "name_contains": "Nathan Fielder Look-Alike Contest",
       "venue_contains": "Washington Square Park"
     },
@@ -676,7 +689,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-52",
+    "id": "auto-2026-11-07-53",
     "auto": true,
     "match": {
       "name_contains": "Ginuwine",
@@ -685,19 +698,6 @@
     "badge": "🪩 Nightlife Pick",
     "note": "Listed on 4 calendars; prime-time start.",
     "score": 14.0,
-    "start_date": "2026-11-07",
-    "expires": "2026-11-07"
-  },
-  {
-    "id": "auto-2026-11-07-53",
-    "auto": true,
-    "match": {
-      "name_contains": "Flava D, Don-Ri, Made to Order: Dendi's Dad, EJWIZE, Imbueless",
-      "venue_contains": "Elsewhere Brooklyn"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Listed on 3 calendars; prime-time start.",
-    "score": 13.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
@@ -796,32 +796,6 @@
     "id": "auto-2026-11-08-61",
     "auto": true,
     "match": {
-      "name_contains": "High Line & Hudson Yards Spring Walk (50s & Over Social Stroll)",
-      "venue_contains": "Shake Shack Meatpacking District"
-    },
-    "badge": "🖼️ Art Pick",
-    "note": "Free; listed on 5 calendars; weekend daytime.",
-    "score": 16.0,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-62",
-    "auto": true,
-    "match": {
-      "name_contains": "Cosmic Gate",
-      "venue_contains": "Superior Ingredients"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Listed on 3 calendars; headline room at Superior Ingredients; weekend daytime.",
-    "score": 15.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-63",
-    "auto": true,
-    "match": {
       "name_contains": "Sharief Johnson: I Wish That Was a Joke Too (Album Recording) Presented by the New York Comedy Festival",
       "venue_contains": "New York Comedy Club Upper West Side"
     },
@@ -832,7 +806,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-64",
+    "id": "auto-2026-11-08-62",
     "auto": true,
     "match": {
       "name_contains": "Salsa Classes for Absolute Beginners (Level 0) on Sundays",
@@ -841,6 +815,32 @@
     "badge": "💃 Dance Pick",
     "note": "Free; listed on 4 calendars; weekend daytime.",
     "score": 13.0,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-63",
+    "auto": true,
+    "match": {
+      "name_contains": "High Line & Hudson Yards Spring Walk (50s & Over Social Stroll)",
+      "venue_contains": "Shake Shack Meatpacking District"
+    },
+    "badge": "🌿 Outdoors Pick",
+    "note": "Free; listed on 3 calendars; weekend daytime.",
+    "score": 12.0,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-64",
+    "auto": true,
+    "match": {
+      "name_contains": "Cosmic Gate",
+      "venue_contains": "Superior Ingredients"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Listed on 2 calendars; headline room at Superior Ingredients; weekend daytime.",
+    "score": 11.5,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
@@ -913,6 +913,19 @@
     "id": "auto-2026-11-08-70",
     "auto": true,
     "match": {
+      "name_contains": "Sunday Drop-In Improv Class 4:30pm-6:30pm ($15)",
+      "venue_contains": "330 7th Ave"
+    },
+    "badge": "😂 Comedy Pick",
+    "note": "Free; listed on 3 calendars; weekend daytime.",
+    "score": 9.0,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-71",
+    "auto": true,
+    "match": {
       "name_contains": "Diwali [Part 2] - All-You-Can-Eat Feast at Vatan! 🇮🇳",
       "venue_contains": "Vatan"
     },
@@ -923,7 +936,20 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-71",
+    "id": "auto-2026-11-08-72",
+    "auto": true,
+    "match": {
+      "name_contains": "Diwali In Manhattan",
+      "venue_contains": "1st Avenue"
+    },
+    "badge": "🤝 Community Pick",
+    "note": "Free; listed on 2 calendars; weekend daytime.",
+    "score": 8.0,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-73",
     "auto": true,
     "match": {
       "name_contains": "Glimpse of Greatness",
@@ -936,20 +962,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-72",
-    "auto": true,
-    "match": {
-      "name_contains": "Language Exchange Sunday \nEN · ES · FR · RU · JP · ZH · PT · IT",
-      "venue_contains": "875 3rd Avenue"
-    },
-    "badge": "🤝 Community Pick",
-    "note": "Free; listed on 2 calendars; weekend daytime.",
-    "score": 8.0,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-73",
+    "id": "auto-2026-11-08-74",
     "auto": true,
     "match": {
       "name_contains": "A Few Good Men",
@@ -957,19 +970,6 @@
     },
     "badge": "🎭 Stage Pick",
     "note": "Headline room at Lincoln Center Theater; weekend daytime.",
-    "score": 7.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-74",
-    "auto": true,
-    "match": {
-      "name_contains": "Silent Clowns Film Series Silent Clowns Film Series: The Kid Brother",
-      "venue_contains": "Symphony Space"
-    },
-    "badge": "🎭 Stage Pick",
-    "note": "Headline room at Symphony Space (Upper West Side); weekend daytime.",
     "score": 7.5,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
@@ -1580,7 +1580,7 @@
       "venue_contains": "Grand Central Oyster Bar"
     },
     "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 9 calendars; prime-time start.",
+    "note": "Free; listed on 8 calendars; prime-time start.",
     "score": 16.5,
     "start_date": "2026-11-12",
     "expires": "2026-11-12"
