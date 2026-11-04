@@ -100,6 +100,19 @@ def index():
     return render_page(_get_events_nonblocking(force="refresh" in request.args))
 
 
+@app.get("/<path:filename>")
+def static_export(filename):
+    """Serve exported artifacts (landing pages, feeds, sitemap, OG images) on the live server."""
+    base = os.path.dirname(os.path.abspath(__file__))
+    target = os.path.join(base, filename)
+    if os.path.isdir(target):
+        filename = os.path.join(filename, "index.html")
+    allowed = filename.endswith((".xml", ".ics", ".txt", ".jpg", ".json", "index.html"))
+    if not allowed or ".." in filename or not os.path.isfile(os.path.join(base, filename)):
+        return ("Not found", 404)
+    return send_from_directory(base, filename)
+
+
 @app.get("/deferred_days.html")
 def deferred_days_html():
     return send_from_directory(os.path.dirname(os.path.abspath(__file__)), "deferred_days.html")
@@ -152,7 +165,8 @@ def export_html(dest="index.html", source_json="events.json"):
         data["weather"] = fetch_nyc_weather()
     if "luckyseat" not in data or not data.get("luckyseat"):
         data["luckyseat"] = fetch_luckyseat_nyc()
-    html, deferred_html = render_page(data, split_deferred=True)
+    ctx = {}
+    html, deferred_html = render_page(data, split_deferred=True, context_out=ctx)
     with open(dest, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"wrote {dest}: {len(html.encode('utf-8')):,} bytes")
@@ -161,6 +175,25 @@ def export_html(dest="index.html", source_json="events.json"):
     with open(deferred_path, "w", encoding="utf-8") as f:
         f.write(deferred_html)
     print(f"wrote {deferred_path}: {len(deferred_html.encode('utf-8')):,} bytes")
+
+    # Search/social outputs: landing pages, sitemap/robots/llms.txt, RSS + iCal feeds, OG images.
+    # Each step is independent so one failure never blocks publishing the main page.
+    base_dir = os.path.dirname(os.path.abspath(dest))
+    if ctx.get("dated") is not None:
+        import seo
+        from export_feeds import write_feeds
+        from export_og import write_og_images
+        steps = (
+            ("landing pages & crawler files", lambda: seo.write_seo_files(base_dir, ctx["dated"], ctx["total"], ctx["n_sources"], ctx["site_url"])),
+            ("RSS & iCal feeds", lambda: write_feeds(base_dir, ctx["dated"], ctx["site_url"])),
+            ("OpenGraph images", lambda: write_og_images(base_dir, ctx["dated"], ctx["total"], ctx["site_url"])),
+        )
+        for label, fn in steps:
+            try:
+                written = fn()
+                print(f"wrote {label}: {len(written)} files")
+            except Exception as exc:  # noqa: BLE001 - report and keep exporting
+                print(f"Warning: failed to write {label}: {exc}")
     if dest in ("index.html", "events.html"):
         other = "events.html" if dest == "index.html" else "index.html"
         try:

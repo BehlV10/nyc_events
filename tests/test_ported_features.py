@@ -6,6 +6,7 @@ Run via:
 
 import json
 import os
+import re
 import sys
 import unittest
 from datetime import datetime, timedelta, timezone
@@ -312,8 +313,10 @@ class TestRenderSplit(unittest.TestCase):
         payload = {"venues": [{"venue": "Brooklyn Bowl", "url": "https://x.com", "events": events}]}
         page, deferred = render_page(payload, split_deferred=True)
         self.assertIn('data-src="deferred_days.html?v=', page)
-        self.assertIn("Show 0", page)
-        self.assertNotIn("Show 5", page)
+        # Visible markup only: JSON-LD for search engines intentionally lists the coming week.
+        visible = re.sub(r'<script type="application/ld\+json">.*?</script>', "", page, flags=re.S)
+        self.assertIn("Show 0", visible)
+        self.assertNotIn("Show 5", visible)
         self.assertIn("Show 5", deferred)
         self.assertRegex(page, r'class="cat-chk" value="Kids &amp; Family">')
         self.assertRegex(page, r'class="cat-chk" value="Music &amp; nightlife" checked>')
