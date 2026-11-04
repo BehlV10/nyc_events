@@ -22,9 +22,17 @@ from scrapers import (
     fetch_luckyseat_nyc,
     is_closed_show,
     is_placeholder_or_closed_event,
+    is_standing_exhibit,
+    is_utility_event,
+    is_kid_family_event,
+    fix_doubled_url,
+    sanitize_event_url,
     BROADWAY_THEATRES,
 )
 from venues_geo import resolve_event_geo
+
+# Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes).
+DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family"}
 
 
 TRISTATE_NEEDLES = (
@@ -201,6 +209,7 @@ CITY_RULES = [
         "east village", "west village", "greenwich village", "chelsea",
         "meatpacking", "gramercy", "flatiron", "midtown", "times square",
         "hell's kitchen", "upper west side", "uws", "upper east side", "ues",
+        "riverside park", "riverside drive", "79th street greenmarket", "amnh",
         "harlem", "morningside heights", "washington heights", "inwood",
         "battery park", "financial district", "fidi", "governors island",
         "columbus circle", "lincoln square", "meatpacking district",
@@ -822,7 +831,7 @@ GENERIC_DESCRIPTOR_PREFIXES = {
 
 
 def _normalize_title_head(title, venue=None):
-    t = (title or "").lower().strip()
+    t = unescape(title or "").lower().strip()
 
     # 1. Strip venue name from title if title starts with venue
     if venue:
@@ -834,8 +843,19 @@ def _normalize_title_head(title, venue=None):
                 t = t_clean[len(v_cand):].strip()
                 break
 
-    # 2. Strip leading generic words
+    # 2. Strip leading generic words and prefixes
+    t = re.sub(r"^(?:an evening with|an evening of|a night with|in conversation with)\s+", "", t, flags=re.I)
+    t = re.sub(r"^(?:no cover\s+(?:drag\s+)?|free\s+)", "", t, flags=re.I)
     t = re.sub(r"^(?:live|traditional|weekly|annual)\s+", "", t, flags=re.I)
+    t = re.sub(r"^(?:a|an)\s+", "", t, flags=re.I)
+
+    # Strip leading author/creator possessives when the remainder is a real title
+    # ("Harper Lee's To Kill a Mockingbird" -> "to kill a mockingbird")
+    m_poss = re.match(r"^(?:[a-z\.\'\-]+\s+){0,3}[a-z\.\'\-]+(?:'s|’s|')\s+(.+)$", t, flags=re.I)
+    if m_poss:
+        rem = m_poss.group(1).strip()
+        if len(rem.split()) >= 2 or len(rem) >= 8:
+            t = rem
 
     # 3. Strip parentheses / brackets with openers, support, guest, tour, age limits
     t = re.sub(r"\s*[\(\[][^\)\]]*(?:touring|18\+|21\+|sold out|ages|rescheduled|presale|preseason|preview|week\s*\d+|opens|opener|support|guest|special guest|featuring)[^\)\]]*[\)\]]", "", t, flags=re.I)
@@ -863,7 +883,7 @@ def _normalize_title_head(title, venue=None):
         if sep in t:
             parts = t.split(sep, 1)
             left = parts[0].strip()
-            if any(left.endswith(suff) for suff in GENERIC_CATEGORY_SUFFIXES):
+            if sep in (":", " - ", " – ", " — ") and any(left.endswith(suff) for suff in GENERIC_CATEGORY_SUFFIXES):
                 if len(parts[1].strip()) >= 3:
                     t = parts[1].strip()
                     continue
@@ -876,6 +896,7 @@ def _normalize_title_head(title, venue=None):
             t = parts[0].strip()
 
     t = re.sub(r"^(?:live|traditional|weekly|annual)\s+", "", t, flags=re.I)
+    t = re.sub(r"^(?:a|an)\s+", "", t, flags=re.I)
     t = re.sub(r"\bmusic\s+", "", t, flags=re.I)
     t = re.sub(r"[^a-z0-9]+", " ", t).strip()
     return t
@@ -1066,6 +1087,141 @@ def _ticket_source_name(url):
     return "Official Site"
 
 
+_TITLE_FILLER = {"w", "with", "and", "the", "a", "an", "live", "feat", "ft", "presents", "presented", "by"}
+_GENERIC_TITLE_VARIANTS = {"nyc", "newyork", "brooklyn", "queens", "manhattan", "tour", "usa", "concert", "show", "live"}
+_VENUE_GENERIC_WORDS = {
+    "the", "at", "in", "of", "and", "new", "york", "nyc", "ny", "manhattan", "brooklyn", "queens", "bronx",
+    "staten", "island", "public", "library", "branch", "main", "central", "west", "east", "north", "south",
+    "university", "college", "school", "church", "museum", "theatre", "theater", "hall", "center", "centre",
+    "club", "bar", "pub", "cafe", "café", "lounge", "room", "house", "studio", "brewing", "brewery", "company",
+    "co", "downtown", "presented", "by", "music", "arts", "art", "park", "street", "st", "ave", "avenue",
+}
+
+
+def _title_variants(title):
+    """Compact spellings of a title for cross-source duplicate detection: the full title and,
+    when it has an organizer/series prefix ("MoMA: ...", "X presents: ...", "BAM - ..."),
+    the part after it. Each variant is lowercase alphanumerics with filler words removed."""
+    t = unescape(title or "").lower()
+    t = re.sub(r"[\(\[][^\)\]]*[\)\]]", " ", t)          # (18+), [SOLD OUT]
+    t = re.sub(r"\s+(?:at|@)\s+(?:the\s+)?[\w'\s\.&-]+$", "", t)  # trailing "at Brooklyn Steel"
+    t = re.sub(r"\s*[-–—|,]\s*(?:nyc|new york(?: city)?|brooklyn|queens|manhattan)(?:,?\s*ny)?\s*$", "", t)
+    pieces = [t]
+    m = re.search(r"\bpresents?:?\s+(.+)$", t)
+    if m:
+        pieces.append(m.group(1))
+    for sep in (":", " - ", " – ", " — ", " | "):
+        if sep in t:
+            # Only the part after the prefix: the prefix itself is shared by unrelated events.
+            pieces.append(t.split(sep, 1)[1])
+    out = []
+    for piece in pieces:
+        toks = [w for w in re.findall(r"[a-z0-9]+", piece) if w not in _TITLE_FILLER]
+        c = "".join(toks)
+        if c and c not in _GENERIC_TITLE_VARIANTS:
+            out.append(c)
+    return out
+
+
+# Per-event memo for the O(n^2) duplicate scan. Keys are dropped when a merge rewrites an
+# event's name/venue and stripped from events when _merge_duplicates returns.
+_MEMO_KEYS = ("_m_geo", "_m_vwords", "_m_head", "_m_variants")
+
+
+def _memo(e, key, fn):
+    if key not in e:
+        e[key] = fn()
+    return e[key]
+
+
+def _cached_geo(e):
+    return _memo(e, "_m_geo", lambda: resolve_event_geo(e))
+
+
+def _venue_words(e):
+    return _memo(e, "_m_vwords", lambda: {re.sub(r"s$", "", x) for x in re.findall(r"\w+", (e.get("venue") or "").lower())} - _VENUE_GENERIC_WORDS)
+
+
+def _cached_head(e):
+    return _memo(e, "_m_head", lambda: _normalize_title_head(e.get("name") or "", venue=e.get("venue")))
+
+
+def _cached_variants(e):
+    return _memo(e, "_m_variants", lambda: _title_variants(e.get("name") or ""))
+
+
+def _same_physical_venue(e1, e2):
+    """Stricter venue check than _merge_duplicates' _venue_match: same geo pin, or a shared
+    distinctive word ("Nowadays", "Elsewhere") — not just "Public Library" or "Music Hall"."""
+    if _venue_words(e1) & _venue_words(e2):
+        return True
+    g1, g2 = _cached_geo(e1), _cached_geo(e2)
+    if g1 and g2:
+        return abs(g1["lat"] - g2["lat"]) < 0.0015 and abs(g1["lng"] - g2["lng"]) < 0.0015
+    return False
+
+
+def _titles_equivalent(a, b):
+    """True when any variant pair is identical, or one is a prefix of the other (>= 6 chars)."""
+    for x in a:
+        for y in b:
+            if x == y and len(x) >= 3:
+                return True
+            short, long_ = (x, y) if len(x) <= len(y) else (y, x)
+            if len(short) >= 6 and long_.startswith(short):
+                return True
+    return False
+
+
+_ATTRACTION_TOUR_RE = re.compile(
+    r"\b(museum|stadium|brewery|distillery|historic(?:al)?|walking|architecture|neighborhood|food|ghost|harbor|backstage)\s+tours?\b", re.I)
+
+
+def _is_attraction_tour(e):
+    """Hourly-departure tours (museum, walking, brewery...) that should collapse to one daily listing."""
+    if (e.get("category") or "").lower() in ("music", "comedy", "clubbing"):
+        return False
+    return bool(_ATTRACTION_TOUR_RE.search(e.get("name") or ""))
+
+
+def _event_local_time(e):
+    t = e.get("_time")
+    if t is None and e.get("date"):
+        try:
+            t = datetime.fromisoformat(str(e["date"]).replace("Z", "+00:00"))
+        except ValueError:
+            return None
+    if t is None:
+        return None
+    t = t.replace(tzinfo=EASTERN) if t.tzinfo is None else t.astimezone(EASTERN)
+    e["_time"] = t
+    return t
+
+
+_STEP4_STOPWORDS = {
+    "free", "night", "show", "shows", "live", "session", "comedy", "party", "dance", "dancing", "class",
+    "social", "meetup", "open", "with", "presents", "featuring", "late", "early", "edition", "special",
+}
+
+
+_AGGREGATOR_SOURCE_NAMES = {
+    "donyc citywide", "the skint nyc", "ticketmaster nyc", "seatgeek nyc", "dice.fm nyc",
+    "resident advisor nyc", "nyc parks department", "nyc parks free public events", "meetup nyc",
+    "nyc broadway lotteries", "luckyseat nyc broadway lotteries", "songkick nyc concerts",
+    "partiful nyc", "luma nyc", "nyc parks hikes, rangers & outdoor programs", "secret nyc",
+    "greenpointers brooklyn", "nyc for free (pop-ups & experiences)", "community submissions",
+}
+
+
+def _is_aggregator_source(source, venue_url=None):
+    """True for citywide feeds and keyword searches, which list events but don't present them,
+    so their names must never appear as a "presented by" tag."""
+    s = (source or "").strip().lower()
+    u = (venue_url or "").lower()
+    return (s in _AGGREGATOR_SOURCE_NAMES or s.startswith(("eventbrite: ", "meetup: "))
+            or "/d/ny--" in u or "/find/?keywords=" in u or "donyc.com/events" in u)
+
+
 def _merge_duplicates(events):
     """Collapse events sharing a normalized name or head title within the same day bucket.
 
@@ -1127,6 +1283,13 @@ def _merge_duplicates(events):
             t2 = t2.astimezone(EASTERN)
         if (t1.hour == 0 and t1.minute == 0) or (t2.hour == 0 and t2.minute == 0):
             return False
+        # Noon vs an evening show is a broker's untimed placeholder (e.g. SeatGeek 12 PM default)
+        if ((t1.hour == 12 and t1.minute == 0 and t2.hour >= 16) or
+                (t2.hour == 12 and t2.minute == 0 and t1.hour >= 16)):
+            return False
+        # Hourly departures of the same attraction tour collapse into one daily listing
+        if _is_attraction_tour(e1) and _is_attraction_tour(e2):
+            return False
         diff_mins = abs((t1 - t2).total_seconds()) / 60.0
         s1 = (e1.get("_source_venue") or e1.get("source") or "").lower()
         s2 = (e2.get("_source_venue") or e2.get("source") or "").lower()
@@ -1157,10 +1320,13 @@ def _merge_duplicates(events):
         if w1 and w2 and (w1 & w2):
             return True
         if e1 and e2:
-            g1 = resolve_event_geo(e1)
-            g2 = resolve_event_geo(e2)
-            if g1 and g2 and g1.get("venue") and g1.get("venue") == g2.get("venue"):
-                return True
+            g1 = _cached_geo(e1)
+            g2 = _cached_geo(e2)
+            if g1 and g2:
+                if g1.get("venue") and g1.get("venue") == g2.get("venue"):
+                    return True
+                if abs(g1["lat"] - g2["lat"]) < 0.0015 and abs(g1["lng"] - g2["lng"]) < 0.0015:
+                    return True
         return False
 
     for e in events:
@@ -1183,18 +1349,25 @@ def _merge_duplicates(events):
                 if not any(a.get("url") == t_url for a in e["_alt_sources"]):
                     e["_alt_sources"].append({"venue": src_label, "source": raw_src, "url": t_url, "price": e.get("price")})
 
-        raw_name = e.get("name") or ""
+        raw_name = unescape(e.get("name") or "").strip()
+        e["name"] = raw_name
         full = re.sub(r"[^a-z0-9]+", " ", raw_name.lower()).strip()
         venue_str = e.get("venue") or ""
-        head = _normalize_title_head(raw_name, venue=venue_str)
+        head = _cached_head(e)
         venue = venue_str.lower()
         curl = _clean_event_url(e.get("url"))
+        # A link that is just the source's listing page (calendar fallback) identifies the
+        # source, not the event: many distinct events share it, so it can't anchor a match.
+        if curl and curl == _clean_event_url(e.get("venue_url")):
+            curl = ""
 
         match = None
         # 0. Canonical specific URL match check
         if curl and curl in seen_url:
             for cand in seen_url[curl]:
-                if not _is_different_show(e, cand):
+                s_cand = (cand.get("_source_venue") or cand.get("source") or "").lower()
+                s_cur = (e.get("_source_venue") or e.get("source") or "").lower()
+                if s_cand != s_cur or not _is_different_show(e, cand):
                     match = cand
                     break
 
@@ -1219,13 +1392,89 @@ def _merge_duplicates(events):
             for cand in out:
                 c_venue = (cand.get("venue") or "").lower()
                 if _venue_match(venue, c_venue, e, cand) and not _is_different_show(e, cand):
-                    cand_head = _normalize_title_head(cand.get("name") or "", venue=cand.get("venue"))
+                    cand_head = _cached_head(cand)
                     if cand_head and cand_head not in GENERIC_HEADS:
                         if (cand_head.startswith(head) or head.startswith(cand_head)) and min(len(head), len(cand_head)) >= 6:
                             match = cand
                             break
+                        # Looser containment / shared two-word prefix only at the same physical
+                        # venue: generic feeds match any venue, and two different "run club" or
+                        # "open mic" listings at 7pm must not collapse into one.
+                        if not _same_physical_venue(e, cand):
+                            continue
+                        if (cand_head in head or head in cand_head) and min(len(head), len(cand_head)) >= 6:
+                            match = cand
+                            break
+                        h_words = head.split()
+                        c_words = cand_head.split()
+                        if len(h_words) >= 2 and len(c_words) >= 2 and h_words[:2] == c_words[:2]:
+                            prefix2 = " ".join(h_words[:2])
+                            if prefix2 not in GENERIC_HEADS and len(prefix2) >= 6:
+                                match = cand
+                                break
+
+        # 4. Same physical venue & start within 15 min, same comedy/theater/dance/community
+        #    category, and a shared distinctive title word. Words from the venue name don't
+        #    count, so concurrent rooms ("Comedy Cellar MacDougal" / "Comedy Cellar Village
+        #    Underground") stay separate.
+        if not match and venue and len(venue) >= 4:
+            t_e = e.get("_time")
+            cat_e = (e.get("category") or "").lower()
+            for cand in out if cat_e in ("comedy", "theater", "dance", "community") else ():
+                t_c = cand.get("_time")
+                if not t_e or not t_c or abs((t_e - t_c).total_seconds()) > 15 * 60:
+                    continue
+                if cat_e != (cand.get("category") or "").lower():
+                    continue
+                if not _same_physical_venue(e, cand) or _is_different_show(e, cand):
+                    continue
+                stop = _STEP4_STOPWORDS | set(re.findall(r"\w+", venue)) | set(re.findall(r"\w+", (cand.get("venue") or "").lower()))
+                words_e = {w for w in re.findall(r"\w+", raw_name.lower()) if len(w) >= 4} - stop
+                words_c = {w for w in re.findall(r"\w+", (cand.get("name") or "").lower()) if len(w) >= 4} - stop
+                if words_e & words_c:
+                    match = cand
+                    break
+
+        # 5. Same venue, start within 90 min, titles that differ only in formatting
+        #    ("half•alive"/"halfalive", "MoMA: Free Friday"/"Free Friday", "X presents: Y"/"Y")
+        if not match:
+            keys_e = _cached_variants(e)
+            t_e = e.get("_time")
+            for cand in out:
+                t_c = cand.get("_time")
+                if not t_e or not t_c or abs((t_e - t_c).total_seconds()) > 90 * 60:
+                    continue
+                if not _same_physical_venue(e, cand) or _is_different_show(e, cand):
+                    continue
+                if _titles_equivalent(keys_e, _cached_variants(cand)):
+                    match = cand
+                    break
 
         if match:
+            # Consolidate hourly tour departures into a single daily listing
+            if _is_attraction_tour(match) or _is_attraction_tour(e):
+                t_m, t_new = _event_local_time(match), _event_local_time(e)
+                times = match.setdefault("_tour_times", [])
+                for t in (t_m, t_new):
+                    if t and t not in times:
+                        times.append(t)
+                if t_m and t_new and t_new < t_m:
+                    match["_time"] = t_new
+                    if e.get("date"):
+                        match["date"] = e["date"]
+                times.sort()
+                if len(times) > 1:
+                    match["description"] = (f"Departures from {times[0].strftime('%-I:%M %p')} to "
+                                            f"{times[-1].strftime('%-I:%M %p')} at {match.get('venue') or 'the venue'}.")
+
+            # Upgrade a placeholder time (midnight / noon) once a confirmed evening showtime arrives
+            m_time, e_time = match.get("_time"), e.get("_time")
+            if (m_time and e_time and e_time.hour >= 16
+                    and (m_time.hour == 0 or (m_time.hour == 12 and m_time.minute == 0))):
+                match["_time"] = e_time
+                if e.get("date"):
+                    match["date"] = e["date"]
+
             match.setdefault("_alt_sources", [])
             src_url = e.get("url")
             raw_src = e.get("_source_venue") or e.get("source") or e.get("venue") or "source"
@@ -1250,6 +1499,8 @@ def _merge_duplicates(events):
                     match["_alt_sources"].append({"venue": old_label, "source": old_src, "url": old_url, "price": match.get("price")})
                 match["url"] = e.get("url")
                 match["name"] = e.get("name")
+                for k in _MEMO_KEYS:
+                    match.pop(k, None)
                 if match.get("venue", "").lower() in generic_sources or _is_generic_feed(match) or (e.get("venue") and not _is_generic_feed(e)):
                     match["venue"] = e.get("venue")
                 match["_source_venue"] = e.get("_source_venue") or e.get("source")
@@ -1306,6 +1557,9 @@ def _merge_duplicates(events):
                 seen_head.setdefault(head, []).append(e)
             out.append(e)
 
+    for ev in out:
+        for k in _MEMO_KEYS:
+            ev.pop(k, None)
     return out
 
 
@@ -1316,12 +1570,17 @@ def group_by_date(results):
     ongoing = []
     for r in results:
         for e in r.get("events", []):
-            if is_placeholder_or_closed_event(e.get("name")) or is_closed_show(e.get("venue")):
+            if is_placeholder_or_closed_event(e.get("name")) or is_closed_show(e.get("venue")) or is_standing_exhibit(e):
                 continue
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
+            entry["url"] = sanitize_event_url(fix_doubled_url(entry.get("url")), fallback=r.get("url") or None)
             entry["venue"] = e.get("venue") or r.get("venue", "")
             existing_cat = e.get("category")
-            if existing_cat == "theater":
+            if is_utility_event(e.get("name")):
+                entry["category"] = "services"
+            elif is_kid_family_event(e.get("name"), entry["venue"]):
+                entry["category"] = "family"
+            elif existing_cat == "theater":
                 entry["category"] = "theater"
             else:
                 entry["category"] = guess_category(e.get("name"), existing_cat or r.get("default_category") or "community", venue=entry["venue"])
@@ -1347,7 +1606,10 @@ def group_by_date(results):
     return sorted(buckets.items()), tba, ongoing
 
 
-def render_page(results):
+def render_page(results, split_deferred=False):
+    """Render the full page. With split_deferred=True, days beyond the first week are left
+    out of the HTML and returned separately as (page_html, deferred_html); the page fetches
+    them from deferred_days.html after first paint, keeping index.html small."""
     if isinstance(results, dict):
         venue_list = results.get("venues", [])
     else:
@@ -1406,26 +1668,35 @@ def render_page(results):
         subarea_tag = f' <span class="subarea-tag">· {escape(sub_name)}</span>' if sub_name and not sub_name.startswith("Other ") else ""
         recurring = is_recurring(e)
         recur_flag = "weekly" if recurring else "once"
-        recur_badge = '<span class="recur">↻ weekly</span>' if recurring else ""
-        alts = e.get("_alt_sources") or []
+        is_hourly = len(e.get("_tour_times") or []) > 1
+        recur_badge = '<span class="recur">↻ hourly</span>' if is_hourly else ('<span class="recur">↻ weekly</span>' if recurring else "")
         alt_html = ""
+        # One link per provider label: the same listing reached through several topic feeds
+        # (Eventbrite run-club / 5K / outdoor searches) only needs to be offered once.
+        alts, seen_alt_urls, seen_alt_labels = [], {_clean_event_url(e.get("url")) or e.get("url")}, set()
+        for a in e.get("_alt_sources") or []:
+            a_url = a.get("url")
+            a_key = _clean_event_url(a_url) or a_url
+            label = (a.get("venue") or "").strip().lower()
+            if not a_url or a_key in seen_alt_urls or label in seen_alt_labels:
+                continue
+            seen_alt_urls.add(a_key)
+            seen_alt_labels.add(label)
+            alts.append(a)
         if alts:
             alt_links = " · ".join(
                 f'<a href="{escape(a["url"])}" target="_blank" rel="noopener">{escape(a["venue"])}</a>'
-                for a in alts if a.get("url")
+                for a in alts
             )
             if alt_links:
                 alt_html = f'<span class="alt-sources">also on {alt_links}</span>'
 
         compare_html = _build_compare_links(e, raw_title)
 
-        GENERIC_AGGREGATORS = {
-            "donyc citywide", "the skint nyc", "ticketmaster nyc", "seatgeek nyc",
-            "dice.fm nyc", "resident advisor nyc", "nyc parks department", "meetup nyc",
-            "nyc broadway lotteries", "luckyseat nyc broadway lotteries"
-        }
         presenter = e.get("_presenter") or ""
-        if not presenter and source and venue and source.strip().lower() not in GENERIC_AGGREGATORS:
+        if presenter and _is_aggregator_source(presenter):
+            presenter = ""
+        if not presenter and source and venue and not _is_aggregator_source(source, e.get("venue_url")):
             s_clean = source.strip().lower()
             v_clean = venue.strip().lower()
             if s_clean not in v_clean and v_clean not in s_clean:
@@ -1495,8 +1766,8 @@ def render_page(results):
             accent = CATEGORY_STYLES.get(cats[0], CATEGORY_STYLES["other"])[0] if cats else CATEGORY_STYLES["other"][0]
             items = "\n".join(render_event(e) for e in bucket_events)
             bucket_blocks.append(f'''
-            <div class="bucket" data-bucket="{escape(bname)}">
-              <div class="bucket-head" style="--accent:{accent}">
+            <div class="bucket" data-bucket="{escape(bname)}" style="--accent:{accent};">
+              <div class="bucket-head">
                 <span class="bucket-name">{escape(bname)}</span>
                 <span class="count">{len(bucket_events)}</span>
               </div>
@@ -1548,7 +1819,7 @@ def render_page(results):
     deferred_sections = []
     for idx, (date_obj, events) in enumerate(dated):
         sec_html = _render_day_section(escape(format_date_heading(date_obj)), events, date_obj.isoformat())
-        if idx < 7:
+        if idx < 3:  # today + next two days inline; the rest load after first paint
             initial_sections.append(sec_html)
         else:
             deferred_sections.append(sec_html)
@@ -1556,6 +1827,13 @@ def render_page(results):
         deferred_sections.append(_render_day_section("Date TBA", tba, "tba"))
 
     all_event_dates = [d.isoformat() for d, _ in dated]
+
+    deferred_html = "".join(deferred_sections)
+    if split_deferred:
+        deferred_ver = hashlib.sha1(deferred_html.encode("utf-8")).hexdigest()[:10]
+        deferred_tag = f'<template id="deferred-days" data-src="deferred_days.html?v={deferred_ver}"></template>'
+    else:
+        deferred_tag = f'<template id="deferred-days">{deferred_html}</template>'
 
     useful_sidebar = ""
     if STATIC_LINKS or DEAL_LINKS:
@@ -1566,7 +1844,7 @@ def render_page(results):
             if lucky_shows:
                 def _lucky_li(s):
                     price = s.get("price")
-                    price_str = f" · ${price:.0f} all-in" if isinstance(price, (int, float)) else ""
+                    price_str = f" · ${price:.0f}" if isinstance(price, (int, float)) else ""
                     return (
                         f'<li><a href="{escape(s["url"])}" target="_blank" rel="noopener">'
                         f'<span class="deal-name">{escape(s["name"] or "Show")}</span>'
@@ -1682,7 +1960,7 @@ def render_page(results):
 
     bucket_boxes = "\n".join(
         f'''<label class="chk">
-            <input type="checkbox" class="cat-chk" value="{escape(b)}" checked>
+            <input type="checkbox" class="cat-chk" value="{escape(b)}"{"" if b in DEFAULT_UNCHECKED_BUCKETS else " checked"}>
             <span><span class="chip-icon">{_bucket_icon_row(b)} </span>{escape(b)} <span class="count">{bucket_counts.get(b, 0)}</span></span>
           </label>'''
         for b in bucket_order
@@ -1730,7 +2008,7 @@ def render_page(results):
         for c in city_order
     )
 
-    return f"""<!doctype html>
+    page_html = f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -2479,6 +2757,37 @@ def render_page(results):
     color: #0c0e14;
     font-weight: 700;
     box-shadow: 0 2px 8px var(--accent-glow);
+  }}
+  .view-actions {{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }}
+  .map-toggle-btn {{
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 14px;
+    min-width: 64px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s ease;
+  }}
+  .map-toggle-btn:hover {{
+    color: var(--fg);
+    border-color: var(--accent);
+  }}
+  .map-toggle-btn.active {{
+    background: var(--accent-glow);
+    border-color: var(--accent);
+    color: var(--accent);
   }}
   .share-filter-btn {{
     background: transparent;
@@ -3531,24 +3840,21 @@ def render_page(results):
     </aside>
     <main>
       <div class="view-switch-bar">
-        <div class="view-toggle" role="group" aria-label="View mode">
-          <button type="button" class="view-btn active" id="btn-view-list" data-view="list">
-            <span><span class="chip-icon">📋 </span>List View</span>
+        <div class="view-toggle" role="group" aria-label="Feed presentation">
+          <button type="button" class="view-btn active" id="btn-view-list" data-view="list" title="Browse events grouped by category and borough">
+            <span>Category</span>
           </button>
-          <button type="button" class="view-btn" id="btn-view-map" data-view="map">
-            <span><span class="chip-icon">🗺️ </span>Map View</span>
-          </button>
-          <button type="button" class="view-btn" id="btn-near-me" data-view="near" title="Sort events on visible day by distance to your current location">
-            <span><span class="chip-icon">📍 </span><span id="near-me-btn-label">Near Me</span></span>
+          <button type="button" class="view-btn" id="btn-near-me" data-view="near" title="Sort events by distance to your current location">
+            <span id="near-me-btn-label">Near Me</span>
           </button>
         </div>
-        <div class="view-switch-right">
-          <button type="button" id="btn-share-filter" class="share-filter-btn" title="Copy shareable link with current filters">
-            <span class="chip-icon">🔗 </span><span id="share-btn-text">Share View</span>
-          </button>
+        <div class="view-actions">
           <span id="map-venue-stat" class="map-venue-stat" style="display: none;">
-            <strong id="map-venue-count">0</strong> venues on map
+            <strong id="map-venue-count">0</strong> venues
           </span>
+          <button type="button" class="map-toggle-btn" id="btn-view-map" title="Toggle interactive venue map">
+            <span id="map-btn-label">Map</span>
+          </button>
         </div>
       </div>
       <div class="location-chips-bar" id="location-chips">
@@ -3621,9 +3927,7 @@ def render_page(results):
         </div>
       </div>
       {"".join(initial_sections)}
-      <template id="deferred-days">
-      {"".join(deferred_sections)}
-      </template>
+      {deferred_tag}
       <div class="week-nav bottom">
         <button type="button" id="week-prev-b" aria-label="Previous week">← prev</button>
         <span id="week-label-b"></span>
@@ -3860,6 +4164,9 @@ def render_page(results):
   </div>
   <script>
     const catBoxes = document.querySelectorAll('.cat-chk');
+    const defaultUncheckedCats = new Set({json.dumps(sorted(DEFAULT_UNCHECKED_BUCKETS))});
+    const isDefaultCat = (b) => !defaultUncheckedCats.has(b.value);
+    const isCatFilteredFn = () => Array.from(catBoxes).some(b => b.checked !== isDefaultCat(b));
     const venueBoxes = document.querySelectorAll('.venue-chk');
     const recurBoxes = document.querySelectorAll('.recur-chk');
     const cityBoxes = document.querySelectorAll('.city-chk');
@@ -4138,8 +4445,9 @@ def render_page(results):
       const nearBtn = document.getElementById('btn-near-me');
       const listBtn = document.getElementById('btn-view-list');
       if (nearBtn) nearBtn.classList.toggle('active', nearMeActive);
-      if (listBtn) listBtn.classList.toggle('active', !nearMeActive && currentView === 'list');
+      if (listBtn) listBtn.classList.toggle('active', !nearMeActive);
       apply();
+      stateToHash();
     }}
 
     const mobileToggle = document.getElementById('mobile-filter-toggle');
@@ -4152,19 +4460,48 @@ def render_page(results):
     const eventDates = new Set(ALL_EVENT_DATES);
 
     let deferredHydrated = false;
-    function ensureDeferredDaysHydrated() {{
-      if (deferredHydrated) return;
-      deferredHydrated = true;
-      const tmpl = document.getElementById('deferred-days');
-      if (!tmpl) return;
+    let deferredFetch = null;
+    function insertDeferredDays(fragment) {{
       const bottomNav = document.querySelector('.week-nav.bottom');
-      if (bottomNav && bottomNav.parentNode) {{
-        bottomNav.parentNode.insertBefore(tmpl.content, bottomNav);
+      if (fragment && bottomNav && bottomNav.parentNode) {{
+        bottomNav.parentNode.insertBefore(fragment, bottomNav);
       }}
-      tmpl.remove();
+      const tmpl = document.getElementById('deferred-days');
+      if (tmpl) tmpl.remove();
+      deferredHydrated = true;
       daySections = Array.from(document.querySelectorAll('.day[data-date]'));
       updateDayHeadings();
     }}
+    // Days past the first three are either inlined in <template> (live server) or kept in
+    // deferred_days.html (static export). The file is downloaded on idle, but only parsed
+    // into the DOM when a view actually needs those days; apply() re-runs once it lands.
+    let deferredInserting = false;
+    function fetchDeferredText() {{
+      const tmpl = document.getElementById('deferred-days');
+      if (!deferredFetch && tmpl && tmpl.dataset.src) {{
+        deferredFetch = fetch(tmpl.dataset.src).then(r => r.ok ? r.text() : '').catch(() => '');
+      }}
+      return deferredFetch;
+    }}
+    function ensureDeferredDaysHydrated() {{
+      if (deferredHydrated || deferredInserting) return;
+      const tmpl = document.getElementById('deferred-days');
+      if (!tmpl) {{ deferredHydrated = true; return; }}
+      if (!tmpl.dataset.src) {{ insertDeferredDays(tmpl.content); return; }}
+      deferredInserting = true;
+      fetchDeferredText().then(text => {{
+        const holder = document.createElement('template');
+        holder.innerHTML = text || '';
+        insertDeferredDays(holder.content);
+        apply();
+      }});
+    }}
+    (function prefetchDeferredDays() {{
+      const tmpl = document.getElementById('deferred-days');
+      if (!tmpl || !tmpl.dataset.src) return;
+      if ('requestIdleCallback' in window) requestIdleCallback(fetchDeferredText, {{ timeout: 4000 }});
+      else setTimeout(fetchDeferredText, 2000);
+    }})();
     function parseISO(s) {{ const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }}
     function fmtISO(d) {{
       const y = d.getFullYear(), m = String(d.getMonth() + 1).padStart(2, '0'), da = String(d.getDate()).padStart(2, '0');
@@ -4395,14 +4732,17 @@ def render_page(results):
       updateMapMarkers();
     }}
 
+    // The map opens above the feed and is independent of the Category / Near Me choice.
+    function toggleMap(forcedState) {{
+      switchView((typeof forcedState === 'boolean' ? forcedState : currentView !== 'map') ? 'map' : 'list');
+    }}
+
     function switchView(mode) {{
       currentView = mode;
-      const listBtn = document.getElementById('btn-view-list');
       const mapBtn = document.getElementById('btn-view-map');
       const mapWrapper = document.getElementById('map-view-wrapper');
       const mapStat = document.getElementById('map-venue-stat');
 
-      if (listBtn) listBtn.classList.toggle('active', mode === 'list');
       if (mapBtn) mapBtn.classList.toggle('active', mode === 'map');
       if (mapWrapper) mapWrapper.style.display = (mode === 'map') ? 'flex' : 'none';
       if (mapStat) mapStat.style.display = (mode === 'map') ? 'inline-block' : 'none';
@@ -4415,9 +4755,6 @@ def render_page(results):
             updateMapMarkers();
           }}
         }});
-      }}
-      if (mode === 'list' && nearMeActive) {{
-        setNearMe(false);
       }}
       stateToHash();
     }}
@@ -4679,8 +5016,7 @@ def render_page(results):
     }}
 
     function updateMobileBadge() {{
-      const allCats = catBoxes.length;
-      const chkCats = Array.from(catBoxes).filter(b => b.checked).length;
+      const isCatFiltered = isCatFilteredFn();
       const allVenues = venueBoxes.length;
       const chkVenues = Array.from(venueBoxes).filter(b => b.checked).length;
       const allCities = cityBoxes.length;
@@ -4690,7 +5026,7 @@ def render_page(results):
       const isFree = freeOnlyChk && freeOnlyChk.checked;
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
-      const isFiltered = (chkCats < allCats) || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isFiltered = isCatFiltered || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -4722,9 +5058,11 @@ def render_page(results):
       const q = searchInput.value.trim();
       if (q) params.set('q', q);
 
-      const allCats = Array.from(catBoxes).map(b => b.value);
-      const checkedCats = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
-      if (checkedCats.length > 0 && checkedCats.length < allCats.length) params.set('cat', checkedCats.join(','));
+      if (isCatFilteredFn()) {{
+        const checkedCats = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
+        if (checkedCats.length === catBoxes.length) params.set('cat', 'all');
+        else params.set('cat', checkedCats.length ? checkedCats.join(',') : 'none');
+      }}
 
       const allCities = Array.from(cityBoxes).map(b => b.value);
       const checkedCities = Array.from(cityBoxes).filter(b => b.checked).map(b => b.value);
@@ -4784,8 +5122,13 @@ def render_page(results):
         }}
 
         if (params.has('cat')) {{
-          const vals = new Set(params.get('cat').split(','));
-          catBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
+          const catVal = params.get('cat');
+          if (catVal === 'all') catBoxes.forEach(b => {{ b.checked = true; }});
+          else if (catVal === 'none') catBoxes.forEach(b => {{ b.checked = false; }});
+          else {{
+            const vals = new Set(catVal.split(','));
+            catBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
+          }}
         }}
 
         if (params.has('city')) {{
@@ -4886,17 +5229,15 @@ def render_page(results):
         showAll ||
         searchText.length > 0
       );
-      if (!needsHydration) {{
-        if (timeFilter === 'day') {{
-          needsHydration = !daySections.some(d => d.dataset.date === anchorISO);
-        }} else if (timeFilter === 'week') {{
-          for (const wDate of week) {{
-            if (!daySections.some(d => d.dataset.date === wDate)) {{
-              needsHydration = true;
-              break;
-            }}
-          }}
-        }}
+      if (!needsHydration && !deferredHydrated) {{
+        // Hydrate when the current view needs a day that has events but isn't in the DOM yet
+        const wanted = timeFilter === 'today' ? [todayISO]
+          : timeFilter === 'tomorrow' ? [tomorrowISO]
+          : timeFilter === 'weekend' ? [satISO, sunISO]
+          : timeFilter === 'day' ? [anchorISO]
+          : Array.from(week || []);
+        const loaded = new Set(daySections.map(d => d.dataset.date));
+        needsHydration = wanted.some(dt => eventDates.has(dt) && !loaded.has(dt));
       }}
       if (needsHydration) {{
         ensureDeferredDaysHydrated();
@@ -5266,7 +5607,7 @@ def render_page(results):
       quickTheaterChip.addEventListener('click', () => {{
         const checked = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
         if (checked.length === 1 && checked[0] === 'Theater') {{
-          catBoxes.forEach(b => {{ b.checked = true; }});
+          catBoxes.forEach(b => {{ b.checked = isDefaultCat(b); }});
         }} else {{
           catBoxes.forEach(b => {{
             b.checked = (b.value === 'Theater');
@@ -5418,7 +5759,7 @@ def render_page(results):
       if (customTimeRangeDiv) customTimeRangeDiv.style.display = 'none';
       updateTimeUI();
       activeSubarea = 'all';
-      catBoxes.forEach(b => b.checked = true);
+      catBoxes.forEach(b => b.checked = isDefaultCat(b));
       cityBoxes.forEach(b => b.checked = true);
       recurBoxes.forEach(b => b.checked = true);
       venueBoxes.forEach(b => b.checked = true);
@@ -5517,10 +5858,10 @@ def render_page(results):
     }}
 
     const btnViewList = document.getElementById('btn-view-list');
-    if (btnViewList) btnViewList.addEventListener('click', () => switchView('list'));
+    if (btnViewList) btnViewList.addEventListener('click', () => {{ if (nearMeActive) setNearMe(false); }});
 
     const btnViewMap = document.getElementById('btn-view-map');
-    if (btnViewMap) btnViewMap.addEventListener('click', () => switchView('map'));
+    if (btnViewMap) btnViewMap.addEventListener('click', () => toggleMap());
 
     const btnNearMe = document.getElementById('btn-near-me');
     if (btnNearMe) btnNearMe.addEventListener('click', () => toggleNearMe());
@@ -6147,3 +6488,6 @@ def render_page(results):
   </script>
 </body>
 </html>"""
+    if split_deferred:
+        return page_html, deferred_html
+    return page_html
