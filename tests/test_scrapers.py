@@ -1299,3 +1299,53 @@ if __name__ == "__main__":
     unittest.main()
 
 
+
+
+class TestEventbriteRotation(unittest.TestCase):
+    """Eventbrite rate-limits bursts, so each run refreshes only a few sources in rotation."""
+
+    def setUp(self):
+        import tempfile
+        import scrapers
+        self.scrapers = scrapers
+        self.tmp = tempfile.mkdtemp()
+        self.orig_dir = scrapers.CACHE_DIR
+        scrapers.CACHE_DIR = self.tmp
+
+    def tearDown(self):
+        import shutil
+        self.scrapers.CACHE_DIR = self.orig_dir
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _venues(self, n):
+        return [{"name": f"EB {i}", "url": f"https://www.eventbrite.com/d/ny--new-york/x{i}/"} for i in range(n)]
+
+    def test_caps_and_rotates_failed_sources(self):
+        s = self.scrapers
+        venues = self._venues(10) + [{"name": "Other", "url": "https://example.com/"}]
+        first = s._pick_eventbrite_refreshes(venues, limit=4, now=1000)
+        self.assertEqual(len(first), 4)
+        self.assertNotIn("Other", first)
+        # Those 4 "failed" (no cache written): the next run must pick different sources.
+        second = s._pick_eventbrite_refreshes(venues, limit=4, now=2000)
+        self.assertEqual(len(second), 4)
+        self.assertFalse(first & second)
+
+    def test_fresh_cache_not_due_unless_forced(self):
+        s = self.scrapers
+        venues = self._venues(3)
+        for v in venues:
+            s._save_venue_cache(v["name"], [{"name": "x"}])
+        self.assertEqual(s._pick_eventbrite_refreshes(venues, limit=5), set())
+        self.assertEqual(len(s._pick_eventbrite_refreshes(venues, force=True, limit=2)), 2)
+
+    def test_not_allowed_serves_cache_without_error(self):
+        s = self.scrapers
+        fut = (datetime.now(timezone.utc) + timedelta(days=3)).strftime("%Y-%m-%dT20:00:00Z")
+        v = {"name": "EB cached", "url": "https://www.eventbrite.com/d/ny--new-york/y/", "ua": UA_CHROME,
+             "scraper": lambda u, ua: self.fail("must not fetch live")}
+        s._save_venue_cache(v["name"], [{"name": "Cached Party", "date": fut}])
+        os.utime(s._venue_cache_path(v["name"]))
+        res = s._scrape_one(v, allow_live=False)
+        self.assertIsNone(res["error"])
+        self.assertEqual([e["name"] for e in res["events"]], ["Cached Party"])
