@@ -5400,7 +5400,7 @@ def render_page(results, split_deferred=False, context_out=None):
       if (str === 'midnight' || str === '24:00') return 1440;
       if (str === 'noon' || str === '12:00') return 720;
 
-      const ampmMatch = str.match(/^(\d{{1,2}})(?::(\d{{2}}))?\s*(am|pm)$/);
+      const ampmMatch = str.match(/^(\\d{{1,2}})(?::(\\d{{2}}))?\\s*(am|pm)$/);
       if (ampmMatch) {{
         let h = parseInt(ampmMatch[1], 10);
         const m = ampmMatch[2] ? parseInt(ampmMatch[2], 10) : 0;
@@ -5410,14 +5410,14 @@ def render_page(results, split_deferred=False, context_out=None):
         return h * 60 + m;
       }}
 
-      const colonMatch = str.match(/^(\d{{1,2}}):(\d{{2}})$/);
+      const colonMatch = str.match(/^(\\d{{1,2}}):(\\d{{2}})$/);
       if (colonMatch) {{
         const h = parseInt(colonMatch[1], 10);
         const m = parseInt(colonMatch[2], 10);
         return h * 60 + m;
       }}
 
-      const numMatch = str.match(/^(\d{{1,2}})$/);
+      const numMatch = str.match(/^(\\d{{1,2}})$/);
       if (numMatch) {{
         const n = parseInt(numMatch[1], 10);
         return n * 60;
@@ -7255,7 +7255,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const whenText = (li.querySelector('.when')?.textContent || '').trim();
       let dt = null;
       if (dayDate && dayDate !== 'tba') {{
-        const timeMatch = whenText.match(/(\d{{1,2}})(?::(\d{{2}}))?\s*(am|pm)/i);
+        const timeMatch = whenText.match(/(\\d{{1,2}})(?::(\\d{{2}}))?\\s*(am|pm)/i);
         let h = 19, m = 0;
         if (timeMatch) {{
           h = parseInt(timeMatch[1], 10);
