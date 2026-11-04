@@ -114,35 +114,59 @@ python3 server.py test "Bowery"
 # Re-scrape and export fresh events.json
 python3 server.py export events.json
 
-# Render static HTML from events.json
+# Render static HTML from events.json. Also writes deferred_days.html (days past the first
+# three, loaded on demand), the landing pages, sitemap.xml / robots.txt / llms.txt,
+# feed.xml + events.ics, and the og-*.jpg social cards.
 python3 server.py export html index.html
+
+# Unit tests
+python3 -m unittest discover tests
 ```
+
+### Content & maintenance scripts
+```bash
+python3 scripts/curate_highlights.py          # pick each day's editor's picks -> highlights.json (CI runs this)
+python3 scripts/generate_this_week_flyer.py   # weekly Instagram carousel -> instagram/this_week_slide{1,2}.png
+python3 scripts/generate_reddit_roundup.py    # weekend roundup in Reddit Markdown -> reddit_roundup.md
+python3 scripts/check_links.py --date 2026-11-06   # find dead event links
+python3 scripts/audit_coverage.py newsletter.txt   # what share of an outside list do we have? which venues to add?
+python3 scripts/ping_indexnow.py --force       # notify Bing/IndexNow engines now (CI does this every 6h)
+```
+Hand-written picks can be added to `highlights.json` (entries without `"auto": true` are kept by the curator).
 
 ---
 
 ## 🤖 Automated Scraper Workflow
 
-The repository includes [`.github/workflows/scrape.yml`](.github/workflows/scrape.yml):
-- Runs every **30 minutes** via GitHub Actions cron (`*/30 * * * *`).
-- Supports manual execution via `workflow_dispatch`.
-- Fetches all venue pages concurrently.
-- Deduplicates listings and updates `events.json`, `index.html`, and `events.html`.
-- Commits changes back to `main` with a timestamped bot commit.
+[`.github/workflows/scrape.yml`](.github/workflows/scrape.yml) runs every **30 minutes** (and on push to `main`):
+- Runs the unit tests, then re-scrapes every source (per-host rate limits keep Eventbrite/Meetup from throttling).
+- Curates the daily picks and renders the site, landing pages, feeds, and social cards.
+- Commits `events.json`, `index.html`, `events.html`, `deferred_days.html`, and `highlights.json`. Landing pages,
+  feeds, sitemap, and OG images are deployed with the Pages artifact but not committed (see `.gitignore`).
+- Deploys to GitHub Pages, then pings IndexNow every 6 hours.
+
+[`.github/workflows/tests.yml`](.github/workflows/tests.yml) runs the tests on every pull request.
 
 ---
 
 ## 🌐 GitHub Pages & Custom Domain Setup
 
-1. **Enable GitHub Pages**:
-   - Go to **Settings** → **Pages** in the GitHub repository.
-   - Set **Source** to `Deploy from a branch`.
-   - Select branch `main` and folder `/ (root)`.
-   - Save. Your site will be published at `https://<username>.github.io/nyc_events/`.
+The site deploys through **GitHub Actions** (Settings → Pages → Source: *GitHub Actions*) and is live at
+`https://behlv10.github.io/nyc_events/`.
 
-2. **Custom Domain (Cloudflare DNS)**:
-   - In GitHub repository settings under **Custom domain**, enter your desired domain (e.g., `www.nycevents.com`).
-   - In Cloudflare DNS, add a `CNAME` record pointing to `<username>.github.io` with Proxy status set to *Proxied* or *DNS only*.
-   - Check *Enforce HTTPS* in GitHub Pages settings once DNS propagates.
+Every absolute URL the site emits (canonical tags, OpenGraph images, JSON-LD, sitemap, robots.txt, llms.txt,
+feeds, IndexNow) comes from `seo.get_site_url()`: the `CNAME` file if present, else a `SITE_URL` env var, else the
+GitHub Pages URL. When you buy a domain:
+
+1. **DNS**: add a `CNAME` record for `www` pointing to `behlv10.github.io` (plus GitHub's `A` records for the apex
+   domain if you want `example.com` to work too).
+2. **GitHub**: Settings → Pages → *Custom domain* → enter `www.example.com`, then check *Enforce HTTPS* once it verifies.
+   (With Actions-based deploys GitHub reads the domain from this setting, not from a file.)
+3. **This repo**: create a one-line `CNAME` file containing `www.example.com` and push. The next deploy switches every
+   generated URL to the new domain, and `robots.txt` starts working (crawlers only read it at a domain's root).
+4. **Search consoles**: add the domain to Google Search Console and Bing Webmaster Tools and submit `/sitemap.xml`.
+
+Optional: `edge-og/` is a Cloudflare Worker that renders per-event SVG preview cards (see its README for limits).
 
 ---
 

@@ -6,3 +6,30 @@ __pycache__/
 *.pyc
 .DS_Store
 .cache/
+.idea/
+
+# Generated on every export and deployed with the Pages artifact (not committed, so refreshed
+# OG images and landing pages don't pile up in git history). See seo.py / export_*.py.
+/feed.xml
+/events.ics
+/sitemap.xml
+/robots.txt
+/llms.txt
+/og-*.jpg
+/things-to-do-nyc-this-weekend/
+/free-events-nyc-this-weekend/
+/nyc-events-today/
+/brooklyn-events-tonight/
+/free-events-nyc/
+/live-music-nyc/
+/dj-techno-nights-nyc/
+/comedy-nyc/
+/theater-nyc/
+/run-clubs-nyc/
+/hiking-outdoors-nyc/
+/board-games-trivia-nyc/
+/manhattan/
+/brooklyn/
+/queens/
+/bronx/
+/staten-island/
