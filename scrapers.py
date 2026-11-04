@@ -201,8 +201,11 @@ CATEGORY_KEYWORDS = [
     ("art",       [r"\b(exhibit|gallery|museum|reception|sculpture|painting|open studios?|installation)\b"]),
     ("books",     [r"\b(book launch|author talk|poetry|reading|bookstore|book signing|literary)\b"]),
     ("food",      [r"\b(tasting|wine dinner|beer release|food tour|brewery|pop-up dinner|pairing|culinary)\b"]),
-    ("outdoors",  [r"\b(hike|walking tour|nature walk|birding|trail|kayak|park tour|outdoor)\b"]),
-    ("sports",    [r"\b(yankees|mets|knicks|nets|rangers|islanders|soccer|5k|10k|marathon|hockey|basketball)\b"]),
+    ("outdoors",  [r"\b(hikes?|hiking|walking tour|nature walk|birding|bird walk|trail|kayak(ing)?|paddl(e|ing)|park tour|outdoor|camping|foraging|stargazing)\b"]),
+    ("sports",    [r"\b(yankees|mets|knicks|nets|rangers|islanders|liberty|soccer|5k|10k|half marathon|marathon|hockey|basketball|"
+                   r"run club|running club|group run|social run|long run|track night|runners|yoga|pilates|bootcamp|hiit|"
+                   r"(rock |indoor )?climbing|bouldering|pickleball|volleyball|kickball|softball|cycling|bike ride|group ride|"
+                   r"roller skat\w*|ice skating|skate night|fitness class|workout)\b"]),
     ("gaming",    [r"\b(board games?|trivia|arcade|esports|chess|magic the gathering|d&d|tabletop|video game|smash bros|gaming tournament|smash ultimate|melee|lan|pinball|shuffleboard|billiards|ping-?pong|backgammon|mahjong|loter[ií]a|bingo)\b"]),
     ("community", [r"\b(talk|lecture|panel|discussion|networking|farmers market|flea market|artisan market|expo|festival|parade|sample sale|fashion|symposium|speed-dating|skip the small talk|tech|ai|hackathon|startup|pitch|coworking|founder|mixer)\b"]),
 ]
@@ -2202,8 +2205,17 @@ def scrape_eventbrite_jsonld(url, ua):
         "Sec-Fetch-User": "?1",
         "Upgrade-Insecure-Requests": "1",
     }
-    resp = _SESSION.get(url, headers=headers, timeout=12)
-    resp.raise_for_status()
+    resp = None
+    for attempt in range(2):
+        resp = _SESSION.get(url, headers=headers, timeout=12)
+        resp.raise_for_status()
+        if "application/ld+json" in resp.text or "__SERVER_DATA__" in resp.text:
+            break
+        time.sleep(3 + attempt * 4)  # throttled / challenge page: back off once and retry
+    else:
+        # Raise instead of returning [] so the pipeline reports it and keeps the last good
+        # data visibly ("serving stale cache") rather than silently.
+        raise RuntimeError("Eventbrite returned a page without event data (likely rate-limited)")
     exact_starts = _parse_eventbrite_server_data(resp.text)
     soup = BeautifulSoup(resp.text, "html.parser")
     for s in soup.find_all("script", type="application/ld+json"):
@@ -4795,6 +4807,7 @@ def scrape_songkick_metro(url, ua, max_pages=25):
             entry["name"] = name
             entry["url"] = (entry.get("url") or base).split("?")[0]
             entry["category"] = "music"
+            entry.pop("description", None)  # boilerplate "Artist at Venue at 2026-11-04T20:00:00-0500"
             key = (name.lower(), entry["date"][:13])
             if key in seen:
                 continue
@@ -6225,18 +6238,36 @@ _EVENTBRITE_TOPICS = [
     ("Speed Dating", "speed-dating", "community"), ("Wine Tastings", "wine-tasting", "food"),
 ]
 
+_TOPIC_GENERIC_WORDS = {
+    "music", "party", "parties", "club", "clubs", "night", "nights", "show", "shows", "events", "social",
+    "group", "groups", "rock", "live", "make", "friends", "town", "adventure", "adventures",
+}
+
+
+def _topic_terms(query):
+    """Words that make a title 'on topic' for a keyword search: the phrase itself plus its
+    distinctive words with a light stem ("rock climbing" -> "rock climbing", "climb")."""
+    phrase = re.sub(r"[-_]+", " ", query.lower()).strip()
+    terms = {phrase}
+    for w in phrase.split():
+        if len(w) < 3 or w in _TOPIC_GENERIC_WORDS:
+            continue
+        terms.add(re.sub(r"(ing|ers|er|s)$", "", w) if len(w) > 5 else w)
+    return tuple(sorted(terms))
+
+
 _ALL_VENUES += [
     {
         "name": f"Meetup: {label}",
         "url": f"https://www.meetup.com/find/?keywords={quote(query)}&location=us--ny--New%20York&source=EVENTS",
-        "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": cat,
+        "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": cat, "topic_terms": _topic_terms(query),
     }
     for label, query, cat in _MEETUP_TOPICS
 ] + [
     {
         "name": f"Eventbrite: {label}",
         "url": f"https://www.eventbrite.com/d/ny--new-york/{slug}/",
-        "ua": UA_CHROME, "scraper": scrape_eventbrite_pages, "default_category": cat,
+        "ua": UA_CHROME, "scraper": scrape_eventbrite_pages, "default_category": cat, "topic_terms": _topic_terms(slug),
     }
     for label, slug, cat in _EVENTBRITE_TOPICS
 ]
@@ -6411,6 +6442,27 @@ def _clean_scraped_events(events):
     return out
 
 
+# Per-host concurrency caps for the 24-worker scrape. Bursting ~220 Eventbrite pages at once
+# gets challenge pages back, which used to silently fall back to stale cached events.
+_HOST_LIMITS = {"eventbrite.": 4, "meetup.com": 6, "donyc.com": 6}
+_HOST_SEMAPHORES = {k: threading.BoundedSemaphore(n) for k, n in _HOST_LIMITS.items()}
+
+
+def _host_slot(url):
+    for key, sem in _HOST_SEMAPHORES.items():
+        if key in (url or ""):
+            return sem
+    return None
+
+
+def _run_scraper(v):
+    sem = _host_slot(v.get("url"))
+    if sem is None:
+        return v["scraper"](v["url"], v["ua"])
+    with sem:
+        return v["scraper"](v["url"], v["ua"])
+
+
 def _scrape_one(v, force=False):
     vname = v["name"]
     ttl = _get_venue_ttl(vname, v=v)
@@ -6432,13 +6484,21 @@ def _scrape_one(v, force=False):
     # 2. Scrape live from external endpoint
     t0 = time.time()
     try:
-        events = _clean_scraped_events(v["scraper"](v["url"], v["ua"]))
+        events = _clean_scraped_events(_run_scraper(v))
         for e in events:
             if not e.get("venue"):
                 e["venue"] = vname
             existing_cat = e.get("category")
+            default_cat = v.get("default_category") or "community"
+            if v.get("topic_terms"):
+                # Keyword searches are fuzzy (an "outdoor adventure" search returns rooftop
+                # parties): the search's category only applies when the title is on-topic.
+                title = (e.get("name") or "").lower()
+                on_topic = any(re.search(r"\b" + re.escape(t), title) for t in v["topic_terms"])
+                default_cat = default_cat if on_topic else "community"
+                existing_cat = None
             if not existing_cat or existing_cat == "other":
-                e["category"] = guess_category(e.get("name"), v.get("default_category") or "community", venue=e.get("venue"))
+                e["category"] = guess_category(e.get("name"), default_cat, venue=e.get("venue"))
             else:
                 e["category"] = guess_category(e.get("name"), existing_cat, venue=e.get("venue"))
 
