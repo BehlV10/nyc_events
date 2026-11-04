@@ -398,17 +398,6 @@
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
   }
 
-  /* Quick-Access Chips Bar */
-  .quick-chips-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 8px 12px;
-  }
   .chip {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border);
@@ -433,48 +422,6 @@
     font-weight: 700;
     box-shadow: 0 2px 10px var(--accent-glow);
   }
-  .chip-free {
-    color: var(--green);
-    border-color: var(--green-border);
-    background: var(--green-bg);
-  }
-  .chip-free.active {
-    background: var(--green);
-    color: #08200f;
-    border-color: var(--green);
-    font-weight: 700;
-    box-shadow: 0 2px 10px rgba(74, 222, 128, 0.3);
-  }
-  .chip-theater {
-    color: #f7d794;
-    border-color: rgba(224, 175, 104, 0.4);
-    background: rgba(224, 175, 104, 0.12);
-  }
-  .chip-theater:hover {
-    background: rgba(224, 175, 104, 0.22);
-    border-color: #e0af68;
-    color: #fff;
-  }
-  .chip-theater.active {
-    background: #e0af68;
-    color: #1a1406;
-    border-color: #e0af68;
-    font-weight: 700;
-    box-shadow: 0 2px 10px rgba(224, 175, 104, 0.35);
-  }
-  .chip-guestlist {
-    color: #ff76ac;
-    border-color: rgba(255, 118, 172, 0.35);
-    background: rgba(255, 118, 172, 0.12);
-    margin-left: auto;
-  }
-  .chip-guestlist.active {
-    background: #ff76ac;
-    color: #1a0612;
-    border-color: #ff76ac;
-    font-weight: 700;
-    box-shadow: 0 2px 10px rgba(255, 118, 172, 0.35);
-  }
   .badge-highlight {
     display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px;
     font-size: 11px; font-weight: 700; letter-spacing: 0.02em; vertical-align: middle; margin-left: 6px;
@@ -486,7 +433,7 @@
     border: 1px solid rgba(255, 184, 0, 0.2); border-radius: 8px; padding: 6px 10px; margin-top: 6px;
   }
   .curator-note .note-label { font-weight: 700; color: #ffd866; }
-  .chip.chip-picks.active { background: rgba(255, 184, 0, 0.2); border-color: #ffd866; color: #ffd866; }
+  .week-nav button.chip-picks.active { background: rgba(255, 184, 0, 0.2); border-color: #ffd866; color: #ffd866; }
   .badge-guestlist {
     display: inline-flex;
     align-items: center;
@@ -1422,25 +1369,11 @@
       padding: 3px 9px;
       font-size: 11px;
     }
-    .quick-chips-bar {
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      white-space: nowrap;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      padding: 8px 10px;
-      gap: 6px;
-    }
-    .quick-chips-bar::-webkit-scrollbar {
-      display: none;
-    }
     .chip {
       flex-shrink: 0;
       padding: 5px 12px;
       font-size: 12px;
     }
-    .chip-free { margin-left: 0; }
 
     .week-nav {
       justify-content: space-between;
@@ -2940,9 +2873,9 @@
       <div class="banner-top-tag"><span class="live-pulse"></span> NYC LIVE EVENTS &amp; SHOWS</div>
       <h1 class="banner-title">NYC Events</h1>
       <div class="banner-meta-pill">
-        
+        <span class="pill-weather" title="Clear in NYC (Central Park)">☀️ 71°F <span class="weather-label">Clear</span></span>
         <span class="pill-dot">·</span>
-        <span class="pill-stat"><strong>8,829</strong> events · <strong>603</strong> venues &amp; feeds</span>
+        <span class="pill-stat"><strong>8,811</strong> events · <strong>601</strong> venues &amp; feeds</span>
         <span class="pill-dot">·</span>
         <button type="button" class="pill-submit-btn" id="btn-open-submit-modal" aria-haspopup="dialog" aria-expanded="false">
           <span>＋ Add Event</span>
@@ -3009,11 +2942,11 @@
         <h3>Category <span class="spacer"></span> <button type="button" id="cat-all">all</button> <button type="button" id="cat-none">none</button></h3>
         <div class="chk-grid"><label class="chk">
             <input type="checkbox" class="cat-chk" value="Music &amp; nightlife" checked>
-            <span><span class="chip-icon">♪ ⚡ 💃 </span>Music &amp; nightlife <span class="count">3330</span></span>
+            <span><span class="chip-icon">♪ ⚡ 💃 </span>Music &amp; nightlife <span class="count">3324</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="cat-chk" value="Arts &amp; culture" checked>
-            <span><span class="chip-icon">🎬 ✦ 📖 ツ </span>Arts &amp; culture <span class="count">1526</span></span>
+            <span><span class="chip-icon">🎬 ✦ 📖 ツ </span>Arts &amp; culture <span class="count">1525</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="cat-chk" value="Outdoors &amp; active" checked>
@@ -3021,7 +2954,7 @@
           </label>
 <label class="chk">
             <input type="checkbox" class="cat-chk" value="Social &amp; community" checked>
-            <span><span class="chip-icon">👥 🍴 🎲 · </span>Social &amp; community <span class="count">2359</span></span>
+            <span><span class="chip-icon">👥 🍴 🎲 · </span>Social &amp; community <span class="count">2348</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="cat-chk" value="Theater" checked>
@@ -3044,7 +2977,7 @@
           </label>
 <label class="chk">
             <input type="checkbox" class="city-chk" value="brooklyn" checked>
-            <span><span class="city-swatch" style="background:#e05a6b"></span>Brooklyn <span class="count">2832</span></span>
+            <span><span class="city-swatch" style="background:#e05a6b"></span>Brooklyn <span class="count">2814</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="city-chk" value="queens" checked>
@@ -3068,11 +3001,11 @@
         <div class="chk-grid">
         <label class="chk">
           <input type="checkbox" class="recur-chk" value="once" checked>
-          <span>One-time <span class="count">6335</span></span>
+          <span>One-time <span class="count">6333</span></span>
         </label>
         <label class="chk">
           <input type="checkbox" class="recur-chk" value="weekly" checked>
-          <span>↻ Weekly recurring <span class="count">2494</span></span>
+          <span>↻ Weekly recurring <span class="count">2478</span></span>
         </label></div>
       </div>
       <div class="filter-group venues">
@@ -3254,10 +3187,6 @@
             <span>Bronx Cultural &amp; Community Events <span class="count">15</span></span>
           </label>
 <label class="chk">
-            <input type="checkbox" class="venue-chk" value="BrookLAN" checked>
-            <span>BrookLAN <span class="count">16</span></span>
-          </label>
-<label class="chk">
             <input type="checkbox" class="venue-chk" value="Brooklyn Art Haus" checked>
             <span>Brooklyn Art Haus <span class="count">8</span></span>
           </label>
@@ -3303,15 +3232,11 @@
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="Brooklyn Free Festivals &amp; Fairs" checked>
-            <span>Brooklyn Free Festivals &amp; Fairs <span class="count">8</span></span>
+            <span>Brooklyn Free Festivals &amp; Fairs <span class="count">7</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="Brooklyn Live Jazz &amp; Blues" checked>
             <span>Brooklyn Live Jazz &amp; Blues <span class="count">2</span></span>
-          </label>
-<label class="chk">
-            <input type="checkbox" class="venue-chk" value="Brooklyn Made" checked>
-            <span>Brooklyn Made <span class="count">16</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="Brooklyn Mirage" checked>
@@ -3331,7 +3256,7 @@
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="Brooklyn Public Library" checked>
-            <span>Brooklyn Public Library <span class="count">2</span></span>
+            <span>Brooklyn Public Library <span class="count">14</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="Brooklyn Run Clubs &amp; Fitness Meetups" checked>
@@ -4571,7 +4496,7 @@
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="NYC Board Games &amp; Tabletop" checked>
-            <span>NYC Board Games &amp; Tabletop <span class="count">8</span></span>
+            <span>NYC Board Games &amp; Tabletop <span class="count">9</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="NYC Burlesque Shows &amp; Cabaret" checked>
@@ -4879,7 +4804,7 @@
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="Prohibition Productions (Gotham Jazz)" checked>
-            <span>Prohibition Productions (Gotham Jazz) <span class="count">14</span></span>
+            <span>Prohibition Productions (Gotham Jazz) <span class="count">15</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="Prospect Park Alliance" checked>
@@ -5199,7 +5124,7 @@
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="The Brooklyn Strategist" checked>
-            <span>The Brooklyn Strategist <span class="count">29</span></span>
+            <span>The Brooklyn Strategist <span class="count">30</span></span>
           </label>
 <label class="chk">
             <input type="checkbox" class="venue-chk" value="The Center (LGBTQ+ Community Center)" checked>
@@ -5484,18 +5409,6 @@
         <button type="button" class="loc-chip" data-city="other"><span class="city-dot" style="background:#9aa3b2"></span>Tri-State</button>
       </div>
       <div class="subarea-chips-bar" id="subarea-chips-bar" style="display: none;"></div>
-      <div class="quick-chips-bar" id="quick-chips">
-        <button type="button" class="chip active" data-time="today"><span class="chip-icon">⚡ </span>Today</button>
-        <button type="button" class="chip" data-time="tomorrow">Tomorrow</button>
-        <button type="button" class="chip" data-time="weekend"><span class="chip-icon">🎉 </span>This Weekend</button>
-        <button type="button" class="chip" data-time="week"><span class="chip-icon">📅 </span>Next 7 Days</button>
-        <button type="button" class="chip" data-time="all">All Upcoming</button>
-        <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
-        <button type="button" class="chip chip-guestlist" id="quick-guestlist-chip"><span class="chip-icon">🎟️ </span>Guestlists</button>
-        <button type="button" class="chip chip-free" id="quick-free-chip"><span class="chip-icon">✨ </span>Free Only</button>
-        <button type="button" class="chip chip-picks" id="quick-picks-chip" title="Editor's picks for each day"><span class="chip-icon">⭐ </span>Picks</button>
-        <button type="button" class="chip chip-theater" id="quick-theater-chip"><span class="chip-icon">🎭 </span>Theater</button>
-      </div>
       <div class="week-nav" id="week-nav">
         <button type="button" id="week-prev" aria-label="Previous">← prev</button>
         <span id="week-label">Today, Nov 04</span>
@@ -5503,6 +5416,8 @@
         <button type="button" id="week-today">today</button>
         <button type="button" id="week-all" data-mode="week">show all</button>
         <button type="button" id="cal-toggle" aria-expanded="false">📅 pick date</button>
+        <button type="button" class="chip-picks" id="quick-picks-chip" aria-pressed="false" title="Editor's picks for each day"><span class="chip-icon">⭐ </span>Picks</button>
+        <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
       </div>
       <div class="mini-cal" id="mini-cal" hidden>
         <div class="mini-cal-head">
@@ -5547,7 +5462,7 @@
       </div>
       
         <section class="day" data-date="2026-11-04">
-          <h2>Today · Nov 4<span class="count">411</span></h2>
+          <h2>Today · Nov 4<span class="count">410</span></h2>
           
           <div class="past-events-banner" id="past-events-banner" style="display: none;">
             <div class="past-banner-info">
@@ -7366,7 +7281,7 @@
             </div></div>
           </div>
           <div class="city-section" data-city="brooklyn">
-            <h3 class="city-head"><span>Brooklyn</span><span class="count">96</span></h3>
+            <h3 class="city-head"><span>Brooklyn</span><span class="count">95</span></h3>
             <div class="buckets">
             <div class="bucket" data-bucket="Music &amp; nightlife" style="--accent:#7aa2f7;">
               <div class="bucket-head">
@@ -7858,7 +7773,7 @@
             <div class="bucket" data-bucket="Social &amp; community" style="--accent:#c0caf5;">
               <div class="bucket-head">
                 <span class="bucket-name">Social &amp; community</span>
-                <span class="count">25</span>
+                <span class="count">24</span>
               </div>
               <ul><li class="event" data-cat="party" data-bucket="Social &amp; community" data-venue="Xanadu Roller Arts" data-city="brooklyn" data-subarea="bushwick_ew" data-subarea-name="Bushwick &amp; E. Williamsburg" data-recur="once" data-free="false" data-guestlist="false" data-event-id="ev_9bb4fd595af3" data-epoch="1793833200" data-time-mins="1080" data-time-str="18:00" data-lat="40.7061" data-lng="-73.923" data-venue-name="Xanadu Roller Arts" data-neighborhood="Bushwick">
           <div class="when">6:00 PM</div>
@@ -7941,13 +7856,6 @@
           <div class="when">7:00 PM</div>
           <div class="what"><a href="https://www.thebrooklynstrategist.com/" target="_blank" rel="noopener">Adult Board Game Social Night</a><span class="price">$10</span><span class="recur">↻ weekly</span>
             <div class="venue-tag"><span class="cat-pill" style="--cat-c:#b4f9f8; background:#b4f9f818; border-color:#b4f9f833; color:#b4f9f8"><span class="chip-icon">🎲 </span>gaming</span> · <a class="venue-link" href="https://www.google.com/maps/search/?api=1&amp;query=The%20Brooklyn%20Strategist%2C%20Brooklyn%2C%20NY" target="_blank" rel="noopener">The Brooklyn Strategist</a> <button type="button" class="venue-map-jump" data-lat="40.683" data-lng="-73.9961" data-venue="The Brooklyn Strategist" title="View The Brooklyn Strategist on Map">📍</button><span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span></div>
-            
-          </div>
-        </li>
-<li class="event" data-cat="gaming" data-bucket="Social &amp; community" data-venue="BrookLAN" data-city="brooklyn" data-subarea="bushwick_ew" data-subarea-name="Bushwick &amp; E. Williamsburg" data-recur="weekly" data-free="false" data-guestlist="false" data-event-id="ev_d1e8f1653422" data-epoch="1793836800" data-time-mins="1140" data-time-str="19:00" data-lat="40.7042" data-lng="-73.9225" data-venue-name="BrookLAN" data-neighborhood="Bushwick">
-          <div class="when">7:00 PM</div>
-          <div class="what"><a href="https://www.brooklan.com/" target="_blank" rel="noopener">BrookLAN Bushwick Smash Bros &amp; Fighting Game Community Night</a><span class="price">$10</span><span class="recur">↻ weekly</span>
-            <div class="venue-tag"><span class="cat-pill" style="--cat-c:#b4f9f8; background:#b4f9f818; border-color:#b4f9f833; color:#b4f9f8"><span class="chip-icon">🎲 </span>gaming</span> · <a class="venue-link" href="https://www.google.com/maps/search/?api=1&amp;query=BrookLAN%2C%20Brooklyn%2C%20NY" target="_blank" rel="noopener">BrookLAN</a> <button type="button" class="venue-map-jump" data-lat="40.7042" data-lng="-73.9225" data-venue="BrookLAN" title="View BrookLAN on Map">📍</button> <span class="subarea-tag">· Bushwick &amp; E. Williamsburg</span><span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span></div>
             
           </div>
         </li>
@@ -8626,7 +8534,7 @@
           </div></div>
         </section>
         <section class="day out-of-week" data-date="2026-11-05">
-          <h2>Tomorrow · Nov 5<span class="count">527</span></h2>
+          <h2>Tomorrow · Nov 5<span class="count">526</span></h2>
           
           <div class="near-me-stream" style="display: none;"></div>
           <div class="cities">
@@ -10553,7 +10461,7 @@
             </div></div>
           </div>
           <div class="city-section" data-city="brooklyn">
-            <h3 class="city-head"><span>Brooklyn</span><span class="count">146</span></h3>
+            <h3 class="city-head"><span>Brooklyn</span><span class="count">145</span></h3>
             <div class="buckets">
             <div class="bucket" data-bucket="Music &amp; nightlife" style="--accent:#7aa2f7;">
               <div class="bucket-head">
@@ -11276,11 +11184,11 @@
             <div class="bucket" data-bucket="Social &amp; community" style="--accent:#c0caf5;">
               <div class="bucket-head">
                 <span class="bucket-name">Social &amp; community</span>
-                <span class="count">33</span>
+                <span class="count">32</span>
               </div>
-              <ul><li class="event" data-cat="gaming" data-bucket="Social &amp; community" data-venue="Brooklyn Made" data-city="brooklyn" data-subarea="brooklyn_other" data-subarea-name="Other Brooklyn" data-recur="once" data-free="false" data-guestlist="false" data-event-id="ev_65ea21216f25" data-epoch="1793854800" data-time-mins="0" data-time-str="00:00" data-lat="40.722" data-lng="-73.9519" data-venue-name="McCarren Parkhouse" data-neighborhood="Brooklyn">
+              <ul><li class="event" data-cat="gaming" data-bucket="Social &amp; community" data-venue="Brooklyn Public Library" data-city="brooklyn" data-subarea="brooklyn_other" data-subarea-name="Other Brooklyn" data-recur="once" data-free="true" data-guestlist="false" data-event-id="ev_65ea21216f25" data-epoch="1793854800" data-time-mins="0" data-time-str="00:00" data-lat="40.722" data-lng="-73.9519" data-venue-name="McCarren Parkhouse" data-neighborhood="Brooklyn">
           <div class="when">12:00 AM</div>
-          <div class="what"><a href="https://www.eventbrite.com/e/north-brooklyn-chess-at-mccarren-parkhouse-tickets-1999281562974" target="_blank" rel="noopener">North Brooklyn Chess at McCarren Parkhouse</a>
+          <div class="what"><a href="https://www.eventbrite.com/e/north-brooklyn-chess-at-mccarren-parkhouse-tickets-1999281562974" target="_blank" rel="noopener">North Brooklyn Chess at McCarren Parkhouse</a><span class="price free">Free</span>
             <div class="venue-tag"><span class="cat-pill" style="--cat-c:#b4f9f8; background:#b4f9f818; border-color:#b4f9f833; color:#b4f9f8"><span class="chip-icon">🎲 </span>gaming</span> · <a class="venue-link" href="https://www.google.com/maps/search/?api=1&amp;query=McCarren%20Parkhouse%2C%20Brooklyn%2C%20NY" target="_blank" rel="noopener">McCarren Parkhouse</a> <button type="button" class="venue-map-jump" data-lat="40.722" data-lng="-73.9519" data-venue="McCarren Parkhouse" title="View McCarren Parkhouse on Map">📍</button><span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span></div>
             
           </div>
@@ -11457,13 +11365,6 @@
           <div class="when">7:00 PM</div>
           <div class="what"><a href="https://www.nycresistor.com/" target="_blank" rel="noopener">NYC Resistor Open Make &amp; Electronics Night (Brooklyn)</a><span class="price free">Free</span><span class="recur">↻ weekly</span>
             <div class="venue-tag"><span class="cat-pill" style="--cat-c:#c0caf5; background:#c0caf518; border-color:#c0caf533; color:#c0caf5"><span class="chip-icon">👥 </span>community</span> · <a class="venue-link" href="https://www.google.com/maps/search/?api=1&amp;query=NYC%20Resistor%2C%20Brooklyn%2C%20NY" target="_blank" rel="noopener">NYC Resistor</a> <button type="button" class="venue-map-jump" data-lat="40.6834" data-lng="-73.9818" data-venue="NYC Resistor" title="View NYC Resistor on Map">📍</button><span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span></div>
-            
-          </div>
-        </li>
-<li class="event" data-cat="gaming" data-bucket="Social &amp; community" data-venue="BrookLAN" data-city="brooklyn" data-subarea="bushwick_ew" data-subarea-name="Bushwick &amp; E. Williamsburg" data-recur="weekly" data-free="true" data-guestlist="false" data-event-id="ev_62abe16db062" data-epoch="1793925000" data-time-mins="1170" data-time-str="19:30" data-lat="40.7042" data-lng="-73.9225" data-venue-name="BrookLAN" data-neighborhood="Bushwick">
-          <div class="when">7:30 PM</div>
-          <div class="what"><a href="https://www.brooklan.com/" target="_blank" rel="noopener">BrookLAN Bushwick Board Games, Trivia &amp; Esports Social</a><span class="price free">Free</span><span class="recur">↻ weekly</span>
-            <div class="venue-tag"><span class="cat-pill" style="--cat-c:#b4f9f8; background:#b4f9f818; border-color:#b4f9f833; color:#b4f9f8"><span class="chip-icon">🎲 </span>gaming</span> · <a class="venue-link" href="https://www.google.com/maps/search/?api=1&amp;query=BrookLAN%2C%20Brooklyn%2C%20NY" target="_blank" rel="noopener">BrookLAN</a> <button type="button" class="venue-map-jump" data-lat="40.7042" data-lng="-73.9225" data-venue="BrookLAN" title="View BrookLAN on Map">📍</button> <span class="subarea-tag">· Bushwick &amp; E. Williamsburg</span><span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span></div>
             
           </div>
         </li>
@@ -12537,7 +12438,7 @@
           </div></div>
         </section>
         <section class="day out-of-week" data-date="2026-11-06">
-          <h2>Friday · Nov 6<span class="count">474</span></h2>
+          <h2>Friday · Nov 6<span class="count">473</span></h2>
           
           <div class="near-me-stream" style="display: none;"></div>
           <div class="cities">
@@ -14215,7 +14116,7 @@ MIC! 6pm &amp; 730pm show up &amp; go up! @micdupnyc</a><span class="price free"
             </div></div>
           </div>
           <div class="city-section" data-city="brooklyn">
-            <h3 class="city-head"><span>Brooklyn</span><span class="count">149</span></h3>
+            <h3 class="city-head"><span>Brooklyn</span><span class="count">148</span></h3>
             <div class="buckets">
             <div class="bucket" data-bucket="Music &amp; nightlife" style="--accent:#7aa2f7;">
               <div class="bucket-head">
@@ -14814,18 +14715,11 @@ MIC! 6pm &amp; 730pm show up &amp; go up! @micdupnyc</a><span class="price free"
             <div class="bucket" data-bucket="Arts &amp; culture" style="--accent:#7dcfff;">
               <div class="bucket-head">
                 <span class="bucket-name">Arts &amp; culture</span>
-                <span class="count">32</span>
+                <span class="count">31</span>
               </div>
-              <ul><li class="event" data-cat="comedy" data-bucket="Arts &amp; culture" data-venue="Brooklyn Made" data-city="brooklyn" data-subarea="brooklyn_other" data-subarea-name="Other Brooklyn" data-recur="once" data-free="true" data-guestlist="false" data-event-id="ev_66f856590e1e" data-epoch="1793941200" data-time-mins="0" data-time-str="00:00" data-lat="40.69398" data-lng="-73.90741" data-venue-name="1241 Halsey St" data-neighborhood="Brooklyn">
+              <ul><li class="event" data-cat="comedy" data-bucket="Arts &amp; culture" data-venue="Brooklyn Public Library" data-city="brooklyn" data-subarea="brooklyn_other" data-subarea-name="Other Brooklyn" data-recur="once" data-free="true" data-guestlist="false" data-event-id="ev_d373f150bb64" data-epoch="1793941200" data-time-mins="0" data-time-str="00:00" data-lat="40.68592" data-lng="-73.98162" data-venue-name="EastVille Comedy Club" data-neighborhood="Brooklyn">
           <div class="when">12:00 AM</div>
-          <div class="what"><a href="https://www.eventbrite.com/e/best-of-bk-made-byob-stand-up-free-pizza-every-fri-sat-tickets-1983698032214" target="_blank" rel="noopener">Best of BK Made: BYOB Stand-up + Free Pizza Every Fri &amp; Sat</a><span class="price free">Free</span>
-            <div class="venue-tag"><span class="cat-pill" style="--cat-c:#bb9af7; background:#bb9af718; border-color:#bb9af733; color:#bb9af7"><span class="chip-icon">ツ </span>comedy</span> · <a class="venue-link" href="https://www.google.com/maps/search/?api=1&amp;query=1241%20Halsey%20St%2C%20Brooklyn%2C%20NY" target="_blank" rel="noopener">1241 Halsey St</a> <button type="button" class="venue-map-jump" data-lat="40.69398" data-lng="-73.90741" data-venue="1241 Halsey St" title="View 1241 Halsey St on Map">📍</button><span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span></div>
-            
-          </div>
-        </li>
-<li class="event" data-cat="comedy" data-bucket="Arts &amp; culture" data-venue="Brooklyn Made" data-city="brooklyn" data-subarea="brooklyn_other" data-subarea-name="Other Brooklyn" data-recur="once" data-free="false" data-guestlist="false" data-event-id="ev_d373f150bb64" data-epoch="1793941200" data-time-mins="0" data-time-str="00:00" data-lat="40.68592" data-lng="-73.98162" data-venue-name="EastVille Comedy Club" data-neighborhood="Brooklyn">
-          <div class="when">12:00 AM</div>
-          <div class="what"><a href="https://www.eventbrite.com/e/saturday-night-comedy-8pm-in-brooklyn-tickets-1984664512984" target="_blank" rel="noopener">Saturday Night Comedy  - 8PM in Brooklyn!</a>
+          <div class="what"><a href="https://www.eventbrite.com/e/saturday-night-comedy-8pm-in-brooklyn-tickets-1984664512984" target="_blank" rel="noopener">Saturday Night Comedy  - 8PM in Brooklyn!</a><span class="price free">Free</span>
             <div class="venue-tag"><span class="cat-pill" style="--cat-c:#bb9af7; background:#bb9af718; border-color:#bb9af733; color:#bb9af7"><span class="chip-icon">ツ </span>comedy</span> · <a class="venue-link" href="https://www.google.com/maps/search/?api=1&amp;query=EastVille%20Comedy%20Club%2C%20Brooklyn%2C%20NY" target="_blank" rel="noopener">EastVille Comedy Club</a> <button type="button" class="venue-map-jump" data-lat="40.68592" data-lng="-73.98162" data-venue="EastVille Comedy Club" title="View EastVille Comedy Club on Map">📍</button><span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span></div>
             
           </div>
@@ -16035,7 +15929,7 @@ MIC! 6pm &amp; 730pm show up &amp; go up! @micdupnyc</a><span class="price free"
             </div></div>
           </div></div>
         </section>
-      <template id="deferred-days" data-src="deferred_days.html?v=dc36986271"></template>
+      <template id="deferred-days" data-src="deferred_days.html?v=25c2729563"></template>
       <div class="week-nav bottom">
         <button type="button" id="week-prev-b" aria-label="Previous week">← prev</button>
         <span id="week-label-b"></span>
@@ -16318,12 +16212,8 @@ MIC! 6pm &amp; 730pm show up &amp; go up! @micdupnyc</a><span class="price free"
     const CITY_LABELS_MAP = {"manhattan": "Manhattan", "brooklyn": "Brooklyn", "queens": "Queens", "bronx": "The Bronx", "staten_island": "Staten Island", "other": "Tri-State / Other"};
     let activeSubarea = 'all';
     let renderedSubareaCity = null;
-    const quickChips = document.querySelectorAll('#quick-chips .chip[data-time]');
-    const quickFreeChip = document.getElementById('quick-free-chip');
-    const quickGuestlistChip = document.getElementById('quick-guestlist-chip');
     const quickPicksChip = document.getElementById('quick-picks-chip');
     let picksOnly = false;
-    const quickTheaterChip = document.getElementById('quick-theater-chip');
     const quickCustomTimeChip = document.getElementById('quick-custom-time-chip');
     const activeTimeframeLabel = document.getElementById('active-timeframe-label');
     const timeFromSelect = document.getElementById('time-from-select');
@@ -16816,6 +16706,8 @@ MIC! 6pm &amp; 730pm show up &amp; go up! @micdupnyc</a><span class="price free"
       }
       const b = document.getElementById('week-label-b');
       if (b) b.textContent = label;
+      const todayBtn = document.getElementById('week-today');
+      if (todayBtn) todayBtn.classList.toggle('active', !showAll && timeFilter === 'today');
       const btn = document.getElementById('week-all');
       if (btn) {
         btn.textContent = (timeFilter === 'all' || showAll) ? 'today view' : 'show all';
@@ -17077,20 +16969,10 @@ MIC! 6pm &amp; 730pm show up &amp; go up! @micdupnyc</a><span class="price free"
     }
 
     function updateQuickChipsUI() {
-      quickChips.forEach(chip => {
-        chip.classList.toggle('active', chip.dataset.time === timeFilter);
-      });
-      if (quickTheaterChip) {
-        const checked = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
-        quickTheaterChip.classList.toggle('active', checked.length === 1 && checked[0] === 'Theater');
+      if (quickPicksChip) {
+        quickPicksChip.classList.toggle('active', picksOnly);
+        quickPicksChip.setAttribute('aria-pressed', picksOnly ? 'true' : 'false');
       }
-      if (quickFreeChip) {
-        quickFreeChip.classList.toggle('active', freeOnlyChk ? freeOnlyChk.checked : false);
-      }
-      if (quickGuestlistChip) {
-        quickGuestlistChip.classList.toggle('active', guestlistOnlyChk ? guestlistOnlyChk.checked : false);
-      }
-      if (quickPicksChip) quickPicksChip.classList.toggle('active', picksOnly);
     }
 
     function renderSubareaChips(city) {
@@ -17810,66 +17692,7 @@ MIC! 6pm &amp; 730pm show up &amp; go up! @micdupnyc</a><span class="price free"
       apply();
     }
 
-    quickChips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        clearRange();
-        timeFilter = chip.dataset.time;
-        const todayDate = parseISO(todayISO);
-        const dayOfWeek = todayDate.getDay();
-        let daysToSat = (6 - dayOfWeek + 7) % 7;
-        if (dayOfWeek === 0) daysToSat = -1;
-
-        if (timeFilter === 'all') {
-          showAll = true;
-        } else if (timeFilter === 'today') {
-          showAll = false;
-          anchor = parseISO(todayISO);
-          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-        } else if (timeFilter === 'tomorrow') {
-          showAll = false;
-          anchor = addDays(parseISO(todayISO), 1);
-          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-        } else if (timeFilter === 'weekend') {
-          showAll = false;
-          anchor = addDays(todayDate, daysToSat);
-          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-        } else if (timeFilter === 'week') {
-          showAll = false;
-          anchor = parseISO(todayISO);
-          calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
-        }
-        apply();
-      });
-    });
-
-    if (quickTheaterChip) {
-      quickTheaterChip.addEventListener('click', () => {
-        const checked = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
-        if (checked.length === 1 && checked[0] === 'Theater') {
-          catBoxes.forEach(b => { b.checked = isDefaultCat(b); });
-        } else {
-          catBoxes.forEach(b => {
-            b.checked = (b.value === 'Theater');
-          });
-        }
-        apply();
-        stateToHash();
-      });
-    }
-
-    if (quickFreeChip && freeOnlyChk) {
-      quickFreeChip.addEventListener('click', () => {
-        freeOnlyChk.checked = !freeOnlyChk.checked;
-        apply();
-      });
-    }
-    if (quickGuestlistChip && guestlistOnlyChk) {
-      if (quickPicksChip) quickPicksChip.addEventListener('click', () => { picksOnly = !picksOnly; apply(); stateToHash(); });
-      quickGuestlistChip.addEventListener('click', () => {
-        guestlistOnlyChk.checked = !guestlistOnlyChk.checked;
-        apply();
-      });
-    }
+    if (quickPicksChip) quickPicksChip.addEventListener('click', () => { picksOnly = !picksOnly; apply(); stateToHash(); });
     if (guestlistOnlyChk) guestlistOnlyChk.addEventListener('change', apply);
 
     document.addEventListener('keydown', (e) => {
@@ -18196,10 +18019,12 @@ MIC! 6pm &amp; 730pm show up &amp; go up! @micdupnyc</a><span class="price free"
         showPastToday = !showPastToday;
         apply();
       } else if (e.target && e.target.id === 'btn-banner-tomorrow') {
-        const tomorrowChip = document.querySelector('#quick-chips .chip[data-time="tomorrow"]');
-        if (tomorrowChip) {
-          tomorrowChip.click();
-        }
+        clearRange();
+        timeFilter = 'tomorrow';
+        showAll = false;
+        anchor = addDays(parseISO(todayISO), 1);
+        calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+        apply();
       }
     });
 

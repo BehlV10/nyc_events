@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-04T17:44:50.941201+00:00",
+  "generated_at": "2026-11-04T17:56:02.132100+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -11237,7 +11237,7 @@
         }
       ],
       "error": null,
-      "duration": 18.3,
+      "duration": 17.74,
       "cached": false
     },
     {
@@ -11359,7 +11359,7 @@
       ],
       "error": null,
       "duration": 0.51,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Secret NYC",
@@ -11376,7 +11376,7 @@
       ],
       "error": null,
       "duration": 1.12,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenpointers Brooklyn",
@@ -11393,7 +11393,7 @@
       ],
       "error": null,
       "duration": 0.22,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Ticketmaster NYC",
@@ -11992,7 +11992,7 @@
       ],
       "error": null,
       "duration": 0.92,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "SeatGeek NYC",
@@ -13921,7 +13921,7 @@
       ],
       "error": null,
       "duration": 0.84,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Resident Advisor NYC",
@@ -19598,7 +19598,7 @@
       ],
       "error": null,
       "duration": 2.26,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Dice.fm NYC",
@@ -21227,7 +21227,7 @@
       ],
       "error": null,
       "duration": 9.18,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Songkick NYC Concerts",
@@ -24953,7 +24953,7 @@
       ],
       "error": null,
       "duration": 3.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Partiful NYC",
@@ -25106,7 +25106,7 @@
       ],
       "error": null,
       "duration": 0.4,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Parks Hikes, Rangers & Outdoor Programs",
@@ -25394,7 +25394,7 @@
       ],
       "error": null,
       "duration": 1.01,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Prospect Park Alliance",
@@ -25493,7 +25493,7 @@
       ],
       "error": null,
       "duration": 0.42,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Paramount (Official Calendar)",
@@ -25788,7 +25788,7 @@
       ],
       "error": null,
       "duration": 0.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Bowl",
@@ -26003,7 +26003,7 @@
         }
       ],
       "error": null,
-      "duration": 0.63,
+      "duration": 0.53,
       "cached": false
     },
     {
@@ -26373,7 +26373,7 @@
       ],
       "error": null,
       "duration": 0.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Knockdown Center",
@@ -26462,7 +26462,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61,
+      "duration": 0.53,
       "cached": false
     },
     {
@@ -26552,7 +26552,7 @@
         }
       ],
       "error": null,
-      "duration": 0.63,
+      "duration": 0.54,
       "cached": false
     },
     {
@@ -26741,7 +26741,7 @@
         }
       ],
       "error": null,
-      "duration": 0.6,
+      "duration": 0.53,
       "cached": false
     },
     {
@@ -26910,7 +26910,7 @@
         }
       ],
       "error": null,
-      "duration": 0.6,
+      "duration": 0.79,
       "cached": false
     },
     {
@@ -27280,7 +27280,7 @@
       ],
       "error": null,
       "duration": 1.25,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Littlefield Brooklyn",
@@ -27791,7 +27791,7 @@
         }
       ],
       "error": null,
-      "duration": 0.78,
+      "duration": 0.68,
       "cached": false
     },
     {
@@ -27980,7 +27980,7 @@
         }
       ],
       "error": null,
-      "duration": 1.59,
+      "duration": 0.54,
       "cached": false
     },
     {
@@ -28078,7 +28078,7 @@
       ],
       "error": null,
       "duration": 0.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Barclays Center",
@@ -28328,7 +28328,7 @@
         }
       ],
       "error": null,
-      "duration": 1.38,
+      "duration": 0.77,
       "cached": false
     },
     {
@@ -28481,7 +28481,7 @@
         }
       ],
       "error": null,
-      "duration": 1.23,
+      "duration": 0.81,
       "cached": false
     },
     {
@@ -28649,7 +28649,7 @@
         }
       ],
       "error": null,
-      "duration": 1.16,
+      "duration": 1.36,
       "cached": false
     },
     {
@@ -28712,7 +28712,7 @@
         }
       ],
       "error": null,
-      "duration": 1.35,
+      "duration": 1.58,
       "cached": false
     },
     {
@@ -28892,209 +28892,8 @@
         }
       ],
       "error": null,
-      "duration": 1.18,
+      "duration": 0.86,
       "cached": false
-    },
-    {
-      "venue": "Brooklyn Made",
-      "url": "https://www.eventbrite.com/d/ny--brooklyn/brooklyn-made/",
-      "events": [
-        {
-          "name": "Brooklyn Art Walk, Iconic Views, and Local Tastes",
-          "date": "2026-12-04T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/brooklyn-art-walk-iconic-views-and-local-tastes-tickets-2004327791379",
-          "venue": "Brooklyn Bridge Park - Pier 1",
-          "price": null,
-          "lat": "40.703045",
-          "lng": "-73.9956072",
-          "address": "2 Furman Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "Bachata Party Bushwick Brooklyn | La Casita Brooklyn Bachata Night",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/bachata-party-bushwick-brooklyn-la-casita-brooklyn-bachata-night-tickets-1990916360428",
-          "venue": "LA CASITA BROOKLYN",
-          "price": null,
-          "lat": "40.7077028",
-          "lng": "-73.9312506",
-          "address": "428 Johnson Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "clubbing"
-        },
-        {
-          "name": "Tracing the Battle of Brooklyn: A Revolutionary War Battlefield Walk",
-          "date": "2026-11-14T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/tracing-the-battle-of-brooklyn-a-revolutionary-war-battlefield-walk-registration-2003011240540",
-          "venue": "1 Plaza Street (Corner of Plaza Street W and St. John's Place)",
-          "price": null,
-          "lat": "40.6752573",
-          "lng": "-73.9714784",
-          "address": "1 Plaza Street W, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "The Revolution Continues: Brooklyn’s Black Trailblazers",
-          "date": "2026-11-21T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/the-revolution-continues-brooklyns-black-trailblazers-tickets-1995508395328",
-          "venue": "The Green-Wood Cemetery",
-          "price": null,
-          "lat": "40.6579777",
-          "lng": "-73.9940634",
-          "address": "500 25th Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "The Brooklyn Sunday Social @Aliya",
-          "date": "2026-11-15T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/the-brooklyn-sunday-social-aliya-tickets-2004154721723",
-          "venue": "500 Metropolitan Ave",
-          "price": null,
-          "lat": "40.7136591",
-          "lng": "-73.9524682",
-          "address": "500 Metropolitan Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "Brooklyn Eagle Magazine Launch Party",
-          "date": "2026-11-18T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/brooklyn-eagle-magazine-launch-party-tickets-2004044876172",
-          "venue": "501 Union",
-          "price": null,
-          "lat": "40.6799589",
-          "lng": "-73.988986",
-          "address": "499 Union Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "clubbing"
-        },
-        {
-          "name": "If The Vibe Is Right: Comedy Game Night + Hip Hop & R&B | Brooklyn",
-          "date": "2026-11-12T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/if-the-vibe-is-right-comedy-game-night-hip-hop-rb-brooklyn-tickets-2001399165781",
-          "venue": "Jaywalker",
-          "price": null,
-          "lat": "40.7091465",
-          "lng": "-73.9243619",
-          "address": "573 Johnson Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "comedy"
-        },
-        {
-          "name": "NEW PLAY: Fourth Avenue (Brooklyn)",
-          "date": "2026-11-12T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/new-play-fourth-avenue-brooklyn-tickets-1989959517485",
-          "venue": "Old Stone House of Brooklyn",
-          "price": null,
-          "lat": "40.67298849999999",
-          "lng": "-73.98460229999999",
-          "address": "336 3rd Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "Brooklyn Bridge Soirée Sunset Series - House Music Party at 1 Hotel",
-          "date": "2026-11-08T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/brooklyn-bridge-soiree-sunset-series-house-music-party-at-1-hotel-tickets-2003142611474",
-          "venue": "1 Hotel Brooklyn Bridge",
-          "price": null,
-          "lat": "40.702363",
-          "lng": "-73.995487",
-          "address": "60 Furman Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "clubbing"
-        },
-        {
-          "name": "Best of BK Made: BYOB Stand-up + Free Pizza Every Fri & Sat",
-          "date": "2026-11-06T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/best-of-bk-made-byob-stand-up-free-pizza-every-fri-sat-tickets-1983698032214",
-          "venue": "1241 Halsey St",
-          "price": null,
-          "lat": "40.6939839",
-          "lng": "-73.907409",
-          "address": "1241 Halsey Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "comedy"
-        },
-        {
-          "name": "North Brooklyn Chess at McCarren Parkhouse",
-          "date": "2026-11-05T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/north-brooklyn-chess-at-mccarren-parkhouse-tickets-1999281562974",
-          "venue": "McCarren Parkhouse",
-          "price": null,
-          "lat": "40.722",
-          "lng": "-73.95189970000001",
-          "address": "855 Lorimer Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "gaming"
-        },
-        {
-          "name": "#BEST BROOKLYN PARTY ON A SATURDAY MAMA TACO IN BK BY FB",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/best-brooklyn-party-on-a-saturday-mama-taco-in-bk-by-fb-tickets-1988642847289",
-          "venue": "MAMATACO",
-          "price": null,
-          "lat": "40.7018895",
-          "lng": "-73.936578",
-          "address": "880 Flushing Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "clubbing"
-        },
-        {
-          "name": "“MAMA TACO” LADIES LOVE SATURDAYS  @ “MAMA TACO” Brooklyn",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/mama-taco-ladies-love-saturdays-mama-taco-brooklyn-tickets-2003870069320",
-          "venue": "MAMATACO",
-          "price": null,
-          "lat": "40.701824",
-          "lng": "-73.93664799999999",
-          "address": "880 Flushing Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "Tuesday Queer Figure Drawing @ The Brooklyn Loft!",
-          "date": "2026-11-17T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/tuesday-queer-figure-drawing-the-brooklyn-loft-tickets-2003984046228",
-          "venue": "476 Jefferson St #307",
-          "price": null,
-          "lat": "40.70845389999999",
-          "lng": "-73.92188469999999",
-          "address": "476 Jefferson Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "Fashion and Business Networking | Elevating Your Potential - Brooklyn",
-          "date": "2026-12-09T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/fashion-and-business-networking-elevating-your-potential-brooklyn-tickets-2003618273191",
-          "venue": "Black Forest Brooklyn - Smith Street",
-          "price": null,
-          "lat": "40.6856255",
-          "lng": "-73.990996",
-          "address": "181 Smith Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "community"
-        },
-        {
-          "name": "Saturday Night Comedy  - 8PM in Brooklyn!",
-          "date": "2026-11-06T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/saturday-night-comedy-8pm-in-brooklyn-tickets-1984664512984",
-          "venue": "EastVille Comedy Club",
-          "price": null,
-          "lat": "40.68592140000001",
-          "lng": "-73.9816178",
-          "address": "487 Atlantic Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "comedy"
-        }
-      ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-made/ (serving stale cache)",
-      "duration": 0.1,
-      "cached": true
     },
     {
       "venue": "Market Hotel",
@@ -29102,7 +28901,7 @@
       "events": [],
       "error": null,
       "duration": 1.16,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "SILO Brooklyn",
@@ -29236,7 +29035,7 @@
         }
       ],
       "error": null,
-      "duration": 1.13,
+      "duration": 0.89,
       "cached": false
     },
     {
@@ -29317,7 +29116,7 @@
         }
       ],
       "error": null,
-      "duration": 1.24,
+      "duration": 1.08,
       "cached": false
     },
     {
@@ -29398,7 +29197,7 @@
         }
       ],
       "error": null,
-      "duration": 1.22,
+      "duration": 1.05,
       "cached": false
     },
     {
@@ -29407,7 +29206,7 @@
       "events": [],
       "error": null,
       "duration": 1.16,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Brooklyn Monarch",
@@ -29532,7 +29331,7 @@
         }
       ],
       "error": null,
-      "duration": 0.83,
+      "duration": 1.16,
       "cached": false
     },
     {
@@ -29703,7 +29502,7 @@
         }
       ],
       "error": null,
-      "duration": 1.73,
+      "duration": 1.0,
       "cached": false
     },
     {
@@ -29874,7 +29673,7 @@
         }
       ],
       "error": null,
-      "duration": 1.18,
+      "duration": 1.02,
       "cached": false
     },
     {
@@ -29910,7 +29709,7 @@
         }
       ],
       "error": null,
-      "duration": 1.4,
+      "duration": 1.41,
       "cached": false
     },
     {
@@ -30078,7 +29877,7 @@
         }
       ],
       "error": null,
-      "duration": 1.12,
+      "duration": 1.18,
       "cached": false
     },
     {
@@ -30249,7 +30048,7 @@
         }
       ],
       "error": null,
-      "duration": 1.32,
+      "duration": 1.27,
       "cached": false
     },
     {
@@ -30402,7 +30201,7 @@
         }
       ],
       "error": null,
-      "duration": 1.05,
+      "duration": 1.9,
       "cached": false
     },
     {
@@ -30552,7 +30351,7 @@
         }
       ],
       "error": null,
-      "duration": 1.07,
+      "duration": 0.82,
       "cached": false
     },
     {
@@ -30732,7 +30531,7 @@
         }
       ],
       "error": null,
-      "duration": 0.95,
+      "duration": 0.86,
       "cached": false
     },
     {
@@ -30912,7 +30711,7 @@
         }
       ],
       "error": null,
-      "duration": 0.68,
+      "duration": 0.2,
       "cached": false
     },
     {
@@ -30993,7 +30792,7 @@
         }
       ],
       "error": null,
-      "duration": 0.81,
+      "duration": 0.91,
       "cached": false
     },
     {
@@ -31173,7 +30972,7 @@
         }
       ],
       "error": null,
-      "duration": 0.7,
+      "duration": 0.94,
       "cached": false
     },
     {
@@ -31353,7 +31152,7 @@
         }
       ],
       "error": null,
-      "duration": 0.73,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -31524,7 +31323,7 @@
         }
       ],
       "error": null,
-      "duration": 1.19,
+      "duration": 0.23,
       "cached": false
     },
     {
@@ -31613,7 +31412,7 @@
         }
       ],
       "error": null,
-      "duration": 0.69,
+      "duration": 0.82,
       "cached": false
     },
     {
@@ -31671,7 +31470,7 @@
         }
       ],
       "error": null,
-      "duration": 0.12,
+      "duration": 0.85,
       "cached": false
     },
     {
@@ -31839,7 +31638,7 @@
         }
       ],
       "error": null,
-      "duration": 0.7,
+      "duration": 0.89,
       "cached": false
     },
     {
@@ -31848,7 +31647,7 @@
       "events": [],
       "error": null,
       "duration": 0.66,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Old Man Hustle BKLYN Comedy Club",
@@ -31982,7 +31781,7 @@
         }
       ],
       "error": null,
-      "duration": 0.71,
+      "duration": 0.85,
       "cached": false
     },
     {
@@ -32078,7 +31877,7 @@
         }
       ],
       "error": null,
-      "duration": 0.79,
+      "duration": 0.86,
       "cached": false
     },
     {
@@ -32177,7 +31976,7 @@
         }
       ],
       "error": null,
-      "duration": 0.78,
+      "duration": 0.93,
       "cached": false
     },
     {
@@ -32240,7 +32039,7 @@
         }
       ],
       "error": null,
-      "duration": 0.79,
+      "duration": 0.87,
       "cached": false
     },
     {
@@ -32305,7 +32104,7 @@
         }
       ],
       "error": null,
-      "duration": 0.77,
+      "duration": 1.38,
       "cached": false
     },
     {
@@ -32314,7 +32113,7 @@
       "events": [],
       "error": null,
       "duration": 0.69,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Liz's Book_Bar",
@@ -32331,7 +32130,7 @@
         }
       ],
       "error": null,
-      "duration": 0.74,
+      "duration": 0.86,
       "cached": false
     },
     {
@@ -32511,7 +32310,7 @@
         }
       ],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.2,
       "cached": false
     },
     {
@@ -32520,7 +32319,7 @@
       "events": [],
       "error": null,
       "duration": 0.61,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Noguchi Museum",
@@ -32654,7 +32453,7 @@
         }
       ],
       "error": null,
-      "duration": 0.77,
+      "duration": 0.88,
       "cached": false
     },
     {
@@ -33314,7 +33113,7 @@
       ],
       "error": null,
       "duration": 0.22,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens Botanical Garden",
@@ -33739,7 +33538,7 @@
       ],
       "error": null,
       "duration": 2.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens County Farm Museum",
@@ -34151,7 +33950,7 @@
       ],
       "error": null,
       "duration": 2.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Louis Armstrong House Museum",
@@ -34199,7 +33998,7 @@
       ],
       "error": null,
       "duration": 0.68,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens Theatre",
@@ -34364,7 +34163,7 @@
       ],
       "error": null,
       "duration": 3.03,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Flushing Town Hall",
@@ -34399,7 +34198,7 @@
         }
       ],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.86,
       "cached": false
     },
     {
@@ -34426,12 +34225,12 @@
         }
       ],
       "error": null,
-      "duration": 0.47,
+      "duration": 1.38,
       "cached": false
     },
     {
       "venue": "Grove 34 Astoria",
-      "url": "https://www.eventbrite.com/d/ny--astoria/grove-34/",
+      "url": "https://www.eventbrite.com/d/ny--new-york/grove-34/",
       "events": [
         {
           "name": "Stand Up Comedy at Grove 34!",
@@ -34638,13 +34437,13 @@
           "category": "comedy"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--astoria/grove-34/ (serving stale cache)",
-      "duration": 0.21,
+      "error": null,
+      "duration": 3.34,
       "cached": true
     },
     {
       "venue": "Culture Lab LIC",
-      "url": "https://www.eventbrite.com/d/ny--long-island-city/culture-lab-lic/",
+      "url": "https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/",
       "events": [
         {
           "name": "OPEN LAB | GODBODY: Ritual Participation with Diovanna Obafunmilayo",
@@ -34875,13 +34674,13 @@
           "category": "music"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--long-island-city/culture-lab-lic/ (serving stale cache)",
-      "duration": 0.19,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/ (serving stale cache)",
+      "duration": 0.17,
       "cached": true
     },
     {
       "venue": "Bohemian Hall & Beer Garden (Astoria)",
-      "url": "https://www.eventbrite.com/d/ny--astoria/bohemian-hall/",
+      "url": "https://www.eventbrite.com/d/ny--new-york/bohemian-hall/",
       "events": [
         {
           "name": "IAAC Literary Festival 2026",
@@ -35052,8 +34851,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--astoria/bohemian-hall/ (serving stale cache)",
-      "duration": 0.18,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bohemian-hall/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -35278,7 +35077,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/astoria-queens/ (serving stale cache)",
-      "duration": 0.17,
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -35526,8 +35325,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.15,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/long-island-city/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -35752,7 +35551,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/ (serving stale cache)",
-      "duration": 0.08,
+      "duration": 0.22,
       "cached": true
     },
     {
@@ -35953,7 +35752,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jackson-heights/ (serving stale cache)",
-      "duration": 0.08,
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -36153,8 +35952,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sunnyside-queens/ (serving stale cache)",
-      "duration": 0.07,
+      "error": null,
+      "duration": 3.47,
       "cached": true
     },
     {
@@ -36343,7 +36142,7 @@
         }
       ],
       "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/ (serving stale cache)",
-      "duration": 0.13,
+      "duration": 0.28,
       "cached": true
     },
     {
@@ -36523,7 +36322,7 @@
         }
       ],
       "error": null,
-      "duration": 0.25,
+      "duration": 0.62,
       "cached": false
     },
     {
@@ -36559,7 +36358,7 @@
         }
       ],
       "error": null,
-      "duration": 0.29,
+      "duration": 0.63,
       "cached": false
     },
     {
@@ -36649,7 +36448,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.61,
       "cached": false
     },
     {
@@ -36829,7 +36628,7 @@
         }
       ],
       "error": null,
-      "duration": 0.23,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -36973,7 +36772,7 @@
         }
       ],
       "error": null,
-      "duration": 0.37,
+      "duration": 0.67,
       "cached": false
     },
     {
@@ -37153,7 +36952,7 @@
         }
       ],
       "error": null,
-      "duration": 0.69,
+      "duration": 0.65,
       "cached": false
     },
     {
@@ -37306,7 +37105,7 @@
         }
       ],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.66,
       "cached": false
     },
     {
@@ -37477,7 +37276,7 @@
         }
       ],
       "error": null,
-      "duration": 0.41,
+      "duration": 0.69,
       "cached": false
     },
     {
@@ -37684,7 +37483,7 @@
         }
       ],
       "error": null,
-      "duration": 0.54,
+      "duration": 0.85,
       "cached": false
     },
     {
@@ -37855,7 +37654,7 @@
         }
       ],
       "error": null,
-      "duration": 0.44,
+      "duration": 0.74,
       "cached": false
     },
     {
@@ -37981,7 +37780,7 @@
         }
       ],
       "error": null,
-      "duration": 0.43,
+      "duration": 0.83,
       "cached": false
     },
     {
@@ -38089,7 +37888,7 @@
         }
       ],
       "error": null,
-      "duration": 0.5,
+      "duration": 0.2,
       "cached": false
     },
     {
@@ -38098,7 +37897,7 @@
       "events": [],
       "error": null,
       "duration": 0.52,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Music Kitchen",
@@ -38154,7 +37953,7 @@
         }
       ],
       "error": null,
-      "duration": 0.45,
+      "duration": 0.76,
       "cached": false
     },
     {
@@ -38282,7 +38081,7 @@
       "events": [],
       "error": null,
       "duration": 0.52,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Mannes School of Music",
@@ -38290,7 +38089,7 @@
       "events": [],
       "error": null,
       "duration": 0.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Apollo Theater",
@@ -38316,7 +38115,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -38469,7 +38268,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53,
+      "duration": 0.78,
       "cached": false
     },
     {
@@ -38586,7 +38385,7 @@
         }
       ],
       "error": null,
-      "duration": 0.5,
+      "duration": 0.71,
       "cached": false
     },
     {
@@ -38730,7 +38529,7 @@
         }
       ],
       "error": null,
-      "duration": 0.72,
+      "duration": 0.13,
       "cached": false
     },
     {
@@ -38840,7 +38639,7 @@
       ],
       "error": null,
       "duration": 0.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Town Hall",
@@ -39028,7 +38827,7 @@
         }
       ],
       "error": null,
-      "duration": 0.58,
+      "duration": 0.76,
       "cached": false
     },
     {
@@ -39172,7 +38971,7 @@
         }
       ],
       "error": null,
-      "duration": 0.55,
+      "duration": 0.75,
       "cached": false
     },
     {
@@ -39352,7 +39151,7 @@
         }
       ],
       "error": null,
-      "duration": 0.96,
+      "duration": 0.93,
       "cached": false
     },
     {
@@ -39435,7 +39234,7 @@
         }
       ],
       "error": null,
-      "duration": 0.43,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -39489,7 +39288,7 @@
         }
       ],
       "error": null,
-      "duration": 0.54,
+      "duration": 0.72,
       "cached": false
     },
     {
@@ -39588,7 +39387,7 @@
         }
       ],
       "error": null,
-      "duration": 0.88,
+      "duration": 0.74,
       "cached": false
     },
     {
@@ -39646,7 +39445,7 @@
       ],
       "error": null,
       "duration": 0.76,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bowery Palace",
@@ -39825,7 +39624,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.76,
       "cached": false
     },
     {
@@ -39879,7 +39678,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -39888,7 +39687,7 @@
       "events": [],
       "error": null,
       "duration": 0.5,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Palladium Times Square",
@@ -39977,7 +39776,7 @@
         }
       ],
       "error": null,
-      "duration": 0.52,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -40049,7 +39848,7 @@
         }
       ],
       "error": null,
-      "duration": 0.58,
+      "duration": 0.78,
       "cached": false
     },
     {
@@ -40166,7 +39965,7 @@
         }
       ],
       "error": null,
-      "duration": 0.24,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -40332,7 +40131,7 @@
       ],
       "error": null,
       "duration": 0.97,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Center (LGBTQ+ Community Center)",
@@ -40475,7 +40274,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.77,
       "cached": false
     },
     {
@@ -40583,7 +40382,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53,
+      "duration": 1.5,
       "cached": false
     },
     {
@@ -40781,7 +40580,7 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.81,
       "cached": false
     },
     {
@@ -40961,7 +40760,7 @@
         }
       ],
       "error": null,
-      "duration": 1.04,
+      "duration": 0.75,
       "cached": false
     },
     {
@@ -41051,7 +40850,7 @@
         }
       ],
       "error": null,
-      "duration": 0.12,
+      "duration": 0.67,
       "cached": false
     },
     {
@@ -41150,7 +40949,7 @@
         }
       ],
       "error": null,
-      "duration": 0.52,
+      "duration": 0.76,
       "cached": false
     },
     {
@@ -41204,7 +41003,7 @@
         }
       ],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.72,
       "cached": false
     },
     {
@@ -41375,7 +41174,7 @@
         }
       ],
       "error": null,
-      "duration": 0.53,
+      "duration": 0.74,
       "cached": false
     },
     {
@@ -41472,7 +41271,7 @@
         }
       ],
       "error": null,
-      "duration": 0.59,
+      "duration": 0.74,
       "cached": false
     },
     {
@@ -41481,7 +41280,7 @@
       "events": [],
       "error": null,
       "duration": 0.55,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club Midtown",
@@ -41543,7 +41342,7 @@
         }
       ],
       "error": null,
-      "duration": 0.52,
+      "duration": 0.78,
       "cached": false
     },
     {
@@ -41615,7 +41414,7 @@
         }
       ],
       "error": null,
-      "duration": 0.55,
+      "duration": 0.72,
       "cached": false
     },
     {
@@ -41687,7 +41486,7 @@
         }
       ],
       "error": null,
-      "duration": 0.57,
+      "duration": 0.82,
       "cached": false
     },
     {
@@ -41696,7 +41495,7 @@
       "events": [],
       "error": null,
       "duration": 0.56,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Paley Center for Media",
@@ -41785,7 +41584,7 @@
         }
       ],
       "error": null,
-      "duration": 0.56,
+      "duration": 0.7,
       "cached": false
     },
     {
@@ -41818,7 +41617,7 @@
         }
       ],
       "error": null,
-      "duration": 0.14,
+      "duration": 0.7,
       "cached": false
     },
     {
@@ -41998,7 +41797,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -42142,7 +41941,7 @@
         }
       ],
       "error": null,
-      "duration": 0.59,
+      "duration": 0.74,
       "cached": false
     },
     {
@@ -42151,7 +41950,7 @@
       "events": [],
       "error": null,
       "duration": 0.56,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Lincoln Center Theater",
@@ -42276,7 +42075,7 @@
         }
       ],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -42322,7 +42121,7 @@
       ],
       "error": null,
       "duration": 1.34,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club Upper West Side",
@@ -42402,7 +42201,7 @@
         }
       ],
       "error": null,
-      "duration": 0.74,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -42564,7 +42363,7 @@
         }
       ],
       "error": null,
-      "duration": 0.54,
+      "duration": 0.78,
       "cached": false
     },
     {
@@ -42665,7 +42464,7 @@
       ],
       "error": null,
       "duration": 1.4,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Shrine Harlem",
@@ -42673,7 +42472,7 @@
       "events": [],
       "error": null,
       "duration": 0.55,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Silvana NYC",
@@ -42681,7 +42480,7 @@
       "events": [],
       "error": null,
       "duration": 0.45,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "United Palace",
@@ -42725,7 +42524,7 @@
         }
       ],
       "error": null,
-      "duration": 0.58,
+      "duration": 0.15,
       "cached": false
     },
     {
@@ -42898,8 +42697,8 @@
           "category": "books"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.03,
       "cached": true
     },
     {
@@ -43128,7 +42927,7 @@
         }
       ],
       "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.0,
       "cached": true
     },
     {
@@ -43390,7 +43189,7 @@
         }
       ],
       "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "duration": 0.0,
       "cached": true
     },
     {
@@ -43872,8 +43671,8 @@
           "category": "books"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.23,
       "cached": true
     },
     {
@@ -44109,8 +43908,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 1.86,
       "cached": true
     },
     {
@@ -44199,7 +43998,7 @@
         }
       ],
       "error": null,
-      "duration": 0.55,
+      "duration": 0.84,
       "cached": false
     },
     {
@@ -44435,8 +44234,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.47,
       "cached": true
     },
     {
@@ -44636,8 +44435,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.1,
       "cached": true
     },
     {
@@ -44873,8 +44672,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.71,
       "cached": true
     },
     {
@@ -45748,7 +45547,7 @@
       ],
       "error": null,
       "duration": 1.19,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Skinny Dennis",
@@ -46013,7 +45812,7 @@
       ],
       "error": null,
       "duration": 0.17,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Trivia League",
@@ -48067,7 +47866,7 @@
       ],
       "error": null,
       "duration": 2.29,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Nitehawk Cinema",
@@ -48174,7 +47973,7 @@
         }
       ],
       "error": null,
-      "duration": 0.44,
+      "duration": 0.76,
       "cached": false
     },
     {
@@ -48210,7 +48009,7 @@
         }
       ],
       "error": null,
-      "duration": 0.42,
+      "duration": 0.72,
       "cached": false
     },
     {
@@ -48246,7 +48045,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61,
+      "duration": 0.97,
       "cached": false
     },
     {
@@ -48458,8 +48257,8 @@
           "category": "film"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.31,
       "cached": true
     },
     {
@@ -48647,8 +48446,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "error": null,
+      "duration": 1.82,
       "cached": true
     },
     {
@@ -49118,8 +48917,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 0.71,
       "cached": true
     },
     {
@@ -49333,7 +49132,7 @@
       ],
       "error": null,
       "duration": 0.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Joe's Pub (The Public Theater)",
@@ -49465,7 +49264,7 @@
         }
       ],
       "error": null,
-      "duration": 0.77,
+      "duration": 0.98,
       "cached": false
     },
     {
@@ -49636,7 +49435,7 @@
         }
       ],
       "error": null,
-      "duration": 0.55,
+      "duration": 0.8,
       "cached": false
     },
     {
@@ -49816,7 +49615,7 @@
         }
       ],
       "error": null,
-      "duration": 0.61,
+      "duration": 0.9,
       "cached": false
     },
     {
@@ -49996,7 +49795,7 @@
         }
       ],
       "error": null,
-      "duration": 0.48,
+      "duration": 0.83,
       "cached": false
     },
     {
@@ -50176,7 +49975,7 @@
         }
       ],
       "error": null,
-      "duration": 0.58,
+      "duration": 0.85,
       "cached": false
     },
     {
@@ -50320,7 +50119,7 @@
         }
       ],
       "error": null,
-      "duration": 0.67,
+      "duration": 0.94,
       "cached": false
     },
     {
@@ -50474,7 +50273,7 @@
       ],
       "error": null,
       "duration": 1.08,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Stand NYC",
@@ -50683,7 +50482,7 @@
       ],
       "error": null,
       "duration": 1.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Tight Pants Comedy",
@@ -50701,8 +50500,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 0.44,
       "cached": true
     },
     {
@@ -50890,8 +50689,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.77,
       "cached": true
     },
     {
@@ -50900,7 +50699,7 @@
       "events": [],
       "error": null,
       "duration": 0.57,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -51063,8 +50862,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.24,
       "cached": true
     },
     {
@@ -51204,8 +51003,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 1.76,
       "cached": true
     },
     {
@@ -51417,8 +51216,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.22,
       "cached": true
     },
     {
@@ -53001,7 +52800,7 @@
       ],
       "error": null,
       "duration": 2.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club",
@@ -53188,8 +52987,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "error": null,
+      "duration": 3.69,
       "cached": true
     },
     {
@@ -54109,7 +53908,7 @@
       ],
       "error": null,
       "duration": 1.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Comedy Collective (Eris Mainstage)",
@@ -54633,8 +54432,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 1.24,
       "cached": true
     },
     {
@@ -58999,8 +58798,8 @@
           "category": "art"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.31,
       "cached": true
     },
     {
@@ -59236,8 +59035,8 @@
           "category": "outdoors"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.69,
       "cached": true
     },
     {
@@ -59437,8 +59236,8 @@
           "category": "outdoors"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.61,
       "cached": true
     },
     {
@@ -59602,8 +59401,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.16,
       "cached": true
     },
     {
@@ -60133,7 +59932,7 @@
       ],
       "error": null,
       "duration": 0.37,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Pop-Up Experiences & Activations",
@@ -60320,8 +60119,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.75,
       "cached": true
     },
     {
@@ -60533,8 +60332,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.11,
       "cached": true
     },
     {
@@ -60758,8 +60557,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.26,
       "cached": true
     },
     {
@@ -60947,8 +60746,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.3,
       "cached": true
     },
     {
@@ -61148,8 +60947,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.12,
       "cached": true
     },
     {
@@ -61361,8 +61160,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.13,
       "cached": true
     },
     {
@@ -61660,7 +61459,7 @@
       ],
       "error": null,
       "duration": 2.27,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Outdoor Hikes & Trails",
@@ -61969,7 +61768,7 @@
       ],
       "error": null,
       "duration": 2.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Running Clubs & 5K Socials",
@@ -62266,7 +62065,7 @@
       ],
       "error": null,
       "duration": 2.22,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Fashion Events & Sample Sales",
@@ -62441,8 +62240,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.27,
       "cached": true
     },
     {
@@ -62558,8 +62357,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "error": null,
+      "duration": 4.62,
       "cached": true
     },
     {
@@ -62771,8 +62570,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.21,
       "cached": true
     },
     {
@@ -63008,8 +62807,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 5.4,
       "cached": true
     },
     {
@@ -63129,7 +62928,7 @@
       ],
       "error": null,
       "duration": 0.42,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bibliothèque Wine & Book Bar",
@@ -63352,8 +63151,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.8,
       "cached": true
     },
     {
@@ -63577,8 +63376,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "error": null,
+      "duration": 3.65,
       "cached": true
     },
     {
@@ -63900,7 +63699,7 @@
       ],
       "error": null,
       "duration": 2.26,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Writers & Creative Storytelling",
@@ -64185,7 +63984,7 @@
       ],
       "error": null,
       "duration": 2.19,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Threes Brewing (Gowanus & Greenpoint)",
@@ -64408,8 +64207,8 @@
           "category": "books"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "error": null,
+      "duration": 2.94,
       "cached": true
     },
     {
@@ -64947,7 +64746,7 @@
       ],
       "error": null,
       "duration": 0.6,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Sesh Comedy (Chinatown / LES)",
@@ -65068,7 +64867,7 @@
       ],
       "error": null,
       "duration": 5.9,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "OS NYC (Super Smash Bros & Gaming)",
@@ -65205,7 +65004,7 @@
       ],
       "error": null,
       "duration": 0.27,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Wonderville (Indie Arcade & Smashville)",
@@ -65566,7 +65365,7 @@
       ],
       "error": null,
       "duration": 7.6,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Hex & Company (Board Games & RPG)",
@@ -65765,8 +65564,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.08,
+      "error": null,
+      "duration": 4.3,
       "cached": true
     },
     {
@@ -65978,8 +65777,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.37,
       "cached": true
     },
     {
@@ -66155,8 +65954,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "error": null,
+      "duration": 4.1,
       "cached": true
     },
     {
@@ -66526,7 +66325,7 @@
       ],
       "error": null,
       "duration": 2.25,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tabletop & RPG Games",
@@ -66859,7 +66658,7 @@
       ],
       "error": null,
       "duration": 3.98,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Bar Trivia Nights",
@@ -67261,7 +67060,7 @@
       ],
       "error": null,
       "duration": 4.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Luma NYC",
@@ -68405,7 +68204,7 @@
       ],
       "error": null,
       "duration": 0.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Language Exchange & Polyglot Socials",
@@ -68714,7 +68513,7 @@
       ],
       "error": null,
       "duration": 4.63,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "House of Yes (Circus & Dance)",
@@ -68839,7 +68638,7 @@
         }
       ],
       "error": null,
-      "duration": 0.12,
+      "duration": 0.85,
       "cached": false
     },
     {
@@ -69039,8 +68838,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.8,
       "cached": true
     },
     {
@@ -69202,7 +69001,7 @@
         }
       ],
       "error": null,
-      "duration": 0.13,
+      "duration": 0.93,
       "cached": false
     },
     {
@@ -69438,8 +69237,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.28,
       "cached": true
     },
     {
@@ -69663,8 +69462,8 @@
           "category": "art"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.46,
       "cached": true
     },
     {
@@ -69912,8 +69711,8 @@
           "category": "food"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.52,
       "cached": true
     },
     {
@@ -70029,8 +69828,8 @@
           "category": "sports"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.28,
       "cached": true
     },
     {
@@ -70340,7 +70139,7 @@
       ],
       "error": null,
       "duration": 0.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Photography Walks & Photo Tours",
@@ -70661,7 +70460,7 @@
       ],
       "error": null,
       "duration": 3.5,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Art Gallery Crawls & Openings",
@@ -71006,7 +70805,7 @@
       ],
       "error": null,
       "duration": 4.2,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Magnet Theater (Improv & Sketch)",
@@ -71205,8 +71004,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.53,
       "cached": true
     },
     {
@@ -71454,8 +71253,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.62,
       "cached": true
     },
     {
@@ -71669,7 +71468,7 @@
       ],
       "error": null,
       "duration": 3.56,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "S.O.B.'s (Sounds of Brazil)",
@@ -71964,7 +71763,7 @@
       ],
       "error": null,
       "duration": 2.69,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Salsa & Bachata Socials",
@@ -72211,8 +72010,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -72424,8 +72223,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.26,
       "cached": true
     },
     {
@@ -72673,8 +72472,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.4,
       "cached": true
     },
     {
@@ -72886,8 +72685,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.78,
       "cached": true
     },
     {
@@ -73111,8 +72910,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.92,
       "cached": true
     },
     {
@@ -73300,8 +73099,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.84,
       "cached": true
     },
     {
@@ -73525,8 +73324,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.57,
       "cached": true
     },
     {
@@ -73726,8 +73525,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.12,
       "cached": true
     },
     {
@@ -73975,8 +73774,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.62,
       "cached": true
     },
     {
@@ -74346,7 +74145,7 @@
       ],
       "error": null,
       "duration": 6.52,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "This Week in Swing NYC",
@@ -74715,7 +74514,7 @@
       ],
       "error": null,
       "duration": 0.66,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Swing Dancing & Lindy Hop",
@@ -74878,8 +74677,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.74,
       "cached": true
     },
     {
@@ -75103,8 +74902,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.09,
       "cached": true
     },
     {
@@ -75316,8 +75115,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.06,
       "cached": true
     },
     {
@@ -75459,7 +75258,7 @@
       ],
       "error": null,
       "duration": 5.51,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Live Jazz & Acoustic Sessions",
@@ -75636,7 +75435,7 @@
       ],
       "error": null,
       "duration": 4.62,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "3 Dollar Bill (Queer & Drag Venue)",
@@ -75761,7 +75560,7 @@
         }
       ],
       "error": null,
-      "duration": 0.15,
+      "duration": 0.82,
       "cached": false
     },
     {
@@ -75997,8 +75796,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.61,
       "cached": true
     },
     {
@@ -76186,8 +75985,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.21,
       "cached": true
     },
     {
@@ -76423,8 +76222,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.8,
       "cached": true
     },
     {
@@ -76612,8 +76411,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.94,
       "cached": true
     },
     {
@@ -76825,8 +76624,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.78,
       "cached": true
     },
     {
@@ -77038,8 +76837,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.56,
       "cached": true
     },
     {
@@ -77227,7 +77026,7 @@
         }
       ],
       "error": null,
-      "duration": 0.14,
+      "duration": 0.86,
       "cached": false
     },
     {
@@ -77427,8 +77226,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.14,
       "cached": true
     },
     {
@@ -77640,8 +77439,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.23,
       "cached": true
     },
     {
@@ -78023,8 +77822,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 1.04,
       "cached": true
     },
     {
@@ -78260,8 +78059,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.55,
       "cached": true
     },
     {
@@ -78509,8 +78308,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.03,
       "cached": true
     },
     {
@@ -78758,8 +78557,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.26,
       "cached": true
     },
     {
@@ -78971,8 +78770,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.69,
       "cached": true
     },
     {
@@ -79184,8 +78983,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 5.2,
       "cached": true
     },
     {
@@ -79349,8 +79148,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.12,
       "cached": true
     },
     {
@@ -79490,8 +79289,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.24,
       "cached": true
     },
     {
@@ -79679,8 +79478,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.49,
       "cached": true
     },
     {
@@ -79916,8 +79715,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.47,
       "cached": true
     },
     {
@@ -80117,8 +79916,8 @@
           "category": "film"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.01,
       "cached": true
     },
     {
@@ -80190,7 +79989,7 @@
         }
       ],
       "error": null,
-      "duration": 0.12,
+      "duration": 0.92,
       "cached": false
     },
     {
@@ -80199,7 +79998,7 @@
       "events": [],
       "error": null,
       "duration": 0.39,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Clearview Festival Productions (NYC Street Fairs)",
@@ -80207,7 +80006,7 @@
       "events": [],
       "error": null,
       "duration": 0.42,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Diwali & South Asian Cultural Festivals",
@@ -80454,8 +80253,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 1.66,
       "cached": true
     },
     {
@@ -80643,8 +80442,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -80664,8 +80463,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.42,
       "cached": true
     },
     {
@@ -80865,8 +80664,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.75,
       "cached": true
     },
     {
@@ -81102,8 +80901,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.47,
       "cached": true
     },
     {
@@ -81267,8 +81066,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.76,
       "cached": true
     },
     {
@@ -81492,8 +81291,8 @@
           "category": "art"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.37,
       "cached": true
     },
     {
@@ -81681,8 +81480,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.25,
       "cached": true
     },
     {
@@ -81882,8 +81681,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.32,
       "cached": true
     },
     {
@@ -82107,8 +81906,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.09,
       "cached": true
     },
     {
@@ -82296,8 +82095,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -82521,8 +82320,8 @@
           "category": "food"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.49,
       "cached": true
     },
     {
@@ -82770,8 +82569,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.03,
       "cached": true
     },
     {
@@ -82983,8 +82782,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.59,
       "cached": true
     },
     {
@@ -83196,8 +82995,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.23,
       "cached": true
     },
     {
@@ -83397,8 +83196,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.86,
       "cached": true
     },
     {
@@ -83407,7 +83206,7 @@
       "events": [],
       "error": null,
       "duration": 1.57,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Street Fairs & Avenue Festivals",
@@ -83654,8 +83453,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.8,
       "cached": true
     },
     {
@@ -83879,8 +83678,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.31,
       "cached": true
     },
     {
@@ -84104,8 +83903,8 @@
           "category": "party"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 1.63,
       "cached": true
     },
     {
@@ -84281,8 +84080,8 @@
           "category": "party"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.65,
       "cached": true
     },
     {
@@ -84458,8 +84257,8 @@
           "category": "food"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.05,
       "cached": true
     },
     {
@@ -84695,8 +84494,8 @@
           "category": "art"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.63,
       "cached": true
     },
     {
@@ -84932,8 +84731,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.39,
       "cached": true
     },
     {
@@ -84951,7 +84750,7 @@
       ],
       "error": null,
       "duration": 2.22,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Columbus Circle District Events",
@@ -85186,8 +84985,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.54,
       "cached": true
     },
     {
@@ -85387,8 +85186,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.84,
       "cached": true
     },
     {
@@ -85552,8 +85351,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -85669,8 +85468,8 @@
           "category": "outdoors"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.42,
       "cached": true
     },
     {
@@ -85762,8 +85561,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.25,
       "cached": true
     },
     {
@@ -85963,8 +85762,8 @@
           "category": "outdoors"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 5.43,
       "cached": true
     },
     {
@@ -86140,8 +85939,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.09,
       "cached": true
     },
     {
@@ -86353,8 +86152,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.31,
       "cached": true
     },
     {
@@ -86578,8 +86377,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.42,
       "cached": true
     },
     {
@@ -86791,8 +86590,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.14,
       "cached": true
     },
     {
@@ -86822,8 +86621,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 0.36,
       "cached": true
     },
     {
@@ -87071,8 +86870,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.33,
       "cached": true
     },
     {
@@ -87248,8 +87047,8 @@
           "category": "books"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 4.34,
       "cached": true
     },
     {
@@ -87497,8 +87296,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.41,
       "cached": true
     },
     {
@@ -87734,8 +87533,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.76,
       "cached": true
     },
     {
@@ -87947,8 +87746,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.16,
       "cached": true
     },
     {
@@ -88136,8 +87935,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.88,
       "cached": true
     },
     {
@@ -88313,8 +88112,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.99,
       "cached": true
     },
     {
@@ -88526,8 +88325,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.62,
       "cached": true
     },
     {
@@ -88727,8 +88526,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.71,
       "cached": true
     },
     {
@@ -88952,8 +88751,8 @@
           "category": "books"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.38,
       "cached": true
     },
     {
@@ -89165,8 +88964,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 5.36,
       "cached": true
     },
     {
@@ -89354,8 +89153,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.37,
       "cached": true
     },
     {
@@ -89543,8 +89342,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.84,
       "cached": true
     },
     {
@@ -89732,8 +89531,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 3.41,
       "cached": true
     },
     {
@@ -90091,7 +89890,7 @@
       ],
       "error": null,
       "duration": 4.76,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Book Clubs & Reading Groups",
@@ -90400,7 +90199,7 @@
       ],
       "error": null,
       "duration": 5.32,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Board Games & Tabletop",
@@ -90769,7 +90568,7 @@
       ],
       "error": null,
       "duration": 5.52,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Running & Walking Clubs",
@@ -90922,7 +90721,7 @@
       ],
       "error": null,
       "duration": 5.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Tech, AI & Developers",
@@ -91075,7 +90874,7 @@
       ],
       "error": null,
       "duration": 5.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Williamsburg & Greenpoint Socials",
@@ -91216,7 +91015,7 @@
       ],
       "error": null,
       "duration": 5.96,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Park Slope & Prospect Park Community",
@@ -91369,7 +91168,7 @@
       ],
       "error": null,
       "duration": 6.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bushwick Creative & Social Meetups",
@@ -91522,7 +91321,7 @@
       ],
       "error": null,
       "duration": 6.2,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Neighborhood Socials & Mixers",
@@ -91699,7 +91498,7 @@
       ],
       "error": null,
       "duration": 6.29,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Community & Social Meetups",
@@ -91900,7 +91699,7 @@
       ],
       "error": null,
       "duration": 5.83,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Flushing Tech, Food & Language Meetups",
@@ -92053,7 +91852,7 @@
       ],
       "error": null,
       "duration": 5.28,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Sunnyside, Woodside & Jackson Heights",
@@ -92206,7 +92005,7 @@
       ],
       "error": null,
       "duration": 6.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Board Gamers Group",
@@ -92479,7 +92278,7 @@
       ],
       "error": null,
       "duration": 4.64,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tabletop Tuesday Sunnyside Game Night",
@@ -92487,7 +92286,7 @@
       "events": [],
       "error": null,
       "duration": 4.66,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Prospect Park Board Gaming Club",
@@ -92520,7 +92319,7 @@
       ],
       "error": null,
       "duration": 4.54,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: The Brooklyn Board Games Group",
@@ -92589,7 +92388,7 @@
       ],
       "error": null,
       "duration": 4.16,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Strategist Evening Games",
@@ -92670,7 +92469,7 @@
       ],
       "error": null,
       "duration": 3.98,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Runners",
@@ -92883,7 +92682,7 @@
       ],
       "error": null,
       "duration": 5.49,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: RUN LIC (Long Island City Runners)",
@@ -93180,7 +92979,7 @@
       ],
       "error": null,
       "duration": 3.22,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Woodside-Sunnyside Runners",
@@ -93369,7 +93168,7 @@
       ],
       "error": null,
       "duration": 6.74,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: CALLEFUT Queens Soccer Community",
@@ -93438,7 +93237,7 @@
       ],
       "error": null,
       "duration": 2.56,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Futsal Club",
@@ -93627,7 +93426,7 @@
       ],
       "error": null,
       "duration": 2.58,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn / Queens Coed Soccer Club",
@@ -93684,7 +93483,7 @@
       ],
       "error": null,
       "duration": 3.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Flushing Tech Hackathons & Meetups",
@@ -93717,7 +93516,7 @@
       ],
       "error": null,
       "duration": 2.08,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Tech Meetup",
@@ -93774,7 +93573,7 @@
       ],
       "error": null,
       "duration": 1.89,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Women's Writing Group",
@@ -93951,7 +93750,7 @@
       ],
       "error": null,
       "duration": 1.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bushwick Writers Group",
@@ -94092,7 +93891,7 @@
       ],
       "error": null,
       "duration": 1.76,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Forest Hills Book Group",
@@ -94125,7 +93924,7 @@
       ],
       "error": null,
       "duration": 2.08,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Silent Book Club NYC & Brooklyn",
@@ -94182,7 +93981,7 @@
       ],
       "error": null,
       "duration": 2.17,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Shut Up & Write! NYC (Brooklyn & Queens)",
@@ -94551,7 +94350,7 @@
       ],
       "error": null,
       "duration": 1.39,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Williamsburg French & Spanish Conversations",
@@ -94620,7 +94419,7 @@
       ],
       "error": null,
       "duration": 1.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Conversation française à Brooklyn",
@@ -94653,7 +94452,7 @@
       ],
       "error": null,
       "duration": 1.91,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Traditional Slow Jam (Park Slope)",
@@ -94698,7 +94497,7 @@
       ],
       "error": null,
       "duration": 1.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Ethical Culture Community (Park Slope)",
@@ -94743,7 +94542,7 @@
       ],
       "error": null,
       "duration": 1.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Mindful Astoria Meditation Community",
@@ -94836,7 +94635,7 @@
       ],
       "error": null,
       "duration": 1.61,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Friends from Bayside & Queens Socials",
@@ -95097,7 +94896,7 @@
       ],
       "error": null,
       "duration": 1.44,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Cucala Dance LIC Salsa Classes & Socials",
@@ -95358,7 +95157,7 @@
       ],
       "error": null,
       "duration": 1.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC 20s & 30s Board Game Group",
@@ -95403,7 +95202,7 @@
       ],
       "error": null,
       "duration": 1.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Borough Hoppers NYC",
@@ -95616,7 +95415,7 @@
       ],
       "error": null,
       "duration": 2.28,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Victory Pints Board Games & Beer",
@@ -95685,7 +95484,7 @@
       ],
       "error": null,
       "duration": 1.36,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Social Board Game Events",
@@ -95706,7 +95505,7 @@
       ],
       "error": null,
       "duration": 1.29,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tuesday Board Games NYC",
@@ -95751,7 +95550,7 @@
       ],
       "error": null,
       "duration": 1.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Table-Top Games Meetup",
@@ -95759,7 +95558,7 @@
       "events": [],
       "error": null,
       "duration": 1.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Board Game Club",
@@ -95767,7 +95566,7 @@
       "events": [],
       "error": null,
       "duration": 1.26,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: New York LGBT Board Games Group",
@@ -95800,7 +95599,7 @@
       ],
       "error": null,
       "duration": 1.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Backgammon New York City (BGNYC)",
@@ -95821,7 +95620,7 @@
       ],
       "error": null,
       "duration": 1.19,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Foodies Club",
@@ -95842,7 +95641,7 @@
       ],
       "error": null,
       "duration": 1.14,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Exploring NYC History & Neighborhoods",
@@ -95911,7 +95710,7 @@
       ],
       "error": null,
       "duration": 1.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: New York City Young Adults",
@@ -95932,7 +95731,7 @@
       ],
       "error": null,
       "duration": 0.69,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Run Clubs",
@@ -96181,7 +95980,7 @@
       ],
       "error": null,
       "duration": 2.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Social Runs",
@@ -96334,7 +96133,7 @@
       ],
       "error": null,
       "duration": 2.3,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Trail Running",
@@ -96571,7 +96370,7 @@
       ],
       "error": null,
       "duration": 3.4,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Outdoor Adventures",
@@ -96928,7 +96727,7 @@
       ],
       "error": null,
       "duration": 3.2,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Nature Walks",
@@ -97201,7 +97000,7 @@
       ],
       "error": null,
       "duration": 3.67,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Walking Groups",
@@ -97534,7 +97333,7 @@
       ],
       "error": null,
       "duration": 4.26,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Kayaking & Paddling",
@@ -97723,7 +97522,7 @@
       ],
       "error": null,
       "duration": 3.73,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Birding",
@@ -97864,7 +97663,7 @@
       ],
       "error": null,
       "duration": 4.5,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Camping",
@@ -98029,7 +97828,7 @@
       ],
       "error": null,
       "duration": 4.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Cycling",
@@ -98182,7 +97981,7 @@
       ],
       "error": null,
       "duration": 4.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bike Rides",
@@ -98323,7 +98122,7 @@
       ],
       "error": null,
       "duration": 4.97,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Rock Climbing",
@@ -98512,7 +98311,7 @@
       ],
       "error": null,
       "duration": 5.74,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bouldering",
@@ -98689,7 +98488,7 @@
       ],
       "error": null,
       "duration": 5.5,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Climbing",
@@ -98890,7 +98689,7 @@
       ],
       "error": null,
       "duration": 5.9,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Skating",
@@ -99067,7 +98866,7 @@
       ],
       "error": null,
       "duration": 8.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Yoga",
@@ -99280,7 +99079,7 @@
       ],
       "error": null,
       "duration": 7.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Pickleball",
@@ -99457,7 +99256,7 @@
       ],
       "error": null,
       "duration": 6.54,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Volleyball",
@@ -99706,7 +99505,7 @@
       ],
       "error": null,
       "duration": 6.9,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tennis",
@@ -99919,7 +99718,7 @@
       ],
       "error": null,
       "duration": 9.97,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Dance",
@@ -100252,7 +100051,7 @@
       ],
       "error": null,
       "duration": 7.55,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bachata",
@@ -100465,7 +100264,7 @@
       ],
       "error": null,
       "duration": 7.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tango",
@@ -100690,7 +100489,7 @@
       ],
       "error": null,
       "duration": 8.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: DJ Nights",
@@ -100855,7 +100654,7 @@
       ],
       "error": null,
       "duration": 8.66,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Techno",
@@ -101008,7 +100807,7 @@
       ],
       "error": null,
       "duration": 7.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: House Music",
@@ -101161,7 +100960,7 @@
       ],
       "error": null,
       "duration": 7.92,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Dance Parties",
@@ -101446,7 +101245,7 @@
       ],
       "error": null,
       "duration": 9.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Karaoke",
@@ -101635,7 +101434,7 @@
       ],
       "error": null,
       "duration": 9.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Open Mics",
@@ -101896,7 +101695,7 @@
       ],
       "error": null,
       "duration": 8.95,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Music Jams",
@@ -102145,7 +101944,7 @@
       ],
       "error": null,
       "duration": 8.39,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Choirs & Singing",
@@ -102286,7 +102085,7 @@
       ],
       "error": null,
       "duration": 7.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Comedy",
@@ -102583,7 +102382,7 @@
       ],
       "error": null,
       "duration": 8.28,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Theater",
@@ -102832,7 +102631,7 @@
       ],
       "error": null,
       "duration": 9.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Poetry",
@@ -103009,7 +102808,7 @@
       ],
       "error": null,
       "duration": 8.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Film",
@@ -103138,7 +102937,7 @@
       ],
       "error": null,
       "duration": 8.81,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Drawing & Sketching",
@@ -103471,7 +103270,7 @@
       ],
       "error": null,
       "duration": 9.22,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Make Friends",
@@ -103624,7 +103423,7 @@
       ],
       "error": null,
       "duration": 8.52,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: New in Town",
@@ -103945,7 +103744,7 @@
       ],
       "error": null,
       "duration": 8.76,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: 20s & 30s",
@@ -104098,7 +103897,7 @@
       ],
       "error": null,
       "duration": 8.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Social Events",
@@ -104383,7 +104182,7 @@
       ],
       "error": null,
       "duration": 9.25,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Singles",
@@ -104584,7 +104383,7 @@
       ],
       "error": null,
       "duration": 8.82,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: LGBTQ+",
@@ -104905,7 +104704,7 @@
       ],
       "error": null,
       "duration": 8.12,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Volunteering",
@@ -105106,7 +104905,7 @@
       ],
       "error": null,
       "duration": 8.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Meditation",
@@ -105355,7 +105154,7 @@
       ],
       "error": null,
       "duration": 8.67,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Chess",
@@ -105532,7 +105331,7 @@
       ],
       "error": null,
       "duration": 7.78,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Happy Hours",
@@ -105889,7 +105688,7 @@
       ],
       "error": null,
       "duration": 8.85,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brunch",
@@ -106126,7 +105925,7 @@
       ],
       "error": null,
       "duration": 7.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Wine Tasting",
@@ -106291,7 +106090,7 @@
       ],
       "error": null,
       "duration": 7.85,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Foodies",
@@ -106624,391 +106423,391 @@
       ],
       "error": null,
       "duration": 7.93,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Eventbrite: Run Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/run-club/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.29,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Running Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/running-club/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.51,
+      "cached": true
     },
     {
       "venue": "Eventbrite: 5K Races",
       "url": "https://www.eventbrite.com/d/ny--new-york/5k/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.24,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Hiking",
       "url": "https://www.eventbrite.com/d/ny--new-york/hiking/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.19,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Hikes",
       "url": "https://www.eventbrite.com/d/ny--new-york/hike/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.37,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Outdoor Adventures",
       "url": "https://www.eventbrite.com/d/ny--new-york/outdoor-adventure/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.31,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Walking Tours",
       "url": "https://www.eventbrite.com/d/ny--new-york/walking-tour/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.3,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Bike Rides",
       "url": "https://www.eventbrite.com/d/ny--new-york/bike-ride/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.31,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Cycling",
       "url": "https://www.eventbrite.com/d/ny--new-york/cycling/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.06,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Rock Climbing",
       "url": "https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.31,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Roller Skating",
       "url": "https://www.eventbrite.com/d/ny--new-york/roller-skating/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.08,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Yoga",
       "url": "https://www.eventbrite.com/d/ny--new-york/yoga/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Pickleball",
       "url": "https://www.eventbrite.com/d/ny--new-york/pickleball/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.29,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Volleyball",
       "url": "https://www.eventbrite.com/d/ny--new-york/volleyball/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Kickball",
       "url": "https://www.eventbrite.com/d/ny--new-york/kickball/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: DJ Sets",
       "url": "https://www.eventbrite.com/d/ny--new-york/dj/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.17,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Techno",
       "url": "https://www.eventbrite.com/d/ny--new-york/techno/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.19,
+      "cached": true
     },
     {
       "venue": "Eventbrite: House Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/house-music/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.08,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Dance Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/dance-party/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.15,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Day Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/day-party/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Raves",
       "url": "https://www.eventbrite.com/d/ny--new-york/rave/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Afrobeats",
       "url": "https://www.eventbrite.com/d/ny--new-york/afrobeats/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Reggaeton",
       "url": "https://www.eventbrite.com/d/ny--new-york/reggaeton/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Hip-Hop Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/hip-hop-party/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Latin Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/latin-party/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Silent Discos",
       "url": "https://www.eventbrite.com/d/ny--new-york/silent-disco/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.26,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Brunch Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/brunch-party/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.22,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Live Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/live-music/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.12,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Concerts",
       "url": "https://www.eventbrite.com/d/ny--new-york/concerts/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Singer-Songwriters",
       "url": "https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Karaoke",
       "url": "https://www.eventbrite.com/d/ny--new-york/karaoke/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Open Mics",
       "url": "https://www.eventbrite.com/d/ny--new-york/open-mic/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Poetry",
       "url": "https://www.eventbrite.com/d/ny--new-york/poetry/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.07,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Comedy Shows",
       "url": "https://www.eventbrite.com/d/ny--new-york/comedy-show/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.05,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Stand-Up Comedy",
       "url": "https://www.eventbrite.com/d/ny--new-york/stand-up-comedy/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.23,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/theater/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Immersive Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/immersive-theater/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Cabaret",
       "url": "https://www.eventbrite.com/d/ny--new-york/cabaret/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.09,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Dance Performances",
       "url": "https://www.eventbrite.com/d/ny--new-york/dance-performance/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.06,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Film Screenings",
       "url": "https://www.eventbrite.com/d/ny--new-york/film-screening/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Art Shows",
       "url": "https://www.eventbrite.com/d/ny--new-york/art-show/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.18,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Gallery Openings",
       "url": "https://www.eventbrite.com/d/ny--new-york/gallery-opening/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Paint & Sip",
       "url": "https://www.eventbrite.com/d/ny--new-york/paint-and-sip/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Workshops",
       "url": "https://www.eventbrite.com/d/ny--new-york/workshops/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Social Mixers",
       "url": "https://www.eventbrite.com/d/ny--new-york/social-mixer/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.23,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Singles Events",
       "url": "https://www.eventbrite.com/d/ny--new-york/singles/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Speed Dating",
       "url": "https://www.eventbrite.com/d/ny--new-york/speed-dating/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Wine Tastings",
       "url": "https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Union Square Greenmarket",
@@ -119672,141 +119471,6 @@
           "url": "https://twentysidedstore.com/",
           "venue": "Twenty Sided Store",
           "price": "$15",
-          "category": "gaming"
-        }
-      ],
-      "error": null
-    },
-    {
-      "venue": "BrookLAN",
-      "url": "https://www.brooklan.com/",
-      "events": [
-        {
-          "name": "BrookLAN Bushwick Smash Bros & Fighting Game Community Night",
-          "date": "2026-11-05T00:00:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "$10",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Smash Bros & Fighting Game Community Night",
-          "date": "2026-11-12T00:00:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "$10",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Smash Bros & Fighting Game Community Night",
-          "date": "2026-11-19T00:00:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "$10",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Smash Bros & Fighting Game Community Night",
-          "date": "2026-11-26T00:00:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "$10",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Smash Bros & Fighting Game Community Night",
-          "date": "2026-12-03T00:00:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "$10",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Smash Bros & Fighting Game Community Night",
-          "date": "2026-12-10T00:00:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "$10",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Smash Bros & Fighting Game Community Night",
-          "date": "2026-12-17T00:00:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "$10",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Smash Bros & Fighting Game Community Night",
-          "date": "2026-12-24T00:00:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "$10",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Board Games, Trivia & Esports Social",
-          "date": "2026-11-06T00:30:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "Free",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Board Games, Trivia & Esports Social",
-          "date": "2026-11-13T00:30:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "Free",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Board Games, Trivia & Esports Social",
-          "date": "2026-11-20T00:30:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "Free",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Board Games, Trivia & Esports Social",
-          "date": "2026-11-27T00:30:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "Free",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Board Games, Trivia & Esports Social",
-          "date": "2026-12-04T00:30:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "Free",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Board Games, Trivia & Esports Social",
-          "date": "2026-12-11T00:30:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "Free",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Board Games, Trivia & Esports Social",
-          "date": "2026-12-18T00:30:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "Free",
-          "category": "gaming"
-        },
-        {
-          "name": "BrookLAN Bushwick Board Games, Trivia & Esports Social",
-          "date": "2026-12-25T00:30:00+00:00",
-          "url": "https://www.brooklan.com/",
-          "venue": "BrookLAN",
-          "price": "Free",
           "category": "gaming"
         }
       ],
