@@ -56,6 +56,8 @@ def _get_venue_ttl(vname, v=None):
     url = (v.get("url") if isinstance(v, dict) else "") or ""
     if "eventbrite.com" in url or "eventbrite" in low:
         return EVENTBRITE_TTL
+    if isinstance(v, dict) and v.get("scraper") is scrape_donyc_calendar:
+        return DEFAULT_VENUE_TTL  # ~300 page loads; hourly would hammer DoNYC
     if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc", "the skint", "secret nyc", "greenpointers", "flop house", "sesh comedy", "luma"]):
         return FAST_VENUE_TTL
     if any(k in low for k in ["parks", "trivia", "library", "flea", "greenmarket"]):
@@ -946,14 +948,85 @@ def fetch_luckyseat_nyc():
 
 # --- Scrapers ---
 
+_JS_STR = r'"((?:[^"\\]|\\.)*)"'
+_DONYC_EVENT_RE = re.compile(
+    r'\{id:(\d+),type:"event",title:' + _JS_STR + r',permalink:' + _JS_STR + r'(.*?)venue:\{id:\d+,title:' + _JS_STR
+    + r'(?:,district_id:[^,]*,district_name:(?:' + _JS_STR + r'|null))?(?:,area_id:[^,]*,area_name:(?:' + _JS_STR + r'|null))?',
+    re.S,
+)
+
+
+def _js_unquote(s):
+    try:
+        return json.loads(f'"{s}"')
+    except ValueError:
+        return s
+
+
+def _parse_donyc_svelte(page, now):
+    """DoNYC's 2026 SvelteKit pages embed their event list as a JS object literal
+    (id, title, permalink, tz_adjusted_begin_time, category, genres, venue{title, district})."""
+    venue_site = None
+    detail_at = page.find("detail:{")
+    m = re.search(r'social_links:\[(.*?)\]', page[detail_at:], re.S) if detail_at >= 0 else None
+    if m:
+        w = re.search(r'label:"Website",href:' + _JS_STR, m.group(1))
+        if w and w.group(1).startswith("http"):
+            venue_site = _js_unquote(w.group(1))
+    events, seen = [], set()
+    for em in _DONYC_EVENT_RE.finditer(page):
+        _id, title, _permalink, body, venue, district, area = em.groups()
+        name = re.sub(r"\s{2,}", " ", html.unescape(_js_unquote(title))).strip()
+        t = re.search(r'tz_adjusted_begin_time:"([^"]+)"', body)
+        if not name or not t:
+            continue
+        try:
+            dt = datetime.fromisoformat(t.group(1)).astimezone(timezone.utc)
+        except ValueError:
+            continue
+        if dt < now:
+            continue
+        venue_name = _js_unquote(venue)
+        key = (name.lower(), dt.date().isoformat(), venue_name.lower())
+        if key in seen:
+            continue
+        seen.add(key)
+        url = venue_site or f"https://www.google.com/search?q={quote_plus(f'{name} {venue_name} NYC')}"
+        ev = {"name": name, "date": dt.isoformat(), "url": url, "venue": venue_name, "price": None}
+        cat = re.search(r'category:"([^"]*)"', body)
+        genres = re.findall(_JS_STR, (re.search(r'genres:\[(.*?)\]', body) or [None, ""])[1] or "")
+        if cat:
+            dcat = cat.group(1).lower()
+            mapped = {"music": "music", "comedy": "comedy", "nightlife": "clubbing", "theatre": "theater", "theater": "theater",
+                      "film": "film", "art": "art", "arts": "art", "food & drink": "food", "sports": "sports",
+                      "outdoors": "outdoors", "dance": "dance", "family": "family", "books": "books"}.get(dcat)
+            if mapped:
+                ev["category"] = mapped
+        if genres:
+            g = next((map_native_genre(_js_unquote(x)) for x in genres if map_native_genre(_js_unquote(x))), None)
+            if g:
+                ev["genre"] = g
+        if district:
+            ev["neighborhood"] = _js_unquote(district)
+        events.append(ev)
+    return events
+
+
 def scrape_donyc(url, ua):
-    """DoNYC venue & category scraper — parses Schema.org microdata with Cloudflare error shielding.
-    Resolves direct ticket links and official venue websites to prevent linking through doNYC.
+    """DoNYC venue & category scraper. Reads the event list embedded in the SvelteKit page;
+    falls back to the older Schema.org microdata markup. Links the venue's own website (or a
+    search) rather than doNYC.
     """
     try:
-        soup = fetch_soup(url, ua)
+        resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=15)
+        resp.raise_for_status()
+        page = resp.text
     except Exception:
         return []
+    svelte_events = _parse_donyc_svelte(page, datetime.now(timezone.utc))
+    if svelte_events or "__sveltekit" in page:
+        return svelte_events
+    soup = BeautifulSoup(page, "html.parser")
     events = []
     now = datetime.now(timezone.utc)
     seen = set()
@@ -1042,28 +1115,37 @@ def scrape_donyc(url, ua):
 
 
 def scrape_donyc_calendar(url, ua):
-    """DoNYC multi-day event calendar — fetches next 14 days of citywide listings with pacing & pagination."""
-    events = []
+    """DoNYC citywide day listings (~300 events/day over ~15 pages): every page for the next two
+    weeks, the first few pages after that. Three pages in flight with light pacing."""
+    from concurrent.futures import ThreadPoolExecutor
     now = datetime.now(EASTERN)
-    seen = set()
+    jobs = []
     for i in range(HORIZON_DAYS):
         d = now.date() + timedelta(days=i)
-        for page in (1, 2):
-            day_url = f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}"
-            if page > 1:
-                day_url = f"{day_url}?page={page}"
+        jobs.append((f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}", 15 if i < 14 else 4))
+
+    def day(job):
+        base, max_pages = job
+        out = []
+        for page in range(1, max_pages + 1):
+            time.sleep(0.3)  # gentle pacing; DoStuff's origin returns 521s under bursts
             try:
-                time.sleep(0.3)  # Gentle pacing to avoid DoStuff origin server 521 rate limits
-                day_events = scrape_donyc(day_url, ua)
-                if not day_events:
-                    break
-                for e in day_events:
-                    key = (e["name"].lower(), (e.get("date") or "")[:10])
-                    if key not in seen:
-                        seen.add(key)
-                        events.append(e)
+                got = scrape_donyc(base if page == 1 else f"{base}?page={page}", ua)
             except Exception:
-                continue
+                break
+            if not got:
+                break
+            out.extend(got)
+        return out
+
+    events, seen = [], set()
+    with ThreadPoolExecutor(max_workers=3) as ex:
+        for day_events in ex.map(day, jobs):
+            for e in day_events:
+                key = (e["name"].lower(), (e.get("date") or "")[:10], (e.get("venue") or "").lower())
+                if key not in seen:
+                    seen.add(key)
+                    events.append(e)
     return events
 
 
