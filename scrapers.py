@@ -6139,6 +6139,64 @@ def scrape_fever(url, ua):
     return _dedupe_future(list(plans.values()))
 
 
+_VV_RANGE_RE = re.compile(
+    r"^(?P<m1>January|February|March|April|May|June|July|August|September|October|November|December) (?P<d1>\d{1,2})"
+    r"\s*[-\u2010-\u2015\u2011]\s*(?:(?P<m2>January|February|March|April|May|June|July|August|September|October|November|December) )?(?P<d2>\d{1,2})$")
+
+
+def scrape_village_vanguard(url, ua):
+    """Village Vanguard: the front page lists week-long residencies ("Tyshawn Sorey | November
+    10 - November 15", sidemen on a following "with ..." line) plus the Vanguard Jazz Orchestra
+    every Monday. Residencies become one listing per night (sets at 8 and 10 PM)."""
+    _status, text = fetch_text(url, headers={"User-Agent": ua})
+    body = re.sub(r"<script.*?</script>|<style.*?</style>", "", text, flags=re.S)
+    tokens = [html.unescape(t).strip() for t in re.split(r"<[^>]+>", body)]
+    tokens = [t for t in tokens if t and t not in ("|", "\u2014", "\u201c", "\u201d", "&nbsp;", "\xa0")]
+    today = datetime.now(EASTERN).date()
+    venue, address = "Village Vanguard", "178 7th Ave S, New York, NY 10014"
+    events, seen = [], set()
+
+    def _date(mon, day):
+        m = datetime.strptime(mon[:3], "%b").month
+        d = datetime(today.year, m, int(day)).date()
+        return datetime(today.year + 1, m, int(day)).date() if d < today - timedelta(days=60) else d
+
+    for i, tok in enumerate(tokens):
+        m = _VV_RANGE_RE.match(tok.replace("\u2011", "-"))
+        if not m:
+            continue
+        artist = ""
+        for prev in reversed(tokens[max(0, i - 4):i]):
+            if prev.lower().startswith("with ") or len(prev) < 3 or prev.startswith(("\u2014", "-")):
+                continue
+            artist = prev
+            break
+        if not artist or "coming soon" in artist.lower() or artist.upper() == "TICKETS":
+            continue
+        start = _date(m.group("m1"), m.group("d1"))
+        end = _date(m.group("m2") or m.group("m1"), m.group("d2"))
+        if end < start:  # "December 29 - January 3"
+            end = datetime(start.year + 1, end.month, end.day).date()
+        d = start
+        while d <= end and (d - start).days < 10:
+            local = datetime(d.year, d.month, d.day, 20, 0, tzinfo=EASTERN)
+            if local >= datetime.now(EASTERN) - timedelta(hours=3) and (artist, d) not in seen:
+                seen.add((artist, d))
+                events.append({"name": artist, "date": local.astimezone(timezone.utc).isoformat(), "url": url,
+                               "venue": venue, "address": address, "price": None,
+                               "description": "Sets at 8 PM and 10 PM."})
+            d += timedelta(days=1)
+    if any("every monday" in t.lower() for t in tokens):
+        d = today + timedelta(days=(0 - today.weekday()) % 7)
+        while d <= today + timedelta(days=HORIZON_DAYS):
+            local = datetime(d.year, d.month, d.day, 20, 0, tzinfo=EASTERN)
+            events.append({"name": "Vanguard Jazz Orchestra", "date": local.astimezone(timezone.utc).isoformat(),
+                           "url": url, "venue": venue, "address": address, "price": None,
+                           "description": "Every Monday night, sets at 8 PM and 10 PM."})
+            d += timedelta(days=7)
+    return _dedupe_future(events)
+
+
 _ST_MARKS_ADDRESS = "12 St Marks Pl, New York, NY 10003"
 
 
@@ -7375,6 +7433,8 @@ _ALL_VENUES = [
     {"name": "AllEvents: Astoria (all)", "url": "https://allevents.in/astoria/all", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community", "kwargs": {"pages": 4}},
     {"name": "AllEvents: Jamaica (Queens) (all)", "url": "https://allevents.in/jamaica/all", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community", "kwargs": {"pages": 4}},
     {"name": "AllEvents: Long Island City (all)", "url": "https://allevents.in/long%20island%20city/all", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community", "kwargs": {"pages": 4}},
+    {"name": "Village Vanguard", "url": "https://villagevanguard.com/", "ua": UA_CHROME, "scraper": scrape_village_vanguard, "default_category": "music"},
+    {"name": "The Django (Jazz)", "url": "https://www.thedjangonyc.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/events/[^/]+", "venue": "The Django", "address": "2 6th Ave, New York, NY 10013"}},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},

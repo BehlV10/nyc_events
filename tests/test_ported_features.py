@@ -612,5 +612,20 @@ class TestFamilyClassifier(unittest.TestCase):
             self.assertFalse(is_kid_family_event(t), t)
 
 
+class TestVillageVanguard(unittest.TestCase):
+    def test_residencies_expand_to_nightly_listings(self):
+        d = _future_local(10, 20).date()
+        e = d + timedelta(days=5)
+        page = (f"<h2>Tyshawn Sorey</h2><p>{d:%B} {d.day} - {e:%B} {e.day}</p><p>with Aaron Diehl</p>"
+                f"<h2>COMING SOON!</h2><p>{d:%B} {d.day}-{e.day}</p><h3>Vanguard Jazz Orchestra</h3><p>Every Monday Night</p>")
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
+            events = scrapers.scrape_village_vanguard("https://villagevanguard.com/", UA_CHROME)
+        sorey = [x for x in events if x["name"] == "Tyshawn Sorey"]
+        self.assertEqual(len(sorey), 6)
+        self.assertEqual(_local(sorey[0]["date"]).hour, 20)
+        self.assertFalse(any("COMING" in x["name"] for x in events))
+        self.assertTrue(any(x["name"] == "Vanguard Jazz Orchestra" for x in events))
+
+
 if __name__ == "__main__":
     unittest.main()
