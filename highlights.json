@@ -328,12 +328,12 @@
     "id": "auto-2026-11-06-25",
     "auto": true,
     "match": {
-      "name_contains": "Comedy Show + Mini-Golf Experience",
-      "venue_contains": "Fever NYC"
+      "name_contains": "40s & Over Mixer (Free Drink For Women)",
+      "venue_contains": "The Cloud One Hotel New York-Downtown"
     },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 4 calendars; prime-time start.",
-    "score": 17.0,
+    "badge": "🤝 Community Pick",
+    "note": "Free; listed on 6 calendars; prime-time start.",
+    "score": 16.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
@@ -341,12 +341,12 @@
     "id": "auto-2026-11-06-26",
     "auto": true,
     "match": {
-      "name_contains": "40s & Over Mixer (Free Drink For Women)",
-      "venue_contains": "The Cloud One Hotel New York-Downtown"
+      "name_contains": "Friday Late Night Comedy Show NYC",
+      "venue_contains": "Comedy Village NYC"
     },
-    "badge": "🤝 Community Pick",
-    "note": "Free; listed on 6 calendars; prime-time start.",
-    "score": 16.5,
+    "badge": "😂 Comedy Pick",
+    "note": "Listed on 4 calendars; prime-time start.",
+    "score": 14.0,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
@@ -406,6 +406,19 @@
     "id": "auto-2026-11-07-31",
     "auto": true,
     "match": {
+      "name_contains": "Saturday Night Open Mic (6:30 PM)",
+      "venue_contains": "Bushwick Comedy Club"
+    },
+    "badge": "😂 Comedy Pick",
+    "note": "Free; listed on 4 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-32",
+    "auto": true,
+    "match": {
       "name_contains": "Queens Fiber Arts Festival",
       "venue_contains": "King Manor Museum"
     },
@@ -416,7 +429,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-32",
+    "id": "auto-2026-11-07-33",
     "auto": true,
     "match": {
       "name_contains": "Breathe Deep NYC",
@@ -429,7 +442,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-33",
+    "id": "auto-2026-11-07-34",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Festival Presents Cattywampus with Ellen Skrmetti",
@@ -442,7 +455,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-34",
+    "id": "auto-2026-11-07-35",
     "auto": true,
     "match": {
       "name_contains": "The 11pm Comedy Show",
@@ -451,19 +464,6 @@
     "badge": "😂 Comedy Pick",
     "note": "Listed on 4 calendars; prime-time start.",
     "score": 17.5,
-    "start_date": "2026-11-07",
-    "expires": "2026-11-07"
-  },
-  {
-    "id": "auto-2026-11-07-35",
-    "auto": true,
-    "match": {
-      "name_contains": "New York Comedy Festival: Character Select Comedy",
-      "venue_contains": "The Stand"
-    },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 6 calendars; weekend daytime.",
-    "score": 17.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
@@ -1238,6 +1238,19 @@
     "id": "auto-2026-11-11-95",
     "auto": true,
     "match": {
+      "name_contains": "Trivia",
+      "venue_contains": "Pete's Candy Store"
+    },
+    "badge": "🎲 Game Night Pick",
+    "note": "Free; listed on 3 calendars; prime-time start.",
+    "score": 15.0,
+    "start_date": "2026-11-11",
+    "expires": "2026-11-11"
+  },
+  {
+    "id": "auto-2026-11-11-96",
+    "auto": true,
+    "match": {
       "name_contains": "New York Comedy Festival: Pat McGann",
       "venue_contains": "Gramercy Theatre"
     },
@@ -1248,7 +1261,7 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-96",
+    "id": "auto-2026-11-11-97",
     "auto": true,
     "match": {
       "name_contains": "Chai Room: Ghar Wali Diwali",
@@ -1261,7 +1274,7 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-97",
+    "id": "auto-2026-11-11-98",
     "auto": true,
     "match": {
       "name_contains": "The Workout | New York Comedy Festival | Wed Nov 11 · 8 PM",
@@ -1274,7 +1287,7 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-98",
+    "id": "auto-2026-11-11-99",
     "auto": true,
     "match": {
       "name_contains": "Wednesday Showcase",
@@ -1287,7 +1300,7 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-99",
+    "id": "auto-2026-11-11-100",
     "auto": true,
     "match": {
       "name_contains": "Fruit Bats",
@@ -1300,7 +1313,7 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-100",
+    "id": "auto-2026-11-11-101",
     "auto": true,
     "match": {
       "name_contains": "Michigander, Wildermiss",
@@ -1308,19 +1321,6 @@
     },
     "badge": "🎸 Music Pick",
     "note": "Listed on 2 calendars; headline room at Music Hall of Williamsburg; prime-time start.",
-    "score": 12.0,
-    "start_date": "2026-11-11",
-    "expires": "2026-11-11"
-  },
-  {
-    "id": "auto-2026-11-11-101",
-    "auto": true,
-    "match": {
-      "name_contains": "November Weekday Social @Lofi Bar",
-      "venue_contains": "Crown Heights Meetup"
-    },
-    "badge": "🤝 Community Pick",
-    "note": "Free; listed on 3 calendars; prime-time start.",
     "score": 12.0,
     "start_date": "2026-11-11",
     "expires": "2026-11-11"
