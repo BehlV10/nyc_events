@@ -65,7 +65,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add events.json index.html events.html deferred_days.html highlights.json community_events.json luckyseat_shows.json
+          git add events.json index.html events.html deferred_days.html highlights.json community_events.json luckyseat_shows.json geocode_cache.json
           if git diff --staged --quiet; then
             echo "no changes"
           else

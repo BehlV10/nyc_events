@@ -8,6 +8,8 @@ client-side mapping without rate limits.
 import re
 from typing import Optional, Dict, Any, Tuple
 
+import nyc_geo
+
 # Curated coordinates for NYC venues across all 5 boroughs
 # (lat, lng, neighborhood, street_address, canonical_name)
 VENUE_COORDINATES: Dict[str, Tuple[float, float, str, str, str]] = {
@@ -1067,64 +1069,87 @@ MIN_LAT, MAX_LAT = 40.35, 41.85
 MIN_LNG, MAX_LNG = -75.05, -73.50
 
 
+_BOROUGH_WORDS = (
+    ("brooklyn", ("brooklyn", "williamsburg", "bushwick", "greenpoint", "park slope", "dumbo", "crown heights",
+                  "bed-stuy", "bedford-stuyvesant", "gowanus", "red hook", "flatbush", "bay ridge", "sunset park",
+                  "coney island", "fort greene", "clinton hill", "prospect heights", "carroll gardens", "cobble hill")),
+    ("queens", ("queens", "astoria", "flushing", "long island city", "jackson heights", "ridgewood", "forest hills",
+                "elmhurst", "sunnyside", "woodside", "corona", "bayside", "jamaica", "rockaway", "kew gardens")),
+    ("bronx", ("bronx", "riverdale", "fordham", "mott haven", "city island", "pelham")),
+    ("staten_island", ("staten island", "st. george", "tompkinsville", "stapleton")),
+    ("manhattan", ("manhattan", "harlem", "east village", "west village", "greenwich village", "soho", "tribeca",
+                   "chelsea", "midtown", "lower east side", "upper west side", "upper east side", "times square",
+                   "hell's kitchen", "financial district", "inwood", "washington heights")),
+)
+
+
+def _named_borough(text):
+    t = f" {text} "
+    for borough, words in _BOROUGH_WORDS:
+        if any(re.search(r"\b" + re.escape(w) + r"\b", t) for w in words):
+            return borough
+    return None
+
+
+def _curated(v_lower):
+    norm_v = re.sub(r"[^\w\s]", "", v_lower).strip()
+    return VENUE_COORDINATES.get(v_lower) or VENUE_COORDINATES.get(norm_v)
+
+
 def resolve_event_geo(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Resolve latitude, longitude, neighborhood, and venue name for an event.
 
     Prioritizes:
-    1. Pre-existing valid event coordinates (e.g. from Ticketmaster/Eventbrite)
-    2. Exact curated venue match
-    3. Pattern/needle match on venue name and source
+    1. Exact curated venue match (hand-checked pins; feeds often send a district centroid)
+    2. The event's own coordinates (from the feed, or geocoded from its street address),
+       unless they are a "New York, NY" placeholder
+    3. Needle match on the venue's *name* (not its address), skipped for venues outside the
+       city or when the venue text names a different borough than the needle's pin
     """
     venue_raw = (event.get("venue") or "").strip()
     source_raw = (event.get("_source_venue") or "").strip()
 
     # Discard non-physical venues
     v_lower = venue_raw.lower()
-    if not v_lower or v_lower in ("zoom", "online", "virtual", "online event", "tba", "various"):
+    if not v_lower or v_lower in ("zoom", "online", "virtual", "online event", "tba", "various") \
+            or re.match(r"(online|virtual|zoom)\b", v_lower):
         return None
 
-    # 1. Check if event has native coordinates
+    # 1. Exact curated match
+    curated = _curated(v_lower)
+    if curated:
+        lat, lng, neigh, addr, cname = curated
+        return {"lat": lat, "lng": lng, "venue": cname, "neighborhood": event.get("neighborhood") or neigh,
+                "address": addr}
+
+    # 2. The event's own coordinates
     lat = event.get("lat") or event.get("latitude")
     lng = event.get("lng") or event.get("lon") or event.get("longitude")
-    if lat is not None and lng is not None:
+    if lat is not None and lng is not None and not nyc_geo.is_placeholder(lat, lng):
         try:
             flat, flng = float(lat), float(lng)
             if MIN_LAT <= flat <= MAX_LAT and MIN_LNG <= flng <= MAX_LNG:
-                neigh = event.get("neighborhood") or ""
-                addr = event.get("address") or ""
-                norm_v = re.sub(r"[^\w\s]", "", v_lower).strip()
-                curated = VENUE_COORDINATES.get(v_lower) or VENUE_COORDINATES.get(norm_v)
-                c_venue = venue_raw or source_raw
-                if curated:
-                    if not neigh:
-                        neigh = curated[2]
-                    if not addr:
-                        addr = curated[3]
-                    if curated[4]:
-                        c_venue = curated[4]
                 return {
                     "lat": round(flat, 5),
                     "lng": round(flng, 5),
-                    "venue": c_venue,
-                    "neighborhood": neigh,
-                    "address": addr,
+                    "venue": venue_raw or source_raw,
+                    "neighborhood": event.get("neighborhood") or "",
+                    "address": event.get("address") or "",
                 }
         except (ValueError, TypeError):
             pass
 
-    # 2. Check exact curated match
-    norm_v = re.sub(r"[^\w\s]", "", v_lower).strip()
-    if v_lower in VENUE_COORDINATES:
-        lat, lng, neigh, addr, cname = VENUE_COORDINATES[v_lower]
-        return {"lat": lat, "lng": lng, "venue": cname, "neighborhood": neigh, "address": addr}
-    if norm_v in VENUE_COORDINATES:
-        lat, lng, neigh, addr, cname = VENUE_COORDINATES[norm_v]
-        return {"lat": lat, "lng": lng, "venue": cname, "neighborhood": neigh, "address": addr}
-
-    # 3. Check needle rules
-    target = f"{v_lower} {source_raw.lower()}"
+    # 3. Needle rules on the venue name (the part before any "(address)")
+    text = f"{v_lower} {(event.get('address') or '').lower()}"
+    if nyc_geo.outside_nyc_text(text):
+        return None
+    name_part = v_lower.split("(")[0].strip() or v_lower
+    named = _named_borough(text)
+    target = f"{name_part} {source_raw.lower()}"
     for needle, (lat, lng, neigh, addr, cname) in VENUE_RULES:
         if needle in target:
+            if named and nyc_geo.borough_at(lat, lng) not in (None, named):
+                return None  # e.g. "Flushing Town Hall" must not take The Town Hall's Midtown pin
             return {"lat": lat, "lng": lng, "venue": cname, "neighborhood": neigh, "address": addr}
 
     return None
