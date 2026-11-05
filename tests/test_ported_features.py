@@ -502,5 +502,32 @@ class TestComedyRoundFour(unittest.TestCase):
         self.assertIsNone(events[0]["price"])
 
 
+class TestCacheFingerprint(unittest.TestCase):
+    def test_changed_source_does_not_reuse_old_cache(self):
+        name = "Test Fingerprint Venue"
+        path = scrapers._venue_cache_path(name)
+        future = _future_local(3, 20).astimezone(timezone.utc).isoformat()
+        old_ev = [{"name": "Old Eventbrite Result", "date": future, "url": "https://www.eventbrite.com/e/1"}]
+        new_ev = [{"name": "Venue Calendar Show", "date": future, "url": "https://example.com/show"}]
+        old_v = {"name": name, "url": "https://www.eventbrite.com/d/x/", "scraper": scrapers.scrape_eventbrite_jsonld}
+        new_v = {"name": name, "url": "https://example.com/calendar", "scraper": lambda u, ua: [], "default_category": "comedy"}
+        try:
+            scrapers._save_venue_cache(name, old_ev, src=scrapers._source_fingerprint(old_v))
+            self.assertIsNotNone(scrapers._load_venue_cache(name, src=scrapers._source_fingerprint(old_v)))
+            self.assertIsNone(scrapers._load_venue_cache(name, src=scrapers._source_fingerprint(new_v)))
+            # New scraper returns nothing: must not fall back to the old source's events.
+            with patch("scrapers._run_scraper", return_value=[]):
+                res = scrapers._scrape_one(new_v, force=True)
+            self.assertEqual(res["events"], [])
+            # Legacy entries (no fingerprint) are still accepted, so a deploy doesn't flush every cache.
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump({"ts": scrapers.time.time(), "venue": name, "events": new_ev}, f)
+            self.assertIsNotNone(scrapers._load_venue_cache(name, src=scrapers._source_fingerprint(new_v)))
+        finally:
+            if os.path.exists(path):
+                os.remove(path)
+            scrapers._last_known_good.pop(name, None)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -70,13 +70,26 @@ def _venue_cache_path(vname):
     return os.path.join(CACHE_DIR, f"{slug}.json")
 
 
-def _load_venue_cache(vname, max_age=None):
+def _source_fingerprint(v):
+    """Identifies what produced a cache entry, so changing a source's URL or scraper
+    in place doesn't keep serving (or falling back to) the old source's events."""
+    if not isinstance(v, dict):
+        return None
+    fn = v.get("scraper")
+    return f"{v.get('url')}|{getattr(fn, '__name__', fn)}"
+
+
+def _load_venue_cache(vname, max_age=None, src=None):
     path = _venue_cache_path(vname)
     if not os.path.exists(path):
         return None
     try:
         with open(path, "r", encoding="utf-8") as f:
             cached = json.load(f)
+        # Entries written before fingerprints existed have no "src"; accept those so a deploy
+        # doesn't invalidate every cache at once (and stampede rate-limited hosts).
+        if src and cached.get("src") and cached["src"] != src:
+            return None
         if max_age is not None:
             age = time.time() - cached.get("ts", 0)
             if age > max_age:
@@ -97,11 +110,14 @@ def _load_venue_cache(vname, max_age=None):
         return None
 
 
-def _save_venue_cache(vname, events, duration=0.0):
+def _save_venue_cache(vname, events, duration=0.0, src=None):
     path = _venue_cache_path(vname)
     try:
+        payload = {"ts": time.time(), "venue": vname, "duration": duration, "events": events}
+        if src:
+            payload["src"] = src
         with open(path, "w", encoding="utf-8") as f:
-            json.dump({"ts": time.time(), "venue": vname, "duration": duration, "events": events}, f, ensure_ascii=False)
+            json.dump(payload, f, ensure_ascii=False)
     except Exception:
         pass
 
@@ -7612,7 +7628,7 @@ def _run_scraper(v):
 
 
 def _serve_cache(v, max_age):
-    cached = _load_venue_cache(v["name"], max_age=max_age)
+    cached = _load_venue_cache(v["name"], max_age=max_age, src=_source_fingerprint(v))
     if not cached or cached.get("events") is None:
         return None
     events = [e for e in _clean_scraped_events(cached["events"]) if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_closed_show(e.get("name"))]
@@ -7667,6 +7683,7 @@ def _pick_eventbrite_refreshes(venues, force=False, limit=EVENTBRITE_PER_RUN, no
 def _scrape_one(v, force=False, allow_live=True):
     vname = v["name"]
     ttl = _get_venue_ttl(vname, v=v)
+    src = _source_fingerprint(v)
 
     if not allow_live:
         # Rate-limited host and not this source's turn: keep its last good copy, any age.
@@ -7677,7 +7694,7 @@ def _scrape_one(v, force=False, allow_live=True):
 
     # 1. Check if cached data exists and is within TTL
     if not force:
-        cached = _load_venue_cache(vname, max_age=ttl)
+        cached = _load_venue_cache(vname, max_age=ttl, src=src)
         if cached and cached.get("events") is not None:
             events = [e for e in _clean_scraped_events(cached["events"]) if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_closed_show(e.get("name"))]
             return {
@@ -7713,16 +7730,16 @@ def _scrape_one(v, force=False, allow_live=True):
         dur = round(time.time() - t0, 2)
         if events:
             _last_known_good[vname] = events
-            _save_venue_cache(vname, events, duration=dur)
+            _save_venue_cache(vname, events, duration=dur, src=src)
         else:
             # Scraper returned 0 events: preserve previous cached events if available
-            stale_cache = _load_venue_cache(vname, max_age=None)
+            stale_cache = _load_venue_cache(vname, max_age=None, src=src)
             prev = (stale_cache.get("events") if stale_cache else None) or _last_known_good.get(vname, [])
             prev_evs = [e for e in prev if not is_placeholder_or_closed_event(e.get("name")) and _is_within_horizon(e, max_days=HORIZON_DAYS)]
             if prev_evs:
                 events = prev_evs
             else:
-                _save_venue_cache(vname, events, duration=dur)
+                _save_venue_cache(vname, events, duration=dur, src=src)
 
         # Filter events to rolling horizon window
         events = [e for e in events if _is_within_horizon(e, max_days=HORIZON_DAYS)]
@@ -7736,7 +7753,7 @@ def _scrape_one(v, force=False, allow_live=True):
         }
     except Exception as exc:
         # Error resilience: fall back to existing cache or last known good if network/Cloudflare fails
-        stale_cache = _load_venue_cache(vname, max_age=None)
+        stale_cache = _load_venue_cache(vname, max_age=None, src=src)
         prev = (stale_cache.get("events") if stale_cache else None) or _last_known_good.get(vname, [])
         if prev:
             events = [e for e in prev if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_placeholder_or_closed_event(e.get("name"))]
