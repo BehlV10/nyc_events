@@ -281,6 +281,200 @@ def category_bucket(cat):
     return "Social & community"
 
 
+MUSIC_GENRES = {
+    "rock_indie": {
+        "id": "rock_indie",
+        "label": "Rock & Indie",
+        "icon": "🎸",
+        "color": "#ff708d",
+    },
+    "folk_trad": {
+        "id": "folk_trad",
+        "label": "Folk & Trad",
+        "icon": "🪕",
+        "color": "#9ece6a",
+    },
+    "jazz_blues": {
+        "id": "jazz_blues",
+        "label": "Jazz & Blues",
+        "icon": "🎷",
+        "color": "#f29e4c",
+    },
+    "electronic": {
+        "id": "electronic",
+        "label": "Electronic & Club",
+        "icon": "🎛",
+        "color": "#bb9af7",
+    },
+    "classical": {
+        "id": "classical",
+        "label": "Classical",
+        "icon": "🎻",
+        "color": "#7aa2f7",
+    },
+    "hiphop_rnb": {
+        "id": "hiphop_rnb",
+        "label": "Hip-Hop & R&B",
+        "icon": "🎤",
+        "color": "#f0a07a",
+    },
+    "latin_global": {
+        "id": "latin_global",
+        "label": "Latin & Global",
+        "icon": "🪇",
+        "color": "#ffb8d1",
+    },
+    "pop": {
+        "id": "pop",
+        "label": "Pop",
+        "icon": "✨",
+        "color": "#ffd866",
+    },
+}
+
+def map_native_genre(name):
+    """Maps raw external genre strings (e.g. from Ticketmaster or SeatGeek) into our standard MUSIC_GENRES."""
+    if not name or not isinstance(name, str):
+        return None
+    s = name.strip().lower()
+    if s in ("undefined", "other", "music", "concert"):
+        return None
+    if any(k in s for k in ["classical", "orchestr", "symphon", "opera", "chamber"]):
+        return "classical"
+    if any(k in s for k in ["jazz", "blues"]):
+        return "jazz_blues"
+    if any(k in s for k in ["folk", "country", "americana", "bluegrass", "celtic", "irish", "traditional", "acoustic"]):
+        return "folk_trad"
+    if any(k in s for k in ["dance", "electronic", "edm", "house", "techno", "club", "trance", "drum & bass", "dubstep", "synth"]):
+        return "electronic"
+    if any(k in s for k in ["hip-hop", "hip hop", "rap", "r&b", "rhythm and blues", "urban", "soul", "trap"]):
+        return "hiphop_rnb"
+    if any(k in s for k in ["latin", "salsa", "reggaeton", "bachata", "cumbia", "world", "reggae", "afrobeat", "dancehall", "ska"]):
+        return "latin_global"
+    if any(k in s for k in ["rock", "alternative", "punk", "metal", "indie", "grunge", "emo", "hardcore"]):
+        return "rock_indie"
+    if any(k in s for k in ["pop", "k-pop", "j-pop"]):
+        return "pop"
+    return None
+
+MUSIC_VENUE_ANCHORS = {
+    # Classical institutions
+    "carnegie hall": "classical", "zankel hall": "classical", "weill recital": "classical",
+    "lincoln center": "classical", "david geffen hall": "classical", "alice tully": "classical",
+    "metropolitan opera": "classical", "the met opera": "classical", "juilliard": "classical",
+    "manhattan school of music": "classical", "mannes": "classical", "bargemusic": "classical",
+    "92nd street y": "classical", "merkin hall": "classical", "kaufman music center": "classical",
+    "new york philharmonic": "classical", "trinity church wall street": "classical",
+    "st. thomas church": "classical", "national sawdust": "classical",
+    # Jazz & Blues
+    "blue note": "jazz_blues", "village vanguard": "jazz_blues", "smalls": "jazz_blues",
+    "mezzrow": "jazz_blues", "birdland": "jazz_blues", "jazz standard": "jazz_blues",
+    "dizzy's club": "jazz_blues", "jazz at lincoln center": "jazz_blues", "smoke jazz": "jazz_blues",
+    "minton's": "jazz_blues", "zinc bar": "jazz_blues", "the django": "jazz_blues",
+    "terra blues": "jazz_blues", "arthur's tavern": "jazz_blues", "bar bayeux": "jazz_blues",
+    "ornithology": "jazz_blues", "the jazz gallery": "jazz_blues", "swing 46": "jazz_blues",
+    "fat cat": "jazz_blues", "cellar dog": "jazz_blues", "the owl music parlor": "jazz_blues",
+    # Folk & Trad
+    "paddy reilly": "folk_trad", "mona's": "folk_trad", "the jalopy": "folk_trad", "jalopy theatre": "folk_trad",
+    "rockwood music hall": "folk_trad", "postcrypt": "folk_trad", "american folk art": "folk_trad",
+    # Electronic / club
+    "bossa nova civic club": "electronic", "nowadays": "electronic", "elsewhere": "electronic",
+    "basement": "electronic", "good room": "electronic", "public records": "electronic",
+    "knockdown center": "electronic", "superior ingredients": "electronic", "mood ring": "electronic",
+    "jupiter disco": "electronic", "le bain": "electronic", "silo brooklyn": "electronic",
+    "avant gardner": "electronic", "brooklyn mirage": "electronic", "the brooklyn mirage": "electronic",
+    "marquee new york": "electronic", "nebula": "electronic", "musica": "electronic", "3 dollar bill": "electronic",
+    "outpost artist resources": "electronic", "bushwick public house": "electronic", "h0l0": "electronic",
+    "signal brooklyn": "electronic", "paragon": "electronic", "the sultan room": "electronic",
+    # Latin & Global
+    "s.o.b.'s": "latin_global", "sob's": "latin_global", "sounds of brazil": "latin_global",
+    "taj lounge": "latin_global", "club cache": "latin_global", "gonzalez y gonzalez": "latin_global",
+    "iguana nyc": "latin_global", "drom": "latin_global", "mehanata": "latin_global", "barbès": "latin_global",
+    "barbes": "latin_global", "terraza 7": "latin_global", "lpr": None,
+    # Hip-hop
+    "apollo theater": None,
+}
+MUSIC_VENUE_ANCHORS = {k: v for k, v in MUSIC_VENUE_ANCHORS.items() if v}
+
+MUSIC_VENUE_DEFAULTS = {
+    "bowery ballroom": "rock_indie", "mercury lounge": "rock_indie", "baby's all right": "rock_indie",
+    "music hall of williamsburg": "rock_indie", "brooklyn steel": "rock_indie", "tv eye": "rock_indie",
+    "saint vitus": "rock_indie", "arlene's grocery": "rock_indie", "pianos": "rock_indie",
+    "berlin": "rock_indie", "union pool": "rock_indie", "trans-pecos": "rock_indie", "our wicked lady": "rock_indie",
+    "the knitting factory": "rock_indie", "knitting factory": "rock_indie", "brooklyn bowl": "rock_indie",
+    "warsaw": "rock_indie", "irving plaza": "rock_indie", "webster hall": "rock_indie", "terminal 5": "rock_indie",
+    "racket": "rock_indie", "bowery electric": "rock_indie", "the bitter end": "rock_indie",
+    "gramercy theatre": "rock_indie", "brooklyn made": "rock_indie", "elsewhere rooftop": "electronic",
+    "the broadway": "rock_indie", "sleepwalk": "rock_indie", "alphaville": "rock_indie", "littlefield": "rock_indie",
+    "gold sounds": "rock_indie", "the meadows": "rock_indie", "le poisson rouge": "rock_indie",
+    "sony hall": "rock_indie", "beacon theatre": "rock_indie", "kings theatre": "rock_indie",
+    "radio city": "pop", "madison square garden": "pop", "barclays center": "pop", "ubs arena": "pop",
+    "forest hills stadium": "rock_indie", "brooklyn paramount": "rock_indie",
+}
+
+MUSIC_GENRE_RULES = [
+    ("classical", [
+        r"\b(symphony(\s+no\b|\s+orchestra|\s+hall)?|philharmonic|concerto|sonata|chamber\s+(orchestra|music|ensemble)|opera\b(?!(\s+(house|theatre|theater|pop|rock)))|soprano|tenor\s+solo|mezzo-soprano|baritone\s+solo|choral\s+(society|concert|works)|requiem|cantata|oratorio|sinfonia|allegro|adagio|beethoven|mozart|\bbach\b(?!ata)|chopin|brahms|tchaikovsky|vivaldi|mahler|handel(\s+and\s+haydn)?|haydn\b|debussy|ravel\b|rachmaninoff|shostakovich|stravinsky|dvorak|mendelssohn|schubert|schumann|puccini|verdi\b|string\s+quartet|piano\s+trio|brass\s+quintet|wind\s+quintet|organ\s+recital|flute\s+recital|cello\s+recital|violin\s+recital|harpsichord)\b"
+    ]),
+    ("jazz_blues", [
+        r"\b(jazz|blues\b(?!(\s+screens|ky))|bebop|post-bop|hard\s+bop|dixieland|big\s+band|trad\s+jazz|jazz\s+fusion|delta\s+blues|chicago\s+blues|rhythm\s+and\s+blues|boogie\s+woogie|stride\s+piano|saxophone\s+(quartet|solo)|coltrane|thelonious|miles\s+davis|charlie\s+parker|bill\s+evans|ella\s+fitzgerald|billie\s+holiday|muddy\s+waters|b\.b\.\s+king|buddy\s+guy|howlin['\''’]?\s*wolf|straight-ahead\s+jazz|jazz\s+(trio|quartet|quintet|ensemble|orchestra|jam|collective|brunch|lounge))\b"
+    ]),
+    ("folk_trad", [
+        r"\b(folk\b(?!(\s+art))|bluegrass|americana|celtic|irish\s+(session|trad|traditional|music|tunes)|seisi[uú]n|fiddle|banjo|mandolin|singer-songwriter|old-time|flatpicking|sea\s+shant(y|ies)|appalachian|honky\s*tonk|outlaw\s+country|country\s+music|acoustic\s+(folk|guitar|showcase|open\s+mic)|woody\s+guthrie|john\s+prine|townes\s+van\s+zandt|doc\s+watson|cape\s+breton)\b"
+    ]),
+    ("electronic", [
+        r"\b(electronic(a)?|edm\b|techno\b|house\s+music|deep\s+house|tech\s+house|drum\s*&\s*bass|drum\s+and\s+bass|\bdnb\b|\bd&b\b|dubstep|synthwave|darkwave|ebm\b|industrial\s+(dance|music)|trance\b|psytrance|ambient\s+music|dj\s+(set|night|party)|all-night\s+dance|dance\s+party|rave\b|turntabli(sm|st)|boiler\s+room|club\s+night|modular\s+synth|synthesizer\s+music|nightclub|electro-pop|electronic\s+dance)\b"
+    ]),
+    ("hiphop_rnb", [
+        r"\b(hip[- ]?hop|rap\b(?!ture|id)|rapper|emcee|\bmc\s+[a-z]+|trap\s+music|boom\s+bap|r&b\b|rhythm\s+&\s+blues|neo-soul|soul\s+music|motown|afrobeat|freestyle\s+(rap|session)|cypher|drill\s+music|grime\b)\b"
+    ]),
+    ("latin_global", [
+        r"\b(latin\b(?!o?\s+(america|studies))|salsa\b|bachata|cumbia|merengue|reggaeton|tango\b|flamenco|bossa\s+nova|samba\b|mariachi|ranchera|corrido|latin\s+jazz|afro-cuban|calypso|reggae|dancehall|rocksteady|afrobeats|klezmer|balkan|flamenco\s+guitar|middle\s+eastern\s+music|oud\s+recital|\bsitar\b|\btabla\b|bollywood)\b"
+    ]),
+    ("rock_indie", [
+        r"\b(rock(\s+and\s+roll|\s*'\''n'\''\s*roll)?|indie\s+rock|indie\s+pop|alternative(\s+rock)?|punk(\s+rock)?|hardcore(\s+punk)?|post-punk|post-hardcore|emo\b|metal(\s+band)?|heavy\s+metal|death\s+metal|black\s+metal|thrash(\s+metal)?|doom\s+metal|sludge(\s+metal)?|stoner\s+rock|grunge|shoegaze|dream\s+pop|math\s+rock|psychedelic(\s+rock)?|garage\s+rock|noise\s+rock|art\s+rock|prog\s+rock|progressive\s+rock|glam\s+rock|classic\s+rock|hard\s+rock|tribute\s+band|cover\s+band|screamo|pop-punk|riot\s+grrrl|surf\s+rock|dark\s+star\s+orchestra)\b"
+    ]),
+    ("pop", [
+        r"\b(pop\s+music|electropop|synth-pop|synthpop|k-pop|kpop|j-pop|jpop|boy\s+band|girl\s+group|dance\s+pop|teen\s+pop|hyperpop|taylor\s+swift|swiftie|beatles\s+tribute|disco(\s+night|\s+party)?|abba\s+night|britpop)\b"
+    ]),
+]
+
+def infer_music_genre(name, venue=None, description=None, native_genre=None, category=None):
+    """Music subgenre from a source's own genre tag, an anchor venue, title/description
+    keywords, then a venue default. Social-dance listings (swing, salsa, ballroom) only get a
+    genre from real evidence; everything else falls back to Rock & Indie."""
+    if native_genre:
+        mapped = map_native_genre(native_genre)
+        if mapped:
+            return mapped
+    v_str = (venue or "").lower()
+    t_str = f"{name or ''} {description or ''}".lower()
+    if "dark star orchestra" in t_str or "night at the opera" in t_str:
+        return "rock_indie"
+    for anchor, g in MUSIC_VENUE_ANCHORS.items():
+        if anchor in v_str:
+            return g
+    for genre, patterns in MUSIC_GENRE_RULES:
+        for p in patterns:
+            if re.search(p, t_str, re.IGNORECASE):
+                return genre
+    if category == "dance":
+        if re.search(r"\b(swing|lindy|charleston|balboa)\b", t_str):
+            return "jazz_blues"
+        if re.search(r"\b(kizomba|zouk|samba|forr[oó])\b", t_str):
+            return "latin_global"
+        return None
+    if category == "clubbing" or "clubbing" in v_str:
+        return "electronic"
+    for v_prefix, g in MUSIC_VENUE_DEFAULTS.items():
+        if v_prefix in v_str:
+            return g
+    return "rock_indie"
+
+
+MUSIC_CATEGORIES = ("music", "clubbing", "dance")
+
+
 def guess_category(text, default="community", venue=None):
     if is_utility_event(text):
         return "services"
@@ -1568,10 +1762,22 @@ def scrape_ticketmaster_nyc(_url, _ua):
                     "lng": lng,
                     "price": price,
                     "category": guess_category(ev.get("name"), cat, venue=venue),
+                    "genre": _tm_native_genre(ev),
                 })
         except Exception:
             break
     return events
+
+
+def _tm_native_genre(ev):
+    for c in ev.get("classifications") or []:
+        if ((c.get("segment") or {}).get("name") or "").lower() != "music":
+            continue
+        for key in ("subGenre", "genre"):
+            g = map_native_genre((c.get(key) or {}).get("name"))
+            if g:
+                return g
+    return None
 
 
 def scrape_carnegie_hall_tm(_url, _ua):
@@ -1942,6 +2148,7 @@ def scrape_seatgeek_nyc(_url, _ua):
                     "lng": lng,
                     "price": price,
                     "category": guess_category(title, cat, venue=venue),
+                    "genre": next((g for p in ev.get("performers") or [] for gn in (p.get("genres") or []) for g in [map_native_genre(gn.get("name"))] if g), None),
                 })
         except Exception:
             break
