@@ -250,6 +250,19 @@
     "id": "auto-2026-11-06-19",
     "auto": true,
     "match": {
+      "name_contains": "First Friday",
+      "venue_contains": "Poster House"
+    },
+    "badge": "🖼️ Art Pick",
+    "note": "Free; listed on 7 calendars.",
+    "score": 17.5,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-20",
+    "auto": true,
+    "match": {
       "name_contains": "40s & 50s Speed Dating (Free Drink For Women) + After Party",
       "venue_contains": "The Cloud One Hotel New York-Downtown"
     },
@@ -260,7 +273,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-20",
+    "id": "auto-2026-11-06-21",
     "auto": true,
     "match": {
       "name_contains": "40s & Over Mixer (Free Drink For Women)",
@@ -273,7 +286,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-21",
+    "id": "auto-2026-11-06-22",
     "auto": true,
     "match": {
       "name_contains": "Bayside Queens Speed dating Men 30s & 40s & Women ages 30s & 40s",
@@ -286,7 +299,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-22",
+    "id": "auto-2026-11-06-23",
     "auto": true,
     "match": {
       "name_contains": "Comedy Cellar Showcase",
@@ -299,7 +312,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-23",
+    "id": "auto-2026-11-06-24",
     "auto": true,
     "match": {
       "name_contains": "Dating Games: A Fun Twist on Speed Dating",
@@ -312,7 +325,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-24",
+    "id": "auto-2026-11-06-25",
     "auto": true,
     "match": {
       "name_contains": "Friday Late Night Comedy Show NYC",
@@ -325,24 +338,11 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-25",
+    "id": "auto-2026-11-06-26",
     "auto": true,
     "match": {
       "name_contains": "11pm Comedy Show",
       "venue_contains": "Flop House Comedy"
-    },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 3 calendars; prime-time start.",
-    "score": 13.5,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-26",
-    "auto": true,
-    "match": {
-      "name_contains": "Live Comedy NYC | Fri, November 6th @10:30 PM",
-      "venue_contains": "Comedy Village"
     },
     "badge": "😂 Comedy Pick",
     "note": "Listed on 3 calendars; prime-time start.",
@@ -549,6 +549,19 @@
     "id": "auto-2026-11-07-42",
     "auto": true,
     "match": {
+      "name_contains": "It’s My Park at Westerleigh Park",
+      "venue_contains": "Staten Island"
+    },
+    "badge": "🌿 Outdoors Pick",
+    "note": "Free; listed on 3 calendars.",
+    "score": 13.5,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-43",
+    "auto": true,
+    "match": {
       "name_contains": "Nathan Fielder Look-Alike Contest",
       "venue_contains": "Washington Square Park"
     },
@@ -559,24 +572,11 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-43",
+    "id": "auto-2026-11-07-44",
     "auto": true,
     "match": {
       "name_contains": "76th Mahan Nagar Kirtan",
       "venue_contains": "113-10 101 Avenue"
-    },
-    "badge": "🤝 Community Pick",
-    "note": "Free; listed on 2 calendars; weekend daytime.",
-    "score": 11.0,
-    "start_date": "2026-11-07",
-    "expires": "2026-11-07"
-  },
-  {
-    "id": "auto-2026-11-07-44",
-    "auto": true,
-    "match": {
-      "name_contains": "Discover Green-Wood Trolley Tour",
-      "venue_contains": "Queens Cultural Center"
     },
     "badge": "🤝 Community Pick",
     "note": "Free; listed on 2 calendars; weekend daytime.",
@@ -692,6 +692,45 @@
     "id": "auto-2026-11-08-53",
     "auto": true,
     "match": {
+      "name_contains": "Family Art Project: Raptors in Autumn Sky",
+      "venue_contains": "Wave Hill"
+    },
+    "badge": "🌿 Outdoors Pick",
+    "note": "Free; listed on 2 calendars; weekend daytime.",
+    "score": 10.5,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-54",
+    "auto": true,
+    "match": {
+      "name_contains": "Fiery Fall Sunset Yoga",
+      "venue_contains": "Wave Hill"
+    },
+    "badge": "🏃 Active Pick",
+    "note": "Free; listed on 2 calendars; weekend daytime.",
+    "score": 10.5,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-55",
+    "auto": true,
+    "match": {
+      "name_contains": "Garden Highlights Walk",
+      "venue_contains": "Wave Hill"
+    },
+    "badge": "🌿 Outdoors Pick",
+    "note": "Free; listed on 2 calendars; weekend daytime.",
+    "score": 10.5,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-56",
+    "auto": true,
+    "match": {
       "name_contains": "Grand Bazaar NYC: One of a Kind Bazaar",
       "venue_contains": "Grand Bazaar NYC"
     },
@@ -702,20 +741,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-54",
-    "auto": true,
-    "match": {
-      "name_contains": "NYRR Open Run: Conference House Park",
-      "venue_contains": "Conference House Park"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Free; listed on 3 calendars.",
-    "score": 10.0,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-55",
+    "id": "auto-2026-11-08-57",
     "auto": true,
     "match": {
       "name_contains": "Babes",
@@ -728,7 +754,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-56",
+    "id": "auto-2026-11-08-58",
     "auto": true,
     "match": {
       "name_contains": "FUNY New Talent Showcase",
@@ -741,7 +767,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-57",
+    "id": "auto-2026-11-08-59",
     "auto": true,
     "match": {
       "name_contains": "Faculty Lounge",
@@ -750,32 +776,6 @@
     "badge": "😂 Comedy Pick",
     "note": "Listed on 2 calendars; prime-time start.",
     "score": 9.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-58",
-    "auto": true,
-    "match": {
-      "name_contains": "diwali sandwich popup",
-      "venue_contains": "Anaïs"
-    },
-    "badge": "🤝 Community Pick",
-    "note": "Listed on 3 calendars; weekend daytime.",
-    "score": 9.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-59",
-    "auto": true,
-    "match": {
-      "name_contains": "Glimpse of Greatness",
-      "venue_contains": "Yankee Stadium"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Headline room at Yankee Stadium; prime-time start.",
-    "score": 8.0,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
