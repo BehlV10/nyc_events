@@ -8752,6 +8752,52 @@ def _run_with_lanes(venues, worker, live, workers=24):
     return results
 
 
+GEOCODE_PER_RUN = 400   # new addresses looked up per run (each one is cached for good)
+GEOCODE_GAP = 0.25      # seconds between GeoSearch requests
+
+
+def _apply_geocodes(results, limit=None, gap=None, cache_path=None):
+    """Pin events that carry an NYC street address but no usable coordinates.
+
+    Feeds that only know "New York, NY" send City Hall's coordinates; those are dropped first.
+    Addresses go through NYC Planning's GeoSearch once and are remembered in
+    geocode_cache.json (misses too), so a run only looks up addresses it hasn't seen."""
+    import venues_geo
+    cache_path = cache_path or nyc_geo.GEOCODE_CACHE_FILE
+    cache = nyc_geo.load_geocode_cache(cache_path)
+    wanted = []
+    for res in results:
+        for e in res.get("events") or []:
+            if e.get("lat") is not None and (nyc_geo.is_placeholder(e.get("lat"), e.get("lng"))
+                                             or nyc_geo.city_level_only(e.get("address"), e.get("venue"))):
+                e["lat"] = e["lng"] = None  # "New York, NY"-only location: the feed's pin is a guess
+            if e.get("lat") is not None and e.get("lng") is not None:
+                continue
+            v = (e.get("venue") or "").strip().lower()
+            if v in venues_geo.VENUE_COORDINATES or re.sub(r"[^\w\s]", "", v).strip() in venues_geo.VENUE_COORDINATES:
+                continue
+            addr = nyc_geo.extract_address(f"{e.get('address') or ''} {e.get('venue') or ''}")
+            if addr:
+                wanted.append((e, addr))
+    before = len(cache)
+    looked_up = nyc_geo.geocode_missing([a for _, a in wanted], cache,
+                                        limit=GEOCODE_PER_RUN if limit is None else limit,
+                                        gap=GEOCODE_GAP if gap is None else gap, session=_SESSION)
+    pinned = 0
+    for e, addr in wanted:
+        hit = cache.get(addr)
+        if hit:
+            e["lat"], e["lng"] = hit[0], hit[1]
+            e["borough"] = hit[2]
+            pinned += 1
+    if len(cache) != before:
+        try:
+            nyc_geo.save_geocode_cache(cache, cache_path)
+        except OSError:
+            pass
+    print(f"geocode: {pinned} events pinned from addresses; {looked_up} new lookups, {len(cache)} cached")
+
+
 def get_all_events(force=False):
     now = time.time()
     if not force and _cache["data"] and (now - _cache["ts"] < CACHE_SECONDS):
@@ -8771,6 +8817,7 @@ def get_all_events(force=False):
     # Add recurring events (expanded for 8 weeks / 56 days)
     results.extend(_expand_manual_recurring(weeks=8))
     results.extend(_load_community_events())
+    _apply_geocodes(results)
 
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
