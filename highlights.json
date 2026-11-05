@@ -42,6 +42,19 @@
     "id": "auto-2026-11-05-3",
     "auto": true,
     "match": {
+      "name_contains": "Millennial Speed-Dating (Monogamous)",
+      "venue_contains": "McCarren Parkhouse"
+    },
+    "badge": "🤝 Community Pick",
+    "note": "Listed on 4 calendars; prime-time start.",
+    "score": 17.5,
+    "start_date": "2026-11-05",
+    "expires": "2026-11-05"
+  },
+  {
+    "id": "auto-2026-11-05-4",
+    "auto": true,
+    "match": {
       "name_contains": "Boy Harsher",
       "venue_contains": "Knockdown Center"
     },
@@ -52,7 +65,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-4",
+    "id": "auto-2026-11-05-5",
     "auto": true,
     "match": {
       "name_contains": "Christmas Spectacular Starring The Radio City Rockettes",
@@ -65,7 +78,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-5",
+    "id": "auto-2026-11-05-6",
     "auto": true,
     "match": {
       "name_contains": "Akeem Ali - The Texture Tour",
@@ -78,7 +91,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-6",
+    "id": "auto-2026-11-05-7",
     "auto": true,
     "match": {
       "name_contains": "Matt Quinn",
@@ -91,7 +104,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-7",
+    "id": "auto-2026-11-05-8",
     "auto": true,
     "match": {
       "name_contains": "NYC Trivia Night @ Rose’s R&R Bar",
@@ -104,7 +117,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-8",
+    "id": "auto-2026-11-05-9",
     "auto": true,
     "match": {
       "name_contains": "For The Record",
@@ -117,26 +130,13 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-9",
+    "id": "auto-2026-11-05-10",
     "auto": true,
     "match": {
       "name_contains": "Live Comedy NYC | Thurs, November 5th @7 PM",
       "venue_contains": "Comedy Village"
     },
     "badge": "😂 Comedy Pick",
-    "note": "Listed on 3 calendars; prime-time start.",
-    "score": 13.5,
-    "start_date": "2026-11-05",
-    "expires": "2026-11-05"
-  },
-  {
-    "id": "auto-2026-11-05-10",
-    "auto": true,
-    "match": {
-      "name_contains": "Millennial Speed-Dating (Monogamous)",
-      "venue_contains": "McCarren Parkhouse"
-    },
-    "badge": "🤝 Community Pick",
     "note": "Listed on 3 calendars; prime-time start.",
     "score": 13.5,
     "start_date": "2026-11-05",
@@ -159,12 +159,12 @@
     "id": "auto-2026-11-05-12",
     "auto": true,
     "match": {
-      "name_contains": "A Few Good Men",
-      "venue_contains": "Lincoln Center Theater"
+      "name_contains": "Bingo Comedy Show",
+      "venue_contains": "Ernie O'Malley's"
     },
-    "badge": "🎭 Stage Pick",
-    "note": "Listed on 2 calendars; headline room at Lincoln Center Theater; prime-time start.",
-    "score": 12.0,
+    "badge": "😂 Comedy Pick",
+    "note": "Free; listed on 3 calendars; prime-time start.",
+    "score": 12.5,
     "start_date": "2026-11-05",
     "expires": "2026-11-05"
   },
@@ -172,7 +172,7 @@
     "id": "auto-2026-11-05-13",
     "auto": true,
     "match": {
-      "name_contains": "August Wilson's Seven Guitars",
+      "name_contains": "A Few Good Men",
       "venue_contains": "Lincoln Center Theater"
     },
     "badge": "🎭 Stage Pick",
@@ -185,11 +185,11 @@
     "id": "auto-2026-11-05-14",
     "auto": true,
     "match": {
-      "name_contains": "Comedy Cellar Showcase",
-      "venue_contains": "Comedy Cellar"
+      "name_contains": "August Wilson's Seven Guitars",
+      "venue_contains": "Lincoln Center Theater"
     },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 2 calendars; headline room at Comedy Cellar; prime-time start.",
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 2 calendars; headline room at Lincoln Center Theater; prime-time start.",
     "score": 12.0,
     "start_date": "2026-11-05",
     "expires": "2026-11-05"
@@ -263,17 +263,30 @@
     "id": "auto-2026-11-06-20",
     "auto": true,
     "match": {
-      "name_contains": "40s & 50s Speed Dating (Free Drink For Women) + After Party",
-      "venue_contains": "The Cloud One Hotel New York-Downtown"
+      "name_contains": "(Women Sold Out) Singles with Advanced Degrees ages 30s and 40s - Speed Dating",
+      "venue_contains": "Amelia's NYC"
     },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
+    "badge": "🤝 Community Pick",
+    "note": "Free; listed on 4 calendars; prime-time start.",
     "score": 16.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
   {
     "id": "auto-2026-11-06-21",
+    "auto": true,
+    "match": {
+      "name_contains": "40s & 50s Speed Dating (Free Drink For Women) + After Party",
+      "venue_contains": "The Cloud One Hotel New York-Downtown"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Free; listed on 6 calendars; prime-time start.",
+    "score": 16.5,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-22",
     "auto": true,
     "match": {
       "name_contains": "40s & Over Mixer (Free Drink For Women)",
@@ -286,20 +299,20 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-22",
+    "id": "auto-2026-11-06-23",
     "auto": true,
     "match": {
       "name_contains": "Bayside Queens Speed dating Men 30s & 40s & Women ages 30s & 40s",
       "venue_contains": "One Station Plaza"
     },
     "badge": "🎲 Game Night Pick",
-    "note": "Free; listed on 10 calendars; prime-time start.",
+    "note": "Free; listed on 15 calendars; prime-time start.",
     "score": 16.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-23",
+    "id": "auto-2026-11-06-24",
     "auto": true,
     "match": {
       "name_contains": "Comedy Cellar Showcase",
@@ -308,19 +321,6 @@
     "badge": "😂 Comedy Pick",
     "note": "Listed on 3 calendars; headline room at Comedy Cellar; prime-time start.",
     "score": 16.0,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-24",
-    "auto": true,
-    "match": {
-      "name_contains": "Dating Games: A Fun Twist on Speed Dating",
-      "venue_contains": "Stout NYC"
-    },
-    "badge": "🎲 Game Night Pick",
-    "note": "Listed on 5 calendars; prime-time start.",
-    "score": 14.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
@@ -488,7 +488,7 @@
       "venue_contains": "Starbucks Coffee Company"
     },
     "badge": "🌿 Outdoors Pick",
-    "note": "Free; listed on 17 calendars; weekend daytime.",
+    "note": "Free; listed on 18 calendars; weekend daytime.",
     "score": 16.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
@@ -592,7 +592,7 @@
       "venue_contains": "Connolly's Pub"
     },
     "badge": "💃 Dance Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
+    "note": "Free; listed on 6 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
@@ -679,6 +679,19 @@
     "id": "auto-2026-11-08-52",
     "auto": true,
     "match": {
+      "name_contains": "Jamaica Bay Wildlife Refuge Nature Walk",
+      "venue_contains": "Jamaica Bay wildlife refuge visitor center"
+    },
+    "badge": "🌿 Outdoors Pick",
+    "note": "Free; listed on 3 calendars; weekend daytime.",
+    "score": 12.0,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-53",
+    "auto": true,
+    "match": {
       "name_contains": "Pumpkin Smash!",
       "venue_contains": "NYC Park"
     },
@@ -689,7 +702,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-53",
+    "id": "auto-2026-11-08-54",
     "auto": true,
     "match": {
       "name_contains": "Family Art Project: Raptors in Autumn Sky",
@@ -702,26 +715,13 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-54",
+    "id": "auto-2026-11-08-55",
     "auto": true,
     "match": {
       "name_contains": "Fiery Fall Sunset Yoga",
       "venue_contains": "Wave Hill"
     },
     "badge": "🏃 Active Pick",
-    "note": "Free; listed on 2 calendars; weekend daytime.",
-    "score": 10.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-55",
-    "auto": true,
-    "match": {
-      "name_contains": "Garden Highlights Walk",
-      "venue_contains": "Wave Hill"
-    },
-    "badge": "🌿 Outdoors Pick",
     "note": "Free; listed on 2 calendars; weekend daytime.",
     "score": 10.5,
     "start_date": "2026-11-08",
@@ -1372,7 +1372,7 @@
       "venue_contains": "Grand Central Oyster Bar"
     },
     "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 17 calendars; prime-time start.",
+    "note": "Free; listed on 18 calendars; prime-time start.",
     "score": 16.5,
     "start_date": "2026-11-12",
     "expires": "2026-11-12"
@@ -1580,7 +1580,7 @@
       "venue_contains": "5th&Mad"
     },
     "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 6 calendars; prime-time start.",
+    "note": "Free; listed on 7 calendars; prime-time start.",
     "score": 16.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
@@ -1593,7 +1593,7 @@
       "venue_contains": "Sour Mouse"
     },
     "badge": "🤝 Community Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
+    "note": "Free; listed on 6 calendars; prime-time start.",
     "score": 16.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
@@ -1606,7 +1606,7 @@
       "venue_contains": "Sour Mouse"
     },
     "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 4 calendars; prime-time start.",
+    "note": "Free; listed on 5 calendars; prime-time start.",
     "score": 16.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
@@ -1631,7 +1631,7 @@
       "name_contains": "Somewhere Funny, Nowhere Serious!",
       "venue_contains": "Somewhere Nowhere"
     },
-    "badge": "🪩 Nightlife Pick",
+    "badge": "😂 Comedy Pick",
     "note": "Listed on 3 calendars; headline room at Somewhere Nowhere; prime-time start.",
     "score": 16.0,
     "start_date": "2026-11-13",
@@ -1654,6 +1654,19 @@
     "id": "auto-2026-11-13-127",
     "auto": true,
     "match": {
+      "name_contains": "Miss Monique",
+      "venue_contains": "Pacha NYC"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Free; listed on 3 calendars; prime-time start.",
+    "score": 15.5,
+    "start_date": "2026-11-13",
+    "expires": "2026-11-13"
+  },
+  {
+    "id": "auto-2026-11-13-128",
+    "auto": true,
+    "match": {
       "name_contains": "The BoyGirl Experience LIVE",
       "venue_contains": "3 Dollar Bill"
     },
@@ -1664,20 +1677,20 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-128",
+    "id": "auto-2026-11-13-129",
     "auto": true,
     "match": {
       "name_contains": "Speed Dating NYC : Men ages 48-65, Women 45-59",
       "venue_contains": "Nosh@The Courtyard Marriott"
     },
     "badge": "🤝 Community Pick",
-    "note": "Listed on 11 calendars; prime-time start.",
+    "note": "Listed on 14 calendars; prime-time start.",
     "score": 14.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-129",
+    "id": "auto-2026-11-13-130",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Club Presents",
@@ -1690,7 +1703,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-130",
+    "id": "auto-2026-11-13-131",
     "auto": true,
     "match": {
       "name_contains": "【🗽J-KURU NEW YORK🗽】Evening Japanese Conversation!!",
@@ -1699,19 +1712,6 @@
     "badge": "🤝 Community Pick",
     "note": "Free; listed on 3 calendars; prime-time start.",
     "score": 12.5,
-    "start_date": "2026-11-13",
-    "expires": "2026-11-13"
-  },
-  {
-    "id": "auto-2026-11-13-131",
-    "auto": true,
-    "match": {
-      "name_contains": "Juggling Class",
-      "venue_contains": "Bryant Park"
-    },
-    "badge": "😂 Comedy Pick",
-    "note": "Free; listed on 9 calendars.",
-    "score": 11.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
   },
