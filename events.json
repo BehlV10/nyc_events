@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T10:04:32.711190+00:00",
+  "generated_at": "2026-11-05T10:10:25.170920+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -45008,7 +45008,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.89,
+      "duration": 1.06,
       "cached": false
     },
     {
@@ -111186,7 +111186,7 @@
       "url": "https://www.nycgovparks.org/events/hiking",
       "events": [],
       "error": "all NYC Parks category fetches failed (3), e.g. hiking: 405 Client Error: Not Allowed for url: https://www.nycgovparks.org/events/hiking",
-      "duration": 2.07,
+      "duration": 2.12,
       "cached": false
     },
     {
@@ -115025,7 +115025,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.18,
+      "duration": 0.46,
       "cached": false
     },
     {
@@ -115288,7 +115288,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.22,
+      "duration": 0.49,
       "cached": false
     },
     {
@@ -116116,7 +116116,7 @@
       ],
       "error": null,
       "duration": 0.21,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Alphaville",
@@ -117385,7 +117385,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.19,
+      "duration": 0.45,
       "cached": false
     },
     {
@@ -122585,7 +122585,7 @@
       ],
       "error": null,
       "duration": 0.7,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Stand Up NY",
@@ -133456,8 +133456,8 @@
         }
       ],
       "error": null,
-      "duration": 0.62,
-      "cached": true
+      "duration": 0.33,
+      "cached": false
     },
     {
       "venue": "Birdland Jazz Club",
@@ -173226,7 +173226,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.15,
+      "duration": 0.34,
       "cached": false
     },
     {
@@ -173436,7 +173436,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.08,
+      "duration": 0.34,
       "cached": false
     },
     {
@@ -173444,7 +173444,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.16,
+      "duration": 0.37,
       "cached": false
     },
     {
@@ -174575,7 +174575,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.07,
+      "duration": 0.5,
       "cached": false
     },
     {
@@ -176093,7 +176093,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.14,
+      "duration": 0.49,
       "cached": false
     },
     {
@@ -176977,7 +176977,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.13,
+      "duration": 0.62,
       "cached": false
     },
     {
@@ -185897,8 +185897,8 @@
         }
       ],
       "error": null,
-      "duration": 0.46,
-      "cached": true
+      "duration": 0.74,
+      "cached": false
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -231809,7 +231809,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.37,
       "cached": false
     },
     {
@@ -231817,7 +231817,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.63,
       "cached": false
     },
     {
@@ -235125,7 +235125,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 1.37,
+      "duration": 0.56,
       "cached": false
     },
     {
@@ -241610,8 +241610,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-meetup/ (serving stale cache)",
-      "duration": 0.05,
+      "error": null,
+      "duration": 3.84,
       "cached": true
     },
     {
@@ -241799,8 +241799,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-trivia/ (serving stale cache)",
-      "duration": 0.05,
+      "error": null,
+      "duration": 3.41,
       "cached": true
     },
     {
@@ -244824,7 +244824,7 @@
       "url": "https://www.meetup.com/tabletop-tuesday/events/",
       "events": [],
       "error": null,
-      "duration": 0.14,
+      "duration": 0.23,
       "cached": false
     },
     {
@@ -248347,7 +248347,7 @@
       "url": "https://www.meetup.com/Brooklyn-Table-Top-Games-Meetup/events/",
       "events": [],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.25,
       "cached": false
     },
     {
@@ -248355,7 +248355,7 @@
       "url": "https://www.meetup.com/astoria-board-game-club/events/",
       "events": [],
       "error": null,
-      "duration": 0.35,
+      "duration": 0.21,
       "cached": false
     },
     {
@@ -285785,7 +285785,7 @@
       ],
       "error": null,
       "duration": 5.4,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Storytelling",
@@ -286444,7 +286444,7 @@
       ],
       "error": null,
       "duration": 11.1,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Pickleball Open Play",
@@ -287246,7 +287246,7 @@
       ],
       "error": null,
       "duration": 9.77,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Soccer",
@@ -288308,7 +288308,7 @@
       ],
       "error": null,
       "duration": 13.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Basketball",
@@ -288980,7 +288980,7 @@
       ],
       "error": null,
       "duration": 18.0,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Softball",
@@ -289639,7 +289639,7 @@
       ],
       "error": null,
       "duration": 14.49,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Ultimate Frisbee",
@@ -290363,7 +290363,7 @@
       ],
       "error": null,
       "duration": 12.77,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Kickball",
@@ -291009,7 +291009,7 @@
       ],
       "error": null,
       "duration": 12.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Badminton",
@@ -291642,7 +291642,7 @@
       ],
       "error": null,
       "duration": 16.56,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Table Tennis",
@@ -292301,7 +292301,7 @@
       ],
       "error": null,
       "duration": 8.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Swimming",
@@ -292869,7 +292869,7 @@
       ],
       "error": null,
       "duration": 7.12,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Ice Skating",
@@ -293528,7 +293528,7 @@
       ],
       "error": null,
       "duration": 6.58,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Board Games",
@@ -295188,7 +295188,7 @@
       ],
       "error": null,
       "duration": 21.81,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Trivia",
@@ -296714,7 +296714,7 @@
       ],
       "error": null,
       "duration": 18.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Video Games",
@@ -297373,7 +297373,7 @@
       ],
       "error": null,
       "duration": 19.52,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Mahjong",
@@ -298032,7 +298032,7 @@
       ],
       "error": null,
       "duration": 19.52,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Poker",
@@ -298860,7 +298860,7 @@
       ],
       "error": null,
       "duration": 29.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Language Exchange",
@@ -300208,7 +300208,7 @@
       ],
       "error": null,
       "duration": 32.74,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Spanish Conversation",
@@ -300971,7 +300971,7 @@
       ],
       "error": null,
       "duration": 23.03,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: French Conversation",
@@ -301708,7 +301708,7 @@
       ],
       "error": null,
       "duration": 25.18,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Japanese Conversation",
@@ -302393,7 +302393,7 @@
       ],
       "error": null,
       "duration": 24.04,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Book Clubs",
@@ -303910,7 +303910,7 @@
       ],
       "error": null,
       "duration": 30.64,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Writing Groups",
@@ -304582,7 +304582,7 @@
       ],
       "error": null,
       "duration": 29.67,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: History Walks",
@@ -305228,7 +305228,7 @@
       ],
       "error": null,
       "duration": 29.97,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Architecture Tours",
@@ -305900,7 +305900,7 @@
       ],
       "error": null,
       "duration": 25.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Museum Meetups",
@@ -306130,7 +306130,7 @@
       ],
       "error": null,
       "duration": 24.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astronomy",
@@ -306603,10 +306603,166 @@
           "price": "Free",
           "description": "• MeetUp For: At approximately 08:25 PM, for (https://www.lallianceny.org/) (formerly (https://www.fiaf.org/))'s 08:45 PM screening of * (https://ww",
           "category": "community"
+        },
+        {
+          "name": "The Brights Museum Walk and Talk with Charles",
+          "date": "2026-12-06T18:00:00+00:00",
+          "url": "https://www.meetup.com/nycbrights/events/317068182/",
+          "venue": "The American Museum of Natural History (Corner of Central Park West & W 81st st, New York, NY)",
+          "venue_unknown": false,
+          "address": "Corner of Central Park West & W 81st st, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Dear Brights, Pastafarians, Guardians, Tru's, We're still \"Walking and Talking,\" and our monthly meeting is live again. Every first Sunday from 1pm-5pm at the American Museum of Natural History. All ages welcome. Children must be accompanied by a",
+          "category": "art"
+        },
+        {
+          "name": "Park Avenue Toastmasters Club Meeting",
+          "date": "2026-12-07T23:15:00+00:00",
+          "url": "https://www.meetup.com/toastmasters-district-83-meetup-group/events/315944681/",
+          "venue": "Wood-Ridge Library (231 Hackensack St, Wood Ridge, NJ)",
+          "venue_unknown": false,
+          "address": "231 Hackensack St, Wood Ridge, NJ, Wood Ridge, NJ",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join our award-winning club and discover the joy of public speaking. Whether you're stepping in with curiosity or leaving empowered, each meeting is an opportunity to grow and have fun. Let's elevate your speaking skills together at the Wood-Ridge Me",
+          "category": "community"
+        },
+        {
+          "name": "Galileo (the musical)",
+          "date": "2026-12-02T19:00:00+00:00",
+          "url": "https://www.meetup.com/finding-female-friends-over-fifty/events/316590609/",
+          "venue": "Forever Fun: NYC Women 50+ Friendship Group",
+          "venue_unknown": true,
+          "address": "Forever Fun: NYC Women 50+ Friendship Group",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "theater"
+        },
+        {
+          "name": "Improve Your Public Speaking Skills — Columbia University Toastmasters",
+          "date": "2026-11-28T20:00:00+00:00",
+          "url": "https://www.meetup.com/columbia-university-toastmasters-meetup/events/316034538/",
+          "venue": "Columbia University Toastmasters Meetup",
+          "venue_unknown": true,
+          "address": "Columbia University Toastmasters Meetup",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "Illuminated After-Hours: Lightscape at Brooklyn Botanic Garden (21+ Night)",
+          "date": "2026-12-10T22:45:00+00:00",
+          "url": "https://www.meetup.com/socially-awkward-but-im-trying/events/317284359/",
+          "venue": "34 St - Herald Sq (34 St - Herald Sq, New York, NY 10001, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "34 St - Herald Sq, New York, NY 10001, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us for a magical evening stroll through *Lightscape* at the Brooklyn Botanic Garden! We’re heading over on Thursday, December 10th, which is a special 21+ Night—meaning we get to experience the immersive trail of over one million lights,",
+          "category": "community"
+        },
+        {
+          "name": "Comics & Conversation",
+          "date": "2026-12-08T00:00:00+00:00",
+          "url": "https://www.meetup.com/comics-and-conversation/events/316201238/",
+          "venue": "Hide & Seek (593 Manhattan Avenue, Kings County, NY)",
+          "venue_unknown": false,
+          "address": "593 Manhattan Avenue, Kings County, NY, Kings County, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Comics & Conversation is a relaxed meetup with dedicated time to read comics, followed by time to hear from those in the industry, and socialize with other fans. Bring whatever you’re currently reading, or finally crack open something that’s been",
+          "category": "community"
+        },
+        {
+          "name": "NYC Airflow Meetup at Datadog!",
+          "date": "2026-12-10T22:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-apache-airflow-meetup/events/316969148/",
+          "venue": "Datadog (New York Times Bldg, 620 8th Ave, New York, NY 10018, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "New York Times Bldg, 620 8th Ave, New York, NY 10018, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join fellow Airflow enthusiasts and leaders at Datadog's offices for an evening of engaging talks, great food and drinks, and awesome swag, co-hosted by Astronomer and Datadog! PRESENTATIONS Talk 1: Multi-Tenant Airflow at Scale Sp",
+          "category": "community"
+        },
+        {
+          "name": "Beers & Data",
+          "date": "2026-12-01T23:00:00+00:00",
+          "url": "https://www.meetup.com/advertising-marketing-analysts/events/314639578/",
+          "venue": "Mustang Harry's (352 7th Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "352 7th Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "WE ARE BACK IN PERSON!",
+          "category": "community"
+        },
+        {
+          "name": "Main Street America - Beacon NY",
+          "date": "2026-11-28T14:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-photographers/events/316938801/",
+          "venue": "Grand Central Terminal (89 E 42nd St, New York, NY 10017, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "89 E 42nd St, New York, NY 10017, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us for our last “Upstate” Meetup of the season. Once again, we’ll meet by the info booth/clock at Grand Central Station Date: Saturday November 28nd Time: 9:30 am for a 9:56 am train on the Hudson Line (Poughkeepsie Train",
+          "category": "community"
+        },
+        {
+          "name": "VISIT THE SECRET GARDEN",
+          "date": "2026-11-28T16:00:00+00:00",
+          "url": "https://www.meetup.com/out-about-in-the-city-and-having-fun/events/317239927/",
+          "venue": "Ford Foundation Center for Social Justice (320 E 43rd St, New York, NY 10017, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "320 E 43rd St, New York, NY 10017, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "I bet you haven't been here - the free public garden in the Ford Foundation Building. We'll meet outside the building at the main entrance at 320 East 43rd Street at 11 AM. Once we clear security we'll see the free exhibition entitled",
+          "category": "community"
+        },
+        {
+          "name": "Foodie stops here - Best Pizza in NYC (Brooklyn)",
+          "date": "2026-11-30T23:30:00+00:00",
+          "url": "https://www.meetup.com/neverwinter-free-parties/events/316163284/",
+          "venue": "table 87 (87 Atlantic Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "87 Atlantic Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "\\*\\*PLEASE READ THE DESCRIPTION\\*\\* A love for pizza can be treated as a form of obsession. A special obsession that a lot of humans are addicted to. It is a matter of fact that the best pizza in the world is made by New York pizzaiolos. Last night",
+          "category": "community"
+        },
+        {
+          "name": "SkeptiCamp NYC 2026",
+          "date": "2026-12-05T14:30:00+00:00",
+          "url": "https://www.meetup.com/the-nycskeptics-meetup-group/events/315545908/",
+          "venue": "151 W 30th St 3rd floor (151 W 30th St 3rd floor, New York, NY)",
+          "venue_unknown": false,
+          "address": "151 W 30th St 3rd floor, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "SkeptiCamp is like a science conference, except the content is provided by the attendees themselves! Anyone can be a presenter, as long as your topic has something to do with science and/or skepticism. We hope that the sessions emerge as lively disc",
+          "category": "community"
         }
       ],
       "error": null,
-      "duration": 23.83,
+      "duration": 5.57,
       "cached": false
     },
     {
@@ -306833,10 +306989,738 @@
           "price": "Free",
           "description": "Hello everyone! We will check out the various art galleries in Chelsea, between 10th and 11th Ave and between 28th - 23rd Streets. Same neighborhood, different art every month. They always have interesting and creative art and you never know what to",
           "category": "art"
+        },
+        {
+          "name": "Croton Point Park Our Third Upstate Trip",
+          "date": "2026-11-14T15:00:00+00:00",
+          "url": "https://www.meetup.com/nyc-photographers/events/316938676/",
+          "venue": "Grand Central Terminal (89 E 42nd St, New York, NY 10017, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "89 E 42nd St, New York, NY 10017, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us on our Third Fall Colors Photo Walk at Croton Point Park Saturday, November 14th. Meet near the Clock/info booth in Grand Central Station 10:00am for 10:31 train departure on Metro North Hudson Line (Poughkeepsie Train) to Croto",
+          "category": "community"
+        },
+        {
+          "name": "NYC Photo Walk: Bushwick 🍁",
+          "date": "2026-11-14T17:30:00+00:00",
+          "url": "https://www.meetup.com/hazenyc/events/317214010/",
+          "venue": "SEY Coffee (18 Grattan St, Brooklyn, NY 11206, USA, Brooklyn, NY)",
+          "venue_unknown": false,
+          "address": "18 Grattan St, Brooklyn, NY 11206, USA, Brooklyn, NY, Brooklyn, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "📸 On Nov 14, dust off your camera and come out for a photo walk through Bushwick. Come on your own or bring a friend. * Meetup Location: Sey Coffee, 18 Grattan St, Brooklyn, NY * 12:30 PM to 1:00 PM \\| Meet up, grab a drink, and connect\\. * 1:00 P",
+          "category": "community"
+        },
+        {
+          "name": "Les Fincher: Photographing Laurie Anderson's Concert Film  (Nov 12, 2026)",
+          "date": "2026-11-12T23:30:00+00:00",
+          "url": "https://www.meetup.com/the-art-of-photography-nyc/events/316936149/",
+          "venue": "Leica Store & Gallery (406 W 13th st, New York City, NY)",
+          "venue_unknown": false,
+          "address": "406 W 13th st, New York City, NY, New York City, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Hello Fellow NYC TAOP Members Join us at the Leica Store and Gallery on Thursday, November 12th, at 6:30 pm for an evening with photographer Les Fincher. Les shot the cover photography for Laurie Anderson's 1986 concert film and album \"Home of th",
+          "category": "music"
+        },
+        {
+          "name": "FiDi And Staten Islnd Ferry Tour.",
+          "date": "2026-11-14T17:30:00+00:00",
+          "url": "https://www.meetup.com/nycshutterbugs/events/316452735/",
+          "venue": "Oculus (33-69 Vesey Street, New York, NY)",
+          "venue_unknown": false,
+          "address": "33-69 Vesey Street, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Saturday stroll to FiDi and Staten Island Ferry. Meet at Epicerie Boulud inside the Oculus (uploaded a photo for reference), in front of Path entrance, as there will be some people joining us from NJ. You will have the opportunity to grab breakfast e",
+          "category": "community"
+        },
+        {
+          "name": "Central Park Bird Walk - Bluebirds!",
+          "date": "2026-11-14T18:30:00+00:00",
+          "url": "https://www.meetup.com/birdingaroundnyc/events/317132003/",
+          "venue": "Location to be announced to all who RSVP (, Manhattan, NY)",
+          "venue_unknown": false,
+          "address": ", Manhattan, NY, Manhattan, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Central Park Bird Walk - Paid event $20/person Beginners Welcome! We will be looking for eastern bluebirds that migrate through our area at this time of year. They will be eating berries, brightly colored, orange and red, and it will truly be a fall",
+          "category": "outdoors"
+        },
+        {
+          "name": "ELLA - NUDE /LINGERIE - Tuesday 11/17/26",
+          "date": "2026-11-17T15:30:00+00:00",
+          "url": "https://www.meetup.com/peak-photo-group/events/317181592/",
+          "venue": "Peak Photo Workshop Group NYC",
+          "venue_unknown": true,
+          "address": "Peak Photo Workshop Group NYC",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "11/15 - An Array of Style - Editorial Power Shoot ft. Jarrah Jerdo & Dasha",
+          "date": "2026-11-15T17:00:00+00:00",
+          "url": "https://www.meetup.com/hypnoticastudios/events/316401543/",
+          "venue": "Hypnotica Studios Photography Network - NJ/NYC/PA",
+          "venue_unknown": true,
+          "address": "Hypnotica Studios Photography Network - NJ/NYC/PA",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "ELLA - NUDE /LINGERIE - Tueesday 11/17/25",
+          "date": "2026-11-17T15:30:00+00:00",
+          "url": "https://www.meetup.com/meetup-group-bgrpadcn/events/317181650/",
+          "venue": "New York Studio Photography Meetup",
+          "venue_unknown": true,
+          "address": "New York Studio Photography Meetup",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "Camera & Tricks Seminar: Nov 14, Saturday  1:00pm. In-person, Outdoors",
+          "date": "2026-11-14T18:00:00+00:00",
+          "url": "https://www.meetup.com/photography-classes-nyc/events/316817778/",
+          "venue": "41 E 14th St (41 E 14th St, New York, NY)",
+          "venue_unknown": false,
+          "address": "41 E 14th St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join our students in this upcoming (https://www.photomanhattan.com/product-p/dcs-se-i.1.3.htm \"Camera & Tricks Seminar (",
+          "category": "community"
+        },
+        {
+          "name": "Your First Pro Photos: Nov 14-Nov 28, Saturdays 1:00pm. In-person, Outdoors",
+          "date": "2026-11-14T18:00:00+00:00",
+          "url": "https://www.meetup.com/photography-classes-nyc/events/316817770/",
+          "venue": "41 E 14th St (41 E 14th St, New York, NY)",
+          "venue_unknown": false,
+          "address": "41 E 14th St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Learn the basics using ANY cameras! Join us for: (https://www.photomanhattan.com/product-p/co-dp1.i-",
+          "category": "community"
+        },
+        {
+          "name": "Visual Composition: Nov 14, Saturday 10:45am. In-person: Outdoor",
+          "date": "2026-11-14T15:45:00+00:00",
+          "url": "https://www.meetup.com/photography-classes-nyc/events/316817932/",
+          "venue": "41 E 14th St (41 E 14th St, New York, NY)",
+          "venue_unknown": false,
+          "address": "41 E 14th St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us for (https://www.photomanhattan.com/product-p/se-cfb.i-01.3.htm \"Visual Composition Seminar: (1 session): Nov 14, Saturday 10:45 AM-12:30 PM. In",
+          "category": "outdoors"
+        },
+        {
+          "name": "Visual, Composition : Nov 14-Dec 07 , Sat. 10:45am. In-person",
+          "date": "2026-11-14T15:45:00+00:00",
+          "url": "https://www.meetup.com/photography-classes-nyc/events/316817875/",
+          "venue": "Union Square (, New York, NY)",
+          "venue_unknown": false,
+          "address": ", New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "(https://www.photomanhattan.com/product-p/co-dp3.i-01.1.htm \"Visual Composition & Storytelling Classes (4 sessions): Nov 07-Nov",
+          "category": "community"
+        },
+        {
+          "name": "Film Photography: Nov 15-Nov 22, Sundays 10:00am. In-person: Outdoors",
+          "date": "2026-11-15T15:00:00+00:00",
+          "url": "https://www.meetup.com/photography-classes-nyc/events/317059945/",
+          "venue": "PhotoManhattan - Photography classes NYC & Free Exhibits",
+          "venue_unknown": true,
+          "address": "PhotoManhattan - Photography classes NYC & Free Exhibits",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "(https://www.photomanhattan.com/product-p/co-au-1.2-.htm \"Film Photography: Shooting workshop (2 sessions): Nov 15-Nov 22, Sundays 10:",
+          "category": "film"
+        },
+        {
+          "name": "Grand Central Murder Mystery & Scavenger Hunt (+ After Party)",
+          "date": "2026-11-13T00:00:00+00:00",
+          "url": "https://www.meetup.com/the-most-awesome-things-to-do-in-new-york-city/events/317206067/",
+          "venue": "Grand Central Oyster Bar (89 E 42nd St, New York, NY 10017, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "89 E 42nd St, New York, NY 10017, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "\\*TO ATTEND GET TICKETS AT: (https://www.eventbrite.com/e/grand-central-murder-mystery-scavenger-hunt-tickets-1039615376577) (This is co-organized by",
+          "category": "clubbing"
+        },
+        {
+          "name": "50s & Over Central Park Social Walk",
+          "date": "2026-11-15T17:00:00+00:00",
+          "url": "https://www.meetup.com/the-most-awesome-things-to-do-in-new-york-city/events/317270438/",
+          "venue": "Tavern On the Green (Central Park, W 67th St, New York, NY 10023, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "Central Park, W 67th St, New York, NY 10023, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "\\*TO ATTEND GET TICKETS AT - (https://www.eventbrite.com/e/central-park-social-walk-50s-over-tickets-1307309892079) (\\*Limited 5 save $5 by using discount code",
+          "category": "community"
+        },
+        {
+          "name": "Film - Ebenezer",
+          "date": "2026-11-14T21:30:00+00:00",
+          "url": "https://www.meetup.com/group-carpe-diem/events/317166904/",
+          "venue": "Regal Theatre (247 W. 42nd St., New York NY 10036, New York, NY)",
+          "venue_unknown": false,
+          "address": "247 W. 42nd St., New York NY 10036, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us as we watch the latest adaptation of the Charles Dickens' holiday classic starring Johnny Depp at the Regal Theater in Times Square. I have already purchased my ticket and I'm seated in G8. The movie showtime is for 4:40 pm.",
+          "category": "film"
+        },
+        {
+          "name": "Little Island Sunset Singles Stroll (AKA Date Walk) 20s, 30s, 40s",
+          "date": "2026-11-14T21:00:00+00:00",
+          "url": "https://www.meetup.com/the-most-awesome-things-to-do-in-new-york-city/events/317285361/",
+          "venue": "51 10th Ave (51 10th Ave, New York, NY 10014, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "51 10th Ave, New York, NY 10014, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "\\*TO ATTEND GET TICKETS AT: (https://www.eventbrite.com/e/little-island-summer-sunset-singles-date-walk-tickets-1131160935809) (First 5 women can sa",
+          "category": "community"
+        },
+        {
+          "name": "Fun & Games Singles Social Mingle In NYC",
+          "date": "2026-11-13T23:30:00+00:00",
+          "url": "https://www.meetup.com/the-most-awesome-things-to-do-in-new-york-city/events/317124973/",
+          "venue": "Sour Mouse (110 Delaney st, 10002, Manhattan, NY)",
+          "venue_unknown": false,
+          "address": "110 Delaney st, 10002, Manhattan, NY, Manhattan, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "\\*GET TICKETS AT: (https://www.eventbrite.com/e/798003729637) GAME NIGHT SOCIAL W/ COMPLIMENTARY PING PONG, POOL, DJ, & FREE DRINK! Multiple groups are co-organizing so RSVP's shown are just a very sma",
+          "category": "community"
+        },
+        {
+          "name": "Meet in the Arts",
+          "date": "2026-11-14T18:00:00+00:00",
+          "url": "https://www.meetup.com/singles-by-neighborhood/events/317133109/",
+          "venue": "The Jewish Museum (1109 5th Ave &, E 92nd Street ,, New York, NY)",
+          "venue_unknown": false,
+          "address": "1109 5th Ave &, E 92nd Street ,, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "(https://app.favr.town/polls/s_378XeL85R4csGQ?r=@lovemaze) Our preferences in art reveal more about us than we often realize. Long before personality traits were formally categorized, psy",
+          "category": "community"
+        },
+        {
+          "name": "3DNY - WEDNESDAY, NOV 18, LUCKY JACK'S",
+          "date": "2026-11-19T00:00:00+00:00",
+          "url": "https://www.meetup.com/3d-new-york-meetup/events/317185537/",
+          "venue": "Lucky Jack's (129 Orchard St, New York, NY)",
+          "venue_unknown": false,
+          "address": "129 Orchard St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "3DNY - WEDNESDAY NOVEMBER 18 2026 \\*\\*FREE DRINKS FOR FIRST 100 ATTENDEES\\*\\ Generous Support from Chaos WHERE: Lucky Jack's 129 Orchard St, New York, NY 10002 Downstairs, basement bar WHEN: Wednesday, November 18, 2026 7 pm -",
+          "category": "community"
+        },
+        {
+          "name": "Biking Fall Colors Trenton to Lambertville ByoB or  Rent, ~ 15 miles",
+          "date": "2026-11-14T13:30:00+00:00",
+          "url": "https://www.meetup.com/desi-outdoors-enrichment-and-recreational-activities/events/316699316/",
+          "venue": "DESI OUTDOORS: Nature.Adventure.Experience.Community",
+          "venue_unknown": true,
+          "address": "DESI OUTDOORS: Nature.Adventure.Experience.Community",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "theater"
+        },
+        {
+          "name": "Sip and Paint Pet Portrait Fun...Dogs Welcome- DBA Eastvillage",
+          "date": "2026-11-15T18:30:00+00:00",
+          "url": "https://www.meetup.com/paint-your-pet-and-mingle-with-pet-lovers/events/317149069/",
+          "venue": "d.b.a. (41 1st Ave., New York, NY)",
+          "venue_unknown": false,
+          "address": "41 1st Ave., New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Sip and Paint a Pet Portrait...Dogs Welcome! It's EASY No Artistic Background Necessary One of NYC BEST DOG FRIENDLY ACTIVITIES * Michele Draws your Pet for you before the event! * Send a photo of your pet to MICHELECAHILLK9@gmail.com * Trace and Pa",
+          "category": "community"
+        },
+        {
+          "name": "Speed Dating NYC : Men ages 48-65, Women 45-59",
+          "date": "2026-11-14T00:00:00+00:00",
+          "url": "https://www.meetup.com/the-most-awesome-things-to-do-in-new-york-city/events/317292405/",
+          "venue": "Nosh@The Courtyard Marriott (114 W 40th St, New york, NY)",
+          "venue_unknown": false,
+          "address": "114 W 40th St, New york, NY, New york, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Prepay repay required at (https://www.weekenddating.com/event-details.aspx?id=13783) (This is NOT a pay at the door event. Ignore anything that says you can rsvp and pay organizer directl",
+          "category": "family"
+        },
+        {
+          "name": "TRIBECA - Return to A World of Photo Icons",
+          "date": "2026-11-21T18:00:00+00:00",
+          "url": "https://www.meetup.com/nysp-plus/events/317270651/",
+          "venue": "Nancy Whiskey Pub (1 Lispenard St, New York, NY)",
+          "venue_unknown": false,
+          "address": "1 Lispenard St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "DATE/TIME/CONTACT Saturday, November 21 from 1pm to 3pm (http://ArtFrame24@gmail.com;/), ALL WELCOME Beginners to Professionals with Digital Cameras, Smartphone Cameras, Vid Cams, Discerning Eyes MEETUP LOCATION (U",
+          "category": "community"
+        },
+        {
+          "name": "Last Call",
+          "date": "2026-11-21T19:00:00+00:00",
+          "url": "https://www.meetup.com/union-square-portraiture-friends/events/317220393/",
+          "venue": "41 Union Square West (41 Union Square W, New York, NY 10003, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "41 Union Square W, New York, NY 10003, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "# Last Call at Studio 1119 Nine years in New York. Countless faces, unforgettable moments, and more beautiful light than I could ever ask for. On December 2nd, I'm leaving New York. But before I go, there's one last gathering at Studio 1119. An af",
+          "category": "community"
+        },
+        {
+          "name": "A very vintage holiday shoot! Session 1",
+          "date": "2026-11-22T17:00:00+00:00",
+          "url": "https://www.meetup.com/nypinupclub/events/317141067/",
+          "venue": "** NY Pin Up Club **  - retro themed events",
+          "venue_unknown": true,
+          "address": "** NY Pin Up Club **  - retro themed events",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "Vintage holiday pin up modeling sessions! (3)",
+          "date": "2026-11-22T20:00:00+00:00",
+          "url": "https://www.meetup.com/nypinupclub/events/317141133/",
+          "venue": "** NY Pin Up Club **  - retro themed events",
+          "venue_unknown": true,
+          "address": "** NY Pin Up Club **  - retro themed events",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "A very vintage holiday shoot! Session 2",
+          "date": "2026-11-22T19:30:00+00:00",
+          "url": "https://www.meetup.com/nypinupclub/events/317280267/",
+          "venue": "** NY Pin Up Club **  - retro themed events",
+          "venue_unknown": true,
+          "address": "** NY Pin Up Club **  - retro themed events",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "SOLD OUT - 11/21 - Glamorous Fashion & Boudoir Shoot ft. Emilie Nasseh",
+          "date": "2026-11-21T17:00:00+00:00",
+          "url": "https://www.meetup.com/jerseyshorephotonetwork/events/316406675/",
+          "venue": "Jersey Shore Photography Network - NJ/NYC/PA",
+          "venue_unknown": true,
+          "address": "Jersey Shore Photography Network - NJ/NYC/PA",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "Professional Studio Lighting : Nov 19, Thursday 6:15 PM-8:00 PM. In-person",
+          "date": "2026-11-19T23:15:00+00:00",
+          "url": "https://www.meetup.com/photography-classes-nyc/events/316818070/",
+          "venue": "PhotoManhattan (51 W 14th St #3R, New York, NY)",
+          "venue_unknown": false,
+          "address": "51 W 14th St #3R, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Learn lighting like a pro with our next workshop (https://www.photomanhattan.com/product-p/slb-se1-i-1.htm \"Professional",
+          "category": "community"
+        },
+        {
+          "name": "Visit to Poster House",
+          "date": "2026-11-22T18:30:00+00:00",
+          "url": "https://www.meetup.com/group-carpe-diem/events/317145463/",
+          "venue": "Poster House (119 W 23rd St, New York, NY 10011, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "119 W 23rd St, New York, NY 10011, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Every third Sunday of the month, Poster House offers free access to their exhibits on display. Let's take advantage of this and explore the museum. (https://posterhouse.org/exhibitions/) When you arrive, look",
+          "category": "community"
+        },
+        {
+          "name": "MANHATTAN, NY - Practical Philosophy Meetup - 🗽🇺🇸",
+          "date": "2026-11-22T23:00:00+00:00",
+          "url": "https://www.meetup.com/practical-philosophy-club-new-york/events/316334888/",
+          "venue": "Olympic Tower Atrium (645 5th Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "645 5th Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "🏛️ WHAT'S PRACTICAL PHILOSOPHY ABOUT? Practical Philosophy is a weekly meet-up that brings critical thinkers together for an opportunity to dive deep on a topic, practice communicating, and building a community. All with no ‘official’ philosophy",
+          "category": "community"
+        },
+        {
+          "name": "Meet in the Arts",
+          "date": "2026-11-21T18:00:00+00:00",
+          "url": "https://www.meetup.com/singles-by-neighborhood/events/317242386/",
+          "venue": "The Jewish Museum (1109 5th Ave &, E 92nd Street ,, New York, NY)",
+          "venue_unknown": false,
+          "address": "1109 5th Ave &, E 92nd Street ,, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "(https://app.favr.town/polls/s_378XeL85R4csGQ?r=@lovemaze) Our preferences in art reveal more about us than we often realize. Long before personality traits were formally categorized, psy",
+          "category": "community"
+        },
+        {
+          "name": "NYC Feeding Program @ Tompkins Square Park",
+          "date": "2026-11-21T16:30:00+00:00",
+          "url": "https://www.meetup.com/meetup-group-finnyc/events/317241449/",
+          "venue": "Tompkins Square Park (E 10th St, New York, NY)",
+          "venue_unknown": false,
+          "address": "E 10th St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Feeding program occurs every Saturday (rain or shine...we are there!) Time: 11:30 am (volunteers arrive by 11:15 am) Location: Tompkins Square Park (7th Street , between Avenue A & B) We are halfway down 7th Street. You will see people",
+          "category": "community"
+        },
+        {
+          "name": "Poconos retreat:  Various Nature and Rejuvenation activities",
+          "date": "2026-11-20T20:00:00+00:00",
+          "url": "https://www.meetup.com/desi-outdoors-enrichment-and-recreational-activities/events/316555819/",
+          "venue": "DESI OUTDOORS: Nature.Adventure.Experience.Community",
+          "venue_unknown": true,
+          "address": "DESI OUTDOORS: Nature.Adventure.Experience.Community",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "Extended Hours at The Met",
+          "date": "2026-11-20T23:00:00+00:00",
+          "url": "https://www.meetup.com/childfreenycwomen/events/316977240/",
+          "venue": "Childfree (By Choice) Women over 30",
+          "venue_unknown": true,
+          "address": "Childfree (By Choice) Women over 30",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "Paint In Central Park - A Bucket List Event",
+          "date": "2026-11-22T18:00:00+00:00",
+          "url": "https://www.meetup.com/nyc-art-meetup/events/317257652/",
+          "venue": "Central Park (, New York, NY)",
+          "venue_unknown": false,
+          "address": ", New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Get tickets at: (https://www.eventbrite.com/e/878650696887) You're invited to this fun, creative, social, and fun event! We will be painting in Central Park under the guidance of a master artist! Please bri",
+          "category": "community"
+        },
+        {
+          "name": "Ice-skating at Bryant Park",
+          "date": "2026-11-21T00:00:00+00:00",
+          "url": "https://www.meetup.com/nycrollerbladers/events/316191556/",
+          "venue": "Bryant Park (Bryant Park, 42nd Street and 6th avenue, New York, NY)",
+          "venue_unknown": false,
+          "address": "Bryant Park, 42nd Street and 6th avenue, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Ice-skating at Bryant Park is free if you have your own pair of skates; see the website for prices if you want to rent skates. They will store your shoes and a small, collapsable bag that will fit in the same container. They also provide small locker",
+          "category": "community"
+        },
+        {
+          "name": "AFK NYC: Creator Party + Concert (21+)",
+          "date": "2026-11-21T23:00:00+00:00",
+          "url": "https://www.meetup.com/content-creators-exchange-of-new-york/events/317285131/",
+          "venue": "Fushimi Times Square (311 W 43rd St, New York, NY 10036, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "311 W 43rd St, New York, NY 10036, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "🎟 YOU MUST PURCHASE TICKETS AT THE LINK BELOW TO GAIN ACCESS TO THE EVENT: https://www.ticketfairy.com/event/afknyc RSVPing here does NOT get you in. 21+ with valid ID. All sales final. 💸 CCExNYC community members get a discount code. Join us to",
+          "category": "clubbing"
+        },
+        {
+          "name": "Love Is Blind Speed Dating Event - As Seen On Netflix!",
+          "date": "2026-11-20T23:30:00+00:00",
+          "url": "https://www.meetup.com/the-most-awesome-things-to-do-in-new-york-city/events/317227714/",
+          "venue": "SOURMOUSE (110 Delancey St, New York, NY 10002, USA, Manhattan, NY)",
+          "venue_unknown": false,
+          "address": "110 Delancey St, New York, NY 10002, USA, Manhattan, NY, Manhattan, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Get tickets at: (https://www.eventbrite.com/e/673108474567) NYC Speed Dating - Singles 20s & 30s --- LADIES TICKET COMES WITH A FREE DRINK! Come experience this new & unique twist on speed dating! You've h",
+          "category": "community"
+        },
+        {
+          "name": "Main Street America - Beacon NY",
+          "date": "2026-11-28T14:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-photographers/events/316938801/",
+          "venue": "Grand Central Terminal (89 E 42nd St, New York, NY 10017, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "89 E 42nd St, New York, NY 10017, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us for our last “Upstate” Meetup of the season. Once again, we’ll meet by the info booth/clock at Grand Central Station Date: Saturday November 28nd Time: 9:30 am for a 9:56 am train on the Hudson Line (Poughkeepsie Train",
+          "category": "community"
+        },
+        {
+          "name": "11/29 - Chic Mood - Fashion & Boudoir Shoot ft. Christina Gilmur",
+          "date": "2026-11-29T17:00:00+00:00",
+          "url": "https://www.meetup.com/hypnoticastudios/events/316486254/",
+          "venue": "Hypnotica Studios Photography Network - NJ/NYC/PA",
+          "venue_unknown": true,
+          "address": "Hypnotica Studios Photography Network - NJ/NYC/PA",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "Photography Masterclass with Tony Northrup in NY",
+          "date": "2026-12-05T17:00:00+00:00",
+          "url": "https://www.meetup.com/new-york-photography-meetup-photo-studio-events/events/317167885/",
+          "venue": "New-York Photography Meetup & Photo Studio Events",
+          "venue_unknown": true,
+          "address": "New-York Photography Meetup & Photo Studio Events",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us on Saturday, December 5, from 12:00 to 4:00 PM at (https://www.fdphotostudio.com/photo-studio-for-rent/lic-studios) in Long Island City. Three professional studios are open just for this masterclass:",
+          "category": "art"
+        },
+        {
+          "name": "Street, Travel Photography : Nov 28-Nov 29, Sat & Sun 12:00pm. Outdoors.",
+          "date": "2026-11-28T17:00:00+00:00",
+          "url": "https://www.meetup.com/photography-classes-nyc/events/316817797/",
+          "venue": "Union Square (, New York, NY)",
+          "venue_unknown": false,
+          "address": ", New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "(https://www.photomanhattan.com/product-p/co-tp1.i-06.1.htm \"Street, Travel & Cityscape Photography Workshop (2 ses",
+          "category": "art"
+        },
+        {
+          "name": "Street, Travel & Cityscape Photography Seminar: Nov 28 , Sat. 1:00pm. Outdoors",
+          "date": "2026-11-28T17:00:00+00:00",
+          "url": "https://www.meetup.com/photography-classes-nyc/events/316817811/",
+          "venue": "41 E 14th St (41 E 14th St, New York, NY)",
+          "venue_unknown": false,
+          "address": "41 E 14th St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us for another Street photo tour in Union Square (https://www.photomanhattan.com/product-p/se-spb.i-03.1.htm \"Street, Travel & C",
+          "category": "art"
+        },
+        {
+          "name": "DIY Product Photography: Dec 10, Thursday Dec 10, Thursday 5:15pm. In-person.",
+          "date": "2026-12-10T22:15:00+00:00",
+          "url": "https://www.meetup.com/photography-classes-nyc/events/316818000/",
+          "venue": "PhotoManhattan (51 W 14th St #3R, New York, NY)",
+          "venue_unknown": false,
+          "address": "51 W 14th St #3R, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Learn lighting like a pro with our next workshop (https://www.photomanhattan.com/product-p/co-pef.i-03.1.htm \"DIY Product Ph",
+          "category": "art"
+        },
+        {
+          "name": "Model intensive one day training",
+          "date": "2026-12-04T15:00:00+00:00",
+          "url": "https://www.meetup.com/port-chester-model-photography-meetup-group/events/316791670/",
+          "venue": "Suzanne Claire Studios (￼ 14 – 20 Willett Ave, Port Chester, NY)",
+          "venue_unknown": false,
+          "address": "￼ 14 – 20 Willett Ave, Port Chester, NY, Port Chester, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Step into your confidence with Focus & Fire Model Intensive, led by Suzanne Claire and Devin Riley. This hands-on training covers posing, movement, expression, runway skills, and camera confidence. Create digitals, explore editorial looks, and lear",
+          "category": "community"
+        },
+        {
+          "name": "Christmas Photo Mixer in New York",
+          "date": "2026-12-04T23:00:00+00:00",
+          "url": "https://www.meetup.com/new-york-photography-meetup-photo-studio-events/events/317287566/",
+          "venue": "FD Photo Studio NYC Astoria (35-58 37th St 3rd Floor, Astoria, NY 11106, USA, Queens, NY)",
+          "venue_unknown": false,
+          "address": "35-58 37th St 3rd Floor, Astoria, NY 11106, USA, Queens, NY, Queens, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us on Friday, December 4th, from 6:00 PM - 9:00 PM for a Christmas-themed photo mixer at FD Photo Studios Astoria. We’re opening three completely different studios with Christmas Trees so you can shoot your photos in multiple di",
+          "category": "community"
+        },
+        {
+          "name": "Vietnam & Cambodia with Angkor Wat! Ancient Kingdoms of Southeast Asia",
+          "date": "2026-12-05T00:00:00+00:00",
+          "url": "https://www.meetup.com/nycphotography/events/316375441/",
+          "venue": "JFK International Airport (John F. Kennedy International Airport, New York, NY)",
+          "venue_unknown": false,
+          "address": "John F. Kennedy International Airport, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "A Meetup trip in December . . . what can be a better gift for the holidays?! Join our travelers group on a captivating 14-day journey through the heart of Southeast Asia as we explore the vibrant cultures and breathtaking landscapes of Vietnam & Camb",
+          "category": "community"
+        },
+        {
+          "name": "NYC ICO's Adventure Film Festival",
+          "date": "2026-12-10T23:00:00+00:00",
+          "url": "https://www.meetup.com/nybackpackers/events/316561784/",
+          "venue": "SVA Theatre (333 W 23rd St, New York, NY 10011, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "333 W 23rd St, New York, NY 10011, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us for an incredible night of adventure films with 100% of proceeds going to support Sierra Club NYCICO's programming, introducing NYC youth to the great outdoors through hiking, rafting, camping, backpacking, ice skating, skiing and more. VIP t",
+          "category": "film"
+        },
+        {
+          "name": "Banff Film Festival Monday",
+          "date": "2026-12-08T00:30:00+00:00",
+          "url": "https://www.meetup.com/nybackpackers/events/317258821/",
+          "venue": "Peter Norton Symphony Space (2537 Broadway, (@ 95th Street), NYC, NY)",
+          "venue_unknown": false,
+          "address": "2537 Broadway, (@ 95th Street), NYC, NY, NYC, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "We are going to the Banff Film Festival on Monday December 7 and Tuesday December 8. This is the Monday event. Now for those who have gone many times you will probably be asking, why did the event move from March to December? Well Symphony",
+          "category": "film"
+        },
+        {
+          "name": "Banff Film Festival Tuesday",
+          "date": "2026-12-09T00:30:00+00:00",
+          "url": "https://www.meetup.com/nybackpackers/events/317258968/",
+          "venue": "Peter Norton Symphony Space (2537 Broadway, (@ 95th Street), NYC, NY)",
+          "venue_unknown": false,
+          "address": "2537 Broadway, (@ 95th Street), NYC, NY, NYC, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "We are going to the Banff Film Festival on Monday December 7 and Tuesday December 8. Both nights will have different films. This is the Meetup for the Tuesday event. Now for those who have gone many times you will probably be asking, why did",
+          "category": "film"
+        },
+        {
+          "name": "A Visit to the Winter Village",
+          "date": "2026-11-29T18:30:00+00:00",
+          "url": "https://www.meetup.com/group-carpe-diem/events/317090057/",
+          "venue": "La Colombe Coffee (1045 6th Ave., New York, ny)",
+          "venue_unknown": false,
+          "address": "1045 6th Ave., New York, ny, New York, ny",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Now that Thanksgiving is over, it's officially holiday shopping time. We are planning to visit the Christmas vendors located in the Winter Village of Bryant Park. We'll first meet at 'La Colombe Coffee' for some warm drinks and introductions. Once th",
+          "category": "community"
+        },
+        {
+          "name": "LET'S GO ON A PRIVATE TOUR OF THE NEUE GALERIE",
+          "date": "2026-12-05T15:45:00+00:00",
+          "url": "https://www.meetup.com/art-music-social/events/317060259/",
+          "venue": "Neue Galerie (1048 5th Ave, New York, NY 10028, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "1048 5th Ave, New York, NY 10028, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "# ✨🎨 KLIMT, MASTERWORKS & A MILESTONE! # OUR SOCIAL CLUB RETURNS TO NEUE GALERIE NEW YORK ## 🏛️ A SPECIAL GUIDED TOUR OF THE 25TH ANNIVERSARY EXHIBITION ### Saturday, December 5, 2026 • 10:45 AM ### Only 15 Members • Just $38 Per Person!",
+          "category": "community"
+        },
+        {
+          "name": "Skip the Small Talk: Make Friends, Not Small Talk",
+          "date": "2026-12-09T00:00:00+00:00",
+          "url": "https://www.meetup.com/socialnewyork/events/317019045/",
+          "venue": "Bibliotheque (54 mercer st, ny 10013, new york)",
+          "venue_unknown": false,
+          "address": "54 mercer st, ny 10013, new york, new york",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "###PLEASE NOTE: Even if you RSVP on Meetup, you will need to grab a ticket here https://www.skipthesmalltalk.com/store/20s-skip-the-small-talk-night-at-bibliotheque-nyc-tuesday-december-8-2026 in order to attend### This event is cross-posted so M",
+          "category": "community"
+        },
+        {
+          "name": "The New York City Sci-Fi/Fantasy Meetup Group Monthly Meetup",
+          "date": "2026-12-01T23:30:00+00:00",
+          "url": "https://www.meetup.com/e-w-n-y-c/events/316918744/",
+          "venue": "Food Gallery 32 (KoreaTown) (11 W. 32nd St. (Korea Way), btw. Fifth Ave. & Broadway, New York, NY)",
+          "venue_unknown": false,
+          "address": "11 W. 32nd St. (Korea Way), btw. Fifth Ave. & Broadway, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "● MeetUp For: At 06:30 PM, for some conversation, discussion, socializing and some fun, by sharing our common affections, enthusiasms, interests and knowledge for Science Fiction, Fantasy, Sci-Fi/Fantasy, Speculative Fiction and/or adjacent Genr",
+          "category": "community"
         }
       ],
       "error": null,
-      "duration": 22.93,
+      "duration": 8.24,
       "cached": false
     },
     {
@@ -307011,10 +307895,556 @@
           "price": "Free",
           "description": "In-Person Open House at Fat Cat Fab Lab! Open House and Project Night: * Open House is casual and unstructured, come hang! * Get a tour of the space: Laser room, woodshop, metal shop, sewing area, 3D printing area, electronics lab, and more! * If y",
           "category": "community"
+        },
+        {
+          "name": "💖 NOVEMBER GIRLS CRAFT NIGHT 🎨 🍁",
+          "date": "2026-11-14T00:30:00+00:00",
+          "url": "https://www.meetup.com/girlsgoexplorenyc/events/317258829/",
+          "venue": "Ground Support Cafe (399 West Broadway, New York, NY)",
+          "venue_unknown": false,
+          "address": "399 West Broadway, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Girls Craft Social is back!! Ground Support Cafe is staying open for us. limited spots. get access to this iconic girl's coffee shop party filled with music, conversations, craft art stations, girlhood, and meeting new besties!! Think: welcome drink",
+          "category": "art"
+        },
+        {
+          "name": "Williamsburg Coffee and Craft",
+          "date": "2026-11-14T16:00:00+00:00",
+          "url": "https://www.meetup.com/knittingaroundny/events/317102969/",
+          "venue": "Knitting Around New York",
+          "venue_unknown": true,
+          "address": "Knitting Around New York",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "art"
+        },
+        {
+          "name": "Stitch, please!",
+          "date": "2026-11-18T00:00:00+00:00",
+          "url": "https://www.meetup.com/embroidery-nyc/events/317189583/",
+          "venue": "Wild East Brewery (623 Sackett street,, Kings County, NY)",
+          "venue_unknown": false,
+          "address": "623 Sackett street,, Kings County, NY, Kings County, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "If you're looking for people to stitch with, you've come to the right place! Bring your embroidery, sewing, cross stitch, etc. - all fiber art projects are welcome. Hope to see you there!",
+          "category": "community"
+        },
+        {
+          "name": "Make Art and Crafts together",
+          "date": "2026-11-17T00:00:00+00:00",
+          "url": "https://www.meetup.com/williamsburg-art-club/events/317168222/",
+          "venue": "Spritzenhaus33 (33 Nassau Ave, Brooklyn, NY)",
+          "venue_unknown": false,
+          "address": "33 Nassau Ave, Brooklyn, NY, Brooklyn, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Artists and creatives of all skill levels are welcome, including aspiring creatives who are just starting out and professionals. Bring your drawing supplies or whatever creative project you're working on. Digital media like iPad sketching is ideal s",
+          "category": "art"
+        },
+        {
+          "name": "AWOL - After Work Origami Lovers",
+          "date": "2026-11-13T00:00:00+00:00",
+          "url": "https://www.meetup.com/omgnyc/events/317109726/",
+          "venue": "Whole Foods Market (63 Madison Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "63 Madison Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "AWOL (After Work Origami Lovers) with us at Whole Foods on Madison Avenue and East 28th Street, UPSTAIRS in the dining area. After a long week what could be better than meeting with friends and potential new friends to fold your work week away!",
+          "category": "community"
+        },
+        {
+          "name": "Union Square Yarnies",
+          "date": "2026-11-18T23:30:00+00:00",
+          "url": "https://www.meetup.com/knittingaroundny/events/317210099/",
+          "venue": "Knitting Around New York",
+          "venue_unknown": true,
+          "address": "Knitting Around New York",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "In-person Crafting and Happy Hour",
+          "date": "2026-11-12T22:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-pints-n-purls/events/315576057/",
+          "venue": "Brookfield Place (230 Vesey St, New York, NY)",
+          "venue_unknown": false,
+          "address": "230 Vesey St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "You asked, and we provided! Meet with the group in-person at the food court at Brookfield Place Mall aka World Financial Center at 230 Vesey Street. The host Ivy will make a sign so participants can find the group. Come grab a drink, yarn, and some",
+          "category": "art"
+        },
+        {
+          "name": "NYC Aces Knit/Crochet/Craft a long ~ Brooklyn Edition",
+          "date": "2026-11-15T20:00:00+00:00",
+          "url": "https://www.meetup.com/aces-nyc/events/317053338/",
+          "venue": "Aces NYC",
+          "venue_unknown": true,
+          "address": "Aces NYC",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "art"
+        },
+        {
+          "name": "WTF (Weekly Tuesday Folders)",
+          "date": "2026-11-17T23:00:00+00:00",
+          "url": "https://www.meetup.com/omgnyc/events/317095049/",
+          "venue": "Stavros Niarchos Foundation Library (455 5th Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "455 5th Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "PLEASE NOTE: TIME IS NOW 6:00 to 8:00PM NEW LOCATION: OMG NYC (Origami Meetup Group! New York City) is a group for people to come together and share in the beautiful art of Origami - an ancient art of folding various mediums, most commonly p",
+          "category": "community"
+        },
+        {
+          "name": "Meet in the Arts",
+          "date": "2026-11-14T18:00:00+00:00",
+          "url": "https://www.meetup.com/romantic-cooking-club/events/317133110/",
+          "venue": "Jewish Museum (5th Ave & E 92nd St, New York, NY)",
+          "venue_unknown": false,
+          "address": "5th Ave & E 92nd St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "(https://app.favr.town/polls/s_378XeL85R4csGQ?r=@lovemaze) Our preferences in art reveal more about us than we often realize. Long before personality traits were formally categorized, psy",
+          "category": "community"
+        },
+        {
+          "name": "Open House at Fat Cat Fab Lab",
+          "date": "2026-11-19T00:00:00+00:00",
+          "url": "https://www.meetup.com/fat-cat-fab-lab/events/317128649/",
+          "venue": "Fat Cat Fab Lab (224 West 4th Street #250, New York, NY)",
+          "venue_unknown": false,
+          "address": "224 West 4th Street #250, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "In-Person Open House at Fat Cat Fab Lab! Open House and Project Night: * Open House is casual and unstructured, come hang! * Get a tour of the space: Laser room, woodshop, metal shop, sewing area, 3D printing area, electronics lab, and more! * If y",
+          "category": "community"
+        },
+        {
+          "name": "Let's Make Homemade Chocolates!!",
+          "date": "2026-11-16T16:00:00+00:00",
+          "url": "https://www.meetup.com/meetup-group-vrgvpdde/events/313067951/",
+          "venue": "Laura's House (Will be sent to attendees prior to the event, New Rochelle, NY)",
+          "venue_unknown": false,
+          "address": "Will be sent to attendees prior to the event, New Rochelle, NY, New Rochelle, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Making homemade chocolates offers complete control over ingredients - allowing for healthier, organic, or specialized choices - while fostering creativity through custom flavors, shapes, and fillings. It is a therapeutic, meditative, and rewarding pr",
+          "category": "community"
+        },
+        {
+          "name": "IRL Sip and Stitch - Sierra Coffee Group (Lyndhurst, NJ) [Every 2nd Sat!]",
+          "date": "2026-11-14T17:00:00+00:00",
+          "url": "https://www.meetup.com/alterknitive-fiber-arts-community/events/316229601/",
+          "venue": "Sierra Coffee Group (302 Ridge Rd, Lyndhurst, NJ)",
+          "venue_unknown": false,
+          "address": "302 Ridge Rd, Lyndhurst, NJ, Lyndhurst, NJ",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Come knit/crochet/craft with us! We'll be meeting together at Sierra Coffee Group in Lyndhurst, NJ every Second Saturday from 12pm to 4pm! :) Get ready for: 🧶 KNITTING. CROCHETING. literally any crafts. :) ☕️ an EXCLUSIVE coffee drink menu!",
+          "category": "community"
+        },
+        {
+          "name": "Paint In Central Park - A Bucket List Event",
+          "date": "2026-11-15T18:00:00+00:00",
+          "url": "https://www.meetup.com/nyc-art-meetup/events/317148443/",
+          "venue": "Central Park (, New York, NY)",
+          "venue_unknown": false,
+          "address": ", New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Get tickets at: (https://www.eventbrite.com/e/878650696887) You're invited to this fun, creative, social, and fun event! We will be painting in Central Park under the guidance of a master artist! Please bri",
+          "category": "community"
+        },
+        {
+          "name": "\"Art Of Manga\" @ Brooklyn Museum",
+          "date": "2026-11-14T19:30:00+00:00",
+          "url": "https://www.meetup.com/scifi-22/events/314817473/",
+          "venue": "Brooklyn Museum (Institution Park) (200 Eastern Pkwy. & Washington Ave., Kings County, NY)",
+          "venue_unknown": false,
+          "address": "200 Eastern Pkwy. & Washington Ave., Kings County, NY, Kings County, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "● MeetUp For: At 02:30 PM, to view (https://www.brooklynmuseum.org/)'s and (https://www.famsf.org/about/about-the-de-young/) of (https://www.famsf.org/)'s \" (http",
+          "category": "art"
+        },
+        {
+          "name": "💖 NOVEMBER GIRLS CRAFT NIGHT 🎨 🍁",
+          "date": "2026-11-21T00:30:00+00:00",
+          "url": "https://www.meetup.com/girlsgoexplorenyc/events/317258843/",
+          "venue": "Ground Support Cafe (399 West Broadway, New York, NY)",
+          "venue_unknown": false,
+          "address": "399 West Broadway, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Girls Craft Social is back!! Ground Support Cafe is staying open for us. limited spots. get access to this iconic girl's coffee shop party filled with music, conversations, craft art stations, girlhood, and meeting new besties!! Think: welcome drink",
+          "category": "art"
+        },
+        {
+          "name": "November Crafternoon",
+          "date": "2026-11-21T19:00:00+00:00",
+          "url": "https://www.meetup.com/westchester-crafters/events/317228179/",
+          "venue": "Marlowe Artisanal Ales (139 Hoyt Ave Suite A, Mamaroneck, NY 10543, USA, Mamaroneck, NY)",
+          "venue_unknown": false,
+          "address": "139 Hoyt Ave Suite A, Mamaroneck, NY 10543, USA, Mamaroneck, NY, Mamaroneck, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Whether you are into crochet, knitting, coloring, sewing, or any other craft, this event is the perfect opportunity for you to work on your projects while making new friends in the crafting community. Feel free to bring your latest work-in-progress o",
+          "category": "art"
+        },
+        {
+          "name": "Let's Craft Together in the Streets! (In-person, Astoria, NYC)",
+          "date": "2026-11-21T19:00:00+00:00",
+          "url": "https://www.meetup.com/the-art-of-crafting/events/317265308/",
+          "venue": "31st Avenue Open Street (34-02 31st Ave, Astoria, NY 11106, USA, Queens, NY)",
+          "venue_unknown": false,
+          "address": "34-02 31st Ave, Astoria, NY 11106, USA, Queens, NY, Queens, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Have a craft project that you've been meaning to finish? Have a craft project you've been meaning to start? Bring it and we'll craft together! This is an informal get-together where we can just make things with our hands while idly chatting. Let's cr",
+          "category": "art"
+        },
+        {
+          "name": "Stitch At the Library: Crochet & Knit Fun",
+          "date": "2026-11-24T16:00:00+00:00",
+          "url": "https://www.meetup.com/new-york-city-crochet-guild/events/317068232/",
+          "venue": "St. Agnes Library (444 Amsterdam Avenue, New York, NY)",
+          "venue_unknown": false,
+          "address": "444 Amsterdam Avenue, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Meet fellow craft enthusiasts, chat about your latest projects, and get inspired by all the crafty creations shared during the session. This event will take place in person at the St. Agnes Library, the perfect setting for a cozy and creative ga",
+          "category": "community"
+        },
+        {
+          "name": "Make Art and Crafts together",
+          "date": "2026-11-24T00:00:00+00:00",
+          "url": "https://www.meetup.com/williamsburg-art-club/events/317102551/",
+          "venue": "Spritzenhaus33 (33 Nassau Ave, Brooklyn, NY)",
+          "venue_unknown": false,
+          "address": "33 Nassau Ave, Brooklyn, NY, Brooklyn, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Artists and creatives of all skill levels are welcome, including aspiring creatives who are just starting out and professionals. Bring your drawing supplies or whatever creative project you're working on. Digital media like iPad sketching is ideal s",
+          "category": "art"
+        },
+        {
+          "name": "WEDNESDAY In-person Crafting and Happy Hour",
+          "date": "2026-11-25T22:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-pints-n-purls/events/315576058/",
+          "venue": "Brookfield Place (230 Vesey St, New York, NY)",
+          "venue_unknown": false,
+          "address": "230 Vesey St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "A lot of folks asked for a second monthly meeting, so here it is! Join us on the last Wednesday of every month for our in-person fiber arts meet up! Whether you knit, crochet, felt, sew, cross-stitch, or embroider, come by, grab a drink or a snack, a",
+          "category": "art"
+        },
+        {
+          "name": "Monthly OMGNYC (Origami Meetup Group) meeting!",
+          "date": "2026-11-21T16:30:00+00:00",
+          "url": "https://www.meetup.com/omgnyc/events/315210241/",
+          "venue": "New York Public Library (53rd st branch) (18 W 53rd St, New Yotk, NY)",
+          "venue_unknown": false,
+          "address": "18 W 53rd St, New Yotk, NY, New Yotk, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Every third Saturday of the month we meet to fold and learn new things. The NYPL on W 53rd ST (Across from MOMA) has generously offered their wonderful community meeting rooms for our monthly meetings! Come and fold with us every 3rd Saturdays! The",
+          "category": "community"
+        },
+        {
+          "name": "In Person NYC Crochet Guild Meeting",
+          "date": "2026-11-21T17:15:00+00:00",
+          "url": "https://www.meetup.com/new-york-city-crochet-guild/events/317068228/",
+          "venue": "240 E 31st St (240 E 31st St, New York, NY)",
+          "venue_unknown": false,
+          "address": "240 E 31st St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "In Person Guild Meeting Church of the Good Shepherd, Basement level, 240 E 31st Street, bet. 2nd & 3rd Avenues, Manhattan. 12:30 pm-2:30 pm EST, doors open @ 12:15 pm. *The meeting will start at 12:30.* * Learn to make an acorn pouch from La",
+          "category": "community"
+        },
+        {
+          "name": "AWOL - After Work Origami Lovers",
+          "date": "2026-11-20T00:00:00+00:00",
+          "url": "https://www.meetup.com/omgnyc/events/317131061/",
+          "venue": "Whole Foods Market (63 Madison Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "63 Madison Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "AWOL (After Work Origami Lovers) with us at Whole Foods on Madison Avenue and East 28th Street, UPSTAIRS in the dining area. After a long week what could be better than meeting with friends and potential new friends to fold your work week away!",
+          "category": "community"
+        },
+        {
+          "name": "WTF (Weekly Tuesday Folders)",
+          "date": "2026-11-24T23:00:00+00:00",
+          "url": "https://www.meetup.com/omgnyc/events/315210242/",
+          "venue": "Stavros Niarchos Foundation Library (455 5th Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "455 5th Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "PLEASE NOTE: TIME IS NOW 6:00 to 8:00PM NEW LOCATION: OMG NYC (Origami Meetup Group! New York City) is a group for people to come together and share in the beautiful art of Origami - an ancient art of folding various mediums, most commonly p",
+          "category": "community"
+        },
+        {
+          "name": "👯‍♀️ Girl's Movie & Crafts Day 🎞",
+          "date": "2026-11-22T20:00:00+00:00",
+          "url": "https://www.meetup.com/girlsgoexplorenyc/events/317259645/",
+          "venue": "Wonderland Bar (96 2nd Ave, New York, NY 10003, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "96 2nd Ave, New York, NY 10003, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "We’re taking over Wonderland Bar for a girls-only Little Women movie & bracelet making day!!! think: secret back with floral, cozy, your favorite comfort movie playing, and a room full of girls who just get it what’s included: • private movie exper",
+          "category": "film"
+        },
+        {
+          "name": "Meet in the Arts",
+          "date": "2026-11-21T18:00:00+00:00",
+          "url": "https://www.meetup.com/romantic-cooking-club/events/317242387/",
+          "venue": "Jewish Museum (5th Ave & E 92nd St, New York, NY)",
+          "venue_unknown": false,
+          "address": "5th Ave & E 92nd St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "(https://app.favr.town/polls/s_378XeL85R4csGQ?r=@lovemaze) Our preferences in art reveal more about us than we often realize. Long before personality traits were formally categorized, psy",
+          "category": "community"
+        },
+        {
+          "name": "Open House at Fat Cat Fab Lab",
+          "date": "2026-11-26T00:00:00+00:00",
+          "url": "https://www.meetup.com/fat-cat-fab-lab/events/317128650/",
+          "venue": "Fat Cat Fab Lab (224 West 4th Street #250, New York, NY)",
+          "venue_unknown": false,
+          "address": "224 West 4th Street #250, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "In-Person Open House at Fat Cat Fab Lab! Open House and Project Night: * Open House is casual and unstructured, come hang! * Get a tour of the space: Laser room, woodshop, metal shop, sewing area, 3D printing area, electronics lab, and more! * If y",
+          "category": "community"
+        },
+        {
+          "name": "Queens yarnies happy hour",
+          "date": "2026-11-19T23:30:00+00:00",
+          "url": "https://www.meetup.com/knittingaroundny/events/315498485/",
+          "venue": "Knitting Around New York",
+          "venue_unknown": true,
+          "address": "Knitting Around New York",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "November 2026 Knit+Wine Night",
+          "date": "2026-11-29T22:00:00+00:00",
+          "url": "https://www.meetup.com/knitandwinebklyn/events/317015062/",
+          "venue": "The Center for Fiction (15 Lafayette Ave, Brooklyn, NY)",
+          "venue_unknown": false,
+          "address": "15 Lafayette Ave, Brooklyn, NY, Brooklyn, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us for our next Knit+Wine Night on Sunday, November 29, 2026 from 5-7:00pm. Please note that space is limited to 15 people. For those of you who are new to Knit+Wine Night, this is an informal community event for knitters (& other",
+          "category": "community"
+        },
+        {
+          "name": "Stitch At the Library: Crochet & Knit Fun",
+          "date": "2026-12-08T16:00:00+00:00",
+          "url": "https://www.meetup.com/new-york-city-crochet-guild/events/317068234/",
+          "venue": "St. Agnes Library (444 Amsterdam Avenue, New York, NY)",
+          "venue_unknown": false,
+          "address": "444 Amsterdam Avenue, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Meet fellow craft enthusiasts, chat about your latest projects, and get inspired by all the crafty creations shared during the session. This event will take place in person at the St. Agnes Library, the perfect setting for a cozy and creative ga",
+          "category": "community"
+        },
+        {
+          "name": "AWOL - After Work Origami Lovers",
+          "date": "2026-11-27T00:00:00+00:00",
+          "url": "https://www.meetup.com/omgnyc/events/317131062/",
+          "venue": "Whole Foods Market (63 Madison Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "63 Madison Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "AWOL (After Work Origami Lovers) with us at Whole Foods on Madison Avenue and East 28th Street, UPSTAIRS in the dining area. After a long week what could be better than meeting with friends and potential new friends to fold your work week away!",
+          "category": "community"
+        },
+        {
+          "name": "In-person Crafting and Happy Hour",
+          "date": "2026-12-10T22:30:00+00:00",
+          "url": "https://www.meetup.com/nyc-pints-n-purls/events/315576060/",
+          "venue": "Brookfield Place (230 Vesey St, New York, NY)",
+          "venue_unknown": false,
+          "address": "230 Vesey St, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "You asked, and we provided! Meet with the group in-person at the food court at Brookfield Place Mall aka World Financial Center at 230 Vesey Street. The host Ivy will make a sign so participants can find the group. Come grab a drink, yarn, and some",
+          "category": "art"
+        },
+        {
+          "name": "In-person: Socrates Cafe in QUEENS",
+          "date": "2026-12-01T23:30:00+00:00",
+          "url": "https://www.meetup.com/philosophy101/events/317073043/",
+          "venue": "Panera Bread Cafe (38-01 35th Avenue  (off Steinway street), ASTORIA,  Queens 11101, NY)",
+          "venue_unknown": false,
+          "address": "38-01 35th Avenue  (off Steinway street), ASTORIA,  Queens 11101, NY, ASTORIA,  Queens 11101, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Start time: 6:30 pm. And as usual, please bring a simple question for submission for possible discussion. Please frame the question in a simple interrogative statement. *If/when circumstances permit, we usually discuss two questions.",
+          "category": "community"
+        },
+        {
+          "name": "UES yarn lovers brunch",
+          "date": "2026-11-29T16:00:00+00:00",
+          "url": "https://www.meetup.com/knittingaroundny/events/315498162/",
+          "venue": "Knitting Around New York",
+          "venue_unknown": true,
+          "address": "Knitting Around New York",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "WTF (Weekly Tuesday Folders)",
+          "date": "2026-12-01T23:00:00+00:00",
+          "url": "https://www.meetup.com/omgnyc/events/317095050/",
+          "venue": "Stavros Niarchos Foundation Library (455 5th Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "455 5th Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "PLEASE NOTE: TIME IS NOW 6:00 to 8:00PM NEW LOCATION: OMG NYC (Origami Meetup Group! New York City) is a group for people to come together and share in the beautiful art of Origami - an ancient art of folding various mediums, most commonly p",
+          "category": "community"
+        },
+        {
+          "name": "Polymer Clay Workshop",
+          "date": "2026-12-01T23:45:00+00:00",
+          "url": "https://www.meetup.com/novels-at-night-paramus-book-discussion-meetup/events/316063857/",
+          "venue": "Paramus Public Library (116 E Century Rd, Paramus, NJ)",
+          "venue_unknown": false,
+          "address": "116 E Century Rd, Paramus, NJ, Paramus, NJ",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Polymer Clay Workshop December 1, 6:45-8:45pm (Tuesday) Learn the art of Polymer Clay and create coasters to use at home or give as a gift to someone you love. This program is for Paramus Residents 18+. This program will be filled by lo",
+          "category": "community"
+        },
+        {
+          "name": "Tuesdays in the Heights (FW Public) 🎶",
+          "date": "2026-12-08T23:30:00+00:00",
+          "url": "https://www.meetup.com/knittingaroundny/events/317103039/",
+          "venue": "Knitting Around New York",
+          "venue_unknown": true,
+          "address": "Knitting Around New York",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "theater"
+        },
+        {
+          "name": "Open House at Fat Cat Fab Lab",
+          "date": "2026-12-03T00:00:00+00:00",
+          "url": "https://www.meetup.com/fat-cat-fab-lab/events/317128651/",
+          "venue": "Fat Cat Fab Lab (224 West 4th Street #250, New York, NY)",
+          "venue_unknown": false,
+          "address": "224 West 4th Street #250, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "In-Person Open House at Fat Cat Fab Lab! Open House and Project Night: * Open House is casual and unstructured, come hang! * Get a tour of the space: Laser room, woodshop, metal shop, sewing area, 3D printing area, electronics lab, and more! * If y",
+          "category": "community"
+        },
+        {
+          "name": "Queens yarnies happy hour",
+          "date": "2026-12-03T23:30:00+00:00",
+          "url": "https://www.meetup.com/knittingaroundny/events/315498488/",
+          "venue": "Knitting Around New York",
+          "venue_unknown": true,
+          "address": "Knitting Around New York",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": null,
+          "category": "community"
+        },
+        {
+          "name": "An Intro to Soldering",
+          "date": "2026-12-03T00:00:00+00:00",
+          "url": "https://www.meetup.com/hackmanhattan/events/316857712/",
+          "venue": "Hack Manhattan (, New York, NY)",
+          "venue_unknown": false,
+          "address": ", New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Welcome to our soldering basics class! This class is for beginners and designed to teach you a few important fundamentals on soldering, an essential skill for anyone interested in electronics or DIY projects. We’ll go over solder types, soldering tem",
+          "category": "community"
+        },
+        {
+          "name": "🦃 Girl's Thanksgiving Paint & Sip Social 🎨 🤎",
+          "date": "2026-11-29T20:00:00+00:00",
+          "url": "https://www.meetup.com/girlsgoexplorenyc/events/317260260/",
+          "venue": "Wonderland Bar (96 2nd Ave, New York, NY)",
+          "venue_unknown": false,
+          "address": "96 2nd Ave, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "IT'S THAT type of magical Thanksgiving activity for a girls day 🍁✨ Join Girls Go Explore for a fun Thanksgiving November mood paint & sip social in East Village filled with fairy lounge vibes, music, conversations, and meeting new girls in NYC 💌 We a",
+          "category": "community"
         }
       ],
       "error": null,
-      "duration": 21.27,
+      "duration": 5.59,
       "cached": false
     },
     {
@@ -336676,17 +338106,17 @@
       "venue": "Eventbrite: Run Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/run-club/",
       "events": [],
-      "error": null,
-      "duration": 0.29,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/run-club/",
+      "duration": 0.07,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Running Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/running-club/",
       "events": [],
-      "error": null,
-      "duration": 0.51,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/running-club/",
+      "duration": 0.07,
+      "cached": false
     },
     {
       "venue": "Eventbrite: 5K Races",
@@ -336700,25 +338130,25 @@
       "venue": "Eventbrite: Hiking",
       "url": "https://www.eventbrite.com/d/ny--new-york/hiking/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hiking/",
-      "duration": 0.05,
-      "cached": false
+      "error": null,
+      "duration": 0.19,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Hikes",
       "url": "https://www.eventbrite.com/d/ny--new-york/hike/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hike/",
-      "duration": 0.05,
-      "cached": false
+      "error": null,
+      "duration": 0.37,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Outdoor Adventures",
       "url": "https://www.eventbrite.com/d/ny--new-york/outdoor-adventure/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-adventure/",
-      "duration": 0.12,
-      "cached": false
+      "error": null,
+      "duration": 0.31,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Walking Tours",
@@ -336740,25 +338170,25 @@
       "venue": "Eventbrite: Cycling",
       "url": "https://www.eventbrite.com/d/ny--new-york/cycling/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/cycling/",
-      "duration": 0.08,
-      "cached": false
+      "error": null,
+      "duration": 0.06,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Rock Climbing",
       "url": "https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
       "events": [],
-      "error": null,
-      "duration": 0.31,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
+      "duration": 0.13,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Roller Skating",
       "url": "https://www.eventbrite.com/d/ny--new-york/roller-skating/",
       "events": [],
-      "error": null,
-      "duration": 0.08,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/roller-skating/",
+      "duration": 0.06,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Yoga",
@@ -336772,9 +338202,9 @@
       "venue": "Eventbrite: Pickleball",
       "url": "https://www.eventbrite.com/d/ny--new-york/pickleball/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pickleball/",
-      "duration": 0.04,
-      "cached": false
+      "error": null,
+      "duration": 0.29,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Volleyball",
@@ -336788,17 +338218,17 @@
       "venue": "Eventbrite: Kickball",
       "url": "https://www.eventbrite.com/d/ny--new-york/kickball/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/kickball/",
-      "duration": 0.03,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: DJ Sets",
       "url": "https://www.eventbrite.com/d/ny--new-york/dj/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/dj/",
-      "duration": 0.08,
-      "cached": false
+      "error": null,
+      "duration": 0.17,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Techno",
@@ -336812,33 +338242,33 @@
       "venue": "Eventbrite: House Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/house-music/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/house-music/",
-      "duration": 0.04,
-      "cached": false
+      "error": null,
+      "duration": 0.08,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Dance Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/dance-party/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/dance-party/",
-      "duration": 0.13,
-      "cached": false
+      "error": null,
+      "duration": 0.15,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Day Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/day-party/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.08,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Raves",
       "url": "https://www.eventbrite.com/d/ny--new-york/rave/",
       "events": [],
-      "error": null,
-      "duration": 0.03,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rave/",
+      "duration": 0.15,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Afrobeats",
@@ -336852,33 +338282,33 @@
       "venue": "Eventbrite: Reggaeton",
       "url": "https://www.eventbrite.com/d/ny--new-york/reggaeton/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/reggaeton/",
+      "duration": 0.15,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Hip-Hop Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/hip-hop-party/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hip-hop-party/",
-      "duration": 0.12,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Latin Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/latin-party/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/latin-party/",
-      "duration": 0.12,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Silent Discos",
       "url": "https://www.eventbrite.com/d/ny--new-york/silent-disco/",
       "events": [],
-      "error": null,
-      "duration": 0.26,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/silent-disco/",
+      "duration": 0.17,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Brunch Parties",
@@ -336892,49 +338322,49 @@
       "venue": "Eventbrite: Live Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/live-music/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.12,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Concerts",
       "url": "https://www.eventbrite.com/d/ny--new-york/concerts/",
-      "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.06,
-      "cached": false
-    },
-    {
-      "venue": "Eventbrite: Singer-Songwriters",
-      "url": "https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
       "events": [],
       "error": null,
       "duration": 0.02,
       "cached": true
     },
     {
+      "venue": "Eventbrite: Singer-Songwriters",
+      "url": "https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
+      "events": [],
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
+    },
+    {
       "venue": "Eventbrite: Karaoke",
       "url": "https://www.eventbrite.com/d/ny--new-york/karaoke/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Open Mics",
       "url": "https://www.eventbrite.com/d/ny--new-york/open-mic/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Poetry",
       "url": "https://www.eventbrite.com/d/ny--new-york/poetry/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.07,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Comedy Shows",
@@ -336948,9 +338378,9 @@
       "venue": "Eventbrite: Stand-Up Comedy",
       "url": "https://www.eventbrite.com/d/ny--new-york/stand-up-comedy/",
       "events": [],
-      "error": null,
-      "duration": 0.23,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Theater",
@@ -336964,9 +338394,9 @@
       "venue": "Eventbrite: Immersive Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/immersive-theater/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Cabaret",
@@ -336980,17 +338410,17 @@
       "venue": "Eventbrite: Dance Performances",
       "url": "https://www.eventbrite.com/d/ny--new-york/dance-performance/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.04,
-      "cached": false
+      "error": null,
+      "duration": 0.06,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Film Screenings",
       "url": "https://www.eventbrite.com/d/ny--new-york/film-screening/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.03,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Art Shows",
@@ -337004,17 +338434,17 @@
       "venue": "Eventbrite: Gallery Openings",
       "url": "https://www.eventbrite.com/d/ny--new-york/gallery-opening/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "error": null,
       "duration": 0.04,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Eventbrite: Paint & Sip",
       "url": "https://www.eventbrite.com/d/ny--new-york/paint-and-sip/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Workshops",
@@ -337028,25 +338458,25 @@
       "venue": "Eventbrite: Social Mixers",
       "url": "https://www.eventbrite.com/d/ny--new-york/social-mixer/",
       "events": [],
-      "error": null,
-      "duration": 0.23,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Singles Events",
       "url": "https://www.eventbrite.com/d/ny--new-york/singles/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Speed Dating",
       "url": "https://www.eventbrite.com/d/ny--new-york/speed-dating/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Wine Tastings",
