@@ -614,6 +614,19 @@
     "id": "auto-2026-11-08-47",
     "auto": true,
     "match": {
+      "name_contains": "Salsa Beginner @ Dance Fever Studios",
+      "venue_contains": "Dance Fever Studios"
+    },
+    "badge": "💃 Dance Pick",
+    "note": "Free; listed on 8 calendars.",
+    "score": 17.5,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-48",
+    "auto": true,
+    "match": {
       "name_contains": "Sharief Johnson: I Wish That Was a Joke Too (Album Recording) Presented by the New York Comedy Festival",
       "venue_contains": "New York Comedy Club Upper West Side"
     },
@@ -624,7 +637,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-48",
+    "id": "auto-2026-11-08-49",
     "auto": true,
     "match": {
       "name_contains": "High Line & Hudson Yards Spring Walk (50s & Over Social Stroll)",
@@ -637,7 +650,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-49",
+    "id": "auto-2026-11-08-50",
     "auto": true,
     "match": {
       "name_contains": "Bronx Veterans Day Parade",
@@ -650,7 +663,20 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-50",
+    "id": "auto-2026-11-08-51",
+    "auto": true,
+    "match": {
+      "name_contains": "Salsa Classes at Nieves Latin Dance Studio",
+      "venue_contains": "Nieves Latin Dance Studio"
+    },
+    "badge": "💃 Dance Pick",
+    "note": "Listed on 7 calendars; weekend daytime.",
+    "score": 14.0,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-52",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Festival Presents: Cartoon Strips with Hilary Campbell",
@@ -663,7 +689,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-51",
+    "id": "auto-2026-11-08-53",
     "auto": true,
     "match": {
       "name_contains": "Kenneth Chenault Book Tour - Harlem",
@@ -676,20 +702,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-52",
-    "auto": true,
-    "match": {
-      "name_contains": "Salsa Classes Level 2 on Sundays",
-      "venue_contains": "Houghton Hall Arts Community"
-    },
-    "badge": "💃 Dance Pick",
-    "note": "Free; listed on 5 calendars; weekend daytime.",
-    "score": 13.0,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-53",
+    "id": "auto-2026-11-08-54",
     "auto": true,
     "match": {
       "name_contains": "Marc Maron: Yammering into the Void Tour",
@@ -698,19 +711,6 @@
     "badge": "😂 Comedy Pick",
     "note": "Listed on 2 calendars; headline room at The Beacon Theatre; prime-time start.",
     "score": 12.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-54",
-    "auto": true,
-    "match": {
-      "name_contains": "Cosmic Gate",
-      "venue_contains": "Superior Ingredients"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Listed on 2 calendars; headline room at Superior Ingredients; weekend daytime.",
-    "score": 11.5,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
@@ -809,6 +809,32 @@
     "id": "auto-2026-11-09-62",
     "auto": true,
     "match": {
+      "name_contains": "Absolute Beginner Ballet",
+      "venue_contains": "Ballet Arts – The Rudolf Nureyev Studio"
+    },
+    "badge": "💃 Dance Pick",
+    "note": "Listed on 4 calendars.",
+    "score": 15.5,
+    "start_date": "2026-11-09",
+    "expires": "2026-11-09"
+  },
+  {
+    "id": "auto-2026-11-09-63",
+    "auto": true,
+    "match": {
+      "name_contains": "West Coast Swing Workshop",
+      "venue_contains": "Fred Astaire Dance Studio NY Downtown"
+    },
+    "badge": "💃 Dance Pick",
+    "note": "Listed on 5 calendars.",
+    "score": 15.5,
+    "start_date": "2026-11-09",
+    "expires": "2026-11-09"
+  },
+  {
+    "id": "auto-2026-11-09-64",
+    "auto": true,
+    "match": {
       "name_contains": "NYC Trivia Night @ Talea Beer Co. — Upper West Side",
       "venue_contains": "Talea Beer Co. — Upper West Side"
     },
@@ -819,7 +845,20 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-63",
+    "id": "auto-2026-11-09-65",
+    "auto": true,
+    "match": {
+      "name_contains": "Ongoing Argentine Tango Group Class - Monday",
+      "venue_contains": "Pearl Studios"
+    },
+    "badge": "💃 Dance Pick",
+    "note": "Free; listed on 15 calendars.",
+    "score": 14.5,
+    "start_date": "2026-11-09",
+    "expires": "2026-11-09"
+  },
+  {
+    "id": "auto-2026-11-09-66",
     "auto": true,
     "match": {
       "name_contains": "Profit the DJ",
@@ -832,7 +871,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-64",
+    "id": "auto-2026-11-09-67",
     "auto": true,
     "match": {
       "name_contains": "Monday Night Open Mic (7:30PM)",
@@ -845,7 +884,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-65",
+    "id": "auto-2026-11-09-68",
     "auto": true,
     "match": {
       "name_contains": "NYC Trivia Night @ Talea Beer Co. — Bryant Park",
@@ -858,33 +897,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-66",
-    "auto": true,
-    "match": {
-      "name_contains": "DURATIONS 2026 Festival Pass",
-      "venue_contains": "Public Records"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Listed on 3 calendars.",
-    "score": 11.0,
-    "start_date": "2026-11-09",
-    "expires": "2026-11-09"
-  },
-  {
-    "id": "auto-2026-11-09-67",
-    "auto": true,
-    "match": {
-      "name_contains": "Live Music for Indie Film",
-      "venue_contains": "Starr Bar"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Free; listed on 2 calendars; prime-time start.",
-    "score": 11.0,
-    "start_date": "2026-11-09",
-    "expires": "2026-11-09"
-  },
-  {
-    "id": "auto-2026-11-09-68",
+    "id": "auto-2026-11-09-69",
     "auto": true,
     "match": {
       "name_contains": "NYC Trivia Night @ Dutch Fred’s",
@@ -897,7 +910,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-69",
+    "id": "auto-2026-11-09-70",
     "auto": true,
     "match": {
       "name_contains": "An Evening of Stand-Up Comedy with Jason Choi and Friends Presented by the New York Comedy Festival",
@@ -910,7 +923,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-70",
+    "id": "auto-2026-11-09-71",
     "auto": true,
     "match": {
       "name_contains": "Compost Build Community Volunteer Days",
@@ -923,7 +936,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-71",
+    "id": "auto-2026-11-09-72",
     "auto": true,
     "match": {
       "name_contains": "Critical Grace Theory",
@@ -936,7 +949,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-72",
+    "id": "auto-2026-11-09-73",
     "auto": true,
     "match": {
       "name_contains": "Fall Bodyroll in the Field House",
@@ -949,7 +962,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-73",
+    "id": "auto-2026-11-09-74",
     "auto": true,
     "match": {
       "name_contains": "Health, Fitness, Beauty & Wellness Business Networking Mixer NYC",
@@ -958,19 +971,6 @@
     "badge": "🤝 Community Pick",
     "note": "Listed on 2 calendars; prime-time start.",
     "score": 9.5,
-    "start_date": "2026-11-09",
-    "expires": "2026-11-09"
-  },
-  {
-    "id": "auto-2026-11-09-74",
-    "auto": true,
-    "match": {
-      "name_contains": "Orville Peck - Man Turned Mule Tour",
-      "venue_contains": "Brooklyn Paramount"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 2 calendars; prime-time start.",
-    "score": 9.0,
     "start_date": "2026-11-09",
     "expires": "2026-11-09"
   },
@@ -991,6 +991,19 @@
     "id": "auto-2026-11-10-76",
     "auto": true,
     "match": {
+      "name_contains": "Midtown Swings Intro to Lindy Hop",
+      "venue_contains": "Danznik Studios"
+    },
+    "badge": "💃 Dance Pick",
+    "note": "Listed on 6 calendars; prime-time start.",
+    "score": 17.5,
+    "start_date": "2026-11-10",
+    "expires": "2026-11-10"
+  },
+  {
+    "id": "auto-2026-11-10-77",
+    "auto": true,
+    "match": {
       "name_contains": "Millennial Skip the Small Talk Night at Threes Brewing Gowanus",
       "venue_contains": "Threes Brewing Gowanus"
     },
@@ -1001,20 +1014,46 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-77",
+    "id": "auto-2026-11-10-78",
     "auto": true,
     "match": {
-      "name_contains": "AD Synch Summit Showcase",
-      "venue_contains": "Drom"
+      "name_contains": "Bachata Beginner @ Dance Fever Studios",
+      "venue_contains": "Dance Fever Studios"
     },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 135 calendars.",
-    "score": 15.0,
+    "badge": "💃 Dance Pick",
+    "note": "Listed on 6 calendars.",
+    "score": 15.5,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-78",
+    "id": "auto-2026-11-10-79",
+    "auto": true,
+    "match": {
+      "name_contains": "Ballet",
+      "venue_contains": "Dance Workshop NY"
+    },
+    "badge": "💃 Dance Pick",
+    "note": "Listed on 5 calendars.",
+    "score": 15.5,
+    "start_date": "2026-11-10",
+    "expires": "2026-11-10"
+  },
+  {
+    "id": "auto-2026-11-10-80",
+    "auto": true,
+    "match": {
+      "name_contains": "Tango Immersion: Tango, Milonga & Vals",
+      "venue_contains": "TriANGulO"
+    },
+    "badge": "💃 Dance Pick",
+    "note": "Listed on 4 calendars.",
+    "score": 15.5,
+    "start_date": "2026-11-10",
+    "expires": "2026-11-10"
+  },
+  {
+    "id": "auto-2026-11-10-81",
     "auto": true,
     "match": {
       "name_contains": "NYC Trivia Night @ Emmy Squared Pizza — East Village",
@@ -1027,7 +1066,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-79",
+    "id": "auto-2026-11-10-82",
     "auto": true,
     "match": {
       "name_contains": "NYC Trivia Night @ Hei Tiki",
@@ -1040,7 +1079,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-80",
+    "id": "auto-2026-11-10-83",
     "auto": true,
     "match": {
       "name_contains": "NYC Trivia Night @ Rocco’s Sports&Rec.",
@@ -1053,7 +1092,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-81",
+    "id": "auto-2026-11-10-84",
     "auto": true,
     "match": {
       "name_contains": "Laughing Buddha Open Mic",
@@ -1066,7 +1105,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-82",
+    "id": "auto-2026-11-10-85",
     "auto": true,
     "match": {
       "name_contains": "All Starrs Movie Night",
@@ -1079,7 +1118,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-83",
+    "id": "auto-2026-11-10-86",
     "auto": true,
     "match": {
       "name_contains": "Overheard New York Presents: The Roast of NYC",
@@ -1088,45 +1127,6 @@
     "badge": "😂 Comedy Pick",
     "note": "Listed on 3 calendars; prime-time start.",
     "score": 13.5,
-    "start_date": "2026-11-10",
-    "expires": "2026-11-10"
-  },
-  {
-    "id": "auto-2026-11-10-84",
-    "auto": true,
-    "match": {
-      "name_contains": "Tuesdays at The Red Room",
-      "venue_contains": "KGB Bar"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Listed on 3 calendars; prime-time start.",
-    "score": 13.5,
-    "start_date": "2026-11-10",
-    "expires": "2026-11-10"
-  },
-  {
-    "id": "auto-2026-11-10-85",
-    "auto": true,
-    "match": {
-      "name_contains": "Bedouine w/ Steady Holiday",
-      "venue_contains": "158 Bleecker Street"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; prime-time start.",
-    "score": 13.0,
-    "start_date": "2026-11-10",
-    "expires": "2026-11-10"
-  },
-  {
-    "id": "auto-2026-11-10-86",
-    "auto": true,
-    "match": {
-      "name_contains": "Statue & Skyline Sightseeing Cruise",
-      "venue_contains": "Chelsea Piers"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 4 calendars.",
-    "score": 12.0,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
   },

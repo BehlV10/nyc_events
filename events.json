@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T08:28:15.423192+00:00",
+  "generated_at": "2026-11-05T08:32:25.199253+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -43461,7 +43461,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.81,
+      "duration": 0.94,
       "cached": false
     },
     {
@@ -60530,7 +60530,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.39,
+      "duration": 0.27,
       "cached": false
     },
     {
@@ -60785,7 +60785,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.29,
+      "duration": 0.26,
       "cached": false
     },
     {
@@ -62729,7 +62729,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.25,
+      "duration": 0.22,
       "cached": false
     },
     {
@@ -67929,7 +67929,7 @@
       ],
       "error": null,
       "duration": 0.62,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Stand Up NY",
@@ -96366,7 +96366,7 @@
       ],
       "error": null,
       "duration": 5.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Flatiron NoMad Partnership Events",
@@ -96455,7 +96455,7 @@
       ],
       "error": null,
       "duration": 3.75,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Madison Avenue BID Events",
@@ -96513,7 +96513,7 @@
       ],
       "error": null,
       "duration": 0.39,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Coney Island USA",
@@ -96562,6 +96562,3291 @@
       ],
       "error": null,
       "duration": 0.52,
+      "cached": true
+    },
+    {
+      "venue": "DanceUS: NYC Argentine Tango",
+      "url": "https://www.danceus.org/events/argentine-tango/new-york-nyc-tango-calendar/",
+      "events": [
+        {
+          "name": "Abrazos Tango Festival",
+          "date": "2026-11-13T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/179315874232832/abrazos-tango-festival/",
+          "venue": "The Hungarian House",
+          "price": null,
+          "address": "213 E 82nd St, New York, NY 10028, USA, New York, NY",
+          "lat": 40.7760979,
+          "lng": -73.95497089999999,
+          "description": "Our Inspiration for This Year It started as a casual conversation, the kind that drifts between planning sessions and car rides to pick up the kids. We were talking about tango, about how no two",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango: Intermediate/Advanced Series",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771460335603452/argentine-tango-intermediateadvanced-series-new-york-city-ny/",
+          "venue": "Dardo Galletto Studios",
+          "price": null,
+          "address": "Dardo Galletto Studios, 151 West 46th Street, 11th Floor, New York, NY 10036, Houston, United States, New York City, NY",
+          "lat": 40.758344,
+          "lng": -73.984133,
+          "description": "An intensive session for experienced dancers focusing on complex structures, musicality, and advanced connection techniques. Instructors Adam and Ciko provide personalized feedback to help students",
+          "category": "dance"
+        },
+        {
+          "name": "Paciencia Milonga Tuesdays",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/163650112225932/paciencia-milonga-tuesdays-new-york-ny/",
+          "venue": "Stepping Out Studios",
+          "price": null,
+          "address": "617 W 46th Street, PH Floor, New York, NY 10036, New York, NY",
+          "lat": 40.7639742,
+          "lng": -73.9972978,
+          "description": "Every Tuesday 9:30pm to 1:30am. Join us for tango dancing every Tuesday 2 DJ's and 2 Salons Trad. Alt. Excellent DJ's every week and Performance at 11pm. Plus Occasionally live music. Complementary -",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango Group Class - DWM Midtown",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/177162235024699/argentine-tango-group-class-dwm-midtown-new-york-city-ny/",
+          "venue": "Dance With Me Midtown",
+          "price": null,
+          "address": "Dance With Me Midtown, 466 Lexington Ave, New York, NY 10017, Austin, United States, New York City, NY",
+          "lat": 40.753706,
+          "lng": -73.974564,
+          "description": "Master the fundamentals of Argentine Tango, focusing on the connection between partners and precise footwork. This group class is designed for adults looking to improve their social dance skills in a",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango: Beginner Foundations",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771460335484521/argentine-tango-beginner-foundations-new-york-city-ny/",
+          "venue": "Dardo Galletto Studios",
+          "price": null,
+          "address": "Dardo Galletto Studios, 151 West 46th Street, 11th Floor, New York, NY 10036, Houston, United States, New York City, NY",
+          "lat": 40.758344,
+          "lng": -73.984133,
+          "description": "This class introduces the fundamental movements, connection, and lead-follow communication of Argentine Tango. Taught by Adam and Ciko, it is designed for absolute beginners or those looking to",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango Group Class (La Maestranza)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771352064704552/argentine-tango-group-class-la-maestranza-new-york-city-ny/",
+          "venue": "Brooklyn Tango Studio",
+          "price": null,
+          "address": "Brooklyn Tango Studio, Clinton &amp; Degraw Streets, Cobble Hill, Brooklyn, NY, New York City, United States, New York City, NY",
+          "lat": 40.685453,
+          "lng": -73.994409,
+          "description": "Small-group Argentine Tango classes focusing on technique, connection, and musicality in an intimate studio setting. Taught by renowned instructor Ney Melo, the session includes 60 minutes of",
+          "category": "dance"
+        },
+        {
+          "name": "Tango Immersion: Tango, Milonga & Vals",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771351734928518/tango-immersion-tango-milonga-vals-new-york-city-ny/",
+          "venue": "TriANGulO",
+          "price": null,
+          "address": "TriANGulO, 151 W 30th St, 3rd Floor, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.748356,
+          "lng": -73.991828,
+          "description": "An intensive 90-minute workshop exploring the specialized techniques of Argentine Tango, Milonga, and Vals. Focuses on social dance skills, rhythmic variation, and complex figures like barridas.",
+          "category": "dance"
+        },
+        {
+          "name": "Tango Tuesdays",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/170443187499932/tango-tuesdays-a-traditional-milonga-new-york-ny/",
+          "venue": "Balance Arts Center",
+          "price": null,
+          "address": "151 W 30th Street. 6th Floor, New York, NY 10001, New York, NY",
+          "lat": 40.7484352,
+          "lng": -73.99177639999999,
+          "description": "Hosted by Anthony Blackwell & Medich Gee - Presenting a brand new traditional Milonga, providing excellent music and a beautiful floor. - Snacks & Drinks Included+BYOB - $20 Day of / $18 Discount Via",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Argentine Tango (Tuesday)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771351853264284/beginner-argentine-tango-tuesday-new-york-city-ny/",
+          "venue": "Balance Arts Center",
+          "price": null,
+          "address": "Balance Arts Center, 151 W 30th St, 3rd Fl, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.748356,
+          "lng": -73.991828,
+          "description": "Master the walking systems of Argentine Tango with Leonardo Sardella, focusing on parallel and cross systems (Track 3). This class provides essential techniques for navigating the dance floor. Open",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango Group Classes – Technique, History & Steps",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149715966143/argentine-tango-group-classes-technique-history-steps-new-york-city-ny/",
+          "venue": "Misse Tango Company",
+          "price": null,
+          "address": "Misse Tango Company, New York City, United States, New York City, NY",
+          "lat": 40.877409,
+          "lng": -73.885518,
+          "description": "In-person group classes led by Gabriel Missé & Maru Rifourcat, covering Argentine Tango technique, history, steps, Milonga, and Vals. With over 36 years of combined teaching experience, students",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango Saturday Classes – Misse Tango Company",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149715742944/argentine-tango-saturday-classes-misse-tango-company-new-york-city-ny/",
+          "venue": "Misse Tango Company – New York",
+          "price": null,
+          "address": "Misse Tango Company – New York, New York, NY, USA, New York City, United States, New York City, NY",
+          "lat": 40.664017,
+          "lng": -73.88818,
+          "description": "Weekly group and private Argentine Tango classes in New York, taught by master teachers Gabriel Missé and Maru Rifourcat with over 30 years of international experience. Their custom pedagogical",
+          "category": "dance"
+        },
+        {
+          "name": "Tango Immersion",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149329236640/tango-immersion-new-york-city-ny/",
+          "venue": "Tango NYC Studio",
+          "price": null,
+          "address": "Tango NYC Studio, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.614112,
+          "lng": -74.079316,
+          "description": "Intermediate-level Argentine Tango class with instructor Carina, building on foundational skills for deeper musicality and technique. Tuesdays 7:00–8:30 PM, new cohort starting September 8, 2026. $45",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Tango Course (Tuesday)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/177135173472592/beginner-tango-course-tuesday-new-york-city-ny/",
+          "venue": "TriANGulO",
+          "price": null,
+          "address": "TriANGulO, 151 W 30th St, 3rd Floor, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.748356,
+          "lng": -73.991828,
+          "description": "A foundational class covering the essential movements, connection, and rhythm of Argentine Tango. Taught by Carina Moeller in a welcoming boutique studio environment. No partner or prior experience",
+          "category": "dance"
+        },
+        {
+          "name": "Foundation Level – Intermediate",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149885893879/foundation-level-intermediate-new-york-city-ny/",
+          "venue": "MyTangoBody",
+          "price": null,
+          "address": "MyTangoBody, 134 West 29th Street, Suite 608, New York, NY, 10001, New York City, United States, New York City, NY",
+          "lat": 40.747171,
+          "lng": -73.991736,
+          "description": "A weekly 55-minute Argentine Tango group class for intermediate-level dancers focused on creating comfortable connection with a partner. Held every Tuesday at MyTangoBody in Manhattan.",
+          "category": "dance"
+        },
+        {
+          "name": "Tango Y Te Practica",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/163650112537532/tango-y-te-practica-new-york-ny/",
+          "venue": "Stepping Out Studios",
+          "price": null,
+          "address": "617 W 46th Street, PH Floor, New York, NY 10036, New York, NY",
+          "lat": 40.7639742,
+          "lng": -73.9972978,
+          "description": "Every Sunday - Time: 3:00pm 6:00 pm Join host Maria Jose Sosa in a relaxed atmosphere to practice your Tango steps with the best music on the best dance floor! Enjoy the popular tea table offering",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango Group Class",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771735531708954/argentine-tango-group-class-new-york-city-ny/",
+          "venue": "Dance With Me SoHo",
+          "price": null,
+          "address": "Dance With Me SoHo, 466 Broome St, New York, NY 10013, Austin, United States, New York City, NY",
+          "lat": 40.722586,
+          "lng": -74.001185,
+          "description": "Master the art of Argentine Tango with expert instructors, focusing on authentic connection, traditional embrace, and dramatic footwork. This class is designed for all levels to build social dancing",
+          "category": "dance"
+        },
+        {
+          "name": "Intermediate Argentine Tango (Monday)",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771351853127882/intermediate-argentine-tango-monday-new-york-city-ny/",
+          "venue": "Balance Arts Center",
+          "price": null,
+          "address": "Balance Arts Center, 151 W 30th St, 3rd Fl, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.748356,
+          "lng": -73.991828,
+          "description": "Intermediate level class with Maureen Muñoz focusing on intricate tango sequences and floor craft. The session on Feb 23 features guest artist Jeremias Fors for a special co-taught workshop ($40).",
+          "category": "dance"
+        },
+        {
+          "name": "Ongoing Argentine Tango Group Class - Monday",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771351887197155/ongoing-argentine-tango-group-class-monday-new-york-city-ny/",
+          "venue": "Pearl Studios",
+          "price": null,
+          "address": "Pearl Studios, 500 8th Ave, 4th Floor, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753036,
+          "lng": -73.992544,
+          "description": "Weekly Argentine Tango sessions held at the renown Pearl Studios, focusing on the artistry and elegance of the dance. Taught by seasoned instructors from Strictly Tango NYC, these classes help",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Argentine Tango (Monday)",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/177135185289824/beginner-argentine-tango-monday-new-york-city-ny/",
+          "venue": "Balance Arts Center",
+          "price": null,
+          "address": "Balance Arts Center, 151 W 30th St, 3rd Fl, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.748356,
+          "lng": -73.991828,
+          "description": "Foundational Argentine Tango class with Maureen Muñoz focusing on basic walking, rocking, and the basic step. Part of a progressive 4-week cycle designed to build a solid foundation for social",
+          "category": "dance"
+        },
+        {
+          "name": "Ensueno Tango Salon Mondays",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/163650111773016/ensueno-tango-salon-mondays-new-york-ny/",
+          "venue": "Ukrainian Private Ballroom",
+          "price": null,
+          "address": "140 2nd Ave, New York, NY 10003, New York, NY",
+          "lat": 40.7288722,
+          "lng": -73.9871248,
+          "description": "Argentine tango classes and dancing every Monday 6: 30pm - 12: 45am at the Ukrainian Private Ballroom 140 2nd Ave, NYC between 8th and 9th streets. Enjoy the beautiful dance floor, friendly",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango Intermediate Class",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771352016651129/argentine-tango-intermediate-class-new-york-city-ny/",
+          "venue": "Dance Fever Studios",
+          "price": null,
+          "address": "Dance Fever Studios, 159 20th Street, Brooklyn, NY 11232, New York City, United States, New York City, NY",
+          "lat": 40.663738,
+          "lng": -73.995587,
+          "description": "This class is designed for students with previous tango experience to refine their technique, body mechanics, and leading/following skills. Instruction includes walking variations, complex patterns",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango Beginner Class",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771352016528195/argentine-tango-beginner-class-new-york-city-ny/",
+          "venue": "Dance Fever Studios",
+          "price": null,
+          "address": "Dance Fever Studios, 159 20th Street, Brooklyn, NY 11232, New York City, United States, New York City, NY",
+          "lat": 40.663738,
+          "lng": -73.995587,
+          "description": "Learn the fundamentals of Argentine Tango including partnership, dance connection, and musicality in a welcoming environment. No partner or prior experience is required to join. Classes focus on",
+          "category": "dance"
+        },
+        {
+          "name": "Jean's FUNtango Practica",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16365011315508/jeans-funtango-practica-new-york-ny/",
+          "venue": "Studios 353",
+          "price": null,
+          "address": "353 West 48th St, 2nd Floor, New York, NY 10036, New York, NY",
+          "lat": 40.7620517,
+          "lng": -73.9888438,
+          "description": "Practica at 353 Studios, 353 W 48th St (8/9thAves) 2nd Fl.; 4:30-6:30pm; 10; Hosts: Jean Fung Surya Parekh . VACCINATION PROOF, PHOTO ID, AND MASKS REQUIRED. FUNtango is all about",
+          "category": "dance"
+        },
+        {
+          "name": "Milonga Del Barrio Nyc",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16365010931320/milonga-del-barrio-nyc-new-york-ny/",
+          "venue": "Arthur Murray Manhattan",
+          "price": null,
+          "address": "286 5th Ave, 3rd Floor, New York, NY 10001, New York, NY",
+          "lat": 40.7462548,
+          "lng": -73.9866105,
+          "description": "Every 2nd 4th Saturday of each month. And on the 5th Saturday when there is 5 Saturday in the month. All included Seating is limited and Free Tables no extra charge please reserve your table by",
+          "category": "dance"
+        },
+        {
+          "name": "Uptown Go Sundays",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/163650110821216/uptown-go-sundays-new-york-ny/",
+          "venue": "Hungarian House of New York",
+          "price": null,
+          "address": "213 E 82nd St, New York, NY 10028, New York, NY",
+          "lat": 40.776109,
+          "lng": -73.95495199999999,
+          "description": "Have you ever thought about the magic of the embrace? Its That moment in life when two strangers feel free to escape with their minds to the pleasure of falling in love during a couple of tangos. No",
+          "category": "dance"
+        },
+        {
+          "name": "El Destino Milonga",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16365011148538/el-destino-milonga-new-york-ny/",
+          "venue": "Solas Bar",
+          "price": null,
+          "address": "232 E 9th St, New York, NY 10003, New York, NY",
+          "lat": 40.7293349,
+          "lng": -73.98813369999999,
+          "description": "Michelle Lamb and Tine Herreman invite you to join us for great dancing in an intimate setting with expertly mixed drinks and an amazing sound system. Sunday 6-11pm Solas Bar 232 East 9th St NYC",
+          "category": "dance"
+        },
+        {
+          "name": "Wall Street Tango Practica",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/170443142210616/wall-street-tango-practica-new-york-ny/",
+          "venue": "Nassau Street Dance",
+          "price": null,
+          "address": "88 Nassau Street, 5th Floor, New York, NY 10038, New York, NY",
+          "lat": 40.7100265,
+          "lng": -74.0077793,
+          "description": "Hosted by Medich Gee - Basics and foundations are never to be under estimated. In this practica we will provide basic concepts to reinforce the fundamental knowledge and understanding of Argentine",
+          "category": "dance"
+        },
+        {
+          "name": "Milonga Fernet Saturday",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16365010898740/milonga-fernet-saturday-east-brunswick-nj/",
+          "venue": "APAC",
+          "price": null,
+          "address": "6 Edgeboro Rd, East Brunswick, NJ 08816, East Brunswick, NJ",
+          "lat": 40.4640705,
+          "lng": -74.4039205,
+          "description": "Every first Saturday of the month our milonga becomes a perfect getaway for Tango dancers. Dont have time to fly to Buenos Aires and back? Stop By At Fernet! 8: 30 PM 9: 30 PM Open Level class with",
+          "category": "dance"
+        },
+        {
+          "name": "The Queens Project: Argentine Tango Intensive",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771632216203206/the-queens-project-argentine-tango-intensive-new-york-city-ny/",
+          "venue": "Sokol Hall (Bohemian Hall)",
+          "price": null,
+          "address": "Sokol Hall (Bohemian Hall), 29-19 24th Ave, Astoria, NY 11102, Ireland, New York City, NY",
+          "lat": 40.772838,
+          "lng": -73.915631,
+          "description": "A high-level Argentine Tango intensive led by Johel Quiroz and Lorena Guilarte focusing on technique and musicality. The program offers three-hour sessions designed to build connection and movement",
+          "category": "dance"
+        },
+        {
+          "name": "Practica La Resaca",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/163650114045024/practica-la-resaca-new-york-ny/",
+          "venue": "Ripley Grier Studios",
+          "price": null,
+          "address": "939 8th Ave, Studio 4A, New York, NY 10019, New York, NY",
+          "lat": 40.7658669,
+          "lng": -73.9837465,
+          "description": "Practica at Ripley-Grier Studios, 939 8th Avenue, Studio 4A; Hosts Carlos Maureen Urrego and Andres Bravo Sarita Apel; class 20, practica 20 (pre-registration required), both class practica 30;",
+          "category": "dance"
+        },
+        {
+          "name": "Mariela Franganillo & Rebecca Shulman's La Practica",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16365011372430/mariela-franganillo-rebecca-shulmans-la-practica-new-york-ny/",
+          "venue": "Stepping Out Studios",
+          "price": null,
+          "address": "617 W 46th Street, PH Floor, New York, NY 10036, New York, NY",
+          "lat": 40.7639742,
+          "lng": -73.9972978,
+          "description": "Your dear old Practica, in the new, spectacular, Stepping Out Studios, with an additional Host (NYC tango diva Rebecca Shulman herself), an exciting lineup of top-notch DJs for your musical pleasure,",
+          "category": "dance"
+        },
+        {
+          "name": "Wall Street Tango Practica",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/170598685332316/wall-street-tango-practica-new-york-ny/",
+          "venue": "Springboard Cultural Arts",
+          "price": null,
+          "address": "88 Nassau Street, 5th Floor, New York, NY 10038, New York, NY",
+          "lat": 40.7100265,
+          "lng": -74.0077793,
+          "description": "Hosted by Medich Gee - Basics and foundations are never to be under estimated. In this practica we will provide basic concepts to reinforce the fundamental knowledge and understanding of Argentine",
+          "category": "dance"
+        },
+        {
+          "name": "Argentine Tango group class | Beginner Level",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/173825206918732/argentine-tango-group-class-beginner-level-manhattan-ny-usa/",
+          "venue": "Ripley Grier studio",
+          "price": null,
+          "address": "520 8th Ave, Room 16H, Manhattan, NY",
+          "lat": 40.753669,
+          "lng": -73.99216520000002,
+          "description": "Argentine Tango | Beginner Level is the key and fundation of the dance. Syllabus is provided at the beginning of each month. 90min Class $40",
+          "category": "dance"
+        }
+      ],
+      "error": null,
+      "duration": 2.02,
+      "cached": false
+    },
+    {
+      "venue": "DanceUS: NYC Salsa",
+      "url": "https://www.danceus.org/events/salsa/new-york-ny-salsa-classes/",
+      "events": [
+        {
+          "name": "Salsa Level 2 - Step Up Your Salsa",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348937999370/salsa-level-step-up-your-salsa-new-york-city-ny/",
+          "venue": "Salsa Classes NYC Studio",
+          "price": null,
+          "address": "Salsa Classes NYC Studio, 520 8th Ave, 16th Floor, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753691,
+          "lng": -73.992082,
+          "description": "An intermediate-level class designed for students with a solid grasp of the basics to elevate their skills with complex shines and refined technique. Focuses on fluidity, coordination, and advanced",
+          "category": "dance"
+        },
+        {
+          "name": "Bachata Beginner @ Dance Fever Studios",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/165766085489832/bachata-beginner-dance-fever-studios-brooklyn-ny/",
+          "venue": "Dance Fever Studios",
+          "price": null,
+          "address": "159 20th St, Brooklyn, NY 11232, Brooklyn, NY",
+          "lat": 40.6638293,
+          "lng": -73.9955368,
+          "description": "Bachata Dance Classes in Brooklyn at Dance Fever Studios. Anyone can learn how to bachata dance. Let us teach you how. We have bachata dance lessons from the very beginner, basic bachata",
+          "category": "dance"
+        },
+        {
+          "name": "Level 1 Salsa Course Brooklyn (Tuesdays)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771349305576322/level-salsa-course-brooklyn-tuesdays-new-york-city-ny/",
+          "venue": "NYC Salsa Dance",
+          "price": null,
+          "address": "NYC Salsa Dance, 304 Boerum Street, Brooklyn, NY 11206, New York City, United States, New York City, NY",
+          "lat": 40.706668,
+          "lng": -73.935367,
+          "description": "Learn the fundamentals of Salsa, including basic steps, timing, and essential turn patterns with instructors Jacob and Dawn. This course focuses on building a strong foundation, improving balance,",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Level 1 Partnerwork",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348937907130/salsa-level-partnerwork-new-york-city-ny/",
+          "venue": "Salsa Classes NYC Studio",
+          "price": null,
+          "address": "Salsa Classes NYC Studio, 520 8th Ave, 16th Floor, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753691,
+          "lng": -73.992082,
+          "description": "An introductory partnerwork class for beginners that teaches essential lead and follow connection and basic turn patterns. No partner is required as students rotate during the session. Taught by",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Beginner @ Dance Fever Studios",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/165766085364232/salsa-beginner-dance-fever-studios-brooklyn-ny/",
+          "venue": "Dance Fever Studios",
+          "price": null,
+          "address": "159 20th St, Brooklyn, NY 11232, Brooklyn, NY",
+          "lat": 40.6638293,
+          "lng": -73.9955368,
+          "description": "Salsa Dance Classes in Brooklyn at Dance Fever Studios. Anyone can learn how to salsa dance. Let us teach you how. We have salsa lessons in the very basic, beginner salsa dance fundamentals, up to",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Level 1 (Fundamentals)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348937728283/salsa-level-fundamentals-new-york-city-ny/",
+          "venue": "Salsa Classes NYC Studio",
+          "price": null,
+          "address": "Salsa Classes NYC Studio, 520 8th Ave, 16th Floor, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753691,
+          "lng": -73.992082,
+          "description": "A beginner-friendly class focusing on the fundamental basic steps, timing, and footwork of New York Style Salsa On2. Designed to build a strong foundation for absolute beginners with no prior",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Level 1 - The Fundamentals",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348824109398/salsa-level-the-fundamentals-new-york-city-ny/",
+          "venue": "Joel Salsa NYC",
+          "price": null,
+          "address": "Joel Salsa NYC, 38 West 32nd Street, Suite 404, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.747775,
+          "lng": -73.987421,
+          "description": "Learn the essentials of Salsa On2 with instructors Geovanni and Jennie. This beginner-friendly class focuses on timing, rhythm, and basic footwork in a welcoming environment. No partner is required",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Beginner 101 @ Nieves Dance Studio - Midtown",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/165766085923232/salsa-beginner-nieves-dance-studio-midtown-new-york-ny/",
+          "venue": "Nieves Dance Studio - Midtown",
+          "price": null,
+          "address": "240 West 37th St, New York, NY 10018, New York, NY",
+          "lat": 40.7534205,
+          "lng": -73.9910376,
+          "description": "Our Manhattan branch currently hosts a beginner Class every Tuesday at 6:00pm. We offer a 101 for people who have never taken a class before. We treat our School as a Social Community of People who",
+          "category": "dance"
+        },
+        {
+          "name": "Cuban Salsa Classes",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/178814021284592/cuban-salsa-classes-new-york-city-ny/",
+          "venue": "Salsa Sabrosa",
+          "price": null,
+          "address": "Salsa Sabrosa, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.664017,
+          "lng": -73.88818,
+          "description": "Cuban Salsa, Rueda de Casino, and Timba classes taught by instructor Teo (Renzo) with a focus on Latin flavor and community. Available at beginner, advanced beginner, and advanced levels. Classes are",
+          "category": "dance"
+        },
+        {
+          "name": "Cuban Salsa Classes (Beginner to Advanced)",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/178814021259156/cuban-salsa-classes-beginner-to-advanced-new-york-city-ny/",
+          "venue": "Salsa Sabrosa School",
+          "price": null,
+          "address": "Salsa Sabrosa School, New York City, NY, United States, New York City, NY",
+          "lat": 40.642069,
+          "lng": -73.908015,
+          "description": "Cuban Salsa classes taught by instructor Teo (Renzo) at Salsa Sabrosa School in New York City, covering Cuban Salsa, Rueda de casino, and timba with Latin flavor. Available at beginner, advanced",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes in NYC (Group)",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/17881402471340/salsa-classes-in-nyc-group-new-york-city-ny/",
+          "venue": "JoelSalsa",
+          "price": null,
+          "address": "JoelSalsa, 38 W 32nd St, 4th Fl, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.747757,
+          "lng": -73.987442,
+          "description": "Structured Salsa on2 / New York Style group classes at JoelSalsa in Midtown Manhattan, available for all levels from beginner to advanced. Focus on timing, rhythm, body movement, and partner",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes – 4-Week Cycle",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788140527049768/salsa-classes-week-cycle-new-york-city-ny/",
+          "venue": "InnerLight Dance Nyc",
+          "price": null,
+          "address": "InnerLight Dance Nyc, NYC, New York, New York City, United States, New York City, NY",
+          "lat": 40.788577,
+          "lng": -73.966064,
+          "description": "Salsa classes taught by certified instructor Stan 'The Light' in a collaborative, uplifting environment. The 4-week cycle is tailored for quick learning with personal feedback to prep students for",
+          "category": "services"
+        },
+        {
+          "name": "Beginner Salsa Dance Classes NYC",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/177134906008621/beginner-salsa-dance-classes-nyc-new-york-city-ny/",
+          "venue": "Sensual Movement NYC Studio",
+          "price": null,
+          "address": "Sensual Movement NYC Studio, 224 W 35th St Floor 15, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.751946,
+          "lng": -73.991242,
+          "description": "Customized salsa classes in New York City focusing on foundational footwork, timing, and partner connection. Taught by certified instructors like Gabi, these sessions are designed to help beginners",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Level 3 Salsa @ Lorenz Latin Dance Studio",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16576608498998/beginner-level-salsa-lorenz-latin-dance-studio-new-york-ny/",
+          "venue": "Lorenz Latin Dance Studio",
+          "price": null,
+          "address": "2153 Second Avenue, New York, NY  10029, New York, NY",
+          "lat": 40.7937416,
+          "lng": -73.94045969999999,
+          "description": "Lorenz Latin Dance Studio is the Premier and largest Salsa/Latin Dance Studio in New York",
+          "category": "dance"
+        },
+        {
+          "name": "Intermediate Salsa Class",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348870592888/intermediate-salsa-class-new-york-city-ny/",
+          "venue": "Salsa Salsa Dance Studio",
+          "price": null,
+          "address": "Salsa Salsa Dance Studio, 55 4th Avenue, Brooklyn, NY 11217, New York City, United States, New York City, NY",
+          "lat": 40.682686,
+          "lng": -73.979165,
+          "description": "Elevate your dancing with this 90-minute progressive On2 salsa class led by Sasha & Valentina. The curriculum covers intricate footwork shines and advanced turn patterns designed to improve social",
+          "category": "dance"
+        },
+        {
+          "name": "Cuban Salsa Level 1 (Sunday)",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348779213453/cuban-salsa-level-sunday-new-york-city-ny/",
+          "venue": "Salsa Sabrosa School",
+          "price": null,
+          "address": "Salsa Sabrosa School, 410-412 8th Ave, 4th Floor, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.749909,
+          "lng": -73.994794,
+          "description": "A beginner-friendly introduction to the art of Cuban Salsa, focusing on body movement and basic partner connections. Perfect for those starting their dance journey in a supportive community setting.",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Beginner @ Dance Fever Studios",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/165766084034332/salsa-beginner-dance-fever-studios-brooklyn-ny/",
+          "venue": "Dance Fever Studios",
+          "price": null,
+          "address": "3009 Avenue J, Brooklyn, NY 11210, Brooklyn, NY",
+          "lat": 40.6270398,
+          "lng": -73.9465207,
+          "description": "Salsa Dance Classes in Brooklyn at Dance Fever Studios. No partner or experience needed. All are welcome. Call to register. Meet new people and make new friends as you learn the art and",
+          "category": "dance"
+        },
+        {
+          "name": "Advanced Salsa Class",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348870755956/advanced-salsa-class-new-york-city-ny/",
+          "venue": "Salsa Salsa Dance Studio",
+          "price": null,
+          "address": "Salsa Salsa Dance Studio, 55 4th Avenue, Brooklyn, NY 11217, New York City, United States, New York City, NY",
+          "lat": 40.682686,
+          "lng": -73.979165,
+          "description": "Master high-level turn patterns and complex musicality in this advanced On2 salsa session with Pito & Destiny. Designed for seasoned dancers with over 2 years of experience looking to refine their",
+          "category": "dance"
+        },
+        {
+          "name": "New Beginner Salsa Class",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/178814030666483/new-beginner-salsa-class-new-york-city-ny/",
+          "venue": "Salsa Salsa Dance Studio",
+          "price": null,
+          "address": "Salsa Salsa Dance Studio, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.614112,
+          "lng": -74.079316,
+          "description": "A beginner-friendly Salsa class requiring no prior experience, offered by Salsa Salsa Dance Studio in NYC. Online pre-registration is required, and each person must create their own account. A great",
+          "category": "dance"
+        },
+        {
+          "name": "Outdoor Salsa Series – Free Salsa Class & Dance Party",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788140307041345/outdoor-salsa-series-free-salsa-class-dance-party-new-york-city-ny/",
+          "venue": "Vanderbilt & Pacific Street",
+          "price": null,
+          "address": "Vanderbilt &amp; Pacific Street, 550 Vanderbilt Ave, Brooklyn, NY 11238, USA, New York City, United States, New York City, NY",
+          "lat": 40.680812,
+          "lng": -73.96812,
+          "description": "A free outdoor Salsa class held on Vanderbilt Avenue in Brooklyn as part of the Prospect Heights Open Streets event with Salsa Salsa Dance Studio. Followed by a high-energy dance party from 5:30 PM",
+          "category": "clubbing"
+        },
+        {
+          "name": "Salsa Level 1 - The Fundamentals (NYC)",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771349280567581/salsa-level-the-fundamentals-nyc-new-york-city-ny/",
+          "venue": "Joel Salsa NYC Studio",
+          "price": null,
+          "address": "Joel Salsa NYC Studio, 38 West 32nd Street, Suite 404, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.747775,
+          "lng": -73.987421,
+          "description": "In-person progressive cycle for beginners focused on the core basics of On2 NY Style Salsa. Held at the Manhattan studio, this 1.5-hour class covers rhythm, timing, basic turns, and essential partner",
+          "category": "dance"
+        },
+        {
+          "name": "Level 1 Salsa Course Brooklyn (Saturdays)",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771349305664285/level-salsa-course-brooklyn-saturdays-new-york-city-ny/",
+          "venue": "NYC Salsa Dance",
+          "price": null,
+          "address": "NYC Salsa Dance, 304 Boerum Street, Brooklyn, NY 11206, New York City, United States, New York City, NY",
+          "lat": 40.706668,
+          "lng": -73.935367,
+          "description": "Start your weekend with a comprehensive introduction to Salsa dancing led by expert instructors Jacob and Dawn. You will cover movement etiquette, basic turn patterns, and foundational steps in a",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Level 4 Salsa @ Lorenz Latin Dance Studio",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16576608528618/beginner-level-salsa-lorenz-latin-dance-studio-new-york-ny/",
+          "venue": "Lorenz Latin Dance Studio",
+          "price": null,
+          "address": "2153 Second Avenue, New York, NY  10029, New York, NY",
+          "lat": 40.7937416,
+          "lng": -73.94045969999999,
+          "description": "Our Salsa group classes are 1.5 hours long consisting of shines and dynamic turn patterns for all levels (beginner, intermediate or advanced).",
+          "category": "dance"
+        },
+        {
+          "name": "Recently Started Salsa Class",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788140306761982/recently-started-salsa-class-new-york-city-ny/",
+          "venue": "Salsa Salsa Dance Studio",
+          "price": null,
+          "address": "Salsa Salsa Dance Studio, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.614112,
+          "lng": -74.079316,
+          "description": "A recently launched beginner-level Salsa class with no experience required, taught by Salsa Salsa Dance Studio. Online pre-registration is mandatory with individual account creation. Ideal for",
+          "category": "dance"
+        },
+        {
+          "name": "Cuban Salsa Level 1 (Friday)",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348779124144/cuban-salsa-level-friday-new-york-city-ny/",
+          "venue": "Salsa Sabrosa School",
+          "price": null,
+          "address": "Salsa Sabrosa School, 410-412 8th Ave, 4th Floor, New York, NY 10001, New York City, United States, New York City, NY",
+          "lat": 40.749909,
+          "lng": -73.994794,
+          "description": "This foundational class covers the basic steps and timing of Cuban Salsa Casino in a social environment. No partner is required, and the class emphasizes community and fun. New students are eligible",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Beginner Salsa 101 @ Nieves Dance Studio - Midtown",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/165766086311532/salsa-beginner-salsa-nieves-dance-studio-midtown-new-york-ny/",
+          "venue": "Nieves Dance Studio - Midtown",
+          "price": null,
+          "address": "240 West 37th St, New York, NY 10018, New York, NY",
+          "lat": 40.7534205,
+          "lng": -73.9910376,
+          "description": "Our Manhattan branch currently hosts a beginner Class every Friday at 6:00pm. We offer a 101 for people who have never taken a class before. Classes are approximately 50mins 1 hour, Some locations",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Level 3 Salsa @ Lorenz Latin Dance Studio",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16576608514208/beginner-level-salsa-lorenz-latin-dance-studio-new-york-ny/",
+          "venue": "Lorenz Latin Dance Studio",
+          "price": null,
+          "address": "2153 Second Avenue, New York, NY  10029, New York, NY",
+          "lat": 40.7937416,
+          "lng": -73.94045969999999,
+          "description": "Our Studio offers many different classes during the week.",
+          "category": "dance"
+        }
+      ],
+      "error": null,
+      "duration": 1.93,
+      "cached": false
+    },
+    {
+      "venue": "DanceUS: NYC Swing",
+      "url": "https://www.danceus.org/events/swing/new-york-nyc-swing-calendar/",
+      "events": [
+        {
+          "name": "Midtown Swings Intro to Lindy Hop",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348440650778/midtown-swings-intro-to-lindy-hop-new-york-city-ny/",
+          "venue": "Danznik Studios",
+          "price": null,
+          "address": "Danznik Studios, 240 West 37th Street, 2nd Floor, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753446,
+          "lng": -73.991013,
+          "description": "A weekly beginner-friendly introductory lesson held every Tuesday night at Danznik Studios. The class covers fundamental Lindy Hop steps and connection, followed by a social dance session to",
+          "category": "dance"
+        },
+        {
+          "name": "American Rhythm Group Class",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771454273538109/american-rhythm-group-class-new-york-city-ny/",
+          "venue": "Dance With Me Midtown",
+          "price": null,
+          "address": "Dance With Me Midtown, 37 West 37th Street, 2nd Floor, New York, NY 10018, Houston, United States, New York City, NY",
+          "lat": 40.751279,
+          "lng": -73.985089,
+          "description": "Join an energetic group session covering the essentials of American Rhythm styles such as East Coast Swing, Salsa, and Samba. Led by expert instructors, this class focuses on partnering skills and",
+          "category": "dance"
+        },
+        {
+          "name": "Lindy 100: Beginner Swing",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348105886924/lindy-beginner-swing-new-york-city-ny/",
+          "venue": "Danznik Studios NYC",
+          "price": null,
+          "address": "Danznik Studios NYC, 240 W 37th St, 2nd Floor, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753446,
+          "lng": -73.991013,
+          "description": "Learn the basic fundamentals of Lindy Hop, the original swing dance from Harlem. This class covers 6-count and 8-count patterns, focusing on connection and classic rhythms. No partner is required to",
+          "category": "dance"
+        },
+        {
+          "name": "Intro to Lindy Hop: Beginner Class at Midtown Swings",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788143674686528/intro-to-lindy-hop-beginner-class-at-midtown-swings-new-york-city-ny/",
+          "venue": "Danznik Studios – NYC (Midtown Swings)",
+          "price": null,
+          "address": "Danznik Studios – NYC (Midtown Swings), New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.757719,
+          "lng": -73.982288,
+          "description": "An introductory Lindy Hop class hosted by the Midtown Swings community at Danznik Studios NYC. Focuses on foundational swing vocabulary, rhythm, and social dance etiquette in a welcoming",
+          "category": "dance"
+        },
+        {
+          "name": "Ballroom Beginner Class (Includes Swing)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/17713485635049/ballroom-beginner-class-includes-swing-new-york-city-ny/",
+          "venue": "Dance Fever Studios (Marine Park)",
+          "price": null,
+          "address": "Dance Fever Studios (Marine Park), 3009 Quentin Road, Brooklyn, NY 11234, New York City, United States, New York City, NY",
+          "lat": 40.6121,
+          "lng": -73.941171,
+          "description": "A foundational course covering essential social dances including Swing, Waltz, Foxtrot, and Tango. Students progress through a two-month sequential cycle to master timing and partner connection.",
+          "category": "dance"
+        },
+        {
+          "name": "Guided West Cost Swing Practice With Robert Royston",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16546331173910/guided-west-cost-swing-practice-with-robert-royston-new-york-ny/",
+          "venue": "Emmanuel Pierre-Antoine Dance Studio",
+          "price": null,
+          "address": "320 W 37th St, Fl 2, New York, NY 10018, New York, NY",
+          "lat": 40.7544001,
+          "lng": -73.99334759999999,
+          "description": "Join champion Robert Royston weekly to work not only on class topics as well as other moves you may be struggling with. REGISTER EVENING SCHEDULE 6:30pm Beginner West Coast Swing 7:00pm",
+          "category": "dance"
+        },
+        {
+          "name": "East Coast Swing Group Class",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348670014321/east-coast-swing-group-class-new-york-city-ny/",
+          "venue": "Fred Astaire Dance Studio - New York West Side",
+          "price": null,
+          "address": "174 West 72nd Street, 2nd Floor, New York, NY 10023, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Learn the fundamentals of East Coast Swing, including the basic triple step, turns, and partner connection. This class is designed to help students master the most famous American folk dance in a",
+          "category": "dance"
+        },
+        {
+          "name": "Lindy 200: Intermediate Lindy Hop",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348105978100/lindy-intermediate-lindy-hop-new-york-city-ny/",
+          "venue": "Danznik Studios NYC",
+          "price": null,
+          "address": "Danznik Studios NYC, 240 W 37th St, 2nd Floor, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753446,
+          "lng": -73.991013,
+          "description": "Designed for experienced dancers, this class explores advanced rhythms, Charleston variations, and refined partnering techniques. Participants will focus on improvisation and musicality within the",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner American Rhythm (Swing)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771464506486376/beginner-american-rhythm-swing-glen-rock-nj/",
+          "venue": "Dance With Me Glen Rock",
+          "price": null,
+          "address": "Dance With Me Glen Rock, 232 Rock Road, Glen Rock, NJ 07452, Las Vegas, United States, Glen Rock, NJ",
+          "lat": 40.962213,
+          "lng": -74.130612,
+          "description": "An introductory group class exploring the fundamentals of East Coast Swing alongside other popular rhythm dances. Students will learn basic footwork, timing, and expressive movement to build",
+          "category": "dance"
+        },
+        {
+          "name": "Swing Dance Classes (East Coast & West Coast)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348669901368/swing-dance-classes-east-coast-west-coast-new-york-city-ny/",
+          "venue": "Fred Astaire Dance Studio New York West Side",
+          "price": null,
+          "address": "174 West 72nd Street, 2nd Floor, New York, NY 10023, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Learn the fundamentals of East Coast and West Coast Swing in a supportive and professional studio environment. These weekly group classes focus on foundational patterns, rhythm, and partner",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner American Rhythm",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/177134824157769/beginner-american-rhythm-new-york-city-ny/",
+          "venue": "Dance With Me Soho",
+          "price": null,
+          "address": "Dance With Me Soho, 430 Broome St, 2nd Floor, New York, NY 10013, New York City, United States, New York City, NY",
+          "lat": 40.721517,
+          "lng": -73.998809,
+          "description": "This foundational class explores popular American Rhythm styles including Swing, Cha-Cha, Rumba, and Mambo. Students focus on fundamental technique, timing, and building the confidence needed for",
+          "category": "dance"
+        },
+        {
+          "name": "Swing Beginner (Weekly Class)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348158094517/swing-beginner-weekly-class-new-york-city-ny/",
+          "venue": "You Should Be Dancing...!",
+          "price": null,
+          "address": "You Should Be Dancing...!, 37 West 26th Street, 2nd Floor, New York, NY 10010, New York City, United States, New York City, NY",
+          "lat": 40.744543,
+          "lng": -73.990435,
+          "description": "This 4-week progressive course taught by Elena Iannucci introduces the fundamentals of Lindy Hop and East Coast Swing. Students will build confidence through 6-count patterns and basic partnering",
+          "category": "dance"
+        },
+        {
+          "name": "Guided Practice with Midtown Swings",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788143674473273/guided-practice-with-midtown-swings-new-york-city-ny/",
+          "venue": "Danznik Studios – NYC",
+          "price": null,
+          "address": "Danznik Studios – NYC, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.788577,
+          "lng": -73.966064,
+          "description": "A guided swing dance practice session led by the Midtown Swings crew at Danznik Studios NYC. A semi-structured opportunity to apply and refine swing skills in a supportive group setting. Ideal for",
+          "category": "dance"
+        },
+        {
+          "name": "Lindy Hop/Swing Tuesday Classes",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348440397752/lindy-hopswing-tuesday-classes-new-york-city-ny/",
+          "venue": "You Should Be Dancing...!",
+          "price": null,
+          "address": "You Should Be Dancing...!, 37 West 26th Street, 2nd Floor, New York, NY 10010, New York City, United States, New York City, NY",
+          "lat": 40.744543,
+          "lng": -73.990435,
+          "description": "Weekly progressive classes featuring Basic, Advanced Basic, and Pre-Intermediate levels taught by Elena Iannucci. Students learn 6-count and 8-count patterns, social dance footwork, and technical",
+          "category": "dance"
+        },
+        {
+          "name": "West Coast Swing Workshop",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348399550998/west-coast-swing-workshop-new-york-city-ny/",
+          "venue": "Fred Astaire Dance Studio NY Downtown",
+          "price": null,
+          "address": "Fred Astaire Dance Studio NY Downtown, 291 Broadway, Suite 900, New York, NY 10007, New York City, United States, New York City, NY",
+          "lat": 40.714893,
+          "lng": -74.005982,
+          "description": "A sophisticated and linear style of swing that can be danced to a variety of music from pop to blues. This session covers the unique 'slotted' technique and rhythmic interpretations characteristic of",
+          "category": "dance"
+        },
+        {
+          "name": "Back Room Speakeasy Sessions",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/165463312495532/back-room-speakeasy-sessions-new-york-ny/",
+          "venue": "The Back Room",
+          "price": null,
+          "address": "102 Norfolk St, New York, NY 10002, New York, NY",
+          "lat": 40.7187848,
+          "lng": -73.9870183,
+          "description": "Back Room Speakeasy Sessions most deliberate recreation of an actual speakeasy (Wall Street Journal) in its 10th year since May 2012! Prohibition style drinks in teacups. Band starts the show opening",
+          "category": "dance"
+        },
+        {
+          "name": "Lindy 150 Advanced Beginner",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788143607091333/lindy-advanced-beginner-new-york-city-ny/",
+          "venue": "Danznik",
+          "price": null,
+          "address": "Danznik, New York City, United States, New York City, NY",
+          "lat": 40.62739,
+          "lng": -74.104195,
+          "description": "An advanced beginner Lindy Hop class building on foundational skills. Taught in a fun, historically-grounded style at Danznik. Classes are held every Tuesday at 8:00 PM.",
+          "category": "dance"
+        },
+        {
+          "name": "Lindy 100 Beginner",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788143607044459/lindy-beginner-new-york-city-ny/",
+          "venue": "Danznik",
+          "price": null,
+          "address": "Danznik, New York City, United States, New York City, NY",
+          "lat": 40.62739,
+          "lng": -74.104195,
+          "description": "A fun and friendly beginner Lindy Hop class for those just getting started. Taught in a historically-grounded and accessible style at Danznik. Classes are held every Tuesday at 8:00 PM.",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner American Rhythm Class",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771454273297102/beginner-american-rhythm-class-new-york-city-ny/",
+          "venue": "Dance With Me Soho",
+          "price": null,
+          "address": "Dance With Me Soho, 676 Broadway, 4th Floor, New York, NY 10012, Houston, United States, New York City, NY",
+          "lat": 40.727411,
+          "lng": -73.99482,
+          "description": "This class explores popular social dances including Swing, Cha-Cha, Rumba, and Mambo. You'll learn fundamental technique, timing, and expressive movement in a supportive environment. Perfect for",
+          "category": "dance"
+        },
+        {
+          "name": "Swing Dance Classes",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348563256915/swing-dance-classes-new-york-city-ny/",
+          "venue": "Dance Fever Studios (Park Slope)",
+          "price": null,
+          "address": "Dance Fever Studios (Park Slope), 159 20th Street, Brooklyn, NY 11232, New York City, United States, New York City, NY",
+          "lat": 40.663738,
+          "lng": -73.995587,
+          "description": "Learn various swing styles including Lindy Hop, West Coast Swing, and East Coast Swing. These classes are designed for beginners with no partner or prior experience required. Lessons focus on basic",
+          "category": "dance"
+        },
+        {
+          "name": "West Coast Swing III",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788144605401126/west-coast-swing-iii-new-york-city-ny/",
+          "venue": "Big Apple Ballroom",
+          "price": null,
+          "address": "Big Apple Ballroom, 78 5th Avenue, 5th Floor, New York, NY 10011, New York City, United States, New York City, NY",
+          "lat": 40.735773,
+          "lng": -73.994089,
+          "description": "Level 3 advanced West Coast Swing class with instructor Sophie at Big Apple Ballroom. 55-minute session for experienced WCS dancers ready to refine technique. No partner required.",
+          "category": "dance"
+        },
+        {
+          "name": "West Coast Swing Basics",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788144605385555/west-coast-swing-basics-new-york-city-ny/",
+          "venue": "Big Apple Ballroom",
+          "price": null,
+          "address": "Big Apple Ballroom, 78 5th Avenue, 5th Floor, New York, NY 10011, New York City, United States, New York City, NY",
+          "lat": 40.735773,
+          "lng": -73.994089,
+          "description": "Beginner-friendly West Coast Swing class with instructor Sabrina at Big Apple Ballroom. 55-minute session covering the fundamentals of WCS. No partner required.",
+          "category": "dance"
+        },
+        {
+          "name": "Social Basic - Hustle & Swing",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771617588405443/social-basic-hustle-swing-new-york-city-ny/",
+          "venue": "Dance With Me Midtown NYC",
+          "price": null,
+          "address": "Dance With Me Midtown NYC, 341 5th Ave, New York, NY 10016, Austin, United States, New York City, NY",
+          "lat": 40.747934,
+          "lng": -73.984921,
+          "description": "A beginner-friendly introduction to the fundamentals of Swing and Hustle. This class focuses on rhythm, basic patterns, and lead-follow technique in a high-energy social setting. No partner is",
+          "category": "dance"
+        },
+        {
+          "name": "Lindy 200 Intermediate",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788143607108221/lindy-intermediate-new-york-city-ny/",
+          "venue": "Danznik",
+          "price": null,
+          "address": "Danznik, New York City, United States, New York City, NY",
+          "lat": 40.62739,
+          "lng": -74.104195,
+          "description": "An intermediate Lindy Hop class taught by some of the most esteemed dancers in the global lindy hop community. Focuses on fun, historically-grounded swing dance education accessible to all",
+          "category": "dance"
+        },
+        {
+          "name": "East Coast Swing",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788144124504533/east-coast-swing-new-york-city-ny/",
+          "venue": "Fred Astaire Dance Studios - New York Downtown",
+          "price": null,
+          "address": "Fred Astaire Dance Studios - New York Downtown, New York, NY (Downtown), New York City, United States, New York City, NY",
+          "lat": 40.72145,
+          "lng": -73.9974,
+          "description": "East Coast Swing class offered at Fred Astaire Dance Studios New York Downtown. Evolved from the Lindy Hop in the 1940s, this is perhaps the most famous American folk dance, featuring an energetic,",
+          "category": "dance"
+        },
+        {
+          "name": "West Coast Swing",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/178814412445774/west-coast-swing-new-york-city-ny/",
+          "venue": "Fred Astaire Dance Studios - New York Downtown",
+          "price": null,
+          "address": "Fred Astaire Dance Studios - New York Downtown, New York, NY (Downtown), New York City, United States, New York City, NY",
+          "lat": 40.72145,
+          "lng": -73.9974,
+          "description": "West Coast Swing class offered at Fred Astaire Dance Studios New York Downtown. This sophisticated 1950s-style swing dance adapts easily to contemporary rock music, featuring smooth styling and a",
+          "category": "dance"
+        },
+        {
+          "name": "Swing - Level 2 - Lindy Hop/Swing 2",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788143804734450/swing-level-lindy-hopswing-new-york-city-ny/",
+          "venue": "You Should Be Dancing...! - Studio A",
+          "price": null,
+          "address": "You Should Be Dancing...! - Studio A, 37 West 26th Street 2nd Floor, New York NY 10010, New York City, United States, New York City, NY",
+          "lat": 40.744567,
+          "lng": -73.990446,
+          "description": "Intermediate swing class taught by Akemi Kinukawa covering swingouts and mixing 6 & 8 count patterns. Requires a pre-requisite of 2 months of each Level 1 track. Students will expand their vocabulary",
+          "category": "dance"
+        },
+        {
+          "name": "Swing - Level 1 Lindy Hop/Swing: Basic 6 count",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/178814380470374/swing-level-lindy-hopswing-basic-count-new-york-city-ny/",
+          "venue": "You Should Be Dancing...! - Studio B",
+          "price": null,
+          "address": "You Should Be Dancing...! - Studio B, 37 West 26th Street 2nd Floor, New York NY 10010, New York City, United States, New York City, NY",
+          "lat": 40.744567,
+          "lng": -73.990446,
+          "description": "A beginner-friendly introduction to social swing dancing for students with no prior knowledge or background in Lindy Hop/Swing. Taught by Tammy Halaburda, this class provides instruction and",
+          "category": "dance"
+        },
+        {
+          "name": "West Coast Swing II",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788144605356320/west-coast-swing-ii-new-york-city-ny/",
+          "venue": "Big Apple Ballroom",
+          "price": null,
+          "address": "Big Apple Ballroom, 78 5th Avenue, 5th Floor, New York, NY 10011, New York City, United States, New York City, NY",
+          "lat": 40.735773,
+          "lng": -73.994089,
+          "description": "Level 2 West Coast Swing class with instructor Sophie at Big Apple Ballroom. 55-minute weekly session suitable for dancers with some swing experience. No partner required.",
+          "category": "dance"
+        },
+        {
+          "name": "Swing - Level 1 - Lindy Hop/Swing: Basic 8 count: no pre-req",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788143804512138/swing-level-lindy-hopswing-basic-count-no-pre-req-new-york-city-ny/",
+          "venue": "You Should Be Dancing...! - Studio A",
+          "price": null,
+          "address": "You Should Be Dancing...! - Studio A, 37 West 26th Street 2nd Floor, New York NY 10010, New York City, United States, New York City, NY",
+          "lat": 40.744567,
+          "lng": -73.990446,
+          "description": "Introduction to the foundations of 8-count Lindy Hop, one of the fundamental rhythms in swing dance. Taught by Akemi Kinukawa, this class broadens your understanding of musicality and partnering to",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Social Variety",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348241885281/beginner-social-variety-new-york-city-ny/",
+          "venue": "Dance With Me Soho",
+          "price": null,
+          "address": "Dance With Me Soho, 430 Broome St, 2nd Floor, New York, NY 10013, New York City, United States, New York City, NY",
+          "lat": 40.721517,
+          "lng": -73.998809,
+          "description": "This upbeat weekend class introduces a new dance every week, featuring popular social styles like Swing, Hustle, and Argentine Tango. The session focuses on essential dance patterns and practical",
+          "category": "dance"
+        },
+        {
+          "name": "Swing Crash Course",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348157923396/swing-crash-course-new-york-city-ny/",
+          "venue": "You Should Be Dancing...!",
+          "price": null,
+          "address": "You Should Be Dancing...!, 37 West 26th Street, 2nd Floor, New York, NY 10010, New York City, United States, New York City, NY",
+          "lat": 40.744543,
+          "lng": -73.990435,
+          "description": "This one-day beginner workshop covers the style of Swing born in Harlem during the 1920s and 30s. Led by instructor Elena Iannucci, students will learn 6-count patterns, partnering, and lead-follow",
+          "category": "dance"
+        },
+        {
+          "name": "Swing Crash Course with Elena Iannucci",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771348440288502/swing-crash-course-with-elena-iannucci-new-york-city-ny/",
+          "venue": "You Should Be Dancing...!",
+          "price": null,
+          "address": "You Should Be Dancing...!, 37 West 26th Street, 2nd Floor, New York, NY 10010, New York City, United States, New York City, NY",
+          "lat": 40.744543,
+          "lng": -73.990435,
+          "description": "A comprehensive beginner's workshop covering partnering, rhythm, and lead-follow techniques with a focus on 6-count patterns. This intensive 'learn-in-a-day' session is designed to get newcomers",
+          "category": "dance"
+        },
+        {
+          "name": "FocusedBal OPEN Practice Session at Studios 797",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/165463312666716/focusedbal-open-practice-session-at-studios-new-york-ny/",
+          "venue": "Studios 797",
+          "price": null,
+          "address": "797 8th Ave, New York, NY 10019, New York, NY",
+          "lat": 40.7613061,
+          "lng": -73.9870806,
+          "description": "Structure of the practice involves open QA and the sharing of drills to improve skill, but everyone should come with 2-3 topics they want to work on. You may come alone or with a partner. You may",
+          "category": "dance"
+        },
+        {
+          "name": "Shagbot Fridays at Kilowatt Dance Theater",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/165463312839332/shagbot-fridays-at-kilowatt-dance-theater-new-york-ny/",
+          "venue": "Kilowatt Dance Theater",
+          "price": null,
+          "address": "4 W 43rd St, #803, New York, NY, New York, NY",
+          "lat": 40.7543471,
+          "lng": -73.9812147,
+          "description": "Shagbots is a loosely organized group of NYC shaggers. On Friday nights, Shagbots have open-to-the-public, guided, experimental shag practice session. Generally speaking, Tony and Jaime will loosely",
+          "category": "theater"
+        }
+      ],
+      "error": null,
+      "duration": 1.96,
+      "cached": false
+    },
+    {
+      "venue": "DanceUS: NYC Hip Hop",
+      "url": "https://www.danceus.org/events/hip-hop/new-york-ny-hip-hop-classes/",
+      "events": [
+        {
+          "name": "Rock The Bells Festival 2026",
+          "date": "2026-11-29T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/179315493024316/rock-the-bells-festival/",
+          "venue": "Prudential Center",
+          "price": null,
+          "address": "Newark, NJ, Newark, NJ",
+          "lat": 40.733537,
+          "lng": -74.1710659,
+          "description": "Rock The Bells Festival in New Jersey celebrates the culture, history, and artistry of hip-hop, bringing together legendary performers, contemporary artists, DJs, and fans for a vibrant experience",
+          "category": "community"
+        },
+        {
+          "name": "Intro to Hip Hop with Devynn Brooks",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347685176436/intro-to-hip-hop-with-devynn-brooks-new-york-city-ny/",
+          "venue": "PMT House of Dance",
+          "price": null,
+          "address": "PMT House of Dance, 28 W 25th Street, 2nd Floor, New York, NY 10010, New York City, United States, New York City, NY",
+          "lat": 40.743477,
+          "lng": -73.990441,
+          "description": "This beginner-friendly class introduces the fundamentals of Hip Hop dance, focusing on rhythm and basic movement. Taught by Devynn Brooks, it provides a welcoming environment for adults to start",
+          "category": "dance"
+        },
+        {
+          "name": "Adult Beginner Hip Hop with Jojo Brooks",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347723048824/adult-beginner-hip-hop-with-jojo-brooks-new-york-city-ny/",
+          "venue": "Brickhouse NYC",
+          "price": null,
+          "address": "Brickhouse NYC, 156 West 44th Street, 3rd Floor, New York, NY 10036, New York City, United States, New York City, NY",
+          "lat": 40.756818,
+          "lng": -73.985252,
+          "description": "A foundational class designed for adults new to Hip Hop, focusing on basic grooves, rhythm, and coordination. Instructor Jojo Brooks breaks down essential street dance moves in a supportive,",
+          "category": "dance"
+        },
+        {
+          "name": "Breaking (Breakdance) Class",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/177134793446826/breaking-breakdance-class-new-york-city-ny/",
+          "venue": "RnnL Dance Studio - Midtown West",
+          "price": null,
+          "address": "RnnL Dance Studio - Midtown West, 520 8th Ave, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753691,
+          "lng": -73.992082,
+          "description": "Learn the essential elements of breaking, including top rock, footwork, power moves, and freezes. This beginner-friendly class provides a supportive environment for dancers to explore street dance",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Foundations of Hip Hop with Hurrikane",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347822155490/beginner-foundations-of-hip-hop-with-hurrikane-new-york-city-ny/",
+          "venue": "Peridance Center",
+          "price": null,
+          "address": "Peridance Center, 126 East 13th Street, New York, NY 10003, New York City, United States, New York City, NY",
+          "lat": 40.732805,
+          "lng": -73.98867,
+          "description": "Alain 'Hurrikane' Lauture teaches this class focusing on rhythm, musicology, and Hip Hop fundamentals through a cultural lens. The session includes rhythmic exercises and drills to help students",
+          "category": "dance"
+        },
+        {
+          "name": "Hip Hop Choreography Class",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347986757978/hip-hop-choreography-class-new-york-city-ny/",
+          "venue": "Ripley Grier Studios",
+          "price": null,
+          "address": "Ripley Grier Studios, 520 8th Ave, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753691,
+          "lng": -73.992082,
+          "description": "Professional hip-hop choreography training led by founder Shannon Salemi (S Funk), blending technical skills with authentic street dance. This high-energy class is designed for both beginners and",
+          "category": "dance"
+        },
+        {
+          "name": "Hip Hop Dance Class",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347934853263/hip-hop-dance-class-new-york-city-ny/",
+          "venue": "RnnL Dance Studio",
+          "price": null,
+          "address": "RnnL Dance Studio, 500/510 8th Avenue, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.752588,
+          "lng": -73.987894,
+          "description": "Master hip hop moves and routines in a supportive environment with instructor Rong, who brings over 20 years of experience in street styles. This class focuses on building strong foundations and",
+          "category": "dance"
+        },
+        {
+          "name": "Hip Hop & Urban Dance Class",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347934158707/hip-hop-urban-dance-class-new-york-city-ny/",
+          "venue": "RnnL Dance Studio - Midtown West",
+          "price": null,
+          "address": "RnnL Dance Studio - Midtown West, 500 8th Ave, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.753036,
+          "lng": -73.992544,
+          "description": "High-energy classes focusing on hip hop foundations and original choreography, led by expert instructors like Rong. Suitable for all levels, these sessions emphasize rhythm, personal style, and",
+          "category": "dance"
+        },
+        {
+          "name": "Acro/Hip Hop (Ages 9 & Up) @ The Brooklyn Dance Centers",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16654346080620/acrohip-hop-ages-up-the-brooklyn-dance-centers-brooklyn-ny/",
+          "venue": "Brooklyn Dance Center",
+          "price": null,
+          "address": "6720 20th Avenue, Brooklyn, NY 11204, Brooklyn, NY",
+          "lat": 40.615049,
+          "lng": -73.9877205,
+          "description": "We have a yearly recital to showcase our students talents plus we provide an opportunity for serious and devoted dancers to perform with our award winning competition team. Whether you are interested",
+          "category": "dance"
+        },
+        {
+          "name": "Intermediate Hip Hop Choreo @ PMT House of Dance",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543459537432/intermediate-hip-hop-choreo-pmt-house-of-dance-new-york-ny/",
+          "venue": "PMT House of Dance",
+          "price": null,
+          "address": "28 W 25th St, 2nd floor, New York, NY 10010, United States, New York, NY",
+          "lat": 40.743371,
+          "lng": -73.99050799999999,
+          "description": "Students can find the proper dance attire at any dance apparel store. Below are three dance apparel stores where you can find the proper dance attire:",
+          "category": "dance"
+        },
+        {
+          "name": "Hip-Hop 1 @ The Dance Loft",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543459885132/hip-hop-the-dance-loft-long-beach-ny/",
+          "venue": "The Dance Loft",
+          "price": null,
+          "address": "160 W Park Ave, Long Beach, NY 11561, United States, Long Beach, NY",
+          "lat": 40.5880957,
+          "lng": -73.6689119,
+          "description": "A fun class for all levels, combining athletic movements and energetic, upbeat music. Hip Hop encompasses many different urban dance styles like popping, locking, waving, breaking, and gliding.",
+          "category": "music"
+        },
+        {
+          "name": "Acro/Hip Hop (Ages 8 & under) @ The Brooklyn Dance Centers",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16654346066930/acrohip-hop-ages-under-the-brooklyn-dance-centers-brooklyn-ny/",
+          "venue": "Brooklyn Dance Center",
+          "price": null,
+          "address": "6720 20th Avenue, Brooklyn, NY 11204, Brooklyn, NY",
+          "lat": 40.615049,
+          "lng": -73.9877205,
+          "description": "We at The Brooklyn Dance Centers have been bringing dance to the community for over 35 years. We offer classes in a wide variety of styles for students of all ages",
+          "category": "dance"
+        },
+        {
+          "name": "Adv Beginner Hip Hop @ Brickhouse NYC",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16654346042760/adv-beginner-hip-hop-brickhouse-nyc-new-york-ny/",
+          "venue": "Brickhouse NYC",
+          "price": null,
+          "address": "156 West 44th Street, 3rd floor, New York, NY 10036, New York, NY",
+          "lat": 40.7568116,
+          "lng": -73.9853716,
+          "description": "Hip-hop Class with Mini Zhan. Born and raised in China, Mini Zhang discovered Hip-Hop when she was in high school. Before she knew it, dance became one of her biggest passions in life and she decided",
+          "category": "dance"
+        },
+        {
+          "name": "KindiBreaking",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788143515234789/kindibreaking-new-york-city-ny/",
+          "venue": "Downtown Dance Factory",
+          "price": null,
+          "address": "Downtown Dance Factory, New York City, NY, United States, New York City, NY",
+          "lat": 40.72145,
+          "lng": -73.9974,
+          "description": "DFD's Breaking Program for preschoolers (ages 3–5) introducing hip hop and breaking moves, simple freezes, and funky footwork in a 45-minute weekly class. Taught by Kid Glyde in Studio 3. Part of the",
+          "category": "dance"
+        },
+        {
+          "name": "Hip Hop",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/178814330383955/hip-hop-new-york-city-ny/",
+          "venue": "Bridgefordance",
+          "price": null,
+          "address": "Bridgefordance, New York City, United States, New York City, NY",
+          "lat": 40.62739,
+          "lng": -74.104195,
+          "description": "A high-energy dance class for young boys and girls (ages 7-Teens) featuring warm-ups, music counting, floor work, stretches, and group choreography to exciting popular music. Students develop",
+          "category": "dance"
+        },
+        {
+          "name": "Young Dancers Program – Hip Hop & Multi-Discipline",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788143303721712/young-dancers-program-hip-hop-multi-discipline-new-york-city-ny/",
+          "venue": "Bridge For Dance",
+          "price": null,
+          "address": "Bridge For Dance, New York City, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Bridge For Dance offers a comprehensive year-long program for children that includes Hip Hop, Ballet, Jazz, Contemporary, Aerial, and Tap. Students train with experienced professional teachers in a",
+          "category": "dance"
+        },
+        {
+          "name": "90-Minute Drop-In Hip Hop Class",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/178814259893246/-minute-drop-in-hip-hop-class-new-york-city-ny/",
+          "venue": "Brickhouse NYC",
+          "price": null,
+          "address": "Brickhouse NYC, Times Square, New York City, NY, United States, New York City, NY",
+          "lat": 40.75765,
+          "lng": -73.98595,
+          "description": "Open 90-minute Hip Hop and commercial dance drop-in classes at Brickhouse NYC, the premiere Hip Hop training studio in Times Square. Suitable for all levels from beginner to professional/commercial",
+          "category": "dance"
+        },
+        {
+          "name": "X Factory Training",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788142598916453/x-factory-training-new-york-city-ny/",
+          "venue": "Brickhouse NYC",
+          "price": null,
+          "address": "Brickhouse NYC, Times Square, New York City, NY, United States, New York City, NY",
+          "lat": 40.75765,
+          "lng": -73.98595,
+          "description": "A membership-based Hip Hop and commercial dance training program requiring one session per week. No audition required—open to all skill levels from beginner to professional. Provides rigorous,",
+          "category": "dance"
+        },
+        {
+          "name": "90 Minute Drop-In Class",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788142598869642/minute-drop-in-class-new-york-city-ny/",
+          "venue": "Brickhouse NYC",
+          "price": null,
+          "address": "Brickhouse NYC, Times Square, New York City, NY, United States, New York City, NY",
+          "lat": 40.75765,
+          "lng": -73.98595,
+          "description": "A 90-minute drop-in Hip Hop and commercial dance class for all levels, from beginners to professional dancers. Offers foundational Hip Hop styles plus cutting-edge choreography and contemporary",
+          "category": "dance"
+        },
+        {
+          "name": "Hiphop Foundation Class - Ditto",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788142698346252/hiphop-foundation-class-ditto-new-york-city-ny/",
+          "venue": "RnnL Dance",
+          "price": null,
+          "address": "RnnL Dance, New York City, United States, New York City, NY",
+          "lat": 40.62739,
+          "lng": -74.104195,
+          "description": "An absolute beginner Hip Hop foundation class featuring the song 'Ditto.' Designed for those with no prior dance experience, this session builds essential hip hop movement skills in a welcoming environment.",
+          "category": "dance"
+        },
+        {
+          "name": "Hip Hop Open Class (Adults) – Peridance Center",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788142927221724/hip-hop-open-class-adults-peridance-center-new-york-city-ny/",
+          "venue": "Peridance Center",
+          "price": null,
+          "address": "Peridance Center, 126 E 13 Street, New York, NY 10003, New York City, United States, New York City, NY",
+          "lat": 40.732809,
+          "lng": -73.988676,
+          "description": "Drop-in Hip Hop classes offered as part of 200+ daily dance classes and workshops open to adult students on all levels. Year-round pay-as-you-go format, open to the community and dancers from all",
+          "category": "dance"
+        },
+        {
+          "name": "Hip Hop Classes – The School at Peridance (Children & Teens)",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788142927188323/hip-hop-classes-the-school-at-peridance-children-teens-new-york-city-ny/",
+          "venue": "Peridance Center",
+          "price": null,
+          "address": "Peridance Center, 126 E 13 Street, New York, NY 10003, New York City, United States, New York City, NY",
+          "lat": 40.732809,
+          "lng": -73.988676,
+          "description": "Enrollment-based Hip Hop classes for students ranging from 18 months to 18 years, offered through a progressive interdisciplinary approach to dance training. Emphasizes thorough understanding of",
+          "category": "family"
+        },
+        {
+          "name": "Fierce Feminine Hip Hop with Mary Moretti",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788142443602983/fierce-feminine-hip-hop-with-mary-moretti-new-york-city-ny/",
+          "venue": "SassClass NYC",
+          "price": null,
+          "address": "SassClass NYC, New York City, NY, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "A Fierce Feminine Hip Hop class built around the belief that dance is when you stop using logic and set yourself free. Taught by Mary Moretti, a choreographer who works with artists including Lil Uzi",
+          "category": "dance"
+        },
+        {
+          "name": "Fierce Feminine Hip Hop with Emma Rosa",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788142443558954/fierce-feminine-hip-hop-with-emma-rosa-new-york-city-ny/",
+          "venue": "SassClass NYC",
+          "price": null,
+          "address": "SassClass NYC, New York City, NY, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "A Fierce Feminine Hip Hop class focused on movement expression, intuition, community-building, and unapologetic self-acceptance. Taught by Emma Rosa, a professional dancer, choreographer, and backup",
+          "category": "dance"
+        },
+        {
+          "name": "SassClass Daily Hip Hop Classes",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788142443334392/sassclass-daily-hip-hop-classes-new-york-city-ny/",
+          "venue": "SassClass Midtown Manhattan Studio",
+          "price": null,
+          "address": "SassClass Midtown Manhattan Studio, Midtown Manhattan, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.757719,
+          "lng": -73.982288,
+          "description": "Daily hip-hop choreography classes at a Midtown Manhattan studio, available in Sass Foundations (beginner technique & choreography), open level (all dancers welcome), and Sass Advanced (faster pace,",
+          "category": "dance"
+        },
+        {
+          "name": "Intro to Hip Hop with Buddha Stretch",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347822006954/intro-to-hip-hop-with-buddha-stretch-new-york-city-ny/",
+          "venue": "Peridance Center",
+          "price": null,
+          "address": "Peridance Center, 126 East 13th Street, New York, NY 10003, New York City, United States, New York City, NY",
+          "lat": 40.732805,
+          "lng": -73.98867,
+          "description": "Taught by the legendary Buddha Stretch, this class covers the foundations of Freestyle Hip-Hop, bridging 'Old Skool' and 'New Skool' styles. Students explore Hip Hop culture and music through",
+          "category": "dance"
+        },
+        {
+          "name": "Int. Hip Hop @ Millennium Dance Company",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16654346047850/int-hip-hop-millennium-dance-company-the-bronx-ny/",
+          "venue": "Millennium Dance Company",
+          "price": null,
+          "address": "2038 Davidson Avenue, Bronx, NY 10453, The Bronx, NY",
+          "lat": 40.8535636,
+          "lng": -73.90847149999999,
+          "description": "There are many iconic dance styles that suit each decade, but hip hop has continued to evolve and stay relevant. Hip Hop dance includes a wide range of \"street dance\" styles that are associated with",
+          "category": "dance"
+        },
+        {
+          "name": "Jazz/Hip-Hop Combo @ The Dance Loft",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543460034124/jazzhip-hop-combo-the-dance-loft-long-beach-ny/",
+          "venue": "The Dance Loft",
+          "price": null,
+          "address": "160 W Park Ave, Long Beach, NY 11561, United States, Long Beach, NY",
+          "lat": 40.5880957,
+          "lng": -73.6689119,
+          "description": "These classes lay the foundation for correct, safe, and successful dancing while still creating a fun and engaging environment for our youngest dancers to learn and grow.",
+          "category": "music"
+        },
+        {
+          "name": "Hip Hop 5-7 yrs @ Midtown Movement And Dance",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543460119416/hip-hop-yrs-midtown-movement-and-dance-new-york-ny/",
+          "venue": "Midtown Movement And Dance",
+          "price": null,
+          "address": "222 East 34th Street, New York, NY, New York, NY",
+          "lat": 40.7449717,
+          "lng": -73.9770424,
+          "description": "We use top hits popular with this age group to engage and keep class energy high! Students warm up in a circle on their own dance spots and will locomote across the floor before learning basic",
+          "category": "dance"
+        },
+        {
+          "name": "Hip Hop 8-10 yrs @ Midtown Movement And Dance",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16654346008150/hip-hop-yrs-midtown-movement-and-dance-new-york-ny/",
+          "venue": "Midtown Movement And Dance",
+          "price": null,
+          "address": "222 East 34th Street, New York, NY, New York, NY",
+          "lat": 40.7449717,
+          "lng": -73.9770424,
+          "description": "At Midtown Movement and Dance Company, our mission is to cultivate a passion for dance in the hearts and minds of young movers. Our classes use engaging music, creativity, positive reinforcement,",
+          "category": "dance"
+        },
+        {
+          "name": "Adult Beginner Hip Hop with Jason Santana",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347723157593/adult-beginner-hip-hop-with-jason-santana-new-york-city-ny/",
+          "venue": "Brickhouse NYC",
+          "price": null,
+          "address": "Brickhouse NYC, 156 West 44th Street, 3rd Floor, New York, NY 10036, New York City, United States, New York City, NY",
+          "lat": 40.756818,
+          "lng": -73.985252,
+          "description": "Led by Jason Santana, this entry-level class explores foundational Hip Hop styles and urban dance techniques. Students learn the essential bounce, rock, and grooves that define the style while",
+          "category": "dance"
+        },
+        {
+          "name": "Adult Beginner Hip Hop @ Brickhouse NYC",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16654346030848/adult-beginner-hip-hop-brickhouse-nyc-new-york-ny/",
+          "venue": "Brickhouse NYC",
+          "price": null,
+          "address": "156 West 44th Street, 3rd floor, New York, NY 10036, New York, NY",
+          "lat": 40.7568116,
+          "lng": -73.9853716,
+          "description": "Hip-hop Class with Jason Santana. Brickhouse NYC is New York Citys premiere urban dance training studio. We are the nations boutique headquarters for the ultimate urban dance training experience.",
+          "category": "dance"
+        },
+        {
+          "name": "Advance Beginner Hip Hop Choreo @ PMT House of Dance",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543459318024/advance-beginner-hip-hop-choreo-pmt-house-of-dance-new-york-ny/",
+          "venue": "PMT House of Dance",
+          "price": null,
+          "address": "28 W 25th St, 2nd floor, New York, NY 10010, United States, New York, NY",
+          "lat": 40.743371,
+          "lng": -73.99050799999999,
+          "description": "Students must wear comfortable dance or athletic pants. No jeans, cargo pants, or shorts are allowed. Students must wear either dance sneakers or regular sneakers of any type/brand.",
+          "category": "dance"
+        },
+        {
+          "name": "Advanced Beginner Hip Hop with Devynn Brooks",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347685459550/advanced-beginner-hip-hop-with-devynn-brooks-new-york-city-ny/",
+          "venue": "PMT House of Dance",
+          "price": null,
+          "address": "PMT House of Dance, 28 W 25th Street, 2nd Floor, New York, NY 10010, New York City, United States, New York City, NY",
+          "lat": 40.743477,
+          "lng": -73.990441,
+          "description": "This class builds on Hip Hop basics with more complex movements and faster-paced choreography. It is ideal for students who have completed introductory courses and want to improve their style and",
+          "category": "dance"
+        },
+        {
+          "name": "Advance Beginner Hip Hop @ PMT House of Dance",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543459071824/advance-beginner-hip-hop-pmt-house-of-dance-new-york-ny/",
+          "venue": "PMT House of Dance",
+          "price": null,
+          "address": "28 W 25th St, 2nd floor, New York, NY 10010, United States, New York, NY",
+          "lat": 40.743371,
+          "lng": -73.99050799999999,
+          "description": "The HipHop Beg. Advance program places a greater emphasis on freestyling whereas the PMT Kids program focuses on applying these foundation toward choreography.",
+          "category": "dance"
+        },
+        {
+          "name": "Fierce Feminine® Hip-Hop",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347790223286/fierce-feminine-hip-hop-new-york-city-ny/",
+          "venue": "SassClass NYC",
+          "price": null,
+          "address": "SassClass NYC, 41 West 36th Street, Suite 3, New York, NY 10018, New York City, United States, New York City, NY",
+          "lat": 40.750666,
+          "lng": -73.98544,
+          "description": "A high-energy class designed to help you channel your inner star while learning professional-quality hip hop choreography. Focuses on building confidence and feminine expression in a supportive",
+          "category": "music"
+        },
+        {
+          "name": "Beg Hip Hop @ Millennium Dance Company",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543460518324/beg-hip-hop-millennium-dance-company-the-bronx-ny/",
+          "venue": "Millennium Dance Company",
+          "price": null,
+          "address": "2038 Davidson Avenue, Bronx, NY 10453, The Bronx, NY",
+          "lat": 40.8535636,
+          "lng": -73.90847149999999,
+          "description": "Many dancers, old and new, enjoy hip hop even though the dance began decades ago. The reason for this is because Hip Hop appeals to everyone, unlike classical dance that is limited to age and body",
+          "category": "dance"
+        },
+        {
+          "name": "Hip Hop (Int/Adv) with Jojo Brooks",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771347723247831/hip-hop-intadv-with-jojo-brooks-new-york-city-ny/",
+          "venue": "Brickhouse NYC",
+          "price": null,
+          "address": "Brickhouse NYC, 156 West 44th Street, 3rd Floor, New York, NY 10036, New York City, United States, New York City, NY",
+          "lat": 40.756818,
+          "lng": -73.985252,
+          "description": "An intermediate to advanced level choreography class with Jojo Brooks focusing on musicality and technical execution. The session covers complex rhythms and grooves within a high-energy urban dance",
+          "category": "dance"
+        },
+        {
+          "name": "Basic/Beginner Hip Hop @ PMT House of Dance",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543459832016/basicbeginner-hip-hop-pmt-house-of-dance-new-york-ny/",
+          "venue": "PMT House of Dance",
+          "price": null,
+          "address": "28 W 25th St, 2nd floor, New York, NY 10010, United States, New York, NY",
+          "lat": 40.743371,
+          "lng": -73.99050799999999,
+          "description": "We will not only provide quality instruction, but we will give them a full understanding of the dance culture. It is this culture that makes the street dance styles so unique and allows dancers to",
+          "category": "dance"
+        },
+        {
+          "name": "Intermediate Hip-Hop  @ The Dance Loft",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543459960332/intermediate-hip-hop-the-dance-loft-long-beach-ny/",
+          "venue": "The Dance Loft",
+          "price": null,
+          "address": "160 W Park Ave, Long Beach, NY 11561, United States, Long Beach, NY",
+          "lat": 40.5880957,
+          "lng": -73.6689119,
+          "description": "A major emphasis in hip-hop is musicality. Students will not only learn how to count music but will also become skilled at listening for different elements and rhythms within the instrumentation",
+          "category": "music"
+        },
+        {
+          "name": "Advanced Hip-Hop  @ The Dance Loft",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543459923832/advanced-hip-hop-the-dance-loft-long-beach-ny/",
+          "venue": "The Dance Loft",
+          "price": null,
+          "address": "160 W Park Ave, Long Beach, NY 11561, United States, Long Beach, NY",
+          "lat": 40.5880957,
+          "lng": -73.6689119,
+          "description": "Classes starts off with a guided warm up and stretch, isolation work, and basic grooves.",
+          "category": "music"
+        },
+        {
+          "name": "Hip Hop 3-5 yrs @ Midtown Movement And Dance",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/166543460154016/hip-hop-yrs-midtown-movement-and-dance-new-york-ny/",
+          "venue": "Midtown Movement And Dance",
+          "price": null,
+          "address": "222 East 34th Street, New York, NY, New York, NY",
+          "lat": 40.7449717,
+          "lng": -73.9770424,
+          "description": "In 3-5yr-old hip-hop, our students experience a fun, entertaining environment while learning basic hip-hop movement and styles.",
+          "category": "dance"
+        }
+      ],
+      "error": null,
+      "duration": 2.11,
+      "cached": false
+    },
+    {
+      "venue": "DanceUS: NYC Ballet",
+      "url": "https://www.danceus.org/events/ballet/new-york-ny-ballet-classes/",
+      "events": [
+        {
+          "name": "Adult Ballet 2 (Tuesday)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771351109245293/adult-ballet-tuesday-new-york-city-ny/",
+          "venue": "Playwrights Rehearsal Studios",
+          "price": null,
+          "address": "Playwrights Rehearsal Studios, 440 Lafayette St, Floor 4, Studio 4F, New York, NY 10003, New York City, United States, New York City, NY",
+          "lat": 40.729463,
+          "lng": -73.992115,
+          "description": "Designed for adult dancers with at least one year of consistent experience looking to refine alignment, strength, and coordination. The class introduces more detailed movement vocabulary and",
+          "category": "dance"
+        },
+        {
+          "name": "Alumni Program – Ballet Classes & Performance",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788148958595115/alumni-program-ballet-classes-performance-new-york-city-ny/",
+          "venue": "Ballet Tech Studios",
+          "price": null,
+          "address": "Ballet Tech Studios, New York City, NY, United States, New York City, NY",
+          "lat": 40.694933,
+          "lng": -73.986378,
+          "description": "Ongoing ballet classes, professional development, and performance opportunities for Ballet Tech graduates. Provides continued dance training and artistic growth beyond the formal school program. Held",
+          "category": "dance"
+        },
+        {
+          "name": "Ballet Tech Across New York",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788148958555778/ballet-tech-across-new-york-new-york-city-ny/",
+          "venue": "Public Elementary Schools (NYC)",
+          "price": null,
+          "address": "Public Elementary Schools (NYC), New York City, NY, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Free ballet enrichment classes brought to public elementary schools across New York City. Designed to introduce young students to ballet technique, rhythm, and artistry. A community outreach program",
+          "category": "community"
+        },
+        {
+          "name": "Introduction to Ballet Program",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788148958381293/introduction-to-ballet-program-new-york-city-ny/",
+          "venue": "Ballet Tech Studios",
+          "price": null,
+          "address": "Ballet Tech Studios, New York City, NY, United States, New York City, NY",
+          "lat": 40.694933,
+          "lng": -73.986378,
+          "description": "A series of introductory ballet classes held at Ballet Tech's studios in New York City, designed for invited students new to ballet. The program provides foundational technique and movement training",
+          "category": "dance"
+        },
+        {
+          "name": "Adult Ballet Series",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149132427461/adult-ballet-series-new-york-city-ny/",
+          "venue": "City Ballet Studio",
+          "price": null,
+          "address": "City Ballet Studio, NYC, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.614112,
+          "lng": -74.079316,
+          "description": "A structured series of adult ballet classes at City Ballet Studio, allowing dancers to progress and refine technique over a set period. Designed for adults at various levels who want a consistent",
+          "category": "dance"
+        },
+        {
+          "name": "Actual Beginner Adult Ballet",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149132384304/actual-beginner-adult-ballet-new-york-city-ny/",
+          "venue": "City Ballet Studio",
+          "price": null,
+          "address": "City Ballet Studio, NYC, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.614112,
+          "lng": -74.079316,
+          "description": "A true beginner-level adult ballet class at City Ballet Studio, perfect for those starting from scratch. Focuses on the fundamentals of ballet in a welcoming and constructive environment. No prior",
+          "category": "dance"
+        },
+        {
+          "name": "Adult Ballet Classes",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149132309924/adult-ballet-classes-new-york-city-ny/",
+          "venue": "City Ballet Studio",
+          "price": null,
+          "address": "City Ballet Studio, NYC, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.614112,
+          "lng": -74.079316,
+          "description": "Adult ballet classes at City Ballet Studio designed to build and refine technique in a positive, constructive setting. Open to all levels, whether beginner or long-time dancer. Students are",
+          "category": "dance"
+        },
+        {
+          "name": "Pointe",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788148925407377/pointe-new-york-city-ny/",
+          "venue": "Dance Workshop NY",
+          "price": null,
+          "address": "Dance Workshop NY, 30 East 60th Street, Upper East Side, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.763766,
+          "lng": -73.970216,
+          "description": "An advanced ballet class where dancers stand on the tips of their toes using hard-toed, stiff-shanked pointe shoes to perform ballet steps. Requires dancers to be taking two ballet classes per week",
+          "category": "dance"
+        },
+        {
+          "name": "Ballet",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788148925383486/ballet-new-york-city-ny/",
+          "venue": "Dance Workshop NY",
+          "price": null,
+          "address": "Dance Workshop NY, 30 East 60th Street, Upper East Side, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.763766,
+          "lng": -73.970216,
+          "description": "A classical ballet class emphasizing grace, precision, and formalized steps set in intricate, flowing patterns to create expression through movement. Offered for ages 2-7 as well as all other ages,",
+          "category": "dance"
+        },
+        {
+          "name": "Ballet/Tap Combo & 2's Ballet",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788148925330755/ballettap-combo-s-ballet-new-york-city-ny/",
+          "venue": "Dance Workshop NY",
+          "price": null,
+          "address": "Dance Workshop NY, 30 East 60th Street, Upper East Side, New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.763766,
+          "lng": -73.970216,
+          "description": "A 30-minute ballet and 30-minute tap combo class teaching fundamentals of both techniques including positions, terminology, body alignment, and rhythm. Additionally features a 45-minute Two's ballet",
+          "category": "dance"
+        },
+        {
+          "name": "Primary Division",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149101633839/primary-division-new-york-city-ny/",
+          "venue": "Ballet Academy East (BAE)",
+          "price": null,
+          "address": "Ballet Academy East (BAE), New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.808723,
+          "lng": -73.885161,
+          "description": "Ballet class for children ages 6 to 7 emphasizing strength, coordination, flexibility, and basic ballet vocabulary. Musicality and joy of dance are emphasized throughout. Taught by faculty including",
+          "category": "dance"
+        },
+        {
+          "name": "Young Dancer Division",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149101589151/young-dancer-division-new-york-city-ny/",
+          "venue": "Ballet Academy East (BAE)",
+          "price": null,
+          "address": "Ballet Academy East (BAE), New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.808723,
+          "lng": -73.885161,
+          "description": "Warm and positive ballet environment for children ages 18 months to 6 years, focusing on physical coordination, self-confidence, musicality, and love of dance. Taught by renowned BAE faculty",
+          "category": "dance"
+        },
+        {
+          "name": "Pre-Professional Division",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/178814910150977/pre-professional-division-new-york-city-ny/",
+          "venue": "Ballet Academy East (BAE)",
+          "price": null,
+          "address": "Ballet Academy East (BAE), New York, NY, New York City, United States, New York City, NY",
+          "lat": 40.808723,
+          "lng": -73.885161,
+          "description": "Advanced ballet training for aspiring dancers ages 7 to 19 at Ballet Academy East. Faculty includes former NY City Ballet principal dancer Daniel Ulbricht and physical therapist Alexandra Smith who",
+          "category": "dance"
+        },
+        {
+          "name": "Actual Beginner Adult Ballet Series (Tuesday)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771351108968725/actual-beginner-adult-ballet-series-tuesday-new-york-city-ny/",
+          "venue": "Playwrights Rehearsal Studios",
+          "price": null,
+          "address": "Playwrights Rehearsal Studios, 440 Lafayette St, Floor 4, Studio 4F, New York, NY 10003, New York City, United States, New York City, NY",
+          "lat": 40.729463,
+          "lng": -73.992115,
+          "description": "A 20-week series designed for adults with zero prior experience to learn foundational ballet technique, terminology, and musicality. Each week builds on the last to ensure dancers feel confident",
+          "category": "dance"
+        },
+        {
+          "name": "Advanced Beginner Ballet",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/177135082741131/advanced-beginner-ballet-new-york-city-ny/",
+          "venue": "Ballet Arts Center for Dance",
+          "price": null,
+          "address": "Ballet Arts Center for Dance, 130 West 56th Street, 6th FL, New York, NY 10019, New York City, United States, New York City, NY",
+          "lat": 40.764104,
+          "lng": -73.979282,
+          "description": "A sequentially structured ballet class with instructors like Noriko Hara that bridges the gap between basic fundamentals and intermediate training. Includes detailed barre work, center adagio, and",
+          "category": "dance"
+        },
+        {
+          "name": "Intermediate Ballet @ Joffrey Ballet School",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/167356308728132/intermediate-ballet-joffrey-ballet-school-new-york-ny/",
+          "venue": "Joffrey Ballet School",
+          "price": null,
+          "address": "436 6th Ave, New York, NY 10011, United States, New York, NY",
+          "lat": 40.7345964,
+          "lng": -73.9986375,
+          "description": "There are two basic positions of the arms in ballet. In one, the dancer keeps the fingers of both arms fully touching to form an oval shape, either almost touching the hips, or at navel level, or",
+          "category": "dance"
+        },
+        {
+          "name": "Open Level Ballet",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771351128903316/open-level-ballet-new-york-city-ny/",
+          "venue": "Bridge for Dance",
+          "price": null,
+          "address": "Bridge for Dance, 2726 Broadway, 3rd Floor, New York, NY 10025, New York City, United States, New York City, NY",
+          "lat": 40.79995,
+          "lng": -73.967781,
+          "description": "A versatile ballet session with Judy Ayres designed to accommodate various skill levels. Dancers are encouraged to work at their own pace while refining their technical proficiency and grace.",
+          "category": "dance"
+        },
+        {
+          "name": "Advanced-Beginner Ballet with Antonia Franceschi",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/177135094962041/advanced-beginner-ballet-with-antonia-franceschi-new-york-city-ny/",
+          "venue": "Peridance Center",
+          "price": null,
+          "address": "Peridance Center, 126 East 13th Street, New York, NY 10003, New York City, United States, New York City, NY",
+          "lat": 40.732805,
+          "lng": -73.98867,
+          "description": "Focuses on placement, precision, speed, and musicality using the knowledge of masters like Balanchine. Instructor Antonia Franceschi, an alumni of NYCB, provides an uncluttered approach to technique.",
+          "category": "dance"
+        },
+        {
+          "name": "Teen Ballet @ Dance Workshop",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/167356309347916/teen-ballet-dance-workshop-new-york-ny/",
+          "venue": "Dance Workshop",
+          "price": null,
+          "address": "154 E 64th St, New York, NY 10065, United States, New York, NY",
+          "lat": 40.7651822,
+          "lng": -73.96584059999999,
+          "description": "While a dancer with Dance Theatre of Harlem, DePrince went on tour to Israel where she prayed at the Wailing Wall.",
+          "category": "dance"
+        },
+        {
+          "name": "Young Dancers Program — Ballet, Jazz & More",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788149166091813/young-dancers-program-ballet-jazz-more-new-york-city-ny/",
+          "venue": "Bridge For Dance",
+          "price": null,
+          "address": "Bridge For Dance, New York City, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Comprehensive dance classes for children covering Ballet, Jazz, Contemporary, Hip Hop, Aerial, Tap, and more, led by experienced professional teachers. Develops fundamental techniques, artistic",
+          "category": "music"
+        },
+        {
+          "name": "Absolute Beginner Ballet",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788148593331119/absolute-beginner-ballet-new-york-city-ny/",
+          "venue": "Ballet Arts – The Rudolf Nureyev Studio",
+          "price": null,
+          "address": "Ballet Arts – The Rudolf Nureyev Studio, 130 West 56th Street, 6th Fl., NYC, NY 10019, New York City, United States, New York City, NY",
+          "lat": 40.764073,
+          "lng": -73.979234,
+          "description": "New absolute beginner ballet class led by Cynthia Vallone at Ballet Arts, NYC's longest-established dance studio. Designed for those new to ballet, held every Friday from 7:00–8:30 PM in the",
+          "category": "dance"
+        },
+        {
+          "name": "Basic Beginner Ballet @ Joffrey Ballet School",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/167356308593216/basic-beginner-ballet-joffrey-ballet-school-new-york-ny/",
+          "venue": "Joffrey Ballet School",
+          "price": null,
+          "address": "434 6th Ave, New York, NY 10011, United States, New York, NY",
+          "lat": 40.7345839,
+          "lng": -73.99862949999999,
+          "description": "During the seventeenth century, different types of fabrics and designs were used to make costumes more spectacular and eye catching. Court dress still remained for women during this century. Silks,",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Ballet @ Joffrey Ballet School",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/167356308657824/beginner-ballet-joffrey-ballet-school-new-york-ny/",
+          "venue": "Joffrey Ballet School",
+          "price": null,
+          "address": "435 6th Ave, New York, NY 10011, United States, New York, NY",
+          "lat": 40.7347464,
+          "lng": -73.9990952,
+          "description": "Starting early with a ballet class for beginners, will help your child feel at ease as they start to learn the basics of ballet. This includes alignment, as well as how to use the barre. Your child",
+          "category": "dance"
+        },
+        {
+          "name": "Ballet/Tap @ Dance Workshop",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/167356309205016/ballettap-dance-workshop-new-york-ny/",
+          "venue": "Dance Workshop",
+          "price": null,
+          "address": "154 E 64th St, New York, NY 10065, United States, New York, NY",
+          "lat": 40.7651822,
+          "lng": -73.96584059999999,
+          "description": "The aim of this class is to create dynamic flow, musicality and work in a larger range of movement while maintaining a strong center and healthy alignment for each individual.",
+          "category": "dance"
+        },
+        {
+          "name": "2 Ballet @ Dance Workshop",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/16735630899630/ballet-dance-workshop-new-york-ny/",
+          "venue": "Dance Workshop",
+          "price": null,
+          "address": "154 E 64th St, New York, NY 10065, United States, New York, NY",
+          "lat": 40.7651822,
+          "lng": -73.96584059999999,
+          "description": "In the other, the arms are extended to the sides with the elbows slightly bent. These positions may be combined to give other positions.",
+          "category": "dance"
+        },
+        {
+          "name": "Intermediate Ballet with Anna Fateeva",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788148593113787/intermediate-ballet-with-anna-fateeva-new-york-city-ny/",
+          "venue": "Ballet Arts – The Rudolf Nureyev Studio (N.Y. City Center Theater)",
+          "price": null,
+          "address": "Ballet Arts – The Rudolf Nureyev Studio (N.Y. City Center Theater), 130 West 56th Street, 6th FL., NYC, NY 10019, New York City, United States, New York City, NY",
+          "lat": 40.764073,
+          "lng": -73.979234,
+          "description": "Intermediate ballet class taught by featured faculty member Anna Fateeva at Ballet Arts, NYC's largest pillar-free studio located steps from Carnegie Hall. Open to adults at the intermediate level;",
+          "category": "theater"
+        },
+        {
+          "name": "Intermediate Ballet with Simon Kazantsev",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788148593068726/intermediate-ballet-with-simon-kazantsev-new-york-city-ny/",
+          "venue": "Ballet Arts – The Rudolf Nureyev Studio (N.Y. City Center Theater)",
+          "price": null,
+          "address": "Ballet Arts – The Rudolf Nureyev Studio (N.Y. City Center Theater), 130 West 56th Street, 6th FL., NYC, NY 10019, New York City, United States, New York City, NY",
+          "lat": 40.764073,
+          "lng": -73.979234,
+          "description": "Intermediate-level ballet class led by instructor Simon Kazantsev at Ballet Arts, NYC's longest-established adult dance studio near Carnegie Hall. Runs Monday through Friday at 1:00–2:30 PM and",
+          "category": "theater"
+        },
+        {
+          "name": "Advanced Ballet with Igal Perry",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771350949359716/advanced-ballet-with-igal-perry-new-york-city-ny/",
+          "venue": "Peridance Center",
+          "price": null,
+          "address": "Peridance Center, 126 East 13th Street, New York, NY 10003, New York City, United States, New York City, NY",
+          "lat": 40.732805,
+          "lng": -73.98867,
+          "description": "Professional-level ballet class focusing on traditional vocabulary, placement, and technical execution. Led by Artistic Director Igal Perry, the class fuses coordination, musicality, and phrasing.",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Ballet",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771351128686365/beginner-ballet-new-york-city-ny/",
+          "venue": "Bridge for Dance",
+          "price": null,
+          "address": "Bridge for Dance, 2726 Broadway, 3rd Floor, New York, NY 10025, New York City, United States, New York City, NY",
+          "lat": 40.79995,
+          "lng": -73.967781,
+          "description": "A foundational ballet class focusing on basic terminology and technique in a supportive environment. Taught by Faith Kimberling, it is ideal for students with some basic knowledge of the art form.",
+          "category": "dance"
+        },
+        {
+          "name": "Introduction to Ballet Program (6-Week Series)",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771350923553652/introduction-to-ballet-program-week-series-new-york-city-ny/",
+          "venue": "Ballet Tech",
+          "price": null,
+          "address": "Ballet Tech, 890 Broadway, New York, NY 10003, New York City, United States, New York City, NY",
+          "lat": 40.738603,
+          "lng": -73.989718,
+          "description": "A free 6-week beginner series for 3rd graders designed to teach fundamental ballet steps, vocabulary, and studio discipline. This program introduces students to classical technique through a",
+          "category": "services"
+        },
+        {
+          "name": "Ballet Body Barre (Beginner)",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771350987401347/ballet-body-barre-beginner-new-york-city-ny/",
+          "venue": "Ballet and Body",
+          "price": null,
+          "address": "Ballet and Body, 325 East 65th Street, New York, NY 10065, New York City, United States, New York City, NY",
+          "lat": 40.764045,
+          "lng": -73.960374,
+          "description": "An authentic ballet-based workout designed to lengthen, tone, and strengthen muscles using traditional barre techniques. This class is suitable for those with some experience or those looking for a",
+          "category": "dance"
+        },
+        {
+          "name": "2's Ballet",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1771351076791255/s-ballet-new-york-city-ny/",
+          "venue": "Dance Workshop",
+          "price": null,
+          "address": "Dance Workshop, 30 East 60th Street, New York, NY 10022, New York City, United States, New York City, NY",
+          "lat": 40.763775,
+          "lng": -73.970219,
+          "description": "A 45-minute creative movement class specifically designed for two-year-olds to discover the basics of ballet. Young dancers will learn fundamental positions and terminology in a fun, professional",
+          "category": "dance"
+        }
+      ],
+      "error": null,
+      "duration": 1.55,
+      "cached": false
+    },
+    {
+      "venue": "DanceUS: NYC Belly Dance",
+      "url": "https://www.danceus.org/events/belly-dance/new-york-ny-belly-dance-classes/",
+      "events": [
+        {
+          "name": "Beginners Intermediate Belly Dance",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151419059871/beginners-intermediate-belly-dance-new-york-city-ny/",
+          "venue": "Gabriela Dance Art",
+          "price": null,
+          "address": "Gabriela Dance Art, New York City, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Weekly beginner-to-intermediate belly dance class with Gabriela Figueroa, building technique, creative choreography, and confidence. Designed for dancers progressing from foundational moves to more",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Belly Dance",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/171158101748324/beginner-belly-dance-new-york-ny/",
+          "venue": "SHEBA- Belly dance school",
+          "price": null,
+          "address": "601 Broadway 11th floor, New York, NY 10019, United States, New York, NY",
+          "lat": 40.7253583,
+          "lng": -73.9973059,
+          "description": "Discover the joy of belly dance as you learn basic moves and easy-to-follow combinations. Gain body awareness, correct posture, and musicality in a fun and supportive environment. No experience is",
+          "category": "dance"
+        },
+        {
+          "name": "Despina's Belly Dance Classes",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151677564734/despinas-belly-dance-classes-new-york-city-ny/",
+          "venue": "Asteria Dance",
+          "price": null,
+          "address": "Asteria Dance, Manhattan &amp; Astoria, Queens, NYC (near N &amp; W subway lines in Astoria; near 1, 2, W &amp; R trains in Manhattan), New York City, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Dynamic belly dance classes blending modern and traditional vocabulary, led by Debbie Despina in an inclusive, welcoming environment. Each session includes a strengthening warmup, movement training,",
+          "category": "dance"
+        },
+        {
+          "name": "JBelly On-Demand Belly Dance Training (Beginner to Advanced)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151375851787/jbelly-on-demand-belly-dance-training-beginner-to-advanced-new-york-city-ny/",
+          "venue": "Online (On-Demand Platform)",
+          "price": null,
+          "address": "Online (On-Demand Platform), Online – accessible from anywhere, New York City, United States, New York City, NY",
+          "lat": 40.684057,
+          "lng": -73.965026,
+          "description": "Pre-recorded belly dance classes, courses, and fitness programs taught by Janelle Jalila Issis, available across 7 unique channels from Absolute Beginner to Advanced. Includes 280+ classes covering",
+          "category": "dance"
+        },
+        {
+          "name": "BellydanceBURN™ Sweat Sexy Fitness & Dance Program",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151375603418/bellydanceburn-sweat-sexy-fitness-dance-program-new-york-city-ny/",
+          "venue": "Online (Zoom / On-Demand Platform)",
+          "price": null,
+          "address": "Online (Zoom / On-Demand Platform), Online – accessible from anywhere, New York City, United States, New York City, NY",
+          "lat": 40.684057,
+          "lng": -73.965026,
+          "description": "An all-levels 'Sweat Sexy' belly dance fitness system created by Janelle Jalila Issis. Features 165+ unique classes ranging from 15 min to 1 hr in length, designed for beginners through advanced",
+          "category": "dance"
+        },
+        {
+          "name": "JBelly Live Belly Dance Classes (Zoom & In-Person)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151375385842/jbelly-live-belly-dance-classes-zoom-in-person-new-york-city-ny/",
+          "venue": "Zoom / New York City / Alabama (in-person)",
+          "price": null,
+          "address": "Zoom / New York City / Alabama (in-person), New York City, NY / Alabama, AL / Online via Zoom, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Live belly dance classes taught by Janelle Jalila Issis, a Palestinian-American touring artist and So You Think You Can Dance Season 9 finalist. Open to Beginner–Advanced dancers, available via Zoom",
+          "category": "dance"
+        },
+        {
+          "name": "Raqs Sharqi and Fusion Belly Dance Classes",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151526439850/raqs-sharqi-and-fusion-belly-dance-classes-new-york-city-ny/",
+          "venue": "Bellyqueen",
+          "price": null,
+          "address": "Bellyqueen, New York City, NY, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Professional belly dance classes covering Raqs Sharqi (traditional) and Fusion styles, offered for all skill levels. Taught by Bellyqueen, an acclaimed professional bellydance company and school",
+          "category": "dance"
+        },
+        {
+          "name": "Raqs Sharqi – Belly Dance",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151419074122/raqs-sharqi-belly-dance-new-york-city-ny/",
+          "venue": "Gabriela Dance Art",
+          "price": null,
+          "address": "Gabriela Dance Art, New York City, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Weekly Raqs Sharqi (Arabic-style belly dance) class with Gabriela Figueroa, a master in this form. Focuses on fluid, expressive movement rooted in musicality and personal expression. 1-hour session.",
+          "category": "dance"
+        },
+        {
+          "name": "Basic Belly Dance",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151419030795/basic-belly-dance-new-york-city-ny/",
+          "venue": "Gabriela Dance Art",
+          "price": null,
+          "address": "Gabriela Dance Art, New York City, United States, New York City, NY",
+          "lat": 40.712749,
+          "lng": -74.005994,
+          "description": "Weekly basic belly dance class with Gabriela Figueroa, focused on movement rooted in sensation, presence, and joy. A welcoming space for beginners to explore foundational belly dance technique and",
+          "category": "dance"
+        },
+        {
+          "name": "SharQuí®—the Bellydance Workout (Level 1)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151484566401/sharquthe-bellydance-workout-level-new-york-city-ny/",
+          "venue": "Carol's Studio",
+          "price": null,
+          "address": "Carol&#39;s Studio, 122 Ashland Place (btw Myrtle &amp; Willoughby), Downtown Brooklyn, NY, New York City, United States, New York City, NY",
+          "lat": 40.69245,
+          "lng": -73.97924,
+          "description": "A 60-minute bellydance fitness workout led by Carol Tandava, combining sexy fitness combos with movement breakdown. Designed for beginners building their base, focusing on posture, hip isolation, and",
+          "category": "sports"
+        },
+        {
+          "name": "SharQuí®—the Bellydance Workout (Level 0 – Free)",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151484334586/sharquthe-bellydance-workout-level-free-new-york-city-ny/",
+          "venue": "McCarren Play Center",
+          "price": null,
+          "address": "McCarren Play Center, 776 Lorimer Street, Williamsburg, Brooklyn, NY, New York City, United States, New York City, NY",
+          "lat": 40.720174,
+          "lng": -73.950036,
+          "description": "A 60-minute bellydance fitness workout for all skill levels, taught by Carol Tandava. Drill a sexy fitness combo with a focus on fun, improving posture, slimming hips and legs, and burning 350+",
+          "category": "sports"
+        },
+        {
+          "name": "All Levels Bellydance Class – Westchester",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151342058185/all-levels-bellydance-class-westchester-ardsley-ny/",
+          "venue": "NY Dance Center",
+          "price": null,
+          "address": "NY Dance Center, 1055 Saw Mill River Rd, Ste 205, Ardsley, NY 10502, New York City, United States, Ardsley, NY",
+          "lat": 41.024332,
+          "lng": -73.842571,
+          "description": "A weekly all-levels bellydance class offered at NY Dance Center in Ardsley, NY, welcoming beginners through advanced dancers. The curriculum covers technique, musicality, combinations, and",
+          "category": "dance"
+        },
+        {
+          "name": "Basic Belly Dance (Drop-In)",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/17115810277510/basic-belly-dance-drop-in-new-york-ny/",
+          "venue": "Bellyqueen",
+          "price": null,
+          "address": "440 Lafayette St # 4, New York, NY 10003, United States, New York, NY",
+          "lat": 40.7294868,
+          "lng": -73.9922345,
+          "description": "Embark on an exciting journey of belly dance discovery, guided step-by-step by our experienced instructors, alongside a supportive group of fellow absolute beginners. Embrace a nurturing environment",
+          "category": "dance"
+        },
+        {
+          "name": "Basic Belly Dance Monday's",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/17115810217700/basic-belly-dance-mondays-new-york-ny/",
+          "venue": "10 Astor Place, 440 Lafayette St, New York, NY 10003, USA",
+          "price": null,
+          "address": "440 Lafayette St, New York, NY 10003, United States, New York, NY",
+          "lat": 40.7295142,
+          "lng": -73.99232310000001,
+          "description": "For Absolute Beginners to learn in a slow paced class belly dance movements boosting your confidence Service Description For the beautiful Absolute beginners I love these workshops so much !! It is",
+          "category": "dance"
+        },
+        {
+          "name": "Intermediate Salit Belly Dance",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/171158101232232/intermediate-salit-belly-dance-new-york-ny/",
+          "venue": "SHEBA (Open Jar Studios)",
+          "price": null,
+          "address": "1601 BROADWAY, New York, New York, USA, 10019, New York, NY",
+          "lat": 40.75298129999999,
+          "lng": -73.9925318,
+          "description": "Build Confidence. Add Complexity. Now that you're comfortable with the fundamentals from Beginner Bellydance, Intermediate is where your dancing starts to expand. You'll learn new movements and",
+          "category": "dance"
+        },
+        {
+          "name": "Saturday Delight – Guided Bellydance Experience",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/1788151341846318/saturday-delight-guided-bellydance-experience-new-york-city-ny/",
+          "venue": "Open Jar Studios",
+          "price": null,
+          "address": "Open Jar Studios, 1601 Broadway (on 48th st.), 11th Floor, New York, NY 10019, New York City, United States, New York City, NY",
+          "lat": 40.760531,
+          "lng": -73.985142,
+          "description": "A relaxing guided bellydance experience to unwind, move freely, and reconnect through music and movement. Suitable for all levels, this class emphasizes expression and joy over technique. Held at",
+          "category": "dance"
+        },
+        {
+          "name": "Belly Dancing [All Levels]",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/17115810272758/belly-dancing-all-levels-brooklyn-ny/",
+          "venue": "368 Fulton St, Brooklyn, NY 11201, USA",
+          "price": null,
+          "address": "368 Fulton St, Brooklyn, NY 11201, United States, Brooklyn, NY",
+          "lat": 40.6915067,
+          "lng": -73.9878119,
+          "description": "In-Person Hybrid: This class is hybrid it will take place in person and will be streamed online for students to join remotely. Health Benefits Build core strength, improve posture, aids in digestion,",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Mariyah Belly Dance",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/171158101567932/beginner-mariyah-belly-dance-new-york-ny/",
+          "venue": "Sublime Bellydance",
+          "price": null,
+          "address": "New York, NY, United States, New York, NY",
+          "lat": 40.7127753,
+          "lng": -74.0059728,
+          "description": "Mariyah is a bellydancer, choreographer and instructor based in NYC. Distinguished by her graceful and evocative dance style, she is highly regarded as a leading dance artist in the New York area.",
+          "category": "dance"
+        },
+        {
+          "name": "Beginner Plus Belly Dance",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/171158101913816/beginner-plus-belly-dance-new-york-ny/",
+          "venue": "SHEBA- Belly dance school",
+          "price": null,
+          "address": "601 Broadway 11th floor, New York, NY 10019, United States, New York, NY",
+          "lat": 40.7253583,
+          "lng": -73.9973059,
+          "description": "Take your belly dancing skills to the next level at SHEBA- Belly dance school with Beginner Plus. Discover fun combos, learn new techniques, and explore the art of using props like veils and fan",
+          "category": "dance"
+        },
+        {
+          "name": "Intermediate Belly Dance",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://www.danceus.org/event/171158102476332/intermediate-belly-dance-brooklyn-ny/",
+          "venue": "Mark Morris Dance Center",
+          "price": null,
+          "address": "3 Lafayette Ave, Brooklyn, NY 11217, United States, Brooklyn, NY",
+          "lat": 40.6869833,
+          "lng": -73.97891680000001,
+          "description": "This class explores the traditional belly dances of North and East Africa. In addition to learning belly dances fundamental movement and performance techniques, students will be introduced to",
+          "category": "dance"
+        }
+      ],
+      "error": null,
+      "duration": 1.6,
+      "cached": false
+    },
+    {
+      "venue": "SalsaVida NYC Socials",
+      "url": "https://www.salsavida.com/guides/new-york/calendar/",
+      "events": [
+        {
+          "name": "Bachata at Solas",
+          "date": "2026-11-13T00:30:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/bachata-at-solas/",
+          "venue": "Solas Bar",
+          "price": "$15",
+          "address": "232 E 9th St, #1, New York City, New York 10003, United States, New York City",
+          "lat": 40.7293818,
+          "lng": -73.9880826,
+          "description": "Passion Thursdays combines a beginner Bachata lesson and Latin party at Solas Bar in New ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Thursdays at Time Out Market",
+          "date": "2026-11-13T00:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-thursdays-at-time-out-market/",
+          "venue": "Time Out Market New York",
+          "price": "Free",
+          "address": "55 Water Street, 5th Floor, Brooklyn, NY 11201, United States, New York City",
+          "lat": 40.7034272,
+          "lng": -73.9921126,
+          "description": "Salsa Thursdays is a weekly lesson and social at Time Out Market New York in ...",
+          "category": "dance"
+        },
+        {
+          "name": "Baila Wednesdays at Solas",
+          "date": "2026-11-12T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/baila-wednesdays-at-solas/",
+          "venue": "Solas Bar",
+          "price": "$15",
+          "address": "232 E 9th St #1, New York, NY 10003, USA, New York City",
+          "lat": 40.7293818,
+          "lng": -73.9880826,
+          "description": "Baila Wednesdays at Solas Bar is a vibrant weekly salsa social held in the East ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-11T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "Nieves Latin Dance Studio",
+          "price": "$25",
+          "address": "134 West 29th Street, 6th Floor, Suite 602, New York, NY 10001, United States, New York City",
+          "lat": 40.7471233,
+          "lng": -73.9917767,
+          "description": "Nieves Latin Dance Studio offers salsa classes throughout the week in New York, with options ...",
+          "category": "dance"
+        },
+        {
+          "name": "Roofchata Wednesdays at 230 Fifth",
+          "date": "2026-11-12T02:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/roofchata-wednesdays-at-230-fifth/",
+          "venue": "230 Fifth Rooftop Bar",
+          "price": "$15",
+          "address": "230 5th Ave, New York City, New York 10001, United States, New York City",
+          "lat": 40.7441081,
+          "lng": -73.9888201,
+          "description": "Roofchata Wednesdays brings Bachata class and social dancing to 230 Fifth Rooftop Bar in New ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Tuesdays at Mamajuana Cafe",
+          "date": "2026-11-10T21:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-tuesdays-at-mamajuana-cafe/",
+          "venue": "Mamajuana Cafe",
+          "price": "Free",
+          "address": "3233 E Tremont Ave, New York, NY 10461, USA, New York City",
+          "lat": 40.8357246,
+          "lng": -73.8325907,
+          "description": "Every Tuesday night, Mamajuana Cafe in the Bronx heats up with the lively sounds of ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-10T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "Nieves Latin Dance Studio",
+          "price": "$25",
+          "address": "134 West 29th Street, 6th Floor, Suite 602, New York, NY 10001, United States, New York City",
+          "lat": 40.7471233,
+          "lng": -73.9917767,
+          "description": "Nieves Latin Dance Studio offers salsa classes throughout the week in New York, with options ...",
+          "category": "dance"
+        },
+        {
+          "name": "Latin Mondays at 5th & Mad",
+          "date": "2026-11-09T22:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/latin-mondays-at-5th-mad/",
+          "venue": "5th & Mad",
+          "price": "$15",
+          "address": "7 E 36th St, New York, NY 10016, USA, New York City",
+          "lat": 40.7496003,
+          "lng": -73.9828889,
+          "description": "Latin Mondays NYC presents an unforgettable weekly evening of music, dance, and fine dining in ...",
+          "category": "dance"
+        },
+        {
+          "name": "Gonzalez y Gonzalez Live Salsa Party",
+          "date": "2026-11-09T02:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/gonzalez-y-gonzalez-live-salsa-party/",
+          "venue": "Gonzalez y Gonzalez",
+          "price": "Free",
+          "address": "192 Mercer Street, New York, NY 10012, USA, New York City",
+          "lat": 40.7262253,
+          "lng": -73.9970904,
+          "description": "Gonzalez y Gonzalez transforms its Mexican eatery into a vibrant Latin nightclub every Thursday and Sunday. ...",
+          "category": "clubbing"
+        },
+        {
+          "name": "Salsa Bachata Sundays at The Rose",
+          "date": "2026-11-08T23:30:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-bachata-sundays-at-the-rose/",
+          "venue": "The Rose",
+          "price": "$15",
+          "address": "160 W 25th St, New York, NY 10001, USA, New York City",
+          "lat": 40.7449824,
+          "lng": -73.9942337,
+          "description": "Salsa Bachata Sundays is a vibrant weekly social held at The Rose on West 25th ...",
+          "category": "dance"
+        },
+        {
+          "name": "Latin & Salsa Dance Social Every Sunday",
+          "date": "2026-11-09T00:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/rochester/latin-salsa-dance-social-every-sunday/",
+          "venue": "The Clover Center",
+          "price": "$5",
+          "address": "1101 Clover St, Rochester, NY 14610, United States, Rochester",
+          "lat": 43.1367874,
+          "lng": -77.5419831,
+          "description": "Latin & Salsa Dance Social Every Sunday is RocSalsa’s weekly Sunday social in Rochester. The ...",
+          "category": "dance"
+        },
+        {
+          "name": "LVG Salsa Social",
+          "date": "2026-11-08T23:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/lvg-salsa-social/",
+          "venue": "LVG Salsa Social (EM)",
+          "price": "$20",
+          "address": "224 W 35th St, 15F, New York, NY 10001, United States, New York City",
+          "lat": 40.7520099,
+          "lng": -73.9912099,
+          "description": "LVG Salsa Social is a twice-monthly Sunday salsa social held in Midtown Manhattan on the ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-08T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "Nieves Latin Dance Studio",
+          "price": "$25",
+          "address": "134 West 29th Street, 6th Floor, Suite 602, New York, NY 10001, United States, New York City",
+          "lat": 40.7471233,
+          "lng": -73.9917767,
+          "description": "Nieves Latin Dance Studio offers salsa classes throughout the week in New York, with options ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Latin Dance Social by Dance Fever Studios",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-latin-dance-social-by-dance-fever-studios/",
+          "venue": "Dance Fever Studios",
+          "price": "$15",
+          "address": "159 20th Street, Brooklyn, NY 11232, United States, Brooklyn",
+          "lat": 40.66382,
+          "lng": -73.9956843,
+          "description": "Dance Fever Studios hosts the Salsa Latin Dance Social in Brooklyn, a social welcoming dancers ...",
+          "category": "dance"
+        },
+        {
+          "name": "Latin Night at Willie’s Steak House",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/latin-night-at-willies-steak-house/",
+          "venue": "Willie's Steak House",
+          "price": "Free",
+          "address": "1832 Westchester Avenue, Bronx NY 10472, USA, New York City",
+          "lat": 40.8320713,
+          "lng": -73.8648323,
+          "description": "Every week, Willie’s Steak House in the Bronx hosts a vibrant Latin Night that combines ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Groove Dance Class Live Music and Happy Hour",
+          "date": "2026-11-06T23:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-groove-fridays-free-salsa-dance-lessons-happy-hour/",
+          "venue": "SOB's",
+          "price": "$10",
+          "address": "204 Varick Street, New York, NY 10014, USA, New York City",
+          "lat": 40.728453,
+          "lng": -74.0051298,
+          "description": "Salsa Groove Dance Class Live Music and Happy Hour takes place at SOB’s in New ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-06T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "Nieves Latin Dance Studio",
+          "price": "$25",
+          "address": "134 West 29th Street, 6th Floor, Suite 602, New York, NY 10001, United States, New York City",
+          "lat": 40.7471233,
+          "lng": -73.9917767,
+          "description": "Nieves Latin Dance Studio offers salsa classes throughout the week in New York, with options ...",
+          "category": "dance"
+        },
+        {
+          "name": "Friday Sensual Bachata at Sensual Movement NYC",
+          "date": "2026-11-07T02:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/friday-sensual-bachata-at-sensual-movement-nyc/",
+          "venue": "Sensual Movement NYC",
+          "price": "$15",
+          "address": "224 W 35th St, Floor 15, New York City, New York 10001, United States, New York City",
+          "lat": 40.7518436,
+          "lng": -73.9910022,
+          "description": "Sensual Movement NYC pairs Sensual Bachata classes and social dancing every Friday. Complimentary beginner and ...",
+          "category": "dance"
+        },
+        {
+          "name": "Bachata Fridays at Hotel Chantelle",
+          "date": "2026-11-07T04:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/bachata-fridays-at-hotel-chantelle/",
+          "venue": "Hotel Chantelle",
+          "price": "$10.31",
+          "address": "92 Ludlow Street, New York, NY 10002, United States, New York City",
+          "lat": 40.7183228,
+          "lng": -73.9889521,
+          "description": "Bachata Fridays brings weekly bachata social dancing to Hotel Chantelle in New York City every ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Craze After Work",
+          "date": "2026-11-06T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-craze-after-work/",
+          "venue": "Atolye Venue & Bar",
+          "price": null,
+          "address": "236b 6th Street, Brooklyn NY 11217, USA, New York City",
+          "lat": 40.672676,
+          "lng": -73.988511,
+          "description": "Salsa Craze After Work is a vibrant after work salsa social held every Thursday at ...",
+          "category": "dance"
+        },
+        {
+          "name": "Gonzalez y Gonzalez Live Salsa Party",
+          "date": "2026-11-06T02:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/gonzalez-y-gonzalez-live-salsa-party/",
+          "venue": "Gonzalez y Gonzalez",
+          "price": "Free",
+          "address": "192 Mercer Street, New York, NY 10012, USA, New York City",
+          "lat": 40.7262253,
+          "lng": -73.9970904,
+          "description": "Gonzalez y Gonzalez transforms its Mexican eatery into a vibrant Latin nightclub every Thursday and Sunday. ...",
+          "category": "clubbing"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-05T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "Nieves Latin Dance Studio",
+          "price": "$25",
+          "address": "134 West 29th Street, 6th Floor, Suite 602, New York, NY 10001, United States, New York City",
+          "lat": 40.7471233,
+          "lng": -73.9917767,
+          "description": "Nieves Latin Dance Studio offers salsa classes throughout the week in New York, with options ...",
+          "category": "dance"
+        },
+        {
+          "name": "Bachata at Solas",
+          "date": "2026-11-06T00:30:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/bachata-at-solas/",
+          "venue": "Solas Bar",
+          "price": "$15",
+          "address": "232 E 9th St, #1, New York City, New York 10003, United States, New York City",
+          "lat": 40.7293818,
+          "lng": -73.9880826,
+          "description": "Passion Thursdays combines a beginner Bachata lesson and Latin party at Solas Bar in New ...",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Thursdays at Time Out Market",
+          "date": "2026-11-06T00:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-thursdays-at-time-out-market/",
+          "venue": "Time Out Market New York",
+          "price": "Free",
+          "address": "55 Water Street, 5th Floor, Brooklyn, NY 11201, United States, New York City",
+          "lat": 40.7034272,
+          "lng": -73.9921126,
+          "description": "Salsa Thursdays is a weekly lesson and social at Time Out Market New York in ...",
+          "category": "dance"
+        }
+      ],
+      "error": null,
+      "duration": 0.41,
+      "cached": false
+    },
+    {
+      "venue": "SalsaVida NYC Socials (list)",
+      "url": "https://www.salsavida.com/guides/new-york/new-york-city/calendar/",
+      "events": [
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-05T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Thursdays at Time Out Market",
+          "date": "2026-11-06T00:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-thursdays-at-time-out-market/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": "Free",
+          "category": "dance"
+        },
+        {
+          "name": "Bachata at Solas",
+          "date": "2026-11-06T00:30:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/bachata-at-solas/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Craze After Work",
+          "date": "2026-11-06T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-craze-after-work/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Gonzalez y Gonzalez Live Salsa Party",
+          "date": "2026-11-06T02:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/gonzalez-y-gonzalez-live-salsa-party/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-06T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Groove Dance Class Live Music and Happy Hour",
+          "date": "2026-11-06T23:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-groove-fridays-free-salsa-dance-lessons-happy-hour/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Latin Night at Willie’s Steak House",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/latin-night-at-willies-steak-house/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": "Free",
+          "category": "dance"
+        },
+        {
+          "name": "Bachata Fridays at Hotel Chantelle",
+          "date": "2026-11-07T04:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/bachata-fridays-at-hotel-chantelle/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Latin Dance Social by Dance Fever Studios",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-latin-dance-social-by-dance-fever-studios/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-08T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "LVG Salsa Social",
+          "date": "2026-11-08T23:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/lvg-salsa-social/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Bachata Sundays at The Rose",
+          "date": "2026-11-08T23:30:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-bachata-sundays-at-the-rose/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Gonzalez y Gonzalez Live Salsa Party",
+          "date": "2026-11-09T02:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/gonzalez-y-gonzalez-live-salsa-party/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "Latin Mondays at 5th & Mad",
+          "date": "2026-11-09T22:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/latin-mondays-at-5th-mad/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-10T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Tuesdays at Mamajuana Cafe",
+          "date": "2026-11-10T21:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-tuesdays-at-mamajuana-cafe/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": "Free",
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-11T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Baila Wednesdays at Solas",
+          "date": "2026-11-12T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/baila-wednesdays-at-solas/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Roofchata Wednesdays at 230 Fifth",
+          "date": "2026-11-12T02:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/roofchata-wednesdays-at-230-fifth/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-12T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Thursdays at Time Out Market",
+          "date": "2026-11-13T00:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-thursdays-at-time-out-market/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": "Free",
+          "category": "dance"
+        },
+        {
+          "name": "Bachata at Solas",
+          "date": "2026-11-13T00:30:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/bachata-at-solas/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Craze After Work",
+          "date": "2026-11-13T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-craze-after-work/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Gonzalez y Gonzalez Live Salsa Party",
+          "date": "2026-11-13T02:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/gonzalez-y-gonzalez-live-salsa-party/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-13T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Latin Night at Willie’s Steak House",
+          "date": "2026-11-14T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/latin-night-at-willies-steak-house/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": "Free",
+          "category": "dance"
+        },
+        {
+          "name": "Melting Pot Fusion Dance Social",
+          "date": "2026-11-14T01:30:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/melting-pot-fusion-dance-social/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Bailamos Juntos Social",
+          "date": "2026-11-14T02:30:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/bailamos-juntos-social/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Bachata Fridays at Hotel Chantelle",
+          "date": "2026-11-14T04:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/bachata-fridays-at-hotel-chantelle/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-15T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Jimmy Anton Salsa Social",
+          "date": "2026-11-15T23:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/jimmy-anton-salsa-social/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Bachata Sundays at The Rose",
+          "date": "2026-11-15T23:30:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-bachata-sundays-at-the-rose/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "The Social by New York SBKZ Congress",
+          "date": "2026-11-16T01:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/the-social-by-new-york-sbkz-congress/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Gonzalez y Gonzalez Live Salsa Party",
+          "date": "2026-11-16T02:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/gonzalez-y-gonzalez-live-salsa-party/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "clubbing"
+        },
+        {
+          "name": "Latin Mondays at 5th & Mad",
+          "date": "2026-11-16T22:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/latin-mondays-at-5th-mad/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Classes at Nieves Latin Dance Studio",
+          "date": "2026-11-17T20:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-classes-at-nieves-latin-dance-studio/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Tuesdays at Mamajuana Cafe",
+          "date": "2026-11-17T21:00:00+00:00",
+          "url": "https://www.salsavida.com/event/new-york/new-york-city/salsa-tuesdays-at-mamajuana-cafe/",
+          "venue": "SalsaVida NYC Socials (list)",
+          "price": "Free",
+          "category": "dance"
+        }
+      ],
+      "error": null,
+      "duration": 0.74,
+      "cached": false
+    },
+    {
+      "venue": "Dance/NYC Community Calendar",
+      "url": "https://www.dance.nyc/for-audiences/community-calendar/",
+      "events": [
+        {
+          "name": "Discover Professional-Level Classes at the Taylor Center for Dance Education This Fall - Taylor East",
+          "date": "2026-11-05T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Professional-Level-Classes-at-the-Taylor-Center-for-Dance-Education-This-Fall-Taylor-East/2026-11-05/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Professional-Level Classes at the Taylor Center for Dance Education This Fall - Taylor West",
+          "date": "2026-11-05T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Professional-Level-Classes-at-the-Taylor-Center-for-Dance-Education-This-Fall-Taylor-West/2026-11-05/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Dance and Fitness at the Taylor Center for Dance Education This Fall",
+          "date": "2026-11-05T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Dance-and-Fitness-at-the-Taylor-Center-for-Dance-Education-This-Fall/2026-11-05/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Zoom Dance Classes for Older Adults",
+          "date": "2026-11-05T17:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Zoom-Dance-Classes-for-Older-Adults/2026-11-05/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "15th Anniversary Fall Season: Opposites Attract",
+          "date": "2026-11-05T23:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/15th-Anniversary-Fall-Season-Opposites-Attract/2026-11-05/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Turn. Turning. TURNT.",
+          "date": "2026-11-06T00:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Turn.-Turning.-TURNT/2026-11-05/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Professional-Level Classes at the Taylor Center for Dance Education This Fall - Taylor East",
+          "date": "2026-11-06T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Professional-Level-Classes-at-the-Taylor-Center-for-Dance-Education-This-Fall-Taylor-East/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Professional-Level Classes at the Taylor Center for Dance Education This Fall - Taylor West",
+          "date": "2026-11-06T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Professional-Level-Classes-at-the-Taylor-Center-for-Dance-Education-This-Fall-Taylor-West/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Dance and Fitness at the Taylor Center for Dance Education This Fall",
+          "date": "2026-11-06T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Dance-and-Fitness-at-the-Taylor-Center-for-Dance-Education-This-Fall/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "MODERNISH Technique with Brad Beakes",
+          "date": "2026-11-06T15:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/MODERNISH-Technique-with-Brad-Beakes/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Zoom Dance Classes for Older Adults",
+          "date": "2026-11-06T15:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Zoom-Dance-Classes-for-Older-Adults/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "$15 Fridays Pilates Classes at Creative Core!",
+          "date": "2026-11-06T21:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/15-Fridays-Pilates-Classes-at-Creative-Core/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "sports"
+        },
+        {
+          "name": "$15 Fridays Pilates Classes at Creative Core!",
+          "date": "2026-11-06T22:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/15-Fridays-Pilates-Classes-at-Creative-Core/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "sports"
+        },
+        {
+          "name": "The Study Series at Fridays in Arnhold - 92Y",
+          "date": "2026-11-06T23:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/The-Study-Series-at-Fridays-in-Arnhold-92Y/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Salsa Groove: Dance Class, Live Music, & Happy Hour",
+          "date": "2026-11-06T23:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Salsa-Groove-Dance-Class-Live-Music-Happy-Hour/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Fun, Upbeat, Dance Cardio Classes Every Friday!",
+          "date": "2026-11-06T23:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Fun-Upbeat-Dance-Cardio-Classes-Every-Friday/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "40+ Years of Legacy: Urban Bush Women Archive",
+          "date": "2026-11-06T23:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/40-Years-of-Legacy-Urban-Bush-Women-Archive/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Turn. Turning. TURNT.",
+          "date": "2026-11-07T00:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Turn.-Turning.-TURNT/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "The Age is Yours, My Liege! A Tale of Proto-Japan",
+          "date": "2026-11-07T00:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/The-Age-is-Yours-My-Liege-A-Tale-of-Proto-Japan/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Diana Byer Launches Teaching Cecchetti, Revitalizing Cecchetti Technique for the Next Generation",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Diana-Byer-Launches-Teaching-Cecchetti-Revitalizing-Cecchetti-Technique-for-the-Next-Generation/2026-11-06/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Professional-Level Classes at the Taylor Center for Dance Education This Fall - Taylor East",
+          "date": "2026-11-07T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Professional-Level-Classes-at-the-Taylor-Center-for-Dance-Education-This-Fall-Taylor-East/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Professional-Level Classes at the Taylor Center for Dance Education This Fall - Taylor West",
+          "date": "2026-11-07T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Professional-Level-Classes-at-the-Taylor-Center-for-Dance-Education-This-Fall-Taylor-West/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Dance and Fitness at the Taylor Center for Dance Education This Fall",
+          "date": "2026-11-07T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Dance-and-Fitness-at-the-Taylor-Center-for-Dance-Education-This-Fall/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Confluence",
+          "date": "2026-11-07T17:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Confluence/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Waacking Showcase: The Next Generation",
+          "date": "2026-11-07T20:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Waacking-Showcase-The-Next-Generation/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Today Is",
+          "date": "2026-11-07T23:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Today-Is/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "The Blue Hood - AoZukin",
+          "date": "2026-11-08T00:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/The-Blue-Hood-AoZukin/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Capital Duo & Ellen Sinopoli Dance Company",
+          "date": "2026-11-08T00:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Capital-Duo-Ellen-Sinopoli-Dance-Company/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Turn. Turning. TURNT.",
+          "date": "2026-11-08T00:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Turn.-Turning.-TURNT/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "The Age is Yours, My Liege! A Tale of Proto-Japan",
+          "date": "2026-11-08T00:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/The-Age-is-Yours-My-Liege-A-Tale-of-Proto-Japan/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "THRESHOLD",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/THRESHOLD/2026-11-07/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Root Technique: Yogis Dancing",
+          "date": "2026-11-08T17:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Root-Technique-Yogis-Dancing/2026-11-08/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "ECHOES OF ISADORA - Fall 2026 workshop + performance",
+          "date": "2026-11-08T18:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/ECHOES-OF-ISADORA-Fall-2026-workshop-performance/2026-11-08/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Afro Flow Yoga Workshop",
+          "date": "2026-11-08T19:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Afro-Flow-Yoga-Workshop-/2026-11-08/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "sports"
+        },
+        {
+          "name": "LMCC Art Grant - Sleeve Lines",
+          "date": "2026-11-08T20:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/LMCC-Art-Grant-Sleeve-Lines/2026-11-08/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "New Beginner Salsa Classes in LIC Queens - Free Trial Class!",
+          "date": "2026-11-08T20:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/New-Beginner-Salsa-Classes-in-LIC-Queens-Free-Trial-Class/2026-11-08/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": "Free",
+          "category": "dance"
+        },
+        {
+          "name": "The Blue Hood - AoZukin",
+          "date": "2026-11-08T21:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/The-Blue-Hood-AoZukin/2026-11-08/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "ETD's 20th Anniversary Celebration and Hearts on Fire Performance",
+          "date": "2026-11-08T23:45:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/ETDs-20th-Anniversary-Celebration-and-Hearts-on-Fire-Performance/2026-11-08/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Professional-Level Classes at the Taylor Center for Dance Education This Fall - Taylor East",
+          "date": "2026-11-09T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Professional-Level-Classes-at-the-Taylor-Center-for-Dance-Education-This-Fall-Taylor-East/2026-11-09/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Professional-Level Classes at the Taylor Center for Dance Education This Fall - Taylor West",
+          "date": "2026-11-09T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Professional-Level-Classes-at-the-Taylor-Center-for-Dance-Education-This-Fall-Taylor-West/2026-11-09/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Discover Dance and Fitness at the Taylor Center for Dance Education This Fall",
+          "date": "2026-11-09T14:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Discover-Dance-and-Fitness-at-the-Taylor-Center-for-Dance-Education-This-Fall/2026-11-09/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Zoom Dance Classes for Older Adults",
+          "date": "2026-11-09T15:00:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Zoom-Dance-Classes-for-Older-Adults/2026-11-09/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "dance"
+        },
+        {
+          "name": "Screening: Tesseract in 3D",
+          "date": "2026-11-10T00:30:00+00:00",
+          "url": "https://www.dance.nyc/for-audiences/community-calendar/view/Screening-Tesseract-in-3D/2026-11-09/",
+          "venue": "Dance/NYC Community Calendar",
+          "price": null,
+          "category": "film"
+        }
+      ],
+      "error": null,
+      "duration": 0.99,
       "cached": false
     },
     {
@@ -100536,7 +103821,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.26,
+      "duration": 0.13,
       "cached": false
     },
     {
@@ -100746,7 +104031,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.2,
       "cached": false
     },
     {
@@ -100754,7 +104039,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.43,
+      "duration": 0.15,
       "cached": false
     },
     {
@@ -101798,7 +105083,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.44,
+      "duration": 0.23,
       "cached": false
     },
     {
@@ -103216,7 +106501,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.69,
+      "duration": 0.38,
       "cached": false
     },
     {
@@ -104046,7 +107331,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.55,
+      "duration": 0.26,
       "cached": false
     },
     {
@@ -112608,8 +115893,8 @@
         }
       ],
       "error": null,
-      "duration": 0.29,
-      "cached": true
+      "duration": 0.33,
+      "cached": false
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -152301,8 +155586,8 @@
           "category": "dance"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/ (serving stale cache)",
-      "duration": 0.11,
+      "error": null,
+      "duration": 4.62,
       "cached": true
     },
     {
@@ -153633,8 +156918,8 @@
           "category": "dance"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/prohibition-productions/ (serving stale cache)",
-      "duration": 0.11,
+      "error": null,
+      "duration": 3.06,
       "cached": true
     },
     {
@@ -154491,8 +157776,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/ (serving stale cache)",
-      "duration": 0.15,
+      "error": null,
+      "duration": 2.21,
       "cached": true
     },
     {
@@ -154728,8 +158013,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pieces-bar/ (serving stale cache)",
-      "duration": 0.15,
+      "error": null,
+      "duration": 2.8,
       "cached": true
     },
     {
@@ -154917,8 +158202,8 @@
           "category": "gaming"
         }
       ],
-      "error": null,
-      "duration": 2.94,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/video-game-tournament/ (serving stale cache)",
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -155130,8 +158415,8 @@
           "category": "gaming"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/smash-bros/ (serving stale cache)",
-      "duration": 0.17,
+      "error": null,
+      "duration": 2.78,
       "cached": true
     },
     {
@@ -155648,8 +158933,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 3.14,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/ (serving stale cache)",
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -155861,8 +159146,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.19,
+      "error": null,
+      "duration": 3.23,
       "cached": true
     },
     {
@@ -156257,7 +159542,7 @@
       ],
       "error": null,
       "duration": 1.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Free Club Guestlists",
@@ -156492,8 +159777,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.55,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-guestlist/ (serving stale cache)",
+      "duration": 0.21,
       "cached": true
     },
     {
@@ -156741,8 +160026,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nightclub-guestlist/ (serving stale cache)",
-      "duration": 0.19,
+      "error": null,
+      "duration": 3.03,
       "cached": true
     },
     {
@@ -156990,8 +160275,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.26,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-rsvp-party/ (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -157203,8 +160488,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.19,
+      "error": null,
+      "duration": 2.69,
       "cached": true
     },
     {
@@ -157710,8 +160995,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.13,
+      "error": null,
+      "duration": 2.24,
       "cached": true
     },
     {
@@ -157899,8 +161184,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.11,
+      "error": null,
+      "duration": 2.49,
       "cached": true
     },
     {
@@ -158136,8 +161421,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.47,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/slate-nyc/ (serving stale cache)",
+      "duration": 0.31,
       "cached": true
     },
     {
@@ -158349,8 +161634,8 @@
           "category": "film"
         }
       ],
-      "error": null,
-      "duration": 2.01,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nebula/ (serving stale cache)",
+      "duration": 0.31,
       "cached": true
     },
     {
@@ -158436,7 +161721,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.37,
+      "duration": 0.31,
       "cached": false
     },
     {
@@ -158444,7 +161729,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.61,
+      "duration": 0.56,
       "cached": false
     },
     {
@@ -158692,8 +161977,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.05,
+      "error": null,
+      "duration": 1.66,
       "cached": true
     },
     {
@@ -158881,8 +162166,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.68,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/holi/ (serving stale cache)",
+      "duration": 0.57,
       "cached": true
     },
     {
@@ -158902,8 +162187,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.42,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.28,
       "cached": true
     },
     {
@@ -159505,8 +162790,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.76,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.27,
       "cached": true
     },
     {
@@ -159943,8 +163228,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.25,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.27,
       "cached": true
     },
     {
@@ -160582,8 +163867,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.68,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -160807,8 +164092,8 @@
           "category": "food"
         }
       ],
-      "error": null,
-      "duration": 2.49,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.21,
       "cached": true
     },
     {
@@ -161716,7 +165001,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 1.25,
+      "duration": 1.53,
       "cached": false
     },
     {
@@ -171091,7 +174376,7 @@
       "url": "https://www.meetup.com/tabletop-tuesday/events/",
       "events": [],
       "error": null,
-      "duration": 0.22,
+      "duration": 0.43,
       "cached": false
     },
     {
@@ -174614,7 +177899,7 @@
       "url": "https://www.meetup.com/Brooklyn-Table-Top-Games-Meetup/events/",
       "events": [],
       "error": null,
-      "duration": 0.32,
+      "duration": 0.5,
       "cached": false
     },
     {
@@ -174622,7 +177907,7 @@
       "url": "https://www.meetup.com/astoria-board-game-club/events/",
       "events": [],
       "error": null,
-      "duration": 0.19,
+      "duration": 0.43,
       "cached": false
     },
     {
@@ -279480,9 +282765,9 @@
     }
   ],
   "weather": {
-    "temp": 64,
-    "icon": "☁️",
-    "label": "Overcast"
+    "temp": 63,
+    "icon": "⛅",
+    "label": "Partly cloudy"
   },
   "luckyseat": [
     {
