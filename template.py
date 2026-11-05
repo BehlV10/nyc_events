@@ -35,7 +35,7 @@ from scrapers import (
     BROADWAY_THEATRES,
 )
 from venues_geo import resolve_event_geo
-from nyc_geo import TRISTATE_NEEDLES, borough_at
+from nyc_geo import TRISTATE_NEEDLES, borough_at, outside_area
 
 # Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes).
 DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups"}
@@ -227,7 +227,8 @@ CITY_LABELS = {
     "queens": "Queens",
     "bronx": "The Bronx",
     "staten_island": "Staten Island",
-    "other": "Tri-State / Other",
+    "citywide": "Citywide / Location TBA",
+    "other": "Outside NYC",
 }
 
 CITY_COLORS = {
@@ -236,6 +237,7 @@ CITY_COLORS = {
     "queens": "#f29e4c",
     "bronx": "#4ade80",
     "staten_island": "#a78bfa",
+    "citywide": "#7dd3c0",
     "other": "#9aa3b2",
 }
 
@@ -273,10 +275,23 @@ SUBAREAS_BY_CITY = {
     "staten_island": [
         ("staten_island_all", "Staten Island", "🚢"),
     ],
+    "citywide": [
+        ("citywide_all", "Location TBA", "📍"),
+    ],
     "other": [
-        ("tristate_other", "Tri-State Area", "🌲"),
+        ("nj", "New Jersey", "🌉"),
+        ("long_island", "Long Island", "🏖️"),
+        ("westchester_hv", "Westchester & Hudson Valley", "🍂"),
+        ("ct", "Connecticut", "⛵"),
+        ("outside_other", "Elsewhere", "📍"),
     ]
 }
+
+# Shown by default; "other" (outside the five boroughs) is opt-in via its chip.
+# "citywide" = in NYC but no borough known (e.g. Meetups that show the venue to members only).
+DEFAULT_CITIES = ("manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide")
+_NO_BOROUGH = ("citywide", "other")
+_OUTSIDE_LABELS = {slug: name for slug, name, _ in SUBAREAS_BY_CITY["other"]}
 
 
 def resolve_subarea(city, event, geo=None):
@@ -340,7 +355,11 @@ def resolve_subarea(city, event, geo=None):
     elif city == "staten_island":
         return ("Staten Island", "staten_island_all")
 
-    return ("Tri-State Area", "tristate_other")
+    elif city == "citywide":
+        return ("Location TBA", "citywide_all")
+
+    area = outside_area(blob, (geo or {}).get("lat"), (geo or {}).get("lng"))
+    return (_OUTSIDE_LABELS[area], area)
 
 
 def _event_stable_id(e):
@@ -395,7 +414,7 @@ def _event_city(venue, source, geo=None, event=None):
                 return m.group(1).replace(" ", "_")  # "Knockdown Center (Queens, NY)"
         return borough_at(geo["lat"], geo["lng"]) or "other"
     city = _event_city_from(venue, "", geo, event)
-    if city == "other" and source:
+    if city == "citywide" and source:
         city = _event_city_from(venue, source, geo, event)
     return city
 
@@ -424,13 +443,13 @@ def _event_city_from(venue, source, geo=None, event=None):
                     return city
             elif n in hay:
                 return city
-    return "other"
+    return "citywide"  # in NYC as far as we know, borough unknown
 
 
 def _maps_link(venue, city):
     if not venue:
         return ""
-    if city == "other":
+    if city in _NO_BOROUGH:
         return f"https://www.google.com/maps/search/?api=1&query={quote(venue)}"
     label = CITY_LABELS.get(city)
     v_lower = venue.lower()
@@ -569,7 +588,7 @@ def _build_gcal_link(e, title, venue, city):
         return None
     if not venue:
         loc = "New York, NY"
-    elif city == "other":
+    elif city in _NO_BOROUGH:
         loc = venue
     else:
         label = CITY_LABELS.get(city)
@@ -1960,7 +1979,7 @@ def render_page(results, split_deferred=False, context_out=None):
         </li>'''
 
     bucket_name_order = [b for b, _ in CATEGORY_BUCKETS]
-    city_day_order = ["manhattan", "brooklyn", "queens", "bronx", "staten_island", "other"]
+    city_day_order = ["manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide", "other"]
 
     def _render_buckets(events):
         by_bucket = {b: [] for b in bucket_name_order}
@@ -2223,7 +2242,7 @@ def render_page(results, split_deferred=False, context_out=None):
         for v in all_venue_names
     )
 
-    city_order = ["manhattan", "brooklyn", "queens", "bronx", "staten_island", "other"]
+    city_order = ["manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide", "other"]
     city_counts = {c: 0 for c in city_order}
     for e in all_events_flat:
         geo = resolve_event_geo(e)
@@ -2232,7 +2251,7 @@ def render_page(results, split_deferred=False, context_out=None):
 
     city_boxes = "\n".join(
         f'''<label class="chk">
-            <input type="checkbox" class="city-chk" value="{escape(c)}" checked>
+            <input type="checkbox" class="city-chk" value="{escape(c)}"{" checked" if c in DEFAULT_CITIES else ""}>
             <span><span class="city-swatch" style="background:{CITY_COLORS[c]}"></span>{escape(CITY_LABELS[c])} <span class="count">{city_counts.get(c, 0)}</span></span>
           </label>'''
         for c in city_order
@@ -2682,6 +2701,7 @@ def render_page(results, split_deferred=False, context_out=None):
   .city-section[data-city="queens"]        {{ --city-color: #f29e4c; }}
   .city-section[data-city="bronx"]         {{ --city-color: #4ade80; }}
   .city-section[data-city="staten_island"] {{ --city-color: #a78bfa; }}
+  .city-section[data-city="citywide"]      {{ --city-color: #7dd3c0; }}
   .city-section[data-city="other"]         {{ --city-color: #9aa3b2; }}
   .city-head {{ margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--city-color); display: flex; align-items: center; gap: 8px; }}
   .city-head .count {{ background: transparent; color: var(--muted); font-weight: 500; letter-spacing: 0; }}
@@ -5027,6 +5047,7 @@ def render_page(results, split_deferred=False, context_out=None):
         <button type="button" class="loc-chip" data-city="queens"><span class="city-dot" style="background:#f29e4c"></span>Queens</button>
         <button type="button" class="loc-chip" data-city="bronx"><span class="city-dot" style="background:#4ade80"></span>The Bronx</button>
         <button type="button" class="loc-chip" data-city="staten_island"><span class="city-dot" style="background:#a78bfa"></span>Staten Island</button>
+        <button type="button" class="loc-chip" data-city="other" title="New Jersey, Long Island, Westchester &amp; more"><span class="city-dot" style="background:#9aa3b2"></span>Outside NYC</button>
       </div>
       <div class="subarea-chips-bar" id="subarea-chips-bar" style="display: none;"></div>
       <div class="week-nav" id="week-nav">
@@ -5331,6 +5352,14 @@ def render_page(results, split_deferred=False, context_out=None):
     const venueBoxes = document.querySelectorAll('.venue-chk');
     const recurBoxes = document.querySelectorAll('.recur-chk');
     const cityBoxes = document.querySelectorAll('.city-chk');
+    // The five boroughs are the default view; events outside the city are opt-in.
+    const DEFAULT_CITIES = new Set({json.dumps(list(DEFAULT_CITIES))});
+    function isDefaultCities(checked) {{
+      return checked.length === DEFAULT_CITIES.size && checked.every(c => DEFAULT_CITIES.has(c));
+    }}
+    function setDefaultCities() {{
+      cityBoxes.forEach(b => {{ b.checked = DEFAULT_CITIES.has(b.value); }});
+    }}
     const searchInput = document.getElementById('search-input');
     const searchKbd = document.getElementById('search-kbd');
     const searchClear = document.getElementById('search-clear');
@@ -6156,12 +6185,11 @@ def render_page(results, split_deferred=False, context_out=None):
     }}
 
     function updateLocChipsUI() {{
-      const allCities = cityBoxes.length;
       const checkedCities = Array.from(cityBoxes).filter(b => b.checked).map(b => b.value);
       locChips.forEach(chip => {{
         const city = chip.dataset.city;
         if (city === 'all') {{
-          chip.classList.toggle('active', checkedCities.length === allCities || checkedCities.length === 0);
+          chip.classList.toggle('active', isDefaultCities(checkedCities) || checkedCities.length === 0);
         }} else {{
           chip.classList.toggle('active', checkedCities.length === 1 && checkedCities[0] === city);
         }}
@@ -6192,15 +6220,14 @@ def render_page(results, split_deferred=False, context_out=None):
       const isCatFiltered = isCatFilteredFn();
       const allVenues = venueBoxes.length;
       const chkVenues = Array.from(venueBoxes).filter(b => b.checked).length;
-      const allCities = cityBoxes.length;
-      const chkCities = Array.from(cityBoxes).filter(b => b.checked).length;
+      const citiesDefault = isDefaultCities(Array.from(cityBoxes).filter(b => b.checked).map(b => b.value));
       const allRecurs = recurBoxes.length;
       const chkRecurs = Array.from(recurBoxes).filter(b => b.checked).length;
       const isFree = freeOnlyChk && freeOnlyChk.checked;
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
       const isGenreFiltered = Array.from(genreBoxes).some(b => !b.checked);
-      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -6240,9 +6267,8 @@ def render_page(results, split_deferred=False, context_out=None):
       const checkedGenres = Array.from(genreBoxes).filter(b => b.checked).map(b => b.value);
       if (checkedGenres.length < genreBoxes.length) params.set('genre', checkedGenres.length ? checkedGenres.join(',') : 'none');
 
-      const allCities = Array.from(cityBoxes).map(b => b.value);
       const checkedCities = Array.from(cityBoxes).filter(b => b.checked).map(b => b.value);
-      if (checkedCities.length > 0 && checkedCities.length < allCities.length) params.set('city', checkedCities.join(','));
+      if (checkedCities.length > 0 && !isDefaultCities(checkedCities)) params.set('city', checkedCities.join(','));
       if (activeSubarea && activeSubarea !== 'all') params.set('sub', activeSubarea);
 
       const allRecurs = Array.from(recurBoxes).map(b => b.value);
@@ -6321,6 +6347,8 @@ def render_page(results, split_deferred=False, context_out=None):
         if (params.has('city')) {{
           const vals = new Set(params.get('city').split(','));
           cityBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
+        }} else {{
+          setDefaultCities();
         }}
 
         if (params.has('sub')) {{
@@ -7025,7 +7053,7 @@ def render_page(results, split_deferred=False, context_out=None):
       catBoxes.forEach(b => b.checked = isDefaultCat(b));
       genreBoxes.forEach(g => g.checked = true);
       syncSubgenreUI();
-      cityBoxes.forEach(b => b.checked = true);
+      setDefaultCities();
       recurBoxes.forEach(b => b.checked = true);
       venueBoxes.forEach(b => b.checked = true);
       try {{ localStorage.removeItem('nyc_saved_venues'); }} catch (_) {{}}
@@ -7066,11 +7094,11 @@ def render_page(results, split_deferred=False, context_out=None):
         const targetCity = chip.dataset.city;
         activeSubarea = 'all';
         if (targetCity === 'all') {{
-          cityBoxes.forEach(b => {{ b.checked = true; }});
+          setDefaultCities();
         }} else {{
           const checked = Array.from(cityBoxes).filter(b => b.checked).map(b => b.value);
           if (checked.length === 1 && checked[0] === targetCity) {{
-            cityBoxes.forEach(b => {{ b.checked = true; }});
+            setDefaultCities();
           }} else {{
             cityBoxes.forEach(b => {{
               b.checked = (b.value === targetCity);
