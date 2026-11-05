@@ -2965,7 +2965,7 @@ def scrape_squarespace_calendar(url, ua):
         resp.raise_for_status()
         data = resp.json()
         for item in data.get("upcoming", []) or data.get("items", []):
-            title = item.get("title")
+            title = html.unescape(item.get("title") or "").strip()
             start_ms = item.get("startDate")
             if not title or not start_ms:
                 continue
@@ -3201,12 +3201,14 @@ def scrape_nyc_parks_categories(url, ua, max_pages=4):
     seen = set()
     now = datetime.now(timezone.utc)
     horizon = now + timedelta(days=HORIZON_DAYS)
+    failures = []
     for slug, default_cat in NYC_PARKS_CATEGORIES.items():
         for page in range(1, max_pages + 1):
             page_url = f"https://www.nycgovparks.org/events/{slug}" + (f"/p{page}" if page > 1 else "")
             try:
                 soup = fetch_soup(page_url, ua)
-            except Exception:
+            except Exception as exc:
+                failures.append(f"{slug}: {exc}")
                 break
             rows = soup.select('div[itemtype="http://schema.org/Event"]')
             if not rows:
@@ -3262,6 +3264,8 @@ def scrape_nyc_parks_categories(url, ua, max_pages=4):
             if reached_horizon:
                 break
             time.sleep(0.2)
+    if not events and failures:
+        raise RuntimeError(f"all NYC Parks category fetches failed ({len(failures)}), e.g. {failures[0]}")
     return events
 
 
@@ -5054,6 +5058,7 @@ _TRIBE_VENUE_DEFAULTS = {
     "posterhouse.org": ("Poster House", "119 W 23rd St, New York, NY", "Chelsea", 40.7431, -73.9939, "art"),
     "mocanyc.org": ("Museum of Chinese in America", "215 Centre St, New York, NY", "Chinatown", 40.7194, -73.9993, "art"),
     "riversideparknyc.org": ("Riverside Park Conservancy", None, "Upper West Side", None, None, "outdoors"),
+    "zincbar.com": ("Zinc Bar", "82 W 3rd St, New York, NY 10012", "Greenwich Village", 40.7297, -73.9990, "music"),
     "comedyvillage.com": ("Comedy Village", "352 W 44th St, New York, NY", "Hell's Kitchen", 40.7593, -73.9905, "comedy"),
     "movingimage.org": ("Museum of the Moving Image", "36-01 35th Ave, Queens, NY", "Astoria", 40.7563, -73.9239, "film"),
     "queensbotanical.org": ("Queens Botanical Garden", "43-50 Main St, Queens, NY", "Flushing", 40.7510, -73.8290, "outdoors"),
@@ -5938,6 +5943,43 @@ def scrape_html_cards(url, ua, link_re=None, max_up=5, require_time=False, venue
             e["price"] = "Free"
         events.append(e)
     return _dedupe_future(events)
+
+
+_OUT_OF_CITY_RE = re.compile(r"\b(westchester|new jersey|nj\b|american dream|long island|hoboken|jersey city|yonkers|connecticut|hamptons|newark)\b", re.I)
+
+
+# Day-ticket attractions rather than dated events.
+_FEVER_ATTRACTION_RE = re.compile(r"citypass|\bpass\b|entry ticket|admission|observ|summit one|edge nyc|top of the rock|empire state|one world|skip[- ]the[- ]line|museum|exhibition|gallery|sightseeing|hop-on|gift card|membership", re.I)
+
+
+def scrape_fever(url, ua):
+    """Fever city page (feverup.com/en/new-york): plan cards carry data-plan-id/name/price/date
+    (the plan's next session). Dates are local wall-clock times despite the +00:00 suffix."""
+    _status, text = fetch_text(url, headers={"User-Agent": ua, "Accept-Language": "en-US,en;q=0.9"})
+    plans = {}
+    for m in re.finditer(r'<a [^>]*data-plan-id="(\d+)"[^>]*>', text):
+        tag = m.group(0)
+
+        def attr(k):
+            mm = re.search(k + r'="([^"]*)"', tag)
+            return html.unescape(mm.group(1)) if mm else None
+
+        name, when = attr("data-plan-name"), attr("data-plan-date")
+        if not name or not when or m.group(1) in plans or _OUT_OF_CITY_RE.search(name) or _FEVER_ATTRACTION_RE.search(name):
+            continue
+        dt = _local_iso_to_utc(when[:19])
+        if dt is None:
+            continue
+        price = attr("data-plan-price")
+        try:
+            price = f"From ${float(price):.0f}" if price and float(price) > 0 else ("Free" if price else None)
+        except ValueError:
+            price = None
+        plans[m.group(1)] = {
+            "name": name.strip(), "date": dt.isoformat(), "price": price, "venue": None,
+            "url": urljoin("https://feverup.com/", attr("href") or f"/m/{m.group(1)}"),
+        }
+    return _dedupe_future(list(plans.values()))
 
 
 _ST_MARKS_ADDRESS = "12 St Marks Pl, New York, NY 10003"
@@ -7058,13 +7100,27 @@ _ALL_VENUES = [
     {"name": "Museum of the City of New York", "url": "https://www.mcny.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/event/", "venue": "Museum of the City of New York", "address": "1220 Fifth Ave, New York, NY 10029"}},
     {"name": "Cooper Hewitt", "url": "https://www.cooperhewitt.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "/event/", "venue": "Cooper Hewitt, Smithsonian Design Museum", "address": "2 E 91st St, New York, NY 10128"}},
     {"name": "Bronx Museum of the Arts", "url": "https://www.bronxmuseum.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/event/", "venue": "Bronx Museum of the Arts", "address": "1040 Grand Concourse, Bronx, NY 10456"}},
-    {"name": "Kings Theatre", "url": "https://www.kingstheatre.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/events/", "venue": "Kings Theatre", "address": "1027 Flatbush Ave, Brooklyn, NY 11226"}},
     {"name": "BAM (Brooklyn Academy of Music)", "url": "https://www.bam.org/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"link_re": "^/[a-z-]+/20\\d\\d/[^/]+$", "venue": "BAM", "address": "30 Lafayette Ave, Brooklyn, NY 11217"}},
     {"name": "NYRR Races & Group Runs", "url": "https://www.nyrr.org/run/race-calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "sports", "kwargs": {"link_re": "^/races-and-events/20\\d\\d/"}},
     {"name": "The Joyce Theater", "url": "https://www.joyce.org/performances", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "dance", "kwargs": {"link_re": "^/performances/[^/]+$", "venue": "The Joyce Theater", "address": "175 8th Ave, New York, NY 10011"}},
     {"name": "Seaport District Events", "url": "https://www.theseaport.nyc/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "community", "kwargs": {"link_re": "^/events/[^/]+/?$"}},
     {"name": "The Jewish Museum", "url": "https://thejewishmuseum.org/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/program/", "venue": "The Jewish Museum", "address": "1109 Fifth Ave, New York, NY 10128"}},
     {"name": "La MaMa", "url": "https://www.lamama.org/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"venue": "La MaMa", "address": "66 E 4th St, New York, NY 10003"}},
+    {"name": "Zinc Bar (Jazz)", "url": "https://www.zincbar.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
+    {"name": "Trans-Pecos", "url": "https://www.thetranspecos.com/", "ua": UA_CHROME, "scraper": scrape_venuepilot, "default_category": "music"},
+    {"name": "Starr Bar", "url": "https://www.starrbar.com/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
+    {"name": "Bar Lun\u00e0tico", "url": "https://www.barlunatico.com/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
+    {"name": "Birdland Jazz Club", "url": "https://www.birdlandjazz.com/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/tm-event/", "venue": "Birdland", "address": "315 W 44th St, New York, NY 10036"}},
+    {"name": "Roulette Intermedium", "url": "https://roulette.org/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/event/", "venue": "Roulette", "address": "509 Atlantic Ave, Brooklyn, NY 11217"}},
+    {"name": "Issue Project Room", "url": "https://issueprojectroom.org/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/event/", "venue": "ISSUE Project Room", "address": "22 Boerum Pl, Brooklyn, NY 11201"}},
+    {"name": "amNY Community Calendar", "url": "https://events.amny.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "community"},
+    {"name": "Brooklyn Paper Community Calendar", "url": "https://events.brooklynpaper.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "community"},
+    {"name": "Bronx Times Community Calendar", "url": "https://events.bxtimes.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "community"},
+    {"name": "QNS Queens Community Calendar", "url": "https://events.qns.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "community"},
+    {"name": "Fever NYC (Candlelight, Immersive & Experiences)", "url": "https://feverup.com/en/new-york", "ua": UA_CHROME, "scraper": scrape_fever, "default_category": "music"},
+    {"name": "New York Theatre Guide", "url": "https://www.newyorktheatreguide.com/whats-on/all-shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "theater"},
+    {"name": "AllEvents NYC", "url": "https://allevents.in/new%20york", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
+    {"name": "AllEvents NYC (All)", "url": "https://allevents.in/new%20york/all", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
@@ -7905,8 +7961,8 @@ def _scrape_one(v, force=False, allow_live=True):
             prev_evs = [e for e in prev if not is_placeholder_or_closed_event(e.get("name")) and _is_within_horizon(e, max_days=HORIZON_DAYS)]
             if prev_evs:
                 events = prev_evs
-            else:
-                _save_venue_cache(vname, events, duration=dur, src=src)
+            # else: leave the cache alone. Saving an empty result would lock in a transient
+            # failure (blocked page, timeout swallowed by the scraper) for the whole TTL.
 
         # Filter events to rolling horizon window
         events = [e for e in events if _is_within_horizon(e, max_days=HORIZON_DAYS)]
