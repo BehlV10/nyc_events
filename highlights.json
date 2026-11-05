@@ -1524,6 +1524,19 @@
     "id": "auto-2026-11-12-117",
     "auto": true,
     "match": {
+      "name_contains": "Learn to Play Mahjong in Midtown! Beginner Night at FreedSpaces",
+      "venue_contains": "FreedSpaces"
+    },
+    "badge": "🎲 Game Night Pick",
+    "note": "Listed on 3 calendars; prime-time start.",
+    "score": 13.5,
+    "start_date": "2026-11-12",
+    "expires": "2026-11-12"
+  },
+  {
+    "id": "auto-2026-11-12-118",
+    "auto": true,
+    "match": {
       "name_contains": "Alaire Thomas and Friends",
       "venue_contains": "The Bell House"
     },
@@ -1534,7 +1547,7 @@
     "expires": "2026-11-12"
   },
   {
-    "id": "auto-2026-11-12-118",
+    "id": "auto-2026-11-12-119",
     "auto": true,
     "match": {
       "name_contains": "August Wilson's Seven Guitars",
@@ -1543,19 +1556,6 @@
     "badge": "🎭 Stage Pick",
     "note": "Listed on 3 calendars; headline room at Lincoln Center - Mitzi E. Newhouse Theater (New York, NY); prime-time start.",
     "score": 13.0,
-    "start_date": "2026-11-12",
-    "expires": "2026-11-12"
-  },
-  {
-    "id": "auto-2026-11-12-119",
-    "auto": true,
-    "match": {
-      "name_contains": "Bad Trip Storytelling Show",
-      "venue_contains": "Secret Pour"
-    },
-    "badge": "🎲 Game Night Pick",
-    "note": "Free; listed on 3 calendars; prime-time start.",
-    "score": 12.5,
     "start_date": "2026-11-12",
     "expires": "2026-11-12"
   },
