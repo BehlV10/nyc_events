@@ -1122,7 +1122,7 @@ def scrape_donyc_calendar(url, ua):
     jobs = []
     for i in range(HORIZON_DAYS):
         d = now.date() + timedelta(days=i)
-        jobs.append((f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}", 15 if i < 14 else 4))
+        jobs.append((f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}", 15 if i < 14 else 8))
 
     def day(job):
         base, max_pages = job
@@ -1146,6 +1146,51 @@ def scrape_donyc_calendar(url, ua):
                 if key not in seen:
                     seen.add(key)
                     events.append(e)
+    return events
+
+
+_PERMIT_TYPES = ("Parade", "Athletic Race / Tour", "Single Block Festival", "Street Festival", "Block Party")
+
+
+def scrape_nyc_permitted_events(url, ua):
+    """NYC Open Data "NYC Permitted Event Information" (tvpp-9vvx): parades, races, street and
+    block festivals. Other permit types are lawn closures, field bookings and filming."""
+    now = datetime.now(EASTERN)
+    where = (f"start_date_time >= '{now.strftime('%Y-%m-%dT00:00:00')}' AND start_date_time < "
+             f"'{(now + timedelta(days=HORIZON_DAYS)).strftime('%Y-%m-%dT00:00:00')}' AND event_type in ("
+             + ",".join(f"'{t}'" for t in _PERMIT_TYPES) + ")")
+    resp = _SESSION.get(url, params={"$where": where, "$order": "start_date_time", "$limit": 2000},
+                        headers={"User-Agent": ua, "Accept": "application/json"}, timeout=30)
+    resp.raise_for_status()
+    events, seen = [], set()
+    for row in resp.json():
+        name = re.sub(r"\s+", " ", (row.get("event_name") or "")).strip()
+        start = row.get("start_date_time")
+        if not name or not start or name.lower() in ("closed", "n/a"):
+            continue
+        if name.isupper():
+            name = name.title()
+        try:
+            dt = datetime.fromisoformat(start).replace(tzinfo=EASTERN)
+        except ValueError:
+            continue
+        key = (name.lower(), dt.date())
+        if key in seen:  # one permit row per street segment
+            continue
+        seen.add(key)
+        loc = re.sub(r"\s+", " ", (row.get("event_location") or "")).split(",")[0].strip()
+        borough = (row.get("event_borough") or "").strip()
+        etype = row.get("event_type") or ""
+        cat = "sports" if etype == "Athletic Race / Tour" else "community"
+        events.append({
+            "name": name,
+            "date": dt.isoformat(),
+            "url": f"https://www.google.com/search?q={quote_plus(f'{name} {borough} NYC')}",
+            "venue": f"{loc.title()}, {borough}" if loc else borough or "New York",
+            "price": "Free",
+            "category": guess_category(name, cat),
+            "description": f"{etype} (NYC event permit)",
+        })
     return events
 
 
@@ -6386,6 +6431,10 @@ _ALL_VENUES = [
     {"name": "Museum of the Moving Image", "url": "https://movingimage.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "film"},
     {"name": "Queens Botanical Garden", "url": "https://queensbotanical.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Queens County Farm Museum", "url": "https://www.queensfarm.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
+    {"name": "Green-Wood Cemetery", "url": "https://www.green-wood.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
+    {"name": "Bargemusic", "url": "https://www.bargemusic.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
+    {"name": "Staten Island Museum", "url": "https://www.statenislandmuseum.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
+    {"name": "NYC Parades, Races & Street Festivals", "url": "https://data.cityofnewyork.us/resource/tvpp-9vvx.json", "ua": UA_CHROME, "scraper": scrape_nyc_permitted_events, "default_category": "community"},
     {"name": "Louis Armstrong House Museum", "url": "https://www.louisarmstronghouse.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Queens Theatre", "url": "https://queenstheatre.org/events/", "ua": UA_CHROME, "scraper": scrape_queens_theatre, "default_category": "theater"},
     {"name": "Flushing Town Hall", "url": "https://donyc.com/venues/flushing-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
