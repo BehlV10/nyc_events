@@ -423,7 +423,7 @@
       "venue_contains": "Bushwick Comedy Club"
     },
     "badge": "😂 Comedy Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
+    "note": "Free; listed on 9 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
@@ -549,19 +549,6 @@
     "id": "auto-2026-11-07-42",
     "auto": true,
     "match": {
-      "name_contains": "Family Art Project: Raptors in Autumn Sky",
-      "venue_contains": "Wave Hill"
-    },
-    "badge": "🌿 Outdoors Pick",
-    "note": "Free; listed on 3 calendars; weekend daytime.",
-    "score": 15.0,
-    "start_date": "2026-11-07",
-    "expires": "2026-11-07"
-  },
-  {
-    "id": "auto-2026-11-07-43",
-    "auto": true,
-    "match": {
       "name_contains": "International Saturdays at Egypt Astoria | Saturday, November 7",
       "venue_contains": "Egypt Astoria"
     },
@@ -572,7 +559,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-44",
+    "id": "auto-2026-11-07-43",
     "auto": true,
     "match": {
       "name_contains": "NYRR Open Run: Canarsie Park",
@@ -581,6 +568,19 @@
     "badge": "🏃 Active Pick",
     "note": "Free; listed on 9 calendars.",
     "score": 14.0,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-44",
+    "auto": true,
+    "match": {
+      "name_contains": "It’s My Park at Westerleigh Park",
+      "venue_contains": "Staten Island"
+    },
+    "badge": "🌿 Outdoors Pick",
+    "note": "Free; listed on 3 calendars.",
+    "score": 13.5,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
@@ -1684,26 +1684,13 @@
       "venue_contains": "Sour Mouse"
     },
     "badge": "🤝 Community Pick",
-    "note": "Free; listed on 6 calendars; prime-time start.",
+    "note": "Free; listed on 5 calendars; prime-time start.",
     "score": 16.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
   },
   {
     "id": "auto-2026-11-13-130",
-    "auto": true,
-    "match": {
-      "name_contains": "Speed Dating NYC : Men ages 48-65, Women 45-59",
-      "venue_contains": "Nosh@The Courtyard Marriott"
-    },
-    "badge": "🎲 Game Night Pick",
-    "note": "Free; listed on 12 calendars; prime-time start.",
-    "score": 16.5,
-    "start_date": "2026-11-13",
-    "expires": "2026-11-13"
-  },
-  {
-    "id": "auto-2026-11-13-131",
     "auto": true,
     "match": {
       "name_contains": "Comedy Cellar Showcase",
@@ -1716,7 +1703,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-132",
+    "id": "auto-2026-11-13-131",
     "auto": true,
     "match": {
       "name_contains": "Friday Night Open Mic (6:30PM)",
@@ -1729,7 +1716,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-133",
+    "id": "auto-2026-11-13-132",
     "auto": true,
     "match": {
       "name_contains": "Christmas Spectacular Starring The Radio City Rockettes",
@@ -1742,7 +1729,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-134",
+    "id": "auto-2026-11-13-133",
     "auto": true,
     "match": {
       "name_contains": "August Wilson's Seven Guitars",
@@ -1750,6 +1737,19 @@
     },
     "badge": "🎭 Stage Pick",
     "note": "Listed on 3 calendars; headline room at Lincoln Center - Mitzi E. Newhouse Theater (New York, NY); prime-time start.",
+    "score": 13.0,
+    "start_date": "2026-11-13",
+    "expires": "2026-11-13"
+  },
+  {
+    "id": "auto-2026-11-13-134",
+    "auto": true,
+    "match": {
+      "name_contains": "Nice Mom's Coffee Club",
+      "venue_contains": "Parkish"
+    },
+    "badge": "🤝 Community Pick",
+    "note": "Free; listed on 3 calendars.",
     "score": 13.0,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
