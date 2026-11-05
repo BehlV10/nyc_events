@@ -33,3 +33,11 @@ __pycache__/
 /queens/
 /bronx/
 /staten-island/
+
+# Generated every scrape and deployed via the Pages artifact; the latest events.json and the
+# geocode cache live on the `data` branch (git fetch origin data && git show FETCH_HEAD:events.json)
+events.json
+index.html
+events.html
+deferred_days.html
+geocode_cache.json
