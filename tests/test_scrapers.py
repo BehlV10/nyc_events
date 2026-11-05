@@ -506,8 +506,9 @@ class TestNYCEvents(unittest.TestCase):
         </body>
         </html>
         """
-        with patch("scrapers.fetch_soup") as mock_soup:
-            mock_soup.return_value = BeautifulSoup(sample_html, "html.parser")
+        from unittest.mock import MagicMock
+        resp = MagicMock(text=sample_html)
+        with patch("scrapers._SESSION.get", return_value=resp):
             events = scrape_donyc("https://donyc.com/venues/brooklyn-bowl", "TestUA")
 
         self.assertEqual(len(events), 2)
@@ -1390,3 +1391,27 @@ class TestBostonPortRound2(unittest.TestCase):
         self.assertEqual(len(evs), 1)
         self.assertEqual(evs[0]["venue"], "The Uncommons")
         self.assertIn("meetup.com", evs[0]["url"])
+
+
+class TestDoNYCSvelte(unittest.TestCase):
+    def test_parses_embedded_sveltekit_events(self):
+        from unittest.mock import patch, MagicMock
+        from scrapers import scrape_donyc
+        when = (datetime.now(EASTERN) + timedelta(days=2)).replace(hour=19, minute=0, second=0, microsecond=0)
+        page = (
+            '<script>__sveltekit_x = {}; kit.start(app, element, {data: [{type:"data",data:{layout:{social_links:[{label:"Website",href:"https://donyc.com/"}]}}},'
+            '{type:"data",data:{detail:{title:"Baby\'s All Right",social_links:[{label:"Instagram",href:"https://instagram.com/x"},{label:"Website",href:"http://babysallright.com/"}],'
+            'events:[{id:1,type:"event",title:"Mad \\"Tsai\\"",permalink:"/events/x",image_url:"",begin_date:null,begin_time:"x",date_label:"x",presented_by:null,'
+            f'tz_adjusted_begin_time:"{when.isoformat()}",tz_adjusted_end_time:null,event_type:"single_day",occurrence_date:null,category:"Music",genres:["Jazz"],'
+            'venue:{id:9,title:"Baby\'s All Right",district_id:516,district_name:"Williamsburg / Greenpoint",area_id:122,area_name:"Brooklyn",location:null}}]}}}]});</script>'
+        )
+        with patch("scrapers._SESSION.get", return_value=MagicMock(text=page)):
+            events = scrape_donyc("https://donyc.com/venues/baby-s-all-right", "TestUA")
+        self.assertEqual(len(events), 1)
+        ev = events[0]
+        self.assertEqual(ev["name"], 'Mad "Tsai"')
+        self.assertEqual(ev["venue"], "Baby's All Right")
+        self.assertEqual(ev["url"], "http://babysallright.com/")
+        self.assertEqual(ev["category"], "music")
+        self.assertEqual(ev["genre"], "jazz_blues")
+        self.assertEqual(ev["neighborhood"], "Williamsburg / Greenpoint")
