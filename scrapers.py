@@ -3445,6 +3445,29 @@ def _meetup_venue_hidden(vname_raw, street):
     return not (street or "").strip() and (not v or v in ("none", "see event description", "view point", "null", "needs a location", "tbd", "tba"))
 
 
+def scrape_meetup_windows(url, ua):
+    """A Meetup keyword search returns one page (~30 events), so search four date windows
+    (this week, next week, the week after, then to the horizon) and merge them."""
+    from urllib.parse import quote as _q
+    today = datetime.now(EASTERN).date()
+    bounds = [(0, 6), (7, 13), (14, 20), (21, HORIZON_DAYS)]
+    events, seen = [], set()
+    for a, b in bounds:
+        start = datetime.combine(today + timedelta(days=a), datetime.min.time()).strftime("%Y-%m-%dT00:00:00-05:00")
+        end = datetime.combine(today + timedelta(days=b), datetime.min.time()).strftime("%Y-%m-%dT23:59:00-05:00")
+        win = f"{url}&dateRange=custom&customStartDate={_q(start)}&customEndDate={_q(end)}"
+        try:
+            got = scrape_meetup(win, ua)
+        except Exception:
+            got = []
+        for e in got:
+            key = ((e.get("name") or "").lower(), (e.get("date") or "")[:16])
+            if key not in seen:
+                seen.add(key)
+                events.append(e)
+    return events
+
+
 def scrape_meetup(url, ua):
     """Meetup.com — in-person community events (search pages and direct group pages)."""
     events = []
@@ -6431,6 +6454,9 @@ _ALL_VENUES = [
     {"name": "Museum of the Moving Image", "url": "https://movingimage.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "film"},
     {"name": "Queens Botanical Garden", "url": "https://queensbotanical.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Queens County Farm Museum", "url": "https://www.queensfarm.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
+    {"name": "Comedy in Harlem", "url": "https://www.comedyinharlem.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
+    {"name": "New York Comedy Club (all locations)", "url": "https://www.newyorkcomedyclub.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
+    {"name": "Eastville Comedy Club", "url": "https://www.eastvillecomedy.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
     {"name": "Green-Wood Cemetery", "url": "https://www.green-wood.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Bargemusic", "url": "https://www.bargemusic.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Staten Island Museum", "url": "https://www.statenislandmuseum.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
@@ -6831,6 +6857,32 @@ _MEETUP_TOPICS = [
     ("Meditation", "meditation", "community"), ("Chess", "chess", "gaming"),
     ("Happy Hours", "happy hour", "food"), ("Brunch", "brunch", "food"), ("Wine Tasting", "wine tasting", "food"),
     ("Foodies", "foodie", "food"),
+    # Comedy & performance
+    ("Stand-Up Comedy", "stand up comedy", "comedy"), ("Comedy Shows", "comedy show", "comedy"),
+    ("Comedy Open Mics", "comedy open mic", "comedy"), ("Improv", "improv", "comedy"),
+    ("Drag Shows", "drag show", "theater"), ("Storytelling", "storytelling", "books"),
+    # Sports & games
+    ("Pickleball Open Play", "pickleball open play", "sports"), ("Soccer", "soccer", "sports"),
+    ("Basketball", "basketball", "sports"), ("Softball", "softball", "sports"), ("Ultimate Frisbee", "frisbee", "sports"),
+    ("Kickball", "kickball", "sports"), ("Badminton", "badminton", "sports"), ("Table Tennis", "ping pong", "sports"),
+    ("Swimming", "swimming", "sports"), ("Ice Skating", "ice skating", "sports"),
+    ("Board Games", "board games", "gaming"), ("Trivia", "trivia", "gaming"), ("Dungeons & Dragons", "dungeons and dragons", "gaming"),
+    ("Video Games", "video games", "gaming"), ("Mahjong", "mahjong", "gaming"), ("Poker", "poker", "gaming"),
+    # Languages, books & learning
+    ("Language Exchange", "language exchange", "community"), ("Spanish Conversation", "spanish", "community"),
+    ("French Conversation", "french", "community"), ("Japanese Conversation", "japanese", "community"),
+    ("Book Clubs", "book club", "books"), ("Writing Groups", "writing", "books"), ("History Walks", "history walk", "outdoors"),
+    ("Architecture Tours", "architecture", "outdoors"), ("Museum Meetups", "museum", "art"), ("Astronomy", "astronomy", "outdoors"),
+    # Arts & crafts
+    ("Photography Walks", "photography", "art"), ("Crafts", "crafts", "art"), ("Knitting", "knitting", "art"),
+    ("Pottery", "pottery", "art"), ("Sketching", "sketch", "art"),
+    # Dance & music
+    ("Salsa", "salsa", "dance"), ("Swing Dancing", "swing dance", "dance"), ("Line Dancing", "line dancing", "dance"),
+    ("Ballroom", "ballroom", "dance"), ("K-Pop Dance", "kpop", "dance"), ("Jazz", "jazz", "music"),
+    # Social
+    ("Queer Socials", "queer", "community"), ("Women's Socials", "women social", "community"),
+    ("Dog Meetups", "dog", "community"), ("Sound Baths", "sound bath", "community"), ("Food Tours", "food tour", "food"),
+    ("Craft Beer", "craft beer", "food"),
 ]
 
 _EVENTBRITE_TOPICS = [
@@ -6878,8 +6930,8 @@ def _topic_terms(query):
 _ALL_VENUES += [
     {
         "name": f"Meetup: {label}",
-        "url": f"https://www.meetup.com/find/?keywords={quote(query)}&location=us--ny--New%20York&source=EVENTS",
-        "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": cat, "topic_terms": _topic_terms(query),
+        "url": f"https://www.meetup.com/find/?keywords={quote(query)}&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
+        "ua": UA_CHROME, "scraper": scrape_meetup_windows, "default_category": cat, "topic_terms": _topic_terms(query),
     }
     for label, query, cat in _MEETUP_TOPICS
 ] + [

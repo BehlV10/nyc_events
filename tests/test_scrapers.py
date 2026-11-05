@@ -1415,3 +1415,21 @@ class TestDoNYCSvelte(unittest.TestCase):
         self.assertEqual(ev["category"], "music")
         self.assertEqual(ev["genre"], "jazz_blues")
         self.assertEqual(ev["neighborhood"], "Williamsburg / Greenpoint")
+
+
+class TestMeetupWindows(unittest.TestCase):
+    def test_searches_four_windows_and_dedupes(self):
+        from unittest.mock import patch
+        import scrapers
+        seen_urls = []
+
+        def fake(url, ua):
+            seen_urls.append(url)
+            return [{"name": "Pickleball Open Play", "date": "2026-11-07T14:00:00+00:00"},
+                    {"name": f"Window {len(seen_urls)}", "date": "2026-11-08T14:00:00+00:00"}]
+
+        with patch.object(scrapers, "scrape_meetup", side_effect=fake):
+            evs = scrapers.scrape_meetup_windows("https://www.meetup.com/find/?keywords=pickleball", "UA")
+        self.assertEqual(len(seen_urls), 4)
+        self.assertTrue(all("dateRange=custom" in u for u in seen_urls))
+        self.assertEqual(len(evs), 5)  # the repeated listing is kept once
