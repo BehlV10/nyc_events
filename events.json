@@ -177105,8 +177105,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 3.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/grove-34/ (serving stale cache)",
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -177993,8 +177993,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.66,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/long-island-city/ (serving stale cache)",
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -178218,8 +178218,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 2.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -178632,8 +178632,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 3.47,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sunnyside-queens/ (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -184930,8 +184930,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 3.23,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -185167,8 +185167,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 1.86,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.28,
       "cached": true
     },
     {
@@ -185515,8 +185515,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.47,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nypl/ (serving stale cache)",
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -185716,8 +185716,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.1,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-public-library/ (serving stale cache)",
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -189791,8 +189791,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 1.82,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.27,
       "cached": true
     },
     {
@@ -192577,8 +192577,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 2.77,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.28,
       "cached": true
     },
     {
@@ -193066,8 +193066,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 1.76,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.28,
       "cached": true
     },
     {
