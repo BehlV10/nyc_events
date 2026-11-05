@@ -349,7 +349,9 @@ class TestTopicSources(unittest.TestCase):
         self.assertEqual(len(names), len(set(names)))
         self.assertEqual(len(urls), len(set(urls)))
         self.assertIn("Meetup: Run Clubs", names)
-        self.assertIn("Eventbrite: DJ Sets", names)
+        self.assertNotIn("Eventbrite: DJ Sets", names)  # search pages: discovery input only
+        self.assertIn("https://www.eventbrite.com/d/ny--new-york/dj/", scrapers.EVENTBRITE_DISCOVERY_SEARCHES)
+        self.assertFalse(any("eventbrite.com/d/" in u for u in urls))
         for v in scrapers.VENUES:
             if v["name"].startswith(("Meetup: ", "Eventbrite: ")) and v["scraper"] in (scrapers.scrape_meetup, scrapers.scrape_eventbrite_pages):
                 self.assertTrue(v["url"].startswith("https://www."), v["name"])
@@ -842,3 +844,63 @@ class TestLanes(unittest.TestCase):
         with patch("scrapers._load_venue_cache", return_value=None), patch("scrapers.open", create=True, side_effect=OSError):
             picked = scrapers._pick_rotation_refreshes(venues, scrapers.EVENTBRITE_API_HOST, None, scrapers.EVENTBRITE_TTL, now=1000)
         self.assertEqual(len(picked), 30)
+
+
+class TestEventbriteOrganizerFile(unittest.TestCase):
+    def test_organizer_file_loads_into_api_sources(self):
+        import tempfile
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+            json.dump({"sources": [{"id": "123456789", "kind": "venue", "name": "Some Venue", "category": "music"},
+                                   {"id": "bad", "kind": "organizer", "name": "Bad"},
+                                   {"id": "987654321", "kind": "organizer", "name": "Promoter"}],
+                       "excluded": [{"id": "555555555", "name": "Skip"}]}, f)
+        try:
+            rows = scrapers._load_eventbrite_organizers(f.name)
+        finally:
+            os.unlink(f.name)
+        self.assertEqual(rows, [("venue", "123456789", "Some Venue", "music"), ("organizer", "987654321", "Promoter", "community")])
+        self.assertEqual(scrapers._load_eventbrite_organizers("/nonexistent.json"), [])
+
+    def test_repo_organizer_file_is_valid(self):
+        with open(scrapers.EVENTBRITE_ORGANIZERS_FILE, encoding="utf-8") as f:
+            data = json.load(f)
+        ids = [s["id"] for s in data["sources"]]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertFalse(set(ids) & {x["id"] for x in data.get("excluded", [])})
+        api_urls = [v["url"] for v in scrapers.VENUES if "/api/v3/" in v["url"]]
+        self.assertGreaterEqual(len(api_urls), len(ids))
+
+
+class TestDiscoverEventbrite(unittest.TestCase):
+    def test_tally_keeps_in_person_nyc_and_counts_venue_organizers(self):
+        sys.path.insert(0, os.path.join(BASE_DIR, "scripts"))
+        import discover_eventbrite as de
+        rows = [
+            {"eid": "1", "org": "10", "venue_id": "v1", "venue": "Hall", "lat": "40.70", "lng": "-73.95", "online": False, "tags": ["Comedy"]},
+            {"eid": "2", "org": "10", "venue_id": "v1", "venue": "Hall", "lat": "40.70", "lng": "-73.95", "online": False, "tags": ["Comedy"]},
+            {"eid": "3", "org": "11", "venue_id": "v1", "venue": "Hall", "lat": "40.70", "lng": "-73.95", "online": False, "tags": ["Music"]},
+            {"eid": "4", "org": "12", "venue_id": "v2", "venue": "Hoboken Bar", "lat": "40.74", "lng": "-74.03", "online": False, "tags": []},
+            {"eid": "5", "org": "13", "venue_id": None, "venue": None, "lat": None, "lng": None, "online": True, "tags": []},
+        ]
+        orgs, venues = de.tally(rows)
+        self.assertEqual(set(orgs), {"10", "11"})
+        self.assertEqual(len(orgs["10"]["eids"]), 2)
+        self.assertEqual(venues["v1"]["orgs"], {"10", "11"})
+        self.assertNotIn("v2", venues)  # Hoboken is outside the five boroughs
+        self.assertEqual(de.category_for(["Comedy", "Standupcomedy"]), "comedy")
+        self.assertEqual(de.category_for(["Nightlife", "Party"]), "clubbing")
+        self.assertEqual(de.category_for([]), "community")
+
+
+class TestNycGeo(unittest.TestCase):
+    def test_borough_polygons(self):
+        import nyc_geo
+        self.assertEqual(nyc_geo.borough_at(40.6760, -73.9801), "brooklyn")
+        self.assertEqual(nyc_geo.borough_at(40.7580, -73.9855), "manhattan")
+        self.assertEqual(nyc_geo.borough_at(40.8296, -73.9262), "bronx")
+        self.assertEqual(nyc_geo.borough_at(40.7580, -73.8303), "queens")
+        self.assertEqual(nyc_geo.borough_at(40.6437, -74.0736), "staten_island")
+        self.assertEqual(nyc_geo.borough_at(40.7335, -74.0119), "manhattan")  # Pier 45, in the river
+        for lat, lng in ((40.7440, -74.0324), (40.7178, -74.0431), (40.9312, -73.8988)):  # Hoboken, Jersey City, Yonkers
+            self.assertIsNone(nyc_geo.borough_at(lat, lng))
+        self.assertFalse(scrapers._eb_venue_in_nyc({"latitude": "40.7440", "longitude": "-74.0324", "address": {"city": "Hoboken"}}))
