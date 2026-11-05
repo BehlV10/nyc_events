@@ -725,3 +725,90 @@ class TestEncodingDefault(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestEventbriteOrganizerApi(unittest.TestCase):
+    def _ev(self, name, days, online=False, lat="40.676", lng="-73.98", free=False, sold_out=False, lo="25.00", hi="25.00"):
+        start = _future_local(days, 20).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        return {"name": {"text": name}, "start": {"utc": start}, "url": f"https://www.eventbrite.com/e/{name.lower().replace(' ', '-')}-tickets-1",
+                "online_event": online, "is_free": free, "summary": "",
+                "ticket_availability": {"is_sold_out": sold_out, "minimum_ticket_price": {"major_value": lo}, "maximum_ticket_price": {"major_value": hi}},
+                "venue": {"name": "Union Hall", "latitude": lat, "longitude": lng,
+                          "address": {"city": "Brooklyn", "region": "NY", "localized_address_display": "702 Union St., Brooklyn, NY 11215",
+                                      "localized_area_display": "Brooklyn, NY"}}}
+
+    def test_window_params_pagination_and_filters(self):
+        pages = [
+            {"events": [self._ev("Late Show", 9, lo="15.00", hi="30.00"), self._ev("Stream Only", 3, online=True),
+                        self._ev("Jersey Gig", 4, lat="40.73", lng="-74.40")],
+             "pagination": {"has_more_items": True, "continuation": "abc"}},
+            {"events": [self._ev("Early Show", 2, free=True), self._ev("Packed Show", 5, sold_out=True)],
+             "pagination": {"has_more_items": False}},
+        ]
+        urls = []
+        def fake_get(url, **kw):
+            urls.append(url)
+            return _resp(payload=pages[len(urls) - 1])
+        with patch("scrapers._SESSION.get", side_effect=fake_get), patch("scrapers.time.sleep") as slept:
+            events = scrapers.scrape_eventbrite_organizer("https://www.eventbrite.com/api/v3/organizers/17899496497/events/?order_by=start_asc", UA_CHROME)
+        self.assertEqual(len(urls), 2)
+        self.assertIn("/organizers/17899496497/events/", urls[0])
+        self.assertIn("status=live", urls[0])
+        self.assertRegex(urls[0], r"start_date\.range_start=\d{4}-\d\d-\d\dT00:00:00&start_date\.range_end=\d{4}-\d\d-\d\dT00:00:00")
+        self.assertIn("continuation=abc", urls[1])
+        slept.assert_called_with(scrapers.EVENTBRITE_API_GAP)
+        by_name = {e["name"]: e for e in events}
+        self.assertEqual(set(by_name), {"Late Show", "Early Show", "Packed Show"})
+        self.assertEqual(by_name["Late Show"]["price"], "$15 - $30")
+        self.assertEqual(by_name["Early Show"]["price"], "Free")
+        self.assertTrue(by_name["Packed Show"]["sold_out"])
+        self.assertEqual(by_name["Late Show"]["address"], "702 Union St., Brooklyn, NY 11215")
+        self.assertEqual(by_name["Late Show"]["venue"], "Union Hall (Brooklyn, NY)")
+
+    def test_venue_feed_url(self):
+        with patch("scrapers._SESSION.get", return_value=_resp(payload={"events": [], "pagination": {}})) as get:
+            scrapers.scrape_eventbrite_organizer("https://www.eventbrite.com/api/v3/venues/35619335/events/", UA_CHROME)
+        self.assertIn("/venues/35619335/events/", get.call_args[0][0])
+
+    def test_api_has_its_own_host_rotation_and_breaker(self):
+        api = "https://www.eventbrite.com/api/v3/organizers/1234567890/events/"
+        self.assertEqual(scrapers._host_key(api), scrapers.EVENTBRITE_API_HOST)
+        self.assertEqual(scrapers._host_key("https://www.eventbrite.com/d/ny--new-york/salsa/"), "eventbrite.")
+        self.assertIn(scrapers.EVENTBRITE_API_HOST, scrapers._ROTATED_HOSTS)
+        scrapers._reset_host_breakers()
+        boom = MagicMock(side_effect=RuntimeError("405"))
+        v = {"name": "X", "url": api, "ua": "", "scraper": boom}
+        for _ in range(2):
+            with self.assertRaises(RuntimeError):
+                scrapers._run_scraper(v)
+        with self.assertRaisesRegex(RuntimeError, "skipped"):
+            scrapers._run_scraper(v)
+        self.assertEqual(boom.call_count, 2)
+        # A tripped API breaker must not block the search pages, and vice versa.
+        ok = {"name": "Y", "url": "https://www.eventbrite.com/d/ny--new-york/x/", "ua": "", "scraper": MagicMock(return_value=[])}
+        self.assertEqual(scrapers._run_scraper(ok), [])
+        scrapers._reset_host_breakers()
+
+    def test_serial_lane_runs_one_at_a_time_and_keeps_order(self):
+        api = lambda i: {"name": f"api{i}", "url": f"https://www.eventbrite.com/api/v3/organizers/10000000{i}/events/"}
+        venues = [api(1), {"name": "other", "url": "https://example.com"}, api(2), api(3)]
+        live = {scrapers.EVENTBRITE_API_HOST: {"api1", "api2"}}  # api3 not due: served from cache in the pool
+        active, peak, lane_names = [0], [0], []
+        import threading
+        lock = threading.Lock()
+        def worker(v):
+            with lock:
+                if v["name"] in ("api1", "api2"):
+                    lane_names.append(v["name"])
+                    active[0] += 1
+                    peak[0] = max(peak[0], active[0])
+            time.sleep(0.01)
+            with lock:
+                if v["name"] in ("api1", "api2"):
+                    active[0] -= 1
+            return v["name"]
+        with patch.object(scrapers, "EVENTBRITE_API_GAP", 0):
+            out = scrapers._run_with_serial_lane(venues, worker, live, workers=4)
+        self.assertEqual(out, ["api1", "other", "api2", "api3"])
+        self.assertEqual(peak[0], 1)
+        self.assertEqual(lane_names, ["api1", "api2"])
