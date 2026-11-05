@@ -3582,15 +3582,19 @@ def scrape_meetup_windows(url, ua):
     pending = [(0, 6), (7, 13), (14, 20), (21, HORIZON_DAYS)]
     events, seen = [], set()
     fetches = 0
+    failures = []
     while pending and fetches < MEETUP_MAX_WINDOW_FETCHES:
         a, b = pending.pop(0)
         start = datetime.combine(today + timedelta(days=a), datetime.min.time()).strftime("%Y-%m-%dT00:00:00-05:00")
         end = datetime.combine(today + timedelta(days=b), datetime.min.time()).strftime("%Y-%m-%dT23:59:00-05:00")
         win = f"{url}&dateRange=custom&customStartDate={_q(start)}&customEndDate={_q(end)}"
+        if fetches:
+            time.sleep(0.4)  # pace window fetches; Meetup throttles bursts from CI
         fetches += 1
         try:
             got = scrape_meetup(win, ua)
-        except Exception:
+        except Exception as exc:
+            failures.append(str(exc)[:120])
             got = []
         for ev in got:
             key = ((ev.get("name") or "").lower(), (ev.get("date") or "")[:16])
@@ -3600,6 +3604,12 @@ def scrape_meetup_windows(url, ua):
         if len(got) >= MEETUP_WINDOW_FULL and b > a:
             mid = (a + b) // 2
             pending.extend([(a, mid), (mid + 1, b)])
+        if failures and len(failures) == fetches and fetches >= 2:
+            break  # throttled; stop hitting Meetup for this topic
+    if failures and not events:
+        raise RuntimeError(f"all {len(failures)} Meetup window fetches failed: {failures[0]}")
+    if failures:
+        print(f"  Meetup: {len(failures)}/{fetches} windows failed for {url[:90]}: {failures[0]}")
     return events
 
 def scrape_meetup(url, ua):
@@ -3843,6 +3853,8 @@ def scrape_meetup(url, ua):
                     })
             except Exception:
                 pass
+    except requests.exceptions.RequestException:
+        raise  # 429/403/timeouts must not look like "no events" (callers serve stale cache)
     except Exception:
         pass
     return events
