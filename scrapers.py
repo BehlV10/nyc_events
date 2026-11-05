@@ -3561,28 +3561,39 @@ def _meetup_venue_hidden(vname_raw, street):
     return not (street or "").strip() and (not v or v in ("none", "see event description", "view point", "null", "needs a location", "tbd", "tba"))
 
 
+MEETUP_WINDOW_FULL = 28      # a search page carries ~30 events; at/above this the window is saturated
+MEETUP_MAX_WINDOW_FETCHES = 12
+
+
 def scrape_meetup_windows(url, ua):
-    """A Meetup keyword search returns one page (~30 events), so search four date windows
-    (this week, next week, the week after, then to the horizon) and merge them."""
+    """A Meetup keyword search returns one page (~30 events), so search date windows (this
+    week, next week, the week after, then to the horizon) and merge them. A window that
+    comes back full is split in half (down to single days) so busy topics aren't capped;
+    total fetches per topic are bounded by MEETUP_MAX_WINDOW_FETCHES."""
     from urllib.parse import quote as _q
     today = datetime.now(EASTERN).date()
-    bounds = [(0, 6), (7, 13), (14, 20), (21, HORIZON_DAYS)]
+    pending = [(0, 6), (7, 13), (14, 20), (21, HORIZON_DAYS)]
     events, seen = [], set()
-    for a, b in bounds:
+    fetches = 0
+    while pending and fetches < MEETUP_MAX_WINDOW_FETCHES:
+        a, b = pending.pop(0)
         start = datetime.combine(today + timedelta(days=a), datetime.min.time()).strftime("%Y-%m-%dT00:00:00-05:00")
         end = datetime.combine(today + timedelta(days=b), datetime.min.time()).strftime("%Y-%m-%dT23:59:00-05:00")
         win = f"{url}&dateRange=custom&customStartDate={_q(start)}&customEndDate={_q(end)}"
+        fetches += 1
         try:
             got = scrape_meetup(win, ua)
         except Exception:
             got = []
-        for e in got:
-            key = ((e.get("name") or "").lower(), (e.get("date") or "")[:16])
+        for ev in got:
+            key = ((ev.get("name") or "").lower(), (ev.get("date") or "")[:16])
             if key not in seen:
                 seen.add(key)
-                events.append(e)
+                events.append(ev)
+        if len(got) >= MEETUP_WINDOW_FULL and b > a:
+            mid = (a + b) // 2
+            pending.extend([(a, mid), (mid + 1, b)])
     return events
-
 
 def scrape_meetup(url, ua):
     """Meetup.com — in-person community events (search pages and direct group pages)."""
