@@ -762,6 +762,8 @@ class TestEventbriteOrganizerApi(unittest.TestCase):
         self.assertEqual(by_name["Late Show"]["price"], "$15 - $30")
         self.assertEqual(by_name["Early Show"]["price"], "Free")
         self.assertTrue(by_name["Packed Show"]["sold_out"])
+        self.assertEqual(scrapers._eb_price({"ticket_availability": {"minimum_ticket_price": {"major_value": "0.00"}, "maximum_ticket_price": {"major_value": "0.00"}}}), "Free")
+        self.assertEqual(scrapers._eb_price({"ticket_availability": {"minimum_ticket_price": {"major_value": "0.00"}, "maximum_ticket_price": {"major_value": "20.50"}}}), "Free - $20.50")
         self.assertEqual(by_name["Late Show"]["address"], "702 Union St., Brooklyn, NY 11215")
         self.assertEqual(by_name["Late Show"]["venue"], "Union Hall (Brooklyn, NY)")
 
