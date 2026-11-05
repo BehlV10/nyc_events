@@ -5033,7 +5033,6 @@ def render_page(results, split_deferred=False, context_out=None):
         <button type="button" class="loc-chip" data-city="queens"><span class="city-dot" style="background:#f29e4c"></span>Queens</button>
         <button type="button" class="loc-chip" data-city="bronx"><span class="city-dot" style="background:#4ade80"></span>The Bronx</button>
         <button type="button" class="loc-chip" data-city="staten_island"><span class="city-dot" style="background:#a78bfa"></span>Staten Island</button>
-        <button type="button" class="loc-chip" data-city="other"><span class="city-dot" style="background:#9aa3b2"></span>Tri-State</button>
       </div>
       <div class="subarea-chips-bar" id="subarea-chips-bar" style="display: none;"></div>
       <div class="week-nav" id="week-nav">
@@ -5041,7 +5040,6 @@ def render_page(results, split_deferred=False, context_out=None):
         <span id="week-label">Today, {today.strftime("%b %d")}</span>
         <button type="button" id="week-next" aria-label="Next">next →</button>
         <button type="button" id="week-today">today</button>
-        <button type="button" id="week-all" data-mode="week">show all</button>
         <button type="button" id="cal-toggle" aria-expanded="false">📅 pick date</button>
         {picks_chip_html}
         <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
@@ -6900,7 +6898,8 @@ def render_page(results, split_deferred=False, context_out=None):
       calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
       apply();
     }});
-    document.getElementById('week-all').addEventListener('click', () => {{
+    const weekAllBtn = document.getElementById('week-all');
+    if (weekAllBtn) weekAllBtn.addEventListener('click', () => {{
       clearRange();
       if (showAll || timeFilter === 'all') {{
         showAll = false;
