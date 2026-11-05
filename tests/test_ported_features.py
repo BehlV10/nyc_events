@@ -810,7 +810,35 @@ class TestEventbriteOrganizerApi(unittest.TestCase):
                     active[0] -= 1
             return v["name"]
         with patch.object(scrapers, "EVENTBRITE_API_GAP", 0):
-            out = scrapers._run_with_serial_lane(venues, worker, live, workers=4)
+            out = scrapers._run_with_lanes(venues, worker, live, workers=4)
         self.assertEqual(out, ["api1", "other", "api2", "api3"])
         self.assertEqual(peak[0], 1)
         self.assertEqual(lane_names, ["api1", "api2"])
+
+
+class TestLanes(unittest.TestCase):
+    def test_meetup_lane_caps_concurrency_and_all_due_refresh(self):
+        import threading
+        venues = [{"name": f"m{i}", "url": f"https://www.meetup.com/find/?keywords={i}"} for i in range(9)]
+        live = {"meetup.com": {v["name"] for v in venues}}
+        active, peak = [0], [0]
+        lock = threading.Lock()
+        def worker(v):
+            with lock:
+                active[0] += 1
+                peak[0] = max(peak[0], active[0])
+            time.sleep(0.02)
+            with lock:
+                active[0] -= 1
+            return v["name"]
+        with patch.object(scrapers, "MEETUP_GAP", 0):
+            out = scrapers._run_with_lanes(venues, worker, live, workers=8)
+        self.assertEqual(out, [v["name"] for v in venues])
+        self.assertLessEqual(peak[0], scrapers.MEETUP_LANE_THREADS)
+        self.assertGreater(peak[0], 1)
+
+    def test_uncapped_rotation_picks_every_due_source(self):
+        venues = [{"name": f"EB API {i}", "url": f"https://www.eventbrite.com/api/v3/organizers/10000000{i}/events/"} for i in range(30)]
+        with patch("scrapers._load_venue_cache", return_value=None), patch("scrapers.open", create=True, side_effect=OSError):
+            picked = scrapers._pick_rotation_refreshes(venues, scrapers.EVENTBRITE_API_HOST, None, scrapers.EVENTBRITE_TTL, now=1000)
+        self.assertEqual(len(picked), 30)
