@@ -45008,7 +45008,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.98,
+      "duration": 0.96,
       "cached": false
     },
     {
@@ -138703,7 +138703,7 @@
       ],
       "error": null,
       "duration": 0.43,
-      "cached": true
+      "cached": false
     },
     {
       "venue": "Bar Lunàtico",
@@ -214833,8 +214833,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.55,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pop-up/ (serving stale cache)",
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -215532,8 +215532,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.32,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/union-square/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -217302,8 +217302,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 8.72,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/fashion-show/ (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -217527,8 +217527,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 10.11,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/talks/ (serving stale cache)",
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -219276,8 +219276,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 12.69,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/threes-brewing/ (serving stale cache)",
+      "duration": 0.31,
       "cached": true
     },
     {
@@ -220890,8 +220890,8 @@
           "category": "gaming"
         }
       ],
-      "error": null,
-      "duration": 15.2,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-uncommons/ (serving stale cache)",
+      "duration": 0.25,
       "cached": true
     },
     {
@@ -260962,8 +260962,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 5.36,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-run-club/ (serving stale cache)",
+      "duration": 0.13,
       "cached": true
     },
     {
@@ -359813,9 +359813,9 @@
       "venue": "Eventbrite: 5K Races",
       "url": "https://www.eventbrite.com/d/ny--new-york/5k/",
       "events": [],
-      "error": null,
-      "duration": 0.24,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Hiking",
@@ -359853,9 +359853,9 @@
       "venue": "Eventbrite: Bike Rides",
       "url": "https://www.eventbrite.com/d/ny--new-york/bike-ride/",
       "events": [],
-      "error": null,
-      "duration": 0.31,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Cycling",
@@ -359965,9 +359965,9 @@
       "venue": "Eventbrite: Afrobeats",
       "url": "https://www.eventbrite.com/d/ny--new-york/afrobeats/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.02,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Reggaeton",
@@ -360005,9 +360005,9 @@
       "venue": "Eventbrite: Brunch Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/brunch-party/",
       "events": [],
-      "error": null,
-      "duration": 0.22,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.06,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Live Music",
@@ -360117,9 +360117,9 @@
       "venue": "Eventbrite: Art Shows",
       "url": "https://www.eventbrite.com/d/ny--new-york/art-show/",
       "events": [],
-      "error": null,
-      "duration": 0.18,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.01,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Gallery Openings",
