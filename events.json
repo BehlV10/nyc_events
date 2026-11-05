@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T08:06:55.727158+00:00",
+  "generated_at": "2026-11-05T08:09:08.485595+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -43461,7 +43461,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.64,
+      "duration": 0.89,
       "cached": false
     },
     {
@@ -59140,7 +59140,7 @@
       ],
       "error": null,
       "duration": 1.22,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Music Hall of Williamsburg",
@@ -92957,8 +92957,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 3.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/grove-34/ (serving stale cache)",
+      "duration": 0.25,
       "cached": true
     },
     {
@@ -93194,8 +93194,8 @@
           "category": "music"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/ (serving stale cache)",
-      "duration": 0.12,
+      "error": null,
+      "duration": 2.82,
       "cached": true
     },
     {
@@ -93371,8 +93371,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bohemian-hall/ (serving stale cache)",
-      "duration": 0.35,
+      "error": null,
+      "duration": 2.5,
       "cached": true
     },
     {
@@ -93596,8 +93596,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/astoria-queens/ (serving stale cache)",
-      "duration": 0.23,
+      "error": null,
+      "duration": 3.11,
       "cached": true
     },
     {
@@ -93845,8 +93845,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.66,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/long-island-city/ (serving stale cache)",
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -94070,8 +94070,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 2.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/ (serving stale cache)",
+      "duration": 0.44,
       "cached": true
     },
     {
@@ -94283,8 +94283,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jackson-heights/ (serving stale cache)",
-      "duration": 0.32,
+      "error": null,
+      "duration": 2.86,
       "cached": true
     },
     {
@@ -94484,8 +94484,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 3.47,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sunnyside-queens/ (serving stale cache)",
+      "duration": 0.38,
       "cached": true
     },
     {
@@ -94673,8 +94673,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/ (serving stale cache)",
-      "duration": 0.27,
+      "error": null,
+      "duration": 2.81,
       "cached": true
     },
     {
@@ -95941,11 +95941,22 @@
           "price": null,
           "description": "Join us for an afternoon of great live music at Sugar Mouse in the East Village! NYU Students welcome!",
           "category": "gaming"
+        },
+        {
+          "name": "LAMZ Presents Joe Vanable + Roy Ben Bashat",
+          "date": "2026-12-08T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/lamz-presents-joe-vanable-roy-ben-bashat-tickets-2004313463524",
+          "venue": "Sugar Mouse NYC (New York, NY)",
+          "lat": 40.7308173,
+          "lng": -73.988621,
+          "price": null,
+          "description": "Join us for a Monday night of great live music at Sugar Mouse in the East Village!",
+          "category": "gaming"
         }
       ],
       "error": null,
-      "duration": 0.47,
-      "cached": true
+      "duration": 0.89,
+      "cached": false
     },
     {
       "venue": "The New School",
@@ -99726,7 +99737,7 @@
       ],
       "error": null,
       "duration": 1.27,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenlight Bookstore",
@@ -99955,7 +99966,7 @@
       ],
       "error": null,
       "duration": 1.97,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "P&T Knitwear Books & Podcasts",
@@ -100204,8 +100215,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 0.51,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.58,
       "cached": true
     },
     {
@@ -100226,7 +100237,7 @@
       ],
       "error": null,
       "duration": 0.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "McNally Jackson Books",
@@ -100425,8 +100436,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 3.23,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/ (serving stale cache)",
+      "duration": 0.49,
       "cached": true
     },
     {
@@ -100662,8 +100673,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 1.86,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bluestockings/ (serving stale cache)",
+      "duration": 0.58,
       "cached": true
     },
     {
@@ -101001,8 +101012,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.47,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.58,
       "cached": true
     },
     {
@@ -101202,8 +101213,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.1,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.58,
       "cached": true
     },
     {
@@ -104992,8 +105003,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 1.82,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.58,
       "cached": true
     },
     {
@@ -107236,8 +107247,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 1.76,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.57,
       "cached": true
     },
     {
@@ -255797,9 +255808,9 @@
       "venue": "Eventbrite: Yoga",
       "url": "https://www.eventbrite.com/d/ny--new-york/yoga/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/yoga/",
-      "duration": 1.04,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Pickleball",
@@ -256053,9 +256064,9 @@
       "venue": "Eventbrite: Workshops",
       "url": "https://www.eventbrite.com/d/ny--new-york/workshops/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/workshops/",
-      "duration": 1.11,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Social Mixers",
@@ -256085,9 +256096,9 @@
       "venue": "Eventbrite: Wine Tastings",
       "url": "https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
-      "duration": 1.13,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Union Square Greenmarket",
