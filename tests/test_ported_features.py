@@ -693,5 +693,19 @@ class TestSidearmHomeGames(unittest.TestCase):
         self.assertEqual(out[0]["url"], "https://x/a?b=1&c=2")
 
 
+class TestDatedShowLinks(unittest.TestCase):
+    def test_date_and_time_from_slug(self):
+        d = _future_local(3, 21).date()
+        href = f"/shows/{d:%Y-%m-%d}-mac-ohara-and-friends-900-pm/"
+        page = (f'<a href="{href}">Mac O\u2019hara And Friends {d:%B} {d.day}th 9PM</a><a href="{href}">Buy Tickets</a>'
+                f'<a href="/shows/{d:%Y-%m-%d}-late-show-1130-pm/"></a>')
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
+            events = scrapers.scrape_dated_show_links("https://www.greenwichvillagecomedyclub.com/", UA_CHROME, venue="GVCC")
+        by = {e["name"]: e for e in events}
+        self.assertIn("Mac O\u2019hara And Friends", by)
+        self.assertEqual(_local(by["Mac O\u2019hara And Friends"]["date"]).hour, 21)
+        self.assertEqual((_local(by["Late Show"]["date"]).hour, _local(by["Late Show"]["date"]).minute), (23, 30))
+
+
 if __name__ == "__main__":
     unittest.main()
