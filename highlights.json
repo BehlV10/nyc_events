@@ -7,7 +7,7 @@
       "venue_contains": "Flushing Town Hall"
     },
     "badge": "🎸 Music Pick",
-    "note": "Free; listed on 4 calendars; headline room at Flushing Town Hall; prime-time start.",
+    "note": "Free; listed on 5 calendars; headline room at Flushing Town Hall; prime-time start.",
     "score": 22.5,
     "start_date": "2026-11-05",
     "expires": "2026-11-05"
@@ -328,6 +328,19 @@
     "id": "auto-2026-11-06-25",
     "auto": true,
     "match": {
+      "name_contains": "Animal Capitalism and the Biodiversity Crisis Event with Ashely Dawson and Terike Haapoja",
+      "venue_contains": "The World’s Borough Bookshop"
+    },
+    "badge": "🤝 Community Pick",
+    "note": "Listed on 9 calendars; prime-time start.",
+    "score": 17.5,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-26",
+    "auto": true,
+    "match": {
       "name_contains": "Dating Games  a Fun Twist on Speed Dating",
       "venue_contains": "Stout NYC"
     },
@@ -338,7 +351,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-26",
+    "id": "auto-2026-11-06-27",
     "auto": true,
     "match": {
       "name_contains": "Dj Birane",
@@ -347,19 +360,6 @@
     "badge": "🪩 Nightlife Pick",
     "note": "Free; listed on 242 calendars.",
     "score": 17.5,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-27",
-    "auto": true,
-    "match": {
-      "name_contains": "40s & Over Mixer (Free Drink For Women)",
-      "venue_contains": "The Cloud One Hotel New York-Downtown"
-    },
-    "badge": "🤝 Community Pick",
-    "note": "Free; listed on 6 calendars; prime-time start.",
-    "score": 16.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
