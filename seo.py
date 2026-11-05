@@ -112,7 +112,7 @@ def event_schema(e, site_url=None):
     venue = e.get("venue") or e.get("_source_venue") or "New York City"
     geo = resolve_event_geo(e)
     city = _event_city(venue, e.get("_source_venue"), geo=geo, event=e)
-    locality = CITY_LABELS.get(city, "New York") if city != "other" else "New York"
+    locality = CITY_LABELS.get(city, "New York") if city not in ("other", "citywide") else "New York"
     address = {"@type": "PostalAddress", "addressLocality": locality, "addressRegion": "NY", "addressCountry": "US"}
     street = (geo or {}).get("address") or e.get("address")
     if street:
@@ -419,7 +419,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
         geo = resolve_event_geo(e)
         city = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo, event=e)
         where = e.get("venue") or e.get("_source_venue") or ""
-        if city != "other":
+        if city not in ("other", "citywide"):
             where = f"{where} · {CITY_LABELS.get(city, '')}"
         if _is_event_free(e):
             badge = '<span class="badge free">Free</span>'

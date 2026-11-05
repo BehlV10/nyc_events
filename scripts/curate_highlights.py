@@ -69,7 +69,7 @@ def score_event(e, recurring_keys):
     if cat in EXCLUDED_CATEGORIES:
         return None, []
     city = _event_city(e.get("venue"), e.get("_source_venue"), resolve_event_geo(e), e)
-    if city == "other":
+    if city in ("other", "citywide"):
         return None, []
     name = e.get("name") or ""
     reasons = []

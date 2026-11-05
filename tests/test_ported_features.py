@@ -995,3 +995,21 @@ class TestMorePins(unittest.TestCase):
         self.assertEqual(b["lat"], 40.7466)
         self.assertNotIn("lat", c)  # one-word names are not shared
         self.assertNotIn("lat", d)  # text says Queens; the learned pin is Manhattan
+
+
+class TestOutsideNyc(unittest.TestCase):
+    def test_unknown_borough_is_citywide_not_outside(self):
+        import template
+        self.assertEqual(template._event_city("Queer Social: Curated Events For LGBTQ People", "Meetup: Karaoke", None, {}), "citywide")
+        self.assertEqual(template._event_city("Lancer's Restaurant (459 Ferry St, Newark, NJ)", "Meetup", None, {}), "other")
+        self.assertIn("citywide", template.DEFAULT_CITIES)
+        self.assertNotIn("other", template.DEFAULT_CITIES)
+
+    def test_outside_areas(self):
+        import nyc_geo, template
+        self.assertEqual(nyc_geo.outside_area("Lancer's (459 Ferry St, Newark, NJ)"), "nj")
+        self.assertEqual(nyc_geo.outside_area("Mulcahy's Pub (3232 Railroad Ave, Wantagh)"), "long_island")
+        self.assertEqual(nyc_geo.outside_area("", 40.744, -74.032), "nj")          # Hoboken pin
+        self.assertEqual(nyc_geo.outside_area("", 40.931, -73.899), "westchester_hv")  # Yonkers pin
+        self.assertEqual(nyc_geo.outside_area("Fort Lauderdale", 26.1, -80.1), "outside_other")
+        self.assertEqual(template.resolve_subarea("other", {"venue": "Wellmont Theater"}, None)[1], "nj")
