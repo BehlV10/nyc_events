@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T07:57:04.688212+00:00",
+  "generated_at": "2026-11-05T07:59:53.516021+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -43454,14 +43454,14 @@
       ],
       "error": null,
       "duration": 1.27,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Secret NYC",
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 1.13,
+      "duration": 1.28,
       "cached": false
     },
     {
@@ -43479,7 +43479,7 @@
       ],
       "error": null,
       "duration": 0.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Ticketmaster NYC",
@@ -43983,7 +43983,7 @@
       ],
       "error": null,
       "duration": 1.76,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "SeatGeek NYC",
@@ -46071,7 +46071,7 @@
       ],
       "error": null,
       "duration": 1.89,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Resident Advisor NYC",
@@ -51772,7 +51772,7 @@
       ],
       "error": null,
       "duration": 2.18,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Dice.fm NYC",
@@ -53149,7 +53149,7 @@
       ],
       "error": null,
       "duration": 41.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Songkick NYC Concerts",
@@ -89761,7 +89761,7 @@
       ],
       "error": null,
       "duration": 6.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Feinstein's/54 Below",
@@ -89833,7 +89833,7 @@
       ],
       "error": null,
       "duration": 0.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Metrograph",
@@ -90112,7 +90112,7 @@
       ],
       "error": null,
       "duration": 1.05,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "IFC Center (own calendar)",
@@ -90283,7 +90283,7 @@
       ],
       "error": null,
       "duration": 0.93,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Anthology Film Archives",
@@ -90364,7 +90364,7 @@
       ],
       "error": null,
       "duration": 0.57,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Cinema Village",
@@ -90463,7 +90463,7 @@
       ],
       "error": null,
       "duration": 0.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Roxy Cinema (Q&As & Events)",
@@ -90499,7 +90499,7 @@
       ],
       "error": null,
       "duration": 0.48,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Rooftop Cinema Club (Midtown)",
@@ -90564,7 +90564,7 @@
       ],
       "error": null,
       "duration": 0.79,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Japan Society Film",
@@ -90618,7 +90618,7 @@
       ],
       "error": null,
       "duration": 1.19,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Film Noir Cinema",
@@ -90683,6 +90683,1102 @@
       ],
       "error": null,
       "duration": 1.34,
+      "cached": true
+    },
+    {
+      "venue": "St. Ann's Warehouse",
+      "url": "https://stannswarehouse.org/wp-json/tribe/events/v1/events?per_page=50",
+      "events": [
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-06T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-4/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-07T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-5/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-07T19:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-6/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-08T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-7/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-08T19:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-8/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-09T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-9/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-11T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-10/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-11T19:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-11/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-12T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-12/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-13T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-13/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-14T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-14/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-14T19:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-15/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-15T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-16/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-15T22:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-17/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-18T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-18/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-18T18:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-19/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-19T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-20/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-20T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-21/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-21T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-22/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-21T19:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-23/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-22T00:30:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-24/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Tristan & Yseult",
+          "date": "2026-11-22T19:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/tristan-yseult-25/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Saigon",
+          "date": "2026-12-04T00:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/saigon/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Saigon",
+          "date": "2026-12-05T00:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/saigon-2/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Saigon",
+          "date": "2026-12-06T00:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/saigon-3/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Saigon",
+          "date": "2026-12-06T19:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/saigon-4/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Saigon",
+          "date": "2026-12-09T00:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/saigon-5/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Saigon",
+          "date": "2026-12-10T00:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/saigon-6/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        },
+        {
+          "name": "Saigon",
+          "date": "2026-12-11T00:00:00+00:00",
+          "url": "https://stannswarehouse.org/show/saigon-7/",
+          "venue": "St. Ann's Warehouse",
+          "price": null,
+          "category": "theater",
+          "description": null,
+          "address": "45 Water St, Brooklyn, NY 11201",
+          "neighborhood": "DUMBO",
+          "lat": 40.7038,
+          "lng": -73.9915
+        }
+      ],
+      "error": null,
+      "duration": 0.86,
+      "cached": false
+    },
+    {
+      "venue": "The Brick Theater",
+      "url": "https://www.bricktheater.com/wp-json/tribe/events/v1/events?per_page=50",
+      "events": [
+        {
+          "name": "I Can Steal Your Mother",
+          "date": "2026-11-06T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/i-can-steal-your-mother/2026-11-05/",
+          "venue": "Brick Theater",
+          "price": "$25 – $50",
+          "category": "theater",
+          "description": "The Brick presents I Can Steal Your Mother written, performed, and illustrated by Max Wittert playing October 30-November 15, 2026 at The Brick Theater running time 65 minutes tickets $25-50 I Can Steal Your Mother is a fully-illustrated comedy hour ",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "I Can Steal Your Mother",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/i-can-steal-your-mother/2026-11-06/",
+          "venue": "Brick Theater",
+          "price": "$25 – $50",
+          "category": "theater",
+          "description": "The Brick presents I Can Steal Your Mother written, performed, and illustrated by Max Wittert playing October 30-November 15, 2026 at The Brick Theater running time 65 minutes tickets $25-50 I Can Steal Your Mother is a fully-illustrated comedy hour ",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "I Can Steal Your Mother",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/i-can-steal-your-mother/2026-11-07/",
+          "venue": "Brick Theater",
+          "price": "$25 – $50",
+          "category": "theater",
+          "description": "The Brick presents I Can Steal Your Mother written, performed, and illustrated by Max Wittert playing October 30-November 15, 2026 at The Brick Theater running time 65 minutes tickets $25-50 I Can Steal Your Mother is a fully-illustrated comedy hour ",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "I Can Steal Your Mother",
+          "date": "2026-11-08T20:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/i-can-steal-your-mother/2026-11-08/",
+          "venue": "Brick Theater",
+          "price": "$25 – $50",
+          "category": "theater",
+          "description": "The Brick presents I Can Steal Your Mother written, performed, and illustrated by Max Wittert playing October 30-November 15, 2026 at The Brick Theater running time 65 minutes tickets $25-50 I Can Steal Your Mother is a fully-illustrated comedy hour ",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "I Can Steal Your Mother",
+          "date": "2026-11-12T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/i-can-steal-your-mother/2026-11-11/",
+          "venue": "Brick Theater",
+          "price": "$25 – $50",
+          "category": "theater",
+          "description": "The Brick presents I Can Steal Your Mother written, performed, and illustrated by Max Wittert playing October 30-November 15, 2026 at The Brick Theater running time 65 minutes tickets $25-50 I Can Steal Your Mother is a fully-illustrated comedy hour ",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "I Can Steal Your Mother",
+          "date": "2026-11-13T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/i-can-steal-your-mother/2026-11-12/",
+          "venue": "Brick Theater",
+          "price": "$25 – $50",
+          "category": "theater",
+          "description": "The Brick presents I Can Steal Your Mother written, performed, and illustrated by Max Wittert playing October 30-November 15, 2026 at The Brick Theater running time 65 minutes tickets $25-50 I Can Steal Your Mother is a fully-illustrated comedy hour ",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "I Can Steal Your Mother",
+          "date": "2026-11-14T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/i-can-steal-your-mother/2026-11-13/",
+          "venue": "Brick Theater",
+          "price": "$25 – $50",
+          "category": "theater",
+          "description": "The Brick presents I Can Steal Your Mother written, performed, and illustrated by Max Wittert playing October 30-November 15, 2026 at The Brick Theater running time 65 minutes tickets $25-50 I Can Steal Your Mother is a fully-illustrated comedy hour ",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "I Can Steal Your Mother",
+          "date": "2026-11-15T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/i-can-steal-your-mother/2026-11-14/",
+          "venue": "Brick Theater",
+          "price": "$25 – $50",
+          "category": "theater",
+          "description": "The Brick presents I Can Steal Your Mother written, performed, and illustrated by Max Wittert playing October 30-November 15, 2026 at The Brick Theater running time 65 minutes tickets $25-50 I Can Steal Your Mother is a fully-illustrated comedy hour ",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "I Can Steal Your Mother",
+          "date": "2026-11-15T20:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/i-can-steal-your-mother/2026-11-15/",
+          "venue": "Brick Theater",
+          "price": "$25 – $50",
+          "category": "theater",
+          "description": "The Brick presents I Can Steal Your Mother written, performed, and illustrated by Max Wittert playing October 30-November 15, 2026 at The Brick Theater running time 65 minutes tickets $25-50 I Can Steal Your Mother is a fully-illustrated comedy hour ",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "Letters from Tyra",
+          "date": "2026-12-04T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/letters-from-tyra/2026-12-03/",
+          "venue": "Brick Theater",
+          "price": null,
+          "category": "theater",
+          "description": "The Brick presents Letters from Tyra by Derek Smith playing December 3-20, 2026 at The Brick Theater running time 60 minutes Billed as “a spectacular duet blending song, dance, and scene work on national and Italian themes,” Letters from Tyra is actu",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "Letters from Tyra",
+          "date": "2026-12-05T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/letters-from-tyra/2026-12-04/",
+          "venue": "Brick Theater",
+          "price": null,
+          "category": "theater",
+          "description": "The Brick presents Letters from Tyra by Derek Smith playing December 3-20, 2026 at The Brick Theater running time 60 minutes Billed as “a spectacular duet blending song, dance, and scene work on national and Italian themes,” Letters from Tyra is actu",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "Letters from Tyra",
+          "date": "2026-12-06T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/letters-from-tyra/2026-12-05/",
+          "venue": "Brick Theater",
+          "price": null,
+          "category": "theater",
+          "description": "The Brick presents Letters from Tyra by Derek Smith playing December 3-20, 2026 at The Brick Theater running time 60 minutes Billed as “a spectacular duet blending song, dance, and scene work on national and Italian themes,” Letters from Tyra is actu",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "Letters from Tyra",
+          "date": "2026-12-07T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/letters-from-tyra/2026-12-06/",
+          "venue": "Brick Theater",
+          "price": null,
+          "category": "theater",
+          "description": "The Brick presents Letters from Tyra by Derek Smith playing December 3-20, 2026 at The Brick Theater running time 60 minutes Billed as “a spectacular duet blending song, dance, and scene work on national and Italian themes,” Letters from Tyra is actu",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "Letters from Tyra",
+          "date": "2026-12-10T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/letters-from-tyra/2026-12-09/",
+          "venue": "Brick Theater",
+          "price": null,
+          "category": "theater",
+          "description": "The Brick presents Letters from Tyra by Derek Smith playing December 3-20, 2026 at The Brick Theater running time 60 minutes Billed as “a spectacular duet blending song, dance, and scene work on national and Italian themes,” Letters from Tyra is actu",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        },
+        {
+          "name": "Letters from Tyra",
+          "date": "2026-12-11T01:00:00+00:00",
+          "url": "https://www.bricktheater.com/event/letters-from-tyra/2026-12-10/",
+          "venue": "Brick Theater",
+          "price": null,
+          "category": "theater",
+          "description": "The Brick presents Letters from Tyra by Derek Smith playing December 3-20, 2026 at The Brick Theater running time 60 minutes Billed as “a spectacular duet blending song, dance, and scene work on national and Italian themes,” Letters from Tyra is actu",
+          "address": "579 Metropolitan Ave, Brooklyn, NY 11211"
+        }
+      ],
+      "error": null,
+      "duration": 1.44,
+      "cached": false
+    },
+    {
+      "venue": "The Chain Theatre",
+      "url": "https://www.chaintheatre.org/whats-on",
+      "events": [
+        {
+          "name": "RENTAL: T.O.Y. (4TH FLOOR)",
+          "date": "2026-11-06T00:00:00.181000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-toy-s7rra-2gh5k-kytmd",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Brody Went Missing (3RD FLOOR)",
+          "date": "2026-11-06T00:00:00.461000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-brody-went-missing",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: T.O.Y. (4TH FLOOR)",
+          "date": "2026-11-07T00:00:00.181000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-toy-s7rra-2gh5k-kytmd-fhlm9",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Brody Went Missing (3RD FLOOR)",
+          "date": "2026-11-07T00:00:00.461000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-brody-went-missing-5zmp8",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Brody Went Missing (3RD FLOOR)",
+          "date": "2026-11-07T19:00:00.461000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-brody-went-missing-5zmp8-wmnss-tj27k",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: T.O.Y. (4TH FLOOR)",
+          "date": "2026-11-07T19:30:00.181000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-toy-s7rra-2gh5k-kytmd-fhlm9-l543w-7gc83-m8ct6",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: T.O.Y. (4TH FLOOR)",
+          "date": "2026-11-08T00:00:00.181000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-toy-s7rra-2gh5k-kytmd-fhlm9-l543w",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Brody Went Missing (3RD FLOOR)",
+          "date": "2026-11-08T00:00:00.461000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-brody-went-missing-5zmp8-wmnss",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: T.O.Y. (4TH FLOOR)",
+          "date": "2026-11-08T19:30:00.181000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-toy-s7rra-2gh5k-kytmd-fhlm9-l543w-7gc83",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Brody Went Missing (3RD FLOOR)",
+          "date": "2026-11-08T22:00:00.461000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-brody-went-missing-5zmp8-wmnss-wy668",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Romeo & Juliet (3RD FLOOR)",
+          "date": "2026-11-14T00:00:00.746000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/20ofyh209hfvwobjsjlv76jwzgyhnp",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Suburbia Ad Nauseam (4th Floor)",
+          "date": "2026-11-14T00:30:00.874000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-suburbia-ad-nauseam-4th-floor",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Romeo & Juliet (3RD FLOOR)",
+          "date": "2026-11-14T19:00:00.746000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/20ofyh209hfvwobjsjlv76jwzgyhnp-sfdzr-z2t6r",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Romeo & Juliet (3RD FLOOR)",
+          "date": "2026-11-15T00:00:00.746000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/20ofyh209hfvwobjsjlv76jwzgyhnp-sfdzr",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Suburbia Ad Nauseam (4th Floor)",
+          "date": "2026-11-15T00:30:00.874000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-suburbia-ad-nauseam-4th-floor-nmf5b",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Romeo & Juliet (3RD FLOOR)",
+          "date": "2026-11-15T19:00:00.746000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/20ofyh209hfvwobjsjlv76jwzgyhnp-sfdzr-z2t6r-5k3p2",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Suburbia Ad Nauseam (4th Floor)",
+          "date": "2026-11-15T19:00:00.874000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-suburbia-ad-nauseam-4th-floor-nmf5b-9627l",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Suburbia Ad Nauseam (4th Floor)",
+          "date": "2026-11-19T00:30:00.874000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-suburbia-ad-nauseam-4th-floor-nmf5b-gslz7",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Suburbia Ad Nauseam (4th Floor)",
+          "date": "2026-11-20T00:30:00.874000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-suburbia-ad-nauseam-4th-floor-nmf5b-9627l-p63d8",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Suburbia Ad Nauseam (4th Floor)",
+          "date": "2026-11-21T00:30:00.874000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-suburbia-ad-nauseam-4th-floor-nmf5b-9627l-p63d8-2ctay",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Suburbia Ad Nauseam (4th Floor)",
+          "date": "2026-11-22T00:30:00.874000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-suburbia-ad-nauseam-4th-floor-nmf5b-9627l-p63d8-2ctay-cwmrj",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "RENTAL: Suburbia Ad Nauseam (4th Floor)",
+          "date": "2026-11-22T19:00:00.874000+00:00",
+          "url": "https://www.chaintheatre.org/whats-on/rental-suburbia-ad-nauseam-4th-floor-nmf5b-9627l-77fj5",
+          "venue": "The Chain Theatre",
+          "price": "Free / No Cover",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.59,
+      "cached": false
+    },
+    {
+      "venue": "The Secret Theatre (LIC)",
+      "url": "https://www.secrettheatre.com/shows-events",
+      "events": [
+        {
+          "name": "King Lear",
+          "date": "2026-11-13T01:00:00.190000+00:00",
+          "url": "https://www.secrettheatre.com/shows-events/king-lear",
+          "venue": "The Secret Theatre (LIC)",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Beetlejuice Jr.",
+          "date": "2026-11-20T00:00:00.216000+00:00",
+          "url": "https://www.secrettheatre.com/shows-events/beetlejuice-jr",
+          "venue": "The Secret Theatre (LIC)",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Showpeople Theatre Festival",
+          "date": "2026-12-01T00:30:00.239000+00:00",
+          "url": "https://www.secrettheatre.com/shows-events/showpeople-theatre-festival",
+          "venue": "The Secret Theatre (LIC)",
+          "price": "Free / No Cover",
+          "category": "theater"
+        }
+      ],
+      "error": null,
+      "duration": 0.58,
+      "cached": false
+    },
+    {
+      "venue": "Kupferberg Center for the Arts",
+      "url": "https://www.kupferbergcenter.org/events",
+      "events": [
+        {
+          "name": "Malika Zarra",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://kupferbergcenter.org/event/malika/",
+          "venue": "Kupferberg Center for the Arts",
+          "price": null,
+          "address": "65-30 Kissena Blvd, Flushing, NY 11367",
+          "category": "music"
+        },
+        {
+          "name": "Salcedo’s Latin Soul: Pops y Palmas Album Release Party",
+          "date": "2026-11-15T20:00:00+00:00",
+          "url": "https://kupferbergcenter.org/event/salcedo/",
+          "venue": "Kupferberg Center for the Arts",
+          "price": null,
+          "address": "65-30 Kissena Blvd, Flushing, NY 11367",
+          "category": "clubbing"
+        },
+        {
+          "name": "(Visiting Presenter) Ele Yan MOMENTⁿ World Tour",
+          "date": "2026-11-16T01:00:00+00:00",
+          "url": "https://kupferbergcenter.org/event/ele-yan/",
+          "venue": "Kupferberg Center for the Arts",
+          "price": null,
+          "address": "65-30 Kissena Blvd, Flushing, NY 11367",
+          "category": "music"
+        },
+        {
+          "name": "Sensations: Culture, Community, Courage",
+          "date": "2026-12-03T17:00:00+00:00",
+          "url": "https://kupferbergcenter.org/event/sensations/",
+          "venue": "Kupferberg Center for the Arts",
+          "price": null,
+          "address": "65-30 Kissena Blvd, Flushing, NY 11367",
+          "category": "music"
+        },
+        {
+          "name": "Keith Michael’s The Nutcracker",
+          "date": "2026-12-05T00:00:00+00:00",
+          "url": "https://kupferbergcenter.org/event/nutcracker/",
+          "venue": "Kupferberg Center for the Arts",
+          "price": null,
+          "address": "65-30 Kissena Blvd, Flushing, NY 11367",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.85,
+      "cached": false
+    },
+    {
+      "venue": "Theatre for a New Audience",
+      "url": "https://www.tfana.org/current-season",
+      "events": [
+        {
+          "name": "Elektra",
+          "date": "2026-11-11T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-10-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-12T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-11-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-13T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-12-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-14T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-13-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-15T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-14-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-16T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-15-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Spotlight Series: Tom Stoppard’s Shakespeare",
+          "date": "2026-11-16T17:00:00+00:00",
+          "url": "https://tfana.org/events/spotlight-series-tom-stoppards-shakespeare-2026-11-16-730-pm",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-18T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-17-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-19T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-18-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-20T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-19-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-21T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-20-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-21T19:00:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-21-200-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-22T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-21-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-22T19:00:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-22-200-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-23T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-22-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-25T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-24-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-26T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-25-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-28T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-27-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-28T19:00:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-28-200-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-29T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-28-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-29T19:00:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-29-200-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-11-30T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-11-29-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-12-02T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-12-01-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-12-03T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-12-02-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-12-04T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-12-03-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-12-05T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-12-04-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-12-05T19:00:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-12-05-200-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-12-06T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-12-05-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-12-06T19:00:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-12-06-200-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        },
+        {
+          "name": "Elektra",
+          "date": "2026-12-07T00:30:00+00:00",
+          "url": "https://tfana.org/events/elektra-2026-12-06-730-pm/seats",
+          "venue": "Polonsky Shakespeare Center (TFANA)",
+          "price": null,
+          "address": "262 Ashland Pl, Brooklyn, NY 11217",
+          "category": "theater"
+        }
+      ],
+      "error": null,
+      "duration": 4.59,
       "cached": false
     },
     {
@@ -119965,7 +121061,7 @@
       ],
       "error": null,
       "duration": 0.82,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Sesh Comedy (Chinatown / LES)",
@@ -120086,7 +121182,7 @@
       ],
       "error": null,
       "duration": 5.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "OS NYC (Super Smash Bros & Gaming)",
@@ -134916,7 +136012,7 @@
       ],
       "error": null,
       "duration": 7.84,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Luma Calendars",
@@ -135603,6 +136699,19 @@
           "neighborhood": "Manhattan"
         },
         {
+          "name": "Cake Decorating Workshop 🍰",
+          "date": "2026-11-19T23:30:00+00:00",
+          "url": "https://lu.ma/maayans-gg27",
+          "venue": "519 Broome St 2nd floor, New York",
+          "price": "$105",
+          "category": "community",
+          "description": "Hosted by Maayan's Hospitality Group",
+          "lat": 40.7236201,
+          "lng": -74.0039267,
+          "address": "519 Broome St 2nd floor, New York, NY 10013, USA",
+          "neighborhood": "Manhattan"
+        },
+        {
           "name": "Mosaic Pottery Workshop",
           "date": "2026-11-19T23:30:00+00:00",
           "url": "https://lu.ma/maayans-7och",
@@ -135629,6 +136738,19 @@
           "neighborhood": "Manhattan"
         },
         {
+          "name": "Cake Decorating Workshop 🍰",
+          "date": "2026-11-20T23:30:00+00:00",
+          "url": "https://lu.ma/maayans-7r4w",
+          "venue": "519 Broome St 2nd floor, New York",
+          "price": "$105",
+          "category": "community",
+          "description": "Hosted by Maayan's Hospitality Group",
+          "lat": 40.7236201,
+          "lng": -74.0039267,
+          "address": "519 Broome St 2nd floor, New York, NY 10013, USA",
+          "neighborhood": "Manhattan"
+        },
+        {
           "name": "Mosaic Pottery Workshop",
           "date": "2026-11-21T23:30:00+00:00",
           "url": "https://lu.ma/maayans-9bec",
@@ -135642,6 +136764,19 @@
           "neighborhood": "Manhattan"
         },
         {
+          "name": "Cake Decorating Workshop 🍰",
+          "date": "2026-11-21T23:30:00+00:00",
+          "url": "https://lu.ma/maayans-zovm",
+          "venue": "519 Broome St 2nd floor, New York",
+          "price": "$105",
+          "category": "community",
+          "description": "Hosted by Maayan's Hospitality Group",
+          "lat": 40.7236201,
+          "lng": -74.0039267,
+          "address": "519 Broome St 2nd floor, New York, NY 10013, USA",
+          "neighborhood": "Manhattan"
+        },
+        {
           "name": "Mosaic Pottery Workshop",
           "date": "2026-11-22T23:30:00+00:00",
           "url": "https://lu.ma/maayans-hj5v",
@@ -135652,6 +136787,19 @@
           "lat": 40.7540987,
           "lng": -73.9917081,
           "address": "265 W 37th St 20th floor, New York, NY 10018, USA",
+          "neighborhood": "Manhattan"
+        },
+        {
+          "name": "Cake Decorating Workshop 🍰",
+          "date": "2026-11-22T23:30:00+00:00",
+          "url": "https://lu.ma/maayans-872n",
+          "venue": "519 Broome St 2nd floor, New York",
+          "price": "$105",
+          "category": "community",
+          "description": "Hosted by Maayan's Hospitality Group",
+          "lat": 40.7236201,
+          "lng": -74.0039267,
+          "address": "519 Broome St 2nd floor, New York, NY 10013, USA",
           "neighborhood": "Manhattan"
         },
         {
@@ -139185,8 +140333,8 @@
         }
       ],
       "error": null,
-      "duration": 3.85,
-      "cached": true
+      "duration": 4.93,
+      "cached": false
     },
     {
       "venue": "Meetup: NYC Language Exchange & Polyglot Socials",
@@ -254585,25 +255733,25 @@
       "venue": "Eventbrite: Hiking",
       "url": "https://www.eventbrite.com/d/ny--new-york/hiking/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hiking/",
-      "duration": 0.2,
-      "cached": false
+      "error": null,
+      "duration": 0.19,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Hikes",
       "url": "https://www.eventbrite.com/d/ny--new-york/hike/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hike/",
-      "duration": 0.2,
-      "cached": false
+      "error": null,
+      "duration": 0.37,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Outdoor Adventures",
       "url": "https://www.eventbrite.com/d/ny--new-york/outdoor-adventure/",
       "events": [],
-      "error": null,
-      "duration": 0.31,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-adventure/",
+      "duration": 0.29,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Walking Tours",
@@ -254633,17 +255781,17 @@
       "venue": "Eventbrite: Rock Climbing",
       "url": "https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
       "events": [],
-      "error": null,
-      "duration": 0.31,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
+      "duration": 0.3,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Roller Skating",
       "url": "https://www.eventbrite.com/d/ny--new-york/roller-skating/",
       "events": [],
-      "error": null,
-      "duration": 0.08,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/roller-skating/",
+      "duration": 0.18,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Yoga",
@@ -254657,9 +255805,9 @@
       "venue": "Eventbrite: Pickleball",
       "url": "https://www.eventbrite.com/d/ny--new-york/pickleball/",
       "events": [],
-      "error": null,
-      "duration": 0.29,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pickleball/",
+      "duration": 0.18,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Volleyball",
@@ -254673,17 +255821,17 @@
       "venue": "Eventbrite: Kickball",
       "url": "https://www.eventbrite.com/d/ny--new-york/kickball/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.42,
+      "cached": false
     },
     {
       "venue": "Eventbrite: DJ Sets",
       "url": "https://www.eventbrite.com/d/ny--new-york/dj/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/dj/",
-      "duration": 0.3,
-      "cached": false
+      "error": null,
+      "duration": 0.17,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Techno",
@@ -254697,33 +255845,33 @@
       "venue": "Eventbrite: House Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/house-music/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/house-music/",
-      "duration": 0.4,
-      "cached": false
+      "error": null,
+      "duration": 0.08,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Dance Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/dance-party/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/dance-party/",
-      "duration": 0.39,
-      "cached": false
+      "error": null,
+      "duration": 0.15,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Day Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/day-party/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/day-party/",
-      "duration": 0.28,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Raves",
       "url": "https://www.eventbrite.com/d/ny--new-york/rave/",
       "events": [],
-      "error": null,
-      "duration": 0.03,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rave/",
+      "duration": 0.42,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Afrobeats",
@@ -254737,25 +255885,25 @@
       "venue": "Eventbrite: Reggaeton",
       "url": "https://www.eventbrite.com/d/ny--new-york/reggaeton/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/reggaeton/",
+      "duration": 0.42,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Hip-Hop Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/hip-hop-party/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hip-hop-party/",
-      "duration": 0.47,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Latin Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/latin-party/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.42,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Silent Discos",
@@ -254777,9 +255925,9 @@
       "venue": "Eventbrite: Live Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/live-music/",
       "events": [],
-      "error": null,
-      "duration": 0.12,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/live-music/",
+      "duration": 0.48,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Concerts",
@@ -254801,25 +255949,25 @@
       "venue": "Eventbrite: Karaoke",
       "url": "https://www.eventbrite.com/d/ny--new-york/karaoke/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.39,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Open Mics",
       "url": "https://www.eventbrite.com/d/ny--new-york/open-mic/",
       "events": [],
-      "error": null,
-      "duration": 0.03,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.42,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Poetry",
       "url": "https://www.eventbrite.com/d/ny--new-york/poetry/",
       "events": [],
-      "error": null,
-      "duration": 0.07,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.42,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Comedy Shows",
@@ -254849,9 +255997,9 @@
       "venue": "Eventbrite: Immersive Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/immersive-theater/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.39,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Cabaret",
@@ -254865,17 +256013,17 @@
       "venue": "Eventbrite: Dance Performances",
       "url": "https://www.eventbrite.com/d/ny--new-york/dance-performance/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.39,
-      "cached": false
+      "error": null,
+      "duration": 0.06,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Film Screenings",
       "url": "https://www.eventbrite.com/d/ny--new-york/film-screening/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.39,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Art Shows",
@@ -254889,17 +256037,17 @@
       "venue": "Eventbrite: Gallery Openings",
       "url": "https://www.eventbrite.com/d/ny--new-york/gallery-opening/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.39,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Paint & Sip",
       "url": "https://www.eventbrite.com/d/ny--new-york/paint-and-sip/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.42,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Workshops",
