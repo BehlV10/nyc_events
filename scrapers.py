@@ -18,6 +18,8 @@ import requests
 from requests.adapters import HTTPAdapter
 from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
 
+import nyc_geo
+
 warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 CACHE_SECONDS = 15 * 60
@@ -2884,7 +2886,7 @@ def _eb_venue_in_nyc(vobj):
     try:
         lat, lng = float(vobj.get("latitude") or addr.get("latitude")), float(vobj.get("longitude") or addr.get("longitude"))
         if lat or lng:
-            return 40.49 <= lat <= 40.92 and -74.27 <= lng <= -73.68
+            return nyc_geo.in_nyc(lat, lng)  # borough polygons: a bbox also takes in Hoboken/Jersey City
     except (TypeError, ValueError):
         pass
     city = (addr.get("city") or "").strip().lower()
@@ -8206,82 +8208,23 @@ _TOPIC_GENERIC_WORDS = {
 }
 
 
-# Eventbrite organizers with recurring NYC events, read through their organizer feed
-# (scrape_eventbrite_organizer) instead of search pages. Found by tallying organizers
-# across our Eventbrite searches and keeping those with 2+ upcoming in-window NYC events.
-_EVENTBRITE_ORGANIZERS = [
-    ("113265046921", 'Time Out Market Union Square', "food"),
-    ("10797526283", 'New York City Social Events', "party"),
-    ("99682610781", 'Diversity and Inclusion Film Festival', "film"),
-    ("79969695593", 'Grove 34 Comedy (James Quesada)', "comedy"),
-    ("70818623373", 'Gotham Park', "sports"),
-    ("6201076797", 'New York Adventure Club', "outdoors"),
-    ("76065455893", 'EastWest Collective Networking', "community"),
-    ("37080538453", 'Chelsea Table + Stage', "music"),
-    ("33571507987", 'The Dendro Lab', "outdoors"),
-    ("33177285613", 'NYPL Career Services', "community"),
-    ("19886909683", 'EastVille Comedy Club (Eventbrite)', "comedy"),
-    ("115954955391", 'NYC Events Guide', "clubbing"),
-    ("10013510321", 'Czech Center New York', "art"),
-    ("76612649623", 'Tiny Arts Supply', "art"),
-    ("5993389089", 'NYPL for the Performing Arts', "music"),
-    ("58374016673", 'VIP Sample Sale', "community"),
-    ("54944809083", 'NYC Thanksgiving Parade Events & Experiences', "community"),
-    ("43013127903", 'Barnes & Noble - Union Square', "books"),
-    ("31639983301", 'NYC Social Group', "party"),
-    ("64632290063", 'Funny People At', "comedy"),
-    ("64377861443", 'Shock A Go Go Film Festival', "film"),
-    ("58042250453", 'Kiss Lounge Queens', "clubbing"),
-    ("53470389893", 'Cucala Dance Company', "dance"),
-    ("4279966505", 'UrbanGlass', "art"),
-    ("39653796043", 'NYPL Center for Educators and Schools', "family"),
-    ("31200117645", 'CPR - Center for Performance Research', "art"),
-    ("31080353121", 'Old Stone House & Washington Park', "outdoors"),
-    ("28434919813", 'Long Live the Runway', "community"),
-    ("2045320721", 'GBH Parties (TV Eye, DROM)', "clubbing"),
-    ("20080920317", 'Time Out Market New York', "food"),
-    ("17235422291", 'The Greater Ridgewood Historical Society', "outdoors"),
-    ("11920997917", 'MTS Productions (Latin Parties)', "dance"),
-    ("11755215507", 'Hudson Park Library', "community"),
-    ("11144694568", 'NYPL Thomas Yoseloff Business Center', "community"),
-    ("91898788783", 'High Line Comedy Club', "comedy"),
-    ("8892496774", 'Frankie Banks Parties (Queens & Brooklyn)', "clubbing"),
-    ("87580057813", 'Tealeaf Collective', "music"),
-    ("86136754923", 'Lectures on Tap', "community"),
-    ("74577442203", 'Touring Treasures', "food"),
-    ("67306368493", "The People's Forum", "community"),
-    ("6350090643", 'Newtown Creek Alliance', "outdoors"),
-    ("60462031173", 'Blue Glove Hospitality Parties', "clubbing"),
-    ("48539543903", 'Salsa Pizzeria', "dance"),
-    ("41991254513", 'FRIGID New York', "theater"),
-    ("39289382883", 'National Academy of Design', "art"),
-    ("3903604283", 'Mike Geffner Presents (Brooklyn Music Kitchen)', "music"),
-    ("36746617253", 'WalksNYC Tours & Cruises', "outdoors"),
-    ("34192319459", '1014 Space (873 Broadway)', "art"),
-    ("25203170825", 'Ismada Productions', "music"),
-    ("18615337552", 'MakerSpace NYC', "community"),
-    ("17659708650", 'Comedy Mob', "comedy"),
-    ("17292272476", 'Improv Theatre LLC', "theater"),
-    ("1717273352", 'ICLUBNYC Parties & Cruises', "clubbing"),
-    ("17022023886", 'Main Event Hospitality (South Beach Astoria)', "clubbing"),
-    ("16028691897", 'El Museo del Barrio', "art"),
-    ("15236594760", 'The Latin Social', "dance"),
-    ("1513263208", 'Open House New York', "outdoors"),
-    ("12316350145", 'iBoatNYC Party Cruises', "clubbing"),
-    ("121282020636", 'NYPL Roosevelt Island Library', "community"),
-    ("120777580098", 'Brooklyn Public Library - Community Health', "community"),
-    ("120760418804", 'The Ornate Project', "clubbing"),
-    ("11795946643", 'Attractions4us NYC Tours & Cruises', "outdoors"),
-    ("115824599241", 'Brooklyn Attic Books', "books"),
-    ("115594308411", 'Comedia en Times Square (Grisly Pear)', "comedy"),
-    ("114781508361", 'The Twisted Spine', "books"),
-    ("110275304201", 'South Beach NY (Olympia Lounge)', "clubbing"),
-    ("108250881751", 'Dada Bar', "music"),
-    ("107812353391", 'Ermantourage NYC (Foodie Socials)', "party"),
-    ("106883929601", "Arts and Architecture Conservancy at Saint Peter's", "music"),
-    ("103104074541", "Enoch's", "comedy"),
-    ("103091184941", 'Tipsy Scoop Queens', "food"),
-]
+# Eventbrite organizers/venues read through their JSON feed (scrape_eventbrite_organizer)
+# instead of search pages. The list lives in eventbrite_organizers.json and grows via
+# scripts/discover_eventbrite.py, which crawls search pages slowly from a home connection.
+EVENTBRITE_ORGANIZERS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "eventbrite_organizers.json")
+
+
+def _load_eventbrite_organizers(path=EVENTBRITE_ORGANIZERS_FILE):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return []
+    out = []
+    for src in data.get("sources") or []:
+        if str(src.get("id", "")).isdigit() and src.get("name") and src.get("kind") in ("organizer", "venue"):
+            out.append((src["kind"], str(src["id"]), src["name"], src.get("category") or "community"))
+    return out
 
 
 def _topic_terms(query):
@@ -8313,13 +8256,21 @@ _ALL_VENUES += [
 ] + [
     {
         "name": name,
-        "url": f"https://www.eventbrite.com/api/v3/organizers/{org_id}/events/",
+        "url": f"https://www.eventbrite.com/api/v3/{kind}s/{org_id}/events/",
         "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": cat,
     }
-    for org_id, name, cat in _EVENTBRITE_ORGANIZERS
+    for kind, org_id, name, cat in _load_eventbrite_organizers()
 ]
 
-VENUES = _ALL_VENUES
+def _is_eventbrite_search(v):
+    return "eventbrite.com/d/" in (v.get("url") or "")
+
+
+# Eventbrite search pages 405 from CI runners, so the scrape no longer requests them; they
+# are kept only as the starting points for scripts/discover_eventbrite.py, which turns what
+# they list into organizer feeds.
+EVENTBRITE_DISCOVERY_SEARCHES = [v["url"] for v in _ALL_VENUES if _is_eventbrite_search(v)]
+VENUES = [v for v in _ALL_VENUES if not _is_eventbrite_search(v)]
 
 
 # Static "useful links" — venues & discount programs worth linking
