@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T11:04:45.812792+00:00",
+  "generated_at": "2026-11-05T11:08:42.877028+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -45008,7 +45008,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 1.09,
+      "duration": 0.99,
       "cached": false
     },
     {
@@ -120488,7 +120488,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.23,
+      "duration": 0.44,
       "cached": false
     },
     {
@@ -120751,7 +120751,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.22,
+      "duration": 0.5,
       "cached": false
     },
     {
@@ -121531,7 +121531,7 @@
           "neighborhood": "Bedford-Stuyvesant"
         },
         {
-          "name": "Arthur Dutra & Vitor GonÃ§alves",
+          "name": "Arthur Dutra & Vitor Gonçalves",
           "date": "2026-11-11T02:00:00+00:00",
           "url": "https://www.barlunatico.com/",
           "venue": "Lunatico",
@@ -121540,7 +121540,7 @@
           "neighborhood": "Bedford-Stuyvesant"
         },
         {
-          "name": "The Smoota TÃªte-a-TÃªte / Moon Radio",
+          "name": "The Smoota Tête-a-Tête / Moon Radio",
           "date": "2026-11-12T02:00:00+00:00",
           "url": "https://www.barlunatico.com/",
           "venue": "Lunatico",
@@ -121578,8 +121578,8 @@
         }
       ],
       "error": null,
-      "duration": 0.63,
-      "cached": true
+      "duration": 0.5,
+      "cached": false
     },
     {
       "venue": "Alphaville",
@@ -122848,7 +122848,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.21,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -128047,8 +128047,8 @@
         }
       ],
       "error": null,
-      "duration": 0.72,
-      "cached": true
+      "duration": 0.66,
+      "cached": false
     },
     {
       "venue": "Stand Up NY",
@@ -138920,7 +138920,7 @@
       ],
       "error": null,
       "duration": 0.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Birdland Jazz Club",
@@ -158773,7 +158773,7 @@
       ],
       "error": null,
       "duration": 0.65,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Brick Theater",
@@ -158932,7 +158932,7 @@
       ],
       "error": null,
       "duration": 1.4,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Chain Theatre",
@@ -159117,7 +159117,7 @@
       ],
       "error": null,
       "duration": 0.78,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Secret Theatre (LIC)",
@@ -159150,7 +159150,7 @@
       ],
       "error": null,
       "duration": 0.25,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Kupferberg Center for the Arts",
@@ -159204,7 +159204,7 @@
       ],
       "error": null,
       "duration": 1.07,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Theatre for a New Audience",
@@ -159483,7 +159483,7 @@
       ],
       "error": null,
       "duration": 4.14,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Bird Club Trips",
@@ -190849,7 +190849,7 @@
       ],
       "error": null,
       "duration": 0.65,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Explorers Club",
@@ -191014,7 +191014,7 @@
       ],
       "error": null,
       "duration": 0.36,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Municipal Art Society Tours & Talks",
@@ -191183,7 +191183,7 @@
       ],
       "error": null,
       "duration": 0.49,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Society Library",
@@ -191228,7 +191228,7 @@
       ],
       "error": null,
       "duration": 0.56,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Cooper Union Public Programs",
@@ -191282,7 +191282,7 @@
       ],
       "error": null,
       "duration": 0.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Littlefield (own calendar)",
@@ -191444,7 +191444,7 @@
       ],
       "error": null,
       "duration": 1.17,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenwich Village Comedy Club (own calendar)",
@@ -192281,7 +192281,7 @@
       ],
       "error": null,
       "duration": 5.33,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Broadway Comedy Club (own calendar)",
@@ -193550,7 +193550,7 @@
       ],
       "error": null,
       "duration": 1.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Comedy Collective (own calendar)",
@@ -194239,7 +194239,7 @@
       ],
       "error": null,
       "duration": 1.39,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Industry City",
@@ -195417,8 +195417,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 3.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/grove-34/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -195654,8 +195654,8 @@
           "category": "music"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/ (serving stale cache)",
-      "duration": 0.13,
+      "error": null,
+      "duration": 2.82,
       "cached": true
     },
     {
@@ -195831,8 +195831,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bohemian-hall/ (serving stale cache)",
-      "duration": 0.24,
+      "error": null,
+      "duration": 2.5,
       "cached": true
     },
     {
@@ -196056,8 +196056,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/astoria-queens/ (serving stale cache)",
-      "duration": 0.12,
+      "error": null,
+      "duration": 3.11,
       "cached": true
     },
     {
@@ -196305,8 +196305,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.66,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/long-island-city/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -196743,8 +196743,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.86,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jackson-heights/ (serving stale cache)",
+      "duration": 0.22,
       "cached": true
     },
     {
@@ -197133,8 +197133,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.81,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/ (serving stale cache)",
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -198318,7 +198318,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.1,
+      "duration": 0.38,
       "cached": false
     },
     {
@@ -198528,7 +198528,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.14,
+      "duration": 0.4,
       "cached": false
     },
     {
@@ -198536,7 +198536,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.1,
+      "duration": 0.47,
       "cached": false
     },
     {
@@ -199667,7 +199667,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.16,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -201185,7 +201185,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.15,
+      "duration": 0.46,
       "cached": false
     },
     {
@@ -202069,7 +202069,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.15,
+      "duration": 0.53,
       "cached": false
     },
     {
@@ -203242,8 +203242,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 3.23,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/ (serving stale cache)",
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -203479,8 +203479,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 1.86,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bluestockings/ (serving stale cache)",
+      "duration": 0.38,
       "cached": true
     },
     {
@@ -204028,8 +204028,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.1,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-public-library/ (serving stale cache)",
+      "duration": 0.3,
       "cached": true
     },
     {
@@ -210889,8 +210889,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 2.77,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.3,
       "cached": true
     },
     {
@@ -210990,7 +210990,7 @@
       ],
       "error": null,
       "duration": 0.21,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -257286,7 +257286,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.96,
+      "duration": 0.72,
       "cached": false
     },
     {
@@ -257294,7 +257294,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.62,
+      "duration": 0.65,
       "cached": false
     },
     {
@@ -260602,7 +260602,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 1.59,
+      "duration": 1.3,
       "cached": false
     },
     {
@@ -365532,9 +365532,9 @@
       "venue": "Eventbrite: Walking Tours",
       "url": "https://www.eventbrite.com/d/ny--new-york/walking-tour/",
       "events": [],
-      "error": null,
-      "duration": 0.3,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Bike Rides",
@@ -365572,9 +365572,9 @@
       "venue": "Eventbrite: Yoga",
       "url": "https://www.eventbrite.com/d/ny--new-york/yoga/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Pickleball",
@@ -365588,9 +365588,9 @@
       "venue": "Eventbrite: Volleyball",
       "url": "https://www.eventbrite.com/d/ny--new-york/volleyball/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/volleyball/",
-      "duration": 0.11,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Kickball",
@@ -365612,9 +365612,9 @@
       "venue": "Eventbrite: Techno",
       "url": "https://www.eventbrite.com/d/ny--new-york/techno/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/techno/",
-      "duration": 0.27,
-      "cached": false
+      "error": null,
+      "duration": 0.19,
+      "cached": true
     },
     {
       "venue": "Eventbrite: House Music",
@@ -365684,9 +365684,9 @@
       "venue": "Eventbrite: Silent Discos",
       "url": "https://www.eventbrite.com/d/ny--new-york/silent-disco/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/silent-disco/",
-      "duration": 0.33,
-      "cached": false
+      "error": null,
+      "duration": 0.26,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Brunch Parties",
@@ -365716,9 +365716,9 @@
       "venue": "Eventbrite: Singer-Songwriters",
       "url": "https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
-      "duration": 0.18,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Karaoke",
@@ -365756,17 +365756,17 @@
       "venue": "Eventbrite: Stand-Up Comedy",
       "url": "https://www.eventbrite.com/d/ny--new-york/stand-up-comedy/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "error": null,
       "duration": 0.23,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Eventbrite: Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/theater/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.3,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Immersive Theater",
@@ -365828,41 +365828,41 @@
       "venue": "Eventbrite: Workshops",
       "url": "https://www.eventbrite.com/d/ny--new-york/workshops/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Social Mixers",
       "url": "https://www.eventbrite.com/d/ny--new-york/social-mixer/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.27,
-      "cached": false
+      "error": null,
+      "duration": 0.23,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Singles Events",
       "url": "https://www.eventbrite.com/d/ny--new-york/singles/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.27,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Speed Dating",
       "url": "https://www.eventbrite.com/d/ny--new-york/speed-dating/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.24,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Wine Tastings",
       "url": "https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Union Square Greenmarket",
