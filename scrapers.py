@@ -695,7 +695,8 @@ EXCLUDE_KID_FAMILY_RE = re.compile(
     r"\b("
     r"dababy|frost children|wild child|childish gambino|fat baby|"
     r"destiny's child|child's play|children of bodom|indiana jones|"
-    r"r&b sing-?along|beatles singalong|sing-?along bar|piano bar"
+    r"r&b sing-?along|beatles singalong|sing-?along bar|piano bar|"
+    r"teenage|teen mom|teen wolf|stroller ?\(band\)|puppet ?master|sock puppet"
     r")\b",
     re.IGNORECASE,
 )
@@ -705,7 +706,13 @@ KID_FAMILY_EVENT_RE = re.compile(
     r"baby|babies|lapsit|storytime|story time|toddler|toddlers|"
     r"preschool|preschooler|preschoolers|infant|infants|"
     r"children|child(?:ren)?'s|for kids|for children|kid's|kids\b|"
-    r"pajama story|baby rave|kids yoga|family day|family fun day"
+    r"pajama story|baby rave|kids yoga|family day|family fun day|"
+    r"family[- ](?:program|programs|workshop|workshops|concert|concerts|festival|art|art project|"
+    r"activity|activities|story|stories|tour|tours|time|sunday|saturday|series|show|night|friendly|"
+    r"fun|matinee|studio|celebration|open house|garden|hike|walk|yoga|dance|music)|"
+    r"for families|families|stroller|tweens?|teens?|ages? \d{1,2}\s*(?:-|–|to|\+)|grades? (?:k|pre-?k|\d)|"
+    r"puppet|puppets|puppetry|marionettes?|parents?'? night out|"
+    r"bluey|peppa pig|paw patrol|sesame street|cocomelon|disney junior|daniel tiger"
     r")\b",
     re.IGNORECASE,
 )
@@ -755,7 +762,7 @@ def is_kid_family_event(name, venue=None):
     """Return True if an event is meant for infants, toddlers, kids, or family storytimes."""
     if not name:
         return False
-    if EXCLUDE_KID_FAMILY_RE.search(name):
+    if EXCLUDE_KID_FAMILY_RE.search(name) or re.search(r"\b(?:18|21)\s*\+|\badults? only\b|\bburlesque\b", name, re.I):
         return False
     return bool(KID_FAMILY_EVENT_RE.search(name))
 
