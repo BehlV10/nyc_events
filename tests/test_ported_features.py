@@ -642,5 +642,21 @@ class TestTurntable(unittest.TestCase):
         self.assertTrue(events[0]["url"].startswith("https://tickets.smokejazz.com/shows/7/"))
 
 
+class TestParksOpenData(unittest.TestCase):
+    def test_parks_opendata_rows(self):
+        start = _future_local(2, 10).strftime("%Y-%m-%dT%H:%M:%S.000")
+        rows = [{"title": "Line Dance Fitness", "starttime": start, "parknames": "St. John's Park", "parkids": "B245",
+                 "location": "Dance Room (in St. John's Park)", "categories": "Dance | Fitness | Shape Up NYC",
+                 "coordinates": "40.6735, -73.9347", "link": {"url": "http://www.nycgovparks.org/events/x"}}]
+        with patch("scrapers._SESSION.get", return_value=_resp(payload=rows)):
+            events = scrapers.scrape_nyc_parks_opendata("https://data.cityofnewyork.us/resource/w3wp-dpdi.json", UA_CHROME)
+        e = events[0]
+        self.assertEqual(e["category"], "dance")
+        self.assertEqual(e["address"], "St. John's Park, Brooklyn, NY")
+        self.assertEqual(_local(e["date"]).hour, 10)
+        self.assertTrue(e["url"].startswith("https://"))
+        self.assertAlmostEqual(e["lat"], 40.6735)
+
+
 if __name__ == "__main__":
     unittest.main()
