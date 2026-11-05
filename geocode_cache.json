@@ -138,6 +138,11 @@
 -73.968412,
 "brooklyn"
 ],
+"101 avenue a, new york": [
+40.725862,
+-73.984038,
+"manhattan"
+],
 "101 w 75th st, new york": [
 40.779591,
 -73.977582,
@@ -857,6 +862,11 @@
 -73.9261,
 "brooklyn"
 ],
+"140 stewart avenue, kings county": [
+40.71071,
+-73.9261,
+"brooklyn"
+],
 "140 stewart avenue, new york": [
 40.71071,
 -73.9261,
@@ -1066,6 +1076,11 @@
 "154 w 29th st, new york": [
 40.747369,
 -73.992295,
+"manhattan"
+],
+"155 avenue b, new york": [
+40.726668,
+-73.979805,
 "manhattan"
 ],
 "1561 bedford ave, new york": [
@@ -1305,6 +1320,7 @@
 -74.000948,
 "manhattan"
 ],
+"179 n6 street, kings county": null,
 "18 bleecker street, new york": [
 40.72534,
 -73.993369,
@@ -1343,6 +1359,11 @@
 "1800 broadway, 10019": [
 40.767339,
 -73.981175,
+"manhattan"
+],
+"181 avenue b, new york city": [
+40.72765,
+-73.979092,
 "manhattan"
 ],
 "181 front st, brooklyn": [
@@ -1420,6 +1441,11 @@
 -73.98556,
 "manhattan"
 ],
+"192 3rd ave, new york": [
+40.735552,
+-73.985953,
+"manhattan"
+],
 "192 st to dyckman st, manhattan broadway and dongan": null,
 "192 st to dyckman st, manhattan margaret corbin circ": null,
 "192-10 northern blvd, flushing": [
@@ -1431,6 +1457,11 @@
 40.717386,
 -73.957914,
 "brooklyn"
+],
+"195 avenue a, new york": [
+40.729338,
+-73.981619,
+"manhattan"
 ],
 "195 cadman plaza, new york": [
 40.698452,
@@ -1772,6 +1803,11 @@
 -73.985353,
 "manhattan"
 ],
+"216 avenue a, new york": [
+40.72993,
+-73.980443,
+"manhattan"
+],
 "216 e 6th st, new york": [
 40.727823,
 -73.989963,
@@ -1800,6 +1836,11 @@
 "2180 first avenue, manhattan dance room": [
 40.793818,
 -73.936492,
+"manhattan"
+],
+"219 avenue a, new york": [
+40.730173,
+-73.980805,
 "manhattan"
 ],
 "22 boerum pl, brooklyn": [
@@ -1863,6 +1904,11 @@
 -73.756545,
 "queens"
 ],
+"224 avenue b, new york": [
+40.729188,
+-73.978477,
+"manhattan"
+],
 "224 greene ave, new york": [
 40.686991,
 -73.962089,
@@ -1873,14 +1919,29 @@
 -74.003153,
 "manhattan"
 ],
+"225 ellis st, richmond county": [
+40.515546,
+-74.249448,
+"staten_island"
+],
 "225 madison ave, new york": [
 40.749302,
 -73.981311,
 "manhattan"
 ],
+"225 rogers avenue, kings county": [
+40.668691,
+-73.953165,
+"brooklyn"
+],
 "227 w 27th st, new york": [
 40.747283,
 -73.994751,
+"manhattan"
+],
+"227 w. 29th st, new york": [
+40.748559,
+-73.99397,
 "manhattan"
 ],
 "2271 adam clayton powell jr blvd, new york": [
@@ -2060,6 +2121,7 @@
 -73.980785,
 "manhattan"
 ],
+"242 butler street, new york": null,
 "242 east 14th street, new york": [
 40.732299,
 -73.98547,
@@ -2099,6 +2161,11 @@
 40.735293,
 -73.973876,
 "manhattan"
+],
+"245 avenue u, brooklyn": [
+40.596993,
+-73.975373,
+"brooklyn"
 ],
 "245 lenox ave, new york": [
 40.80619,
@@ -2271,6 +2338,11 @@
 "manhattan"
 ],
 "26 navy st, 11201": null,
+"26 scott ave, kings county": [
+40.592243,
+-74.078887,
+"staten_island"
+],
 "26 wall street, new york city": [
 40.707336,
 -74.01025,
@@ -2339,6 +2411,11 @@
 "270 meserole st, brooklyn": [
 40.708294,
 -73.937971,
+"brooklyn"
+],
+"2718 gerritsen ave, new york": [
+40.592815,
+-73.925444,
 "brooklyn"
 ],
 "273 13th street, brooklyn": [
@@ -2561,6 +2638,11 @@
 -73.99181,
 "manhattan"
 ],
+"306 grand st, kings county": [
+40.712753,
+-73.957289,
+"brooklyn"
+],
 "307 meeker ave, brooklyn": null,
 "307 w 36th st, new york": [
 40.754045,
@@ -2625,6 +2707,11 @@
 "314 scholes street, brooklyn": [
 40.709191,
 -73.935263,
+"brooklyn"
+],
+"315 smith street, new york": [
+40.681174,
+-73.993951,
 "brooklyn"
 ],
 "315 w 35th st, new york": [
@@ -2754,12 +2841,17 @@
 -73.993342,
 "manhattan"
 ],
+"3301 avenue u, brooklyn salt marsh nature cen": null,
 "3319 crescent st, queens county": [
 40.76224,
 -73.929249,
 "queens"
 ],
-"333 court street, brooklyn": null,
+"333 court street, brooklyn": [
+40.682731,
+-73.995482,
+"brooklyn"
+],
 "333 douglass st, brooklyn": [
 40.679729,
 -73.982166,
@@ -2852,6 +2944,11 @@
 -73.979961,
 "manhattan"
 ],
+"341 2nd street, kings county": [
+40.673633,
+-73.982968,
+"brooklyn"
+],
 "341 e 9th st, new york": [
 40.728582,
 -73.985367,
@@ -2932,7 +3029,11 @@
 -73.9629,
 "brooklyn"
 ],
-"353 west st, new york": null,
+"353 west st, new york": [
+40.728732,
+-74.012985,
+"manhattan"
+],
 "355 w 41st street, new york": [
 40.757778,
 -73.992548,
@@ -3087,6 +3188,11 @@
 -74.001966,
 "manhattan"
 ],
+"4 berry st, new york": [
+40.722477,
+-73.955254,
+"brooklyn"
+],
 "4 irving avenue, brooklyn": [
 40.70545,
 -73.925967,
@@ -3108,7 +3214,11 @@
 -73.978027,
 "manhattan"
 ],
-"40 west dr, brooklyn": null,
+"40 west dr, brooklyn": [
+40.665568,
+-73.971574,
+"brooklyn"
+],
 "40-05 queens blvd, queens": [
 40.744189,
 -73.923896,
@@ -3281,6 +3391,11 @@
 "423 west 14th street, new york": [
 40.741728,
 -74.006452,
+"manhattan"
+],
+"425 avenue of the americas, new york": [
+40.734613,
+-73.999149,
 "manhattan"
 ],
 "428 troutman street, brooklyn": [
@@ -3650,7 +3765,11 @@
 -73.996746,
 "manhattan"
 ],
-"50 court st, brooklyn": null,
+"50 court st, brooklyn": [
+40.692384,
+-73.991348,
+"brooklyn"
+],
 "50 s first st, brooklyn": [
 40.714912,
 -73.965251,
@@ -3742,7 +3861,11 @@
 -73.975386,
 "manhattan"
 ],
-"517 court street, brooklyn ny": null,
+"517 court street, brooklyn ny": [
+40.675032,
+-73.999104,
+"brooklyn"
+],
 "518 w 27th st, 10001": [
 40.750453,
 -74.003398,
@@ -3872,6 +3995,11 @@
 40.669353,
 -73.950212,
 "brooklyn"
+],
+"546 w 207th st, new york": [
+40.865992,
+-73.920487,
+"manhattan"
 ],
 "547 e 146th street, bronx bronxworks - betances co": [
 40.812686,
@@ -4023,6 +4151,11 @@
 -73.973058,
 "manhattan"
 ],
+"593 manhattan avenue, kings county": [
+40.722938,
+-73.950619,
+"brooklyn"
+],
 "593 manhattan avenue, new york": [
 40.722938,
 -73.950619,
@@ -4074,6 +4207,11 @@
 -73.981652,
 "manhattan"
 ],
+"600 w 218th st, new york": [
+40.872661,
+-73.918256,
+"manhattan"
+],
 "600 washington st, new york": [
 40.730826,
 -74.009284,
@@ -4102,6 +4240,11 @@
 "610 west 56th street, new york": [
 40.769722,
 -73.992769,
+"manhattan"
+],
+"62 avenue c, new york": [
+40.722524,
+-73.979693,
 "manhattan"
 ],
 "62 bedford street, new york": [
@@ -4144,6 +4287,11 @@
 -73.983416,
 "brooklyn"
 ],
+"623 sackett street, new york": [
+40.678617,
+-73.983416,
+"brooklyn"
+],
 "625 6th ave, new york": [
 40.740326,
 -73.995201,
@@ -4168,6 +4316,11 @@
 40.743465,
 -73.985346,
 "manhattan"
+],
+"631 vanderbilt ave, kings county": [
+40.678163,
+-73.968372,
+"brooklyn"
 ],
 "635 sackett street, brooklyn": [
 40.678617,
@@ -4243,6 +4396,11 @@
 "665 9th ave, new york": [
 40.76118,
 -73.990929,
+"manhattan"
+],
+"67 west street, new york": [
+40.708621,
+-74.014697,
 "manhattan"
 ],
 "67-12 yellowstone blvd, forest hills": [
@@ -4356,6 +4514,11 @@
 -73.960987,
 "manhattan"
 ],
+"71 smith st, kings county": [
+40.689433,
+-73.987789,
+"brooklyn"
+],
 "71 st. and dry harbor rd, queens juniper south playgroun": null,
 "71 w 23rd st, new york": [
 40.743043,
@@ -4442,6 +4605,11 @@
 -73.957855,
 "brooklyn"
 ],
+"748 manhattan ave, long island city": [
+40.726608,
+-73.952106,
+"brooklyn"
+],
 "748 washington ave, brooklyn": [
 40.675459,
 -73.963557,
@@ -4517,6 +4685,11 @@
 -73.872173,
 "queens"
 ],
+"7902 third avenue, new york": [
+40.628534,
+-74.02933,
+"brooklyn"
+],
 "8 spruce street, new york": [
 40.710873,
 -74.005628,
@@ -4531,6 +4704,11 @@
 40.733314,
 -74.002229,
 "manhattan"
+],
+"80 john street, kings county": [
+40.704171,
+-73.985155,
+"brooklyn"
 ],
 "80 n 6th st, brooklyn": [
 40.718897,
@@ -4632,6 +4810,11 @@
 -74.008156,
 "manhattan"
 ],
+"85 avenue a, new york": [
+40.725329,
+-73.984453,
+"manhattan"
+],
 "85 broad st, new york": [
 40.704012,
 -74.011091,
@@ -4727,6 +4910,11 @@
 -73.979914,
 "manhattan"
 ],
+"8823 3rd ave, kings county": [
+40.621489,
+-74.031553,
+"brooklyn"
+],
 "888 10th ave, new york": [
 40.769584,
 -73.987882,
@@ -4752,12 +4940,25 @@
 -73.977218,
 "manhattan"
 ],
-"89 s st, 10038": null,
-"89 south street, manhattan": null,
+"89 s st, 10038": [
+40.705523,
+-74.001567,
+"manhattan"
+],
+"89 south street, manhattan": [
+40.705523,
+-74.001567,
+"manhattan"
+],
 "890 broadway, new york": [
 40.738551,
 -73.989491,
 "manhattan"
+],
+"892 lorimer st, kings county": [
+40.723241,
+-73.951199,
+"brooklyn"
 ],
 "895 shore rd, bronx": [
 40.871777,
@@ -4905,6 +5106,11 @@
 -73.988444,
 "manhattan"
 ],
+"96 avenue c, new york": [
+40.723673,
+-73.978861,
+"manhattan"
+],
 "961 2nd ave, 10022": [
 40.755536,
 -73.968427,
@@ -4946,6 +5152,11 @@
 "manhattan"
 ],
 "99 kingsland ave, brooklyn": [
+40.71985,
+-73.940932,
+"brooklyn"
+],
+"99 kingsland ave, new york": [
 40.71985,
 -73.940932,
 "brooklyn"
