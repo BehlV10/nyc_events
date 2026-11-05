@@ -1132,14 +1132,15 @@ def scrape_donyc(url, ua):
 
 
 def scrape_donyc_calendar(url, ua):
-    """DoNYC citywide day listings (~300 events/day over ~15 pages): every page for the next two
-    weeks, the first few pages after that. Three pages in flight with light pacing."""
+    """DoNYC citywide day listings (~20 events/page, up to ~16 pages on a weekend): up to 18 pages
+    a day for the next two weeks and 12 after (stops at the first empty page). Three pages in
+    flight with light pacing."""
     from concurrent.futures import ThreadPoolExecutor
     now = datetime.now(EASTERN)
     jobs = []
     for i in range(HORIZON_DAYS):
         d = now.date() + timedelta(days=i)
-        jobs.append((f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}", 15 if i < 14 else 8))
+        jobs.append((f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}", 18 if i < 14 else 12))
 
     def day(job):
         base, max_pages = job
