@@ -208,25 +208,44 @@ def main():
     print(f"{len(rows)} listed events -> {len(orgs)} NYC organizers, {len(venues)} venues; {len(cands)} new candidates to verify")
 
     added = []
-    for kind, obj_id, seen, tags in cands:
-        res = verify(kind, obj_id)
-        if res is None:
-            print("Eventbrite refused the feed request; stopping verification.")
-            break
-        upcoming, name = res
-        if upcoming >= 2 and name:
-            entry = {"id": obj_id, "kind": kind, "name": name, "category": category_for(list(tags.elements())),
-                     "added": date.today().isoformat(), "upcoming_when_added": upcoming}
-            added.append(entry)
-            print(f"  + {kind:9} {obj_id:>14}  {upcoming:3} upcoming  {entry['category']:9} {name}")
-        time.sleep(API_GAP)
+    net_errors = 0
+    try:
+        for kind, obj_id, seen, tags in cands:
+            try:
+                res = verify(kind, obj_id)
+            except (requests.RequestException, ValueError) as e:
+                net_errors += 1
+                print(f"  ! {kind} {obj_id}: {type(e).__name__}; skipped", flush=True)
+                if net_errors >= 3:
+                    print("Three network errors in a row; stopping verification (rerun later to continue).")
+                    break
+                time.sleep(API_GAP * 5)
+                continue
+            net_errors = 0
+            if res is None:
+                print("Eventbrite refused the feed request; stopping verification.")
+                break
+            upcoming, name = res
+            if upcoming >= 2 and name:
+                entry = {"id": obj_id, "kind": kind, "name": name, "category": category_for(list(tags.elements())),
+                         "added": date.today().isoformat(), "upcoming_when_added": upcoming}
+                added.append(entry)
+                print(f"  + {kind:9} {obj_id:>14}  {upcoming:3} upcoming  {entry['category']:9} {name}", flush=True)
+            time.sleep(API_GAP)
+    except KeyboardInterrupt:
+        print("Interrupted; saving what was verified so far.")
+    finally:
+        save(data, added, path, args.dry_run)
 
+
+def save(data, added, path, dry_run):
+    """Write verified finds even when verification stops early (rerunning skips them)."""
     taken = {s["name"] for s in data["sources"]} | {v["name"] for v in scrapers.VENUES}
     for entry in added:
         if entry["name"] in taken:
             entry["name"] += " (Eventbrite)"
         taken.add(entry["name"])
-    if args.dry_run:
+    if dry_run:
         print(f"dry run: {len(added)} would be added")
         return
     data["sources"].extend(added)

@@ -626,6 +626,82 @@ VENUE_COORDINATES: Dict[str, Tuple[float, float, str, str, str]] = {
     "chilo's": (40.6889, -73.9571, "Bed-Stuy", "323 Franklin Ave, Brooklyn, NY", "Chilo's"),
     "chilos": (40.6889, -73.9571, "Bed-Stuy", "323 Franklin Ave, Brooklyn, NY", "Chilo's"),
     "the juilliard school": (40.7737, -73.9832, "Lincoln Square", "60 Lincoln Center Plaza, New York, NY", "The Juilliard School"),
+    # === Pinned 2026-11-05 from OpenStreetMap (Nominatim) / NYC GeoSearch lookups ===
+    'chelsea piers': (40.7467, -74.00998, 'Chelsea District', '62 Chelsea Piers, New York, NY', 'Chelsea Piers'),
+    'chelsea piers sports & entertainment complex': (40.7467, -74.00998, 'Chelsea District', '62 Chelsea Piers, New York, NY', 'Chelsea Piers'),
+    'muse paintbar - tribeca': (40.7177, -74.01041, 'Tribeca', '329 Greenwich Street, New York, NY', 'Muse Paintbar Tribeca'),
+    'muse paintbar tribeca': (40.7177, -74.01041, 'Tribeca', '329 Greenwich Street, New York, NY', 'Muse Paintbar Tribeca'),
+    'upright citizens brigade (ucb)': (40.76068, -73.99743, 'Clinton', '555 West 42nd Street, New York, NY', 'Upright Citizens Brigade (UCB)'),
+    'upright citizens brigade': (40.76068, -73.99743, 'Clinton', '555 West 42nd Street, New York, NY', 'Upright Citizens Brigade (UCB)'),
+    'ucb': (40.76068, -73.99743, 'Clinton', '555 West 42nd Street, New York, NY', 'Upright Citizens Brigade (UCB)'),
+    'ucb theatre': (40.76068, -73.99743, 'Clinton', '555 West 42nd Street, New York, NY', 'Upright Citizens Brigade (UCB)'),
+    'upright citizens brigade theatre': (40.76068, -73.99743, 'Clinton', '555 West 42nd Street, New York, NY', 'Upright Citizens Brigade (UCB)'),
+    'john f. kennedy international airport': (40.64295, -73.77937, 'Queens', 'JFK Access Road, Queens, NY', 'JFK Airport'),
+    'jfk airport': (40.64295, -73.77937, 'Queens', 'JFK Access Road, Queens, NY', 'JFK Airport'),
+    'the wood shop': (40.71081, -73.9363, 'Brooklyn', '21 Meadow Street, Brooklyn, NY', 'The Wood Shop'),
+    'new york city center': (40.76394, -73.97946, 'Columbus Circle', '131 West 55th Street, New York, NY', 'New York City Center'),
+    'nuyorican poets cafe': (40.72204, -73.98179, 'Manhattan Community Board 3', 'East 3rd Street, New York, NY', 'Nuyorican Poets Cafe'),
+    'nuyorican poets café': (40.72204, -73.98179, 'Manhattan Community Board 3', 'East 3rd Street, New York, NY', 'Nuyorican Poets Cafe'),
+    'the nuyorican poets cafe': (40.72204, -73.98179, 'Manhattan Community Board 3', 'East 3rd Street, New York, NY', 'Nuyorican Poets Cafe'),
+    'cooper hewitt': (40.78428, -73.9577, 'Carnegie Hill', '2 East 91st Street, New York, NY', 'Cooper Hewitt'),
+    'cooper hewitt arthur ross terrace & gardens': (40.78428, -73.9577, 'Carnegie Hill', '2 East 91st Street, New York, NY', 'Cooper Hewitt'),
+    'cooper hewitt, smithsonian design museum': (40.78428, -73.9577, 'Carnegie Hill', '2 East 91st Street, New York, NY', 'Cooper Hewitt'),
+    'cooper hewitt smithsonian design museum': (40.78428, -73.9577, 'Carnegie Hill', '2 East 91st Street, New York, NY', 'Cooper Hewitt'),
+    'hungarian pastry shop': (40.80356, -73.96368, 'Manhattan Community Board 9', '1030 Amsterdam Avenue, New York, NY', 'Hungarian Pastry Shop'),
+    'chelsea waterside park': (40.75118, -74.01043, 'Manhattan Community Board 4', 'New York, NY', 'Chelsea Waterside Park'),
+    'manhattan university (draddy gymnasium)': (40.89074, -73.90027, 'Fieldston', 'Tibbett Avenue, Bronx, NY', 'Draddy Gymnasium (Manhattan University)'),
+    'essex market': (40.71792, -73.98805, 'Lower East Side', '88 Essex Street, New York, NY', 'Essex Market'),
+    'essex market events': (40.71792, -73.98805, 'Lower East Side', '88 Essex Street, New York, NY', 'Essex Market'),
+    'hammerstein ballroom': (40.75294, -73.99412, 'Chelsea District', '311 West 34th Street, New York, NY', 'Hammerstein Ballroom'),
+    'the hammerstein ballroom': (40.75294, -73.99412, 'Chelsea District', '311 West 34th Street, New York, NY', 'Hammerstein Ballroom'),
+    'manhattan center': (40.75294, -73.99412, 'Chelsea District', '311 West 34th Street, New York, NY', 'Hammerstein Ballroom'),
+    'bedford falls nyc': (40.76622, -73.96247, 'Lenox Hill', '206 East 67th Street, New York, NY', 'Bedford Falls'),
+    'flatiron nomad partnership': (40.74184, -73.98917, 'Flatiron District', 'Flatiron Public Plaza, New York, NY', 'Flatiron Plaza'),
+    'flatiron plaza': (40.74184, -73.98917, 'Flatiron District', 'Flatiron Public Plaza, New York, NY', 'Flatiron Plaza'),
+    'college of mount saint vincent': (40.91286, -73.90697, 'The Bronx', '6301 Riverdale Avenue, Bronx, NY', 'College of Mount Saint Vincent'),
+    'film noir cinema': (40.72731, -73.95161, 'Greenpoint', '122 Meserole Avenue, Brooklyn, NY', 'Film Noir Cinema'),
+    'the tank theater': (40.75366, -73.99329, 'Hudson Yards', '312 West 36th Street, New York, NY', 'The Tank'),
+    'the tank': (40.75366, -73.99329, 'Hudson Yards', '312 West 36th Street, New York, NY', 'The Tank'),
+    'tank theater': (40.75366, -73.99329, 'Hudson Yards', '312 West 36th Street, New York, NY', 'The Tank'),
+    'david h koch theater': (40.77179, -73.98377, 'Lincoln Square', '20 Jaffe Drive, New York, NY', 'David H. Koch Theater'),
+    'david h. koch theater': (40.77179, -73.98377, 'Lincoln Square', '20 Jaffe Drive, New York, NY', 'David H. Koch Theater'),
+    'wagner college': (40.61472, -74.09356, 'Grymes Hill', 'Howard Avenue, Staten Island, NY', 'Wagner College'),
+    'wagner college (spiro sports center)': (40.61472, -74.09356, 'Grymes Hill', 'Howard Avenue, Staten Island, NY', 'Wagner College'),
+    'wagner college pool - spiro sports center': (40.61472, -74.09356, 'Grymes Hill', 'Howard Avenue, Staten Island, NY', 'Wagner College'),
+    'austrian cultural forum': (40.75957, -73.97526, 'Midtown East', '11 East 52nd Street, New York, NY', 'Austrian Cultural Forum'),
+    'chelsea market': (40.74205, -74.0049, 'Chelsea District', '75 9th Avenue, New York, NY', 'Chelsea Market'),
+    'chelsea market events': (40.74205, -74.0049, 'Chelsea District', '75 9th Avenue, New York, NY', 'Chelsea Market'),
+    'liu brooklyn (brooklyn athletic center)': (40.6911, -73.9804, 'Downtown Brooklyn', '1 University Plaza, Brooklyn, NY', 'LIU Brooklyn'),
+    'liu brooklyn': (40.6911, -73.9804, 'Downtown Brooklyn', '1 University Plaza, Brooklyn, NY', 'LIU Brooklyn'),
+    'seaport district': (40.70552, -74.00157, 'Seaport', '95 South Street, New York, NY', 'Pier 17 (Seaport)'),
+    'seaport district events': (40.70552, -74.00157, 'Seaport', '95 South Street, New York, NY', 'Pier 17 (Seaport)'),
+    'drawing new york': (40.73775, -73.98668, 'Gramercy', '15 Gramercy Park South, New York, NY', 'National Arts Club (15 Gramercy Park S)'),
+    'victory field': (40.70135, -73.85387, 'Queens', 'Forest Park Drive, Queens, NY', 'Victory Field (Forest Park)'),
+    'berry park': (40.72247, -73.95525, 'Greenpoint', '4 Berry Street, Brooklyn, NY', 'Berry Park'),
+    'bethesda fountain': (40.77422, -73.97105, 'Manhattan', 'Bethesda Terrace, New York, NY', 'Bethesda Fountain'),
+    'the metropolitan opera': (40.77287, -73.98479, 'Lincoln Square', '30 Josie Robertson Plaza, New York, NY', 'The Metropolitan Opera'),
+    'metropolitan opera': (40.77287, -73.98479, 'Lincoln Square', '30 Josie Robertson Plaza, New York, NY', 'The Metropolitan Opera'),
+    'metropolitan opera house': (40.77287, -73.98479, 'Lincoln Square', '30 Josie Robertson Plaza, New York, NY', 'The Metropolitan Opera'),
+    'the metropolitan opera house': (40.77287, -73.98479, 'Lincoln Square', '30 Josie Robertson Plaza, New York, NY', 'The Metropolitan Opera'),
+    'met opera': (40.77287, -73.98479, 'Lincoln Square', '30 Josie Robertson Plaza, New York, NY', 'The Metropolitan Opera'),
+    'jazz gallery': (40.74464, -73.9886, 'NoMad', '1160 Broadway, New York, NY', 'The Jazz Gallery'),
+    'the jazz gallery': (40.74464, -73.9886, 'NoMad', '1160 Broadway, New York, NY', 'The Jazz Gallery'),
+    'fordham university (rose hill gym)': (40.86217, -73.88385, 'Belmont', '455 East Fordham Road, Bronx, NY', 'Fordham Rose Hill Gym'),
+    'gapstow bridge': (40.76693, -73.97383, 'Manhattan', 'Inscope Arch, New York, NY', 'Gapstow Bridge'),
+    'nyu (john a. paulson center)': (40.7265, -73.99754, 'University Village', '181 Mercer Street, New York, NY', 'NYU Paulson Center'),
+    'uss maine monument': (40.76825, -73.98098, 'Columbus Circle', 'Central Park South, New York, NY', 'USS Maine Monument'),
+    'yeshiva university': (40.84898, -73.92984, 'Fort George', '2475 Amsterdam Avenue, New York, NY', 'Yeshiva University'),
+    'anne loftus playground': (40.86506, -73.9287, 'Fort George', 'Overlook Path, New York, NY', 'Anne Loftus Playground'),
+    'john murray park': (40.74719, -73.94884, 'Queens', 'Queens, NY', 'John Murray Park'),
+    'rooftop cinema club midtown': (40.74767, -73.98785, 'Koreatown', '1250 Broadway, New York, NY', 'Rooftop Cinema Club Midtown'),
+    'rooftop cinema club': (40.74767, -73.98785, 'Koreatown', '1250 Broadway, New York, NY', 'Rooftop Cinema Club Midtown'),
+    'bric house': (40.688666, -73.979088, 'Brooklyn', '647 Fulton St, Brooklyn, NY', 'BRIC House'),
+    'bric': (40.688666, -73.979088, 'Brooklyn', '647 Fulton St, Brooklyn, NY', 'BRIC House'),
+    'bric house gallery': (40.688666, -73.979088, 'Brooklyn', '647 Fulton St, Brooklyn, NY', 'BRIC House'),
+    'bric house media center': (40.688666, -73.979088, 'Brooklyn', '647 Fulton St, Brooklyn, NY', 'BRIC House'),
+    'bric house ballroom': (40.688666, -73.979088, 'Brooklyn', '647 Fulton St, Brooklyn, NY', 'BRIC House'),
+    'urbanglass': (40.688666, -73.979088, 'Brooklyn', '647 Fulton St, Brooklyn, NY', 'UrbanGlass'),
+    "don't tell mama nyc": (40.76063, -73.989477, 'Manhattan', '343 W 46Th St, New York, NY', "Don't Tell Mama"),
 }
 
 # Substring needle rules for matching venues in event or source titles
@@ -1093,7 +1169,11 @@ def _named_borough(text):
 
 def _curated(v_lower):
     norm_v = re.sub(r"[^\w\s]", "", v_lower).strip()
-    return VENUE_COORDINATES.get(v_lower) or VENUE_COORDINATES.get(norm_v)
+    hit = VENUE_COORDINATES.get(v_lower) or VENUE_COORDINATES.get(norm_v)
+    if hit or "(" not in v_lower:
+        return hit
+    name = v_lower.split("(")[0].strip()  # "DROM (New York)", "The Keep (Bushwick)"
+    return VENUE_COORDINATES.get(name) or VENUE_COORDINATES.get(re.sub(r"[^\w\s]", "", name).strip())
 
 
 def resolve_event_geo(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -1151,5 +1231,10 @@ def resolve_event_geo(event: Dict[str, Any]) -> Optional[Dict[str, Any]]:
             if named and nyc_geo.borough_at(lat, lng) not in (None, named):
                 return None  # e.g. "Flushing Town Hall" must not take The Town Hall's Midtown pin
             return {"lat": lat, "lng": lng, "venue": cname, "neighborhood": neigh, "address": addr}
+
+    # 4. A park named in the venue (official NYC Parks properties)
+    park = nyc_geo.park_pin(name_part, text)
+    if park:
+        return {"lat": park[0], "lng": park[1], "venue": venue_raw, "neighborhood": "", "address": ""}
 
     return None
