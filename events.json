@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T08:02:48.813758+00:00",
+  "generated_at": "2026-11-05T08:06:55.727158+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -43461,7 +43461,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.8,
+      "duration": 0.64,
       "cached": false
     },
     {
@@ -59139,8 +59139,8 @@
         }
       ],
       "error": null,
-      "duration": 0.84,
-      "cached": true
+      "duration": 1.22,
+      "cached": false
     },
     {
       "venue": "Music Hall of Williamsburg",
@@ -93194,8 +93194,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.82,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/ (serving stale cache)",
+      "duration": 0.12,
       "cached": true
     },
     {
@@ -93371,8 +93371,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.5,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bohemian-hall/ (serving stale cache)",
+      "duration": 0.35,
       "cached": true
     },
     {
@@ -93596,8 +93596,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.11,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/astoria-queens/ (serving stale cache)",
+      "duration": 0.23,
       "cached": true
     },
     {
@@ -94283,8 +94283,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.86,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jackson-heights/ (serving stale cache)",
+      "duration": 0.32,
       "cached": true
     },
     {
@@ -94673,8 +94673,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.81,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/ (serving stale cache)",
+      "duration": 0.27,
       "cached": true
     },
     {
@@ -99622,7 +99622,7 @@
           "lng": -73.994642,
           "price": "Free",
           "description": "Introducing the love-buggiest new character to steal your heart, from award-winning author-illustrator Lucy Ruth Cummins!",
-          "category": "books"
+          "category": "family"
         },
         {
           "name": "In-Store: K Chiucarello: Nanny Nanny w/ Jia Tolentino",
@@ -99655,7 +99655,7 @@
           "lng": -73.994642,
           "price": "Free",
           "description": "\"Sorry, Interrupting Cow: This chatty chicken holds on to the title of funniest etiquette-challenged barnyard friend.\" —Kirkus Reviews",
-          "category": "books"
+          "category": "family"
         },
         {
           "name": "In-Store: Sophia Veltfort: This Vital Absence w/ Lily Akerman",
@@ -99688,7 +99688,7 @@
           "lng": -73.994642,
           "price": "Free",
           "description": "\"An elegant and endearing ode to an inspiring city and artists everywhere.\" —Booklist",
-          "category": "books"
+          "category": "family"
         },
         {
           "name": "In-Store: Michelle Tea: Free Love w/ MJ Corey",
@@ -99725,8 +99725,8 @@
         }
       ],
       "error": null,
-      "duration": 0.57,
-      "cached": true
+      "duration": 1.27,
+      "cached": false
     },
     {
       "venue": "Greenlight Bookstore",
@@ -99912,9 +99912,9 @@
           "name": "Fantasy Book Group",
           "date": "2026-12-02T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/fantasy-book-group-tickets-2003739279123",
-          "venue": "Greenlight Bookstore",
-          "lat": null,
-          "lng": null,
+          "venue": "BierWax (Brooklyn, NY)",
+          "lat": 40.6800203,
+          "lng": -73.96827619999999,
           "price": "Free",
           "description": "For both lifelong lovers and burgeoning fans, the Fantasy Book Group meets monthly to explore the realm of magical storytelling!",
           "category": "books"
@@ -99954,8 +99954,8 @@
         }
       ],
       "error": null,
-      "duration": 0.98,
-      "cached": true
+      "duration": 1.97,
+      "cached": false
     },
     {
       "venue": "P&T Knitwear Books & Podcasts",
@@ -100225,8 +100225,8 @@
         }
       ],
       "error": null,
-      "duration": 0.78,
-      "cached": true
+      "duration": 0.88,
+      "cached": false
     },
     {
       "venue": "McNally Jackson Books",
@@ -255709,17 +255709,17 @@
       "venue": "Eventbrite: Run Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/run-club/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/run-club/",
-      "duration": 0.2,
-      "cached": false
+      "error": null,
+      "duration": 0.29,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Running Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/running-club/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/running-club/",
-      "duration": 0.2,
-      "cached": false
+      "error": null,
+      "duration": 0.51,
+      "cached": true
     },
     {
       "venue": "Eventbrite: 5K Races",
@@ -255757,9 +255757,9 @@
       "venue": "Eventbrite: Walking Tours",
       "url": "https://www.eventbrite.com/d/ny--new-york/walking-tour/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/walking-tour/",
-      "duration": 0.23,
-      "cached": false
+      "error": null,
+      "duration": 0.3,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Bike Rides",
@@ -255797,9 +255797,9 @@
       "venue": "Eventbrite: Yoga",
       "url": "https://www.eventbrite.com/d/ny--new-york/yoga/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/yoga/",
+      "duration": 1.04,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Pickleball",
@@ -255813,9 +255813,9 @@
       "venue": "Eventbrite: Volleyball",
       "url": "https://www.eventbrite.com/d/ny--new-york/volleyball/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/volleyball/",
-      "duration": 0.22,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Kickball",
@@ -255837,9 +255837,9 @@
       "venue": "Eventbrite: Techno",
       "url": "https://www.eventbrite.com/d/ny--new-york/techno/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/techno/",
-      "duration": 0.27,
-      "cached": false
+      "error": null,
+      "duration": 0.19,
+      "cached": true
     },
     {
       "venue": "Eventbrite: House Music",
@@ -255909,9 +255909,9 @@
       "venue": "Eventbrite: Silent Discos",
       "url": "https://www.eventbrite.com/d/ny--new-york/silent-disco/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/silent-disco/",
-      "duration": 0.28,
-      "cached": false
+      "error": null,
+      "duration": 0.26,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Brunch Parties",
@@ -255941,9 +255941,9 @@
       "venue": "Eventbrite: Singer-Songwriters",
       "url": "https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.27,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Karaoke",
@@ -255981,17 +255981,17 @@
       "venue": "Eventbrite: Stand-Up Comedy",
       "url": "https://www.eventbrite.com/d/ny--new-york/stand-up-comedy/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.27,
-      "cached": false
+      "error": null,
+      "duration": 0.23,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/theater/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/theater/",
-      "duration": 0.33,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Immersive Theater",
@@ -256053,41 +256053,41 @@
       "venue": "Eventbrite: Workshops",
       "url": "https://www.eventbrite.com/d/ny--new-york/workshops/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/workshops/",
+      "duration": 1.11,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Social Mixers",
       "url": "https://www.eventbrite.com/d/ny--new-york/social-mixer/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.27,
-      "cached": false
+      "error": null,
+      "duration": 0.23,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Singles Events",
       "url": "https://www.eventbrite.com/d/ny--new-york/singles/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.27,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Speed Dating",
       "url": "https://www.eventbrite.com/d/ny--new-york/speed-dating/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.27,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Wine Tastings",
       "url": "https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
+      "duration": 1.13,
+      "cached": false
     },
     {
       "venue": "Union Square Greenmarket",
