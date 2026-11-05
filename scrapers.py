@@ -6293,6 +6293,26 @@ def scrape_nyc_parks_opendata(url, ua):
     return events
 
 
+def scrape_sidearm_home_games(url, ua, home_re="New York", school=None, borough="New York"):
+    """College athletics (Sidearm Sports calendar.ashx iCal feed): keep home games -- "vs"
+    in the title and a LOCATION in the school's NYC borough ("Bronx, N.Y., Rose Hill Gym")."""
+    pat = re.compile(rf"^\s*(?:{home_re})\b", re.I)
+    out = []
+    for e in scrape_ical(url, ua):
+        name = re.sub(r"\s+", " ", re.sub(r"^\[[A-Z]\]\s*", "", e.get("name") or "")).strip()
+        loc = (e.get("address") or "").strip()
+        if not re.search(r"\bvs\.?\b", name, re.I) or not pat.search(loc):
+            continue
+        facility = loc.split(",", 2)[2].strip() if loc.count(",") >= 2 else ""
+        e["name"] = name
+        e["url"] = html.unescape(e.get("url") or url)
+        e["venue"] = f"{school} ({facility})" if school and facility else (facility or school)
+        e["address"] = f"{facility + ', ' if facility else ''}{borough}, NY"
+        e["category"] = "sports"
+        out.append(e)
+    return out
+
+
 _ST_MARKS_ADDRESS = "12 St Marks Pl, New York, NY 10003"
 
 
@@ -7536,6 +7556,12 @@ _ALL_VENUES = [
     {"name": "St. Ann & the Holy Trinity (Brooklyn Heights)", "url": "https://www.stannholytrinity.org/eventsnew/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music", "kwargs": {"venue_prefix": "St. Ann & the Holy Trinity", "address_fallback": "157 Montague St, Brooklyn, NY 11201"}},
     {"name": "Manhattan School of Music Performances", "url": "https://www.msmnyc.edu/performances/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/performances/[^/]+/?$", "venue": "Manhattan School of Music", "address": "120 Claremont Ave, New York, NY 10027"}},
     {"name": "New York Philharmonic", "url": "https://www.nyphil.org/concerts-tickets/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/concerts-tickets/\\d{4}/[^/]+$", "venue": "New York Philharmonic (David Geffen Hall)", "address": "10 Lincoln Center Plaza, New York, NY 10023"}},
+    {"name": "Columbia Lions Home Games", "url": "https://gocolumbialions.com/calendar.ashx/calendar.ics?sport_id=0", "ua": UA_CHROME, "scraper": scrape_sidearm_home_games, "default_category": "sports", "kwargs": {"home_re": "New York", "school": "Columbia University", "borough": "New York"}},
+    {"name": "Fordham Rams Home Games", "url": "https://fordhamsports.com/calendar.ashx/calendar.ics?sport_id=0", "ua": UA_CHROME, "scraper": scrape_sidearm_home_games, "default_category": "sports", "kwargs": {"home_re": "Bronx", "school": "Fordham University", "borough": "Bronx"}},
+    {"name": "St. John's Red Storm Home Games", "url": "https://redstormsports.com/calendar.ashx/calendar.ics?sport_id=0", "ua": UA_CHROME, "scraper": scrape_sidearm_home_games, "default_category": "sports", "kwargs": {"home_re": "Queens|Jamaica", "school": "St. John's University", "borough": "Queens"}},
+    {"name": "Wagner Seahawks Home Games", "url": "https://wagnerathletics.com/calendar.ashx/calendar.ics?sport_id=0", "ua": UA_CHROME, "scraper": scrape_sidearm_home_games, "default_category": "sports", "kwargs": {"home_re": "Staten Island", "school": "Wagner College", "borough": "Staten Island"}},
+    {"name": "LIU Sharks Home Games (Brooklyn)", "url": "https://liuathletics.com/calendar.ashx/calendar.ics?sport_id=0", "ua": UA_CHROME, "scraper": scrape_sidearm_home_games, "default_category": "sports", "kwargs": {"home_re": "Brooklyn", "school": "LIU Brooklyn", "borough": "Brooklyn"}},
+    {"name": "Manhattan Jaspers Home Games", "url": "https://gojaspers.com/calendar.ashx/calendar.ics?sport_id=0", "ua": UA_CHROME, "scraper": scrape_sidearm_home_games, "default_category": "sports", "kwargs": {"home_re": "Riverdale|Bronx", "school": "Manhattan University", "borough": "Bronx"}},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
