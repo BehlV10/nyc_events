@@ -6197,6 +6197,35 @@ def scrape_village_vanguard(url, ua):
     return _dedupe_future(events)
 
 
+def scrape_turntable(url, ua, venue=None, address=None):
+    """TurnTable Tickets (jazz-club ticketing, e.g. tickets.smokejazz.com): the public calendar
+    reads /api/performance/?start_date=&end_date=, which takes page_size."""
+    origin = "{0.scheme}://{0.netloc}".format(urlparse(url))
+    today = datetime.now(EASTERN).date()
+    resp = _SESSION.get(
+        f"{origin}/api/performance/",
+        params={"start_date": today.isoformat(), "end_date": (today + timedelta(days=HORIZON_DAYS)).isoformat(), "page_size": 200},
+        headers={"User-Agent": ua, "Accept": "application/json"}, timeout=15,
+    )
+    resp.raise_for_status()
+    events = []
+    for r in (resp.json() or {}).get("results") or []:
+        show = r.get("show") or {}
+        name = (show.get("name") or "").strip()
+        dt = _local_iso_to_utc(r.get("datetime"))
+        if not name or dt is None or str(r.get("availability_state") or "").lower() in ("cancelled", "canceled"):
+            continue
+        local_day = dt.astimezone(EASTERN).date().isoformat()
+        e = {"name": html.unescape(name), "date": dt.isoformat(), "venue": venue, "price": None,
+             "url": f"{origin}/shows/{r.get('show_id') or show.get('id')}/{local_day}"}
+        if address:
+            e["address"] = address
+        if r.get("sold") or "sold" in str(r.get("availability_state") or "").lower():
+            e["sold_out"] = True
+        events.append(e)
+    return _dedupe_future(events)
+
+
 _ST_MARKS_ADDRESS = "12 St Marks Pl, New York, NY 10003"
 
 
@@ -7435,6 +7464,7 @@ _ALL_VENUES = [
     {"name": "AllEvents: Long Island City (all)", "url": "https://allevents.in/long%20island%20city/all", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community", "kwargs": {"pages": 4}},
     {"name": "Village Vanguard", "url": "https://villagevanguard.com/", "ua": UA_CHROME, "scraper": scrape_village_vanguard, "default_category": "music"},
     {"name": "The Django (Jazz)", "url": "https://www.thedjangonyc.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/events/[^/]+", "venue": "The Django", "address": "2 6th Ave, New York, NY 10013"}},
+    {"name": "Smoke Jazz Club", "url": "https://tickets.smokejazz.com/", "ua": UA_CHROME, "scraper": scrape_turntable, "default_category": "music", "kwargs": {"venue": "Smoke Jazz Club", "address": "2751 Broadway, New York, NY 10025"}},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
