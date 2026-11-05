@@ -5557,8 +5557,11 @@ def _jsonld_event_to_entry(ev, base_url=None):
     return entry
 
 
-def scrape_jsonld(url, ua):
-    """Generic schema.org JSON-LD Event scraper for any page that embeds Events."""
+def scrape_jsonld(url, ua, venue_prefix=None, address_fallback=None):
+    """Generic schema.org JSON-LD Event scraper for any page that embeds Events.
+
+    venue_prefix / address_fallback: for campuses whose JSON-LD names only the room
+    ("Stage One", address "NY") -> "Wagner College (Stage One)" at the campus address."""
     soup = fetch_soup(url, ua)
     events = []
     seen = set()
@@ -5569,6 +5572,11 @@ def scrape_jsonld(url, ua):
             continue
         if entry["date"] < now.isoformat():
             continue
+        if venue_prefix:
+            v = entry.get("venue")
+            entry["venue"] = f"{venue_prefix} ({v})" if v and venue_prefix.lower() not in v.lower() else (v or venue_prefix)
+        if address_fallback and len(entry.get("address") or "") < 12:
+            entry["address"] = address_fallback
         key = (entry["name"].lower(), entry["date"])
         if key in seen:
             continue
@@ -7338,6 +7346,8 @@ _ALL_VENUES = [
     {"name": "Poetry Society of America", "url": "https://poetrysociety.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "books", "kwargs": {"link_re": "^/events/[^/]+$"}},
     {"name": "Printed Matter", "url": "https://www.printedmatter.org/programs/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/programs/events/\\d+", "venue": "Printed Matter", "address": "231 11th Ave, New York, NY 10001"}},
     {"name": "Noguchi Museum (own calendar)", "url": "https://www.noguchi.org/museum/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "/calendar/event/", "venue": "Noguchi Museum", "address": "9-01 33rd Rd, Long Island City, NY 11106"}},
+    {"name": "Wagner College (Theatre, Music, Sports)", "url": "https://wagner.edu/newsroom/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "theater", "kwargs": {"venue_prefix": "Wagner College", "address_fallback": "1 Campus Rd, Staten Island, NY 10301"}},
+    {"name": "National Lighthouse Museum", "url": "https://lighthousemuseum.org/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "family", "kwargs": {"venue_prefix": "National Lighthouse Museum", "address_fallback": "200 The Promenade at Lighthouse Point, Staten Island, NY 10301"}},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
