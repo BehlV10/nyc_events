@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T10:59:44.058165+00:00",
+  "generated_at": "2026-11-05T11:04:45.812792+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -45008,7 +45008,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.76,
+      "duration": 1.09,
       "cached": false
     },
     {
@@ -120488,7 +120488,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.32,
+      "duration": 0.23,
       "cached": false
     },
     {
@@ -120751,7 +120751,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.52,
+      "duration": 0.22,
       "cached": false
     },
     {
@@ -121579,7 +121579,7 @@
       ],
       "error": null,
       "duration": 0.63,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Alphaville",
@@ -122848,7 +122848,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.76,
+      "duration": 0.21,
       "cached": false
     },
     {
@@ -128048,7 +128048,7 @@
       ],
       "error": null,
       "duration": 0.72,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Stand Up NY",
@@ -138919,8 +138919,8 @@
         }
       ],
       "error": null,
-      "duration": 0.2,
-      "cached": true
+      "duration": 0.24,
+      "cached": false
     },
     {
       "venue": "Birdland Jazz Club",
@@ -158772,8 +158772,8 @@
         }
       ],
       "error": null,
-      "duration": 0.86,
-      "cached": true
+      "duration": 0.65,
+      "cached": false
     },
     {
       "venue": "The Brick Theater",
@@ -158931,8 +158931,8 @@
         }
       ],
       "error": null,
-      "duration": 1.44,
-      "cached": true
+      "duration": 1.4,
+      "cached": false
     },
     {
       "venue": "The Chain Theatre",
@@ -159116,8 +159116,8 @@
         }
       ],
       "error": null,
-      "duration": 0.59,
-      "cached": true
+      "duration": 0.78,
+      "cached": false
     },
     {
       "venue": "The Secret Theatre (LIC)",
@@ -159149,8 +159149,8 @@
         }
       ],
       "error": null,
-      "duration": 0.58,
-      "cached": true
+      "duration": 0.25,
+      "cached": false
     },
     {
       "venue": "Kupferberg Center for the Arts",
@@ -159203,8 +159203,8 @@
         }
       ],
       "error": null,
-      "duration": 0.85,
-      "cached": true
+      "duration": 1.07,
+      "cached": false
     },
     {
       "venue": "Theatre for a New Audience",
@@ -159482,8 +159482,8 @@
         }
       ],
       "error": null,
-      "duration": 4.59,
-      "cached": true
+      "duration": 4.14,
+      "cached": false
     },
     {
       "venue": "Brooklyn Bird Club Trips",
@@ -190672,6 +190672,3576 @@
       "cached": true
     },
     {
+      "venue": "Big Onion Walking Tours",
+      "url": "https://bigonion.com/the-schedule/",
+      "events": [
+        {
+          "name": "Greenwich Village Walking Tour",
+          "date": "2026-11-06T13:00:00+00:00",
+          "url": "https://bigonion.com/greenwich-village-walking-tour/",
+          "venue": "The Villages",
+          "price": "Free",
+          "description": "Stroll through one of New York’s most picturesque and historic neighborhoods.",
+          "category": "outdoors"
+        },
+        {
+          "name": "Upper East Side Walking Tour: A Clash of Titans",
+          "date": "2026-11-07T11:00:00+00:00",
+          "url": "https://bigonion.com/upper-east-side-walking-tour/",
+          "venue": "Uptown",
+          "price": "Free",
+          "description": "A walking tour exploring the splendor, history, and scandals of the East 60s and 70s.",
+          "category": "outdoors"
+        },
+        {
+          "name": "The Original Multi-Ethnic Eating Tour",
+          "date": "2026-11-07T13:00:00+00:00",
+          "url": "https://bigonion.com/the-original-multi-ethnic-eating-tour/",
+          "venue": "Lower East Side",
+          "price": "Free",
+          "description": "This tour combines the history of the diverse Lower East Side with food sampling from local shops and markets!",
+          "category": "outdoors"
+        },
+        {
+          "name": "A Tale of City Squares Walking Tour: The Private and Public Worlds of Gramercy Park and Union Square",
+          "date": "2026-11-08T13:00:00+00:00",
+          "url": "https://bigonion.com/a-tale-of-city-squares-walking-tour/",
+          "venue": "Midtown",
+          "price": "Free",
+          "description": "A walk through one of the most dynamic and diverse areas in Manhattan, the bustling Union Square and the serene neighboring Gramercy Park!",
+          "category": "outdoors"
+        },
+        {
+          "name": "Lower Manhattan Walking Tour: Forging the Historic Metropolis",
+          "date": "2026-11-13T13:00:00+00:00",
+          "url": "https://bigonion.com/historic-lower-manhattan-walking-tour/",
+          "venue": "Downtown",
+          "price": "Free",
+          "description": "Walk in the footsteps of George Washington, Alexander Hamilton, JP Morgan, Victoria Woodhull, and others on this broad-reaching history & architecture tour of today's Financial District.",
+          "category": "outdoors"
+        },
+        {
+          "name": "East Village Walking Tour",
+          "date": "2026-11-14T11:00:00+00:00",
+          "url": "https://bigonion.com/east-village-walking-tour/",
+          "venue": "The Villages",
+          "price": "Free",
+          "description": "The East Village is a neighborhood of Hippies, Hipsters, and amazing History.",
+          "category": "outdoors"
+        },
+        {
+          "name": "Fort Greene Walking Tour",
+          "date": "2026-11-14T13:00:00+00:00",
+          "url": "https://bigonion.com/fort-greene-history-walking-tour/",
+          "venue": "Brooklyn",
+          "price": "Free",
+          "description": "We start with the rapidly changing area surrounding the Barclay Center and then stroll one of Brooklyn's most ethnically diverse neighborhoods and a park designed by Frederick Law Olmsted and Calvert Vaux.",
+          "category": "outdoors"
+        },
+        {
+          "name": "Brooklyn Heights Walking Tour",
+          "date": "2026-11-15T13:00:00+00:00",
+          "url": "https://bigonion.com/brooklyn-heights-history-walking-tour/",
+          "venue": "Brooklyn",
+          "price": "Free",
+          "description": "Walk the tree-lined streets of America's oldest \"suburb\" and New York's first landmark district. Brooklyn Heights is one subway stop from FiDi yet a world apart.",
+          "category": "outdoors"
+        },
+        {
+          "name": "The Original Multi-Ethnic Eating Tour",
+          "date": "2026-11-20T13:00:00+00:00",
+          "url": "https://bigonion.com/the-original-multi-ethnic-eating-tour/",
+          "venue": "Lower East Side",
+          "price": "Free",
+          "description": "This tour combines the history of the diverse Lower East Side with food sampling from local shops and markets!",
+          "category": "outdoors"
+        },
+        {
+          "name": "Historic Harlem Walking Tour",
+          "date": "2026-11-21T11:00:00+00:00",
+          "url": "https://bigonion.com/historic-harlem-walking-tour/",
+          "venue": "Uptown",
+          "price": "Free",
+          "description": "Emphasizing the Harlem Renaissance, this guided walking tour looks at the history, architecture, and people of this remarkable neighborhood.",
+          "category": "outdoors"
+        },
+        {
+          "name": "DUMBO & Vinegar Hill Walking Tour",
+          "date": "2026-11-21T13:00:00+00:00",
+          "url": "https://bigonion.com/dumbo-and-vinegar-hill-walking-tour/",
+          "venue": "Brooklyn",
+          "price": "Free",
+          "description": "A walking tour of the dynamic DUMBO & Vinegar Hill neighborhoods of Brooklyn.",
+          "category": "outdoors"
+        },
+        {
+          "name": "Immigrant New York Walking Tour",
+          "date": "2026-11-22T13:00:00+00:00",
+          "url": "https://bigonion.com/immigrant-new-york-walking-tour/",
+          "venue": "Lower East Side",
+          "price": "Free",
+          "description": "Walk the streets of Chinatown, Little Italy, and the former Five Points as we explore the many layers of immigration and ethnicity in the Lower East Side.",
+          "category": "outdoors"
+        },
+        {
+          "name": "The Post Thanksgiving Multi-Ethnic Eating Tour",
+          "date": "2026-11-27T13:00:00+00:00",
+          "url": "https://bigonion.com/post-thanksgiving-day-eating-tour/",
+          "venue": "Lower East Side",
+          "price": "Free",
+          "description": "A celebration of the multi-ethnic Lower East Side...with food (no turkey - we promise)!",
+          "category": "outdoors"
+        },
+        {
+          "name": "Greenwich Village Walking Tour",
+          "date": "2026-11-28T11:00:00+00:00",
+          "url": "https://bigonion.com/greenwich-village-walking-tour/",
+          "venue": "The Villages",
+          "price": "Free",
+          "description": "Stroll through one of New York’s most picturesque and historic neighborhoods.",
+          "category": "outdoors"
+        },
+        {
+          "name": "Lower Manhattan Walking Tour: Forging the Historic Metropolis",
+          "date": "2026-11-28T13:00:00+00:00",
+          "url": "https://bigonion.com/historic-lower-manhattan-walking-tour/",
+          "venue": "Downtown",
+          "price": "Free",
+          "description": "Walk in the footsteps of George Washington, Alexander Hamilton, JP Morgan, Victoria Woodhull, and others on this broad-reaching history & architecture tour of today's Financial District.",
+          "category": "outdoors"
+        },
+        {
+          "name": "Gangs of New York – The “Official” Walking Tour",
+          "date": "2026-11-29T13:00:00+00:00",
+          "url": "https://bigonion.com/gangs-of-new-york-the-official-walking-tour/",
+          "venue": "Lower East Side",
+          "price": "Free",
+          "description": "The history of the legendary Five Points. A guided, historically accurate, walking tour originally created in partnership with the fictional film \"Gangs of New York.\"",
+          "category": "outdoors"
+        },
+        {
+          "name": "Revolutionary New York Walking Tour",
+          "date": "2026-12-04T13:00:00+00:00",
+          "url": "https://bigonion.com/revolutionary-new-york-walking-tour/",
+          "venue": "Downtown",
+          "price": "Free",
+          "description": "250 years ago the Declaration of Independence was signed. Join us as we explore the role New York City played in the American Revolution and founding of America. A tour central to understanding #America250 and #NewYork400",
+          "category": "outdoors"
+        },
+        {
+          "name": "Upper East Side Walking Tour: A Clash of Titans",
+          "date": "2026-12-05T11:00:00+00:00",
+          "url": "https://bigonion.com/upper-east-side-walking-tour/",
+          "venue": "Uptown",
+          "price": "Free",
+          "description": "A walking tour exploring the splendor, history, and scandals of the East 60s and 70s.",
+          "category": "outdoors"
+        },
+        {
+          "name": "Historic Harlem Walking Tour",
+          "date": "2026-12-05T13:00:00+00:00",
+          "url": "https://bigonion.com/historic-harlem-walking-tour/",
+          "venue": "Uptown",
+          "price": "Free",
+          "description": "Emphasizing the Harlem Renaissance, this guided walking tour looks at the history, architecture, and people of this remarkable neighborhood.",
+          "category": "outdoors"
+        }
+      ],
+      "error": null,
+      "duration": 0.65,
+      "cached": false
+    },
+    {
+      "venue": "The Explorers Club",
+      "url": "https://www.explorers.org/wp-json/tribe/events/v1/events?per_page=50",
+      "events": [
+        {
+          "name": "Becoming Martian: How Living in Space Will Change Our Bodies and Minds",
+          "date": "2026-11-09T23:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/becoming-martian-how-living-in-space-will-change-our-bodies-and-minds/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "community",
+          "description": "Join The Explorers Club on November 9th to learn about the surprising effects of space habitation on the human body. Plans are underway to build a base on the Moon, to be followed by a settlement on Mars. But what will happen to the human occupants o",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "Screening – Stolen Children",
+          "date": "2026-11-11T23:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/screening-stolen-children/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "family",
+          "description": "Join The Explorers Club on November 11th for a screening of TEC Fellow Martyna Wojciechowska’s new film Stolen Children , followed by a Q&A. Directed by Fellow Martyna Wojciechowska and Jowita Baraniecka, Stolen Children covers a journalistic investi",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "Sea Stories 2026",
+          "date": "2026-11-14T14:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/sea-stories-2026/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "community",
+          "description": "Sea Stories is a day focused on exploration, conservation, scuba diving, shipwrecks and marine life. This will be a great opportunity for those who are interested in the ocean to interact. Tickets will NOT be sold at door. Ticket Price: $100. Tickets",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "Life Ascending",
+          "date": "2026-11-16T23:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/life-ascending/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "community",
+          "description": "Life Ascending: Extreme Animals and Scientific Exploration in the High Andes Join The Explorers Club on November 16th for a glimpse at cutting edge biological field research taking place in the high extremes of the Central Andes Mountains. Since 2020",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "Dispatches from the Field: Timm Döbert",
+          "date": "2026-11-18T17:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/dispatches-from-the-field-timm-dobert/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "community",
+          "description": "Dispatches from the Field, a new digital program designed to bring The Explorers Club community closer—wherever you are. Each session kicks off with a 15-20-minute talk from a Featured Speaker, recorded and posted later to the public on explorers.org",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "The Ghost of the Forest",
+          "date": "2026-11-18T23:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/the-ghost-of-the-forest/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "community",
+          "description": "Join The Explorers Club for a lecture on conserving Okapi, the Ghost of the Forest, amid escalating armed conflict and a major Ebola outbreak in eastern Democratic Republic of the Congo. Globally Endangered and found only in the Democratic Republic o",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "To the Lost Worlds – Uncovering the Secrets of the Guiana Shield",
+          "date": "2026-11-19T21:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/to-the-lost-worlds-uncovering-the-secrets-of-the-guiana-shield/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "community",
+          "description": "Join The Explorers Club on November 19th for a series of seminars on the “Lost World” of South America’s Guiana Shield. Nestled within the dark heart of the South American interior is a place which evades all forms of human comprehension. A raw, prim",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "Saturday Science for Students",
+          "date": "2026-11-21T15:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/saturday-science-for-students-17/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "community",
+          "description": "Join us for Saturday Science for Students at The Explorers Club. On Saturday, November 21 , Dr. Chester Zarnoch, Professor at Baruch College, will present “ My Career as an Applied Ecological Research Scientist and Restoration Sciences for Estuarine ",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "Uncharted Mythologies of Ice, Sea, and Space",
+          "date": "2026-11-23T23:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/uncharted-mythologies-of-ice-sea-and-space/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "film",
+          "description": "Join The Explorers Club on November 23rd for an interdisciplinary look into the evolving archetype of the 21st century explorer. In a two-hour lecture, screening, and performance at the Explorers Club, filmmaker Justice Jamal Jones, author and profes",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "Dispatches from the Field: Paul Clerkin",
+          "date": "2026-12-02T17:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/dispatches-from-the-field-paul-clerkin/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "community",
+          "description": "Dispatches from the Field, a new digital program designed to bring The Explorers Club community closer—wherever you are. Each session kicks off with a 15-20-minute talk from a Featured Speaker, recorded and posted later to the public on explorers.org",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "Saving Big Cats",
+          "date": "2026-12-07T23:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/saving-big-cats/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "community",
+          "description": "Join The Explorers Club on for a look into some of the stories and images featured in Big Cats , a new book promoting the global conservation of lions, tigers, jaguars, and more. This talk will delve into a few of the nine stories included in Steve W",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        },
+        {
+          "name": "Save the Date – The Explorers Club Holiday Party",
+          "date": "2026-12-10T23:00:00+00:00",
+          "url": "https://www.explorers.org/calendar-of-events/the-explorers-club-holiday-party-2026/",
+          "venue": "The Explorers Club",
+          "price": null,
+          "category": "clubbing",
+          "description": "Have Certain Explorers been Naughty or Nice! Our Guests will come from all Seven Continents – Also a special guest from the North Pole & Space! The Explorers Club Annual Holiday Party Save the date – Thursday, December 10th, 6:00 PM At Club Headquart",
+          "address": "46 E 70th St, New York, NY 10021",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7703,
+          "lng": -73.9653
+        }
+      ],
+      "error": null,
+      "duration": 0.36,
+      "cached": false
+    },
+    {
+      "venue": "Municipal Art Society Tours & Talks",
+      "url": "https://www.mas.org/events/",
+      "events": [
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-07T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Fort Greene",
+          "date": "2026-11-07T19:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "The Green-House at Green-Wood Cemetery",
+          "date": "2026-11-08T15:00:00+00:00",
+          "url": "https://www.mas.org/event-type/insider-series/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": "Free",
+          "category": "outdoors"
+        },
+        {
+          "name": "Gilded Age Mansions OFF Fifth Avenue",
+          "date": "2026-11-08T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-10T17:30:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Film Screening: The Social Life of Small Urban Spaces",
+          "date": "2026-11-12T23:00:00+00:00",
+          "url": "https://www.mas.org/events/the-social-life-of-small-urban-spaces-11-12-2026/ ",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "film"
+        },
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-13T17:30:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Tenement Historic District: A History of Housing in Yorkville",
+          "date": "2026-11-14T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Enduring Culture Spotlight: Neighborhood Heritage in West-Central Queens",
+          "date": "2026-11-14T19:30:00+00:00",
+          "url": "https://www.mas.org/events/enduring-culture-spotlight-neighborhood-heritage-in-west-central-queens/ ",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": "Free",
+          "category": "outdoors"
+        },
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-15T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Histories of Social Housing in NYC",
+          "date": "2026-11-15T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-18T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-19T17:30:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-21T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "400 Years of Flatbush",
+          "date": "2026-11-22T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-24T17:30:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-27T17:30:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "By the Numbers: Park Slope",
+          "date": "2026-11-28T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Grand Central Terminal",
+          "date": "2026-11-29T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        },
+        {
+          "name": "Art Deco Financial District",
+          "date": "2026-11-29T16:00:00+00:00",
+          "url": "https://www.mas.org/event-type/tour/",
+          "venue": "Municipal Art Society Tours & Talks",
+          "price": null,
+          "category": "outdoors"
+        }
+      ],
+      "error": null,
+      "duration": 0.49,
+      "cached": false
+    },
+    {
+      "venue": "New York Society Library",
+      "url": "https://www.nysoclib.org/events",
+      "events": [
+        {
+          "name": "Silly Sheep Stories",
+          "date": "2026-11-05T21:00:00+00:00",
+          "url": "https://www.nysoclib.org/events/silly-sheep-stories",
+          "venue": "New York Society Library",
+          "price": null,
+          "address": "53 E 79th St, New York, NY 10075",
+          "category": "books"
+        },
+        {
+          "name": "Alice Cooney Frelinghuysen, Designing the Gilded Age: Drawings from the Studios of Louis C. Tiffany",
+          "date": "2026-11-05T23:00:00+00:00",
+          "url": "https://www.nysoclib.org/events/louis-comfort-tiffany-design-drawings",
+          "venue": "New York Society Library",
+          "price": null,
+          "address": "53 E 79th St, New York, NY 10075",
+          "category": "books"
+        },
+        {
+          "name": "Effortless Eye Use – Reading & Browsing Without Strain",
+          "date": "2026-11-07T14:45:00+00:00",
+          "url": "https://www.nysoclib.org/events/effortless-eye-library-110726",
+          "venue": "New York Society Library",
+          "price": null,
+          "address": "53 E 79th St, New York, NY 10075",
+          "category": "books"
+        },
+        {
+          "name": "Musical Storytime with Kate and Jake Goldbas",
+          "date": "2026-11-07T16:15:00+00:00",
+          "url": "https://www.nysoclib.org/events/library-fun-Goldbas-musical-storytime",
+          "venue": "New York Society Library",
+          "price": null,
+          "address": "53 E 79th St, New York, NY 10075",
+          "category": "family"
+        }
+      ],
+      "error": null,
+      "duration": 0.56,
+      "cached": false
+    },
+    {
+      "venue": "Cooper Union Public Programs",
+      "url": "https://cooper.edu/events",
+      "events": [
+        {
+          "name": "Native Voices Karenna—Lay Our Vibration Down",
+          "date": "2026-11-06T00:00:00+00:00",
+          "url": "https://cooper.edu/index.php/events-and-exhibitions/events/native-voices-karenna-lay-our-vibration-down",
+          "venue": "The Cooper Union",
+          "price": null,
+          "address": "7 E 7th St, New York, NY 10003",
+          "category": "community"
+        },
+        {
+          "name": "Conversations in Tusculum",
+          "date": "2026-11-10T00:00:00+00:00",
+          "url": "https://cooper.edu/index.php/events-and-exhibitions/events/conversations-tusculum",
+          "venue": "The Cooper Union",
+          "price": null,
+          "address": "7 E 7th St, New York, NY 10003",
+          "category": "community"
+        },
+        {
+          "name": "Stanley Wolukau-Wanambwa: Henry Wolf Chair in Photography Artist Talk",
+          "date": "2026-11-11T00:00:00+00:00",
+          "url": "https://cooper.edu/index.php/events-and-exhibitions/events/stanley-wolukau-wanambwa-henry-wolf-chair-photography-artist-talk",
+          "venue": "The Cooper Union",
+          "price": null,
+          "address": "7 E 7th St, New York, NY 10003",
+          "category": "community"
+        },
+        {
+          "name": "Public Art Fund Talks: Camille Henrot",
+          "date": "2026-11-12T23:30:00+00:00",
+          "url": "https://cooper.edu/index.php/events-and-exhibitions/events/public-art-fund-talks-camille-henrot",
+          "venue": "The Cooper Union",
+          "price": null,
+          "address": "7 E 7th St, New York, NY 10003",
+          "category": "community"
+        },
+        {
+          "name": "Representation Lecture | Mark West: Seeing Things, Pareidolia and the Discovery of Form",
+          "date": "2026-11-12T23:30:00+00:00",
+          "url": "https://cooper.edu/index.php/events-and-exhibitions/events/representation-lecture-mark-west-seeing-things-pareidolia-and",
+          "venue": "The Cooper Union",
+          "price": null,
+          "address": "7 E 7th St, New York, NY 10003",
+          "category": "community"
+        }
+      ],
+      "error": null,
+      "duration": 0.35,
+      "cached": false
+    },
+    {
+      "venue": "Littlefield (own calendar)",
+      "url": "https://littlefieldnyc.com/",
+      "events": [
+        {
+          "name": "Once More, With Feeling: Live! 25th Anniversary Show",
+          "date": "2026-11-05T17:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1996316151348",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "Once More, With Feeling: Live! 25th Anniversary Show",
+          "date": "2026-11-06T01:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1996316151348",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "NY Comedy Festival Presents: Putería con PAPIROSSA: Celebration of Life",
+          "date": "2026-11-06T17:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1998383402552",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "AFROVRSE – NYC’s Biggest Celebration of African Music",
+          "date": "2026-11-06T17:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=2003872310022",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "NY Comedy Festival Presents: Putería con PAPIROSSA: Celebration of Life",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1998383402552",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "AFROVRSE – NYC’s Biggest Celebration of African Music",
+          "date": "2026-11-07T04:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=2003872310022",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "NY Comedy Festival Presents: Hot Guy Draft: A Comedy Fantasy Draft",
+          "date": "2026-11-08T17:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1998384216988",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "LPR Presents Trixie Whitley",
+          "date": "2026-11-08T17:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1997018848133",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "NY Comedy Festival Presents: Hot Guy Draft: A Comedy Fantasy Draft",
+          "date": "2026-11-08T20:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1998384216988",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "LPR Presents Trixie Whitley",
+          "date": "2026-11-09T00:30:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1997018848133",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "NY Comedy Festival Presents: Demi Adejuyigbe Sells Out",
+          "date": "2026-11-09T17:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1998384442663",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "NY Comedy Festival Presents: Demi Adejuyigbe Sells Out",
+          "date": "2026-11-10T00:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1998384442663",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "NY Comedy Festival Presents: Demi Adejuyigbe Sells Out",
+          "date": "2026-11-10T02:30:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1998384681377",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "NY Comedy Festival Presents: Tone and the Homies",
+          "date": "2026-11-10T17:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1998385740545",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "NY Comedy Festival Presents: Tone and the Homies",
+          "date": "2026-11-11T01:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=1998385740545",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "PAGE BREAK Presents: STAGE BREAK",
+          "date": "2026-11-11T17:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=2003222700021",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        },
+        {
+          "name": "PAGE BREAK Presents: STAGE BREAK",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://littlefieldnyc.com/event/?wfea_eb_id=2003222700021",
+          "venue": "Littlefield",
+          "price": null,
+          "address": "635 Sackett St, Brooklyn, NY 11217",
+          "category": "comedy"
+        }
+      ],
+      "error": null,
+      "duration": 1.17,
+      "cached": false
+    },
+    {
+      "venue": "Greenwich Village Comedy Club (own calendar)",
+      "url": "https://www.greenwichvillagecomedyclub.com/",
+      "events": [
+        {
+          "name": "Mac O’hara And Friends",
+          "date": "2026-11-06T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-05-mac-ohara-and-friends-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Friday",
+          "date": "2026-11-06T23:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-06-stand-up-comedy-in-greenwich-village-first-stop-friday-600-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-06-stand-up-comedy-in-new-york-city-800-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-07T03:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-06-stand-up-comedy-in-new-york-city-1000-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-07T04:55:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-06-stand-up-comedy-in-new-york-city-1155-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Saturday",
+          "date": "2026-11-07T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-07-stand-up-comedy-in-greenwich-village-first-stop-saturday-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-08T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-07-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-08T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-07-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-08T04:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-07-stand-up-comedy-in-new-york-city-1100-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "The Comedy Lab.  Where Comedy Legends And Rising Stars Collide.",
+          "date": "2026-11-08T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-08-the-comedy-lab-where-comedy-legends-and-rising-stars-collide-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-09T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-08-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-09T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-08-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-10T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-09-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-10T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-09-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-11T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-10-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-11T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-10-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "New York Queer Comedy",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-11-new-york-queer-comedy-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Charisma Check Comedy",
+          "date": "2026-11-12T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-11-charisma-check-comedy-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Luke And Ben In The Village",
+          "date": "2026-11-13T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-12-luke-and-ben-in-the-village-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-13T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-12-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Friday",
+          "date": "2026-11-13T23:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-13-stand-up-comedy-in-greenwich-village-first-stop-friday-600-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-14T01:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-13-stand-up-comedy-in-new-york-city-800-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-14T03:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-13-stand-up-comedy-in-new-york-city-1000-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-14T04:55:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-13-stand-up-comedy-in-new-york-city-1155-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Saturday",
+          "date": "2026-11-14T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-14-stand-up-comedy-in-greenwich-village-first-stop-saturday-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-15T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-14-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-15T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-14-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-15T04:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-14-stand-up-comedy-in-new-york-city-1100-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "The Comedy Lab.  Where Comedy Legends And Rising Stars Collide.",
+          "date": "2026-11-15T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-15-the-comedy-lab-where-comedy-legends-and-rising-stars-collide-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-16T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-15-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-16T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-15-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-17T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-16-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-17T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-16-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-18T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-17-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-18T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-17-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "New York Queer Comedy",
+          "date": "2026-11-19T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-18-new-york-queer-comedy-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-19T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-18-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Friday",
+          "date": "2026-11-20T23:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-20-stand-up-comedy-in-greenwich-village-first-stop-friday-600-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-21T01:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-20-stand-up-comedy-in-new-york-city-800-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-21T03:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-20-stand-up-comedy-in-new-york-city-1000-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-21T04:55:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-20-stand-up-comedy-in-new-york-city-1155-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Saturday",
+          "date": "2026-11-21T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-21-stand-up-comedy-in-greenwich-village-first-stop-saturday-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-22T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-21-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-22T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-21-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-22T04:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-21-stand-up-comedy-in-new-york-city-1100-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "The Comedy Lab.  Where Comedy Legends And Rising Stars Collide.",
+          "date": "2026-11-22T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-22-the-comedy-lab-where-comedy-legends-and-rising-stars-collide-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-23T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-22-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-23T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-22-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-24T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-23-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-24T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-23-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-25T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-24-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-25T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-24-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "New York Queer Comedy",
+          "date": "2026-11-26T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-25-new-york-queer-comedy-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-26T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-25-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Friday",
+          "date": "2026-11-27T23:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-27-stand-up-comedy-in-greenwich-village-first-stop-friday-600-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-28T01:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-27-stand-up-comedy-in-new-york-city-800-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-28T03:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-27-stand-up-comedy-in-new-york-city-1000-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-28T04:55:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-27-stand-up-comedy-in-new-york-city-1155-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Saturday",
+          "date": "2026-11-28T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-28-stand-up-comedy-in-greenwich-village-first-stop-saturday-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-29T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-28-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-29T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-28-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-29T04:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-28-stand-up-comedy-in-new-york-city-1100-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "The Comedy Lab.  Where Comedy Legends And Rising Stars Collide.",
+          "date": "2026-11-29T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-29-the-comedy-lab-where-comedy-legends-and-rising-stars-collide-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-30T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-29-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-11-30T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-29-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-01T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-30-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-01T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-11-30-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-02T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-01-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-02T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-01-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "New York Queer Comedy",
+          "date": "2026-12-03T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-02-new-york-queer-comedy-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-03T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-02-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-04T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-03-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-04T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-03-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Friday",
+          "date": "2026-12-04T23:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-04-stand-up-comedy-in-greenwich-village-first-stop-friday-600-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-05T01:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-04-stand-up-comedy-in-new-york-city-800-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-05T03:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-04-stand-up-comedy-in-new-york-city-1000-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-05T04:55:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-04-stand-up-comedy-in-new-york-city-1155-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand Up Comedy In Greenwich Village–First Stop Saturday",
+          "date": "2026-12-05T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-05-stand-up-comedy-in-greenwich-village-first-stop-saturday-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-06T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-05-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-06T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-05-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-06T04:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-05-stand-up-comedy-in-new-york-city-1100-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "The Comedy Lab.  Where Comedy Legends And Rising Stars Collide.",
+          "date": "2026-12-06T22:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-06-the-comedy-lab-where-comedy-legends-and-rising-stars-collide-500-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-07T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-06-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-07T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-06-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-08T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-07-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-08T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-07-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-09T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-08-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-09T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-08-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "New York Queer Comedy",
+          "date": "2026-12-10T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-09-new-york-queer-comedy-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-10T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-09-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-11T00:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-10-stand-up-comedy-in-new-york-city-700-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        },
+        {
+          "name": "Stand-up Comedy In New York City.",
+          "date": "2026-12-11T02:00:00+00:00",
+          "url": "https://www.greenwichvillagecomedyclub.com/shows/2026-12-10-stand-up-comedy-in-new-york-city-900-pm/",
+          "venue": "Greenwich Village Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "99 MacDougal St, New York, NY 10012"
+        }
+      ],
+      "error": null,
+      "duration": 5.33,
+      "cached": false
+    },
+    {
+      "venue": "Broadway Comedy Club (own calendar)",
+      "url": "https://www.broadwaycomedyclub.com/",
+      "events": [
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-06T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-05-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-06T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-05-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-06T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-05-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-07T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-06-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-07T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-06-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In New York City.",
+          "date": "2026-11-07T03:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-06-stand-up-comedy-in-new-york-city-1000-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-07T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-06-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-07T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-06-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "The Broadway Magic Hour With Jim Vines & Carl Mercurio",
+          "date": "2026-11-07T19:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-07-the-broadway-magic-hour-with-jim-vines-carl-mercurio-200-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Improv Comedy. EIGHT IS NEVER ENOUGH",
+          "date": "2026-11-07T20:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-07-improv-comedy-eight-is-never-enough-300-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-07T22:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-07-stand-up-comedy-in-the-heart-of-nyc-500-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Comedy In The Red",
+          "date": "2026-11-08T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-07-comedy-in-the-red-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-08T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-07-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-08T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-07-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-08T02:30:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-07-stand-up-comedy-in-the-heart-of-nyc-930-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-08T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-07-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-08T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-07-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "The Broadway Magic Hour With Jim Vines & Carl Mercurio",
+          "date": "2026-11-08T19:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-08-the-broadway-magic-hour-with-jim-vines-carl-mercurio-200-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "World Comedy In NYC #7",
+          "date": "2026-11-08T22:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-08-world-comedy-in-nyc-7-500-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-09T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-08-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-09T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-08-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-09T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-08-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-10T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-09-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-10T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-09-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-10T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-09-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-11T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-10-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-11T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-10-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-12T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-11-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-12T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-11-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-13T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-12-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-13T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-12-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-14T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-13-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-14T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-13-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-14T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-13-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-14T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-13-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "The Broadway Magic Hour With Jim Vines & Carl Mercurio",
+          "date": "2026-11-14T19:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-14-the-broadway-magic-hour-with-jim-vines-carl-mercurio-200-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Improv Comedy. EIGHT IS NEVER ENOUGH",
+          "date": "2026-11-14T20:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-14-improv-comedy-eight-is-never-enough-300-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "The Industry Room Audition Show. America’s Best Comedy Open Mic.",
+          "date": "2026-11-14T21:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-14-the-industry-room-audition-show-americas-best-comedy-open-mic-400-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-14T22:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-14-stand-up-comedy-in-the-heart-of-nyc-500-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-15T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-14-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-15T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-14-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-15T02:30:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-14-stand-up-comedy-in-the-heart-of-nyc-930-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-15T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-14-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-15T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-14-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-16T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-15-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-16T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-15-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-16T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-15-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-17T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-16-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-17T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-16-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-17T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-16-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-18T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-17-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-18T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-17-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-18T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-17-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-19T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-18-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Broadway After Dark",
+          "date": "2026-11-19T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-18-broadway-after-dark-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-19T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-18-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Guy’z Nite Comedy Show",
+          "date": "2026-11-20T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-19-guyz-nite-comedy-show-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-20T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-19-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-20T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-19-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-20T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-19-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "South Asian Comedy: Laughing Lassi",
+          "date": "2026-11-21T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-20-south-asian-comedy-laughing-lassi-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-21T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-20-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "A+ Asian Stand Up Comedy Show At Broadway Club",
+          "date": "2026-11-21T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-20-a-asian-stand-up-comedy-show-at-broadway-club-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-21T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-20-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-21T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-20-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-21T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-20-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "The Broadway Magic Hour With Jim Vines & Carl Mercurio",
+          "date": "2026-11-21T19:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-21-the-broadway-magic-hour-with-jim-vines-carl-mercurio-200-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Improv Comedy. EIGHT IS NEVER ENOUGH",
+          "date": "2026-11-21T20:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-21-improv-comedy-eight-is-never-enough-300-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "The Industry Room. New York’s Best Open Mic Show.",
+          "date": "2026-11-21T21:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-21-the-industry-room-new-yorks-best-open-mic-show-400-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-21T22:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-21-stand-up-comedy-in-the-heart-of-nyc-500-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-22T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-21-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-22T03:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-21-stand-up-comedy-in-the-heart-of-nyc-1000-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-22T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-21-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-22T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-21-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-23T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-22-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-23T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-22-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-23T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-22-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-24T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-23-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-24T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-23-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-24T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-23-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-25T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-24-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-25T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-24-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-25T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-24-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-26T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-25-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-26T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-25-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-26T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-25-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-28T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-27-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-28T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-27-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-28T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-27-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-28T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-27-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "The Broadway Magic Hour With Jim Vines & Carl Mercurio",
+          "date": "2026-11-28T19:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-28-the-broadway-magic-hour-with-jim-vines-carl-mercurio-200-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Improv Comedy. EIGHT IS NEVER ENOUGH",
+          "date": "2026-11-28T20:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-28-improv-comedy-eight-is-never-enough-300-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-28T22:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-28-stand-up-comedy-in-the-heart-of-nyc-500-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-29T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-28-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-29T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-28-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-29T03:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-28-stand-up-comedy-in-the-heart-of-nyc-1000-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-29T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-28-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-29T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-28-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-30T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-29-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-30T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-29-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-11-30T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-29-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-01T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-30-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-01T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-30-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-01T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-11-30-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-02T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-01-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-02T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-01-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-02T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-01-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-03T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-02-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-03T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-02-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-03T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-02-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-04T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-03-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-04T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-03-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-04T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-03-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-05T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-04-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-05T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-04-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-05T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-04-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-05T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-04-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "The Broadway Magic Hour With Jim Vines & Carl Mercurio",
+          "date": "2026-12-05T19:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-05-the-broadway-magic-hour-with-jim-vines-carl-mercurio-200-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Improv Comedy. EIGHT IS NEVER ENOUGH",
+          "date": "2026-12-05T20:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-05-improv-comedy-eight-is-never-enough-300-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "The Industry Room Audition Show. America’s Best Comedy Open Mic.",
+          "date": "2026-12-05T21:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-05-the-industry-room-audition-show-americas-best-comedy-open-mic-400-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-05T22:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-05-stand-up-comedy-in-the-heart-of-nyc-500-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-06T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-05-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-06T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-05-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-06T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-05-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-06T04:55:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-05-stand-up-comedy-in-the-heart-of-nyc-1155-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-07T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-06-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-07T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-06-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-07T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-06-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-08T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-07-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-08T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-07-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-08T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-07-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-09T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-08-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-09T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-08-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-09T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-08-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-10T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-09-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-10T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-09-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-10T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-09-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-11T00:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-10-stand-up-comedy-in-the-heart-of-nyc-700-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-11T02:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-10-stand-up-comedy-in-the-heart-of-nyc-900-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        },
+        {
+          "name": "Stand Up Comedy In The Heart Of NYC",
+          "date": "2026-12-11T04:00:00+00:00",
+          "url": "https://www.broadwaycomedyclub.com/shows/2026-12-10-stand-up-comedy-in-the-heart-of-nyc-1100-pm/",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "category": "comedy",
+          "address": "318 W 53rd St, New York, NY 10019"
+        }
+      ],
+      "error": null,
+      "duration": 1.53,
+      "cached": false
+    },
+    {
+      "venue": "Brooklyn Comedy Collective (own calendar)",
+      "url": "https://www.brooklyncc.com/show-schedule",
+      "events": [
+        {
+          "name": "The Good Time",
+          "date": "2026-11-06T00:00:00.077000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/thegoodtime-11-5",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Super Sexy Horse Girls",
+          "date": "2026-11-06T00:00:00.088000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/super-sexy-horsegirls-11-5",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "SLUMBER PARTY",
+          "date": "2026-11-06T01:30:00.004000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/slumber-party-11-5",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Demon Time",
+          "date": "2026-11-06T01:30:00.537000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/demontime-11-5",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "holy spray shiz tan!",
+          "date": "2026-11-07T00:00:00.569000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/holy-spray-shiz-tan-11-6",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Gay Gam",
+          "date": "2026-11-07T00:00:00.674000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/gaygam-11-6",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "New York Comedy Festival: TGIF with Duchovny & Olestra",
+          "date": "2026-11-07T00:30:00.062000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/tgif-nycf-11-6",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "DONNA’S BEEF IMPROV",
+          "date": "2026-11-07T01:30:00.317000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/donnasbeef-11-6",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "¿Qué?",
+          "date": "2026-11-07T01:30:00.642000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/que-11-6",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "The Forever Jam",
+          "date": "2026-11-07T23:00:00.798000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/forever-jam-11-1",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Bucket TV: Scary November",
+          "date": "2026-11-08T00:00:00.429000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/bucket-tv-11-7",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "New York Comedy Festival: Can You Take Our Picture: Now A Silly One",
+          "date": "2026-11-08T00:30:00.640000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/can-you-take-our-picture-nycf-11-7",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Clown Revue",
+          "date": "2026-11-08T01:30:00.419000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/clownrevue-11-7",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "What Makes [You] Laugh?",
+          "date": "2026-11-08T01:30:00.680000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/wmyl-11-7",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "DOPPELGÄNGERS Sell Out",
+          "date": "2026-11-09T00:00:00.587000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/doppelgangers-11-8",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Puppet-palooza!",
+          "date": "2026-11-09T00:00:00.676000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/puppet-palooza-11-8",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "family"
+        },
+        {
+          "name": "New York Comedy Festival: Rainbow Riot",
+          "date": "2026-11-09T00:30:00.634000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/rainbow-riot-nycf-11-8",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "BABES",
+          "date": "2026-11-09T01:30:00.431000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/babes-11-8-26",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Faculty Lounge",
+          "date": "2026-11-09T01:30:00.766000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/facultylounge-11-8",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Home Teams",
+          "date": "2026-11-11T00:00:00.226000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/hometeams-11-10",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "New York Comedy Festival: Time to Kill: A Sketch Comedy Show!",
+          "date": "2026-11-11T00:30:00.485000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/time-to-kill-nycf-11-10",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Pump Up: The Jam",
+          "date": "2026-11-11T01:30:00.204000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/pumpup-11-10",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Chicken Big",
+          "date": "2026-11-12T00:00:00.772000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/chickenbig-11-11",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "New York Comedy Festival: Close Friends",
+          "date": "2026-11-12T00:30:00.744000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/close-friends-nycf-11-11",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "New York Comedy Festival: The Good Time",
+          "date": "2026-11-13T00:30:00.628000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/the-good-time-nycf-11-12",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Demon Time",
+          "date": "2026-11-13T01:30:00.593000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/demontime-11-12",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Weirdos: A Character Mic",
+          "date": "2026-11-14T00:00:00.014000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/pigpen/weirdosmic-11-13",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "New York Comedy Festival: Cup of Worms: Chalice of Worms",
+          "date": "2026-11-14T00:30:00.063000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/cup-of-worms-nycf-11-13",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Perfect Harmony Hour",
+          "date": "2026-11-14T01:30:00.059000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/perfect-harmony-hour-11-13",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "TENURE",
+          "date": "2026-11-14T01:30:00.730000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/tenure-11-13",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Musical Improv Jam!",
+          "date": "2026-11-14T23:30:00.946000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/musicalimprovjam-11-14",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Full of Dummy",
+          "date": "2026-11-15T00:00:00.240000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/fullofdummy-11-14",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "New York Comedy Festival: Red Bastard",
+          "date": "2026-11-15T00:30:00.512000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/red-bastard-nycf-11-14",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Sleepover! with the Girlies, Gays & Theys",
+          "date": "2026-11-15T01:30:00.495000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/slaysians-sleepover-11-14",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "What Makes [You] Laugh?",
+          "date": "2026-11-15T01:30:00.976000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/wmyl-11-14",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Vote Responsibly",
+          "date": "2026-11-16T00:00:00.608000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/vote-responsibly-11-15",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "While I Have You... An Hour of Standup",
+          "date": "2026-11-16T00:00:00.987000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/while-i-have-you-11-15",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "New York Comedy Festival: Misfit Variety Show - ADHD Edition",
+          "date": "2026-11-16T00:30:00.233000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/misfit-variety-nycf-11-15",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "BABES",
+          "date": "2026-11-16T01:30:00.136000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/babes-11-15-26",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Faculty Lounge",
+          "date": "2026-11-16T01:30:00.675000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/facultylounge-11-15",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Home Teams",
+          "date": "2026-11-18T00:00:00.498000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/hometeams-11-17",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "The Limbo Talk Show",
+          "date": "2026-11-18T00:00:00.711000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/the-limbo-talk-show-11-17",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Eiffel Tower Mic",
+          "date": "2026-11-18T01:30:00.281000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/eiffel-tower-mic-11-17",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Pump Up: The Jam",
+          "date": "2026-11-18T01:30:00.772000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/pumpup-11-17",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Frat Boyz",
+          "date": "2026-11-19T00:00:00.371000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/fratboyz-11-18",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Chicken Big",
+          "date": "2026-11-19T00:00:00.672000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/chickenbig-11-18",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "clint church",
+          "date": "2026-11-19T01:30:00.913000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/clint-11-18",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "The Good Time",
+          "date": "2026-11-20T00:00:00.266000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/thegoodtime-11-19",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Babe’s in Space",
+          "date": "2026-11-20T00:00:00.795000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/babes-in-space-11-19",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Demon Time",
+          "date": "2026-11-20T01:30:00.831000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/demontime-11-19",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "TGIF with Duchovny & Olestra",
+          "date": "2026-11-21T00:00:00.060000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/tgif-11-20",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Body, Mask & Gag w/ Anya Opshinsky Class Show",
+          "date": "2026-11-21T00:00:00.073000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/body-mask-gag-anya-11-20",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "The Spice Rack Jam",
+          "date": "2026-11-21T00:00:00.720000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/spicerack-11-20",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "The Letdown Goes Long",
+          "date": "2026-11-21T01:30:00.209000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/letdown-11-20",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Not Like Other Girls Improv",
+          "date": "2026-11-21T01:30:00.710000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/nlog-11-20-26",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Women Off-Colour Goes to New York",
+          "date": "2026-11-22T00:00:00.881000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/women-off-colour-goes-to-new-york-11-21",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "HMID & Friends Present: Improvised Family Drama",
+          "date": "2026-11-22T01:30:00.753000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/hmid-11-21",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "What Makes [You] Laugh?",
+          "date": "2026-11-22T01:30:00.979000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/wmyl-11-21",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Crafting Character's w/ Nick Mestad Class Show",
+          "date": "2026-11-23T00:00:00.423000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/crafting-character-11-22",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Andy Junk's Improv Level 4 Class Show (1/3)",
+          "date": "2026-11-23T00:00:00.889000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/improvlevel4-andy-11-22",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "BABES",
+          "date": "2026-11-23T01:30:00.085000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/babes-11-22-26",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Faculty Lounge",
+          "date": "2026-11-23T01:30:00.854000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/facultylounge-11-22",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Home Teams",
+          "date": "2026-11-25T00:00:00.399000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/hometeams-11-24",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Pump Up: The Jam",
+          "date": "2026-11-25T01:30:00.054000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/pumpup-11-24",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Eiffel Tower Mic",
+          "date": "2026-11-25T01:30:00.496000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/eiffel-tower-mic-11-24",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "THANKSGIVING BREAK",
+          "date": "2026-11-26T00:00:00.233000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/thanksgiving-2026",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "The Britney Spears/Laura Palmer Variety Show",
+          "date": "2026-12-02T00:00:00.490000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/the-britney-spears-variety-show-12-1",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Home Teams",
+          "date": "2026-12-02T00:00:00.993000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/hometeams-12-1",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Pump Up: The Jam",
+          "date": "2026-12-02T01:30:00.653000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/pumpup-12-1",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Eiffel Tower Mic",
+          "date": "2026-12-02T01:30:00.767000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/eiffel-tower-mic-12-1",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Chicken Big",
+          "date": "2026-12-03T00:00:00.239000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/chickenbig-12-2",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "The Good Time",
+          "date": "2026-12-04T00:00:00.044000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/thegoodtime-12-3",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Demon Time",
+          "date": "2026-12-04T01:30:00.643000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/demontime-12-3",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "TGIF with Duchovny & Olestra",
+          "date": "2026-12-05T00:00:00.639000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/tgif-12-4",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Obsessed With Us",
+          "date": "2026-12-05T01:30:00.416000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/obsessedwithus-12-4",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "What Makes [You] Laugh?",
+          "date": "2026-12-06T01:30:00.758000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/wmyl-12-5",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "New Day! New York! Holiday Telethon Sketch Show",
+          "date": "2026-12-07T00:00:00.032000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/new-day-new-york-12-6",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Andy Junk's Improv Level 4 Class Show (2/3)",
+          "date": "2026-12-07T00:00:00.942000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/improvlevel4-andy-12-6",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Faculty Lounge",
+          "date": "2026-12-07T01:30:00.331000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/facultylounge-12-6",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "BABES",
+          "date": "2026-12-07T01:30:00.502000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/babes-12-6",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Eiffel Tower Mic",
+          "date": "2026-12-09T01:30:00.594000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/eiffel-tower-mic-12-8",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Pump Up: The Jam",
+          "date": "2026-12-09T01:30:00.830000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/pumpup-12-8",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Chicken Big",
+          "date": "2026-12-10T00:00:00.019000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/chickenbig-12-9",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "The Good Time",
+          "date": "2026-12-11T00:00:00.267000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/thegoodtime-12-10",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        },
+        {
+          "name": "Demon Time",
+          "date": "2026-12-11T01:30:00.629000+00:00",
+          "url": "https://www.brooklyncc.com/show-schedule/demontime-12-10",
+          "venue": "Brooklyn Comedy Collective (own calendar)",
+          "price": "Free / No Cover",
+          "category": "comedy"
+        }
+      ],
+      "error": null,
+      "duration": 1.39,
+      "cached": false
+    },
+    {
       "venue": "Industry City",
       "url": "https://industrycity.com/events/",
       "events": [
@@ -192084,8 +195654,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.82,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/ (serving stale cache)",
+      "duration": 0.13,
       "cached": true
     },
     {
@@ -192261,8 +195831,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.5,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bohemian-hall/ (serving stale cache)",
+      "duration": 0.24,
       "cached": true
     },
     {
@@ -192486,8 +196056,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.11,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/astoria-queens/ (serving stale cache)",
+      "duration": 0.12,
       "cached": true
     },
     {
@@ -194748,7 +198318,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.26,
+      "duration": 0.1,
       "cached": false
     },
     {
@@ -194958,7 +198528,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.23,
+      "duration": 0.14,
       "cached": false
     },
     {
@@ -194966,7 +198536,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.52,
+      "duration": 0.1,
       "cached": false
     },
     {
@@ -196097,7 +199667,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.3,
+      "duration": 0.16,
       "cached": false
     },
     {
@@ -197615,7 +201185,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.48,
+      "duration": 0.15,
       "cached": false
     },
     {
@@ -198499,7 +202069,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.45,
+      "duration": 0.15,
       "cached": false
     },
     {
@@ -207419,8 +210989,8 @@
         }
       ],
       "error": null,
-      "duration": 0.26,
-      "cached": true
+      "duration": 0.21,
+      "cached": false
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -253716,7 +257286,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.44,
+      "duration": 0.96,
       "cached": false
     },
     {
@@ -253724,7 +257294,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.69,
+      "duration": 0.62,
       "cached": false
     },
     {
@@ -257032,7 +260602,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 1.39,
+      "duration": 1.59,
       "cached": false
     },
     {
@@ -263517,8 +267087,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-meetup/ (serving stale cache)",
-      "duration": 0.27,
+      "error": null,
+      "duration": 3.84,
       "cached": true
     },
     {
@@ -263706,8 +267276,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-trivia/ (serving stale cache)",
-      "duration": 0.18,
+      "error": null,
+      "duration": 3.41,
       "cached": true
     },
     {
@@ -361914,17 +365484,17 @@
       "venue": "Eventbrite: Run Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/run-club/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/run-club/",
-      "duration": 0.16,
-      "cached": false
+      "error": null,
+      "duration": 0.29,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Running Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/running-club/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/running-club/",
-      "duration": 0.21,
-      "cached": false
+      "error": null,
+      "duration": 0.51,
+      "cached": true
     },
     {
       "venue": "Eventbrite: 5K Races",
@@ -361938,25 +365508,25 @@
       "venue": "Eventbrite: Hiking",
       "url": "https://www.eventbrite.com/d/ny--new-york/hiking/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hiking/",
-      "duration": 0.11,
-      "cached": false
+      "error": null,
+      "duration": 0.19,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Hikes",
       "url": "https://www.eventbrite.com/d/ny--new-york/hike/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hike/",
-      "duration": 0.4,
-      "cached": false
+      "error": null,
+      "duration": 0.37,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Outdoor Adventures",
       "url": "https://www.eventbrite.com/d/ny--new-york/outdoor-adventure/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-adventure/",
-      "duration": 0.15,
-      "cached": false
+      "error": null,
+      "duration": 0.31,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Walking Tours",
@@ -361986,17 +365556,17 @@
       "venue": "Eventbrite: Rock Climbing",
       "url": "https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
-      "duration": 0.2,
-      "cached": false
+      "error": null,
+      "duration": 0.31,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Roller Skating",
       "url": "https://www.eventbrite.com/d/ny--new-york/roller-skating/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/roller-skating/",
-      "duration": 0.36,
-      "cached": false
+      "error": null,
+      "duration": 0.08,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Yoga",
@@ -362010,25 +365580,25 @@
       "venue": "Eventbrite: Pickleball",
       "url": "https://www.eventbrite.com/d/ny--new-york/pickleball/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pickleball/",
-      "duration": 0.24,
-      "cached": false
+      "error": null,
+      "duration": 0.29,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Volleyball",
       "url": "https://www.eventbrite.com/d/ny--new-york/volleyball/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/volleyball/",
+      "duration": 0.11,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Kickball",
       "url": "https://www.eventbrite.com/d/ny--new-york/kickball/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/kickball/",
-      "duration": 0.1,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: DJ Sets",
@@ -362042,17 +365612,17 @@
       "venue": "Eventbrite: Techno",
       "url": "https://www.eventbrite.com/d/ny--new-york/techno/",
       "events": [],
-      "error": null,
-      "duration": 0.19,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/techno/",
+      "duration": 0.27,
+      "cached": false
     },
     {
       "venue": "Eventbrite: House Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/house-music/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/house-music/",
-      "duration": 0.36,
-      "cached": false
+      "error": null,
+      "duration": 0.08,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Dance Parties",
@@ -362074,9 +365644,9 @@
       "venue": "Eventbrite: Raves",
       "url": "https://www.eventbrite.com/d/ny--new-york/rave/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rave/",
-      "duration": 0.23,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Afrobeats",
@@ -362090,33 +365660,33 @@
       "venue": "Eventbrite: Reggaeton",
       "url": "https://www.eventbrite.com/d/ny--new-york/reggaeton/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.22,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Hip-Hop Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/hip-hop-party/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.41,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Latin Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/latin-party/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/latin-party/",
-      "duration": 0.6,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Silent Discos",
       "url": "https://www.eventbrite.com/d/ny--new-york/silent-disco/",
       "events": [],
-      "error": null,
-      "duration": 0.26,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/silent-disco/",
+      "duration": 0.33,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Brunch Parties",
@@ -362130,9 +365700,9 @@
       "venue": "Eventbrite: Live Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/live-music/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.2,
-      "cached": false
+      "error": null,
+      "duration": 0.12,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Concerts",
@@ -362146,33 +365716,33 @@
       "venue": "Eventbrite: Singer-Songwriters",
       "url": "https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
+      "duration": 0.18,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Karaoke",
       "url": "https://www.eventbrite.com/d/ny--new-york/karaoke/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.44,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Open Mics",
       "url": "https://www.eventbrite.com/d/ny--new-york/open-mic/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.22,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Poetry",
       "url": "https://www.eventbrite.com/d/ny--new-york/poetry/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.2,
-      "cached": false
+      "error": null,
+      "duration": 0.07,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Comedy Shows",
@@ -362186,25 +365756,25 @@
       "venue": "Eventbrite: Stand-Up Comedy",
       "url": "https://www.eventbrite.com/d/ny--new-york/stand-up-comedy/",
       "events": [],
-      "error": null,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
       "duration": 0.23,
-      "cached": true
+      "cached": false
     },
     {
       "venue": "Eventbrite: Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/theater/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.3,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Immersive Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/immersive-theater/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.44,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Cabaret",
@@ -362226,9 +365796,9 @@
       "venue": "Eventbrite: Film Screenings",
       "url": "https://www.eventbrite.com/d/ny--new-york/film-screening/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.47,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Art Shows",
@@ -362242,17 +365812,17 @@
       "venue": "Eventbrite: Gallery Openings",
       "url": "https://www.eventbrite.com/d/ny--new-york/gallery-opening/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.5,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Paint & Sip",
       "url": "https://www.eventbrite.com/d/ny--new-york/paint-and-sip/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.19,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Workshops",
@@ -362266,25 +365836,25 @@
       "venue": "Eventbrite: Social Mixers",
       "url": "https://www.eventbrite.com/d/ny--new-york/social-mixer/",
       "events": [],
-      "error": null,
-      "duration": 0.23,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.27,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Singles Events",
       "url": "https://www.eventbrite.com/d/ny--new-york/singles/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.27,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Speed Dating",
       "url": "https://www.eventbrite.com/d/ny--new-york/speed-dating/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.24,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Wine Tastings",
@@ -378647,8 +382217,8 @@
   ],
   "weather": {
     "temp": 62,
-    "icon": "☀️",
-    "label": "Clear"
+    "icon": "⛅",
+    "label": "Partly cloudy"
   },
   "luckyseat": [
     {
