@@ -6441,8 +6441,15 @@ def scrape_eventbrite_pages(url, ua, pages=3):
 PARTIFUL_SOURCES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "partiful_sources.json")
 
 
+# Each explore page shows ~16 events; the category/date facets surface different ones (16 -> ~90).
+PARTIFUL_NYC_FACETS = ("parties", "live-music", "lgbtq", "fall", "tomorrow", "today", "food", "popups",
+                       "free-events", "this-weekend", "run-clubs", "trivia")
+
+
 def _get_partiful_targets(primary_url):
     targets = [primary_url] if primary_url else []
+    if primary_url and "/explore/l/nyc/" in primary_url:
+        targets += [f"https://partiful.com/explore/l/nyc/{f}" for f in PARTIFUL_NYC_FACETS]
     if os.path.exists(PARTIFUL_SOURCES_FILE):
         try:
             with open(PARTIFUL_SOURCES_FILE, "r", encoding="utf-8") as f:
