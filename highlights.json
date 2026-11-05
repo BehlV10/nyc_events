@@ -273,7 +273,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-21",
+    "id": "auto-2026-11-06-22",
     "auto": true,
     "match": {
       "name_contains": "First Friday November 2026: Mutual Aid Supply Drive",
@@ -286,7 +286,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-22",
+    "id": "auto-2026-11-06-23",
     "auto": true,
     "match": {
       "name_contains": "20s Skip the Small Talk Night at Bibliotheque NYC with SaySimons",
@@ -299,7 +299,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-23",
+    "id": "auto-2026-11-06-24",
     "auto": true,
     "match": {
       "name_contains": "40s & 50s Speed Dating (+ After Party)",
@@ -312,7 +312,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-24",
+    "id": "auto-2026-11-06-25",
     "auto": true,
     "match": {
       "name_contains": "Dating Games  a Fun Twist on Speed Dating",
@@ -325,7 +325,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-25",
+    "id": "auto-2026-11-06-26",
     "auto": true,
     "match": {
       "name_contains": "Dj Birane",
@@ -423,7 +423,7 @@
       "venue_contains": "Sotheby’s Breuer"
     },
     "badge": "🖼️ Art Pick",
-    "note": "Free; listed on 4 calendars; prime-time start.",
+    "note": "Free; listed on 5 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
@@ -455,7 +455,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-35",
+    "id": "auto-2026-11-07-34",
     "auto": true,
     "match": {
       "name_contains": "GINUWINE WITH SPECIAL GUEST RO JAMES @Lehman Center, Sat., Nov. 7th @8 PM",
@@ -463,6 +463,19 @@
     },
     "badge": "🪩 Nightlife Pick",
     "note": "Listed on 6 calendars; prime-time start.",
+    "score": 17.5,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-35",
+    "auto": true,
+    "match": {
+      "name_contains": "New York Comedy Festival: Can You Take Our Picture: Now A Silly One",
+      "venue_contains": "Brooklyn Comedy Collective"
+    },
+    "badge": "😂 Comedy Pick",
+    "note": "Listed on 9 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
@@ -1664,7 +1677,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-128",
+    "id": "auto-2026-11-13-127",
     "auto": true,
     "match": {
       "name_contains": "Adam Friedland",
@@ -1677,7 +1690,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-129",
+    "id": "auto-2026-11-13-128",
     "auto": true,
     "match": {
       "name_contains": "GAMENIGHT \"GETAWAY\" FOR SINGLES & SOCIALITES!",
@@ -1690,7 +1703,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-130",
+    "id": "auto-2026-11-13-129",
     "auto": true,
     "match": {
       "name_contains": "Speed Dating NYC : Men ages 48-65, Women 45-59",
@@ -1703,7 +1716,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-131",
+    "id": "auto-2026-11-13-130",
     "auto": true,
     "match": {
       "name_contains": "Comedy Cellar Showcase",
@@ -1711,6 +1724,19 @@
     },
     "badge": "😂 Comedy Pick",
     "note": "Listed on 3 calendars; headline room at Comedy Cellar; prime-time start.",
+    "score": 16.0,
+    "start_date": "2026-11-13",
+    "expires": "2026-11-13"
+  },
+  {
+    "id": "auto-2026-11-13-132",
+    "auto": true,
+    "match": {
+      "name_contains": "Somewhere Funny, Nowhere Serious!",
+      "venue_contains": "Somewhere Nowhere"
+    },
+    "badge": "😂 Comedy Pick",
+    "note": "Listed on 3 calendars; headline room at Somewhere Nowhere; prime-time start.",
     "score": 16.0,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
