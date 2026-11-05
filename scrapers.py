@@ -2897,10 +2897,14 @@ def _eb_price(ev):
     lo = ((ta.get("minimum_ticket_price") or {}).get("major_value"))
     hi = ((ta.get("maximum_ticket_price") or {}).get("major_value"))
     try:
-        lo_s = f"${float(lo):.2f}".replace(".00", "") if lo is not None else None
-        hi_s = f"${float(hi):.2f}".replace(".00", "") if hi is not None else None
+        lo_f = float(lo) if lo is not None else None
+        hi_f = float(hi) if hi is not None else None
     except (TypeError, ValueError):
         return None
+    if lo_f == 0 and not hi_f:
+        return "Free"  # $0 RSVP tickets
+    lo_s = ("Free" if lo_f == 0 else f"${lo_f:.2f}".replace(".00", "")) if lo_f is not None else None
+    hi_s = f"${hi_f:.2f}".replace(".00", "") if hi_f is not None else None
     if lo_s and hi_s and lo_s != hi_s:
         return f"{lo_s} - {hi_s}"
     return lo_s
@@ -7723,7 +7727,7 @@ _ALL_VENUES = [
     {"name": "Queens Theatre", "url": "https://queenstheatre.org/events/", "ua": UA_CHROME, "scraper": scrape_queens_theatre, "default_category": "theater"},
     {"name": "Flushing Town Hall", "url": "https://donyc.com/venues/flushing-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "MoMA PS1", "url": "https://donyc.com/venues/moma-ps1", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
-    {"name": "Grove 34 Astoria", "url": "https://www.eventbrite.com/d/ny--new-york/grove-34/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Grove 34 Astoria", "url": "https://www.eventbrite.com/api/v3/organizers/34913454313/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "Culture Lab LIC", "url": "https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
     {"name": "Bohemian Hall & Beer Garden (Astoria)", "url": "https://www.eventbrite.com/d/ny--new-york/bohemian-hall/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "Astoria Queens Events", "url": "https://www.eventbrite.com/d/ny--new-york/astoria-queens/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
@@ -7844,11 +7848,11 @@ _ALL_VENUES = [
     # Comedy Clubs & Queens Performance Spaces
     {"name": "The Stand NYC", "url": "https://thestandnyc.com/shows", "ua": UA_CHROME, "scraper": scrape_the_stand_nyc, "default_category": "comedy"},
     {"name": "Tight Pants Comedy", "url": "https://www.eventbrite.com/api/v3/organizers/58671695943/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
-    {"name": "Broadway Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/broadway-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Broadway Comedy Club", "url": "https://www.eventbrite.com/api/v3/organizers/20163541646/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "EastVille Comedy Club", "url": "https://donyc.com/venues/eastville-comedy-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "Greenwich Village Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/greenwich-village-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
-    {"name": "The Grisly Pear Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/grisly-pear-comedy/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
-    {"name": "St. Marks Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Greenwich Village Comedy Club", "url": "https://www.eventbrite.com/api/v3/organizers/30712345978/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
+    {"name": "The Grisly Pear Comedy Club", "url": "https://www.eventbrite.com/api/v3/organizers/67868093233/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
+    {"name": "St. Marks Comedy Club", "url": "https://www.eventbrite.com/api/v3/organizers/34303274747/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "Q.E.D. Astoria (Comedy & Arts)", "url": "https://qedastoria.com/apps/events/calendar", "ua": UA_CHROME, "scraper": scrape_qed_astoria, "default_category": "comedy"},
     {"name": "New York Comedy Club", "url": "https://www.eventbrite.com/d/ny--new-york/new-york-comedy-club/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
     {"name": "The Tiny Cupboard (Bushwick Rooftop Comedy)", "url": "https://www.thetinycupboard.com/calendar", "ua": UA_CHROME, "scraper": scrape_tiny_cupboard, "default_category": "comedy"},
@@ -7968,7 +7972,7 @@ _ALL_VENUES = [
     {"name": "Somewhere Nowhere Rooftop Club", "url": "https://www.eventbrite.com/d/ny--new-york/somewhere-nowhere/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
     {"name": "The DL (LES Rooftop Club)", "url": "https://www.eventbrite.com/d/ny--new-york/the-dl/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
     {"name": "Harbor NYC Rooftop Club", "url": "https://www.eventbrite.com/d/ny--new-york/harbor-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
-    {"name": "230 Fifth Rooftop Nightclub", "url": "https://www.eventbrite.com/d/ny--new-york/230-fifth/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
+    {"name": "230 Fifth Rooftop Nightclub", "url": "https://www.eventbrite.com/api/v3/organizers/34430736779/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "clubbing"},
     {"name": "Slate NYC (Chelsea Lounge & Club)", "url": "https://www.eventbrite.com/d/ny--new-york/slate-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
     {"name": "Nebula NYC (Midtown Nightclub)", "url": "https://www.eventbrite.com/d/ny--new-york/nebula/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
     {"name": "Superior Ingredients (Williamsburg)", "url": "https://donyc.com/venues/superior-ingredients", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
@@ -8199,6 +8203,84 @@ _TOPIC_GENERIC_WORDS = {
 }
 
 
+# Eventbrite organizers with recurring NYC events, read through their organizer feed
+# (scrape_eventbrite_organizer) instead of search pages. Found by tallying organizers
+# across our Eventbrite searches and keeping those with 2+ upcoming in-window NYC events.
+_EVENTBRITE_ORGANIZERS = [
+    ("113265046921", 'Time Out Market Union Square', "food"),
+    ("10797526283", 'New York City Social Events', "party"),
+    ("99682610781", 'Diversity and Inclusion Film Festival', "film"),
+    ("79969695593", 'Grove 34 Comedy (James Quesada)', "comedy"),
+    ("70818623373", 'Gotham Park', "sports"),
+    ("6201076797", 'New York Adventure Club', "outdoors"),
+    ("76065455893", 'EastWest Collective Networking', "community"),
+    ("37080538453", 'Chelsea Table + Stage', "music"),
+    ("33571507987", 'The Dendro Lab', "outdoors"),
+    ("33177285613", 'NYPL Career Services', "community"),
+    ("19886909683", 'EastVille Comedy Club (Eventbrite)', "comedy"),
+    ("115954955391", 'NYC Events Guide', "clubbing"),
+    ("10013510321", 'Czech Center New York', "art"),
+    ("76612649623", 'Tiny Arts Supply', "art"),
+    ("5993389089", 'NYPL for the Performing Arts', "music"),
+    ("58374016673", 'VIP Sample Sale', "community"),
+    ("54944809083", 'NYC Thanksgiving Parade Events & Experiences', "community"),
+    ("43013127903", 'Barnes & Noble - Union Square', "books"),
+    ("31639983301", 'NYC Social Group', "party"),
+    ("64632290063", 'Funny People At', "comedy"),
+    ("64377861443", 'Shock A Go Go Film Festival', "film"),
+    ("58042250453", 'Kiss Lounge Queens', "clubbing"),
+    ("53470389893", 'Cucala Dance Company', "dance"),
+    ("4279966505", 'UrbanGlass', "art"),
+    ("39653796043", 'NYPL Center for Educators and Schools', "family"),
+    ("31200117645", 'CPR - Center for Performance Research', "art"),
+    ("31080353121", 'Old Stone House & Washington Park', "outdoors"),
+    ("28434919813", 'Long Live the Runway', "community"),
+    ("2045320721", 'GBH Parties (TV Eye, DROM)', "clubbing"),
+    ("20080920317", 'Time Out Market New York', "food"),
+    ("17235422291", 'The Greater Ridgewood Historical Society', "outdoors"),
+    ("11920997917", 'MTS Productions (Latin Parties)', "dance"),
+    ("11755215507", 'Hudson Park Library', "community"),
+    ("11144694568", 'NYPL Thomas Yoseloff Business Center', "community"),
+    ("91898788783", 'High Line Comedy Club', "comedy"),
+    ("8892496774", 'Frankie Banks Parties (Queens & Brooklyn)', "clubbing"),
+    ("87580057813", 'Tealeaf Collective', "music"),
+    ("86136754923", 'Lectures on Tap', "community"),
+    ("74577442203", 'Touring Treasures', "food"),
+    ("67306368493", "The People's Forum", "community"),
+    ("6350090643", 'Newtown Creek Alliance', "outdoors"),
+    ("60462031173", 'Blue Glove Hospitality Parties', "clubbing"),
+    ("48539543903", 'Salsa Pizzeria', "dance"),
+    ("41991254513", 'FRIGID New York', "theater"),
+    ("39289382883", 'National Academy of Design', "art"),
+    ("3903604283", 'Mike Geffner Presents (Brooklyn Music Kitchen)', "music"),
+    ("36746617253", 'WalksNYC Tours & Cruises', "outdoors"),
+    ("34192319459", '1014 Space (873 Broadway)', "art"),
+    ("25203170825", 'Ismada Productions', "music"),
+    ("18615337552", 'MakerSpace NYC', "community"),
+    ("17659708650", 'Comedy Mob', "comedy"),
+    ("17292272476", 'Improv Theatre LLC', "theater"),
+    ("1717273352", 'ICLUBNYC Parties & Cruises', "clubbing"),
+    ("17022023886", 'Main Event Hospitality (South Beach Astoria)', "clubbing"),
+    ("16028691897", 'El Museo del Barrio', "art"),
+    ("15236594760", 'The Latin Social', "dance"),
+    ("1513263208", 'Open House New York', "outdoors"),
+    ("12316350145", 'iBoatNYC Party Cruises', "clubbing"),
+    ("121282020636", 'NYPL Roosevelt Island Library', "community"),
+    ("120777580098", 'Brooklyn Public Library - Community Health', "community"),
+    ("120760418804", 'The Ornate Project', "clubbing"),
+    ("11795946643", 'Attractions4us NYC Tours & Cruises', "outdoors"),
+    ("115824599241", 'Brooklyn Attic Books', "books"),
+    ("115594308411", 'Comedia en Times Square (Grisly Pear)', "comedy"),
+    ("114781508361", 'The Twisted Spine', "books"),
+    ("110275304201", 'South Beach NY (Olympia Lounge)', "clubbing"),
+    ("108250881751", 'Dada Bar', "music"),
+    ("107812353391", 'Ermantourage NYC (Foodie Socials)', "party"),
+    ("106883929601", "Arts and Architecture Conservancy at Saint Peter's", "music"),
+    ("103104074541", "Enoch's", "comedy"),
+    ("103091184941", 'Tipsy Scoop Queens', "food"),
+]
+
+
 def _topic_terms(query):
     """Words that make a title 'on topic' for a keyword search: the phrase itself plus its
     distinctive words with a light stem ("rock climbing" -> "rock climbing", "climb")."""
@@ -8225,6 +8307,13 @@ _ALL_VENUES += [
         "ua": UA_CHROME, "scraper": scrape_eventbrite_pages, "default_category": cat, "topic_terms": _topic_terms(slug),
     }
     for label, slug, cat in _EVENTBRITE_TOPICS
+] + [
+    {
+        "name": name,
+        "url": f"https://www.eventbrite.com/api/v3/organizers/{org_id}/events/",
+        "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": cat,
+    }
+    for org_id, name, cat in _EVENTBRITE_ORGANIZERS
 ]
 
 VENUES = _ALL_VENUES
