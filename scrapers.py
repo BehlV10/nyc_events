@@ -35,6 +35,8 @@ EVENTBRITE_TTL = 6 * 3600       # 6 hours for Eventbrite feeds to prevent Cloudf
 # Each run refreshes at most this many Eventbrite sources (never-fetched first, then the
 # least recently attempted); the rest serve their cached copy. ~180 sources rotate in ~8h.
 EVENTBRITE_PER_RUN = 12
+MEETUP_PER_RUN = 60              # ~230 Meetup searches; refreshing all at once draws 503s in CI
+MEETUP_TTL = 6 * 3600
 
 
 def _is_within_horizon(e, max_days=HORIZON_DAYS):
@@ -56,6 +58,8 @@ def _get_venue_ttl(vname, v=None):
     url = (v.get("url") if isinstance(v, dict) else "") or ""
     if "eventbrite.com" in url or "eventbrite" in low:
         return EVENTBRITE_TTL
+    if "meetup.com" in url:
+        return MEETUP_TTL
     if isinstance(v, dict) and v.get("scraper") is scrape_donyc_calendar:
         return DEFAULT_VENUE_TTL  # ~300 page loads; hourly would hammer DoNYC
     if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc", "the skint", "secret nyc", "greenpointers", "flop house", "sesh comedy", "luma"]):
@@ -8277,24 +8281,32 @@ def _eventbrite_attempts_path():
     return os.path.join(CACHE_DIR, "_eventbrite_attempts.json")
 
 
-def _pick_eventbrite_refreshes(venues, force=False, limit=EVENTBRITE_PER_RUN, now=None):
-    """Choose which Eventbrite sources may fetch live this run, and record the attempt so a
-    source that keeps failing goes to the back of the line instead of being retried (and
-    re-triggering Eventbrite's rate limit) on every run."""
+def _rotation_attempts_path(host_key):
+    if host_key == "eventbrite.":
+        return _eventbrite_attempts_path()
+    return os.path.join(CACHE_DIR, f"_{re.sub(r'[^a-z0-9]+', '_', host_key).strip('_')}_attempts.json")
+
+
+def _pick_rotation_refreshes(venues, host_key, limit, ttl, force=False, now=None):
+    """Choose which sources on a throttling host may fetch live this run, and record the attempt
+    so a source that keeps failing goes to the back of the line instead of being retried (and
+    re-triggering the host's rate limit) on every run. Uncached sources go first, then the
+    stalest; sources fresher than `ttl` are not due."""
     now = now or time.time()
+    path = _rotation_attempts_path(host_key)
     try:
-        with open(_eventbrite_attempts_path(), "r", encoding="utf-8") as f:
+        with open(path, "r", encoding="utf-8") as f:
             attempts = json.load(f)
     except Exception:
         attempts = {}
     due = []
     for v in venues:
-        if _host_key(v.get("url")) != "eventbrite.":
+        if _host_key(v.get("url")) != host_key:
             continue
         name = v["name"]
         cached = _load_venue_cache(name, max_age=None)
         cache_ts = cached.get("ts", 0) if cached else 0
-        if not force and cached and now - cache_ts <= EVENTBRITE_TTL:
+        if not force and cached and now - cache_ts <= ttl:
             continue
         last = max(cache_ts, attempts.get(name, 0))
         due.append((cached is not None, last, name))
@@ -8304,11 +8316,23 @@ def _pick_eventbrite_refreshes(venues, force=False, limit=EVENTBRITE_PER_RUN, no
         attempts[name] = now
     try:
         os.makedirs(CACHE_DIR, exist_ok=True)
-        with open(_eventbrite_attempts_path(), "w", encoding="utf-8") as f:
+        with open(path, "w", encoding="utf-8") as f:
             json.dump(attempts, f)
     except Exception:
         pass
     return picked
+
+
+def _pick_eventbrite_refreshes(venues, force=False, limit=EVENTBRITE_PER_RUN, now=None):
+    return _pick_rotation_refreshes(venues, "eventbrite.", limit, EVENTBRITE_TTL, force=force, now=now)
+
+
+# Hosts that throttle CI when every source refreshes at once: each run refreshes at most
+# `limit` of their sources (stalest first); the rest serve their last good copy.
+_ROTATED_HOSTS = {
+    "eventbrite.": (lambda: EVENTBRITE_PER_RUN, lambda: EVENTBRITE_TTL),
+    "meetup.com": (lambda: MEETUP_PER_RUN, lambda: MEETUP_TTL),
+}
 
 
 def _scrape_one(v, force=False, allow_live=True):
@@ -8451,10 +8475,12 @@ def get_all_events(force=False):
         return _cache["data"]
 
     _reset_host_breakers()
-    eventbrite_live = _pick_eventbrite_refreshes(VENUES, force=force)
+    live = {host: _pick_rotation_refreshes(VENUES, host, lim(), ttl(), force=force)
+            for host, (lim, ttl) in _ROTATED_HOSTS.items()}
 
     def _worker(v):
-        allow = _host_key(v.get("url")) != "eventbrite." or v["name"] in eventbrite_live
+        host = _host_key(v.get("url"))
+        allow = host not in live or v["name"] in live[host]
         return _scrape_one(v, force=force, allow_live=allow)
 
     with ThreadPoolExecutor(max_workers=24) as ex:
