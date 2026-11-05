@@ -62,28 +62,60 @@ def in_nyc(lat, lng):
 
 
 # Out-of-city places that NYC feeds list (text markers; matched as substrings, lowercase).
-TRISTATE_NEEDLES = (
-    # New Jersey markers & towns
-    "new jersey", ", nj", " nj ", " nj,", "hoboken", "jersey city", "newark", "asbury park",
-    "montclair", "paramus", "hackensack", "westwood", "maywood", "weehawken", "secaucus",
-    "englewood", "fort lee", "edgewater", "morristown", "lyndhurst", "wanaque", "loch arbour",
-    "wyckoff, nj", "wyckoff nj", "ridgewood, nj", "ridgewood nj",
-    "west orange", "paterson", "clifton", "passaic", "teaneck", "ridgefield",
-    # Connecticut markers & towns
-    "connecticut", ", ct", " ct ", " ct,", "stamford", "greenwich, ct", "greenwich ct",
-    "norwalk", "new haven", "bridgeport", "darien", "westport",
-    # Westchester, Hudson Valley & Upstate NY
-    "new rochelle", "white plains", "yonkers", "port chester", "tarrytown", "nyack",
-    "scarsdale", "mount vernon, ny", "mount vernon ny", "peekskill", "ossining", "mamaroneck", "rye, ny", "rye ny",
-    "bethel woods", "hudson valley", "woodbury", "poughkeepsie", "beacon, ny", "sleepy hollow",
-    # Long Island (Nassau / Suffolk)
-    "long island", "nassau county", "suffolk county", "huntington", "garden city", "hempstead",
-    "patchogue", "babylon", "montauk", "hamptons", "riverhead", "westbury, ny",
-    "mineola", "rockville centre", "nassau coliseum", "tilles center", "stephen talkhouse", "amagansett",
-    # Venues outside the city that city feeds list by name only
-    "metlife stadium", "wellmont theater", "count basie", "prudential center", "njpac",
-    "new jersey performing arts", "klein memorial", "atlantic city", "catskills", "tarrytown",
-)
+# Out-of-city places that NYC feeds list, by area (text markers; lowercase substrings).
+OUTSIDE_AREAS = {
+    "nj": (
+        "new jersey", ", nj", " nj ", " nj,", "hoboken", "jersey city", "newark", "asbury park",
+        "montclair", "paramus", "hackensack", "westwood", "maywood", "weehawken", "secaucus",
+        "englewood", "fort lee", "edgewater", "morristown", "lyndhurst", "wanaque", "loch arbour",
+        "wyckoff, nj", "wyckoff nj", "ridgewood, nj", "ridgewood nj",
+        "west orange", "paterson", "clifton", "passaic", "teaneck", "ridgefield", "leonia", "tenafly",
+        "bogota, nj", "saddle brook", "metlife stadium", "wellmont theater", "count basie",
+        "prudential center", "njpac", "new jersey performing arts", "atlantic city", "red bank",
+    ),
+    "ct": (
+        "connecticut", ", ct", " ct ", " ct,", "stamford", "greenwich, ct", "greenwich ct",
+        "norwalk", "new haven", "bridgeport", "darien", "westport", "klein memorial",
+    ),
+    "westchester_hv": (
+        "new rochelle", "white plains", "yonkers", "port chester", "tarrytown", "nyack",
+        "scarsdale", "mount vernon, ny", "mount vernon ny", "peekskill", "ossining", "mamaroneck", "rye, ny", "rye ny",
+        "bethel woods", "hudson valley", "woodbury", "poughkeepsie", "beacon, ny", "sleepy hollow",
+        "westchester", "valhalla", "catskills",
+    ),
+    "long_island": (
+        "long island", "nassau county", "suffolk county", "huntington", "garden city", "hempstead",
+        "patchogue", "babylon", "montauk", "hamptons", "riverhead", "westbury, ny",
+        "mineola", "rockville centre", "nassau coliseum", "tilles center", "stephen talkhouse", "amagansett",
+        "woodmere", "wantagh", "jericho turnpike",
+    ),
+}
+TRISTATE_NEEDLES = tuple(n for needles in OUTSIDE_AREAS.values() for n in needles)
+
+
+def outside_area(text, lat=None, lng=None):
+    """Which out-of-city area an event is in: 'nj' | 'long_island' | 'westchester_hv' | 'ct',
+    or 'outside_other'. Text markers first, then a coarse read of the pin (west of the Hudson
+    is New Jersey, north of the Bronx is Westchester, east of Queens is Long Island)."""
+    h = f" {(text or '').lower()} ".replace("long island city", "")
+    for area, needles in OUTSIDE_AREAS.items():
+        if any(n in h for n in needles):
+            return area
+    try:
+        y, x = float(lat), float(lng)
+    except (TypeError, ValueError):
+        return "outside_other"
+    if not (39.0 <= y <= 42.2 and -75.6 <= x <= -71.8):
+        return "outside_other"
+    if x < -74.05 or (x < -73.93 and y < 41.0 and y > 40.6):
+        return "nj"
+    if y > 40.98 and x > -73.66:
+        return "ct"
+    if y > 40.88 and x <= -73.66:
+        return "westchester_hv"
+    if x > -73.76:
+        return "long_island"
+    return "outside_other"
 
 
 def outside_nyc_text(text):
