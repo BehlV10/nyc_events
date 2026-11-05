@@ -8,7 +8,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 import html
 from html import escape, unescape
-from urllib.parse import quote, quote_plus
+from urllib.parse import quote, quote_plus, urlparse
 
 from scrapers import (
     EASTERN,
@@ -18,6 +18,9 @@ from scrapers import (
     STATIC_LINKS,
     category_bucket,
     guess_category,
+    infer_music_genre,
+    MUSIC_CATEGORIES,
+    MUSIC_GENRES,
     fetch_nyc_weather,
     fetch_luckyseat_nyc,
     is_closed_show,
@@ -25,6 +28,8 @@ from scrapers import (
     is_standing_exhibit,
     is_utility_event,
     is_kid_family_event,
+    is_deal_event,
+    is_service_ad,
     fix_doubled_url,
     sanitize_event_url,
     BROADWAY_THEATRES,
@@ -32,7 +37,7 @@ from scrapers import (
 from venues_geo import resolve_event_geo
 
 # Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes).
-DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family"}
+DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups"}
 
 
 TRISTATE_NEEDLES = (
@@ -812,7 +817,9 @@ def compute_recurring(dated):
             name = (e.get("name") or "").strip().lower()
             if not t or not name:
                 continue
-            key = (name, e.get("_source_venue") or "")
+            # Venue is part of the key: a group posting the same title at a different bar each
+            # week isn't one recurring event.
+            key = (name, e.get("_source_venue") or "", (e.get("venue") or "").strip().lower())
             groups[key].append(t)
     recurring = set()
     for key, times in groups.items():
@@ -1180,12 +1187,40 @@ def _cached_variants(e):
 def _same_physical_venue(e1, e2):
     """Stricter venue check than _merge_duplicates' _venue_match: same geo pin, or a shared
     distinctive word ("Nowadays", "Elsewhere") — not just "Public Library" or "Music Hall"."""
+    if e1.get("_venue_unknown") or e2.get("_venue_unknown"):
+        return True
     if _venue_words(e1) & _venue_words(e2):
         return True
     g1, g2 = _cached_geo(e1), _cached_geo(e2)
     if g1 and g2:
         return abs(g1["lat"] - g2["lat"]) < 0.0015 and abs(g1["lng"] - g2["lng"]) < 0.0015
     return False
+
+
+_RSVP_HOSTS = ("lu.ma", "luma.com", "eventbrite.", "meetup.com", "partiful.com", "heylo.com",
+               "dice.fm", "posh.vip", "ticketmaster.", "seatgeek.com", "axs.com", "tixr.com")
+
+
+def _is_event_specific_link(url):
+    """An RSVP/ticket page for one event (lu.ma/8ugz1m1n, eventbrite.com/e/...)."""
+    try:
+        u = urlparse((url or "").strip())
+    except ValueError:
+        return False
+    path = u.path.strip("/")
+    return any(h in u.netloc.lower() for h in _RSVP_HOSTS) and len(path) >= 6 and bool(re.search(r"\d|/", path))
+
+
+def _is_generic_link(url):
+    """A site root or listing page rather than an event page: "x.com", "x.com/events/"."""
+    try:
+        u = urlparse((url or "").strip())
+    except ValueError:
+        return True
+    if not u.netloc:
+        return True
+    path = u.path.strip("/").lower()
+    return path in ("", "events", "calendar", "event-calendar", "upcoming-events", "whats-on") and not u.query
 
 
 def _titles_equivalent(a, b):
@@ -1511,6 +1546,15 @@ def _merge_duplicates(events):
             if src_url and not any(a.get("url") == src_url for a in match["_alt_sources"]) and src_url != match.get("url"):
                 match["_alt_sources"].append({"venue": src_label, "source": raw_src, "url": src_url, "price": e.get("price")})
 
+            if match.get("_venue_unknown") and not e.get("_venue_unknown") and e.get("venue"):
+                match["venue"] = e["venue"]
+                match.pop("_venue_unknown", None)
+                for k in ("lat", "lng", "address"):
+                    if e.get(k):
+                        match[k] = e[k]
+                for k in _MEMO_KEYS:
+                    match.pop(k, None)
+
             cand_t_url = e.get("ticket_url")
             if cand_t_url and cand_t_url != match.get("url"):
                 t_label = _source_display_label(raw_src, cand_t_url)
@@ -1530,8 +1574,9 @@ def _merge_duplicates(events):
                 match["name"] = e.get("name")
                 for k in _MEMO_KEYS:
                     match.pop(k, None)
-                if match.get("venue", "").lower() in generic_sources or _is_generic_feed(match) or (e.get("venue") and not _is_generic_feed(e)):
-                    match["venue"] = e.get("venue")
+                if (match.get("venue", "").lower() in generic_sources or _is_generic_feed(match) or (e.get("venue") and not _is_generic_feed(e))) \
+                        and (not e.get("_venue_unknown") or match.get("_venue_unknown")):
+                    match["venue"] = e.get("venue")  # never replace a real venue with a placeholder
                 match["_source_venue"] = e.get("_source_venue") or e.get("source")
                 if e.get("venue_url"):
                     match["venue_url"] = e.get("venue_url")
@@ -1539,6 +1584,18 @@ def _merge_duplicates(events):
                     match["_time"] = e["_time"]
                 # Clean up _alt_sources so match["url"] is not duplicated in its own alt list
                 match["_alt_sources"] = [a for a in match["_alt_sources"] if a.get("url") != match.get("url")]
+
+            # A venue feed may link only an organizer homepage or /events page; an RSVP page for
+            # this specific event (Luma, Eventbrite, Meetup, ...) is the better primary link.
+            if _is_generic_link(match.get("url")):
+                rsvp = next((a for a in match["_alt_sources"] if _is_event_specific_link(a.get("url"))), None)
+                if rsvp:
+                    old_url = match.get("url")
+                    match["_alt_sources"] = [a for a in match["_alt_sources"] if a is not rsvp]
+                    if old_url and not any(a.get("url") == old_url for a in match["_alt_sources"]):
+                        old_src = match.get("_source_venue") or "source"
+                        match["_alt_sources"].append({"venue": _source_display_label(old_src, old_url), "source": old_src, "url": old_url, "price": match.get("price")})
+                    match["url"] = rsvp["url"]
 
             # If match has 19:00:00 (Eventbrite discovery fallback) while e has a real/earlier time, prefer e
             m_time = match.get("_time")
@@ -1580,6 +1637,8 @@ def _merge_duplicates(events):
                     match["category"] = "theater"
             if not match.get("description") and e.get("description"):
                 match["description"] = e["description"]
+            if not match.get("genre") and e.get("genre"):
+                match["genre"] = e["genre"]
         else:
             if curl:
                 seen_url.setdefault(curl, []).append(e)
@@ -1610,14 +1669,22 @@ def group_by_date(results):
         for e in r.get("events", []):
             if is_placeholder_or_closed_event(e.get("name")) or is_closed_show(e.get("venue")) or is_standing_exhibit(e):
                 continue
+            if is_service_ad(e.get("name"), e.get("venue")):
+                continue
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["url"] = sanitize_event_url(fix_doubled_url(entry.get("url")), fallback=r.get("url") or None)
             entry["venue"] = e.get("venue") or r.get("venue", "")
+            if e.get("venue_unknown") or not (e.get("venue") or "").strip():
+                # The source hid the venue (Meetup does for non-members), so "venue" is only the
+                # group name. Dedup may adopt the real venue from another listing.
+                entry["_venue_unknown"] = True
             existing_cat = e.get("category")
             if is_utility_event(e.get("name")):
                 entry["category"] = "services"
             elif is_kid_family_event(e.get("name"), entry["venue"]):
                 entry["category"] = "family"
+            elif is_deal_event(e.get("name")):
+                entry["category"] = "deals"
             elif existing_cat == "theater":
                 entry["category"] = "theater"
             else:
@@ -1703,6 +1770,20 @@ def _get_event_highlight(e, highlights):
     return None
 
 
+def event_genre(e):
+    """Music subgenre id for music/club/dance events (memoized on the event), else None."""
+    cat = e.get("category") or "other"
+    if cat not in MUSIC_CATEGORIES:
+        return None
+    if "_genre" not in e:
+        g = e.get("genre")
+        if g not in MUSIC_GENRES:
+            g = infer_music_genre(e.get("name"), e.get("venue"), description=e.get("description"),
+                                  native_genre=g if isinstance(g, str) else None, category=cat)
+        e["_genre"] = g
+    return e["_genre"]
+
+
 def render_page(results, split_deferred=False, context_out=None):
     """Render the full page. If context_out is a dict, it receives the deduplicated `dated`
     events plus totals, so the exporter can build SEO pages and feeds without re-merging. With split_deferred=True, days beyond the first week are left
@@ -1766,8 +1847,16 @@ def render_page(results, split_deferred=False, context_out=None):
 
         cat = e.get("category") or "other"
         bucket = category_bucket(cat)
-        color, icon = CATEGORY_STYLES.get(cat, CATEGORY_STYLES["other"])
-        cat_tag = f'<span class="cat-pill" style="--cat-c:{color}; background:{color}18; border-color:{color}33; color:{color}"><span class="chip-icon">{icon} </span>{escape(cat)}</span>'
+        genre = event_genre(e)
+        genre_attr = f' data-genre="{genre}"' if genre else ""
+        if genre:
+            ginfo = MUSIC_GENRES[genre]
+            gcolor = ginfo["color"]
+            cat_tag = (f'<button type="button" class="cat-pill genre-pill" data-genre="{genre}" title="Show only {escape(ginfo["label"])}" '
+                       f'style="--cat-c:{gcolor}; background:{gcolor}18; border-color:{gcolor}33; color:{gcolor}">{escape(ginfo["label"])}</button>')
+        else:
+            color, icon = CATEGORY_STYLES.get(cat, CATEGORY_STYLES["other"])
+            cat_tag = f'<span class="cat-pill" style="--cat-c:{color}; background:{color}18; border-color:{color}33; color:{color}"><span class="chip-icon">{icon} </span>{escape(cat)}</span>'
         venue = e.get("venue") or ""
         source = e.get("_source_venue") or ""
         geo = resolve_event_geo(e)
@@ -1868,7 +1957,7 @@ def render_page(results, split_deferred=False, context_out=None):
             hl_badge = f' <span class="badge-highlight" title="{escape(tooltip)}">{escape(b_text)}</span>'
             if note:
                 note_html = f'<div class="curator-note"><span class="note-label">Why it\'s a pick:</span> {escape(note)}</div>'
-        return f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}" data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-subarea-name="{escape(sub_name)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}"{hl_attr} data-event-id="{ev_id}"{epoch_attr}{time_attr}{geo_attrs}>
+        return f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-subarea-name="{escape(sub_name)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}"{hl_attr} data-event-id="{ev_id}"{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
           <div class="what">{link}{price_tag}{guestlist_badge}{hl_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
@@ -2084,11 +2173,32 @@ def render_page(results, split_deferred=False, context_out=None):
         cats = dict(CATEGORY_BUCKETS).get(bucket_name, [])
         return " ".join(CATEGORY_STYLES.get(c, CATEGORY_STYLES["other"])[1] for c in cats)
 
+    genre_counts = {g: 0 for g in MUSIC_GENRES}
+    for e in all_events_flat:
+        g = event_genre(e)
+        if g:
+            genre_counts[g] += 1
+    genre_boxes = "\n".join(
+        f'''<label class="chk chk-subgenre">
+              <input type="checkbox" class="genre-chk" value="{gid}" checked>
+              <span><span class="genre-swatch" style="background:{ginfo['color']}"></span>{escape(ginfo['label'])} <span class="count">{genre_counts[gid]}</span></span>
+            </label>'''
+        for gid, ginfo in MUSIC_GENRES.items()
+    )
+    subgenres_html = f'''
+          <div class="subgenre-container" id="subgenre-container">
+            <div class="subgenre-header">
+              <span>Subgenres</span><span class="spacer"></span>
+              <button type="button" id="genre-all" class="subgenre-btn" title="Select all subgenres">all</button>
+              <button type="button" id="genre-none" class="subgenre-btn" title="Deselect all subgenres">none</button>
+            </div>
+            <div class="subgenre-grid">{genre_boxes}</div>
+          </div>'''
     bucket_boxes = "\n".join(
         f'''<label class="chk">
             <input type="checkbox" class="cat-chk" value="{escape(b)}"{"" if b in DEFAULT_UNCHECKED_BUCKETS else " checked"}>
             <span><span class="chip-icon">{_bucket_icon_row(b)} </span>{escape(b)} <span class="count">{bucket_counts.get(b, 0)}</span></span>
-          </label>'''
+          </label>''' + (subgenres_html if b == "Music & nightlife" else "")
         for b in bucket_order
     )
 
@@ -2680,6 +2790,17 @@ def render_page(results, split_deferred=False, context_out=None):
   .chk {{ display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; padding: 3px 4px; border-radius: 6px; }}
   .chk:hover {{ background: rgba(255,255,255,0.03); }}
   .chk input {{ accent-color: var(--accent); margin: 0; flex-shrink: 0; }}
+  .subgenre-container {{ margin: 2px 0 6px 14px; padding: 6px 8px 6px 10px; background: rgba(255,255,255,0.02); border-left: 2px solid rgba(255,255,255,0.12); border-radius: 0 6px 6px 0; transition: opacity 0.2s ease; }}
+  .subgenre-container.disabled {{ opacity: 0.4; pointer-events: none; }}
+  .subgenre-header {{ display: flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 4px; }}
+  .subgenre-header .spacer {{ flex: 1; }}
+  .subgenre-btn {{ background: none; border: none; color: var(--muted); font-size: 10px; font-weight: 600; cursor: pointer; padding: 0 4px; border-radius: 3px; font-family: inherit; }}
+  .subgenre-btn:hover {{ color: var(--fg); background: rgba(255,255,255,0.1); }}
+  .subgenre-grid {{ display: flex; flex-direction: column; gap: 1px; }}
+  .chk-subgenre {{ font-size: 11.5px; padding: 2px 4px; }}
+  .genre-swatch {{ display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }}
+  button.genre-pill {{ font-family: inherit; cursor: pointer; }}
+  button.genre-pill:hover {{ filter: brightness(1.2); }}
   .chk > span {{ display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; }}
   .chk > span > .count {{ margin-left: auto; }}
   .city-swatch {{ display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }}
@@ -4912,7 +5033,6 @@ def render_page(results, split_deferred=False, context_out=None):
         <button type="button" class="loc-chip" data-city="queens"><span class="city-dot" style="background:#f29e4c"></span>Queens</button>
         <button type="button" class="loc-chip" data-city="bronx"><span class="city-dot" style="background:#4ade80"></span>The Bronx</button>
         <button type="button" class="loc-chip" data-city="staten_island"><span class="city-dot" style="background:#a78bfa"></span>Staten Island</button>
-        <button type="button" class="loc-chip" data-city="other"><span class="city-dot" style="background:#9aa3b2"></span>Tri-State</button>
       </div>
       <div class="subarea-chips-bar" id="subarea-chips-bar" style="display: none;"></div>
       <div class="week-nav" id="week-nav">
@@ -4920,7 +5040,6 @@ def render_page(results, split_deferred=False, context_out=None):
         <span id="week-label">Today, {today.strftime("%b %d")}</span>
         <button type="button" id="week-next" aria-label="Next">next →</button>
         <button type="button" id="week-today">today</button>
-        <button type="button" id="week-all" data-mode="week">show all</button>
         <button type="button" id="cal-toggle" aria-expanded="false">📅 pick date</button>
         {picks_chip_html}
         <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
@@ -5205,6 +5324,13 @@ def render_page(results, split_deferred=False, context_out=None):
   </div>
   <script>
     const catBoxes = document.querySelectorAll('.cat-chk');
+    const genreBoxes = document.querySelectorAll('.genre-chk');
+    const MUSIC_BUCKET = 'Music & nightlife';
+    const syncSubgenreUI = () => {{
+      const box = document.getElementById('subgenre-container');
+      const music = Array.from(catBoxes).find(b => b.value === MUSIC_BUCKET);
+      if (box && music) box.classList.toggle('disabled', !music.checked);
+    }};
     const defaultUncheckedCats = new Set({json.dumps(sorted(DEFAULT_UNCHECKED_BUCKETS))});
     const isDefaultCat = (b) => !defaultUncheckedCats.has(b.value);
     const isCatFilteredFn = () => Array.from(catBoxes).some(b => b.checked !== isDefaultCat(b));
@@ -6079,7 +6205,8 @@ def render_page(results, split_deferred=False, context_out=None):
       const isFree = freeOnlyChk && freeOnlyChk.checked;
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
-      const isFiltered = isCatFiltered || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isGenreFiltered = Array.from(genreBoxes).some(b => !b.checked);
+      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || (chkCities < allCities) || (chkRecurs < allRecurs) || isFree || isGuestlist || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -6116,6 +6243,8 @@ def render_page(results, split_deferred=False, context_out=None):
         if (checkedCats.length === catBoxes.length) params.set('cat', 'all');
         else params.set('cat', checkedCats.length ? checkedCats.join(',') : 'none');
       }}
+      const checkedGenres = Array.from(genreBoxes).filter(b => b.checked).map(b => b.value);
+      if (checkedGenres.length < genreBoxes.length) params.set('genre', checkedGenres.length ? checkedGenres.join(',') : 'none');
 
       const allCities = Array.from(cityBoxes).map(b => b.value);
       const checkedCities = Array.from(cityBoxes).filter(b => b.checked).map(b => b.value);
@@ -6188,6 +6317,12 @@ def render_page(results, split_deferred=False, context_out=None):
             catBoxes.forEach(b => {{ b.checked = vals.has(b.value); }});
           }}
         }}
+        {{
+          const gVal = params.get('genre');
+          const gVals = gVal ? new Set(gVal.split(',')) : null;
+          genreBoxes.forEach(b => {{ b.checked = !gVals || gVals.has(b.value); }});
+          syncSubgenreUI();
+        }}
 
         if (params.has('city')) {{
           const vals = new Set(params.get('city').split(','));
@@ -6258,6 +6393,9 @@ def render_page(results, split_deferred=False, context_out=None):
 
     function apply() {{
       const cats = new Set(Array.from(catBoxes).filter(b => b.checked).map(b => b.value));
+      const genres = new Set(Array.from(genreBoxes).filter(b => b.checked).map(b => b.value));
+      const allGenresOn = genres.size === genreBoxes.length;
+      const genreOkFor = (bucket, genre) => allGenresOn || bucket !== MUSIC_BUCKET || (!!genre && genres.has(genre));
       const venues = new Set(Array.from(venueBoxes).filter(b => b.checked).map(b => b.value));
       const recurs = new Set(Array.from(recurBoxes).filter(b => b.checked).map(b => b.value));
       const cities = new Set(Array.from(cityBoxes).filter(b => b.checked).map(b => b.value));
@@ -6378,6 +6516,7 @@ def render_page(results, split_deferred=False, context_out=None):
                 const tm = li.dataset.timeMins;
                 m = li._meta = {{
                   bucket: li.dataset.bucket,
+                  genre: li.dataset.genre || '',
                   venue: li.dataset.venue,
                   presenter: li.dataset.presenter || '',
                   recur: li.dataset.recur,
@@ -6423,7 +6562,8 @@ def render_page(results, split_deferred=False, context_out=None):
                 hiddenPastCount++;
               }}
 
-              const isVisible = venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && picksOk && todOk && timePastOk;
+              const genreOk = genreOkFor(m.bucket, m.genre);
+              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && picksOk && todOk && timePastOk;
               if (m.hidden === isVisible) {{ m.hidden = !isVisible; li.classList.toggle('hidden', !isVisible); }}
               if (isVisible) {{
                 bucketVisible++;
@@ -6582,7 +6722,8 @@ def render_page(results, split_deferred=False, context_out=None):
             const freeOk = !freeOnly || li.dataset.free === 'true';
             const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
             const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
-            const isVisible = catOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk;
+            const genreOk = genreOkFor(li.dataset.bucket, li.dataset.genre);
+            const isVisible = catOk && genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk;
             li.classList.toggle('hidden', !isVisible);
           }});
         }}
@@ -6757,7 +6898,8 @@ def render_page(results, split_deferred=False, context_out=None):
       calMonth = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
       apply();
     }});
-    document.getElementById('week-all').addEventListener('click', () => {{
+    const weekAllBtn = document.getElementById('week-all');
+    if (weekAllBtn) weekAllBtn.addEventListener('click', () => {{
       clearRange();
       if (showAll || timeFilter === 'all') {{
         showAll = false;
@@ -6823,13 +6965,48 @@ def render_page(results, split_deferred=False, context_out=None):
     }});
 
     if (freeOnlyChk) freeOnlyChk.addEventListener('change', apply);
-    catBoxes.forEach(b => b.addEventListener('change', apply));
+    catBoxes.forEach(b => b.addEventListener('change', () => {{
+      if (b.value === MUSIC_BUCKET) genreBoxes.forEach(g => {{ g.checked = b.checked; }});
+      syncSubgenreUI();
+      apply();
+    }}));
+    genreBoxes.forEach(g => g.addEventListener('change', () => {{
+      const music = Array.from(catBoxes).find(b => b.value === MUSIC_BUCKET);
+      if (music) music.checked = Array.from(genreBoxes).some(x => x.checked);
+      syncSubgenreUI();
+      apply();
+    }}));
+    const setAllGenres = (on) => {{
+      genreBoxes.forEach(g => {{ g.checked = on; }});
+      const music = Array.from(catBoxes).find(b => b.value === MUSIC_BUCKET);
+      if (music) music.checked = on;
+      syncSubgenreUI();
+      apply();
+    }};
+    const genreAllBtn = document.getElementById('genre-all');
+    if (genreAllBtn) genreAllBtn.addEventListener('click', () => setAllGenres(true));
+    const genreNoneBtn = document.getElementById('genre-none');
+    if (genreNoneBtn) genreNoneBtn.addEventListener('click', () => setAllGenres(false));
+    // Clicking a genre pill on a card shows only that genre; clicking it again shows all.
+    document.addEventListener('click', (e) => {{
+      const pill = e.target.closest && e.target.closest('button.genre-pill');
+      if (!pill) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const gid = pill.dataset.genre;
+      const onlyThis = Array.from(genreBoxes).every(g => g.checked === (g.value === gid));
+      genreBoxes.forEach(g => {{ g.checked = onlyThis ? true : (g.value === gid); }});
+      const music = Array.from(catBoxes).find(b => b.value === MUSIC_BUCKET);
+      if (music) music.checked = true;
+      syncSubgenreUI();
+      apply();
+    }});
     venueBoxes.forEach(b => b.addEventListener('change', apply));
     recurBoxes.forEach(b => b.addEventListener('change', apply));
     cityBoxes.forEach(b => b.addEventListener('change', apply));
     searchInput.addEventListener('input', apply);
-    document.getElementById('cat-all').addEventListener('click', () => {{ catBoxes.forEach(b => b.checked = true); apply(); }});
-    document.getElementById('cat-none').addEventListener('click', () => {{ catBoxes.forEach(b => b.checked = false); apply(); }});
+    document.getElementById('cat-all').addEventListener('click', () => {{ catBoxes.forEach(b => b.checked = true); genreBoxes.forEach(g => g.checked = true); syncSubgenreUI(); apply(); }});
+    document.getElementById('cat-none').addEventListener('click', () => {{ catBoxes.forEach(b => b.checked = false); genreBoxes.forEach(g => g.checked = false); syncSubgenreUI(); apply(); }});
     document.getElementById('venue-all').addEventListener('click', () => {{
       venueBoxes.forEach(b => b.checked = true);
       try {{ localStorage.removeItem('nyc_saved_venues'); }} catch (_) {{}}
@@ -6852,6 +7029,8 @@ def render_page(results, split_deferred=False, context_out=None):
       updateTimeUI();
       activeSubarea = 'all';
       catBoxes.forEach(b => b.checked = isDefaultCat(b));
+      genreBoxes.forEach(g => g.checked = true);
+      syncSubgenreUI();
       cityBoxes.forEach(b => b.checked = true);
       recurBoxes.forEach(b => b.checked = true);
       venueBoxes.forEach(b => b.checked = true);
