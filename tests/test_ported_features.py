@@ -678,5 +678,20 @@ class TestHostRotation(unittest.TestCase):
             scrapers.CACHE_DIR = old
 
 
+class TestSidearmHomeGames(unittest.TestCase):
+    def test_home_games_only(self):
+        rows = [{"name": "[W] Fordham University Men's Soccer vs  Saint Louis", "date": _future_local(2, 19).isoformat(), "url": "https://x/a?b=1&amp;c=2", "address": "Bronx, N.Y., Moglia Stadium"},
+                {"name": "Fordham University Volleyball at Rhode Island", "date": _future_local(3, 19).isoformat(), "url": "u", "address": "Kingston, R.I."},
+                {"name": "Fordham University Squash vs Field", "date": _future_local(4, 19).isoformat(), "url": "u", "address": "Bala Cynwyd, Pa."}]
+        with patch("scrapers.scrape_ical", return_value=rows):
+            out = scrapers.scrape_sidearm_home_games("https://fordhamsports.com/calendar.ashx/calendar.ics", UA_CHROME,
+                                                     home_re="Bronx", school="Fordham University", borough="Bronx")
+        self.assertEqual(len(out), 1)
+        self.assertEqual(out[0]["name"], "Fordham University Men's Soccer vs Saint Louis")
+        self.assertEqual(out[0]["venue"], "Fordham University (Moglia Stadium)")
+        self.assertEqual(out[0]["address"], "Moglia Stadium, Bronx, NY")
+        self.assertEqual(out[0]["url"], "https://x/a?b=1&c=2")
+
+
 if __name__ == "__main__":
     unittest.main()
