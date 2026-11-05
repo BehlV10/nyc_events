@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T10:10:25.170920+00:00",
+  "generated_at": "2026-11-05T10:16:37.278490+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -45008,7 +45008,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 1.06,
+      "duration": 1.07,
       "cached": false
     },
     {
@@ -111186,7 +111186,7 @@
       "url": "https://www.nycgovparks.org/events/hiking",
       "events": [],
       "error": "all NYC Parks category fetches failed (3), e.g. hiking: 405 Client Error: Not Allowed for url: https://www.nycgovparks.org/events/hiking",
-      "duration": 2.12,
+      "duration": 2.32,
       "cached": false
     },
     {
@@ -115025,7 +115025,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.19,
       "cached": false
     },
     {
@@ -115288,7 +115288,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.21,
       "cached": false
     },
     {
@@ -116115,7 +116115,7 @@
         }
       ],
       "error": null,
-      "duration": 0.21,
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -117385,7 +117385,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.45,
+      "duration": 0.19,
       "cached": false
     },
     {
@@ -122584,7 +122584,7 @@
         }
       ],
       "error": null,
-      "duration": 0.7,
+      "duration": 0.6,
       "cached": true
     },
     {
@@ -133456,7 +133456,7 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.44,
       "cached": false
     },
     {
@@ -169150,6 +169150,774 @@
       "cached": true
     },
     {
+      "venue": "Village Vanguard",
+      "url": "https://villagevanguard.com/",
+      "events": [
+        {
+          "name": "Ethan Iverson Sextet",
+          "date": "2026-11-06T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Ethan Iverson Sextet",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Ethan Iverson Sextet",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Ethan Iverson Sextet",
+          "date": "2026-11-09T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Vanguard Jazz Orchestra",
+          "date": "2026-11-10T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Every Monday night, sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Tyshawn Sorey",
+          "date": "2026-11-11T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Tyshawn Sorey",
+          "date": "2026-11-12T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Tyshawn Sorey",
+          "date": "2026-11-13T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Tyshawn Sorey",
+          "date": "2026-11-14T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Tyshawn Sorey",
+          "date": "2026-11-15T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Tyshawn Sorey",
+          "date": "2026-11-16T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Vanguard Jazz Orchestra",
+          "date": "2026-11-17T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Every Monday night, sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "John Zorn’s New Masada Quartet",
+          "date": "2026-11-18T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "John Zorn’s New Masada Quartet",
+          "date": "2026-11-19T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "John Zorn’s New Masada Quartet",
+          "date": "2026-11-20T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "John Zorn’s New Masada Quartet",
+          "date": "2026-11-21T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "John Zorn’s New Masada Quartet",
+          "date": "2026-11-22T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "John Zorn’s New Masada Quartet",
+          "date": "2026-11-23T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Vanguard Jazz Orchestra",
+          "date": "2026-11-24T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Every Monday night, sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "JASON MORAN & THE BANDWAGON",
+          "date": "2026-11-25T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "JASON MORAN & THE BANDWAGON",
+          "date": "2026-11-26T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "JASON MORAN & THE BANDWAGON",
+          "date": "2026-11-27T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "JASON MORAN & THE BANDWAGON",
+          "date": "2026-11-28T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "JASON MORAN & THE BANDWAGON",
+          "date": "2026-11-29T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "JASON MORAN & THE BANDWAGON",
+          "date": "2026-11-30T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Vanguard Jazz Orchestra",
+          "date": "2026-12-01T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Every Monday night, sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Vanguard Jazz Orchestra",
+          "date": "2026-12-08T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Every Monday night, sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Christian McBride Quartet featuring Roy McCurdy",
+          "date": "2026-12-09T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Christian McBride Quartet featuring Roy McCurdy",
+          "date": "2026-12-10T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        },
+        {
+          "name": "Christian McBride Quartet featuring Roy McCurdy",
+          "date": "2026-12-11T01:00:00+00:00",
+          "url": "https://villagevanguard.com/",
+          "venue": "Village Vanguard",
+          "address": "178 7th Ave S, New York, NY 10014",
+          "price": null,
+          "description": "Sets at 8 PM and 10 PM.",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 1.15,
+      "cached": false
+    },
+    {
+      "venue": "The Django (Jazz)",
+      "url": "https://www.thedjangonyc.com/events",
+      "events": [
+        {
+          "name": "Pete Malinverni Quartet",
+          "date": "2026-11-06T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/pete-malinverni-22/?selected_date=2026-11-05",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Jason Tiemann Quintet",
+          "date": "2026-11-07T00:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/jason-tiemann-45/?selected_date=2026-11-06",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Jason Marshall Quartet",
+          "date": "2026-11-07T04:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/jason-marshall-24/?selected_date=2026-11-06",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Simona Premazzi Quartet",
+          "date": "2026-11-08T23:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/simona-premazzi-2/?selected_date=2026-11-08",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Conrad Korsch Trio",
+          "date": "2026-11-09T02:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/conrad-korsch-16/?selected_date=2026-11-08",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Brandon Goldberg Trio",
+          "date": "2026-11-10T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/brandon-goldberg-4/?selected_date=2026-11-09",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Jamile",
+          "date": "2026-11-11T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/jamile-22/?selected_date=2026-11-10",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Dennis Hernandez y su Conjunto Amalia",
+          "date": "2026-11-11T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/dennis-hernandez-5/?selected_date=2026-11-10",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Nir Felder Trio",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/nir-felder-5/?selected_date=2026-11-11",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Brent Canter Quartet",
+          "date": "2026-11-12T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/brent-canter-3/?selected_date=2026-11-11",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Mark Whitfield",
+          "date": "2026-11-13T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/mark-whitfield-40/?selected_date=2026-11-12",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Tim Lin Quartet",
+          "date": "2026-11-14T04:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/tim-lin-7/?selected_date=2026-11-13",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Jeff Rupert Quartet",
+          "date": "2026-11-15T00:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/jeff-rupert-7/?selected_date=2026-11-14",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Lee Taylor",
+          "date": "2026-11-15T04:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/lee-taylor-40/?selected_date=2026-11-14",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Marissa Mulder Quartet",
+          "date": "2026-11-15T23:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/marissa-mulder-3/?selected_date=2026-11-15",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Champian Fulton Quartet",
+          "date": "2026-11-16T02:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/champian-fulton-22/?selected_date=2026-11-15",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Jihee Heo Trio",
+          "date": "2026-11-17T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/jihee-heo-trio-9/?selected_date=2026-11-16",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "April Varner Quartet",
+          "date": "2026-11-17T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/april-varner-29/?selected_date=2026-11-16",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Hector Martignon Trio",
+          "date": "2026-11-18T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/hector-martignon-93/?selected_date=2026-11-17",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Duduka Da Fonseca Trio",
+          "date": "2026-11-18T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/duduka-da-fonseca-7/?selected_date=2026-11-17",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Abe Fogle Band",
+          "date": "2026-11-19T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/abe-fogle-7/?selected_date=2026-11-18",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "A.C.E.",
+          "date": "2026-11-19T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/ace-5/?selected_date=2026-11-18",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Joe Farnsworth Quartet",
+          "date": "2026-11-20T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/joe-farnsworth-33/?selected_date=2026-11-19",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Lauren Sevian Quartet",
+          "date": "2026-11-20T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/lauren-sevian-6/?selected_date=2026-11-19",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Manuel Valera Quartet",
+          "date": "2026-11-21T00:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/manuel-valera-30/?selected_date=2026-11-20",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Craig Handy and 2nd Line Smith",
+          "date": "2026-11-21T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/craig-handy-2nd-line-smith-35/?selected_date=2026-11-20",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "T.K. Blue Quartet",
+          "date": "2026-11-22T00:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/tk-blue-32/?selected_date=2026-11-21",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Freddy DeBoe Band",
+          "date": "2026-11-22T04:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/freddy-deboe-band-27/?selected_date=2026-11-21",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Ittetsu Nasuda Trio",
+          "date": "2026-11-22T23:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/ittestsu-nasuda-4/?selected_date=2026-11-22",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Alma Micic Quartet",
+          "date": "2026-11-23T02:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/alma-micic-6/?selected_date=2026-11-22",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Preston Rupert Quartet",
+          "date": "2026-11-24T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/preston-rupert-5/?selected_date=2026-11-23",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Kieran Brown Quartet",
+          "date": "2026-11-24T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/kieran-brown-15/?selected_date=2026-11-23",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Benito Gonzalez Trio",
+          "date": "2026-11-25T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/benito-gonzalez-19/?selected_date=2026-11-24",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "People of Earth",
+          "date": "2026-11-25T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/people-of-earth-28-2/?selected_date=2026-11-24",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Fima Ephron Band",
+          "date": "2026-11-26T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/fima-ephron-18/?selected_date=2026-11-25",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Ben Stivers Organ Quartet",
+          "date": "2026-11-26T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/ben-stivers-quartet-15/?selected_date=2026-11-25",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Tommy Campbell Quartet",
+          "date": "2026-11-28T00:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/tommy-campbell-42/?selected_date=2026-11-27",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Ron Jackson Quartet",
+          "date": "2026-11-28T04:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/ron-jackson-43/?selected_date=2026-11-27",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "David Gibson Quartet",
+          "date": "2026-11-29T00:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/david-gibson-49/?selected_date=2026-11-28",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Nick Di Maria Quintet",
+          "date": "2026-11-29T04:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/nick-di-maria-14/?selected_date=2026-11-28",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Chris Beck Quartet",
+          "date": "2026-11-29T23:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/chris-beck-15/?selected_date=2026-11-29",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Raphael Silverman Quartet",
+          "date": "2026-11-30T02:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/raphael-silverman-9/?selected_date=2026-11-29",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Peter Glynn Trio",
+          "date": "2026-12-01T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/peter-glynn-5/?selected_date=2026-11-30",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Ricardo Grilli Quartet",
+          "date": "2026-12-01T04:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/ricardo-grilli-11/?selected_date=2026-11-30",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Helio Alves Trio",
+          "date": "2026-12-02T00:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/helio-alves-33/?selected_date=2026-12-01",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Sonido Costeño",
+          "date": "2026-12-02T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/sonido-costeno-46/?selected_date=2026-12-01",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Mark Whitfield",
+          "date": "2026-12-04T03:15:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/mark-whitfield-41/?selected_date=2026-12-03",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Jason Tiemann Quintet",
+          "date": "2026-12-05T00:30:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/jason-tiemann-46/?selected_date=2026-12-04",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "The Latona Brothers",
+          "date": "2026-12-05T04:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/latona-brothers-12/?selected_date=2026-12-04",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        },
+        {
+          "name": "Craig Handy and 2nd Line Smith",
+          "date": "2026-12-06T04:00:00+00:00",
+          "url": "https://www.thedjangonyc.com/events/craig-handy-2nd-line-smith-36/?selected_date=2026-12-05",
+          "venue": "The Django",
+          "price": null,
+          "address": "2 6th Ave, New York, NY 10013",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.76,
+      "cached": false
+    },
+    {
       "venue": "Industry City",
       "url": "https://industrycity.com/events/",
       "events": [
@@ -170325,8 +171093,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 3.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/grove-34/ (serving stale cache)",
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -171213,8 +171981,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.66,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/long-island-city/ (serving stale cache)",
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -171438,8 +172206,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 2.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -171852,8 +172620,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 3.47,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sunnyside-queens/ (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -173226,7 +173994,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.05,
       "cached": false
     },
     {
@@ -173436,7 +174204,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.11,
       "cached": false
     },
     {
@@ -173444,7 +174212,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.37,
+      "duration": 0.08,
       "cached": false
     },
     {
@@ -174575,7 +175343,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.5,
+      "duration": 0.05,
       "cached": false
     },
     {
@@ -176093,7 +176861,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.49,
+      "duration": 0.05,
       "cached": false
     },
     {
@@ -176977,7 +177745,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.62,
+      "duration": 0.14,
       "cached": false
     },
     {
@@ -177882,7 +178650,7 @@
           "lng": -73.9881633,
           "price": null,
           "description": "A panel conversation hosted with PEN America, featuring Cat Fitzpatrick, Jamilah Lemieux, and Joseph Osmundson!",
-          "category": "books"
+          "category": "family"
         },
         {
           "name": "The City Reading Series",
@@ -177930,8 +178698,8 @@
         }
       ],
       "error": null,
-      "duration": 0.51,
-      "cached": true
+      "duration": 0.99,
+      "cached": false
     },
     {
       "venue": "Housing Works Bookstore Cafe",
@@ -178150,8 +178918,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 3.23,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -178387,8 +179155,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 1.86,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.28,
       "cached": true
     },
     {
@@ -178735,8 +179503,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.47,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nypl/ (serving stale cache)",
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -178936,8 +179704,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.1,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-public-library/ (serving stale cache)",
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -183011,8 +183779,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 1.82,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.27,
       "cached": true
     },
     {
@@ -185797,8 +186565,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 2.77,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.28,
       "cached": true
     },
     {
@@ -185897,7 +186665,7 @@
         }
       ],
       "error": null,
-      "duration": 0.74,
+      "duration": 0.35,
       "cached": false
     },
     {
@@ -186202,8 +186970,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 1.76,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.28,
       "cached": true
     },
     {
@@ -231809,7 +232577,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.37,
+      "duration": 0.55,
       "cached": false
     },
     {
@@ -231817,7 +232585,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.63,
+      "duration": 0.68,
       "cached": false
     },
     {
@@ -235125,7 +235893,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 0.56,
+      "duration": 0.43,
       "cached": false
     },
     {
@@ -244824,7 +245592,7 @@
       "url": "https://www.meetup.com/tabletop-tuesday/events/",
       "events": [],
       "error": null,
-      "duration": 0.23,
+      "duration": 0.28,
       "cached": false
     },
     {
@@ -248347,7 +249115,7 @@
       "url": "https://www.meetup.com/Brooklyn-Table-Top-Games-Meetup/events/",
       "events": [],
       "error": null,
-      "duration": 0.25,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -248355,7 +249123,7 @@
       "url": "https://www.meetup.com/astoria-board-game-club/events/",
       "events": [],
       "error": null,
-      "duration": 0.21,
+      "duration": 0.24,
       "cached": false
     },
     {
@@ -306763,7 +307531,7 @@
       ],
       "error": null,
       "duration": 5.57,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Photography Walks",
@@ -307721,7 +308489,7 @@
       ],
       "error": null,
       "duration": 8.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Crafts",
@@ -308445,7 +309213,7 @@
       ],
       "error": null,
       "duration": 5.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Knitting",
@@ -338106,17 +338874,17 @@
       "venue": "Eventbrite: Run Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/run-club/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/run-club/",
-      "duration": 0.07,
-      "cached": false
+      "error": null,
+      "duration": 0.29,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Running Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/running-club/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/running-club/",
-      "duration": 0.07,
-      "cached": false
+      "error": null,
+      "duration": 0.51,
+      "cached": true
     },
     {
       "venue": "Eventbrite: 5K Races",
@@ -338178,17 +338946,17 @@
       "venue": "Eventbrite: Rock Climbing",
       "url": "https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
-      "duration": 0.13,
-      "cached": false
+      "error": null,
+      "duration": 0.31,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Roller Skating",
       "url": "https://www.eventbrite.com/d/ny--new-york/roller-skating/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/roller-skating/",
-      "duration": 0.06,
-      "cached": false
+      "error": null,
+      "duration": 0.08,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Yoga",
@@ -338266,9 +339034,9 @@
       "venue": "Eventbrite: Raves",
       "url": "https://www.eventbrite.com/d/ny--new-york/rave/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rave/",
-      "duration": 0.15,
-      "cached": false
+      "error": null,
+      "duration": 0.03,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Afrobeats",
@@ -338282,9 +339050,9 @@
       "venue": "Eventbrite: Reggaeton",
       "url": "https://www.eventbrite.com/d/ny--new-york/reggaeton/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/reggaeton/",
-      "duration": 0.15,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Hip-Hop Parties",
@@ -338306,9 +339074,9 @@
       "venue": "Eventbrite: Silent Discos",
       "url": "https://www.eventbrite.com/d/ny--new-york/silent-disco/",
       "events": [],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/silent-disco/",
-      "duration": 0.17,
-      "cached": false
+      "error": null,
+      "duration": 0.26,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Brunch Parties",
@@ -338338,9 +339106,9 @@
       "venue": "Eventbrite: Singer-Songwriters",
       "url": "https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.12,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Karaoke",
@@ -338378,9 +339146,9 @@
       "venue": "Eventbrite: Stand-Up Comedy",
       "url": "https://www.eventbrite.com/d/ny--new-york/stand-up-comedy/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.12,
-      "cached": false
+      "error": null,
+      "duration": 0.23,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Theater",
@@ -338458,25 +339226,25 @@
       "venue": "Eventbrite: Social Mixers",
       "url": "https://www.eventbrite.com/d/ny--new-york/social-mixer/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.12,
-      "cached": false
+      "error": null,
+      "duration": 0.23,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Singles Events",
       "url": "https://www.eventbrite.com/d/ny--new-york/singles/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.12,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Speed Dating",
       "url": "https://www.eventbrite.com/d/ny--new-york/speed-dating/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.12,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Wine Tastings",
@@ -354838,9 +355606,9 @@
     }
   ],
   "weather": {
-    "temp": 63,
-    "icon": "🌤️",
-    "label": "Mainly clear"
+    "temp": 62,
+    "icon": "☀️",
+    "label": "Clear"
   },
   "luckyseat": [
     {
