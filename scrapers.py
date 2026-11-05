@@ -3276,13 +3276,23 @@ def scrape_nyc_parks_categories(url, ua, max_pages=4):
     horizon = now + timedelta(days=HORIZON_DAYS)
     failures = []
     for slug, default_cat in NYC_PARKS_CATEGORIES.items():
+        if len(failures) >= 3 and not events:
+            break
         for page in range(1, max_pages + 1):
             page_url = f"https://www.nycgovparks.org/events/{slug}" + (f"/p{page}" if page > 1 else "")
             try:
-                soup = fetch_soup(page_url, ua)
+                status, text = fetch_text(page_url, headers={"User-Agent": ua})
+                if status == 202 or not text.strip():
+                    # nycgovparks' WAF answers rapid crawls with an empty 202, not an error
+                    raise RuntimeError(f"throttled (HTTP {status}, {len(text)} bytes)")
+                soup = BeautifulSoup(text, "html.parser")
             except Exception as exc:
                 failures.append(f"{slug}: {exc}")
+                if len(failures) >= 3 and not events:
+                    break  # stop hammering a throttled host; raise below
                 break
+            finally:
+                time.sleep(0.6)
             rows = soup.select('div[itemtype="http://schema.org/Event"]')
             if not rows:
                 break
@@ -7295,6 +7305,11 @@ _ALL_VENUES = [
     {"name": "The Secret Theatre (LIC)", "url": "https://www.secrettheatre.com/shows-events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "theater"},
     {"name": "Kupferberg Center for the Arts", "url": "https://www.kupferbergcenter.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/event/", "venue": "Kupferberg Center for the Arts", "address": "65-30 Kissena Blvd, Flushing, NY 11367"}},
     {"name": "Theatre for a New Audience", "url": "https://www.tfana.org/current-season", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"link_re": "^/events/", "venue": "Polonsky Shakespeare Center (TFANA)", "address": "262 Ashland Pl, Brooklyn, NY 11217"}},
+    {"name": "Brooklyn Bird Club Trips", "url": "https://brooklynbirdclub.org/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
+    {"name": "Linnaean Society Bird Walks", "url": "https://linnaeannewyork.org/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
+    {"name": "NYCRUNS Races", "url": "https://nycruns.com/races", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "sports", "kwargs": {"link_re": "^/race/"}},
+    {"name": "Transportation Alternatives (Rides & Walks)", "url": "https://transalt.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "^/events/[^/]+$"}},
+    {"name": "Volo Sports NYC (Pickup Pickleball, Basketball, Volleyball)", "url": "https://www.volosports.com/new-york", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "sports", "kwargs": {"link_re": "^/d/"}},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
