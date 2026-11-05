@@ -5618,6 +5618,28 @@ def _dedupe_future(events, grace_hours=3):
     return out
 
 
+def scrape_jsonld_paged(url, ua, pages=4, param="page"):
+    """JSON-LD listing paged with ?page=N (AllEvents category pages); stops at the first page
+    that adds nothing new."""
+    events, seen = [], set()
+    sep = "&" if "?" in url else "?"
+    for n in range(1, pages + 1):
+        target = url if n == 1 else f"{url}{sep}{param}={n}"
+        try:
+            batch = scrape_jsonld(target, ua)
+        except Exception:
+            if n == 1:
+                raise
+            break
+        fresh = [e for e in batch if (e["name"].lower(), e["date"]) not in seen]
+        if not fresh:
+            break
+        for e in fresh:
+            seen.add((e["name"].lower(), e["date"]))
+        events.extend(fresh)
+    return events
+
+
 def scrape_jsonld_months(url, ua, months=2):
     """JSON-LD calendar paged by month at `<url>/YYYY-MM` (New York Comedy Club's /calendar).
 
@@ -7135,11 +7157,37 @@ _ALL_VENUES = [
     {"name": "Brooklyn Children's Museum", "url": "https://www.brooklynkids.org/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "family", "kwargs": {"link_re": "^/(events|programs)/[^/]+/?$", "venue": "Brooklyn Children's Museum", "address": "145 Brooklyn Ave, Brooklyn, NY 11213"}},
     {"name": "Flushing Town Hall (own calendar)", "url": "https://www.flushingtownhall.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/show-details/", "venue": "Flushing Town Hall", "address": "137-35 Northern Blvd, Flushing, NY 11354"}},
     {"name": "Snug Harbor Botanical Garden & Classes", "url": "https://www.snug-harbor.org/botanical-garden/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "^/(event|class)/", "venue": "Snug Harbor Cultural Center & Botanical Garden", "address": "1000 Richmond Terrace, Staten Island, NY 10301"}},
-    {"name": "Center for Brooklyn History", "url": "https://www.bklynlibrary.org/cbh", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "books", "kwargs": {"venue": "Center for Brooklyn History", "address": "128 Pierrepont St, Brooklyn, NY 11201"}},
     {"name": "Pregones/PRTT", "url": "https://pregonesprtt.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"venue": "Pregones Theater", "address": "575 Walton Ave, Bronx, NY 10451"}},
     {"name": "Lehman Center for the Performing Arts (own calendar)", "url": "https://www.lehmancenter.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/events/[^/]+$", "venue": "Lehman Center for the Performing Arts", "address": "250 Bedford Park Blvd W, Bronx, NY 10468"}},
     {"name": "New York Botanical Garden", "url": "https://www.nybg.org/whats-on/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "^/event/", "venue": "New York Botanical Garden", "address": "2900 Southern Blvd, Bronx, NY 10458"}},
     {"name": "Bartow-Pell Mansion Museum", "url": "https://www.bartowpellmansionmuseum.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/events/[^/]+/?$", "venue": "Bartow-Pell Mansion Museum", "address": "895 Shore Rd, Bronx, NY 10464"}},
+    {"name": "AllEvents: Music", "url": "https://allevents.in/new%20york/music", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "music"},
+    {"name": "AllEvents: Comedy", "url": "https://allevents.in/new%20york/comedy", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "comedy"},
+    {"name": "AllEvents: Parties", "url": "https://allevents.in/new%20york/parties", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "clubbing"},
+    {"name": "AllEvents: Kids", "url": "https://allevents.in/new%20york/kids", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "family"},
+    {"name": "AllEvents: Family", "url": "https://allevents.in/new%20york/family", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "family"},
+    {"name": "AllEvents: Sports", "url": "https://allevents.in/new%20york/sports", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "sports"},
+    {"name": "AllEvents: Fitness", "url": "https://allevents.in/new%20york/fitness", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "sports"},
+    {"name": "AllEvents: Workshops", "url": "https://allevents.in/new%20york/workshops", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "AllEvents: Dance", "url": "https://allevents.in/new%20york/dance", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "dance"},
+    {"name": "AllEvents: Art", "url": "https://allevents.in/new%20york/art", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "art"},
+    {"name": "AllEvents: Theatre", "url": "https://allevents.in/new%20york/theatre", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "theater"},
+    {"name": "AllEvents: Food & Drinks", "url": "https://allevents.in/new%20york/food-drinks", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "food"},
+    {"name": "AllEvents: Festivals", "url": "https://allevents.in/new%20york/festivals", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "AllEvents: Health & Wellness", "url": "https://allevents.in/new%20york/health-wellness", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "AllEvents: Yoga", "url": "https://allevents.in/new%20york/yoga", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "sports"},
+    {"name": "AllEvents: Dating", "url": "https://allevents.in/new%20york/dating", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "AllEvents: Lgbt", "url": "https://allevents.in/new%20york/lgbt", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "AllEvents: Free", "url": "https://allevents.in/new%20york/free", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "AllEvents: Performances", "url": "https://allevents.in/new%20york/performances", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "theater"},
+    {"name": "AllEvents: Exhibitions", "url": "https://allevents.in/new%20york/exhibitions", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "art"},
+    {"name": "AllEvents: Meetups", "url": "https://allevents.in/new%20york/meetups", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "AllEvents: Community", "url": "https://allevents.in/new%20york/community", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "AllEvents: Spirituality", "url": "https://allevents.in/new%20york/spirituality", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "AllEvents: Books", "url": "https://allevents.in/new%20york/books", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "books"},
+    {"name": "AllEvents: Film", "url": "https://allevents.in/new%20york/film", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "film"},
+    {"name": "AllEvents: Gaming", "url": "https://allevents.in/new%20york/gaming", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "gaming"},
+    {"name": "AllEvents: Classes", "url": "https://allevents.in/new%20york/classes", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
