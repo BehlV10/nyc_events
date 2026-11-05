@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T07:44:34.576002+00:00",
+  "generated_at": "2026-11-05T07:47:33.567660+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -57531,7 +57531,7 @@
     },
     {
       "venue": "Prospect Park Alliance",
-      "url": "https://www.prospectpark.org/events/",
+      "url": "https://www.prospectpark.org/wp-json/tribe/events/v1/events?per_page=50",
       "events": [
         {
           "name": "Sunday Greenmarket at Bartel-Pritchard Square",
@@ -77640,7 +77640,7 @@
       ],
       "error": null,
       "duration": 0.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Trans-Pecos",
@@ -77834,7 +77834,7 @@
       ],
       "error": null,
       "duration": 0.73,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Starr Bar (own calendar)",
@@ -77963,7 +77963,7 @@
       ],
       "error": null,
       "duration": 0.43,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bar Lunàtico",
@@ -78162,7 +78162,7 @@
       ],
       "error": null,
       "duration": 0.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Roulette (own calendar)",
@@ -78252,7 +78252,7 @@
       ],
       "error": null,
       "duration": 1.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Issue Project Room",
@@ -78288,7 +78288,7 @@
       ],
       "error": null,
       "duration": 0.71,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "amNY Community Calendar",
@@ -78489,7 +78489,7 @@
       ],
       "error": null,
       "duration": 0.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Paper Community Calendar",
@@ -78690,7 +78690,7 @@
       ],
       "error": null,
       "duration": 0.74,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bronx Times Community Calendar",
@@ -78891,7 +78891,7 @@
       ],
       "error": null,
       "duration": 0.74,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "QNS Queens Community Calendar",
@@ -79092,7 +79092,7 @@
       ],
       "error": null,
       "duration": 0.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Fever NYC (Candlelight, Immersive & Experiences)",
@@ -80141,7 +80141,7 @@
       ],
       "error": null,
       "duration": 0.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Theatre Guide",
@@ -80237,7 +80237,7 @@
       ],
       "error": null,
       "duration": 1.67,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "AllEvents NYC",
@@ -80807,7 +80807,7 @@
       ],
       "error": null,
       "duration": 3.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "AllEvents NYC (All)",
@@ -81234,6 +81234,1304 @@
       ],
       "error": null,
       "duration": 1.0,
+      "cached": true
+    },
+    {
+      "venue": "Jacques Marchais Museum of Tibetan Art",
+      "url": "https://www.tibetanmuseum.org/calendar",
+      "events": [
+        {
+          "name": "Beginner Tai Chi with Kristen Dolan Murphy",
+          "date": "2026-11-07T14:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/beginner-tai-chi-with-kristen-dolan-murphy-2026-11-07-09-00-1",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Our Saturday Tai Ji class is perfect for beginners, those looking to experiment with the form, or anyone looking for a gentle, balance building practice. // $25, members $20",
+          "category": "art"
+        },
+        {
+          "name": "Tai Chi with Bob Murphy :: All Levels",
+          "date": "2026-11-07T20:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/tai-chi-with-bob-murphy-all-levels-2026-11-07-15-00-2",
+          "venue": "Jacques Marchais Museum of Tibetan Art ",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Tai Chi classes are taught by Bob Murphy every Saturday at 3:00 PM. $25 // $20 members",
+          "category": "art"
+        },
+        {
+          "name": "Yoga Nidra & Restorative Yoga Workshop",
+          "date": "2026-11-08T15:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/yoga-nidra-restorative-yoga-workshop",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "$40 // $35 members",
+          "category": "sports"
+        },
+        {
+          "name": "Beginner Tai Chi with Kristen Dolan Murphy",
+          "date": "2026-11-14T14:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/beginner-tai-chi-with-kristen-dolan-murphy-2026-11-14-09-00-1",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Our Saturday Tai Ji class is perfect for beginners, those looking to experiment with the form, or anyone looking for a gentle, balance building practice. // $25, members $20",
+          "category": "art"
+        },
+        {
+          "name": "Tai Chi with Bob Murphy :: All Levels",
+          "date": "2026-11-14T20:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/tai-chi-with-bob-murphy-all-levels-2026-11-14-15-00-1",
+          "venue": "Jacques Marchais Museum of Tibetan Art ",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Tai Chi classes are taught by Bob Murphy every Saturday at 3:00 PM. $25 // $20 members",
+          "category": "art"
+        },
+        {
+          "name": "The Unheld Note: Listening Before Meaning — Devotional Song with Umer Piracha",
+          "date": "2026-11-14T22:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/the-unheld-note-listening-before-meaning-devotional-song-with-umer-piracha",
+          "venue": "The Jacques Marchais Museum of Tibetan A",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.5763172,
+          "lng": -74.13834480000001,
+          "description": "Sufi vocalist Umer Piracha leads an hour of devotional song, improvisation, and silence, where Qawwali and the Buddhist teaching of the Four Maras meet through the act of listening. $18 — $13 members",
+          "category": "art"
+        },
+        {
+          "name": "(11:00 AM) Sound Healing Meditation with Leslee Penny",
+          "date": "2026-11-15T16:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/11-00-am-sound-healing-meditation-with-leslee-penny-2026-11-15-11-00",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "In this meditation practice Tibetan singing bowls, gongs and bells guide the listener through the practice which incorporates tactile physical vibrations and frequencies in the healing process. // $25, $20 members",
+          "category": "art"
+        },
+        {
+          "name": "(12: 45 PM) Sound Healing Meditation with Leslee Penny",
+          "date": "2026-11-15T17:45:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/12-45-pm-sound-healing-meditation-with-leslee-penny-2026-11-15-12-45",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "In this meditation practice Tibetan singing bowls, gongs and bells guide the listener through the practice which incorporates tactile physical vibrations and frequencies in the healing process. // $25, $20 members",
+          "category": "art"
+        },
+        {
+          "name": "Beginner Tai Chi with Kristen Dolan Murphy",
+          "date": "2026-11-19T00:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/beginner-tai-chi-with-kristen-dolan-murphy-2026-11-18-19-00",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Our Saturday Tai Ji class is perfect for beginners, those looking to experiment with the form, or anyone looking for a gentle, balance building practice. // $25, members $20",
+          "category": "art"
+        },
+        {
+          "name": "Beginner Tai Chi with Kristen Dolan Murphy",
+          "date": "2026-11-21T14:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/beginner-tai-chi-with-kristen-dolan-murphy-2026-11-21-09-00-1",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Our Saturday Tai Ji class is perfect for beginners, those looking to experiment with the form, or anyone looking for a gentle, balance building practice. // $25, members $20",
+          "category": "art"
+        },
+        {
+          "name": "Tai Chi with Bob Murphy :: All Levels",
+          "date": "2026-11-21T20:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/tai-chi-with-bob-murphy-all-levels-2026-11-21-15-00-1",
+          "venue": "Jacques Marchais Museum of Tibetan Art ",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Tai Chi classes are taught by Bob Murphy every Saturday at 3:00 PM. $25 // $20 members",
+          "category": "art"
+        },
+        {
+          "name": "Kundalini Yoga & Meditation Practice — Radiant Gratitude",
+          "date": "2026-11-22T15:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/kundalini-yoga-meditation-practice-radiant-gratitude",
+          "venue": "The Jacques Marchais Museum of Tibetan A",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.5763172,
+          "lng": -74.13834480000001,
+          "description": "Join Jeanine Caruvana for another session — The Abundant Current is a 75-minute Kundalini workshop that closes in breath, mudra, and mantra with the Attitude of Gratitude Meditation. // $25, $20 members",
+          "category": "sports"
+        },
+        {
+          "name": "The Sacred Sea Snail Shell — Instrument Lecture with Dr. Jeff S. Dailey",
+          "date": "2026-11-22T19:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/the-sacred-sea-snail-shell-instrument-lecture-with-dr-jeff-s-dailey",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.5763172,
+          "lng": -74.13834480000001,
+          "description": "This lecture with Dr. Jeff Dailey will discuss the use of the sacred shank in Tibetan art and how it came to be used in Buddhist ritual. // Included with museum admission.",
+          "category": "community"
+        },
+        {
+          "name": "Beginner Tai Chi with Kristen Dolan Murphy",
+          "date": "2026-11-26T00:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/beginner-tai-chi-with-kristen-dolan-murphy-2026-11-25-19-00",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Our Saturday Tai Ji class is perfect for beginners, those looking to experiment with the form, or anyone looking for a gentle, balance building practice. // $25, members $20",
+          "category": "art"
+        },
+        {
+          "name": "Beginner Tai Chi with Kristen Dolan Murphy",
+          "date": "2026-11-28T14:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/beginner-tai-chi-with-kristen-dolan-murphy-2026-11-28-09-00-1",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Our Saturday Tai Ji class is perfect for beginners, those looking to experiment with the form, or anyone looking for a gentle, balance building practice. // $25, members $20",
+          "category": "art"
+        },
+        {
+          "name": "Tai Chi with Bob Murphy :: All Levels",
+          "date": "2026-11-28T20:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/tai-chi-with-bob-murphy-all-levels-2026-11-28-15-00-1",
+          "venue": "Jacques Marchais Museum of Tibetan Art ",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Tai Chi classes are taught by Bob Murphy every Saturday at 3:00 PM. $25 // $20 members",
+          "category": "art"
+        },
+        {
+          "name": "(11:00 AM) Sound Healing Meditation with Leslee Penny",
+          "date": "2026-11-29T16:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/11-00-am-sound-healing-meditation-with-leslee-penny-2026-11-29-11-00",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "In this meditation practice Tibetan singing bowls, gongs and bells guide the listener through the practice which incorporates tactile physical vibrations and frequencies in the healing process. // $25, $20 members",
+          "category": "art"
+        },
+        {
+          "name": "(12: 45 PM) Sound Healing Meditation with Leslee Penny",
+          "date": "2026-11-29T17:45:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/12-45-pm-sound-healing-meditation-with-leslee-penny-2026-11-29-12-45",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "In this meditation practice Tibetan singing bowls, gongs and bells guide the listener through the practice which incorporates tactile physical vibrations and frequencies in the healing process. // $25, $20 members",
+          "category": "art"
+        },
+        {
+          "name": "Beginner Tai Chi with Kristen Dolan Murphy",
+          "date": "2026-12-03T00:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/beginner-tai-chi-with-kristen-dolan-murphy-2026-12-02-19-00",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Our Saturday Tai Ji class is perfect for beginners, those looking to experiment with the form, or anyone looking for a gentle, balance building practice. // $25, members $20",
+          "category": "art"
+        },
+        {
+          "name": "Beginner Tai Chi with Kristen Dolan Murphy",
+          "date": "2026-12-05T14:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/beginner-tai-chi-with-kristen-dolan-murphy-2026-12-05-09-00-1",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Our Saturday Tai Ji class is perfect for beginners, those looking to experiment with the form, or anyone looking for a gentle, balance building practice. // $25, members $20",
+          "category": "art"
+        },
+        {
+          "name": "Tai Chi with Bob Murphy :: All Levels",
+          "date": "2026-12-05T20:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/tai-chi-with-bob-murphy-all-levels-2026-12-05-15-00-1",
+          "venue": "Jacques Marchais Museum of Tibetan Art ",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Tai Chi classes are taught by Bob Murphy every Saturday at 3:00 PM. $25 // $20 members",
+          "category": "art"
+        },
+        {
+          "name": "Yoga Nidra & Restorative Yoga Workshop - Dec26",
+          "date": "2026-12-06T15:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/yoga-nidra-restorative-yoga-workshop-dec26",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "$40 // $35 members",
+          "category": "sports"
+        },
+        {
+          "name": "Beginner Tai Chi with Kristen Dolan Murphy",
+          "date": "2026-12-10T00:00:00+00:00",
+          "url": "https://www.tibetanmuseum.org/event-details/beginner-tai-chi-with-kristen-dolan-murphy-2026-12-09-19-00",
+          "venue": "Jacques Marchais Museum of Tibetan Art",
+          "price": null,
+          "address": "338 Lighthouse Ave, Staten Island, NY 10306",
+          "lat": 40.576316,
+          "lng": -74.13814599999999,
+          "description": "Our Saturday Tai Ji class is perfect for beginners, those looking to experiment with the form, or anyone looking for a gentle, balance building practice. // $25, members $20",
+          "category": "art"
+        }
+      ],
+      "error": null,
+      "duration": 0.39,
+      "cached": false
+    },
+    {
+      "venue": "City Island Chamber Events",
+      "url": "https://cityislandchamber.org/events/",
+      "events": [
+        {
+          "name": "Yoga | City Island Gallery",
+          "date": "2026-11-05T10:30:00+00:00",
+          "url": "https://cityislandchamber.org/events/yoga-city-island-gallery-3/",
+          "venue": "City Island Gallery",
+          "price": "Free",
+          "address": "278 City Island Ave, The Bronx, NY 10464",
+          "description": "Call / Text Tinuola | 347-386-0549 City Island Gallery | 278 City Island Avenue, Bronx, NY 10464",
+          "category": "art"
+        },
+        {
+          "name": "Trivia Night | The Snug",
+          "date": "2026-11-05T19:00:00+00:00",
+          "url": "https://cityislandchamber.org/events/trivia-night-the-snug-15/",
+          "venue": "The Snug",
+          "price": "Free",
+          "address": "302 City Island Avenue, City Island, NY",
+          "description": "Join us every Thursday for Trivia Night fun! The Snug | 302 City Island Avenue, Bronx, NY",
+          "category": "gaming"
+        },
+        {
+          "name": "Yoga | City Island Gallery",
+          "date": "2026-11-10T10:30:00+00:00",
+          "url": "https://cityislandchamber.org/events/yoga-city-island-gallery-2/",
+          "venue": "City Island Gallery",
+          "price": "Free",
+          "address": "278 City Island Ave, The Bronx, NY 10464",
+          "description": "Call / Text Tinuola | 347-386-0549 City Island Gallery | 278 City Island Avenue, Bronx, NY 10464",
+          "category": "art"
+        },
+        {
+          "name": "Italian Wine Dinner | ATIK Restaurant",
+          "date": "2026-11-10T18:00:00+00:00",
+          "url": "https://cityislandchamber.org/events/italian-wine-dinner-atik-restaurant/",
+          "venue": "ATIK Restaurant",
+          "price": "Free",
+          "address": "555 City Island Avenue, Bronx, NY",
+          "description": "ATIK Restaurant | 555 City Island Avenue, Bronx, NY 10464 Tickets: https://www.sevenrooms.com/events/atik — select the event by name.",
+          "category": "food"
+        },
+        {
+          "name": "Yoga | City Island Gallery",
+          "date": "2026-11-11T18:30:00+00:00",
+          "url": "https://cityislandchamber.org/events/yoga-city-island-gallery/",
+          "venue": "City Island Gallery",
+          "price": "Free",
+          "address": "278 City Island Ave, The Bronx, NY 10464",
+          "description": "Call / Text Tinuola | 347-386-0549 City Island Gallery | 278 City Island Avenue, Bronx, NY 10464",
+          "category": "art"
+        },
+        {
+          "name": "Yoga | City Island Gallery",
+          "date": "2026-11-12T10:30:00+00:00",
+          "url": "https://cityislandchamber.org/events/yoga-city-island-gallery-3/",
+          "venue": "City Island Gallery",
+          "price": "Free",
+          "address": "278 City Island Ave, The Bronx, NY 10464",
+          "description": "Call / Text Tinuola | 347-386-0549 City Island Gallery | 278 City Island Avenue, Bronx, NY 10464",
+          "category": "art"
+        },
+        {
+          "name": "Trivia Night | The Snug",
+          "date": "2026-11-12T19:00:00+00:00",
+          "url": "https://cityislandchamber.org/events/trivia-night-the-snug-15/",
+          "venue": "The Snug",
+          "price": "Free",
+          "address": "302 City Island Avenue, City Island, NY",
+          "description": "Join us every Thursday for Trivia Night fun! The Snug | 302 City Island Avenue, Bronx, NY",
+          "category": "gaming"
+        },
+        {
+          "name": "Annual Dinner Dance | City Island Chamber of Commerce",
+          "date": "2026-11-14T18:00:00+00:00",
+          "url": "https://cityislandchamber.org/events/annual-dinner-dance-city-island-chamber-of-commerce-2/",
+          "venue": "Harlem Yacht Club",
+          "price": "Free",
+          "address": "417 Hunter Ave. City Island New York",
+          "description": "City Island Chamber of Commerce 116th Anniversary Dinner Dance Saturday, November 14 @ 6-10 PM Harlem Yacht Club 417 Hunter Avenue, City Island, NY Elegant Dinner With Seafood And Carving Stations | Live Music $95 per person 718-885-9100 contact@city",
+          "category": "community"
+        },
+        {
+          "name": "Yoga | City Island Gallery",
+          "date": "2026-11-17T10:30:00+00:00",
+          "url": "https://cityislandchamber.org/events/yoga-city-island-gallery-2/",
+          "venue": "City Island Gallery",
+          "price": "Free",
+          "address": "278 City Island Ave, The Bronx, NY 10464",
+          "description": "Call / Text Tinuola | 347-386-0549 City Island Gallery | 278 City Island Avenue, Bronx, NY 10464",
+          "category": "art"
+        },
+        {
+          "name": "Yoga | City Island Gallery",
+          "date": "2026-11-18T18:30:00+00:00",
+          "url": "https://cityislandchamber.org/events/yoga-city-island-gallery/",
+          "venue": "City Island Gallery",
+          "price": "Free",
+          "address": "278 City Island Ave, The Bronx, NY 10464",
+          "description": "Call / Text Tinuola | 347-386-0549 City Island Gallery | 278 City Island Avenue, Bronx, NY 10464",
+          "category": "art"
+        },
+        {
+          "name": "Yoga | City Island Gallery",
+          "date": "2026-11-19T10:30:00+00:00",
+          "url": "https://cityislandchamber.org/events/yoga-city-island-gallery-3/",
+          "venue": "City Island Gallery",
+          "price": "Free",
+          "address": "278 City Island Ave, The Bronx, NY 10464",
+          "description": "Call / Text Tinuola | 347-386-0549 City Island Gallery | 278 City Island Avenue, Bronx, NY 10464",
+          "category": "art"
+        },
+        {
+          "name": "Trivia Night | The Snug",
+          "date": "2026-11-19T19:00:00+00:00",
+          "url": "https://cityislandchamber.org/events/trivia-night-the-snug-15/",
+          "venue": "The Snug",
+          "price": "Free",
+          "address": "302 City Island Avenue, City Island, NY",
+          "description": "Join us every Thursday for Trivia Night fun! The Snug | 302 City Island Avenue, Bronx, NY",
+          "category": "gaming"
+        }
+      ],
+      "error": null,
+      "duration": 0.97,
+      "cached": false
+    },
+    {
+      "venue": "Uptown Grand Central (East Harlem)",
+      "url": "https://www.uptowngrandcentral.org/events",
+      "events": [
+        {
+          "name": "UPTOWN FARMSTAND",
+          "date": "2026-11-05T21:00:00.695000+00:00",
+          "url": "https://www.uptowngrandcentral.org/events/w4hzcmkbjj5hy7d-betzk-kzw69-5t958-wzkwr-zblpa-g6s46-k92ps-cyrfm-mb8zj-blwt7-9p2kl-hbp7d-8dcwp-9d2r9",
+          "venue": "Uptown Grand Central (East Harlem)",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "UPTOWN FARMSTAND",
+          "date": "2026-11-11T17:00:00.532000+00:00",
+          "url": "https://www.uptowngrandcentral.org/events/w4hzcmkbjj5hy7d-betzk-kzw69-5t958-wzkwr-zblpa-g6s46-k92ps-cyrfm-mb8zj-blwt7-9p2kl-hbp7d-8dcwp-6ajsz-g6d67",
+          "venue": "Uptown Grand Central (East Harlem)",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "UPTOWN FARMSTAND",
+          "date": "2026-11-12T21:00:00.726000+00:00",
+          "url": "https://www.uptowngrandcentral.org/events/w4hzcmkbjj5hy7d-betzk-kzw69-5t958-wzkwr-zblpa-g6s46-k92ps-cyrfm-mb8zj-blwt7-9p2kl-hbp7d-8dcwp-9d2r9-y2tbj",
+          "venue": "Uptown Grand Central (East Harlem)",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "UPTOWN FARMSTAND",
+          "date": "2026-11-18T17:00:00.995000+00:00",
+          "url": "https://www.uptowngrandcentral.org/events/w4hzcmkbjj5hy7d-betzk-kzw69-5t958-wzkwr-zblpa-g6s46-k92ps-cyrfm-mb8zj-blwt7-9p2kl-hbp7d-8dcwp-6ajsz-g6d67-5r9yd",
+          "venue": "Uptown Grand Central (East Harlem)",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "UPTOWN FARMSTAND",
+          "date": "2026-11-19T21:00:00.933000+00:00",
+          "url": "https://www.uptowngrandcentral.org/events/w4hzcmkbjj5hy7d-betzk-kzw69-5t958-wzkwr-zblpa-g6s46-k92ps-cyrfm-mb8zj-blwt7-9p2kl-hbp7d-8dcwp-9d2r9-2jklh",
+          "venue": "Uptown Grand Central (East Harlem)",
+          "price": "Free / No Cover",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.66,
+      "cached": false
+    },
+    {
+      "venue": "Lewis Latimer House Museum",
+      "url": "https://latimernow.org/events",
+      "events": [
+        {
+          "name": "The Inventor’s Glasses: 3D Anaglyph Art",
+          "date": "2026-11-12T21:00:00.296000+00:00",
+          "url": "https://latimernow.org/events/inventors-glasses-qpl-langstonhughes",
+          "venue": "Lewis Latimer House Museum",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "S.T.E.A.M Saturday: Sewing History",
+          "date": "2026-11-14T16:00:00.935000+00:00",
+          "url": "https://latimernow.org/events/steam-saturday-sewing-history",
+          "venue": "Lewis Latimer House Museum",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "A Taste of Home: Queens Memoirists",
+          "date": "2026-12-05T19:00:00.935000+00:00",
+          "url": "https://latimernow.org/events/steam-saturday-seasonal-survival-gpcjd",
+          "venue": "Lewis Latimer House Museum",
+          "price": "Free / No Cover",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.67,
+      "cached": false
+    },
+    {
+      "venue": "Weeksville Heritage Center",
+      "url": "https://www.weeksvillesociety.org/events",
+      "events": [
+        {
+          "name": "Sip, Tour and Connect: K-12 Educator Open House",
+          "date": "2026-11-19T00:30:00+00:00",
+          "url": "https://www.weeksvillesociety.org/event/sip-tour-and-connect-k-12-educator-open-house/",
+          "venue": "Weeksville Heritage Center",
+          "price": null,
+          "description": "Weeksville Heritage Center invites K-12 teachers and school administrators to a relaxed evening of wine, light bites, and conversation.",
+          "category": "art"
+        },
+        {
+          "name": "Weeksville Watch Night: True North",
+          "date": "2026-11-13T02:00:00+00:00",
+          "url": "https://www.weeksvillesociety.org/event/weeksville-watch-night-true-north/",
+          "venue": "Weeksville Heritage Center",
+          "price": null,
+          "description": "See Montreal’s role in the global Black liberation movement through never-before-seen archival footage and the elders who lived it. Weeksville Watch Night: TRUE NORTH, Thursday, November 12.",
+          "category": "art"
+        },
+        {
+          "name": "“Before It’s Gone: Archive to Survive” Book Launch and Panel Discussion",
+          "date": "2026-11-07T23:00:00+00:00",
+          "url": "https://www.weeksvillesociety.org/event/before-its-gone-archive-to-survive-book-launch/",
+          "venue": "Weeksville Heritage Center",
+          "price": null,
+          "description": "Join Weeksville Heritage Center in Crown Heights on Nov 7 for a free book launch and panel on Archive to Survive and preserving Black and Brown Brooklyn.",
+          "category": "books"
+        }
+      ],
+      "error": null,
+      "duration": 1.39,
+      "cached": false
+    },
+    {
+      "venue": "Bronx Arts Ensemble",
+      "url": "https://bronxartsensemble.org/",
+      "events": [
+        {
+          "name": "2026 Festival of Lessons and Carols at Fordham University Church",
+          "date": "2026-12-06T20:00:00+00:00",
+          "url": "https://www.bronxartsensemble.org/event/2026-festival-of-lessons-and-carols-at-fordham-university-church/",
+          "venue": "Fordham University Church – Rose Hill Campus",
+          "price": "Free",
+          "address": "441 E. Fordham Road, Bronx, 10458",
+          "lat": 40.861203,
+          "lng": -73.8892181,
+          "description": "Don’t miss this annual tradition of joyous music, dance, and reflection! Join us for an afternoon featuring the Fordham University Choir and Liturgical Choir, directed by Robert A. Minotti; the",
+          "category": "community"
+        },
+        {
+          "name": "2026 Festival of Lessons and Carols at Church of St. Paul the Apostle",
+          "date": "2026-12-06T00:30:00+00:00",
+          "url": "https://www.bronxartsensemble.org/event/2026-festival-of-lessons-and-carols-at-church-of-st-paul-the-apostle/",
+          "venue": "St. Paul the Apostle Church, Fordham University at Lincoln Center",
+          "price": "Free",
+          "address": "405 W. 59th St, New York, NY 10019",
+          "lat": 40.7701368,
+          "lng": -73.9860967,
+          "description": "Don’t miss this annual tradition of joyous music, dance, and reflection! Join us for an evening featuring the Fordham University Choir and Liturgical Choir, directed by Robert A. Minotti; the",
+          "category": "community"
+        },
+        {
+          "name": "Jenn Jade and Friends at Breakfast with Santa",
+          "date": "2026-11-21T16:30:00+00:00",
+          "url": "https://www.bronxartsensemble.org/event/jenn-jade-and-friends-at-breakfast-with-santa/",
+          "venue": "The Mall at Bay Plaza",
+          "price": "Free",
+          "address": "200 Baychester Avenue, Bronx, 10475",
+          "lat": 40.8636318,
+          "lng": -73.8274021,
+          "description": "Celebrate the holidays with music and joy at The Mall at Bay Plaza’s annual Breakfast with Santa, featuring a festive celebration of holiday classics, international rhythms, and a delightful mix of music with Jenn Jade and Friends.",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 12.31,
+      "cached": false
+    },
+    {
+      "venue": "Historic Richmond Town",
+      "url": "https://www.historicrichmondtown.org/events",
+      "events": [
+        {
+          "name": "Talks of the Town: From the Stacks: Loring McMillen’s Map of the American Revolution",
+          "date": "2026-11-14T19:00:00.226000+00:00",
+          "url": "https://www.historicrichmondtown.org/events/2026/11/14/talks-of-the-town-from-the-stacks-loring-mcmillens-map-of-the-american-revolutionnbsp",
+          "venue": "Historic Richmond Town",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Hearth & Harvest Festival*",
+          "date": "2026-11-21T16:00:00.484000+00:00",
+          "url": "https://www.historicrichmondtown.org/events/hearth-amp-harvest",
+          "venue": "Historic Richmond Town",
+          "price": "Free / No Cover",
+          "category": "community"
+        },
+        {
+          "name": "Tree Lighting at Historic Richmond Town",
+          "date": "2026-12-04T22:00:00.666000+00:00",
+          "url": "https://www.historicrichmondtown.org/events/tree-lighting-at-historic-richmond-town",
+          "venue": "Historic Richmond Town",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Christmas in Historic Richmond Town*",
+          "date": "2026-12-05T17:00:00.673000+00:00",
+          "url": "https://www.historicrichmondtown.org/events/xmasinhrt",
+          "venue": "Historic Richmond Town",
+          "price": "Free / No Cover",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.39,
+      "cached": false
+    },
+    {
+      "venue": "King Manor Museum",
+      "url": "https://kingmanor.org/events-1-1-1",
+      "events": [
+        {
+          "name": "Queens Fiber Arts Festival",
+          "date": "2026-11-07T16:00:00.378000+00:00",
+          "url": "https://kingmanor.org/events-1-1-1/xeijirwli457877z0efq7u7jxijpek",
+          "venue": "King Manor Museum",
+          "price": "Free / No Cover",
+          "category": "community"
+        },
+        {
+          "name": "Bangladesh not Bhaangadesh Closing Reception",
+          "date": "2026-11-07T17:00:00.208000+00:00",
+          "url": "https://kingmanor.org/events-1-1-1/bangladesh-not-bhaangadesh-closing-reception",
+          "venue": "King Manor Museum",
+          "price": "Free / No Cover",
+          "category": "art"
+        },
+        {
+          "name": "Talisman for the Perfect Stranger",
+          "date": "2026-11-07T19:00:00.407000+00:00",
+          "url": "https://kingmanor.org/events-1-1-1/talisman-for-the-perfect-stranger",
+          "venue": "King Manor Museum",
+          "price": "Free / No Cover",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.59,
+      "cached": false
+    },
+    {
+      "venue": "JCC Manhattan",
+      "url": "https://mmjccm.org/events",
+      "events": [
+        {
+          "name": "Film | Other Israel: New Perspectives Film Festival",
+          "date": "2026-11-05T13:00:00+00:00",
+          "url": "https://mmjccm.org/events/film-other-israel-new-perspectives-film-festival",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "film"
+        },
+        {
+          "name": "The Challah-verse Ambassadors: Jewish Community, Braided Together",
+          "date": "2026-11-05T22:00:00+00:00",
+          "url": "https://mmjccm.org/events/the-challah-verse-ambassadors-jewish-community-braided-together",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "community"
+        },
+        {
+          "name": "Member Mingle Events",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://mmjccm.org/events/member-mingle-events",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "community"
+        },
+        {
+          "name": "Winter Clothing Drive for Children",
+          "date": "2026-11-12T13:00:00+00:00",
+          "url": "https://mmjccm.org/events/winter-clothing-drive-for-children",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "family"
+        },
+        {
+          "name": "JCC + Parents League Panel",
+          "date": "2026-11-12T23:00:00+00:00",
+          "url": "https://mmjccm.org/events/jcc-parents-league-symposium",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "community"
+        },
+        {
+          "name": "9th Annual Holiday Bazaar",
+          "date": "2026-11-13T14:00:00+00:00",
+          "url": "https://mmjccm.org/events/9th-annual-holiday-bazaar",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "community"
+        },
+        {
+          "name": "20s + 30s Friendsgiving Shabbat Dinner",
+          "date": "2026-11-14T00:00:00+00:00",
+          "url": "https://mmjccm.org/events/20s-30s-friendsgiving-shabbat-dinner",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "community"
+        },
+        {
+          "name": "Go Fact Yourself LIVE! feat. Gina Gershon + Michael Ian Black",
+          "date": "2026-11-17T00:00:00+00:00",
+          "url": "https://mmjccm.org/events/go-fact-yourself-2026",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "community"
+        },
+        {
+          "name": "Film | Labors of Love: The Life and Legacy of Henrietta Szold",
+          "date": "2026-11-18T00:00:00+00:00",
+          "url": "https://mmjccm.org/events/film-labors-of-love-the-life-and-legacy-of-henrietta-szold-2",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "film"
+        },
+        {
+          "name": "Special Education + Resource Fair",
+          "date": "2026-11-18T22:30:00+00:00",
+          "url": "https://mmjccm.org/events/special-education-fair-2026",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "community"
+        },
+        {
+          "name": "Shirley Kohn Spa Day for Women Impacted by Breast and Ovarian Cancer",
+          "date": "2026-11-22T18:00:00+00:00",
+          "url": "https://mmjccm.org/events/shirley-kohn-spa-day-for-women-impacted-by-breast-and-ovarian-cancer",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "community"
+        },
+        {
+          "name": "Film | The Golden Diaspora",
+          "date": "2026-11-25T00:00:00+00:00",
+          "url": "https://mmjccm.org/events/film-the-golden-diaspora",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "film"
+        },
+        {
+          "name": "Film | In the Path of Peace",
+          "date": "2026-12-01T23:00:00+00:00",
+          "url": "https://mmjccm.org/events/film-in-the-path-of-peace",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "film"
+        },
+        {
+          "name": "Doughnuts Go Global: A Chanukah Tasting Adventure Around the World",
+          "date": "2026-12-07T00:00:00+00:00",
+          "url": "https://mmjccm.org/events/doughnuts-go-global-2026",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "food"
+        },
+        {
+          "name": "Film | Sapiro v. Ford: The Jew Who Sued Henry Ford",
+          "date": "2026-12-09T00:00:00+00:00",
+          "url": "https://mmjccm.org/events/film-sapiro-v-ford-the-jew-who-sued-henry-ford",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "film"
+        },
+        {
+          "name": "20s + 30s Annual Chanukah Party: The Gelt Gala",
+          "date": "2026-12-11T00:00:00+00:00",
+          "url": "https://mmjccm.org/events/20s-30s-annual-chanukah-party-the-gelt-gala",
+          "venue": "JCC Manhattan",
+          "price": null,
+          "address": "334 Amsterdam Ave, New York, NY 10023",
+          "category": "clubbing"
+        }
+      ],
+      "error": null,
+      "duration": 0.68,
+      "cached": false
+    },
+    {
+      "venue": "Brooklyn Children's Museum",
+      "url": "https://www.brooklynkids.org/",
+      "events": [
+        {
+          "name": "Play at BCM",
+          "date": "2026-11-05T15:00:00+00:00",
+          "url": "https://www.brooklynkids.org/events/play-at-bcm-3-2026-11-05/",
+          "venue": "Brooklyn Children's Museum",
+          "price": null,
+          "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+          "category": "family"
+        },
+        {
+          "name": "Mexican Folk Dance Workshop",
+          "date": "2026-11-05T17:00:00+00:00",
+          "url": "https://www.brooklynkids.org/programs/mexican-folk-dance/",
+          "venue": "Brooklyn Children's Museum",
+          "price": null,
+          "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+          "category": "music"
+        },
+        {
+          "name": "Community Access Thursdays",
+          "date": "2026-11-05T19:00:00+00:00",
+          "url": "https://www.brooklynkids.org/events/amazon-free-hours-2026-11-05/",
+          "venue": "Brooklyn Children's Museum",
+          "price": null,
+          "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+          "category": "family"
+        },
+        {
+          "name": "Animal Encounters",
+          "date": "2026-11-05T20:00:00+00:00",
+          "url": "https://www.brooklynkids.org/events/animal-encounters-11-5/",
+          "venue": "Brooklyn Children's Museum",
+          "price": null,
+          "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+          "category": "family"
+        },
+        {
+          "name": "Mexican Folk Dance Workshop",
+          "date": "2026-11-05T20:00:00+00:00",
+          "url": "https://www.brooklynkids.org/events/mexican-folk-dance/",
+          "venue": "Brooklyn Children's Museum",
+          "price": null,
+          "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+          "category": "music"
+        },
+        {
+          "name": "Play at BCM",
+          "date": "2026-11-06T15:00:00+00:00",
+          "url": "https://www.brooklynkids.org/events/play-at-bcm-4-2026-07-03-2026-07-10-2026-07-17-2026-07-24-2026-07-31-2026-08-07-2026-08-14-2026-08-21-2026-08-28-2026-09-04-2026-09-11-2026-09-18-2026-09-25-2026-10-02-2026-10-09-2026-10-30-2026-11-06/",
+          "venue": "Brooklyn Children's Museum",
+          "price": null,
+          "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+          "category": "family"
+        },
+        {
+          "name": "Celebrate Día de los Muertos",
+          "date": "2026-11-07T17:00:00+00:00",
+          "url": "https://www.brooklynkids.org/programs/celebrate-dia/",
+          "venue": "Brooklyn Children's Museum",
+          "price": null,
+          "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+          "category": "family"
+        },
+        {
+          "name": "Celebrate Diwali",
+          "date": "2026-11-12T17:00:00+00:00",
+          "url": "https://www.brooklynkids.org/programs/celebrate-diwali/",
+          "venue": "Brooklyn Children's Museum",
+          "price": null,
+          "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+          "category": "family"
+        },
+        {
+          "name": "Healing with Play",
+          "date": "2026-11-21T17:00:00+00:00",
+          "url": "https://www.brooklynkids.org/programs/healing-with-play/",
+          "venue": "Brooklyn Children's Museum",
+          "price": null,
+          "address": "145 Brooklyn Ave, Brooklyn, NY 11213",
+          "category": "family"
+        }
+      ],
+      "error": null,
+      "duration": 0.56,
+      "cached": false
+    },
+    {
+      "venue": "Flushing Town Hall (own calendar)",
+      "url": "https://www.flushingtownhall.org/events",
+      "events": [
+        {
+          "name": "New York Classical Players Presents Brahms & Puts: A Journey to Belief",
+          "date": "2026-11-05T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/new-york-classical-players-presents-brahms-puts-a-journey-to-belief",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        },
+        {
+          "name": "Field Notes Exhibition",
+          "date": "2026-11-06T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/field-notes-/-notas-del-campo",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        },
+        {
+          "name": "Queens Jazz Orchestra: The Jimmy Heath Centennial Concert",
+          "date": "2026-11-07T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/queens-jazz-orchestra-the-jimmy-heath-centennial-concert",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        },
+        {
+          "name": "The Queens Musical Passport",
+          "date": "2026-11-09T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/the-queens-musical-passport",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "theater"
+        },
+        {
+          "name": "Framing America: Portraiture, Identity, and Belonging",
+          "date": "2026-11-10T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/framing-america-portraiture-identity-and-belonging",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        },
+        {
+          "name": "Legal Clinic Workshop",
+          "date": "2026-11-12T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/legal-clinic-workshop",
+          "venue": "Flushing Town Hall",
+          "price": "Free",
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        },
+        {
+          "name": "GLOBAL MASHUP: Hollywood Meets Bollywood",
+          "date": "2026-11-15T00:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/global-mashup-hollywood-meets-bollywood",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        },
+        {
+          "name": "Mapping Queens: Stewards of Historic Houses & Heritage Sites",
+          "date": "2026-11-19T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/mapping-queens-stewards-of-historic-houses-heritage-sites",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        },
+        {
+          "name": "A Collective Thread",
+          "date": "2026-12-04T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/a-collective-thread-collaborative-drawings-with-older-adults",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        },
+        {
+          "name": "Raising Our Voices",
+          "date": "2026-12-04T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/raising-our-voices-building-bridges-through-words-movement",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        },
+        {
+          "name": "2026 Native American Market & Social",
+          "date": "2026-12-05T17:00:00+00:00",
+          "url": "https://www.flushingtownhall.org/show-details/2026-native-american-market-social",
+          "venue": "Flushing Town Hall",
+          "price": null,
+          "address": "137-35 Northern Blvd, Flushing, NY 11354",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.59,
+      "cached": false
+    },
+    {
+      "venue": "Snug Harbor Botanical Garden & Classes",
+      "url": "https://www.snug-harbor.org/botanical-garden/",
+      "events": [
+        {
+          "name": "Tree Maintenance Workshop",
+          "date": "2026-11-07T17:00:00+00:00",
+          "url": "https://snug-harbor.org/class/tree-maintenance-workshop/?slot_id=12506",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": "Free",
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        },
+        {
+          "name": "Glass House Tour",
+          "date": "2026-11-14T18:00:00+00:00",
+          "url": "https://snug-harbor.org/event/glass-house-tour/?slot_id=19180",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": null,
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        },
+        {
+          "name": "Tiny Gardens Workshop",
+          "date": "2026-11-14T19:30:00+00:00",
+          "url": "https://snug-harbor.org/class/tiny-gardens-workshop/?slot_id=24552",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": null,
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        },
+        {
+          "name": "Cultivating Balance Workshop Series",
+          "date": "2026-11-28T19:30:00+00:00",
+          "url": "https://snug-harbor.org/class/cultivating-balance-workshop-series/?slot_id=19998",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": null,
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        },
+        {
+          "name": "Glass House Tour",
+          "date": "2026-11-29T18:00:00+00:00",
+          "url": "https://snug-harbor.org/event/glass-house-tour/?slot_id=19181",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": null,
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        },
+        {
+          "name": "Tiny Gardens Workshop",
+          "date": "2026-11-29T19:30:00+00:00",
+          "url": "https://snug-harbor.org/class/tiny-gardens-workshop/?slot_id=24553",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": null,
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        },
+        {
+          "name": "Glass House Tour",
+          "date": "2026-12-05T18:00:00+00:00",
+          "url": "https://snug-harbor.org/event/glass-house-tour/?slot_id=19182",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": null,
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        },
+        {
+          "name": "Tiny Gardens Workshop",
+          "date": "2026-12-05T19:30:00+00:00",
+          "url": "https://snug-harbor.org/class/tiny-gardens-workshop/?slot_id=24554",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": null,
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        },
+        {
+          "name": "Glass House Tour",
+          "date": "2026-12-06T18:00:00+00:00",
+          "url": "https://snug-harbor.org/event/glass-house-tour/?slot_id=19183",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": null,
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        },
+        {
+          "name": "Tiny Gardens Workshop",
+          "date": "2026-12-06T19:30:00+00:00",
+          "url": "https://snug-harbor.org/class/tiny-gardens-workshop/?slot_id=24555",
+          "venue": "Snug Harbor Cultural Center & Botanical Garden",
+          "price": null,
+          "address": "1000 Richmond Terrace, Staten Island, NY 10301",
+          "category": "outdoors"
+        }
+      ],
+      "error": null,
+      "duration": 0.79,
+      "cached": false
+    },
+    {
+      "venue": "Center for Brooklyn History",
+      "url": "https://www.bklynlibrary.org/cbh",
+      "events": [],
+      "error": "403 Client Error: Forbidden for url: https://www.bklynlibrary.org/cbh",
+      "duration": 0.21,
+      "cached": false
+    },
+    {
+      "venue": "Pregones/PRTT",
+      "url": "https://pregonesprtt.org/events/",
+      "events": [
+        {
+          "name": "I f@cking hate Luma",
+          "date": "2026-11-09T17:00:00+00:00",
+          "url": "https://pregonesprtt.org/i-fcking-hate-luma-2026-27/",
+          "venue": "Pregones Theater",
+          "price": null,
+          "address": "575 Walton Ave, Bronx, NY 10451",
+          "category": "theater"
+        },
+        {
+          "name": "Do Not Turn Off My Telenovela",
+          "date": "2026-11-20T17:00:00+00:00",
+          "url": "https://pregonesprtt.org/do-not-turn-off-my-telenovela-2026-27/",
+          "venue": "Pregones Theater",
+          "price": null,
+          "address": "575 Walton Ave, Bronx, NY 10451",
+          "category": "theater"
+        },
+        {
+          "name": "Doomscroll",
+          "date": "2026-12-01T17:00:00+00:00",
+          "url": "https://pregonesprtt.org/doomscroll-2026-27/",
+          "venue": "Pregones Theater",
+          "price": null,
+          "address": "575 Walton Ave, Bronx, NY 10451",
+          "category": "theater"
+        },
+        {
+          "name": "Maybe Next Time",
+          "date": "2026-12-04T17:00:00+00:00",
+          "url": "https://pregonesprtt.org/maybe-next-time-2026-27/",
+          "venue": "Pregones Theater",
+          "price": null,
+          "address": "575 Walton Ave, Bronx, NY 10451",
+          "category": "theater"
+        },
+        {
+          "name": "The Tragedy of Macbeth",
+          "date": "2026-12-04T17:00:00+00:00",
+          "url": "https://pregonesprtt.org/the-tragedy-of-macbeth-2026-27/",
+          "venue": "Pregones Theater",
+          "price": null,
+          "address": "575 Walton Ave, Bronx, NY 10451",
+          "category": "theater"
+        }
+      ],
+      "error": null,
+      "duration": 1.1,
+      "cached": false
+    },
+    {
+      "venue": "Lehman Center for the Performing Arts (own calendar)",
+      "url": "https://www.lehmancenter.org/events",
+      "events": [
+        {
+          "name": "GINUWINE",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://www.lehmancenter.org/events/ginuwine",
+          "venue": "Lehman Center for the Performing Arts",
+          "price": null,
+          "address": "250 Bedford Park Blvd W, Bronx, NY 10468",
+          "category": "music"
+        },
+        {
+          "name": "LOS PARCERITOS USA TOUR",
+          "date": "2026-11-09T01:00:00+00:00",
+          "url": "https://www.lehmancenter.org/events/los-parceritos",
+          "venue": "Lehman Center for the Performing Arts",
+          "price": null,
+          "address": "250 Bedford Park Blvd W, Bronx, NY 10468",
+          "category": "music"
+        },
+        {
+          "name": "BACHATÉAME NEW YORK!",
+          "date": "2026-11-15T01:00:00+00:00",
+          "url": "https://www.lehmancenter.org/events/bachateame-new-york",
+          "venue": "Lehman Center for the Performing Arts",
+          "price": null,
+          "address": "250 Bedford Park Blvd W, Bronx, NY 10468",
+          "category": "music"
+        },
+        {
+          "name": "Rashan Brown Presents: Poetry me, Please",
+          "date": "2026-11-29T00:00:00+00:00",
+          "url": "https://www.lehmancenter.org/events/poetry-me-please",
+          "venue": "Lehman Center for the Performing Arts",
+          "price": null,
+          "address": "250 Bedford Park Blvd W, Bronx, NY 10468",
+          "category": "books"
+        },
+        {
+          "name": "A Charlie Brown Christmas",
+          "date": "2026-11-29T21:00:00+00:00",
+          "url": "https://www.lehmancenter.org/events/charlie-brown-live",
+          "venue": "Lehman Center for the Performing Arts",
+          "price": null,
+          "address": "250 Bedford Park Blvd W, Bronx, NY 10468",
+          "category": "music"
+        },
+        {
+          "name": "SWAN LAKE",
+          "date": "2026-12-11T00:00:00+00:00",
+          "url": "https://www.lehmancenter.org/events/swan-lake",
+          "venue": "Lehman Center for the Performing Arts",
+          "price": null,
+          "address": "250 Bedford Park Blvd W, Bronx, NY 10468",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 1.07,
+      "cached": false
+    },
+    {
+      "venue": "New York Botanical Garden",
+      "url": "https://www.nybg.org/whats-on/",
+      "events": [
+        {
+          "name": "NYBG 5K Fun Run",
+          "date": "2026-11-08T17:00:00+00:00",
+          "url": "https://www.nybg.org/event/nybg-5k-fun-run/",
+          "venue": "New York Botanical Garden",
+          "price": null,
+          "address": "2900 Southern Blvd, Bronx, NY 10458",
+          "category": "sports"
+        },
+        {
+          "name": "Holiday Train Show Â®",
+          "date": "2026-11-14T17:00:00+00:00",
+          "url": "https://www.nybg.org/event/holiday-train-show-2026/",
+          "venue": "New York Botanical Garden",
+          "price": null,
+          "address": "2900 Southern Blvd, Bronx, NY 10458",
+          "category": "outdoors"
+        }
+      ],
+      "error": null,
+      "duration": 0.55,
+      "cached": false
+    },
+    {
+      "venue": "Bartow-Pell Mansion Museum",
+      "url": "https://www.bartowpellmansionmuseum.org/events",
+      "events": [
+        {
+          "name": "Beyond the Oak Tree Treaty—Part III: Native American Fashion and Pop-Up Exhibition",
+          "date": "2026-11-11T19:00:00+00:00",
+          "url": "https://www.bartowpellmansionmuseum.org/events/beyond-the-oak-tree-treaty-part-iii/",
+          "venue": "Bartow-Pell Mansion Museum",
+          "price": "Free",
+          "address": "895 Shore Rd, Bronx, NY 10464",
+          "category": "community"
+        },
+        {
+          "name": "Bartow to Bartow Challenge",
+          "date": "2026-11-12T16:00:00+00:00",
+          "url": "https://www.bartowpellmansionmuseum.org/events/bartow-to-bartow-challenge/",
+          "venue": "Bartow-Pell Mansion Museum",
+          "price": "Free",
+          "address": "895 Shore Rd, Bronx, NY 10464",
+          "category": "art"
+        },
+        {
+          "name": "The Bronx of Yesteryear",
+          "date": "2026-11-15T00:00:00+00:00",
+          "url": "https://www.bartowpellmansionmuseum.org/events/the-bronx-of-yesteryear/",
+          "venue": "Bartow-Pell Mansion Museum",
+          "price": null,
+          "address": "895 Shore Rd, Bronx, NY 10464",
+          "category": "art"
+        },
+        {
+          "name": "Bartow’s Literary Elevenses",
+          "date": "2026-11-18T15:00:00+00:00",
+          "url": "https://www.bartowpellmansionmuseum.org/events/bartows-literary-elevenses/",
+          "venue": "Bartow-Pell Mansion Museum",
+          "price": "Free",
+          "address": "895 Shore Rd, Bronx, NY 10464",
+          "category": "books"
+        }
+      ],
+      "error": null,
+      "duration": 0.9,
       "cached": false
     },
     {
@@ -144114,8 +145412,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-free-festivals/ (serving stale cache)",
-      "duration": 0.21,
+      "error": null,
+      "duration": 3.59,
       "cached": true
     },
     {
@@ -145874,8 +147172,8 @@
           "category": "art"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/art-festivals/ (serving stale cache)",
-      "duration": 0.2,
+      "error": null,
+      "duration": 2.63,
       "cached": true
     },
     {
@@ -146111,8 +147409,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/craft-fair/ (serving stale cache)",
-      "duration": 0.3,
+      "error": null,
+      "duration": 3.39,
       "cached": true
     },
     {
@@ -146365,8 +147663,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/columbus-circle/ (serving stale cache)",
-      "duration": 0.55,
+      "error": null,
+      "duration": 2.54,
       "cached": true
     },
     {
@@ -146566,8 +147864,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/downtown-brooklyn-partnership/ (serving stale cache)",
-      "duration": 0.29,
+      "error": null,
+      "duration": 2.84,
       "cached": true
     },
     {
@@ -146731,8 +148029,8 @@
           "category": "music"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/meatpacking-district/ (serving stale cache)",
-      "duration": 0.56,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -146848,8 +148146,8 @@
           "category": "outdoors"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.57,
+      "error": null,
+      "duration": 2.42,
       "cached": true
     },
     {
@@ -146941,8 +148239,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 4.25,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/times-square/ (serving stale cache)",
+      "duration": 0.21,
       "cached": true
     },
     {
@@ -147142,8 +148440,8 @@
           "category": "outdoors"
         }
       ],
-      "error": null,
-      "duration": 5.43,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/battery-park-city/ (serving stale cache)",
+      "duration": 0.21,
       "cached": true
     },
     {
@@ -147319,8 +148617,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.57,
+      "error": null,
+      "duration": 3.09,
       "cached": true
     },
     {
@@ -147532,8 +148830,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 3.31,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/musical/ (serving stale cache)",
+      "duration": 0.32,
       "cached": true
     },
     {
@@ -147757,8 +149055,8 @@
           "category": "theater"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.57,
+      "error": null,
+      "duration": 2.42,
       "cached": true
     },
     {
@@ -147970,8 +149268,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 3.14,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/improv/ (serving stale cache)",
+      "duration": 0.32,
       "cached": true
     },
     {
@@ -148250,8 +149548,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.56,
+      "error": null,
+      "duration": 2.33,
       "cached": true
     },
     {
@@ -148427,8 +149725,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 4.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-board-games/ (serving stale cache)",
+      "duration": 0.4,
       "cached": true
     },
     {
@@ -148676,8 +149974,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.38,
+      "error": null,
+      "duration": 2.41,
       "cached": true
     },
     {
@@ -148913,8 +150211,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.76,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/meetup/ (serving stale cache)",
+      "duration": 0.45,
       "cached": true
     },
     {
@@ -149126,8 +150424,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.38,
+      "error": null,
+      "duration": 2.16,
       "cached": true
     },
     {
@@ -149315,8 +150613,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.88,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jazz/ (serving stale cache)",
+      "duration": 0.5,
       "cached": true
     },
     {
@@ -149492,8 +150790,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.99,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.37,
       "cached": true
     },
     {
@@ -149705,8 +151003,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 3.62,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.25,
       "cached": true
     },
     {
@@ -149906,8 +151204,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.71,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.25,
       "cached": true
     },
     {
@@ -150131,8 +151429,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 3.38,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -150533,8 +151831,8 @@
           "category": "gaming"
         }
       ],
-      "error": null,
-      "duration": 2.37,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -261844,7 +263142,7 @@
     }
   ],
   "weather": {
-    "temp": 64,
+    "temp": 63,
     "icon": "☁️",
     "label": "Overcast"
   },

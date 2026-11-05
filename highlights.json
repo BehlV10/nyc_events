@@ -3,12 +3,12 @@
     "id": "auto-2026-11-05-0",
     "auto": true,
     "match": {
-      "name_contains": "New York Rangers vs. Philadelphia Flyers",
-      "venue_contains": "Madison Square Garden"
+      "name_contains": "New York Classical Players Presents Brahms & Puts: A Journey to Belief",
+      "venue_contains": "Flushing Town Hall"
     },
-    "badge": "🏃 Active Pick",
-    "note": "Listed on 5 calendars; headline room at Madison Square Garden; prime-time start.",
-    "score": 20.0,
+    "badge": "🎸 Music Pick",
+    "note": "Free; listed on 4 calendars; headline room at Flushing Town Hall; prime-time start.",
+    "score": 22.5,
     "start_date": "2026-11-05",
     "expires": "2026-11-05"
   },
@@ -16,12 +16,12 @@
     "id": "auto-2026-11-05-1",
     "auto": true,
     "match": {
-      "name_contains": "New York Classical Players Presents Brahms & Puts: A Journey to Belief",
-      "venue_contains": "Flushing Town Hall"
+      "name_contains": "New York Rangers vs. Philadelphia Flyers",
+      "venue_contains": "Madison Square Garden"
     },
-    "badge": "🎸 Music Pick",
-    "note": "Free; listed on 3 calendars; headline room at Flushing Town Hall; prime-time start.",
-    "score": 18.5,
+    "badge": "🏃 Active Pick",
+    "note": "Listed on 5 calendars; headline room at Madison Square Garden; prime-time start.",
+    "score": 20.0,
     "start_date": "2026-11-05",
     "expires": "2026-11-05"
   },
@@ -419,6 +419,19 @@
     "id": "auto-2026-11-07-32",
     "auto": true,
     "match": {
+      "name_contains": "Queens Fiber Arts Festival",
+      "venue_contains": "King Manor Museum"
+    },
+    "badge": "🤝 Community Pick",
+    "note": "Free; listed on 4 calendars; weekend daytime.",
+    "score": 19.0,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-33",
+    "auto": true,
+    "match": {
       "name_contains": "Breathe Deep NYC",
       "venue_contains": "89 South Street"
     },
@@ -429,7 +442,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-33",
+    "id": "auto-2026-11-07-34",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Festival Presents: Ariel Elias",
@@ -442,7 +455,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-34",
+    "id": "auto-2026-11-07-35",
     "auto": true,
     "match": {
       "name_contains": "The 11pm Comedy Show",
@@ -455,7 +468,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-35",
+    "id": "auto-2026-11-07-36",
     "auto": true,
     "match": {
       "name_contains": "(Women Sold Out) Single Professionals ages 40s and 50s - Speed Dating",
@@ -468,7 +481,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-36",
+    "id": "auto-2026-11-07-37",
     "auto": true,
     "match": {
       "name_contains": "Mix & Mingle Meetup (Drink Specials)",
@@ -481,7 +494,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-37",
+    "id": "auto-2026-11-07-38",
     "auto": true,
     "match": {
       "name_contains": "Brooklyn Bridge Date Walk (aka Singles Sunset Stroll) 30s & 40s",
@@ -494,7 +507,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-38",
+    "id": "auto-2026-11-07-39",
     "auto": true,
     "match": {
       "name_contains": "Haunted NYC Scavenger Hunt (Clues, Spells, and Curses!) + Free After Party",
@@ -507,7 +520,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-39",
+    "id": "auto-2026-11-07-40",
     "auto": true,
     "match": {
       "name_contains": "OUTLINE: Danny L Harle, yeule, Saya Gray & Contact Sports",
@@ -520,7 +533,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-40",
+    "id": "auto-2026-11-07-41",
     "auto": true,
     "match": {
       "name_contains": "Reggaeton & The City: Noche de Rakata | 2000s Reggaeton Party NYC",
@@ -533,7 +546,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-41",
+    "id": "auto-2026-11-07-42",
     "auto": true,
     "match": {
       "name_contains": "Family Art Project: Raptors in Autumn Sky",
@@ -546,7 +559,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-42",
+    "id": "auto-2026-11-07-43",
     "auto": true,
     "match": {
       "name_contains": "NYRR Open Run: Canarsie Park",
@@ -559,7 +572,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-43",
+    "id": "auto-2026-11-07-44",
     "auto": true,
     "match": {
       "name_contains": "Nathan Fielder Look-Alike Contest",
@@ -568,19 +581,6 @@
     "badge": "🤝 Community Pick",
     "note": "Free; listed on 3 calendars; weekend daytime.",
     "score": 11.5,
-    "start_date": "2026-11-07",
-    "expires": "2026-11-07"
-  },
-  {
-    "id": "auto-2026-11-07-44",
-    "auto": true,
-    "match": {
-      "name_contains": "76th Mahan Nagar Kirtan",
-      "venue_contains": "113-10 101 Avenue"
-    },
-    "badge": "🤝 Community Pick",
-    "note": "Free; listed on 2 calendars; weekend daytime.",
-    "score": 11.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
