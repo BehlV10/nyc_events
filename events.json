@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T10:37:06.882496+00:00",
+  "generated_at": "2026-11-05T10:42:53.494050+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -45008,7 +45008,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.79,
+      "duration": 0.98,
       "cached": false
     },
     {
@@ -120479,7 +120479,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.24,
+      "duration": 0.25,
       "cached": false
     },
     {
@@ -120742,7 +120742,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.23,
+      "duration": 0.22,
       "cached": false
     },
     {
@@ -121569,8 +121569,8 @@
         }
       ],
       "error": null,
-      "duration": 0.26,
-      "cached": true
+      "duration": 0.25,
+      "cached": false
     },
     {
       "venue": "Alphaville",
@@ -122839,7 +122839,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.21,
+      "duration": 0.22,
       "cached": false
     },
     {
@@ -128038,8 +128038,8 @@
         }
       ],
       "error": null,
-      "duration": 0.69,
-      "cached": true
+      "duration": 0.78,
+      "cached": false
     },
     {
       "venue": "Stand Up NY",
@@ -137620,7 +137620,7 @@
       ],
       "error": null,
       "duration": 1.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Joyce Theater",
@@ -137665,7 +137665,7 @@
       ],
       "error": null,
       "duration": 2.18,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Seaport District Events",
@@ -137778,7 +137778,7 @@
       ],
       "error": null,
       "duration": 0.43,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Jewish Museum",
@@ -137832,7 +137832,7 @@
       ],
       "error": null,
       "duration": 0.91,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "La MaMa",
@@ -137868,7 +137868,7 @@
       ],
       "error": null,
       "duration": 1.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Zinc Bar (Jazz)",
@@ -138911,7 +138911,7 @@
       ],
       "error": null,
       "duration": 0.23,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Birdland Jazz Club",
@@ -186675,7 +186675,7 @@
       ],
       "error": null,
       "duration": 1.07,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Industry City",
@@ -190754,7 +190754,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.2,
+      "duration": 0.12,
       "cached": false
     },
     {
@@ -190964,7 +190964,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.19,
+      "duration": 0.17,
       "cached": false
     },
     {
@@ -190972,7 +190972,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.17,
+      "duration": 0.16,
       "cached": false
     },
     {
@@ -192103,7 +192103,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.19,
+      "duration": 0.15,
       "cached": false
     },
     {
@@ -193621,7 +193621,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.16,
+      "duration": 0.14,
       "cached": false
     },
     {
@@ -194505,7 +194505,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.09,
+      "duration": 0.15,
       "cached": false
     },
     {
@@ -203426,7 +203426,7 @@
       ],
       "error": null,
       "duration": 0.23,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -213868,8 +213868,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 5.41,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/lincoln-center/ (serving stale cache)",
+      "duration": 0.12,
       "cached": true
     },
     {
@@ -214093,8 +214093,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 6.1,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jazz-at-lincoln-center/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -215308,8 +215308,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 7.42,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.56,
       "cached": true
     },
     {
@@ -216245,8 +216245,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 10.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bibliotheque/ (serving stale cache)",
+      "duration": 0.43,
       "cached": true
     },
     {
@@ -216494,8 +216494,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 12.37,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/lizs-book-bar/ (serving stale cache)",
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -238301,8 +238301,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 14.63,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/burlesque/ (serving stale cache)",
+      "duration": 0.37,
       "cached": true
     },
     {
@@ -243528,8 +243528,8 @@
           "category": "dance"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/ (serving stale cache)",
-      "duration": 0.34,
+      "error": null,
+      "duration": 4.62,
       "cached": true
     },
     {
@@ -244872,8 +244872,8 @@
           "category": "dance"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/prohibition-productions/ (serving stale cache)",
-      "duration": 0.4,
+      "error": null,
+      "duration": 3.06,
       "cached": true
     },
     {
@@ -245730,8 +245730,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/ (serving stale cache)",
-      "duration": 0.61,
+      "error": null,
+      "duration": 2.21,
       "cached": true
     },
     {
@@ -245967,8 +245967,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pieces-bar/ (serving stale cache)",
-      "duration": 0.61,
+      "error": null,
+      "duration": 2.8,
       "cached": true
     },
     {
@@ -246156,8 +246156,8 @@
           "category": "gaming"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/video-game-tournament/ (serving stale cache)",
-      "duration": 0.18,
+      "error": null,
+      "duration": 2.94,
       "cached": true
     },
     {
@@ -246369,8 +246369,8 @@
           "category": "gaming"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/smash-bros/ (serving stale cache)",
-      "duration": 0.79,
+      "error": null,
+      "duration": 2.78,
       "cached": true
     },
     {
@@ -246921,8 +246921,8 @@
           "category": "music"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/ (serving stale cache)",
-      "duration": 0.18,
+      "error": null,
+      "duration": 3.14,
       "cached": true
     },
     {
@@ -247765,8 +247765,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-guestlist/ (serving stale cache)",
-      "duration": 0.81,
+      "error": null,
+      "duration": 3.55,
       "cached": true
     },
     {
@@ -248263,8 +248263,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-rsvp-party/ (serving stale cache)",
-      "duration": 0.29,
+      "error": null,
+      "duration": 3.26,
       "cached": true
     },
     {
@@ -248476,8 +248476,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.82,
+      "error": null,
+      "duration": 2.69,
       "cached": true
     },
     {
@@ -248842,8 +248842,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.12,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-dl/ (serving stale cache)",
+      "duration": 0.51,
       "cached": true
     },
     {
@@ -249409,8 +249409,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/slate-nyc/ (serving stale cache)",
-      "duration": 0.34,
+      "error": null,
+      "duration": 2.47,
       "cached": true
     },
     {
@@ -249622,8 +249622,8 @@
           "category": "film"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nebula/ (serving stale cache)",
-      "duration": 0.23,
+      "error": null,
+      "duration": 2.01,
       "cached": true
     },
     {
@@ -249709,7 +249709,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.75,
+      "duration": 0.57,
       "cached": false
     },
     {
@@ -249717,7 +249717,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.45,
       "cached": false
     },
     {
@@ -250154,8 +250154,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.74,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -250175,8 +250175,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.76,
+      "error": null,
+      "duration": 3.42,
       "cached": true
     },
     {
@@ -250376,8 +250376,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.75,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.47,
       "cached": true
     },
     {
@@ -250778,8 +250778,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.72,
+      "error": null,
+      "duration": 2.76,
       "cached": true
     },
     {
@@ -251216,8 +251216,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.73,
+      "error": null,
+      "duration": 2.25,
       "cached": true
     },
     {
@@ -251417,8 +251417,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.32,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.33,
       "cached": true
     },
     {
@@ -251855,8 +251855,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.7,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -252080,8 +252080,8 @@
           "category": "food"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--food-and-drink--festivals/ (serving stale cache)",
-      "duration": 0.47,
+      "error": null,
+      "duration": 2.49,
       "cached": true
     },
     {
@@ -253025,7 +253025,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 0.57,
+      "duration": 0.49,
       "cached": false
     },
     {
@@ -253711,8 +253711,8 @@
           "category": "party"
         }
       ],
-      "error": null,
-      "duration": 1.63,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.46,
       "cached": true
     },
     {
@@ -254338,8 +254338,8 @@
           "category": "art"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/art-festivals/ (serving stale cache)",
-      "duration": 0.47,
+      "error": null,
+      "duration": 2.63,
       "cached": true
     },
     {
@@ -254575,8 +254575,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.39,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.45,
       "cached": true
     },
     {
@@ -254829,8 +254829,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.56,
+      "error": null,
+      "duration": 2.54,
       "cached": true
     },
     {
@@ -255030,8 +255030,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.48,
+      "error": null,
+      "duration": 2.84,
       "cached": true
     },
     {
@@ -255195,8 +255195,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.45,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -255312,8 +255312,8 @@
           "category": "outdoors"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.45,
+      "error": null,
+      "duration": 2.42,
       "cached": true
     },
     {
@@ -256762,8 +256762,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.47,
+      "error": null,
+      "duration": 2.33,
       "cached": true
     },
     {
@@ -257698,8 +257698,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.16,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/language-exchange/ (serving stale cache)",
+      "duration": 0.09,
       "cached": true
     },
     {
@@ -262724,8 +262724,8 @@
       "url": "https://www.meetup.com/tabletop-tuesday/events/",
       "events": [],
       "error": null,
-      "duration": 0.33,
-      "cached": false
+      "duration": 3.23,
+      "cached": true
     },
     {
       "venue": "Meetup: Prospect Park Board Gaming Club",
@@ -266247,16 +266247,16 @@
       "url": "https://www.meetup.com/Brooklyn-Table-Top-Games-Meetup/events/",
       "events": [],
       "error": null,
-      "duration": 0.55,
-      "cached": false
+      "duration": 0.65,
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Board Game Club",
       "url": "https://www.meetup.com/astoria-board-game-club/events/",
       "events": [],
       "error": null,
-      "duration": 0.26,
-      "cached": false
+      "duration": 0.09,
+      "cached": true
     },
     {
       "venue": "Meetup: New York LGBT Board Games Group",
@@ -313095,6 +313095,32 @@
       "url": "https://www.meetup.com/find/?keywords=trivia&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [
         {
+          "name": "Trivia Meetup - Sat. Nov. 7",
+          "date": "2026-11-07T19:00:00+00:00",
+          "url": "https://www.meetup.com/nyc-trivia-board-games/events/317285637/",
+          "venue": "Galaxy Diner (665 9th Ave, New York, NY 10036, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "665 9th Ave, New York, NY 10036, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "A trivia meetup at a new location. The Galaxy Diner is at 665 9th Avenue on the corner of 46th Street. A nice menu with diner food and drinks. Let's give this place a try. More info at www.galaxydinerny.com Take the A, C or E or 1 trains to 42nd or",
+          "category": "gaming"
+        },
+        {
+          "name": "Trivia Night - Five Dimes Brewery - Singles and Non Singles - 20s-40s",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.meetup.com/bergen-county-singles/events/317290400/",
+          "venue": "Five Dimes Brewery (247 Westwood Avenue, Westwood, New Jersey 07675, Westwood, NJ)",
+          "venue_unknown": false,
+          "address": "247 Westwood Avenue, Westwood, New Jersey 07675, Westwood, NJ, Westwood, NJ",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Join us for Joe trivia! There will be general knowledge questions and many different other trivia questions! Singles and non singles alike are welcome at this event! We will meet at Five Dimes Brewery in Westwood, NJ. If you are feeling u",
+          "category": "food"
+        },
+        {
           "name": "LGBTQ Trivia Night - in person - Queens",
           "date": "2026-11-09T23:30:00+00:00",
           "url": "https://www.meetup.com/nycgamers/events/317249204/",
@@ -313108,16 +313134,16 @@
           "category": "gaming"
         },
         {
-          "name": "Trivia Meetup - Sat. Nov. 7",
-          "date": "2026-11-07T19:00:00+00:00",
-          "url": "https://www.meetup.com/nyc-trivia-board-games/events/317285637/",
-          "venue": "Galaxy Diner (665 9th Ave, New York, NY 10036, USA, New York, NY)",
+          "name": "Best Trivia Ever at Marlowe",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.meetup.com/mamaroneck-nerds/events/317097250/",
+          "venue": "Marlowe Ales (139 Hoyt Ave, Suite A, Mamaroneck, NY)",
           "venue_unknown": false,
-          "address": "665 9th Ave, New York, NY 10036, USA, New York, NY, New York, NY",
+          "address": "139 Hoyt Ave, Suite A, Mamaroneck, NY, Mamaroneck, NY",
           "lat": null,
           "lng": null,
           "price": "Free",
-          "description": "A trivia meetup at a new location. The Galaxy Diner is at 665 9th Avenue on the corner of 46th Street. A nice menu with diner food and drinks. Let's give this place a try. More info at www.galaxydinerny.com Take the A, C or E or 1 trains to 42nd or",
+          "description": "Mostly pop culture trivia. Good pub food and beer. Wine, mixed drinks, and non-alcohol options available.",
           "category": "gaming"
         },
         {
@@ -313199,6 +313225,19 @@
           "category": "community"
         },
         {
+          "name": "Skip the Small Talk: Make Friends, Not Small Talk",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.meetup.com/socialnewyork/events/317056210/",
+          "venue": "Pianos (158 Ludlow St, New York, NY 10002, USA, New York, NY)",
+          "venue_unknown": false,
+          "address": "158 Ludlow St, New York, NY 10002, USA, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "###PLEASE NOTE: Even if you RSVP on Meetup, you will need to grab a ticket here https://www.skipthesmalltalk.com/store/skip-the-small-talk-night-at-pianos-wednesday-november-11-2026 in order to attend### This event is cross-posted so Meetup RSVPs",
+          "category": "community"
+        },
+        {
           "name": "Brooklyn Bridge Date Walk (aka Singles Sunset Stroll) 30s & 40s",
           "date": "2026-11-07T21:00:00+00:00",
           "url": "https://www.meetup.com/new-york-brainiacs/events/317175251/",
@@ -313209,19 +313248,6 @@
           "lng": null,
           "price": "Free",
           "description": "\\*GET TICKETS AT: (https://www.eventbrite.com/e/brooklyn-bridge-singles-sunset-date-walk-tickets-1996371438714) (\\*Limited # of women save $5 by using pr",
-          "category": "community"
-        },
-        {
-          "name": "Millennial Skip the Small Talk: Make Friends, Not Small Talk",
-          "date": "2026-11-11T00:00:00+00:00",
-          "url": "https://www.meetup.com/ccccc-nyc/events/316812191/",
-          "venue": "Threes Brewing (333 Douglass St, Brooklyn, NY 11217, USA, Brooklyn, NY)",
-          "venue_unknown": false,
-          "address": "333 Douglass St, Brooklyn, NY 11217, USA, Brooklyn, NY, Brooklyn, NY",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "###PLEASE NOTE: Even if you RSVP on Meetup, you will need to grab a ticket here https://www.skipthesmalltalk.com/store/millennial-skip-the-small-talk-night-at-threes-brewing-gowanus-tuesday-november-10-2026 in order to attend### This event is cro",
           "category": "community"
         },
         {
@@ -313236,6 +313262,19 @@
           "price": "Free",
           "description": "*The only comedy show where you can win prizes by playing bingo.* Get ready for a comedy show with a twist. At Bingo Comedy, audience members play along by crossing off joke premises on their bingo cards for the chance to win free drinks and pr",
           "category": "comedy"
+        },
+        {
+          "name": "Millennial Skip the Small Talk: Make Friends, Not Small Talk",
+          "date": "2026-11-11T00:00:00+00:00",
+          "url": "https://www.meetup.com/ccccc-nyc/events/316812191/",
+          "venue": "Threes Brewing (333 Douglass St, Brooklyn, NY 11217, USA, Brooklyn, NY)",
+          "venue_unknown": false,
+          "address": "333 Douglass St, Brooklyn, NY 11217, USA, Brooklyn, NY, Brooklyn, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "###PLEASE NOTE: Even if you RSVP on Meetup, you will need to grab a ticket here https://www.skipthesmalltalk.com/store/millennial-skip-the-small-talk-night-at-threes-brewing-gowanus-tuesday-november-10-2026 in order to attend### This event is cro",
+          "category": "community"
         },
         {
           "name": "Haunted NYC Scavenger Hunt (Clues, Spells, and Curses!) + Free After Party",
@@ -313278,8 +313317,8 @@
         },
         {
           "name": "Best Trivia Ever at Marlowe",
-          "date": "2026-11-12T00:00:00+00:00",
-          "url": "https://www.meetup.com/mamaroneck-nerds/events/317097250/",
+          "date": "2026-11-19T00:00:00+00:00",
+          "url": "https://www.meetup.com/mamaroneck-nerds/events/317198103/",
           "venue": "Marlowe Ales (139 Hoyt Ave, Suite A, Mamaroneck, NY)",
           "venue_unknown": false,
           "address": "139 Hoyt Ave, Suite A, Mamaroneck, NY, Mamaroneck, NY",
@@ -313329,19 +313368,6 @@
           "category": "clubbing"
         },
         {
-          "name": "Trivia Night - Five Dimes Brewery - Singles and Non Singles - 20s-40s",
-          "date": "2026-11-12T00:00:00+00:00",
-          "url": "https://www.meetup.com/bergen-county-singles/events/317290400/",
-          "venue": "Five Dimes Brewery (247 Westwood Avenue, Westwood, New Jersey 07675, Westwood, NJ)",
-          "venue_unknown": false,
-          "address": "247 Westwood Avenue, Westwood, New Jersey 07675, Westwood, NJ, Westwood, NJ",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "Join us for Joe trivia! There will be general knowledge questions and many different other trivia questions! Singles and non singles alike are welcome at this event! We will meet at Five Dimes Brewery in Westwood, NJ. If you are feeling u",
-          "category": "food"
-        },
-        {
           "name": "Casual Drinks, Conversations, and Trivia",
           "date": "2026-11-13T00:00:00+00:00",
           "url": "https://www.meetup.com/casual-drinks-and-conversations-with-marvin/events/317109874/",
@@ -313352,6 +313378,19 @@
           "lng": null,
           "price": "Free",
           "description": "Join me for casual drinks and conversations, and a couple rounds of trivia. This is an event where people from around the neighborhood just meet and talk. Talk about your day, talk about your life, talk about the weather, talk about your hobbies. Any",
+          "category": "gaming"
+        },
+        {
+          "name": "Trivia Night at Ron Black’s",
+          "date": "2026-11-18T00:30:00+00:00",
+          "url": "https://www.meetup.com/young-adults-events-group/events/317116559/",
+          "venue": "Ron Blacks (181 Mamaroneck Avenue, White Plains, NY)",
+          "venue_unknown": false,
+          "address": "181 Mamaroneck Avenue, White Plains, NY, White Plains, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Come join us to play on a team for bar trivia at Ron Black’s in White Plains. Happy hour food & drink pricing is until 8. Trivia starts at 8pm. Go inside and ask for the reservation under “Matthew”. See you there!",
           "category": "gaming"
         },
         {
@@ -313420,19 +313459,6 @@
           "category": "clubbing"
         },
         {
-          "name": "Look Up! The Hidden History of NYC's Wooden Water Towers",
-          "date": "2026-11-15T16:00:00+00:00",
-          "url": "https://www.meetup.com/newyorkadventureclub/events/316946082/",
-          "venue": "The High Line (New York, NY 10011, USA, New York, NY)",
-          "venue_unknown": false,
-          "address": "New York, NY 10011, USA, New York, NY, New York, NY",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "Tickets: $39.98 (advance registration required) Click the link below to officially register for this experience: (https://www.nyadventureclub.com/event/2003011304732) Equal parts engineering mar",
-          "category": "community"
-        },
-        {
           "name": "Yacht Party Sunset Cruise (DJ, Dancing, Drinks)",
           "date": "2026-11-15T23:00:00+00:00",
           "url": "https://www.meetup.com/ccccc-nyc/events/317152282/",
@@ -313446,17 +313472,17 @@
           "category": "clubbing"
         },
         {
-          "name": "Best Trivia Ever at Marlowe",
-          "date": "2026-11-19T00:00:00+00:00",
-          "url": "https://www.meetup.com/mamaroneck-nerds/events/317198103/",
-          "venue": "Marlowe Ales (139 Hoyt Ave, Suite A, Mamaroneck, NY)",
+          "name": "Look Up! The Hidden History of NYC's Wooden Water Towers",
+          "date": "2026-11-15T16:00:00+00:00",
+          "url": "https://www.meetup.com/newyorkadventureclub/events/316946082/",
+          "venue": "The High Line (New York, NY 10011, USA, New York, NY)",
           "venue_unknown": false,
-          "address": "139 Hoyt Ave, Suite A, Mamaroneck, NY, Mamaroneck, NY",
+          "address": "New York, NY 10011, USA, New York, NY, New York, NY",
           "lat": null,
           "lng": null,
           "price": "Free",
-          "description": "Mostly pop culture trivia. Good pub food and beer. Wine, mixed drinks, and non-alcohol options available.",
-          "category": "gaming"
+          "description": "Tickets: $39.98 (advance registration required) Click the link below to officially register for this experience: (https://www.nyadventureclub.com/event/2003011304732) Equal parts engineering mar",
+          "category": "community"
         },
         {
           "name": "Sicilian Wine Tasting in NYC: Experience Sicily Through Wine & Trivia",
@@ -313508,19 +313534,6 @@
           "lng": null,
           "price": "Free",
           "description": "Welcome to “Skeptic Dinners,” a series of events facilitated by Prof. (https://figsinwintertime.substack.com/), a philosopher and biologist at the City College of New York. The idea is similar to that of the",
-          "category": "community"
-        },
-        {
-          "name": "Real Estate Industry Networking",
-          "date": "2026-11-18T23:30:00+00:00",
-          "url": "https://www.meetup.com/social-mingling/events/317187789/",
-          "venue": "Tap Haus 33 (14 E 33rd St, New York, NY 10016, USA, New York, NY)",
-          "venue_unknown": false,
-          "address": "14 E 33rd St, New York, NY 10016, USA, New York, NY, New York, NY",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "For tickets and information: (https://www.eventbrite.com/e/1983567060474) IMPORTANT NOTE: CLICKING THE RSVP AND PAY ORGANIZER BUTTON ON MEETUP DOES NOT GET YOU A TICKET/ SPOT. YOU HAVE TO CLICK THE LINK",
           "category": "community"
         },
         {
@@ -313576,19 +313589,6 @@
           "category": "community"
         },
         {
-          "name": "Drinking Skeptically",
-          "date": "2026-11-19T00:00:00+00:00",
-          "url": "https://www.meetup.com/the-nycskeptics-meetup-group/events/315817310/",
-          "venue": "12th Street Ale House (192 2nd Ave, New York, NY)",
-          "venue_unknown": false,
-          "address": "192 2nd Ave, New York, NY, New York, NY",
-          "lat": null,
-          "lng": null,
-          "price": "Free",
-          "description": "Drinking Skeptically is New York City Skeptics' monthly social gathering—a relaxed evening where skeptics, science enthusiasts, critical thinkers, and the intellectually curious meet for conversation, friendship, and community. Whether you're in",
-          "category": "community"
-        },
-        {
           "name": "Visit to Poster House",
           "date": "2026-11-22T18:30:00+00:00",
           "url": "https://www.meetup.com/group-carpe-diem/events/317145463/",
@@ -313599,6 +313599,19 @@
           "lng": null,
           "price": "Free",
           "description": "Every third Sunday of the month, Poster House offers free access to their exhibits on display. Let's take advantage of this and explore the museum. (https://posterhouse.org/exhibitions/) When you arrive, look",
+          "category": "community"
+        },
+        {
+          "name": "Food For Thought (F4T)",
+          "date": "2026-11-22T17:00:00+00:00",
+          "url": "https://www.meetup.com/cfinyc/events/313156137/",
+          "venue": "Phebe's Tavern & Grill (359 Bowery, New York, NY)",
+          "venue_unknown": false,
+          "address": "359 Bowery, New York, NY, New York, NY",
+          "lat": null,
+          "lng": null,
+          "price": "Free",
+          "description": "Food For Thought (F4T) is a friendly weekend brunch for people who enjoy discussing serious and \"serious\" topics with other smart, engaging people. We welcome everyone, whether you are a card-carrying philosopher or are maybe not quite sure who Plato",
           "category": "community"
         },
         {
@@ -313759,8 +313772,8 @@
         }
       ],
       "error": null,
-      "duration": 1.68,
-      "cached": true
+      "duration": 8.08,
+      "cached": false
     },
     {
       "venue": "Meetup: Dungeons & Dragons",
@@ -338813,7 +338826,7 @@
       ],
       "error": null,
       "duration": 9.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Drag Bingo",
@@ -339420,7 +339433,7 @@
       ],
       "error": null,
       "duration": 7.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Ping Pong",
@@ -340079,7 +340092,7 @@
       ],
       "error": null,
       "duration": 7.6,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Pilates",
@@ -340582,7 +340595,7 @@
       ],
       "error": null,
       "duration": 18.84,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Outdoor Workouts",
@@ -341332,7 +341345,7 @@
       ],
       "error": null,
       "duration": 10.18,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bootcamp",
@@ -342030,7 +342043,7 @@
       ],
       "error": null,
       "duration": 25.5,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: HIIT",
@@ -342650,7 +342663,7 @@
       ],
       "error": null,
       "duration": 23.97,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Calisthenics",
@@ -343218,7 +343231,7 @@
       ],
       "error": null,
       "duration": 15.63,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Boxing",
@@ -343916,7 +343929,7 @@
       ],
       "error": null,
       "duration": 17.34,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Martial Arts",
@@ -344523,7 +344536,7 @@
       ],
       "error": null,
       "duration": 18.19,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Jiu Jitsu",
@@ -345117,7 +345130,7 @@
       ],
       "error": null,
       "duration": 16.85,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Fencing",
@@ -345789,7 +345802,7 @@
       ],
       "error": null,
       "duration": 22.55,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Archery",
@@ -346422,7 +346435,7 @@
       ],
       "error": null,
       "duration": 7.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Squash",
@@ -347016,7 +347029,7 @@
       ],
       "error": null,
       "duration": 7.19,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Golf",
@@ -347662,7 +347675,7 @@
       ],
       "error": null,
       "duration": 23.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Rowing",
@@ -348295,7 +348308,7 @@
       ],
       "error": null,
       "duration": 24.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Sailing",
@@ -348915,7 +348928,7 @@
       ],
       "error": null,
       "duration": 16.9,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Surfing",
@@ -349535,7 +349548,7 @@
       ],
       "error": null,
       "duration": 25.98,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Hiking",
@@ -350584,7 +350597,7 @@
       ],
       "error": null,
       "duration": 30.98,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Free Yoga",
@@ -351477,7 +351490,7 @@
       ],
       "error": null,
       "duration": 33.14,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Yoga in the Park",
@@ -352214,7 +352227,7 @@
       ],
       "error": null,
       "duration": 31.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tai Chi",
@@ -352938,7 +352951,7 @@
       ],
       "error": null,
       "duration": 33.33,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Breathwork",
@@ -353454,7 +353467,7 @@
       ],
       "error": null,
       "duration": 31.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Sauna & Cold Plunge",
@@ -354035,7 +354048,7 @@
       ],
       "error": null,
       "duration": 30.16,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Speed Dating",
@@ -354577,7 +354590,7 @@
       ],
       "error": null,
       "duration": 30.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Dating",
@@ -355080,7 +355093,7 @@
       ],
       "error": null,
       "duration": 29.15,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Gay Speed Dating",
@@ -355609,7 +355622,7 @@
       ],
       "error": null,
       "duration": 30.03,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Dinner Parties",
@@ -356008,7 +356021,7 @@
       ],
       "error": null,
       "duration": 31.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Supper Clubs",
@@ -356160,7 +356173,7 @@
       ],
       "error": null,
       "duration": 27.61,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Cooking Classes",
@@ -356325,15 +356338,15 @@
       ],
       "error": null,
       "duration": 27.34,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Coffee Meetups",
       "url": "https://www.meetup.com/find/?keywords=coffee&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=coffee&location=us--ny--New%20Yor",
-      "duration": 21.19,
-      "cached": false
+      "error": null,
+      "duration": 17.21,
+      "cached": true
     },
     {
       "venue": "Meetup: Picnics",
@@ -356964,105 +356977,105 @@
           "category": "community"
         }
       ],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=picnic&location=us--ny--New%20Yor (serving stale cache)",
-      "duration": 20.41,
+      "error": null,
+      "duration": 5.75,
       "cached": true
     },
     {
       "venue": "Meetup: Networking",
       "url": "https://www.meetup.com/find/?keywords=networking&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=networking&location=us--ny--New%2",
-      "duration": 20.45,
-      "cached": false
+      "error": null,
+      "duration": 13.72,
+      "cached": true
     },
     {
       "venue": "Meetup: Founders & Startups",
       "url": "https://www.meetup.com/find/?keywords=startup&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=startup&location=us--ny--New%20Yo",
-      "duration": 20.36,
-      "cached": false
+      "error": null,
+      "duration": 13.59,
+      "cached": true
     },
     {
       "venue": "Meetup: Professional Women",
       "url": "https://www.meetup.com/find/?keywords=women%20professionals&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=women%20professionals&location=us",
-      "duration": 19.6,
-      "cached": false
+      "error": null,
+      "duration": 13.51,
+      "cached": true
     },
     {
       "venue": "Meetup: Expat Meetups",
       "url": "https://www.meetup.com/find/?keywords=expat&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=expat&location=us--ny--New%20York",
-      "duration": 19.12,
-      "cached": false
+      "error": null,
+      "duration": 12.34,
+      "cached": true
     },
     {
       "venue": "Meetup: Parents & Kids",
       "url": "https://www.meetup.com/find/?keywords=parents&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=parents&location=us--ny--New%20Yo",
-      "duration": 15.49,
-      "cached": false
+      "error": null,
+      "duration": 11.53,
+      "cached": true
     },
     {
       "venue": "Meetup: Family Activities",
       "url": "https://www.meetup.com/find/?keywords=family&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=family&location=us--ny--New%20Yor",
-      "duration": 14.71,
-      "cached": false
+      "error": null,
+      "duration": 10.81,
+      "cached": true
     },
     {
       "venue": "Meetup: Moms Groups",
       "url": "https://www.meetup.com/find/?keywords=moms&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=moms&location=us--ny--New%20York&",
-      "duration": 14.26,
-      "cached": false
+      "error": null,
+      "duration": 11.93,
+      "cached": true
     },
     {
       "venue": "Meetup: Dance Classes",
       "url": "https://www.meetup.com/find/?keywords=dance%20class&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=dance%20class&location=us--ny--Ne",
-      "duration": 13.51,
-      "cached": false
+      "error": null,
+      "duration": 9.06,
+      "cached": true
     },
     {
       "venue": "Meetup: Hip Hop Dance",
       "url": "https://www.meetup.com/find/?keywords=hip%20hop%20dance&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=hip%20hop%20dance&location=us--ny",
-      "duration": 12.96,
-      "cached": false
+      "error": null,
+      "duration": 9.0,
+      "cached": true
     },
     {
       "venue": "Meetup: Contra Dance",
       "url": "https://www.meetup.com/find/?keywords=contra%20dance&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=contra%20dance&location=us--ny--N",
-      "duration": 12.45,
-      "cached": false
+      "error": null,
+      "duration": 10.12,
+      "cached": true
     },
     {
       "venue": "Meetup: Folk Dance",
       "url": "https://www.meetup.com/find/?keywords=folk%20dance&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=folk%20dance&location=us--ny--New",
-      "duration": 7.42,
-      "cached": false
+      "error": null,
+      "duration": 5.95,
+      "cached": true
     },
     {
       "venue": "Meetup: Belly Dance",
       "url": "https://www.meetup.com/find/?keywords=belly%20dance&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=belly%20dance&location=us--ny--Ne",
-      "duration": 7.34,
-      "cached": false
+      "error": null,
+      "duration": 4.15,
+      "cached": true
     },
     {
       "venue": "Meetup: West Coast Swing",
@@ -357407,8 +357420,8 @@
           "category": "community"
         }
       ],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=west%20coast%20swing&location=us- (serving stale cache)",
-      "duration": 7.48,
+      "error": null,
+      "duration": 3.07,
       "cached": true
     },
     {
@@ -357702,113 +357715,113 @@
           "category": "dance"
         }
       ],
-      "error": "all 2 Meetup window fetches failed: 503 Server Error: Internal Server Error for url: https://www.meetup.com/find/?keywords=kizomba&location=us--ny--New%20Yo (serving stale cache)",
-      "duration": 6.62,
+      "error": null,
+      "duration": 3.45,
       "cached": true
     },
     {
       "venue": "Meetup: Zouk",
       "url": "https://www.meetup.com/find/?keywords=zouk&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 5.17,
-      "cached": false
+      "error": null,
+      "duration": 3.7,
+      "cached": true
     },
     {
       "venue": "Meetup: Ecstatic Dance",
       "url": "https://www.meetup.com/find/?keywords=ecstatic%20dance&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 4.7,
-      "cached": false
+      "error": null,
+      "duration": 2.71,
+      "cached": true
     },
     {
       "venue": "Meetup: Pole Dance",
       "url": "https://www.meetup.com/find/?keywords=pole%20dance&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 2.1,
-      "cached": false
+      "error": null,
+      "duration": 0.37,
+      "cached": true
     },
     {
       "venue": "Meetup: Roller Skating",
       "url": "https://www.meetup.com/find/?keywords=roller%20skating&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 1.66,
-      "cached": false
+      "error": null,
+      "duration": 1.86,
+      "cached": true
     },
     {
       "venue": "Meetup: Figure Drawing",
       "url": "https://www.meetup.com/find/?keywords=figure%20drawing&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 1.56,
-      "cached": false
+      "error": null,
+      "duration": 1.67,
+      "cached": true
     },
     {
       "venue": "Meetup: Painting",
       "url": "https://www.meetup.com/find/?keywords=painting&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 1.22,
-      "cached": false
+      "error": null,
+      "duration": 1.76,
+      "cached": true
     },
     {
       "venue": "Meetup: Paint & Sip",
       "url": "https://www.meetup.com/find/?keywords=paint%20and%20sip&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 1.13,
-      "cached": false
+      "error": null,
+      "duration": 1.72,
+      "cached": true
     },
     {
       "venue": "Meetup: Improv Classes",
       "url": "https://www.meetup.com/find/?keywords=improv%20class&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.97,
-      "cached": false
+      "error": null,
+      "duration": 1.56,
+      "cached": true
     },
     {
       "venue": "Meetup: Acting",
       "url": "https://www.meetup.com/find/?keywords=acting&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.88,
-      "cached": false
+      "error": null,
+      "duration": 1.52,
+      "cached": true
     },
     {
       "venue": "Meetup: Singing Lessons",
       "url": "https://www.meetup.com/find/?keywords=singing&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.79,
-      "cached": false
+      "error": null,
+      "duration": 1.49,
+      "cached": true
     },
     {
       "venue": "Meetup: Drum Circles",
       "url": "https://www.meetup.com/find/?keywords=drum%20circle&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.69,
-      "cached": false
+      "error": null,
+      "duration": 0.36,
+      "cached": true
     },
     {
       "venue": "Meetup: Silent Disco",
       "url": "https://www.meetup.com/find/?keywords=silent%20disco&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.52,
-      "cached": false
+      "error": null,
+      "duration": 1.72,
+      "cached": true
     },
     {
       "venue": "Meetup: Raves",
       "url": "https://www.meetup.com/find/?keywords=rave&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.45,
-      "cached": false
+      "error": null,
+      "duration": 1.49,
+      "cached": true
     },
     {
       "venue": "Meetup: Flea Markets",
@@ -357822,73 +357835,73 @@
       "venue": "Meetup: Walking Tours",
       "url": "https://www.meetup.com/find/?keywords=walking%20tour&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.44,
-      "cached": false
+      "error": null,
+      "duration": 1.49,
+      "cached": true
     },
     {
       "venue": "Meetup: Ghost Tours",
       "url": "https://www.meetup.com/find/?keywords=ghost%20tour&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.34,
-      "cached": false
+      "error": null,
+      "duration": 1.51,
+      "cached": true
     },
     {
       "venue": "Meetup: Gardening",
       "url": "https://www.meetup.com/find/?keywords=gardening&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.24,
-      "cached": false
+      "error": null,
+      "duration": 1.47,
+      "cached": true
     },
     {
       "venue": "Meetup: Beach Cleanups",
       "url": "https://www.meetup.com/find/?keywords=cleanup&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.09,
-      "cached": false
+      "error": null,
+      "duration": 1.5,
+      "cached": true
     },
     {
       "venue": "Meetup: Spirituality",
       "url": "https://www.meetup.com/find/?keywords=spiritual&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.01,
-      "cached": false
+      "error": null,
+      "duration": 1.47,
+      "cached": true
     },
     {
       "venue": "Meetup: Tarot & Astrology",
       "url": "https://www.meetup.com/find/?keywords=astrology&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 1.48,
+      "cached": true
     },
     {
       "venue": "Meetup: Magic: The Gathering",
       "url": "https://www.meetup.com/find/?keywords=magic%20the%20gathering&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.37,
+      "cached": true
     },
     {
       "venue": "Meetup: Escape Rooms",
       "url": "https://www.meetup.com/find/?keywords=escape%20room&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 1.51,
+      "cached": true
     },
     {
       "venue": "Meetup: Puzzle Hunts",
       "url": "https://www.meetup.com/find/?keywords=puzzle&location=us--ny--New%20York&source=EVENTS&eventType=inPerson",
       "events": [],
-      "error": "skipped: meetup.com failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 1.46,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Run Clubs",
