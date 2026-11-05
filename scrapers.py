@@ -76,7 +76,8 @@ def _source_fingerprint(v):
     if not isinstance(v, dict):
         return None
     fn = v.get("scraper")
-    return f"{v.get('url')}|{getattr(fn, '__name__', fn)}"
+    kw = v.get("kwargs")
+    return f"{v.get('url')}|{getattr(fn, '__name__', fn)}" + (f"|{json.dumps(kw, sort_keys=True)}" if kw else "")
 
 
 def _load_venue_cache(vname, max_age=None, src=None):
@@ -5044,6 +5045,15 @@ def scrape_qed_astoria(url, ua):
 
 
 _TRIBE_VENUE_DEFAULTS = {
+    "green-wood.com": ("Green-Wood Cemetery", "500 25th St, Brooklyn, NY", "Greenwood Heights", 40.6584, -73.9944, "outdoors"),
+    "bargemusic.org": ("Bargemusic", "Fulton Ferry Landing, Brooklyn, NY", "DUMBO", 40.7036, -73.9945, "music"),
+    "statenislandmuseum.org": ("Staten Island Museum", "1000 Richmond Terrace, Staten Island, NY", "Snug Harbor", 40.6437, -74.1027, "art"),
+    "cmom.org": ("Children's Museum of Manhattan", "212 W 83rd St, New York, NY", "Upper West Side", 40.7857, -73.9773, "family"),
+    "sichildrensmuseum.org": ("Staten Island Children's Museum", "1000 Richmond Terrace, Staten Island, NY", "Snug Harbor", 40.6437, -74.1027, "family"),
+    "nycchildrenstheater.org": ("New York City Children's Theater", None, None, None, None, "family"),
+    "posterhouse.org": ("Poster House", "119 W 23rd St, New York, NY", "Chelsea", 40.7431, -73.9939, "art"),
+    "mocanyc.org": ("Museum of Chinese in America", "215 Centre St, New York, NY", "Chinatown", 40.7194, -73.9993, "art"),
+    "riversideparknyc.org": ("Riverside Park Conservancy", None, "Upper West Side", None, None, "outdoors"),
     "comedyvillage.com": ("Comedy Village", "352 W 44th St, New York, NY", "Hell's Kitchen", 40.7593, -73.9905, "comedy"),
     "movingimage.org": ("Museum of the Moving Image", "36-01 35th Ave, Queens, NY", "Astoria", 40.7563, -73.9239, "film"),
     "queensbotanical.org": ("Queens Botanical Garden", "43-50 Main St, Queens, NY", "Flushing", 40.7510, -73.8290, "outdoors"),
@@ -5062,9 +5072,11 @@ def scrape_tribe_events_api(url, ua):
         sep = "&" if "?" in req_url else "?"
         req_url = f"{req_url}{sep}start_date={now_et.strftime('%Y-%m-%d')}"
 
-    default_vname = "Queens Cultural Center"
-    default_addr = "Queens, NY"
-    default_hood = "Queens"
+    # Unknown domains take venue/address from each event's own venue record (the old
+    # "Queens Cultural Center" fallback mislabeled Brooklyn and Staten Island sources).
+    default_vname = None
+    default_addr = None
+    default_hood = None
     default_lat = None
     default_lng = None
     default_cat = "community"
@@ -5115,12 +5127,24 @@ def scrape_tribe_events_api(url, ua):
             desc_raw = item.get("excerpt") or item.get("description") or ""
             desc = clean_description(desc_raw)
 
-            v_obj = item.get("venue")
+            v_obj = item.get("venue") if isinstance(item.get("venue"), dict) else {}
             v_name = default_vname
-            if isinstance(v_obj, dict) and v_obj.get("venue"):
+            ev_addr, ev_lat, ev_lng = default_addr, default_lat, default_lng
+            if v_obj.get("venue"):
                 cand_v = BeautifulSoup(html.unescape(v_obj["venue"]), "html.parser").get_text(" ", strip=True)
-                if cand_v and default_vname.lower() not in cand_v.lower():
+                if not default_vname:
+                    v_name = cand_v or None
+                elif cand_v and re.sub(r"\W", "", default_vname.lower()) not in re.sub(r"\W", "", cand_v.lower()) \
+                        and cand_v.lower() not in ("various", "online", "tbd", "tba"):
                     v_name = f"{default_vname} ({cand_v})"
+            if not default_addr and v_obj.get("address"):
+                tail = " ".join(x for x in (v_obj.get("stateprovince") or v_obj.get("state") or "NY", v_obj.get("zip") or "") if x)
+                ev_addr = ", ".join(x for x in (html.unescape(v_obj["address"]).strip(), v_obj.get("city") or "", tail) if x)
+            if default_lat is None:
+                try:
+                    ev_lat, ev_lng = float(v_obj["geo_lat"]), float(v_obj["geo_lng"])
+                except (KeyError, TypeError, ValueError):
+                    ev_lat = ev_lng = None
 
             ev_dict = {
                 "name": title,
@@ -5128,14 +5152,16 @@ def scrape_tribe_events_api(url, ua):
                 "url": ev_url,
                 "venue": v_name,
                 "price": price,
-                "category": guess_category(f"{title} {desc}", default_cat, venue=default_vname),
+                "category": guess_category(f"{title} {desc}", default_cat, venue=v_name or default_vname),
                 "description": desc,
-                "address": default_addr,
-                "neighborhood": default_hood,
             }
-            if default_lat is not None and default_lng is not None:
-                ev_dict["lat"] = default_lat
-                ev_dict["lng"] = default_lng
+            if ev_addr:
+                ev_dict["address"] = ev_addr
+            if default_hood:
+                ev_dict["neighborhood"] = default_hood
+            if ev_lat is not None and ev_lng is not None:
+                ev_dict["lat"] = ev_lat
+                ev_dict["lng"] = ev_lng
             events.append(ev_dict)
     except Exception as e:
         print(f"Error scraping Tribe Events API ({url}): {e}")
@@ -5819,6 +5845,97 @@ def scrape_wix_events(url, ua):
             if ev.get("description"):
                 e["description"] = clean_description(str(ev["description"])[:600])
             events.append(e)
+    return _dedupe_future(events)
+
+
+_MONTHS_RE = r"(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sep(?:t(?:ember)?)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)"
+_CARD_DATE_RE = re.compile(_MONTHS_RE + r"\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b(?:,?\s+(20\d\d))?", re.I)
+_CARD_NUMDATE_RE = re.compile(r"\b(1[0-2]|0?[1-9])/([0-3]?\d)(?:/(20\d\d|\d\d))?\b")
+_CARD_TIME_RE = re.compile(r"\b(1[0-2]|0?[1-9])(?::([0-5]\d))?\s*([ap])\.?\s?m\.?\b", re.I)
+_CARD_DEAD_TITLES = re.compile(r"cancel+ed|postponed|\bclosed\b|closure|deadline|sold out\b.*waitlist", re.I)
+_CARD_SKIP_TITLES = re.compile(r"^(buy|get|book|more|learn|read|view|see|details|tickets?|register|rsvp|info|share|add to|sign up|reserve|calendar|next|previous|load more|\W*$)", re.I)
+
+
+def _card_date(text, today):
+    """First month-day (or m/d) date in text -> date, inferring the year when absent."""
+    m = _CARD_DATE_RE.search(text)
+    if m:
+        mon = datetime.strptime(m.group(1)[:3].title(), "%b").month
+        day, year = int(m.group(2)), int(m.group(3)) if m.group(3) else None
+    else:
+        m = _CARD_NUMDATE_RE.search(text)
+        if not m:
+            return None
+        mon, day = int(m.group(1)), int(m.group(2))
+        year = int(m.group(3)) if m.group(3) else None
+        if year and year < 100:
+            year += 2000
+    try:
+        if year:
+            return datetime(year, mon, day).date()
+        d = datetime(today.year, mon, day).date()
+        return datetime(today.year + 1, mon, day).date() if d < today - timedelta(days=60) else d
+    except ValueError:
+        return None
+
+
+def scrape_html_cards(url, ua, link_re=None, max_up=5, require_time=False, venue=None, address=None):
+    """Heuristic listing parser for server-rendered calendars with no structured data.
+
+    For each in-site link, climb to the nearest ancestor block (<= max_up levels) whose text
+    holds a date; take the title from the block's heading (or the link text) and the first
+    clock time in the block (noon placeholder when there is none). Ranges like 'Oct 26 -
+    Nov 9' keep their first date, so ongoing exhibitions are filtered by the date check."""
+    soup = fetch_soup(url, ua)
+    host = urlparse(url).netloc.replace("www.", "")
+    pat = re.compile(link_re) if link_re else None
+    today = datetime.now(EASTERN).date()
+    events, seen_blocks = [], set()
+    for a in soup.find_all("a", href=True):
+        href = urljoin(url, a["href"].split("#")[0])
+        p = urlparse(href)
+        if p.netloc.replace("www.", "") != host or href.rstrip("/") == url.rstrip("/"):
+            continue
+        if pat and not pat.search(p.path):
+            continue
+        block = a
+        found = None
+        for _ in range(max_up):
+            block = block.parent
+            if block is None or block.name in ("body", "html", "main"):
+                break
+            text = block.get_text(" ", strip=True)
+            if len(text) > 1200:
+                break
+            d = _card_date(text, today)
+            if d:
+                found = (block, text, d)
+                break
+        if not found:
+            continue
+        block, text, d = found
+        if id(block) in seen_blocks:
+            continue
+        heading = block.find(re.compile(r"^h[1-6]$")) or block.find(class_=re.compile(r"title|name|heading", re.I))
+        title = (heading.get_text(" ", strip=True) if heading else "") or a.get_text(" ", strip=True)
+        if not title or _CARD_SKIP_TITLES.match(title) or _CARD_DATE_RE.fullmatch(title.strip()):
+            title = a.get("aria-label") or a.get("title") or ""
+            title = re.sub(r"^(buy tickets for|more information about|tickets for)\s+", "", title, flags=re.I)
+        title = title.strip()
+        if len(title) < 3 or _CARD_SKIP_TITLES.match(title) or _CARD_DEAD_TITLES.search(title):
+            continue
+        seen_blocks.add(id(block))
+        tm = _CARD_TIME_RE.search(text)
+        if require_time and not tm:
+            continue
+        hh, mm = (int(tm.group(1)) % 12 + (12 if tm.group(3).lower() == "p" else 0), int(tm.group(2) or 0)) if tm else (12, 0)
+        local = datetime(d.year, d.month, d.day, hh, mm, tzinfo=EASTERN)
+        e = {"name": title[:200], "date": local.astimezone(timezone.utc).isoformat(), "url": href, "venue": venue, "price": None}
+        if address:
+            e["address"] = address
+        if re.search(r"\bfree\b", text, re.I) and not re.search(r"\$\s?\d", text):
+            e["price"] = "Free"
+        events.append(e)
     return _dedupe_future(events)
 
 
@@ -6852,7 +6969,7 @@ _ALL_VENUES = [
     {"name": "Songkick NYC Concerts", "url": "https://www.songkick.com/metro-areas/7644-us-new-york-nyc", "ua": UA_CHROME, "scraper": scrape_songkick_metro, "default_category": "music"},
     {"name": "Partiful NYC", "url": "https://partiful.com/explore/l/nyc/events", "ua": UA_CHROME, "scraper": scrape_partiful, "default_category": "community"},
     {"name": "NYC Parks Hikes, Rangers & Outdoor Programs", "url": "https://www.nycgovparks.org/events/hiking", "ua": UA_CHROME, "scraper": scrape_nyc_parks_categories, "default_category": "outdoors"},
-    {"name": "Riverside Park Conservancy", "url": "https://www.riversideparknyc.org/events", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
+    {"name": "Riverside Park Conservancy", "url": "https://riversideparknyc.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Prospect Park Alliance", "url": "https://www.prospectpark.org/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Brooklyn Paramount (Official Calendar)", "url": "https://www.brooklynparamount.com/shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
 
@@ -6928,6 +7045,24 @@ _ALL_VENUES = [
     {"name": "Green-Wood Cemetery", "url": "https://www.green-wood.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Bargemusic", "url": "https://www.bargemusic.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Staten Island Museum", "url": "https://www.statenislandmuseum.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
+    {"name": "Children's Museum of Manhattan", "url": "https://cmom.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "family"},
+    {"name": "Staten Island Children's Museum", "url": "https://sichildrensmuseum.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "family"},
+    {"name": "New York City Children's Theater", "url": "https://nycchildrenstheater.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "family"},
+    {"name": "Poster House", "url": "https://posterhouse.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
+    {"name": "Museum of Chinese in America", "url": "https://www.mocanyc.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
+    {"name": "Whitney Museum of American Art", "url": "https://whitney.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/events/[^/]+$", "venue": "Whitney Museum", "address": "99 Gansevoort St, New York, NY 10014"}},
+    {"name": "Brooklyn Botanic Garden", "url": "https://www.bbg.org/visit/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "/(event|classes)/", "venue": "Brooklyn Botanic Garden", "address": "990 Washington Ave, Brooklyn, NY 11225"}},
+    {"name": "Hudson Yards Events", "url": "https://www.hudsonyardsnewyork.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "community", "kwargs": {"link_re": "^/events/[^/]+$", "venue": "Hudson Yards", "address": "20 Hudson Yards, New York, NY 10001"}},
+    {"name": "Wave Hill", "url": "https://www.wavehill.org/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "^/calendar/[^/?]+$", "venue": "Wave Hill", "address": "4900 Independence Ave, Bronx, NY 10471"}},
+    {"name": "Museum of the City of New York", "url": "https://www.mcny.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/event/", "venue": "Museum of the City of New York", "address": "1220 Fifth Ave, New York, NY 10029"}},
+    {"name": "Cooper Hewitt", "url": "https://www.cooperhewitt.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "/event/", "venue": "Cooper Hewitt, Smithsonian Design Museum", "address": "2 E 91st St, New York, NY 10128"}},
+    {"name": "Bronx Museum of the Arts", "url": "https://www.bronxmuseum.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/event/", "venue": "Bronx Museum of the Arts", "address": "1040 Grand Concourse, Bronx, NY 10456"}},
+    {"name": "Kings Theatre", "url": "https://www.kingstheatre.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/events/", "venue": "Kings Theatre", "address": "1027 Flatbush Ave, Brooklyn, NY 11226"}},
+    {"name": "BAM (Brooklyn Academy of Music)", "url": "https://www.bam.org/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"link_re": "^/[a-z-]+/20\\d\\d/[^/]+$", "venue": "BAM", "address": "30 Lafayette Ave, Brooklyn, NY 11217"}},
+    {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
+    {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
+    {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
+    {"name": "Pelham Bay Park Conservancy", "url": "https://www.pelhambaypark.org/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
     {"name": "NYC Parades, Races & Street Festivals", "url": "https://data.cityofnewyork.us/resource/tvpp-9vvx.json", "ua": UA_CHROME, "scraper": scrape_nyc_permitted_events, "default_category": "community"},
     {"name": "Louis Armstrong House Museum", "url": "https://www.louisarmstronghouse.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Queens Theatre", "url": "https://queenstheatre.org/events/", "ua": UA_CHROME, "scraper": scrape_queens_theatre, "default_category": "theater"},
@@ -7610,14 +7745,14 @@ def _reset_host_breakers():
 def _run_scraper(v):
     key = _host_key(v.get("url"))
     if key is None:
-        return v["scraper"](v["url"], v["ua"])
+        return v["scraper"](v["url"], v["ua"], **v.get("kwargs", {}))
     with _HOST_SEMAPHORES[key]:
         with _host_failures_lock:
             tripped = _host_failures.get(key, 0) >= HOST_FAILURE_LIMIT
         if tripped:
             raise RuntimeError(f"skipped: {key} failed {HOST_FAILURE_LIMIT}+ times in a row this run")
         try:
-            result = v["scraper"](v["url"], v["ua"])
+            result = v["scraper"](v["url"], v["ua"], **v.get("kwargs", {}))
         except Exception:
             with _host_failures_lock:
                 _host_failures[key] = _host_failures.get(key, 0) + 1
