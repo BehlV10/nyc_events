@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T08:35:02.333879+00:00",
+  "generated_at": "2026-11-05T08:56:35.984524+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -43461,7 +43461,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.92,
+      "duration": 0.9,
       "cached": false
     },
     {
@@ -60530,7 +60530,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.42,
+      "duration": 0.33,
       "cached": false
     },
     {
@@ -60785,7 +60785,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.23,
       "cached": false
     },
     {
@@ -62729,7 +62729,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.4,
+      "duration": 0.38,
       "cached": false
     },
     {
@@ -67929,7 +67929,7 @@
       ],
       "error": null,
       "duration": 0.67,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Stand Up NY",
@@ -100116,7 +100116,7 @@
       ],
       "error": null,
       "duration": 0.45,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Scandinavia House",
@@ -100632,7 +100632,7 @@
       ],
       "error": null,
       "duration": 0.48,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Ukrainian Institute of America",
@@ -100680,7 +100680,7 @@
       ],
       "error": null,
       "duration": 1.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Austrian Cultural Forum",
@@ -100734,7 +100734,7 @@
       ],
       "error": null,
       "duration": 2.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Fraunces Tavern Museum",
@@ -100775,7 +100775,7 @@
       ],
       "error": null,
       "duration": 0.61,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Poetry Project (St. Mark's Church)",
@@ -100838,7 +100838,7 @@
       ],
       "error": null,
       "duration": 0.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Poetry Society of America",
@@ -100887,7 +100887,7 @@
       ],
       "error": null,
       "duration": 0.31,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Printed Matter",
@@ -100959,7 +100959,7 @@
       ],
       "error": null,
       "duration": 1.13,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Noguchi Museum (own calendar)",
@@ -101121,7 +101121,7 @@
       ],
       "error": null,
       "duration": 0.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Industry City",
@@ -105095,7 +105095,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.32,
+      "duration": 0.31,
       "cached": false
     },
     {
@@ -105305,7 +105305,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.31,
+      "duration": 0.27,
       "cached": false
     },
     {
@@ -105313,7 +105313,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.36,
+      "duration": 0.3,
       "cached": false
     },
     {
@@ -106357,7 +106357,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.48,
+      "duration": 0.3,
       "cached": false
     },
     {
@@ -107775,7 +107775,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.53,
+      "duration": 0.41,
       "cached": false
     },
     {
@@ -108605,7 +108605,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.6,
+      "duration": 0.55,
       "cached": false
     },
     {
@@ -117167,8 +117167,8 @@
         }
       ],
       "error": null,
-      "duration": 0.33,
-      "cached": true
+      "duration": 0.8,
+      "cached": false
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -162128,8 +162128,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-dl/ (serving stale cache)",
-      "duration": 0.16,
+      "error": null,
+      "duration": 3.12,
       "cached": true
     },
     {
@@ -162995,7 +162995,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.52,
+      "duration": 0.46,
       "cached": false
     },
     {
@@ -163003,7 +163003,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.66,
+      "duration": 0.73,
       "cached": false
     },
     {
@@ -163662,8 +163662,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/parade/ (serving stale cache)",
-      "duration": 0.15,
+      "error": null,
+      "duration": 2.75,
       "cached": true
     },
     {
@@ -164703,8 +164703,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--street-fair/ (serving stale cache)",
-      "duration": 0.05,
+      "error": null,
+      "duration": 2.32,
       "cached": true
     },
     {
@@ -165625,7 +165625,7 @@
       "events": [
         {
           "name": "Queens Fiber Arts Festival 2026",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T16:00:00+00:00",
           "url": "https://www.eventbrite.com/e/queens-fiber-arts-festival-2026-tickets-1999444139244",
           "venue": "King Manor Museum",
           "price": null,
@@ -165637,7 +165637,7 @@
         },
         {
           "name": "NYC Best Latin Party in Astoria Queens [2025]",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-07T04:00:00+00:00",
           "url": "https://www.eventbrite.com/e/nyc-best-latin-party-in-astoria-queens-2025-tickets-718872816947",
           "venue": "DOHA",
           "price": null,
@@ -165649,7 +165649,7 @@
         },
         {
           "name": "SOUTH BEACH SATURDAYS IN QUEENS NY",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-08T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/south-beach-saturdays-in-queens-ny-tickets-1999977576770",
           "venue": "SOUTH BEACH NEW YORK , Olympia Lounge and Club",
           "price": null,
@@ -165661,7 +165661,7 @@
         },
         {
           "name": "SOUTH BEACH ASTORIA SATURDAYS IN QUEENS NY",
-          "date": "2026-12-05T05:00:00+00:00",
+          "date": "2026-12-06T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/south-beach-astoria-saturdays-in-queens-ny-tickets-2003794421054",
           "venue": "SOUTH BEACH NEW YORK , Olympia Lounge and Club",
           "price": null,
@@ -165672,20 +165672,20 @@
           "category": "community"
         },
         {
-          "name": "Fantasy Fridays at Sd nightclub",
-          "date": "2026-11-06T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/fantasy-fridays-at-sd-nightclub-tickets-1956830315149",
-          "venue": "SD NIGHTCLUB",
+          "name": "Saturday November 14th 2026 : Rich Town Saturdays",
+          "date": "2026-11-15T04:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/saturday-november-14th-2026-rich-town-saturdays-tickets-2004258306548",
+          "venue": "Essence Restaurant",
           "price": null,
-          "lat": "40.7395023",
-          "lng": "-73.9426222",
-          "address": "51-07 27th Street, Queens, NY",
+          "lat": "40.7529174",
+          "lng": "-73.92364119999999",
+          "address": "36-21 Steinway Street, Queens, NY",
           "neighborhood": "Queens",
-          "category": "clubbing"
+          "category": "community"
         },
         {
           "name": "She Means Business Expo: Queens Edition",
-          "date": "2026-11-17T05:00:00+00:00",
+          "date": "2026-11-17T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/she-means-business-expo-queens-edition-tickets-2002436369084",
           "venue": "Vetro Restaurant & Lounge",
           "price": null,
@@ -165697,7 +165697,7 @@
         },
         {
           "name": "Agenda on Saturdays in Astoria Queens ladies are free",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-08T03:00:00+00:00",
           "url": "https://www.eventbrite.com/e/agenda-on-saturdays-in-astoria-queens-ladies-are-free-tickets-2003208418304",
           "venue": "Agenda Restaurant",
           "price": null,
@@ -165708,32 +165708,20 @@
           "category": "community"
         },
         {
-          "name": "Kids Pizza Making Class in Rego Park, Queens (Ages 3-12) – Sat Nov 14",
-          "date": "2026-11-14T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/kids-pizza-making-class-in-rego-park-queens-ages-3-12-sat-nov-14-tickets-2003519800657",
-          "venue": "Salsa Pizzeria Rego Park",
+          "name": "Fantasy Fridays at Sd nightclub",
+          "date": "2026-11-07T03:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/fantasy-fridays-at-sd-nightclub-tickets-1956830315149",
+          "venue": "SD NIGHTCLUB",
           "price": null,
-          "lat": "40.72142650000001",
-          "lng": "-73.8669829",
-          "address": "63-118 Woodhaven Blvd, Rego Park, NY",
-          "neighborhood": "Rego Park",
-          "category": "community"
-        },
-        {
-          "name": "Queens Job Fair - Queens Career Fair",
-          "date": "2026-11-16T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/queens-job-fair-queens-career-fair-registration-2003315163582",
-          "venue": "Queens",
-          "price": null,
-          "lat": "40.7432847",
-          "lng": "-73.8549518",
-          "address": "Job Fair, Queens, NY",
+          "lat": "40.7395023",
+          "lng": "-73.9426222",
+          "address": "51-07 27th Street, Queens, NY",
           "neighborhood": "Queens",
-          "category": "community"
+          "category": "clubbing"
         },
         {
           "name": "SOUTH BEACH SATURDAYS IN QUEENS NY",
-          "date": "2026-11-14T05:00:00+00:00",
+          "date": "2026-11-15T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/south-beach-saturdays-in-queens-ny-tickets-2003799978677",
           "venue": "SOUTH BEACH NEW YORK , Olympia Lounge and Club",
           "price": null,
@@ -165744,56 +165732,68 @@
           "category": "community"
         },
         {
-          "name": "Illusions The Drag Queen Show Queens - Drag Queen Dinner Show - Queens, NY",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/illusions-the-drag-queen-show-queens-drag-queen-dinner-show-queens-ny-tickets-1996742440390",
-          "venue": "Illusions the Drag Queen Show Queens NY",
+          "name": "Prime Astoria NYC Taco $2 Tuesday Party Birthdays Hiphop reggae soca free",
+          "date": "2026-11-11T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/prime-astoria-nyc-taco-2-tuesday-party-birthdays-hiphop-reggae-soca-free-tickets-2001031765878",
+          "venue": "Prime Astoria",
           "price": null,
-          "lat": "40.7413462",
-          "lng": "-73.881669",
-          "address": "3764 83rd, Elmhurst, NY",
-          "neighborhood": "Elmhurst",
-          "category": "theater"
+          "lat": "40.768617",
+          "lng": "-73.9106922",
+          "address": "40-06 Astoria Boulevard South, Queens, NY",
+          "neighborhood": "Queens",
+          "category": "clubbing"
         },
         {
-          "name": "SATURDAYS AT AGENDA (QUEENS)",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/saturdays-at-agenda-queens-tickets-1986371935932",
-          "venue": "Agenda Restaurant",
+          "name": "Kids Pizza Making Class in Rego Park, Queens (Ages 3-12) – Sat Nov 14",
+          "date": "2026-11-14T17:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/kids-pizza-making-class-in-rego-park-queens-ages-3-12-sat-nov-14-tickets-2003519800657",
+          "venue": "Salsa Pizzeria Rego Park",
           "price": null,
-          "lat": "40.7681599",
-          "lng": "-73.9205743",
-          "address": "28-18 31st Street, Queens, NY",
+          "lat": "40.72142650000001",
+          "lng": "-73.8669829",
+          "address": "63-118 Woodhaven Blvd, Rego Park, NY",
+          "neighborhood": "Rego Park",
+          "category": "family"
+        },
+        {
+          "name": "Saturday November 21st 2026 : Rich Town Saturdays",
+          "date": "2026-11-22T04:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/saturday-november-21st-2026-rich-town-saturdays-tickets-2004261656568",
+          "venue": "Essence Restaurant",
+          "price": null,
+          "lat": "40.7529174",
+          "lng": "-73.92364119999999",
+          "address": "36-21 Steinway Street, Queens, NY",
           "neighborhood": "Queens",
           "category": "community"
         },
         {
-          "name": "Diva Royale Drag Queen Show New York City, NY - Weekly Drag Queen Shows",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/diva-royale-drag-queen-show-new-york-city-ny-weekly-drag-queen-shows-tickets-731942789587",
-          "venue": "Harbor New York City",
+          "name": "Queens Job Fair - Queens Career Fair",
+          "date": "2026-11-16T16:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/queens-job-fair-queens-career-fair-registration-2003315163582",
+          "venue": "Queens",
           "price": null,
-          "lat": "40.7640706",
-          "lng": "-73.99755689999999",
-          "address": "621 West 46th Street, New York, NY",
-          "neighborhood": "New York",
-          "category": "theater"
+          "lat": "40.7432847",
+          "lng": "-73.8549518",
+          "address": "Job Fair, Queens, NY",
+          "neighborhood": "Queens",
+          "category": "services"
         },
         {
-          "name": "SATURDAYS AT SOUTH BEACH ASTORIA",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/saturdays-at-south-beach-astoria-tickets-2002902455160",
-          "venue": "Olympia / South Beach",
+          "name": "Kids Class! Ice Cream Sundae Decorating in Queens",
+          "date": "2026-11-05T21:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/kids-class-ice-cream-sundae-decorating-in-queens-tickets-2002395768647",
+          "venue": "Tipsy Scoop",
           "price": null,
-          "lat": "40.7702979",
-          "lng": "-73.909634",
-          "address": "23-44 Steinway Street, Queens, NY",
+          "lat": "40.77133339999999",
+          "lng": "-73.9083532",
+          "address": "38-15 23rd Avenue, Queens, NY",
           "neighborhood": "Queens",
-          "category": "community"
+          "category": "family"
         },
         {
           "name": "Stand Up Comedy at Grove 34!",
-          "date": "2026-11-13T05:00:00+00:00",
+          "date": "2026-11-14T00:30:00+00:00",
           "url": "https://www.eventbrite.com/e/stand-up-comedy-at-grove-34-tickets-2003972226876",
           "venue": "Grove 34",
           "price": null,
@@ -165804,8 +165804,32 @@
           "category": "comedy"
         },
         {
+          "name": "\"Celebrate festival of Lights Diwali on a walking food tour of Queens\"",
+          "date": "2026-11-07T16:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/celebrate-festival-of-lights-diwali-on-a-walking-food-tour-of-queens-tickets-2003241732949",
+          "venue": "Nepali Bhanchha Ghar",
+          "price": null,
+          "lat": "40.7471014",
+          "lng": "-73.8909012",
+          "address": "74-15 Roosevelt Avenue, Queens, NY",
+          "neighborhood": "Queens",
+          "category": "food"
+        },
+        {
+          "name": "Illusions The Drag Queen Show Queens - Drag Queen Dinner Show - Queens, NY",
+          "date": "2026-11-08T00:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/illusions-the-drag-queen-show-queens-drag-queen-dinner-show-queens-ny-tickets-1996742440390",
+          "venue": "Illusions the Drag Queen Show Queens NY",
+          "price": null,
+          "lat": "40.7413462",
+          "lng": "-73.881669",
+          "address": "3764 83rd, Elmhurst, NY",
+          "neighborhood": "Elmhurst",
+          "category": "theater"
+        },
+        {
           "name": "Queens Veteran Job Fair - Queens Career Fair",
-          "date": "2026-11-24T05:00:00+00:00",
+          "date": "2026-11-24T16:00:00+00:00",
           "url": "https://www.eventbrite.com/e/queens-veteran-job-fair-queens-career-fair-registration-2003482645525",
           "venue": "Queens",
           "price": null,
@@ -165813,11 +165837,23 @@
           "lng": "-73.8549518",
           "address": "Job Fair, Queens, NY",
           "neighborhood": "Queens",
+          "category": "services"
+        },
+        {
+          "name": "SATURDAYS AT AGENDA (QUEENS)",
+          "date": "2026-11-08T03:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/saturdays-at-agenda-queens-tickets-1986371935932",
+          "venue": "Agenda Restaurant",
+          "price": null,
+          "lat": "40.7681599",
+          "lng": "-73.9205743",
+          "address": "28-18 31st Street, Queens, NY",
+          "neighborhood": "Queens",
           "category": "community"
         },
         {
           "name": "PREMIERE SATURDAYS ( QUEENS )",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-08T03:00:00+00:00",
           "url": "https://www.eventbrite.com/e/premiere-saturdays-queens-tickets-2002644613950",
           "venue": "Agenda Restaurant",
           "price": null,
@@ -165829,8 +165865,8 @@
         }
       ],
       "error": null,
-      "duration": 3.59,
-      "cached": true
+      "duration": 3.04,
+      "cached": false
     },
     {
       "venue": "Bronx Cultural & Community Events",
@@ -166275,7 +166311,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 1.96,
+      "duration": 1.33,
       "cached": false
     },
     {
@@ -166961,8 +166997,8 @@
           "category": "party"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/parties/ (serving stale cache)",
-      "duration": 0.05,
+      "error": null,
+      "duration": 1.63,
       "cached": true
     },
     {
@@ -167588,8 +167624,8 @@
           "category": "art"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/art-festivals/ (serving stale cache)",
-      "duration": 0.07,
+      "error": null,
+      "duration": 2.63,
       "cached": true
     },
     {
@@ -167825,8 +167861,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/craft-fair/ (serving stale cache)",
-      "duration": 0.06,
+      "error": null,
+      "duration": 3.39,
       "cached": true
     },
     {
@@ -168079,8 +168115,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/columbus-circle/ (serving stale cache)",
-      "duration": 0.17,
+      "error": null,
+      "duration": 2.54,
       "cached": true
     },
     {
@@ -168280,8 +168316,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.05,
+      "error": null,
+      "duration": 2.84,
       "cached": true
     },
     {
@@ -168445,8 +168481,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.05,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -168562,8 +168598,8 @@
           "category": "outdoors"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.02,
+      "error": null,
+      "duration": 2.42,
       "cached": true
     },
     {
@@ -168665,7 +168701,7 @@
       "events": [
         {
           "name": "HOLIDAY LIGHTS CELEBRATION",
-          "date": "2026-12-03T05:00:00+00:00",
+          "date": "2026-12-03T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/holiday-lights-celebration-tickets-1998254808925",
           "venue": "Nelson A. Rockefeller Park",
           "price": null,
@@ -168677,7 +168713,7 @@
         },
         {
           "name": "Musical Learning Time",
-          "date": "2026-11-20T05:00:00+00:00",
+          "date": "2026-11-20T20:30:00+00:00",
           "url": "https://www.eventbrite.com/e/musical-learning-time-tickets-2003684777106",
           "venue": "Battery Park City Library",
           "price": null,
@@ -168689,7 +168725,7 @@
         },
         {
           "name": "2026 NY Energy Infrastructure Summit",
-          "date": "2026-11-19T05:00:00+00:00",
+          "date": "2026-11-19T14:00:00+00:00",
           "url": "https://www.eventbrite.com/e/2026-ny-energy-infrastructure-summit-tickets-2002150568246",
           "venue": "Museum of Jewish Heritage – A Living Memorial to the Holocaust",
           "price": null,
@@ -168701,7 +168737,7 @@
         },
         {
           "name": "Why New York? A Nicky Tours Charity Tour",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-08T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/why-new-york-a-nicky-tours-charity-tour-tickets-2003969173744",
           "venue": "Castle Clinton National Monument",
           "price": null,
@@ -168713,7 +168749,7 @@
         },
         {
           "name": "Lapsit Storytime- Baby and Me",
-          "date": "2026-11-10T05:00:00+00:00",
+          "date": "2026-11-10T16:00:00+00:00",
           "url": "https://www.eventbrite.com/e/lapsit-storytime-baby-and-me-tickets-2004086085430",
           "venue": "Battery Park City Library",
           "price": null,
@@ -168721,11 +168757,11 @@
           "lng": "-74.01574049999999",
           "address": "175 North End Avenue, New York, NY",
           "neighborhood": "New York",
-          "category": "outdoors"
+          "category": "family"
         },
         {
           "name": "Book Chat and Writer's Workshop for Ages 6-11",
-          "date": "2026-11-23T05:00:00+00:00",
+          "date": "2026-11-23T21:00:00+00:00",
           "url": "https://www.eventbrite.com/e/book-chat-and-writers-workshop-for-ages-6-11-tickets-2003684625653",
           "venue": "Battery Park City Library",
           "price": null,
@@ -168737,7 +168773,7 @@
         },
         {
           "name": "Mad Libs Drama for ages 6-11",
-          "date": "2026-11-09T05:00:00+00:00",
+          "date": "2026-11-09T21:00:00+00:00",
           "url": "https://www.eventbrite.com/e/mad-libs-drama-for-ages-6-11-tickets-2003991404236",
           "venue": "Battery Park City Library",
           "price": null,
@@ -168749,7 +168785,7 @@
         },
         {
           "name": "STC: School of Rock",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-05T21:30:00+00:00",
           "url": "https://www.eventbrite.com/e/stc-school-of-rock-tickets-2003832755714",
           "venue": "Murray Kahn Theater",
           "price": null,
@@ -168761,7 +168797,7 @@
         },
         {
           "name": "Fashion Design & Illustration Fundamentals | New York City, NY | Nov 14th",
-          "date": "2026-11-14T05:00:00+00:00",
+          "date": "2026-11-14T14:00:00+00:00",
           "url": "https://www.eventbrite.com/e/fashion-design-illustration-fundamentals-new-york-city-ny-nov-14th-tickets-2003561139302",
           "venue": "Regus - NY, New York City - Brookfield Place",
           "price": null,
@@ -168773,7 +168809,7 @@
         },
         {
           "name": "Del Frisco's Grille World Trade Center- Joe Wagner Wine Dinner",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-05T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/del-friscos-grille-world-trade-center-joe-wagner-wine-dinner-tickets-1999719662341",
           "venue": "Del Frisco's Grille",
           "price": null,
@@ -168785,7 +168821,7 @@
         },
         {
           "name": "Little Mover's Storytime",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-05T16:00:00+00:00",
           "url": "https://www.eventbrite.com/e/little-movers-storytime-tickets-2003933319503",
           "venue": "Battery Park City Library",
           "price": null,
@@ -168793,23 +168829,11 @@
           "lng": "-74.01574049999999",
           "address": "175 North End Avenue, New York, NY",
           "neighborhood": "New York",
-          "category": "outdoors"
-        },
-        {
-          "name": "Baby Art",
-          "date": "2026-11-18T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/baby-art-tickets-2003933239263",
-          "venue": "Battery Park City Library",
-          "price": null,
-          "lat": "40.7157419",
-          "lng": "-74.01574049999999",
-          "address": "175 North End Avenue, New York, NY",
-          "neighborhood": "New York",
-          "category": "outdoors"
+          "category": "family"
         },
         {
           "name": "Time Management for Busy Professionals | New York City, NY | Dec 04, 2026",
-          "date": "2026-12-04T05:00:00+00:00",
+          "date": "2026-12-04T14:00:00+00:00",
           "url": "https://www.eventbrite.com/e/time-management-for-busy-professionals-new-york-city-ny-dec-04-2026-tickets-2003519999251",
           "venue": "Regus - NY, New York City - Brookfield Place",
           "price": null,
@@ -168820,8 +168844,32 @@
           "category": "outdoors"
         },
         {
+          "name": "Baby Art",
+          "date": "2026-11-18T16:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/baby-art-tickets-2003933239263",
+          "venue": "Battery Park City Library",
+          "price": null,
+          "lat": "40.7157419",
+          "lng": "-74.01574049999999",
+          "address": "175 North End Avenue, New York, NY",
+          "neighborhood": "New York",
+          "category": "family"
+        },
+        {
+          "name": "NYC: Sunset Skyline Cruise around Statue of Liberty",
+          "date": "2026-11-05T20:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/nyc-sunset-skyline-cruise-around-statue-of-liberty-tickets-1988925401416",
+          "venue": "Pier 36 NYC",
+          "price": null,
+          "lat": "40.7100148",
+          "lng": "-73.98440599999999",
+          "address": "299 South Street, New York, NY",
+          "neighborhood": "New York",
+          "category": "sports"
+        },
+        {
           "name": "Speed Puzzle Club: Presented by HobbyCon",
-          "date": "2026-11-15T05:00:00+00:00",
+          "date": "2026-11-15T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/speed-puzzle-club-presented-by-hobbycon-tickets-2000642420335",
           "venue": "Brookfield Place",
           "price": null,
@@ -168833,7 +168881,7 @@
         },
         {
           "name": "Climate Adaption in Action: Risk Assessment to Resilient Infrastructure",
-          "date": "2026-11-19T05:00:00+00:00",
+          "date": "2026-11-19T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/climate-adaption-in-action-risk-assessment-to-resilient-infrastructure-tickets-1999625247945",
           "venue": "FXCollaborative Architects",
           "price": null,
@@ -168845,7 +168893,7 @@
         },
         {
           "name": "Effective Communication Skills for Professionals | New York, NY | Nov 17th",
-          "date": "2026-11-17T05:00:00+00:00",
+          "date": "2026-11-17T14:00:00+00:00",
           "url": "https://www.eventbrite.com/e/effective-communication-skills-for-professionals-new-york-ny-nov-17th-tickets-2003300806640",
           "venue": "Regus - NY, New York City - Brookfield Place",
           "price": null,
@@ -168857,8 +168905,8 @@
         }
       ],
       "error": null,
-      "duration": 5.43,
-      "cached": true
+      "duration": 9.04,
+      "cached": false
     },
     {
       "venue": "NYC Off-Broadway Shows",
@@ -168866,7 +168914,7 @@
       "events": [
         {
           "name": "Aladdin on Broadway",
-          "date": "2026-11-18T05:00:00+00:00",
+          "date": "2026-11-19T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/aladdin-on-broadway-tickets-2002523404409",
           "venue": "New Amsterdam Theatre",
           "price": null,
@@ -168877,20 +168925,8 @@
           "category": "theater"
         },
         {
-          "name": "November Industry Showcase",
-          "date": "2026-11-05T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/november-industry-showcase-tickets-2003669612749",
-          "venue": "Steps On Broadway",
-          "price": null,
-          "lat": "40.7807089",
-          "lng": "-73.98185680000002",
-          "address": "2121 Broadway, New York, NY",
-          "neighborhood": "New York",
-          "category": "theater"
-        },
-        {
           "name": "My Favorite Things: Beloved Jazz from Broadway  - Candlelight Jazz Cafe",
-          "date": "2026-11-16T05:00:00+00:00",
+          "date": "2026-11-17T00:30:00+00:00",
           "url": "https://www.eventbrite.com/e/my-favorite-things-beloved-jazz-from-broadway-candlelight-jazz-cafe-tickets-2003961190867",
           "venue": "JCC Manhattan",
           "price": null,
@@ -168901,8 +168937,20 @@
           "category": "theater"
         },
         {
+          "name": "November Industry Showcase",
+          "date": "2026-11-06T01:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/november-industry-showcase-tickets-2003669612749",
+          "venue": "Steps On Broadway",
+          "price": null,
+          "lat": "40.7807089",
+          "lng": "-73.98185680000002",
+          "address": "2121 Broadway, New York, NY",
+          "neighborhood": "New York",
+          "category": "theater"
+        },
+        {
           "name": "Only Make Believe - 27th Annual Gala on Broadway",
-          "date": "2026-11-09T05:00:00+00:00",
+          "date": "2026-11-10T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/only-make-believe-27th-annual-gala-on-broadway-tickets-1998799713750",
           "venue": "Walter Kerr Theatre",
           "price": null,
@@ -168914,7 +168962,7 @@
         },
         {
           "name": "Horsehell w/ Postmark + Slowpoke",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-07T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/horsehell-w-postmark-slowpoke-tickets-2003931050717",
           "venue": "The Broadway",
           "price": null,
@@ -168925,8 +168973,20 @@
           "category": "theater"
         },
         {
+          "name": "Broadway Comedy Club- Top Stand Up Comedy In Times Square!",
+          "date": "2026-11-06T04:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/broadway-comedy-club-top-stand-up-comedy-in-times-square-tickets-1989690033451",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "lat": "40.7644077",
+          "lng": "-73.98566849999997",
+          "address": "318 West 53rd Street, New York, NY",
+          "neighborhood": "New York",
+          "category": "comedy"
+        },
+        {
           "name": "Hall Pass to Broadway: A Cabaret Fundraiser for Arts Education",
-          "date": "2026-11-09T05:00:00+00:00",
+          "date": "2026-11-09T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/hall-pass-to-broadway-a-cabaret-fundraiser-for-arts-education-tickets-2003303821658",
           "venue": "The Town Hall",
           "price": null,
@@ -168937,8 +168997,20 @@
           "category": "theater"
         },
         {
+          "name": "Free  Comedy Show Tickets! Stand-Up Comedy at Broadway Comedy Club!",
+          "date": "2026-11-06T04:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/free-comedy-show-tickets-stand-up-comedy-at-broadway-comedy-club-tickets-2002312052249",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "lat": "40.7644077",
+          "lng": "-73.98566849999997",
+          "address": "318 West 53rd Street, New York, NY",
+          "neighborhood": "New York",
+          "category": "comedy"
+        },
+        {
           "name": "Warmachine, Microgoblet, Iquan + Wiring",
-          "date": "2026-11-22T05:00:00+00:00",
+          "date": "2026-11-23T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/warmachine-microgoblet-iquan-wiring-tickets-2003467012767",
           "venue": "The Broadway",
           "price": null,
@@ -168950,7 +169022,7 @@
         },
         {
           "name": "Magic Show for Kids & Families - Broadway Magic Hour NYC",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T19:00:00+00:00",
           "url": "https://www.eventbrite.com/e/magic-show-for-kids-families-broadway-magic-hour-nyc-tickets-1987940730238",
           "venue": "Broadway Comedy Club",
           "price": null,
@@ -168958,11 +169030,11 @@
           "lng": "-73.9856638",
           "address": "318 West 53rd Street, New York, NY",
           "neighborhood": "New York",
-          "category": "comedy"
+          "category": "family"
         },
         {
           "name": "A+ Asian Comedy. Asian Stand Up Comedy in NYC's Broadway Theater District.",
-          "date": "2026-11-20T05:00:00+00:00",
+          "date": "2026-11-21T02:00:00+00:00",
           "url": "https://www.eventbrite.com/e/a-asian-comedy-asian-stand-up-comedy-in-nycs-broadway-theater-district-tickets-2003443111277",
           "venue": "Broadway Comedy Club",
           "price": null,
@@ -168974,7 +169046,7 @@
         },
         {
           "name": "Warphole w/ Integra Pink + The Shining Hours",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/warphole-w-integra-pink-the-shining-hours-tickets-2003420750395",
           "venue": "The Broadway",
           "price": null,
@@ -168985,21 +169057,9 @@
           "category": "theater"
         },
         {
-          "name": "Magic + Illusion Show for Kids & Families - Broadway Magic Hour / Times Sq.",
-          "date": "2026-11-08T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/magic-illusion-show-for-kids-families-broadway-magic-hour-times-sq-tickets-1992446321583",
-          "venue": "Broadway Comedy Club",
-          "price": null,
-          "lat": "40.7644318",
-          "lng": "-73.9856638",
-          "address": "318 West 53rd Street, New York, NY",
-          "neighborhood": "New York",
-          "category": "comedy"
-        },
-        {
-          "name": "Magic Show for All Ages - Broadway Magic Hour (Times Square)",
-          "date": "2026-11-21T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/magic-show-for-all-ages-broadway-magic-hour-times-square-tickets-1987941006063",
+          "name": "Magic Show for All Ages - Broadway Magic Hour in Times Square",
+          "date": "2026-11-28T19:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/magic-show-for-all-ages-broadway-magic-hour-in-times-square-tickets-1987941232741",
           "venue": "Broadway Comedy Club",
           "price": null,
           "lat": "40.7644318",
@@ -169010,7 +169070,7 @@
         },
         {
           "name": "Broadway Tuesdays at Paramount: Carolling Edition",
-          "date": "2026-12-01T05:00:00+00:00",
+          "date": "2026-12-01T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/broadway-tuesdays-at-paramount-carolling-edition-tickets-2003648755364",
           "venue": "Paramount Times Square - A Generator Hotel",
           "price": null,
@@ -169021,9 +169081,21 @@
           "category": "theater"
         },
         {
-          "name": "Magic Show for All Ages - Broadway Magic Hour in Times Square",
-          "date": "2026-11-28T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/magic-show-for-all-ages-broadway-magic-hour-in-times-square-tickets-1987941232741",
+          "name": "Magic + Illusion Show for Kids & Families - Broadway Magic Hour / Times Sq.",
+          "date": "2026-11-08T19:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/magic-illusion-show-for-kids-families-broadway-magic-hour-times-sq-tickets-1992446321583",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "lat": "40.7644318",
+          "lng": "-73.9856638",
+          "address": "318 West 53rd Street, New York, NY",
+          "neighborhood": "New York",
+          "category": "family"
+        },
+        {
+          "name": "Magic Show for All Ages - Broadway Magic Hour (Times Square)",
+          "date": "2026-11-21T19:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/magic-show-for-all-ages-broadway-magic-hour-times-square-tickets-1987941006063",
           "venue": "Broadway Comedy Club",
           "price": null,
           "lat": "40.7644318",
@@ -169034,8 +169106,8 @@
         }
       ],
       "error": null,
-      "duration": 3.09,
-      "cached": true
+      "duration": 12.06,
+      "cached": false
     },
     {
       "venue": "NYC Musicals & Musical Theatre",
@@ -169256,7 +169328,7 @@
       "events": [
         {
           "name": "Neurodivergent Plays",
-          "date": "2026-11-15T05:00:00+00:00",
+          "date": "2026-11-15T21:00:00+00:00",
           "url": "https://www.eventbrite.com/e/neurodivergent-plays-tickets-1990120270301",
           "venue": "Brooklyn Art Haus",
           "price": null,
@@ -169268,7 +169340,7 @@
         },
         {
           "name": "Play Without Ceasing",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T19:00:00+00:00",
           "url": "https://www.eventbrite.com/e/play-without-ceasing-tickets-2001402460636",
           "venue": "Bechdel Project",
           "price": null,
@@ -169280,7 +169352,7 @@
         },
         {
           "name": "Ogrodowa Street: A Play",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-07T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/ogrodowa-street-a-play-tickets-2003314891769",
           "venue": "Moshava Art",
           "price": null,
@@ -169292,7 +169364,7 @@
         },
         {
           "name": "Sophomore New Play Festival",
-          "date": "2026-11-12T05:00:00+00:00",
+          "date": "2026-11-12T21:30:00+00:00",
           "url": "https://www.eventbrite.com/e/sophomore-new-play-festival-tickets-2004169613264",
           "venue": "Repertory Company High School for Theatre Arts",
           "price": null,
@@ -169304,7 +169376,7 @@
         },
         {
           "name": "Switch n' Play presents: Switch n' Playbill",
-          "date": "2026-11-21T05:00:00+00:00",
+          "date": "2026-11-22T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/switch-n-play-presents-switch-n-playbill-tickets-2003581926477",
           "venue": "littlefield",
           "price": null,
@@ -169316,7 +169388,7 @@
         },
         {
           "name": "An Afternoon of Short Plays Written By Allie Costa",
-          "date": "2026-11-15T05:00:00+00:00",
+          "date": "2026-11-15T18:30:00+00:00",
           "url": "https://www.eventbrite.com/e/an-afternoon-of-short-plays-written-by-allie-costa-tickets-2003224465301",
           "venue": "The Vino Theater",
           "price": null,
@@ -169327,8 +169399,20 @@
           "category": "theater"
         },
         {
+          "name": "Making It Happen: Festival of 10-Minute Plays",
+          "date": "2026-11-12T00:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/making-it-happen-festival-of-10-minute-plays-tickets-2003610720601",
+          "venue": "The Jerry Orbach Theater",
+          "price": null,
+          "lat": "40.7614902",
+          "lng": "-73.98455659999999",
+          "address": "210 W 50th St, New York, NY",
+          "neighborhood": "New York",
+          "category": "theater"
+        },
+        {
           "name": "NEW PLAY: Fourth Avenue (Brooklyn)",
-          "date": "2026-11-12T05:00:00+00:00",
+          "date": "2026-11-13T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/new-play-fourth-avenue-brooklyn-tickets-1989959517485",
           "venue": "Old Stone House of Brooklyn",
           "price": null,
@@ -169340,7 +169424,7 @@
         },
         {
           "name": "Impressive, Sincerely (A New Play)",
-          "date": "2026-11-13T05:00:00+00:00",
+          "date": "2026-11-14T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/impressive-sincerely-a-new-play-tickets-2002474813071",
           "venue": "P&T Knitwear Books & Podcasts",
           "price": null,
@@ -169352,7 +169436,7 @@
         },
         {
           "name": "Zakiya N. Jamal Brooklyn Event for Two Can Play That Game",
-          "date": "2026-11-17T05:00:00+00:00",
+          "date": "2026-11-18T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/zakiya-n-jamal-brooklyn-event-for-two-can-play-that-game-tickets-1994253002414",
           "venue": "The Ripped Bodice",
           "price": null,
@@ -169364,7 +169448,7 @@
         },
         {
           "name": "JESUS CHRIST! A New Play by Ella Warner",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/jesus-christ-a-new-play-by-ella-warner-tickets-2002569212422",
           "venue": "American Theatre of Actors, The Beckmann Theatre",
           "price": null,
@@ -169376,7 +169460,7 @@
         },
         {
           "name": "Either/Or plays Szlavnics, Lewis, and Ferrari",
-          "date": "2026-11-16T05:00:00+00:00",
+          "date": "2026-11-17T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/eitheror-plays-szlavnics-lewis-and-ferrari-tickets-2002433420264",
           "venue": "MISE-EN_PLACE",
           "price": null,
@@ -169387,8 +169471,20 @@
           "category": "theater"
         },
         {
+          "name": "Flutter: A Discovery Play for Babies, Ages 6-18months (Brooklyn)",
+          "date": "2026-11-20T15:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/flutter-a-discovery-play-for-babies-ages-6-18months-brooklyn-tickets-1997910636496",
+          "venue": "Mark Morris Dance Group",
+          "price": null,
+          "lat": "40.6869728",
+          "lng": "-73.9789195",
+          "address": "3 Lafayette Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "family"
+        },
+        {
           "name": "Jeanie - a play by Isabel Renner",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-08T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/jeanie-a-play-by-isabel-renner-tickets-2003181071509",
           "venue": "497 Rogers Ave",
           "price": null,
@@ -169399,20 +169495,8 @@
           "category": "theater"
         },
         {
-          "name": "Flutter: A Discovery Play for Babies, Ages 6-18months (Brooklyn)",
-          "date": "2026-11-20T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/flutter-a-discovery-play-for-babies-ages-6-18months-brooklyn-tickets-1997910636496",
-          "venue": "Mark Morris Dance Group",
-          "price": null,
-          "lat": "40.6869728",
-          "lng": "-73.9789195",
-          "address": "3 Lafayette Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "theater"
-        },
-        {
           "name": "ATW Play Reading: There Out There by Julia Smith",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-08T00:30:00+00:00",
           "url": "https://www.eventbrite.com/e/atw-play-reading-there-out-there-by-julia-smith-tickets-2002161100749",
           "venue": "The Actors Theatre Workshop",
           "price": null,
@@ -169423,20 +169507,8 @@
           "category": "theater"
         },
         {
-          "name": "Flutter: A Discovery Play for Babies, Ages 6-18months (Manhattan)",
-          "date": "2026-11-08T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/flutter-a-discovery-play-for-babies-ages-6-18months-manhattan-tickets-1997911554241",
-          "venue": "The Ailey Studios",
-          "price": null,
-          "lat": "40.7669775",
-          "lng": "-73.9868935",
-          "address": "405 West 55th Street, New York, NY",
-          "neighborhood": "New York",
-          "category": "theater"
-        },
-        {
           "name": "Five Ways to Play",
-          "date": "2026-11-14T05:00:00+00:00",
+          "date": "2026-11-15T00:30:00+00:00",
           "url": "https://www.eventbrite.com/e/five-ways-to-play-tickets-2003490763807",
           "venue": "Ballet Arts Center for Dance, NYC",
           "price": null,
@@ -169447,8 +169519,20 @@
           "category": "theater"
         },
         {
+          "name": "Flutter: A Discovery Play for Babies, Ages 6-18months (Manhattan)",
+          "date": "2026-11-08T15:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/flutter-a-discovery-play-for-babies-ages-6-18months-manhattan-tickets-1997911554241",
+          "venue": "The Ailey Studios",
+          "price": null,
+          "lat": "40.7669775",
+          "lng": "-73.9868935",
+          "address": "405 West 55th Street, New York, NY",
+          "neighborhood": "New York",
+          "category": "family"
+        },
+        {
           "name": "Agua Azul: A One Act Play with Santos, Songs  & Dance",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-08T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/agua-azul-a-one-act-play-with-santos-songs-dance-tickets-2003369772920",
           "venue": "Nimbus Arts Center",
           "price": null,
@@ -169460,7 +169544,7 @@
         },
         {
           "name": "Improv NOW! Friday Jam — Perform, Play & Have Fun",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-06T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/improv-now-friday-jam-perform-play-have-fun-tickets-2000371650455",
           "venue": "520 8th Ave",
           "price": null,
@@ -169472,8 +169556,8 @@
         }
       ],
       "error": null,
-      "duration": 2.42,
-      "cached": true
+      "duration": 2.53,
+      "cached": false
     },
     {
       "venue": "NYC Improv & Alternative Comedy",
@@ -169481,7 +169565,7 @@
       "events": [
         {
           "name": "Improv NOW - Improv Drop-In Comedy Class!",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-08T21:30:00+00:00",
           "url": "https://www.eventbrite.com/e/improv-now-improv-drop-in-comedy-class-tickets-2000372700596",
           "venue": "330 7th Ave, Studio 711",
           "price": null,
@@ -169492,20 +169576,8 @@
           "category": "comedy"
         },
         {
-          "name": "Improv Workshop: Improv Basics",
-          "date": "2026-11-09T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/improv-workshop-improv-basics-tickets-2001711350534",
-          "venue": "Grove 34",
-          "price": null,
-          "lat": "40.7610651",
-          "lng": "-73.9225488",
-          "address": "31-83 34th Street, Queens, NY",
-          "neighborhood": "Queens",
-          "category": "comedy"
-        },
-        {
           "name": "The Improv Draft",
-          "date": "2026-11-29T05:00:00+00:00",
+          "date": "2026-11-30T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/the-improv-draft-tickets-1990338638446",
           "venue": "Grove 34",
           "price": null,
@@ -169516,8 +169588,20 @@
           "category": "comedy"
         },
         {
+          "name": "Improv Workshop: Improv Basics",
+          "date": "2026-11-10T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/improv-workshop-improv-basics-tickets-2001711350534",
+          "venue": "Grove 34",
+          "price": null,
+          "lat": "40.7610651",
+          "lng": "-73.9225488",
+          "address": "31-83 34th Street, Queens, NY",
+          "neighborhood": "Queens",
+          "category": "comedy"
+        },
+        {
           "name": "The Great Improv Experiment",
-          "date": "2026-11-16T05:00:00+00:00",
+          "date": "2026-11-17T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/the-great-improv-experiment-tickets-1994752635831",
           "venue": "Grove 34",
           "price": null,
@@ -169529,7 +169613,7 @@
         },
         {
           "name": "Improv Workshop: Scenes & Notes",
-          "date": "2026-11-23T05:00:00+00:00",
+          "date": "2026-11-24T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/improv-workshop-scenes-notes-tickets-2001711176012",
           "venue": "Grove 34",
           "price": null,
@@ -169541,7 +169625,7 @@
         },
         {
           "name": "That Improv Thing: A Dating Gameshow",
-          "date": "2026-11-18T05:00:00+00:00",
+          "date": "2026-11-19T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/that-improv-thing-a-dating-gameshow-tickets-2004018836286",
           "venue": "Soft Bar",
           "price": null,
@@ -169552,20 +169636,8 @@
           "category": "comedy"
         },
         {
-          "name": "Times Square NYC Comedy by EIGHT IMPROV",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/times-square-nyc-comedy-by-eight-improv-tickets-1992572985438",
-          "venue": "Broadway Comedy Club",
-          "price": null,
-          "lat": "40.7644077",
-          "lng": "-73.98566849999997",
-          "address": "318 West 53rd Street, New York, NY",
-          "neighborhood": "New York",
-          "category": "comedy"
-        },
-        {
           "name": "Intro to Improv Manhattan",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/intro-to-improv-manhattan-tickets-2004046694611",
           "venue": "Broadway Comedy Club",
           "price": null,
@@ -169577,7 +169649,7 @@
         },
         {
           "name": "Improv NOW! Friday Jam — Perform, Play & Have Fun",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-06T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/improv-now-friday-jam-perform-play-have-fun-tickets-2000371650455",
           "venue": "520 8th Ave",
           "price": null,
@@ -169588,8 +169660,32 @@
           "category": "comedy"
         },
         {
+          "name": "Six Week Intro to Improv Comedy Workshop for Adults (Thu. in Hoboken)",
+          "date": "2026-11-06T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/six-week-intro-to-improv-comedy-workshop-for-adults-thu-in-hoboken-registration-2002244973615",
+          "venue": "Symposia Community Bookstore",
+          "price": null,
+          "lat": "40.7426463",
+          "lng": "-74.0296264",
+          "address": "510 Washington Street, Hoboken, NJ",
+          "neighborhood": "Hoboken",
+          "category": "comedy"
+        },
+        {
+          "name": "Times Square NYC Comedy by EIGHT IMPROV",
+          "date": "2026-11-07T19:45:00+00:00",
+          "url": "https://www.eventbrite.com/e/times-square-nyc-comedy-by-eight-improv-tickets-1992572985438",
+          "venue": "Broadway Comedy Club",
+          "price": null,
+          "lat": "40.7644077",
+          "lng": "-73.98566849999997",
+          "address": "318 West 53rd Street, New York, NY",
+          "neighborhood": "New York",
+          "category": "comedy"
+        },
+        {
           "name": "Teen Improv Jam AMDA STUDIOS Times Square NYC",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-08T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/teen-improv-jam-amda-studios-times-square-nyc-tickets-2004206064290",
           "venue": "AMDA 54th",
           "price": null,
@@ -169601,7 +169697,7 @@
         },
         {
           "name": "Saturday Pre-Teen Comedy & Improv (Ages 9–12) | Times Square NYC",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T15:00:00+00:00",
           "url": "https://www.eventbrite.com/e/saturday-pre-teen-comedy-improv-ages-912-times-square-nyc-tickets-2003687498245",
           "venue": "Broadway Comedy Club",
           "price": null,
@@ -169613,7 +169709,7 @@
         },
         {
           "name": "THEATRESPORTS: Interactive Family-Friendly Improv Comedy",
-          "date": "2026-11-15T05:00:00+00:00",
+          "date": "2026-11-15T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/theatresports-interactive-family-friendly-improv-comedy-tickets-2003579496208",
           "venue": "Gallery Players",
           "price": null,
@@ -169624,20 +169720,8 @@
           "category": "comedy"
         },
         {
-          "name": "K!nky Improv: Fantasy Building & RoIepIay",
-          "date": "2026-11-18T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/knky-improv-fantasy-building-roiepiay-tickets-2004200123521",
-          "venue": "Near Union Square, Address in email confirmation additional info section",
-          "price": null,
-          "lat": "40.7358633",
-          "lng": "-73.9910835",
-          "address": "union square, New York, NY",
-          "neighborhood": "New York",
-          "category": "comedy"
-        },
-        {
           "name": "DONNA’S BEEF IMPROV",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-07T01:30:00+00:00",
           "url": "https://www.eventbrite.com/e/donnas-beef-improv-tickets-2003474150115",
           "venue": "The BCC Pig Pen",
           "price": null,
@@ -169648,8 +169732,20 @@
           "category": "comedy"
         },
         {
+          "name": "K!nky Improv: Fantasy Building & RoIepIay",
+          "date": "2026-11-19T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/knky-improv-fantasy-building-roiepiay-tickets-2004200123521",
+          "venue": "Near Union Square, Address in email confirmation additional info section",
+          "price": null,
+          "lat": "40.7358633",
+          "lng": "-73.9910835",
+          "address": "union square, New York, NY",
+          "neighborhood": "New York",
+          "category": "comedy"
+        },
+        {
           "name": "Improv Comedy Workshop, Times Square NYC",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/improv-comedy-workshop-times-square-nyc-tickets-2000051737587",
           "venue": "Broadway Comedy Club",
           "price": null,
@@ -169661,7 +169757,7 @@
         },
         {
           "name": "Not Like Other Girls Improv",
-          "date": "2026-11-20T05:00:00+00:00",
+          "date": "2026-11-21T01:30:00+00:00",
           "url": "https://www.eventbrite.com/e/not-like-other-girls-improv-tickets-2004088416402",
           "venue": "Brooklyn Comedy Collective",
           "price": null,
@@ -169670,23 +169766,11 @@
           "address": "167 Graham Avenue, Brooklyn, NY",
           "neighborhood": "Brooklyn",
           "category": "comedy"
-        },
-        {
-          "name": "Comedy Sportz New York – Interactive Improv Competition",
-          "date": "2026-11-14T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/comedy-sportz-new-york-interactive-improv-competition-tickets-2003871862684",
-          "venue": "The Rat NYC",
-          "price": null,
-          "lat": "40.7030138",
-          "lng": "-73.9868206",
-          "address": "68-117 Jay Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "comedy"
         }
       ],
       "error": null,
-      "duration": 3.14,
-      "cached": true
+      "duration": 4.99,
+      "cached": false
     },
     {
       "venue": "Chess Place NYC",
@@ -169964,8 +170048,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.02,
+      "error": null,
+      "duration": 2.33,
       "cached": true
     },
     {
@@ -169974,7 +170058,7 @@
       "events": [
         {
           "name": "North Brooklyn Chess at McCarren Parkhouse",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/north-brooklyn-chess-at-mccarren-parkhouse-tickets-1999281562974",
           "venue": "McCarren Parkhouse",
           "price": null,
@@ -169985,8 +170069,20 @@
           "category": "gaming"
         },
         {
+          "name": "Live Stand-Up Comedy Every Night @ The Tiny Cupboard Brooklyn",
+          "date": "2026-11-06T01:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/live-stand-up-comedy-every-night-the-tiny-cupboard-brooklyn-tickets-1994075720158",
+          "venue": "The Tiny Cupboard",
+          "price": null,
+          "lat": "40.6837247",
+          "lng": "-73.9112172",
+          "address": "10 Cooper Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "comedy"
+        },
+        {
           "name": "Brooklyns Got Game",
-          "date": "2026-11-14T05:00:00+00:00",
+          "date": "2026-11-14T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/brooklyns-got-game-tickets-2003795801182",
           "venue": "510 Waverly Ave",
           "price": null,
@@ -169998,7 +170094,7 @@
         },
         {
           "name": "The Mingle Games: Hosted Game Night + Cocktails | Brooklyn Distillery",
-          "date": "2026-12-03T05:00:00+00:00",
+          "date": "2026-12-03T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/the-mingle-games-hosted-game-night-cocktails-brooklyn-distillery-tickets-2003552303875",
           "venue": "Jaywalker",
           "price": null,
@@ -170010,7 +170106,7 @@
         },
         {
           "name": "Board Game Night",
-          "date": "2026-11-20T05:00:00+00:00",
+          "date": "2026-11-21T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/board-game-night-tickets-2002960768577",
           "venue": "Nook",
           "price": null,
@@ -170022,7 +170118,7 @@
         },
         {
           "name": "Board Game Speed Dating - Threes Brewing  - Greenpoint NYC  (Ages 25-39)",
-          "date": "2026-11-16T05:00:00+00:00",
+          "date": "2026-11-17T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/board-game-speed-dating-threes-brewing-greenpoint-nyc-ages-25-39-tickets-2002286941141",
           "venue": "Threes Brewing Greenpoint",
           "price": null,
@@ -170034,7 +170130,7 @@
         },
         {
           "name": "If The Vibe Is Right: Comedy Game Night + Hip Hop & R&B | Brooklyn",
-          "date": "2026-11-12T05:00:00+00:00",
+          "date": "2026-11-12T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/if-the-vibe-is-right-comedy-game-night-hip-hop-rb-brooklyn-tickets-2001399165781",
           "venue": "Jaywalker",
           "price": null,
@@ -170046,7 +170142,7 @@
         },
         {
           "name": "Board Game Wednesdays",
-          "date": "2026-11-18T05:00:00+00:00",
+          "date": "2026-11-18T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/board-game-wednesdays-tickets-1999323814349",
           "venue": "Stavros Niarchos Foundation Library",
           "price": null,
@@ -170058,7 +170154,7 @@
         },
         {
           "name": "Board Game Brunch",
-          "date": "2026-11-15T05:00:00+00:00",
+          "date": "2026-11-15T16:00:00+00:00",
           "url": "https://www.eventbrite.com/e/board-game-brunch-tickets-2004012588599",
           "venue": "Hive Mind Books",
           "price": null,
@@ -170070,7 +170166,7 @@
         },
         {
           "name": "Jersey City Connects | Board Game Night (Nov) Fundraiser Event",
-          "date": "2026-11-17T05:00:00+00:00",
+          "date": "2026-11-17T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/jersey-city-connects-board-game-night-nov-fundraiser-event-tickets-2004109089235",
           "venue": "The Hutton Restaurant and Bar",
           "price": null,
@@ -170081,8 +170177,32 @@
           "category": "gaming"
         },
         {
+          "name": "New York City Social Event for Christians ages 30+",
+          "date": "2026-11-22T19:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/new-york-city-social-event-for-christians-ages-30-tickets-2003830968368",
+          "venue": "The Brooklyn Strategist",
+          "price": null,
+          "lat": "40.69467119999999",
+          "lng": "-73.9914646",
+          "address": "148 Pierrepont Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "gaming"
+        },
+        {
+          "name": "GS Goes to The Game — Brooklyn Nets vs. Chicago Bulls Basketball Game",
+          "date": "2026-11-19T00:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/gs-goes-to-the-game-brooklyn-nets-vs-chicago-bulls-basketball-game-tickets-2003991144459",
+          "venue": "Barclays Center",
+          "price": null,
+          "lat": "40.6826465",
+          "lng": "-73.97541559999999",
+          "address": "620 Atlantic Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "sports"
+        },
+        {
           "name": "NYC LIVE TALENT & TABLE TOP GAMES - Mr. Bell's Cuisine & Sports Bar",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/nyc-live-talent-table-top-games-mr-bells-cuisine-sports-bar-tickets-2003549929774",
           "venue": "1099 Broadway",
           "price": null,
@@ -170094,7 +170214,7 @@
         },
         {
           "name": "Board Game Night at 902 Brewing | Free things to do Jersey City",
-          "date": "2026-11-11T05:00:00+00:00",
+          "date": "2026-11-12T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/board-game-night-at-902-brewing-free-things-to-do-jersey-city-tickets-2003680983760",
           "venue": "902 Brewing Co .",
           "price": null,
@@ -170105,20 +170225,20 @@
           "category": "gaming"
         },
         {
-          "name": "New York City Social Event for Christians ages 30+",
-          "date": "2026-11-22T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/new-york-city-social-event-for-christians-ages-30-tickets-2003830968368",
-          "venue": "The Brooklyn Strategist",
+          "name": "Free Backyard Movie Night: Audience Choice",
+          "date": "2026-11-12T01:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/free-backyard-movie-night-audience-choice-tickets-1994697685473",
+          "venue": "The Tiny Cupboard",
           "price": null,
-          "lat": "40.69467119999999",
-          "lng": "-73.9914646",
-          "address": "148 Pierrepont Street, Brooklyn, NY",
+          "lat": "40.6837247",
+          "lng": "-73.9112172",
+          "address": "10 Cooper Street, Brooklyn, NY",
           "neighborhood": "Brooklyn",
-          "category": "gaming"
+          "category": "comedy"
         },
         {
           "name": "FREE Board Game Meetup @ Pier 57",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/free-board-game-meetup-pier-57-tickets-1998638966952",
           "venue": "Pier 57",
           "price": null,
@@ -170129,21 +170249,45 @@
           "category": "gaming"
         },
         {
-          "name": "NYC LIVE TALENT OPEN MIC & POETRY - Mr. Bell's Cuisine & Sports Bar",
-          "date": "2026-11-06T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/nyc-live-talent-open-mic-poetry-mr-bells-cuisine-sports-bar-tickets-2003550260764",
+          "name": "NYC LIVE JAZZ MUSIC & JAM SESSION - Mr. Bell's Cuisine & Sports Bar",
+          "date": "2026-11-06T02:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/nyc-live-jazz-music-jam-session-mr-bells-cuisine-sports-bar-tickets-2003550473400",
           "venue": "1099 Broadway",
           "price": null,
           "lat": "40.6942885",
           "lng": "-73.9302404",
           "address": "1099 Broadway, Brooklyn, NY",
           "neighborhood": "Brooklyn",
-          "category": "books"
+          "category": "music"
+        },
+        {
+          "name": "Vision Board Workshop @ The Brooklyn Loft",
+          "date": "2026-12-05T20:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/vision-board-workshop-the-brooklyn-loft-tickets-2003312853673",
+          "venue": "476 Jefferson St #307",
+          "price": null,
+          "lat": "40.70845389999999",
+          "lng": "-73.92188469999999",
+          "address": "476 Jefferson Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "gaming"
+        },
+        {
+          "name": "NYC LIVE JAZZ MUSIC W/ HAPPY HOUR - Mr. Bell's Cuisine & Sports Bar",
+          "date": "2026-11-05T21:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/nyc-live-jazz-music-w-happy-hour-mr-bells-cuisine-sports-bar-tickets-2003549433289",
+          "venue": "1099 Broadway",
+          "price": null,
+          "lat": "40.6942885",
+          "lng": "-73.9302404",
+          "address": "1099 Broadway, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "music"
         }
       ],
       "error": null,
-      "duration": 4.34,
-      "cached": true
+      "duration": 8.98,
+      "cached": false
     },
     {
       "venue": "NYC Tabletop RPG & D&D",
@@ -170151,7 +170295,7 @@
       "events": [
         {
           "name": "Open Tabletop RPG Night",
-          "date": "2026-12-06T05:00:00+00:00",
+          "date": "2026-12-06T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/open-tabletop-rpg-night-tickets-2002664228618",
           "venue": "Pine Box Rock Shop",
           "price": null,
@@ -170163,7 +170307,7 @@
         },
         {
           "name": "Saturday Open Tabletop RPG Day",
-          "date": "2026-11-14T05:00:00+00:00",
+          "date": "2026-11-14T19:00:00+00:00",
           "url": "https://www.eventbrite.com/e/saturday-open-tabletop-rpg-day-tickets-2004169907143",
           "venue": "Pine Box Rock Shop",
           "price": null,
@@ -170175,7 +170319,7 @@
         },
         {
           "name": "Dungeons & Drafthouse @ House of Wax - The Clash Before Christmas",
-          "date": "2026-12-06T05:00:00+00:00",
+          "date": "2026-12-06T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/dungeons-drafthouse-house-of-wax-the-clash-before-christmas-tickets-1998018721782",
           "venue": "House of Wax (at Alamo Drafthouse Cinema Brooklyn)",
           "price": null,
@@ -170187,7 +170331,7 @@
         },
         {
           "name": "TEENS & ADULTS DND FOR BEGINNERS!",
-          "date": "2026-11-19T05:00:00+00:00",
+          "date": "2026-11-19T21:00:00+00:00",
           "url": "https://www.eventbrite.com/e/teens-adults-dnd-for-beginners-tickets-2004091457498",
           "venue": "Slope Comics & Collectibles",
           "price": null,
@@ -170199,7 +170343,7 @@
         },
         {
           "name": "Modify Murder: A DND Murder Mystery",
-          "date": "2026-11-17T05:00:00+00:00",
+          "date": "2026-11-17T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/modify-murder-a-dnd-murder-mystery-tickets-2003951566079",
           "venue": "The Splendid",
           "price": null,
@@ -170210,8 +170354,20 @@
           "category": "gaming"
         },
         {
+          "name": "Modify Murder: A DND Murder Mystery",
+          "date": "2026-11-22T22:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/modify-murder-a-dnd-murder-mystery-tickets-2004262238308",
+          "venue": "Pubkey",
+          "price": null,
+          "lat": "40.7322184",
+          "lng": "-74.0000245",
+          "address": "85 West Washington Place, New York, NY",
+          "neighborhood": "New York",
+          "category": "gaming"
+        },
+        {
           "name": "Game Night",
-          "date": "2026-11-27T05:00:00+00:00",
+          "date": "2026-11-28T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/game-night-tickets-1980065720873",
           "venue": "Colors Effect",
           "price": null,
@@ -170223,7 +170379,7 @@
         },
         {
           "name": "Greatest All Day Tuesday Happy Hour + Game Night",
-          "date": "2026-11-10T05:00:00+00:00",
+          "date": "2026-11-10T20:00:00+00:00",
           "url": "https://www.eventbrite.com/e/greatest-all-day-tuesday-happy-hour-game-night-tickets-1993778815107",
           "venue": "GuestHouse Restaurant & Bar",
           "price": null,
@@ -170234,8 +170390,20 @@
           "category": "gaming"
         },
         {
+          "name": "Clock Out at Coexist: Friday + Saturday Happy Hour in Midtown",
+          "date": "2026-11-06T22:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/clock-out-at-coexist-friday-saturday-happy-hour-in-midtown-tickets-2004196032284",
+          "venue": "325 W 38th St",
+          "price": null,
+          "lat": "40.7553565",
+          "lng": "-73.9928",
+          "address": "325 West 38th Street, New York, NY",
+          "neighborhood": "New York",
+          "category": "gaming"
+        },
+        {
           "name": "Game On! at the Sheepshead Bay Library",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-05T20:00:00+00:00",
           "url": "https://www.eventbrite.com/e/game-on-at-the-sheepshead-bay-library-tickets-2003676277684",
           "venue": "Brooklyn Public Library - Sheepshead Bay Branch",
           "price": null,
@@ -170247,7 +170415,7 @@
         },
         {
           "name": "Board Game Wednesdays",
-          "date": "2026-11-18T05:00:00+00:00",
+          "date": "2026-11-18T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/board-game-wednesdays-tickets-1999323814349",
           "venue": "Stavros Niarchos Foundation Library",
           "price": null,
@@ -170258,20 +170426,8 @@
           "category": "gaming"
         },
         {
-          "name": "Clock Out at Coexist: Friday + Saturday Happy Hour in Midtown",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/clock-out-at-coexist-friday-saturday-happy-hour-in-midtown-tickets-2004204278950",
-          "venue": "325 W 38th St",
-          "price": null,
-          "lat": "40.7553565",
-          "lng": "-73.9928",
-          "address": "325 West 38th Street, New York, NY",
-          "neighborhood": "New York",
-          "category": "gaming"
-        },
-        {
           "name": "Thanksgiving Table Collection: 3- Class Webinar Series",
-          "date": "2026-11-13T05:00:00+00:00",
+          "date": "2026-11-13T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/thanksgiving-table-collection-3-class-webinar-series-tickets-2003030648590",
           "venue": "HCCC Culinary Arts Institute",
           "price": null,
@@ -170283,7 +170439,7 @@
         },
         {
           "name": "RNB In The City Saturdays At Bliss Teras Rooftop NYC Hosted By SmooveEvents",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-08T03:00:00+00:00",
           "url": "https://www.eventbrite.com/e/rnb-in-the-city-saturdays-at-bliss-teras-rooftop-nyc-hosted-by-smooveevents-tickets-1988009200033",
           "venue": "Bliss Terasu",
           "price": null,
@@ -170295,7 +170451,7 @@
         },
         {
           "name": "The Art of Hosting",
-          "date": "2026-11-22T05:00:00+00:00",
+          "date": "2026-11-22T15:00:00+00:00",
           "url": "https://www.eventbrite.com/e/the-art-of-hosting-tickets-2003029969559",
           "venue": "HCCC Culinary Arts Institute",
           "price": null,
@@ -170306,20 +170462,20 @@
           "category": "gaming"
         },
         {
-          "name": "Mangrove Kitchen Tour",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/mangrove-kitchen-tour-tickets-1982050181448",
-          "venue": "2123 Caton Ave",
+          "name": "DND x Bridgerton",
+          "date": "2026-11-15T20:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/dnd-x-bridgerton-tickets-2004261954459",
+          "venue": "Pubkey",
           "price": null,
-          "lat": "40.6529867",
-          "lng": "-73.95949499999999",
-          "address": "2123 Caton Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
+          "lat": "40.7322184",
+          "lng": "-74.0000245",
+          "address": "85 West Washington Place, New York, NY",
+          "neighborhood": "New York",
           "category": "gaming"
         },
         {
           "name": "DND x Bridgerton",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/dnd-x-bridgerton-tickets-2003951759658",
           "venue": "Park Avenue Tavern",
           "price": null,
@@ -170330,8 +170486,20 @@
           "category": "gaming"
         },
         {
+          "name": "Mangrove Kitchen Tour",
+          "date": "2026-11-07T20:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/mangrove-kitchen-tour-tickets-1982050181448",
+          "venue": "2123 Caton Ave",
+          "price": null,
+          "lat": "40.6529867",
+          "lng": "-73.95949499999999",
+          "address": "2123 Caton Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "gaming"
+        },
+        {
           "name": "Rec Center Realness! Game Night & Social",
-          "date": "2026-11-13T05:00:00+00:00",
+          "date": "2026-11-14T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/rec-center-realness-game-night-social-tickets-2004166078692",
           "venue": "Sprout Society",
           "price": null,
@@ -170343,7 +170511,7 @@
         },
         {
           "name": "Brunch Got Competitive Game Night | Presented by Off The Clock Promotions",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-08T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/brunch-got-competitive-game-night-presented-by-off-the-clock-promotions-tickets-2002015475179",
           "venue": "Greyz Bistro",
           "price": null,
@@ -170355,7 +170523,7 @@
         },
         {
           "name": "Board Game Speed Dating - Threes Brewing  - Greenpoint NYC  (Ages 25-39)",
-          "date": "2026-11-16T05:00:00+00:00",
+          "date": "2026-11-17T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/board-game-speed-dating-threes-brewing-greenpoint-nyc-ages-25-39-tickets-2002286941141",
           "venue": "Threes Brewing Greenpoint",
           "price": null,
@@ -170364,35 +170532,11 @@
           "address": "113 Franklin Street, Brooklyn, NY",
           "neighborhood": "Brooklyn",
           "category": "gaming"
-        },
-        {
-          "name": "☆ Mahjong Parlor Anniversary Market ☆",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/mahjong-parlor-anniversary-market-tickets-2002087080352",
-          "venue": "Welcome to Chinatown",
-          "price": null,
-          "lat": "40.7179244",
-          "lng": "-73.99477759999999",
-          "address": "115 Bowery, New York, NY",
-          "neighborhood": "New York",
-          "category": "gaming"
-        },
-        {
-          "name": "Mahjong Social Play at PubKey",
-          "date": "2026-11-18T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/mahjong-social-play-at-pubkey-tickets-2003432276871",
-          "venue": "Pubkey",
-          "price": null,
-          "lat": "40.7322184",
-          "lng": "-74.0000245",
-          "address": "85 West Washington Place, New York, NY",
-          "neighborhood": "New York",
-          "category": "gaming"
         }
       ],
       "error": null,
-      "duration": 2.41,
-      "cached": true
+      "duration": 6.68,
+      "cached": false
     },
     {
       "venue": "NYC Social Meetups & Mixers",
@@ -170840,8 +170984,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.02,
+      "error": null,
+      "duration": 2.16,
       "cached": true
     },
     {
@@ -170849,8 +170993,20 @@
       "url": "https://www.eventbrite.com/d/ny--new-york/jazz/",
       "events": [
         {
+          "name": "Gypsy Jazz with Antoine Thouvenin -  Cellar Series",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/gypsy-jazz-with-antoine-thouvenin-cellar-series-tickets-2004256820102",
+          "venue": "St Mazie Bar and Supper Club",
+          "price": null,
+          "lat": "40.7126028",
+          "lng": "-73.95581679999998",
+          "address": "345 Grand St, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "theater"
+        },
+        {
           "name": "Jazz Vespers: Jay Leonhart",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-08T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/jazz-vespers-jay-leonhart-tickets-2002456973713",
           "venue": "Saint Peter's Church",
           "price": null,
@@ -170861,8 +171017,20 @@
           "category": "music"
         },
         {
+          "name": "Saturday afternoon Jazz",
+          "date": "2026-11-07T19:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/saturday-afternoon-jazz-tickets-2004258616475",
+          "venue": "St Mazie Bar and Supper Club",
+          "price": null,
+          "lat": "40.7126028",
+          "lng": "-73.95581679999998",
+          "address": "345 Grand St, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "music"
+        },
+        {
           "name": "Jazz Memorial for Gene Bertoncini",
-          "date": "2026-11-10T05:00:00+00:00",
+          "date": "2026-11-10T22:30:00+00:00",
           "url": "https://www.eventbrite.com/e/jazz-memorial-for-gene-bertoncini-tickets-2002645017156",
           "venue": "Saint Peter's Church",
           "price": null,
@@ -170873,8 +171041,20 @@
           "category": "music"
         },
         {
+          "name": "Jazz with Pete Matthiesson - Cellar series",
+          "date": "2026-11-06T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/jazz-with-pete-matthiesson-cellar-series-tickets-2004256047792",
+          "venue": "St Mazie Bar and Supper Club",
+          "price": null,
+          "lat": "40.7126028",
+          "lng": "-73.95581679999998",
+          "address": "345 Grand St, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "music"
+        },
+        {
           "name": "Jazz Vespers: Hyuna Park, Amadis Dunkel, Myles Sloniker,  David Hawkins",
-          "date": "2026-11-15T05:00:00+00:00",
+          "date": "2026-11-15T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/jazz-vespers-hyuna-park-amadis-dunkel-myles-sloniker-david-hawkins-tickets-2002457167292",
           "venue": "Saint Peter's Church",
           "price": null,
@@ -170885,20 +171065,44 @@
           "category": "music"
         },
         {
-          "name": "FREE Live Jazz Jam  - Every Sunday!  - Jazz by Jorei  Weekly Series",
-          "date": "2026-11-08T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/free-live-jazz-jam-every-sunday-jazz-by-jorei-weekly-series-tickets-1232172815059",
-          "venue": "Sour Mouse, NYC",
+          "name": "Jazz with Charlie Roman!",
+          "date": "2026-11-11T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/jazz-with-charlie-roman-tickets-2004260526187",
+          "venue": "St Mazie Bar and Supper Club",
           "price": null,
-          "lat": "40.71896039999999",
-          "lng": "-73.9883548",
-          "address": "110 Delancey Street, New York, NY",
-          "neighborhood": "New York",
+          "lat": "40.7126028",
+          "lng": "-73.95581679999998",
+          "address": "345 Grand St, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "music"
+        },
+        {
+          "name": "Jazz with Lu Salcedo! - Cellar series",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/jazz-with-lu-salcedo-cellar-series-tickets-2004259384773",
+          "venue": "St Mazie Bar and Supper Club",
+          "price": null,
+          "lat": "40.7126028",
+          "lng": "-73.95581679999998",
+          "address": "345 Grand St, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "music"
+        },
+        {
+          "name": "Nola Jazz with The Downtown Griots!",
+          "date": "2026-11-07T03:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/nola-jazz-with-the-downtown-griots-tickets-2004258328614",
+          "venue": "St Mazie Bar and Supper Club",
+          "price": null,
+          "lat": "40.7126028",
+          "lng": "-73.95581679999998",
+          "address": "345 Grand St, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
           "category": "music"
         },
         {
           "name": "Jazz Piano Up Close Recital (Series)",
-          "date": "2026-11-14T05:00:00+00:00",
+          "date": "2026-11-14T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/jazz-piano-up-close-recital-series-tickets-2003551216623",
           "venue": "OPERA America's National Opera Center",
           "price": null,
@@ -170910,7 +171114,7 @@
         },
         {
           "name": "Friday Nights at West & Co | Speakeasy Jazz",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-07T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/friday-nights-at-west-co-speakeasy-jazz-tickets-2002102806389",
           "venue": "West & Co",
           "price": null,
@@ -170922,7 +171126,7 @@
         },
         {
           "name": "Jazz & more with Julia Haltigan & The Salt!",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/jazz-more-with-julia-haltigan-the-salt-tickets-2004006889553",
           "venue": "St Mazie Bar and Supper Club",
           "price": null,
@@ -170934,7 +171138,7 @@
         },
         {
           "name": "Jazz Vespers: Naama Gheber",
-          "date": "2026-12-06T05:00:00+00:00",
+          "date": "2026-12-06T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/jazz-vespers-naama-gheber-tickets-2003714959382",
           "venue": "Saint Peter's Church",
           "price": null,
@@ -170945,8 +171149,20 @@
           "category": "music"
         },
         {
+          "name": "FREE Live Jazz Jam  - Every Sunday!  - Jazz by Jorei  Weekly Series",
+          "date": "2026-11-08T20:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/free-live-jazz-jam-every-sunday-jazz-by-jorei-weekly-series-tickets-1232172815059",
+          "venue": "Sour Mouse, NYC",
+          "price": null,
+          "lat": "40.71896039999999",
+          "lng": "-73.9883548",
+          "address": "110 Delancey Street, New York, NY",
+          "neighborhood": "New York",
+          "category": "music"
+        },
+        {
           "name": "Jazz Vespers: Tomoko Omura, Glenn Zaleski, Pablo Menares, Jay Sawyer",
-          "date": "2026-11-22T05:00:00+00:00",
+          "date": "2026-11-22T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/jazz-vespers-tomoko-omura-glenn-zaleski-pablo-menares-jay-sawyer-tickets-2002457280631",
           "venue": "Saint Peter's Church",
           "price": null,
@@ -170958,7 +171174,7 @@
         },
         {
           "name": "Secret Parlor Jazz: Home-Cooked Tunes & BBQ Dinner on the Upper East Side",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-08T19:00:00+00:00",
           "url": "https://www.eventbrite.com/e/secret-parlor-jazz-home-cooked-tunes-bbq-dinner-on-the-upper-east-side-registration-2002626597061",
           "venue": "Parlor Jazz (Exact Meeting Location Revealed in Confirmation Email)",
           "price": null,
@@ -170970,7 +171186,7 @@
         },
         {
           "name": "Jazz Lab NY: Adult Student Jazz Small Groups",
-          "date": "2026-11-12T05:00:00+00:00",
+          "date": "2026-11-13T00:30:00+00:00",
           "url": "https://www.eventbrite.com/e/jazz-lab-ny-adult-student-jazz-small-groups-tickets-2004081234922",
           "venue": "Sour Mouse",
           "price": null,
@@ -170979,59 +171195,11 @@
           "address": "110 Delancey Street, New York, NY",
           "neighborhood": "New York",
           "category": "music"
-        },
-        {
-          "name": "Live Jazz at Nook",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/live-jazz-at-nook-tickets-2002387771728",
-          "venue": "Nook",
-          "price": null,
-          "lat": "40.705189",
-          "lng": "-73.924549",
-          "address": "45 Irving Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "NYC LIVE JAZZ MUSIC - The Daily Press, Coffee House and Bar",
-          "date": "2026-11-08T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/nyc-live-jazz-music-the-daily-press-coffee-house-and-bar-tickets-1252381108609",
-          "venue": "The Daily Press, Coffeehouse and Bar",
-          "price": null,
-          "lat": "40.6786611",
-          "lng": "-73.9107556",
-          "address": "38 Somers Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "Velvet Nights: A Jazz & Soca Experience | Brooklyn",
-          "date": "2026-11-08T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/velvet-nights-a-jazz-soca-experience-brooklyn-tickets-2002917760940",
-          "venue": "The Picnic House in Prospect Park",
-          "price": null,
-          "lat": "40.6655603",
-          "lng": "-73.971575",
-          "address": "40 West Drive, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
-          "name": "Chris van Voorst van Beest Trio at Dumbo Jazz Loft, Friday 11/13/26",
-          "date": "2026-11-13T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/chris-van-voorst-van-beest-trio-at-dumbo-jazz-loft-friday-111326-tickets-2003969515767",
-          "venue": "25 Jay Street, Brooklyn, NY, USA",
-          "price": null,
-          "lat": "40.7042686",
-          "lng": "-73.9863092",
-          "address": "25 Jay Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
         }
       ],
       "error": null,
-      "duration": 2.88,
-      "cached": true
+      "duration": 13.04,
+      "cached": false
     },
     {
       "venue": "Brooklyn Live Jazz & Blues",
@@ -171039,7 +171207,7 @@
       "events": [
         {
           "name": "Velvet Nights: A Jazz & Soca Experience | Brooklyn",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-08T20:30:00+00:00",
           "url": "https://www.eventbrite.com/e/velvet-nights-a-jazz-soca-experience-brooklyn-tickets-2002917760940",
           "venue": "The Picnic House in Prospect Park",
           "price": null,
@@ -171051,7 +171219,7 @@
         },
         {
           "name": "Caribbean Jazz Lounge Brooklyn",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-09T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/caribbean-jazz-lounge-brooklyn-tickets-2002671778199",
           "venue": "Plum Restaurant & Lounge",
           "price": null,
@@ -171062,8 +171230,20 @@
           "category": "music"
         },
         {
+          "name": "JAZZ & GIN  - A Speakeasy Soirée (Nov 20th)",
+          "date": "2026-11-21T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/jazz-gin-a-speakeasy-soiree-nov-20th-tickets-2004246241461",
+          "venue": "URBANE ARTS CLUB",
+          "price": null,
+          "lat": "40.6436298",
+          "lng": "-73.9694313",
+          "address": "1016 Beverley Rd,, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "music"
+        },
+        {
           "name": "NYC LIVE JAZZ MUSIC - The Daily Press, Coffee House and Bar",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-09T02:00:00+00:00",
           "url": "https://www.eventbrite.com/e/nyc-live-jazz-music-the-daily-press-coffee-house-and-bar-tickets-1252381108609",
           "venue": "The Daily Press, Coffeehouse and Bar",
           "price": null,
@@ -171074,8 +171254,32 @@
           "category": "music"
         },
         {
+          "name": "NYC LIVE TALENT & COMEDY - Mr. Bell's Cuisine & Sports Bar",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/nyc-live-talent-comedy-mr-bells-cuisine-sports-bar-tickets-2003550086242",
+          "venue": "1099 Broadway",
+          "price": null,
+          "lat": "40.6942885",
+          "lng": "-73.9302404",
+          "address": "1099 Broadway, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "comedy"
+        },
+        {
+          "name": "NYC LIVE JAZZ MUSIC & JAM SESSION - Mr. Bell's Cuisine & Sports Bar",
+          "date": "2026-11-06T02:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/nyc-live-jazz-music-jam-session-mr-bells-cuisine-sports-bar-tickets-2003550473400",
+          "venue": "1099 Broadway",
+          "price": null,
+          "lat": "40.6942885",
+          "lng": "-73.9302404",
+          "address": "1099 Broadway, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "music"
+        },
+        {
           "name": "North Brooklyn Chess at McCarren Parkhouse",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/north-brooklyn-chess-at-mccarren-parkhouse-tickets-1999281562974",
           "venue": "McCarren Parkhouse",
           "price": null,
@@ -171087,7 +171291,7 @@
         },
         {
           "name": "Live Jazz Every Thursday at Be Pasta – Brooklyn",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-05T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/live-jazz-every-thursday-at-be-pasta-brooklyn-tickets-2004051631377",
           "venue": "Be Pasta",
           "price": null,
@@ -171099,7 +171303,7 @@
         },
         {
           "name": "CHSC Fall Jazz Fundraiser 2026: In Tune With Change",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-06T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/chsc-fall-jazz-fundraiser-2026-in-tune-with-change-tickets-2001007086060",
           "venue": "305 E 21st St",
           "price": null,
@@ -171110,8 +171314,32 @@
           "category": "music"
         },
         {
+          "name": "NYC LIVE JAZZ MUSIC W/ HAPPY HOUR - Mr. Bell's Cuisine & Sports Bar",
+          "date": "2026-11-05T21:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/nyc-live-jazz-music-w-happy-hour-mr-bells-cuisine-sports-bar-tickets-2003549433289",
+          "venue": "1099 Broadway",
+          "price": null,
+          "lat": "40.6942885",
+          "lng": "-73.9302404",
+          "address": "1099 Broadway, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "music"
+        },
+        {
+          "name": "Wednesday Night - Stand Up Comedy in Brooklyn",
+          "date": "2026-11-12T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/wednesday-night-stand-up-comedy-in-brooklyn-tickets-1987938195657",
+          "venue": "EastVille Comedy Club",
+          "price": null,
+          "lat": "40.68591069999999",
+          "lng": "-73.98160259999997",
+          "address": "487 Atlantic Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "comedy"
+        },
+        {
           "name": "NYC LIVE TALENT & TABLE TOP GAMES - Mr. Bell's Cuisine & Sports Bar",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/nyc-live-talent-table-top-games-mr-bells-cuisine-sports-bar-tickets-2003549929774",
           "venue": "1099 Broadway",
           "price": null,
@@ -171123,7 +171351,7 @@
         },
         {
           "name": "Saturday Night Comedy  - 8PM in Brooklyn!",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-07T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/saturday-night-comedy-8pm-in-brooklyn-tickets-1984664512984",
           "venue": "EastVille Comedy Club",
           "price": null,
@@ -171135,7 +171363,7 @@
         },
         {
           "name": "Brooklyn Eagle Magazine Launch Party",
-          "date": "2026-11-18T05:00:00+00:00",
+          "date": "2026-11-19T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/brooklyn-eagle-magazine-launch-party-tickets-2004044876172",
           "venue": "501 Union",
           "price": null,
@@ -171146,20 +171374,8 @@
           "category": "clubbing"
         },
         {
-          "name": "Live Jazz at Nook",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/live-jazz-at-nook-tickets-2002387771728",
-          "venue": "Nook",
-          "price": null,
-          "lat": "40.705189",
-          "lng": "-73.924549",
-          "address": "45 Irving Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "music"
-        },
-        {
           "name": "Saturday Night Comedy  - 10PM in Brooklyn!",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-08T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/saturday-night-comedy-10pm-in-brooklyn-tickets-2003866357217",
           "venue": "EastVille Comedy Club",
           "price": null,
@@ -171170,20 +171386,20 @@
           "category": "comedy"
         },
         {
-          "name": "JAZZ & GIN  - A Speakeasy Soirée (Nov 20th)",
-          "date": "2026-11-20T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/jazz-gin-a-speakeasy-soiree-nov-20th-tickets-2004246241461",
-          "venue": "URBANE ARTS CLUB",
+          "name": "The Brooklyn Sunday Social @Aliya",
+          "date": "2026-11-15T23:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/the-brooklyn-sunday-social-aliya-tickets-2004154721723",
+          "venue": "500 Metropolitan Ave",
           "price": null,
-          "lat": "40.6436298",
-          "lng": "-73.9694313",
-          "address": "1016 Beverley Rd,, Brooklyn, NY",
+          "lat": "40.7136591",
+          "lng": "-73.9524682",
+          "address": "500 Metropolitan Avenue, Brooklyn, NY",
           "neighborhood": "Brooklyn",
           "category": "music"
         },
         {
           "name": "NYC LIVE TALENT OPEN MIC & POETRY - Mr. Bell's Cuisine & Sports Bar",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-07T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/nyc-live-talent-open-mic-poetry-mr-bells-cuisine-sports-bar-tickets-2003550260764",
           "venue": "1099 Broadway",
           "price": null,
@@ -171194,21 +171410,33 @@
           "category": "books"
         },
         {
-          "name": "The Brooklyn Sunday Social @Aliya",
-          "date": "2026-11-15T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/the-brooklyn-sunday-social-aliya-tickets-2004154721723",
-          "venue": "500 Metropolitan Ave",
+          "name": "Live Jazz at Nook",
+          "date": "2026-11-08T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/live-jazz-at-nook-tickets-2002387771728",
+          "venue": "Nook",
           "price": null,
-          "lat": "40.7136591",
-          "lng": "-73.9524682",
-          "address": "500 Metropolitan Avenue, Brooklyn, NY",
+          "lat": "40.705189",
+          "lng": "-73.924549",
+          "address": "45 Irving Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "music"
+        },
+        {
+          "name": "Cameron Campbell Live!",
+          "date": "2026-11-14T02:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/cameron-campbell-live-tickets-2003929987537",
+          "venue": "367 Bedford Ave",
+          "price": null,
+          "lat": "40.7113361",
+          "lng": "-73.96304409999999",
+          "address": "367 Bedford Avenue, Brooklyn, NY",
           "neighborhood": "Brooklyn",
           "category": "music"
         }
       ],
       "error": null,
-      "duration": 2.99,
-      "cached": true
+      "duration": 11.11,
+      "cached": false
     },
     {
       "venue": "NYC Speakeasy & Acoustic Sessions",
@@ -171429,7 +171657,7 @@
       "events": [
         {
           "name": "Matcha + Meetup: Brooklyn",
-          "date": "2026-11-28T05:00:00+00:00",
+          "date": "2026-11-28T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/matcha-meetup-brooklyn-tickets-1971965880031",
           "venue": "Cafe of the Day",
           "price": null,
@@ -171441,7 +171669,7 @@
         },
         {
           "name": "Meditation and Tacos Meetup!",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/meditation-and-tacos-meetup-tickets-2004076463651",
           "venue": "Sit-Heads HQ (address in email once you register - NOT here on Eventbrite)",
           "price": null,
@@ -171453,7 +171681,7 @@
         },
         {
           "name": "Real Estate Investor Networking Brooklyn | Property Deal Network PDN",
-          "date": "2026-11-10T05:00:00+00:00",
+          "date": "2026-11-11T00:00:00+00:00",
           "url": "https://www.eventbrite.co.uk/e/real-estate-investor-networking-brooklyn-property-deal-network-pdn-tickets-1998966398308",
           "venue": "Black Forest Brooklyn - Smith Street",
           "price": null,
@@ -171464,8 +171692,20 @@
           "category": "community"
         },
         {
+          "name": "Wednesday Night - Stand Up Comedy in Brooklyn",
+          "date": "2026-11-12T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/wednesday-night-stand-up-comedy-in-brooklyn-tickets-1987938195657",
+          "venue": "EastVille Comedy Club",
+          "price": null,
+          "lat": "40.68591069999999",
+          "lng": "-73.98160259999997",
+          "address": "487 Atlantic Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "comedy"
+        },
+        {
           "name": "LIVE COMEDY - 10PM in Brooklyn!",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-07T03:00:00+00:00",
           "url": "https://www.eventbrite.com/e/live-comedy-10pm-in-brooklyn-tickets-1990109002599",
           "venue": "EastVille Comedy Club",
           "price": null,
@@ -171476,20 +171716,8 @@
           "category": "comedy"
         },
         {
-          "name": "Sunday Afternoon LIVE Showcase & Open Mic @ Brooklyn Music Kitchen",
-          "date": "2026-11-15T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/sunday-afternoon-live-showcase-open-mic-brooklyn-music-kitchen-tickets-1264609905269",
-          "venue": "Brooklyn Music Kitchen",
-          "price": null,
-          "lat": "40.692643",
-          "lng": "-73.9694925",
-          "address": "177 Vanderbilt Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "community"
-        },
-        {
           "name": "Gay Men Speed Dating & Mixer in Brooklyn @ Lovejoys | NYC Speed Dating",
-          "date": "2026-12-02T05:00:00+00:00",
+          "date": "2026-12-03T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/gay-men-speed-dating-mixer-in-brooklyn-lovejoys-nyc-speed-dating-tickets-2004206081341",
           "venue": "Lovejoys",
           "price": null,
@@ -171501,7 +171729,7 @@
         },
         {
           "name": "Saturday Night Comedy  - 8PM in Brooklyn!",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-07T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/saturday-night-comedy-8pm-in-brooklyn-tickets-1984664512984",
           "venue": "EastVille Comedy Club",
           "price": null,
@@ -171512,8 +171740,32 @@
           "category": "comedy"
         },
         {
+          "name": "Sunday Afternoon LIVE Showcase & Open Mic @ Brooklyn Music Kitchen",
+          "date": "2026-11-15T20:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/sunday-afternoon-live-showcase-open-mic-brooklyn-music-kitchen-tickets-1264609905269",
+          "venue": "Brooklyn Music Kitchen",
+          "price": null,
+          "lat": "40.692643",
+          "lng": "-73.9694925",
+          "address": "177 Vanderbilt Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "community"
+        },
+        {
+          "name": "Live Stand-Up Comedy Every Night @ The Tiny Cupboard Brooklyn",
+          "date": "2026-11-06T01:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/live-stand-up-comedy-every-night-the-tiny-cupboard-brooklyn-tickets-1994075720158",
+          "venue": "The Tiny Cupboard",
+          "price": null,
+          "lat": "40.6837247",
+          "lng": "-73.9112172",
+          "address": "10 Cooper Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "comedy"
+        },
+        {
           "name": "Millennial Speed Dating  Event  @ Radegast Hall & Biergarten | Williamsburg",
-          "date": "2026-11-11T05:00:00+00:00",
+          "date": "2026-11-12T00:30:00+00:00",
           "url": "https://www.eventbrite.com/e/millennial-speed-dating-event-radegast-hall-biergarten-williamsburg-tickets-2002252897315",
           "venue": "Radegast Hall & Biergarten",
           "price": null,
@@ -171524,20 +171776,8 @@
           "category": "community"
         },
         {
-          "name": "“MAMA TACO” LADIES LOVE SATURDAYS  @ “MAMA TACO” Brooklyn",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/mama-taco-ladies-love-saturdays-mama-taco-brooklyn-tickets-2003870069320",
-          "venue": "MAMATACO",
-          "price": null,
-          "lat": "40.701824",
-          "lng": "-73.93664799999999",
-          "address": "880 Flushing Avenue, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "community"
-        },
-        {
           "name": "The Brooklyn Sunday Social @Aliya",
-          "date": "2026-11-15T05:00:00+00:00",
+          "date": "2026-11-15T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/the-brooklyn-sunday-social-aliya-tickets-2004154721723",
           "venue": "500 Metropolitan Ave",
           "price": null,
@@ -171548,20 +171788,8 @@
           "category": "community"
         },
         {
-          "name": "Black Nurse NEW YORK Meetup",
-          "date": "2026-11-07T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/black-nurse-new-york-meetup-tickets-2004155592327",
-          "venue": "Sweet Fire Cafe & Studio",
-          "price": null,
-          "lat": "40.7076304",
-          "lng": "-73.95635910000001",
-          "address": "338 Broadway, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "community"
-        },
-        {
           "name": "Millennial Speed Dating in Brooklyn @ Radegast Hall | Speed Dating NYC",
-          "date": "2026-11-11T05:00:00+00:00",
+          "date": "2026-11-12T00:30:00+00:00",
           "url": "https://www.eventbrite.com/e/millennial-speed-dating-in-brooklyn-radegast-hall-speed-dating-nyc-tickets-2002252410860",
           "venue": "Radegast Hall & Biergarten",
           "price": null,
@@ -171572,8 +171800,20 @@
           "category": "community"
         },
         {
+          "name": "Gay Men Speed Dating NYC @ Lovejoys : Queer Speed Dating | Brooklyn Event",
+          "date": "2026-12-03T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/gay-men-speed-dating-nyc-lovejoys-queer-speed-dating-brooklyn-event-tickets-2004206082344",
+          "venue": "Lovejoys",
+          "price": null,
+          "lat": "40.7068084",
+          "lng": "-73.9224721",
+          "address": "412 Troutman Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "community"
+        },
+        {
           "name": "Saturday Night Comedy  - 10PM in Brooklyn!",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-08T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/saturday-night-comedy-10pm-in-brooklyn-tickets-2003866357217",
           "venue": "EastVille Comedy Club",
           "price": null,
@@ -171584,8 +171824,20 @@
           "category": "comedy"
         },
         {
+          "name": "Black Nurse NEW YORK Meetup",
+          "date": "2026-11-07T19:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/black-nurse-new-york-meetup-tickets-2004155592327",
+          "venue": "Sweet Fire Cafe & Studio",
+          "price": null,
+          "lat": "40.7076304",
+          "lng": "-73.95635910000001",
+          "address": "338 Broadway, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "community"
+        },
+        {
           "name": "Brooklyn Bridge Soirée Sunset Series - House Music Party at 1 Hotel",
-          "date": "2026-11-08T05:00:00+00:00",
+          "date": "2026-11-08T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/brooklyn-bridge-soiree-sunset-series-house-music-party-at-1-hotel-tickets-2003142611474",
           "venue": "1 Hotel Brooklyn Bridge",
           "price": null,
@@ -171597,7 +171849,7 @@
         },
         {
           "name": "North Brooklyn Chess at McCarren Parkhouse",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/north-brooklyn-chess-at-mccarren-parkhouse-tickets-1999281562974",
           "venue": "McCarren Parkhouse",
           "price": null,
@@ -171609,7 +171861,7 @@
         },
         {
           "name": "Brooklyn Bridge Singles Sunset Date Walk (Sold Out For Men!)",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/brooklyn-bridge-singles-sunset-date-walk-sold-out-for-men-tickets-2002474196226",
           "venue": "Starbucks",
           "price": null,
@@ -171618,11 +171870,35 @@
           "address": "50 Court Street, Brooklyn, NY",
           "neighborhood": "Brooklyn",
           "category": "community"
+        },
+        {
+          "name": "“MAMA TACO” LADIES LOVE SATURDAYS  @ “MAMA TACO” Brooklyn",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/mama-taco-ladies-love-saturdays-mama-taco-brooklyn-tickets-2003870069320",
+          "venue": "MAMATACO",
+          "price": null,
+          "lat": "40.701824",
+          "lng": "-73.93664799999999",
+          "address": "880 Flushing Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "community"
+        },
+        {
+          "name": "Digital Marketers NYC Meetup",
+          "date": "2026-11-10T23:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/digital-marketers-nyc-meetup-tickets-2003167610246",
+          "venue": "26 Broadway",
+          "price": null,
+          "lat": "40.7056289",
+          "lng": "-74.0130813",
+          "address": "26 Broadway, New York, NY",
+          "neighborhood": "New York",
+          "category": "community"
         }
       ],
       "error": null,
-      "duration": 3.71,
-      "cached": true
+      "duration": 14.85,
+      "cached": false
     },
     {
       "venue": "Brooklyn Book Clubs & Literary Nights",
@@ -171630,7 +171906,7 @@
       "events": [
         {
           "name": "Brooklyn Book Club: Read your book and then meet some people! BYO Book!",
-          "date": "2026-11-06T05:00:00+00:00",
+          "date": "2026-11-06T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/brooklyn-book-club-read-your-book-and-then-meet-some-people-byo-book-tickets-1996345141057",
           "venue": "The Tiny Cupboard",
           "price": null,
@@ -171641,20 +171917,8 @@
           "category": "comedy"
         },
         {
-          "name": "Poetry Today Book Club: \"Trilce\" by César Vallejo",
-          "date": "2026-11-15T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/poetry-today-book-club-trilce-by-cesar-vallejo-tickets-2001772789299",
-          "venue": "Book Club Bar - East Village",
-          "price": null,
-          "lat": "40.72296",
-          "lng": "-73.983229",
-          "address": "197 East 3rd Street, New York, NY",
-          "neighborhood": "New York",
-          "category": "books"
-        },
-        {
           "name": "MURDER Book Club",
-          "date": "2026-12-07T05:00:00+00:00",
+          "date": "2026-12-07T23:30:00+00:00",
           "url": "https://www.eventbrite.com/e/murder-book-club-tickets-2004101392213",
           "venue": "Moxy NYC East Village",
           "price": null,
@@ -171665,8 +171929,20 @@
           "category": "books"
         },
         {
+          "name": "Poetry Today Book Club: \"Trilce\" by César Vallejo",
+          "date": "2026-11-15T16:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/poetry-today-book-club-trilce-by-cesar-vallejo-tickets-2001772789299",
+          "venue": "Book Club Bar - East Village",
+          "price": null,
+          "lat": "40.72296",
+          "lng": "-73.983229",
+          "address": "197 East 3rd Street, New York, NY",
+          "neighborhood": "New York",
+          "category": "books"
+        },
+        {
           "name": "General Literary Trivia",
-          "date": "2026-11-18T05:00:00+00:00",
+          "date": "2026-11-19T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/general-literary-trivia-tickets-2002247611505",
           "venue": "Book Club Bar",
           "price": null,
@@ -171677,8 +171953,20 @@
           "category": "books"
         },
         {
+          "name": "ROMANTASY Book Club",
+          "date": "2026-12-02T23:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/romantasy-book-club-tickets-2004101305955",
+          "venue": "Liz's Book Bar",
+          "price": null,
+          "lat": "40.6812175",
+          "lng": "-73.9940756",
+          "address": "315 Smith Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "books"
+        },
+        {
           "name": "Speed Dating Book Club",
-          "date": "2026-11-13T05:00:00+00:00",
+          "date": "2026-11-14T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/speed-dating-book-club-tickets-2003517324250",
           "venue": "Liz's Book Bar",
           "price": null,
@@ -171690,7 +171978,7 @@
         },
         {
           "name": "SCI-FI Book Club",
-          "date": "2026-12-06T05:00:00+00:00",
+          "date": "2026-12-06T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/sci-fi-book-club-tickets-2004101346075",
           "venue": "Spritzenhaus33",
           "price": null,
@@ -171702,7 +171990,7 @@
         },
         {
           "name": "ROMANCE Book Club",
-          "date": "2026-12-01T05:00:00+00:00",
+          "date": "2026-12-02T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/romance-book-club-tickets-2004101278874",
           "venue": "The Ripped Bodice",
           "price": null,
@@ -171714,7 +172002,7 @@
         },
         {
           "name": "Drink 'N Draft: Creative Writing Workshop",
-          "date": "2026-11-24T05:00:00+00:00",
+          "date": "2026-11-25T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/drink-n-draft-creative-writing-workshop-tickets-1999383259150",
           "venue": "Book Club Bar - Bushwick",
           "price": null,
@@ -171726,7 +172014,7 @@
         },
         {
           "name": "Sapphic Lit Book Club: \"Heap Earth Upon It\" by Chloe Michelle Howarth",
-          "date": "2026-11-12T05:00:00+00:00",
+          "date": "2026-11-13T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/sapphic-lit-book-club-heap-earth-upon-it-by-chloe-michelle-howarth-tickets-2003100077253",
           "venue": "Book Club Bar - Bushwick",
           "price": null,
@@ -171738,7 +172026,7 @@
         },
         {
           "name": "FICTION Book Club",
-          "date": "2026-12-06T05:00:00+00:00",
+          "date": "2026-12-06T21:00:00+00:00",
           "url": "https://www.eventbrite.com/e/fiction-book-club-tickets-2004101373156",
           "venue": "Everything's Jake NYC Bar & Lounge",
           "price": null,
@@ -171750,7 +172038,7 @@
         },
         {
           "name": "The Brooklyn Rare Book Fair",
-          "date": "2026-12-04T05:00:00+00:00",
+          "date": "2026-12-04T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/the-brooklyn-rare-book-fair-tickets-2003779377057",
           "venue": "XX V",
           "price": null,
@@ -171762,7 +172050,7 @@
         },
         {
           "name": "Queer Lit Book Club - November 2026",
-          "date": "2026-11-15T05:00:00+00:00",
+          "date": "2026-11-16T00:15:00+00:00",
           "url": "https://www.eventbrite.com/e/queer-lit-book-club-november-2026-tickets-2003786000869",
           "venue": "The Ripped Bodice",
           "price": null,
@@ -171774,7 +172062,7 @@
         },
         {
           "name": "Epic Reads - Blood Over Bright Haven",
-          "date": "2026-11-07T05:00:00+00:00",
+          "date": "2026-11-07T19:00:00+00:00",
           "url": "https://www.eventbrite.com/e/epic-reads-blood-over-bright-haven-tickets-2002979765397",
           "venue": "FourFiveSix",
           "price": null,
@@ -171786,7 +172074,7 @@
         },
         {
           "name": "Quest for Love Book Club - November 2026",
-          "date": "2026-11-22T05:00:00+00:00",
+          "date": "2026-11-23T00:15:00+00:00",
           "url": "https://www.eventbrite.com/e/quest-for-love-book-club-november-2026-tickets-2003786361949",
           "venue": "The Ripped Bodice",
           "price": null,
@@ -171797,20 +172085,8 @@
           "category": "books"
         },
         {
-          "name": "Stage Dive: Creative Writing Workshop",
-          "date": "2026-12-02T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/stage-dive-creative-writing-workshop-tickets-1999381778722",
-          "venue": "Book Club Bar - Bushwick",
-          "price": null,
-          "lat": "40.7058915",
-          "lng": "-73.9233996",
-          "address": "380 Troutman Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "books"
-        },
-        {
           "name": "Book Club² - \"The Coin\" by Yasmin Zaher",
-          "date": "2026-11-11T05:00:00+00:00",
+          "date": "2026-11-12T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/book-club2-the-coin-by-yasmin-zaher-tickets-2002097810446",
           "venue": "Book Club Bar - East Village",
           "price": null,
@@ -171822,7 +172098,7 @@
         },
         {
           "name": "November Fantasy Book Club: Six of Crows",
-          "date": "2026-11-09T05:00:00+00:00",
+          "date": "2026-11-10T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/november-fantasy-book-club-six-of-crows-tickets-2003144241349",
           "venue": "667 Washington Ave",
           "price": null,
@@ -171834,7 +172110,7 @@
         },
         {
           "name": "HEA Romance Book Club  - \"The Guest Book\" by Mae Marvel",
-          "date": "2026-11-18T05:00:00+00:00",
+          "date": "2026-11-19T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/hea-romance-book-club-the-guest-book-by-mae-marvel-tickets-2003745123604",
           "venue": "Book Club Bar",
           "price": null,
@@ -171843,11 +172119,35 @@
           "address": "197 East 3rd Street, New York, NY",
           "neighborhood": "New York",
           "category": "books"
+        },
+        {
+          "name": "NYC Hoodoo Society Book Club: Gnosticism, Practice & Power",
+          "date": "2026-11-29T20:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/nyc-hoodoo-society-book-club-gnosticism-practice-power-tickets-1990716715284",
+          "venue": "98 Hoyt St",
+          "price": null,
+          "lat": "40.6875155",
+          "lng": "-73.98729209999999",
+          "address": "98 Hoyt Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "books"
+        },
+        {
+          "name": "Stage Dive: Creative Writing Workshop",
+          "date": "2026-12-03T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/stage-dive-creative-writing-workshop-tickets-1999381778722",
+          "venue": "Book Club Bar - Bushwick",
+          "price": null,
+          "lat": "40.7058915",
+          "lng": "-73.9233996",
+          "address": "380 Troutman Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "books"
         }
       ],
       "error": null,
-      "duration": 3.38,
-      "cached": true
+      "duration": 15.74,
+      "cached": false
     },
     {
       "venue": "Brooklyn Run Clubs & Fitness Meetups",
@@ -172068,7 +172368,7 @@
       "events": [
         {
           "name": "General Literary Trivia",
-          "date": "2026-11-18T05:00:00+00:00",
+          "date": "2026-11-19T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/general-literary-trivia-tickets-2002247611505",
           "venue": "Book Club Bar",
           "price": null,
@@ -172080,7 +172380,7 @@
         },
         {
           "name": "Musical Theatre mAyHEm! | Musical Theatre Trivia Game Show",
-          "date": "2026-11-23T05:00:00+00:00",
+          "date": "2026-11-24T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/musical-theatre-mayhem-musical-theatre-trivia-game-show-tickets-1985734255613",
           "venue": "The Rat NYC",
           "price": null,
@@ -172091,8 +172391,20 @@
           "category": "theater"
         },
         {
+          "name": "Trivia Night at Mommy's",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/trivia-night-at-mommys-tickets-2003530835663",
+          "venue": "Mommy's Cocktail Bar",
+          "price": null,
+          "lat": "40.713974",
+          "lng": "-73.9445277",
+          "address": "323 Graham Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "gaming"
+        },
+        {
           "name": "Trivia Thursdays @ Halyards",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/trivia-thursdays-halyards-tickets-1901910247749",
           "venue": "Halyards",
           "price": null,
@@ -172104,7 +172416,7 @@
         },
         {
           "name": "The Brooklyn Sunday Social @Aliya",
-          "date": "2026-11-15T05:00:00+00:00",
+          "date": "2026-11-15T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/the-brooklyn-sunday-social-aliya-tickets-2004154721723",
           "venue": "500 Metropolitan Ave",
           "price": null,
@@ -172115,8 +172427,20 @@
           "category": "gaming"
         },
         {
+          "name": "Trivia!",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/trivia-tickets-1988450434778",
+          "venue": "Nook",
+          "price": null,
+          "lat": "40.705189",
+          "lng": "-73.924549",
+          "address": "45 Irving Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "gaming"
+        },
+        {
           "name": "Well Seasoned Trivia: The Boil Down — Brooklyn Trivia Night at Crabby Shack",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-05T23:00:00+00:00",
           "url": "https://www.eventbrite.com/e/well-seasoned-trivia-the-boil-down-brooklyn-trivia-night-at-crabby-shack-tickets-2003297032351",
           "venue": "The Crabby Shack",
           "price": null,
@@ -172127,20 +172451,8 @@
           "category": "gaming"
         },
         {
-          "name": "North Brooklyn Chess at McCarren Parkhouse",
-          "date": "2026-11-05T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/north-brooklyn-chess-at-mccarren-parkhouse-tickets-1999281562974",
-          "venue": "McCarren Parkhouse",
-          "price": null,
-          "lat": "40.722",
-          "lng": "-73.95189970000001",
-          "address": "855 Lorimer Street, Brooklyn, NY",
-          "neighborhood": "Brooklyn",
-          "category": "gaming"
-        },
-        {
           "name": "Brooklyn Eagle Magazine Launch Party",
-          "date": "2026-11-18T05:00:00+00:00",
+          "date": "2026-11-19T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/brooklyn-eagle-magazine-launch-party-tickets-2004044876172",
           "venue": "501 Union",
           "price": null,
@@ -172151,20 +172463,20 @@
           "category": "clubbing"
         },
         {
-          "name": "Trivia Mondays @ Black Horse Pub",
-          "date": "2026-11-09T05:00:00+00:00",
-          "url": "https://www.eventbrite.com/e/trivia-mondays-black-horse-pub-tickets-1318820921879",
-          "venue": "Black Horse Pub",
+          "name": "North Brooklyn Chess at McCarren Parkhouse",
+          "date": "2026-11-06T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/north-brooklyn-chess-at-mccarren-parkhouse-tickets-1999281562974",
+          "venue": "McCarren Parkhouse",
           "price": null,
-          "lat": "40.6651788",
-          "lng": "-73.98999309999999",
-          "address": "568 5th Avenue, Brooklyn, NY",
+          "lat": "40.722",
+          "lng": "-73.95189970000001",
+          "address": "855 Lorimer Street, Brooklyn, NY",
           "neighborhood": "Brooklyn",
           "category": "gaming"
         },
         {
           "name": "THE BROOKLYN FRENZY presents THE GOBBLE GOBBLE",
-          "date": "2026-11-27T05:00:00+00:00",
+          "date": "2026-11-28T03:00:00+00:00",
           "url": "https://www.eventbrite.com/e/the-brooklyn-frenzy-presents-the-gobble-gobble-tickets-2003432741260",
           "venue": "Address sent via email after ticket purchase in week of Nov. 22",
           "price": null,
@@ -172175,8 +172487,20 @@
           "category": "gaming"
         },
         {
+          "name": "Trivia Mondays @ Black Horse Pub",
+          "date": "2026-11-10T00:30:00+00:00",
+          "url": "https://www.eventbrite.com/e/trivia-mondays-black-horse-pub-tickets-1318820921879",
+          "venue": "Black Horse Pub",
+          "price": null,
+          "lat": "40.6651788",
+          "lng": "-73.98999309999999",
+          "address": "568 5th Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "gaming"
+        },
+        {
           "name": "Christmas Literature Trivia",
-          "date": "2026-12-09T05:00:00+00:00",
+          "date": "2026-12-10T01:00:00+00:00",
           "url": "https://www.eventbrite.com/e/christmas-literature-trivia-tickets-2002247884321",
           "venue": "Book Club Bar",
           "price": null,
@@ -172188,7 +172512,7 @@
         },
         {
           "name": "Trivia Mondays @ The Adirondack",
-          "date": "2026-11-09T05:00:00+00:00",
+          "date": "2026-11-10T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/trivia-mondays-the-adirondack-tickets-1978440783642",
           "venue": "The Adirondack",
           "price": null,
@@ -172200,7 +172524,7 @@
         },
         {
           "name": "Brooklyns Got Game",
-          "date": "2026-11-14T05:00:00+00:00",
+          "date": "2026-11-14T17:00:00+00:00",
           "url": "https://www.eventbrite.com/e/brooklyns-got-game-tickets-2003795801182",
           "venue": "510 Waverly Ave",
           "price": null,
@@ -172212,7 +172536,7 @@
         },
         {
           "name": "FAMILY FEUD LIVE - Improv Trivia Game Show",
-          "date": "2026-11-21T05:00:00+00:00",
+          "date": "2026-11-22T02:00:00+00:00",
           "url": "https://www.eventbrite.com/e/family-feud-live-improv-trivia-game-show-tickets-2002605226140",
           "venue": "Secret Pour",
           "price": null,
@@ -172224,7 +172548,7 @@
         },
         {
           "name": "The Brooklyn Rare Book Fair",
-          "date": "2026-12-04T05:00:00+00:00",
+          "date": "2026-12-04T22:00:00+00:00",
           "url": "https://www.eventbrite.com/e/the-brooklyn-rare-book-fair-tickets-2003779377057",
           "venue": "XX V",
           "price": null,
@@ -172235,8 +172559,20 @@
           "category": "gaming"
         },
         {
+          "name": "Trivia Wednesdays @ Gun Hill Publick House",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/trivia-wednesdays-gun-hill-publick-house-tickets-1351587999089",
+          "venue": "Gun Hill Publick House",
+          "price": null,
+          "lat": "40.657391",
+          "lng": "-74.0067541",
+          "address": "52 34th Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "gaming"
+        },
+        {
           "name": "JEOPARDY! Bar League",
-          "date": "2026-11-05T05:00:00+00:00",
+          "date": "2026-11-06T00:00:00+00:00",
           "url": "https://www.eventbrite.com/e/jeopardy-bar-league-tickets-1979912158564",
           "venue": "House of Wax (at Alamo Drafthouse Cinema Brooklyn)",
           "price": null,
@@ -172245,11 +172581,35 @@
           "address": "445 Albee Square West, Brooklyn, NY",
           "neighborhood": "Brooklyn",
           "category": "gaming"
+        },
+        {
+          "name": "Trivia Wednesdays @ Shenanigans",
+          "date": "2026-11-12T01:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/trivia-wednesdays-shenanigans-tickets-1015675341287",
+          "venue": "Shenanigan's Pub",
+          "price": null,
+          "lat": "40.6476167",
+          "lng": "-73.97274999999999",
+          "address": "802 Caton Avenue, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "gaming"
+        },
+        {
+          "name": "Random Acts of Kindness Spree in Brooklyn",
+          "date": "2026-11-05T16:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/random-acts-of-kindness-spree-in-brooklyn-tickets-1991092624639",
+          "venue": "The River Café",
+          "price": null,
+          "lat": "40.7038342",
+          "lng": "-73.9947936",
+          "address": "1 Water Street, Brooklyn, NY",
+          "neighborhood": "Brooklyn",
+          "category": "gaming"
         }
       ],
       "error": null,
-      "duration": 2.37,
-      "cached": true
+      "duration": 17.33,
+      "cached": false
     },
     {
       "venue": "Queens Social Meetups & Mixers",
@@ -175650,7 +176010,7 @@
       "url": "https://www.meetup.com/tabletop-tuesday/events/",
       "events": [],
       "error": null,
-      "duration": 0.34,
+      "duration": 0.18,
       "cached": false
     },
     {
@@ -179173,7 +179533,7 @@
       "url": "https://www.meetup.com/Brooklyn-Table-Top-Games-Meetup/events/",
       "events": [],
       "error": null,
-      "duration": 0.33,
+      "duration": 0.2,
       "cached": false
     },
     {
@@ -179181,7 +179541,7 @@
       "url": "https://www.meetup.com/astoria-board-game-club/events/",
       "events": [],
       "error": null,
-      "duration": 0.27,
+      "duration": 0.16,
       "cached": false
     },
     {
@@ -284040,8 +284400,8 @@
   ],
   "weather": {
     "temp": 63,
-    "icon": "⛅",
-    "label": "Partly cloudy"
+    "icon": "🌤️",
+    "label": "Mainly clear"
   },
   "luckyseat": [
     {
