@@ -222,7 +222,7 @@ BROADWAY_THEATRES = {
 
 COMEDY_VENUES = {
     "comedy cellar", "the stand", "gotham comedy", "broadway comedy", "eastville comedy",
-    "greenwich village comedy", "grisly pear", "st. marks comedy", "tight pants comedy",
+    "greenwich village comedy", "grisly pear", "st. marks comedy", "stand up ny", "west side comedy", "tight pants comedy",
     "new york comedy club", "magnet theater", "the pit", "peoples improv theater",
     "caveat", "flop house comedy", "brooklyn comedy collective", "tiny cupboard"
 }
@@ -5417,6 +5417,148 @@ def scrape_jsonld(url, ua):
     return events
 
 
+def scrape_jsonld_crawl(url, ua, link_re=r"^/shows/[^/?#]+$", max_pages=150):
+    """Crawl a listing page's detail links and read the schema.org Event JSON-LD on each.
+
+    For sites whose listing is client-rendered but whose per-show pages are server-rendered
+    (e.g. West Side Comedy Club's Punchup-powered Nuxt site)."""
+    soup = fetch_soup(url, ua)
+    pat = re.compile(link_re)
+    links = []
+    for a in soup.find_all("a", href=True):
+        href = a["href"].split("#")[0]
+        path = urlparse(urljoin(url, href)).path if href.startswith("http") else href
+        if pat.search(path):
+            full = urljoin(url, href)
+            if full not in links:
+                links.append(full)
+    links = links[:max_pages]
+
+    def _one(link):
+        try:
+            return scrape_jsonld(link, ua)
+        except Exception:
+            return []
+
+    events, seen = [], set()
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        for batch in ex.map(_one, links):
+            for e in batch:
+                key = (e["name"].lower(), e["date"])
+                if key not in seen:
+                    seen.add(key)
+                    events.append(e)
+    return events
+
+
+def scrape_venuepilot(url, ua, account_id=None):
+    """VenuePilot's public widget GraphQL feed (the calendar widget clubs embed on their sites).
+
+    `url` is the club's own site; the account id comes from its `venuepilotSettings.accountIds`."""
+    if account_id is None:
+        status, text = fetch_text(url, headers={"User-Agent": ua})
+        m = re.search(r"accountIds\s*:\s*\[\s*(\d+)", text)
+        if not m:
+            return []
+        account_id = int(m.group(1))
+    today = datetime.now(EASTERN).date().isoformat()
+    query = (
+        "query($ids:[Int!],$start:String){ paginatedEvents(arguments:{accountIds:$ids, startDate:$start, limit:500})"
+        " { collection { id name date startTime status ticketsUrl description"
+        " venue { name street1 city state postal } } } }"
+    )
+    resp = _SESSION.post(
+        "https://www.venuepilot.co/graphql",
+        json={"query": query, "variables": {"ids": [account_id], "start": today}},
+        headers={"User-Agent": ua, "Content-Type": "application/json"},
+        timeout=20,
+    )
+    resp.raise_for_status()
+    rows = (((resp.json() or {}).get("data") or {}).get("paginatedEvents") or {}).get("collection") or []
+    now = datetime.now(timezone.utc)
+    events = []
+    for r in rows:
+        if not r.get("name") or not r.get("date"):
+            continue
+        if str(r.get("status") or "").lower() in ("cancelled", "canceled", "postponed"):
+            continue
+        dt = _local_iso_to_utc(f"{r['date']}T{r.get('startTime') or '20:00:00'}")
+        if dt is None or dt < now:
+            continue
+        venue = r.get("venue") or {}
+        entry = {
+            "name": html.unescape(r["name"]).strip(),
+            "date": dt.isoformat(),
+            "url": r.get("ticketsUrl") or url,
+            "venue": (venue.get("name") or "").strip() or None,
+            "price": None,
+        }
+        street = (venue.get("street1") or "").strip()
+        if street:
+            tail = " ".join(str(x) for x in (venue.get("state"), venue.get("postal")) if x)
+            entry["address"] = ", ".join(p for p in (street, venue.get("city") or "", tail) if p)
+        desc = r.get("description")
+        if desc:
+            text_desc = BeautifulSoup(desc, "html.parser").get_text(" ", strip=True)
+            if text_desc:
+                entry["description"] = clean_description(text_desc[:600])
+        events.append(entry)
+    return events
+
+
+_ST_MARKS_ADDRESS = "12 St Marks Pl, New York, NY 10003"
+
+
+def scrape_st_marks_comedy(url, ua):
+    """St. Marks Comedy Club's Webflow calendar (/calendar). Each card links to Tixr and shows
+    weekday / month / day / time but no year, so the year is inferred as the next occurrence."""
+    soup = fetch_soup(url, ua)
+    today = datetime.now(EASTERN).date()
+    events, seen = [], set()
+    for item in soup.select(".event-item"):
+        a = item.find("a", href=True)
+        title_el = item.select_one(".text-block-35") or item.select_one(".event-name")
+        month_el = item.select_one(".custom-filter")
+        day_el = item.select_one(".month.day.grid")
+        time_el = item.select_one(".month.day.time")
+        if not (a and title_el and month_el and day_el):
+            continue
+        name = title_el.get_text(" ", strip=True)
+        try:
+            month = datetime.strptime(month_el.get_text(strip=True)[:3], "%b").month
+            day = int(day_el.get_text(strip=True))
+        except ValueError:
+            continue
+        try:
+            d = datetime(today.year, month, day).date()
+            if d < today - timedelta(days=60):
+                d = datetime(today.year + 1, month, day).date()  # e.g. a January show listed in November
+        except ValueError:
+            continue
+        hh, mm = 20, 0
+        t = time_el.get_text(" ", strip=True).lower() if time_el else ""
+        tm = re.match(r"(\d{1,2})(?::(\d\d))?\s*([ap])m", t)
+        if tm:
+            hh = int(tm.group(1)) % 12 + (12 if tm.group(3) == "p" else 0)
+            mm = int(tm.group(2) or 0)
+        local = datetime(d.year, d.month, d.day, hh, mm, tzinfo=EASTERN)
+        if local < datetime.now(EASTERN) - timedelta(hours=3):
+            continue
+        key = (name.lower(), local)
+        if key in seen:
+            continue
+        seen.add(key)
+        events.append({
+            "name": name,
+            "date": local.astimezone(timezone.utc).isoformat(),
+            "url": a["href"],
+            "venue": "St. Marks Comedy Club",
+            "address": _ST_MARKS_ADDRESS,
+            "price": None,
+        })
+    return events
+
+
 def scrape_songkick_metro(url, ua, max_pages=25):
     """Songkick metro-area concert listings (50 per page, chronological JSON-LD MusicEvents with
     venue address and coordinates). Pages until the listing passes the horizon."""
@@ -6457,6 +6599,9 @@ _ALL_VENUES = [
     {"name": "Comedy in Harlem", "url": "https://www.comedyinharlem.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
     {"name": "New York Comedy Club (all locations)", "url": "https://www.newyorkcomedyclub.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
     {"name": "Eastville Comedy Club", "url": "https://www.eastvillecomedy.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
+    {"name": "Stand Up NY", "url": "https://standupny.com/", "ua": UA_CHROME, "scraper": scrape_venuepilot, "default_category": "comedy"},
+    {"name": "West Side Comedy Club", "url": "https://westsidecomedyclub.com/shows", "ua": UA_CHROME, "scraper": scrape_jsonld_crawl, "default_category": "comedy"},
+    {"name": "St. Marks Comedy Club (calendar)", "url": "https://www.stmarkscomedyclub.com/calendar", "ua": UA_CHROME, "scraper": scrape_st_marks_comedy, "default_category": "comedy"},
     {"name": "Green-Wood Cemetery", "url": "https://www.green-wood.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Bargemusic", "url": "https://www.bargemusic.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Staten Island Museum", "url": "https://www.statenislandmuseum.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},

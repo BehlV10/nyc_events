@@ -354,5 +354,57 @@ class TestTopicSources(unittest.TestCase):
                 self.assertTrue(v["url"].startswith("https://www."), v["name"])
 
 
+class TestComedyClubScrapers(unittest.TestCase):
+    def test_venuepilot_reads_account_id_and_local_time(self):
+        day = _future_local(3, 0).date().isoformat()
+        home = "<script>window.venuepilotSettings = { general: { accountIds: [2535], server: 'x' } }</script>"
+        payload = {"data": {"paginatedEvents": {"collection": [
+            {"id": 1, "name": "Saturday House Show", "date": day, "startTime": "21:30:00", "status": "Tickets",
+             "ticketsUrl": "https://square.link/u/abc", "description": "<p>Lineup: <b>Wali Collins</b></p>",
+             "venue": {"name": "Stand Up NY at Bond 45", "street1": "221 W 46th St", "city": "New York", "state": "NY", "postal": 10036}},
+            {"id": 2, "name": "Cancelled Show", "date": day, "startTime": "19:00:00", "status": "Cancelled", "venue": {}},
+        ]}}}
+        with patch("scrapers._SESSION.get", return_value=_resp(text=home)), \
+                patch("scrapers._SESSION.post", return_value=_resp(payload=payload)) as post:
+            events = scrapers.scrape_venuepilot("https://standupny.com/", UA_CHROME)
+        self.assertEqual(post.call_args[1]["json"]["variables"]["ids"], [2535])
+        self.assertEqual(len(events), 1)
+        e = events[0]
+        self.assertEqual((_local(e["date"]).hour, _local(e["date"]).minute), (21, 30))
+        self.assertEqual(e["url"], "https://square.link/u/abc")
+        self.assertIn("221 W 46th St", e["address"])
+        self.assertIn("Wali Collins", e["description"])
+
+    def test_st_marks_calendar_cards(self):
+        d = _future_local(2, 20, 30)
+        card = (
+            '<div class="event-item w-dyn-item"><a href="https://www.tixr.com/groups/stmarkscomedyclub/events/x-1">'
+            '<div class="text-block-35">Joe Levy Headlines</div><div class="event-card grid"><div class="date-info grid">'
+            f'<div class="month grid date">{d:%a}</div><div class="month grid">{d:%b}</div>'
+            f'<div class="month grid custom-filter">{d:%B}</div><div class="month day grid">{d.day}</div>'
+            '<div class="month day time">8:30 pm</div></div></div></a></div>'
+        )
+        with patch("scrapers._SESSION.get", return_value=_resp(text=card * 2)):
+            events = scrapers.scrape_st_marks_comedy("https://www.stmarkscomedyclub.com/calendar", UA_CHROME)
+        self.assertEqual(len(events), 1)
+        self.assertEqual(_local(events[0]["date"]), d)
+        self.assertEqual(events[0]["venue"], "St. Marks Comedy Club")
+        self.assertTrue(events[0]["url"].startswith("https://www.tixr.com/"))
+
+    def test_jsonld_crawl_follows_show_links(self):
+        start = _future_local(4, 19, 30).isoformat()
+        listing = '<a href="/shows/clean-up-your-act-1">A</a><a href="/shows/clean-up-your-act-1">dup</a><a href="/about">x</a>'
+        show = ('<script type="application/ld+json">' + json.dumps({
+            "@type": "ComedyEvent", "name": "Clean Up Your Act", "startDate": start,
+            "location": {"@type": "ComedyClub", "name": "West Side Comedy Club"}}) + "</script>")
+        def fake_get(url, **kw):
+            return _resp(text=show if "/shows/" in url else listing)
+        with patch("scrapers._SESSION.get", side_effect=fake_get) as get:
+            events = scrapers.scrape_jsonld_crawl("https://westsidecomedyclub.com/shows", UA_CHROME)
+        self.assertEqual(get.call_count, 2)
+        self.assertEqual([e["name"] for e in events], ["Clean Up Your Act"])
+        self.assertEqual(events[0]["venue"], "West Side Comedy Club")
+
+
 if __name__ == "__main__":
     unittest.main()
