@@ -110,7 +110,7 @@ def select_week(dated, monday, sunday):
             city = _event_city(venue, e.get("_source_venue"), geo=geo, event=e)
             where = (geo or {}).get("venue") or venue
             where = re.split(r"\s*\(", where)[0]
-            if city in CITY_LABELS and city != "other":
+            if city in CITY_LABELS and city not in ("other", "citywide"):
                 where = f"{where} • {CITY_LABELS[city]}"
             t = e["_time"]
             picked.append({"dt": t, "time": t.strftime("%-I:%M %p").replace(":00", ""), "title": title, "venue": where})
