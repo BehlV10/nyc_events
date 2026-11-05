@@ -171330,8 +171330,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.82,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/ (serving stale cache)",
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -171507,8 +171507,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.5,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bohemian-hall/ (serving stale cache)",
+      "duration": 0.16,
       "cached": true
     },
     {
@@ -171732,8 +171732,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.11,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/astoria-queens/ (serving stale cache)",
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -172419,8 +172419,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.86,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jackson-heights/ (serving stale cache)",
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -172809,8 +172809,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.81,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/ (serving stale cache)",
+      "duration": 0.1,
       "cached": true
     },
     {
@@ -338922,9 +338922,9 @@
       "venue": "Eventbrite: Walking Tours",
       "url": "https://www.eventbrite.com/d/ny--new-york/walking-tour/",
       "events": [],
-      "error": null,
-      "duration": 0.3,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/walking-tour/",
+      "duration": 0.11,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Bike Rides",
@@ -338962,9 +338962,9 @@
       "venue": "Eventbrite: Yoga",
       "url": "https://www.eventbrite.com/d/ny--new-york/yoga/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.09,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Pickleball",
@@ -338978,9 +338978,9 @@
       "venue": "Eventbrite: Volleyball",
       "url": "https://www.eventbrite.com/d/ny--new-york/volleyball/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.09,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Kickball",
@@ -339002,9 +339002,9 @@
       "venue": "Eventbrite: Techno",
       "url": "https://www.eventbrite.com/d/ny--new-york/techno/",
       "events": [],
-      "error": null,
-      "duration": 0.19,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/techno/",
+      "duration": 0.09,
+      "cached": false
     },
     {
       "venue": "Eventbrite: House Music",
@@ -339154,9 +339154,9 @@
       "venue": "Eventbrite: Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/theater/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.09,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Immersive Theater",
@@ -339218,9 +339218,9 @@
       "venue": "Eventbrite: Workshops",
       "url": "https://www.eventbrite.com/d/ny--new-york/workshops/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.09,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Social Mixers",
@@ -339250,9 +339250,9 @@
       "venue": "Eventbrite: Wine Tastings",
       "url": "https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.08,
+      "cached": false
     },
     {
       "venue": "Union Square Greenmarket",
