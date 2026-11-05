@@ -243528,8 +243528,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 4.62,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/ (serving stale cache)",
+      "duration": 0.34,
       "cached": true
     },
     {
@@ -244872,8 +244872,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 3.06,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/prohibition-productions/ (serving stale cache)",
+      "duration": 0.4,
       "cached": true
     },
     {
@@ -245730,8 +245730,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 2.21,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/ (serving stale cache)",
+      "duration": 0.61,
       "cached": true
     },
     {
@@ -245967,8 +245967,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 2.8,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pieces-bar/ (serving stale cache)",
+      "duration": 0.61,
       "cached": true
     },
     {
@@ -246369,8 +246369,8 @@
           "category": "gaming"
         }
       ],
-      "error": null,
-      "duration": 2.78,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/smash-bros/ (serving stale cache)",
+      "duration": 0.79,
       "cached": true
     },
     {
@@ -247765,8 +247765,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.55,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-guestlist/ (serving stale cache)",
+      "duration": 0.81,
       "cached": true
     },
     {
@@ -248476,8 +248476,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 2.69,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.82,
       "cached": true
     },
     {
@@ -250154,8 +250154,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.68,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.74,
       "cached": true
     },
     {
@@ -250175,8 +250175,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.42,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.76,
       "cached": true
     },
     {
@@ -250778,8 +250778,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.76,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.72,
       "cached": true
     },
     {
@@ -251216,8 +251216,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.25,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.73,
       "cached": true
     },
     {
@@ -251855,8 +251855,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.68,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.7,
       "cached": true
     },
     {
