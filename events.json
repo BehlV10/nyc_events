@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T08:23:30.114558+00:00",
+  "generated_at": "2026-11-05T08:28:15.423192+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -43461,7 +43461,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.9,
+      "duration": 0.81,
       "cached": false
     },
     {
@@ -56615,7 +56615,7 @@
       ],
       "error": null,
       "duration": 5.43,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Partiful NYC",
@@ -56767,7 +56767,7 @@
       ],
       "error": null,
       "duration": 0.83,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Parks Hikes, Rangers & Outdoor Programs",
@@ -57119,7 +57119,7 @@
       ],
       "error": null,
       "duration": 1.43,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Prospect Park Alliance",
@@ -57848,7 +57848,7 @@
       ],
       "error": null,
       "duration": 6.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Paramount (Official Calendar)",
@@ -58132,7 +58132,7 @@
       ],
       "error": null,
       "duration": 1.06,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Bowl",
@@ -58597,7 +58597,7 @@
       ],
       "error": null,
       "duration": 1.24,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Knockdown Center",
@@ -59348,7 +59348,7 @@
       ],
       "error": null,
       "duration": 1.29,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Littlefield Brooklyn",
@@ -59998,7 +59998,7 @@
       ],
       "error": null,
       "duration": 1.3,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Barclays Center",
@@ -60530,7 +60530,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.28,
+      "duration": 0.39,
       "cached": false
     },
     {
@@ -60785,7 +60785,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.2,
+      "duration": 0.29,
       "cached": false
     },
     {
@@ -62290,7 +62290,7 @@
       ],
       "error": null,
       "duration": 0.26,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Old Man Hustle BKLYN Comedy Club",
@@ -62729,7 +62729,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.22,
+      "duration": 0.25,
       "cached": false
     },
     {
@@ -62854,7 +62854,7 @@
       "events": [],
       "error": null,
       "duration": 0.25,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Noguchi Museum",
@@ -63924,7 +63924,7 @@
       ],
       "error": null,
       "duration": 1.95,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens Botanical Garden",
@@ -64323,7 +64323,7 @@
       ],
       "error": null,
       "duration": 1.98,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens County Farm Museum",
@@ -64761,7 +64761,7 @@
       ],
       "error": null,
       "duration": 1.45,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Comedy in Harlem",
@@ -67928,7 +67928,7 @@
         }
       ],
       "error": null,
-      "duration": 0.94,
+      "duration": 0.62,
       "cached": false
     },
     {
@@ -68018,7 +68018,7 @@
       ],
       "error": null,
       "duration": 0.74,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "West Side Comedy Club",
@@ -68450,7 +68450,7 @@
       ],
       "error": null,
       "duration": 16.83,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Stand West",
@@ -73356,7 +73356,7 @@
       ],
       "error": null,
       "duration": 0.89,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Green-Wood Cemetery",
@@ -96005,6 +96005,563 @@
       ],
       "error": null,
       "duration": 6.16,
+      "cached": true
+    },
+    {
+      "venue": "Myrtle Avenue (Fort Greene/Clinton Hill) Bar & Community Events",
+      "url": "https://myrtleavenue.org/wp-json/tribe/events/v1/events?per_page=50",
+      "events": [
+        {
+          "name": "Trivia Night",
+          "date": "2026-11-06T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/trivia-night-at-putnams-pub-cooker/2026-11-05/",
+          "venue": "Putnam’s Pub & Cooker",
+          "price": null,
+          "category": "gaming",
+          "description": "Trivia night at Putnam’s Pub and Cooker, every Thursday starting at 8pm. Bring a team and win prizes!",
+          "address": "419 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693321,
+          "lng": -73.969045
+        },
+        {
+          "name": "Wine Tasting at Gnarly Vines",
+          "date": "2026-11-06T22:30:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-gnarly-vines/2026-11-06/",
+          "venue": "Gnarly Vines",
+          "price": null,
+          "category": "food",
+          "description": "Join Gnarly Vines for wine tasting every Friday from 5:30-7:30pm. Cheers!",
+          "address": "350 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693007,
+          "lng": -73.972286
+        },
+        {
+          "name": "Wine Tasting at Tipsy",
+          "date": "2026-11-06T23:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-tipsy/2026-11-06/",
+          "venue": "Tipsy",
+          "price": null,
+          "category": "food",
+          "description": "Join Tipsy for wine tasting 6-8pm every Friday. Cheers!",
+          "address": "584 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.6938481,
+          "lng": -73.961263
+        },
+        {
+          "name": "Fort Greene Farmers Market",
+          "date": "2026-11-07T13:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/fort-greene-farmers-market/2026-11-07/",
+          "venue": "Fort Greene Park Greenmarket",
+          "price": null,
+          "category": "community",
+          "description": "Enjoy a year-round farmers market with a wonderful variety of fresh, local, small-batch food producers and handmade crafts along the southeast corner of Fort Greene Park on Washington Park. Compost drop-off available as well.",
+          "address": "Washington Park & DeKalb Avenue, Brooklyn, NY 11205",
+          "lat": 40.6896202,
+          "lng": -73.9731271
+        },
+        {
+          "name": "Jazz Night",
+          "date": "2026-11-11T00:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/jazz-night/2026-11-10/",
+          "venue": "Lula Mae",
+          "price": null,
+          "category": "music",
+          "description": "Cambodian restaurant and bar Lula Mae hosts Jazz Night every Tuesday! Grab a seat at the bar or make a reservation for a table to enjoy cocktails, tasty dishes, and live jazz.",
+          "address": "472 Myrtle Avenue, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Karaoke Night",
+          "date": "2026-11-12T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/karaoke-night/2026-11-11/",
+          "venue": "Somethin’ on Myrtle",
+          "price": null,
+          "category": "deals",
+          "description": "Join Somethin’ on Myrtle every Wednesday for Karaoke Night. Sing a little somethin’ and enjoy great specials- $8 shots, $8 margaritas and $8 rum punch (their specialty!) 8pm-12am every Wednesday",
+          "address": "503 Myrtle Ave, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Trivia Night",
+          "date": "2026-11-13T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/trivia-night-at-putnams-pub-cooker/2026-11-12/",
+          "venue": "Putnam’s Pub & Cooker",
+          "price": null,
+          "category": "gaming",
+          "description": "Trivia night at Putnam’s Pub and Cooker, every Thursday starting at 8pm. Bring a team and win prizes!",
+          "address": "419 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693321,
+          "lng": -73.969045
+        },
+        {
+          "name": "Wine Tasting at Gnarly Vines",
+          "date": "2026-11-13T22:30:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-gnarly-vines/2026-11-13/",
+          "venue": "Gnarly Vines",
+          "price": null,
+          "category": "food",
+          "description": "Join Gnarly Vines for wine tasting every Friday from 5:30-7:30pm. Cheers!",
+          "address": "350 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693007,
+          "lng": -73.972286
+        },
+        {
+          "name": "Wine Tasting at Tipsy",
+          "date": "2026-11-13T23:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-tipsy/2026-11-13/",
+          "venue": "Tipsy",
+          "price": null,
+          "category": "food",
+          "description": "Join Tipsy for wine tasting 6-8pm every Friday. Cheers!",
+          "address": "584 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.6938481,
+          "lng": -73.961263
+        },
+        {
+          "name": "Fort Greene Farmers Market",
+          "date": "2026-11-14T13:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/fort-greene-farmers-market/2026-11-14/",
+          "venue": "Fort Greene Park Greenmarket",
+          "price": null,
+          "category": "community",
+          "description": "Enjoy a year-round farmers market with a wonderful variety of fresh, local, small-batch food producers and handmade crafts along the southeast corner of Fort Greene Park on Washington Park. Compost drop-off available as well.",
+          "address": "Washington Park & DeKalb Avenue, Brooklyn, NY 11205",
+          "lat": 40.6896202,
+          "lng": -73.9731271
+        },
+        {
+          "name": "Jazz Night",
+          "date": "2026-11-18T00:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/jazz-night/2026-11-17/",
+          "venue": "Lula Mae",
+          "price": null,
+          "category": "music",
+          "description": "Cambodian restaurant and bar Lula Mae hosts Jazz Night every Tuesday! Grab a seat at the bar or make a reservation for a table to enjoy cocktails, tasty dishes, and live jazz.",
+          "address": "472 Myrtle Avenue, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Karaoke Night",
+          "date": "2026-11-19T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/karaoke-night/2026-11-18/",
+          "venue": "Somethin’ on Myrtle",
+          "price": null,
+          "category": "deals",
+          "description": "Join Somethin’ on Myrtle every Wednesday for Karaoke Night. Sing a little somethin’ and enjoy great specials- $8 shots, $8 margaritas and $8 rum punch (their specialty!) 8pm-12am every Wednesday",
+          "address": "503 Myrtle Ave, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Trivia Night",
+          "date": "2026-11-20T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/trivia-night-at-putnams-pub-cooker/2026-11-19/",
+          "venue": "Putnam’s Pub & Cooker",
+          "price": null,
+          "category": "gaming",
+          "description": "Trivia night at Putnam’s Pub and Cooker, every Thursday starting at 8pm. Bring a team and win prizes!",
+          "address": "419 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693321,
+          "lng": -73.969045
+        },
+        {
+          "name": "Wine Tasting at Gnarly Vines",
+          "date": "2026-11-20T22:30:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-gnarly-vines/2026-11-20/",
+          "venue": "Gnarly Vines",
+          "price": null,
+          "category": "food",
+          "description": "Join Gnarly Vines for wine tasting every Friday from 5:30-7:30pm. Cheers!",
+          "address": "350 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693007,
+          "lng": -73.972286
+        },
+        {
+          "name": "Wine Tasting at Tipsy",
+          "date": "2026-11-20T23:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-tipsy/2026-11-20/",
+          "venue": "Tipsy",
+          "price": null,
+          "category": "food",
+          "description": "Join Tipsy for wine tasting 6-8pm every Friday. Cheers!",
+          "address": "584 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.6938481,
+          "lng": -73.961263
+        },
+        {
+          "name": "Fort Greene Farmers Market",
+          "date": "2026-11-21T13:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/fort-greene-farmers-market/2026-11-21/",
+          "venue": "Fort Greene Park Greenmarket",
+          "price": null,
+          "category": "community",
+          "description": "Enjoy a year-round farmers market with a wonderful variety of fresh, local, small-batch food producers and handmade crafts along the southeast corner of Fort Greene Park on Washington Park. Compost drop-off available as well.",
+          "address": "Washington Park & DeKalb Avenue, Brooklyn, NY 11205",
+          "lat": 40.6896202,
+          "lng": -73.9731271
+        },
+        {
+          "name": "Jazz Night",
+          "date": "2026-11-25T00:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/jazz-night/2026-11-24/",
+          "venue": "Lula Mae",
+          "price": null,
+          "category": "music",
+          "description": "Cambodian restaurant and bar Lula Mae hosts Jazz Night every Tuesday! Grab a seat at the bar or make a reservation for a table to enjoy cocktails, tasty dishes, and live jazz.",
+          "address": "472 Myrtle Avenue, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Karaoke Night",
+          "date": "2026-11-26T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/karaoke-night/2026-11-25/",
+          "venue": "Somethin’ on Myrtle",
+          "price": null,
+          "category": "deals",
+          "description": "Join Somethin’ on Myrtle every Wednesday for Karaoke Night. Sing a little somethin’ and enjoy great specials- $8 shots, $8 margaritas and $8 rum punch (their specialty!) 8pm-12am every Wednesday",
+          "address": "503 Myrtle Ave, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Trivia Night",
+          "date": "2026-11-27T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/trivia-night-at-putnams-pub-cooker/2026-11-26/",
+          "venue": "Putnam’s Pub & Cooker",
+          "price": null,
+          "category": "gaming",
+          "description": "Trivia night at Putnam’s Pub and Cooker, every Thursday starting at 8pm. Bring a team and win prizes!",
+          "address": "419 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693321,
+          "lng": -73.969045
+        },
+        {
+          "name": "Wine Tasting at Gnarly Vines",
+          "date": "2026-11-27T22:30:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-gnarly-vines/2026-11-27/",
+          "venue": "Gnarly Vines",
+          "price": null,
+          "category": "food",
+          "description": "Join Gnarly Vines for wine tasting every Friday from 5:30-7:30pm. Cheers!",
+          "address": "350 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693007,
+          "lng": -73.972286
+        },
+        {
+          "name": "Wine Tasting at Tipsy",
+          "date": "2026-11-27T23:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-tipsy/2026-11-27/",
+          "venue": "Tipsy",
+          "price": null,
+          "category": "food",
+          "description": "Join Tipsy for wine tasting 6-8pm every Friday. Cheers!",
+          "address": "584 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.6938481,
+          "lng": -73.961263
+        },
+        {
+          "name": "Fort Greene Farmers Market",
+          "date": "2026-11-28T13:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/fort-greene-farmers-market/2026-11-28/",
+          "venue": "Fort Greene Park Greenmarket",
+          "price": null,
+          "category": "community",
+          "description": "Enjoy a year-round farmers market with a wonderful variety of fresh, local, small-batch food producers and handmade crafts along the southeast corner of Fort Greene Park on Washington Park. Compost drop-off available as well.",
+          "address": "Washington Park & DeKalb Avenue, Brooklyn, NY 11205",
+          "lat": 40.6896202,
+          "lng": -73.9731271
+        },
+        {
+          "name": "Jazz Night",
+          "date": "2026-12-02T00:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/jazz-night/2026-12-01/",
+          "venue": "Lula Mae",
+          "price": null,
+          "category": "music",
+          "description": "Cambodian restaurant and bar Lula Mae hosts Jazz Night every Tuesday! Grab a seat at the bar or make a reservation for a table to enjoy cocktails, tasty dishes, and live jazz.",
+          "address": "472 Myrtle Avenue, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Karaoke Night",
+          "date": "2026-12-03T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/karaoke-night/2026-12-02/",
+          "venue": "Somethin’ on Myrtle",
+          "price": null,
+          "category": "deals",
+          "description": "Join Somethin’ on Myrtle every Wednesday for Karaoke Night. Sing a little somethin’ and enjoy great specials- $8 shots, $8 margaritas and $8 rum punch (their specialty!) 8pm-12am every Wednesday",
+          "address": "503 Myrtle Ave, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Trivia Night",
+          "date": "2026-12-04T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/trivia-night-at-putnams-pub-cooker/2026-12-03/",
+          "venue": "Putnam’s Pub & Cooker",
+          "price": null,
+          "category": "gaming",
+          "description": "Trivia night at Putnam’s Pub and Cooker, every Thursday starting at 8pm. Bring a team and win prizes!",
+          "address": "419 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693321,
+          "lng": -73.969045
+        },
+        {
+          "name": "Wine Tasting at Gnarly Vines",
+          "date": "2026-12-04T22:30:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-gnarly-vines/2026-12-04/",
+          "venue": "Gnarly Vines",
+          "price": null,
+          "category": "food",
+          "description": "Join Gnarly Vines for wine tasting every Friday from 5:30-7:30pm. Cheers!",
+          "address": "350 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693007,
+          "lng": -73.972286
+        },
+        {
+          "name": "Wine Tasting at Tipsy",
+          "date": "2026-12-04T23:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/wine-tasting-at-tipsy/2026-12-04/",
+          "venue": "Tipsy",
+          "price": null,
+          "category": "food",
+          "description": "Join Tipsy for wine tasting 6-8pm every Friday. Cheers!",
+          "address": "584 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.6938481,
+          "lng": -73.961263
+        },
+        {
+          "name": "Fort Greene Farmers Market",
+          "date": "2026-12-05T13:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/fort-greene-farmers-market/2026-12-05/",
+          "venue": "Fort Greene Park Greenmarket",
+          "price": null,
+          "category": "community",
+          "description": "Enjoy a year-round farmers market with a wonderful variety of fresh, local, small-batch food producers and handmade crafts along the southeast corner of Fort Greene Park on Washington Park. Compost drop-off available as well.",
+          "address": "Washington Park & DeKalb Avenue, Brooklyn, NY 11205",
+          "lat": 40.6896202,
+          "lng": -73.9731271
+        },
+        {
+          "name": "Jazz Night",
+          "date": "2026-12-09T00:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/jazz-night/2026-12-08/",
+          "venue": "Lula Mae",
+          "price": null,
+          "category": "music",
+          "description": "Cambodian restaurant and bar Lula Mae hosts Jazz Night every Tuesday! Grab a seat at the bar or make a reservation for a table to enjoy cocktails, tasty dishes, and live jazz.",
+          "address": "472 Myrtle Avenue, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Karaoke Night",
+          "date": "2026-12-10T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/karaoke-night/2026-12-09/",
+          "venue": "Somethin’ on Myrtle",
+          "price": null,
+          "category": "deals",
+          "description": "Join Somethin’ on Myrtle every Wednesday for Karaoke Night. Sing a little somethin’ and enjoy great specials- $8 shots, $8 margaritas and $8 rum punch (their specialty!) 8pm-12am every Wednesday",
+          "address": "503 Myrtle Ave, Brooklyn, NY 11205"
+        },
+        {
+          "name": "Trivia Night",
+          "date": "2026-12-11T01:00:00+00:00",
+          "url": "https://myrtleavenue.org/event/trivia-night-at-putnams-pub-cooker/2026-12-10/",
+          "venue": "Putnam’s Pub & Cooker",
+          "price": null,
+          "category": "gaming",
+          "description": "Trivia night at Putnam’s Pub and Cooker, every Thursday starting at 8pm. Bring a team and win prizes!",
+          "address": "419 Myrtle Avenue, Brooklyn, NY 11205",
+          "lat": 40.693321,
+          "lng": -73.969045
+        }
+      ],
+      "error": null,
+      "duration": 5.24,
+      "cached": false
+    },
+    {
+      "venue": "Flatiron NoMad Partnership Events",
+      "url": "https://flatironnomad.nyc/wp-json/tribe/events/v1/events?per_page=50",
+      "events": [
+        {
+          "name": "Plaza Activation: Vaseline",
+          "date": "2026-11-07T15:00:00+00:00",
+          "url": "https://flatironnomad.nyc/event/plaza-activation-vaseline/",
+          "venue": "Flatiron NoMad Partnership",
+          "price": null,
+          "category": "community",
+          "description": "Vaseline will be hosting an activation on Saturday, November 7 from 10am – 6pm at the Flatiron North Plaza. Please be aware of increased activity in the neighborhood.",
+          "neighborhood": "Flatiron"
+        },
+        {
+          "name": "Harry Potter Shop NYC: Magical Holiday Launch",
+          "date": "2026-11-10T15:00:00+00:00",
+          "url": "https://flatironnomad.nyc/event/harry-potter-shop-nyc-magical-holiday-launch-60743/",
+          "venue": "Flatiron NoMad Partnership",
+          "price": null,
+          "category": "community",
+          "description": "Celebrate the magic of the holiday season at Harry Potter Shop NYC. The first 100 customers will receive a complimentary Hot Butterbeer to toast the season. Sip, Shop, and discover a little magic for everyone on your list!",
+          "neighborhood": "Flatiron"
+        },
+        {
+          "name": "LEGO: Build a LEGO® Reindeer at The LEGO Store!",
+          "date": "2026-11-13T05:00:00+00:00",
+          "url": "https://flatironnomad.nyc/event/lego-build-a-lego-reindeer-at-the-lego-store-60956/",
+          "venue": "Flatiron NoMad Partnership",
+          "price": null,
+          "category": "community",
+          "description": "Visit a participating LEGO® Store on 11/13 from 5-7 PM to build this LEGO Reindeer and take it home. While supplies last. Terms & Conditions apply, visit www.LEGO.com/stores to find out more.",
+          "neighborhood": "Flatiron"
+        },
+        {
+          "name": "The Jewelry Library: NYC Jewelry Week 2026 at MAISON 10",
+          "date": "2026-11-16T05:00:00+00:00",
+          "url": "https://flatironnomad.nyc/event/the-jewelry-library-nyc-jewelry-week-2026-at-maison-10/",
+          "venue": "Flatiron NoMad Partnership",
+          "price": null,
+          "category": "community",
+          "description": "We are thrilled to be back at MAISON 10 for NYC Jewelry Week 2026 with a packed roster of conversations, book events, workshops, parties, and our featured exhibition, Doris Chou-Durfee: Does this Make Sense? Grab a coffee at Stumptown (a few doors do",
+          "neighborhood": "Flatiron"
+        },
+        {
+          "name": "SoMad: Pleasure Dome: Continuum",
+          "date": "2026-11-19T00:00:00+00:00",
+          "url": "https://flatironnomad.nyc/event/somad-pleasure-dome-continuum-60953/",
+          "venue": "Flatiron NoMad Partnership",
+          "price": null,
+          "category": "community",
+          "description": "SoMad presents PLEASURE DOME: CONTINUUM, a performance art variety show concocted by current resident artist Amygdala. Across two nights (November 18 & 19), Amygdala’s PLEASURE DOME: CONTINUUM invites its featured artists to engage their personal his",
+          "neighborhood": "Flatiron"
+        },
+        {
+          "name": "Cheryl Rubin Studio & Gallery Event Nov.19-21, 2026",
+          "date": "2026-11-19T17:00:00+00:00",
+          "url": "https://flatironnomad.nyc/event/cheryl-rubin-studio-gallery-event-nov-19-21-2026-60925/",
+          "venue": "Flatiron NoMad Partnership",
+          "price": null,
+          "category": "art",
+          "description": "Curious about what an artist studio in NoMad looks like? Interested in seeing the process behind the art? Meeting the artist? For three days only, Cheryl Rubin Studio & Gallery will be open to the publc. Step into her studio in NoMad, see her solo sh",
+          "neighborhood": "Flatiron"
+        },
+        {
+          "name": "Simons Foundation Presents: A Universe of Grief",
+          "date": "2026-11-20T23:00:00+00:00",
+          "url": "https://flatironnomad.nyc/event/simons-foundation-presents-a-universe-of-grief-60657/",
+          "venue": "Flatiron NoMad Partnership",
+          "price": null,
+          "category": "community",
+          "description": "There is perhaps no human emotion more complex than grief. It’s at once painful and profound, a reminder of loss and a memory of love. To consider grief is to consider different scales — from the end of a particularly memorable summer, to the convers",
+          "neighborhood": "Flatiron"
+        },
+        {
+          "name": "Jewett Farms + Co.: Handmade in Maine",
+          "date": "2026-12-03T16:00:00+00:00",
+          "url": "https://flatironnomad.nyc/event/jewett-farms-co-handmade-in-maine-60762/",
+          "venue": "Flatiron NoMad Partnership",
+          "price": null,
+          "category": "community",
+          "description": "Maine Makers are coming to NYC! A select group of talented Maine artists and craftspeople will show and sell their work in Jewett Farms + Co.’s showroom for one day only. Join our Handmade Maine Holiday Pop-up on Thursday, December 3rd, from 11 a.m.-",
+          "neighborhood": "Flatiron"
+        }
+      ],
+      "error": null,
+      "duration": 3.75,
+      "cached": false
+    },
+    {
+      "venue": "Madison Avenue BID Events",
+      "url": "https://www.madisonavenuebid.org/wp-json/tribe/events/v1/events?per_page=50",
+      "events": [
+        {
+          "name": "CAMILLA La Vie Boheme ​Collection",
+          "date": "2026-11-05T05:00:00+00:00",
+          "url": "https://madisonavenuebid.org/store-happening/camilla-la-vie-boheme-collection/",
+          "venue": "Madison Avenue BID Events",
+          "price": null,
+          "category": "community",
+          "description": "Instinct, refined through form, texture, and silhouette.​ Snakeskin emerges in neutral tones; precise, controlled, and quietly powerful. Tailoring sharpens the line, while leather and denim introduce structure and edge. Ruffles and fluid jersey softe"
+        },
+        {
+          "name": "CAMI NYC x Diamonds Doing Good Trunk Show",
+          "date": "2026-11-07T18:00:00+00:00",
+          "url": "https://madisonavenuebid.org/store-happening/cami-nyc-x-diamonds-doing-good-trunk-show/",
+          "venue": "CAMI NYC",
+          "price": null,
+          "category": "community",
+          "description": "CAMI NYC x Diamonds Doing Good Trunk Show Shop & celebrate with our new holiday collection while indulging in a day of luxury Exclusive discounts to the first 10 customers. November 7 – 1pm to 5pm A portion of proceeds from this event will be donated",
+          "address": "1113 Madison Avenue, New York, NY 10028"
+        },
+        {
+          "name": "VERONICA DE PIANTE  X Artists For Humanity Event",
+          "date": "2026-11-10T23:00:00+00:00",
+          "url": "https://madisonavenuebid.org/store-happening/veronica-de-piante-x-artists-for-humanity-event/",
+          "venue": "VERONICA DE PIANTE",
+          "price": null,
+          "category": "art",
+          "description": "Veronica de Piante and Artists for Humanity continue their partnership with a new chapter on Madison Avenue. To mark the opening of the festive season, the boutique becomes a gallery for the week, presenting original works by the painters of Artists ",
+          "address": "833 Madison Avenue, New York, NY 10021"
+        },
+        {
+          "name": "PAMELLATO x MISSONI",
+          "date": "2026-11-12T21:00:00+00:00",
+          "url": "https://madisonavenuebid.org/store-happening/pamellato-x-missoni/",
+          "venue": "MISSONI",
+          "price": null,
+          "category": "community",
+          "description": "Please join us for an evening of champagne, caviar, and a runway presentation celebrating the union of Pomellato and Missoni Thursday, November 12 4:00 PM – 7:00 PM Cocktail Attire RSVP: jeannie.baezlayana@pomellato.com",
+          "address": "787 Madison Avenue, New York, NY 10065"
+        },
+        {
+          "name": "FRANCES VALENTINE x Steve Q Event",
+          "date": "2026-12-10T17:00:00+00:00",
+          "url": "https://madisonavenuebid.org/store-happening/frances-valentine-x-steve-q-event/",
+          "venue": "FRANCES VALENTINE",
+          "price": null,
+          "category": "community",
+          "description": "YOU’RE INVITED Live Illustrations by Steve Q Steve Q will be at our Madison Avenue store doing free fashion illustrations when you spend $400+ No RSVP Required",
+          "address": "922 Madison Avenue, New York, NY 10021"
+        }
+      ],
+      "error": null,
+      "duration": 0.39,
+      "cached": false
+    },
+    {
+      "venue": "Coney Island USA",
+      "url": "https://www.coneyisland.com/event",
+      "events": [
+        {
+          "name": "Carousel Carving Class",
+          "date": "2026-11-07T17:00:00.424000+00:00",
+          "url": "https://www.coneyisland.com/event/carousel-carving2026",
+          "venue": "Coney Island USA",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Coney Island Clown Skool Class Kickoff Show",
+          "date": "2026-11-09T00:00:00.242000+00:00",
+          "url": "https://www.coneyisland.com/event/clown-skool110826",
+          "venue": "Coney Island USA",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Coney Island Clown Skool Student Showcase",
+          "date": "2026-11-15T00:00:00.093000+00:00",
+          "url": "https://www.coneyisland.com/event/clown-skool111426",
+          "venue": "Coney Island USA",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Cemetery Cinema: Abbott and Costello Meet Frankenstein (1948)",
+          "date": "2026-11-22T00:30:00.010000+00:00",
+          "url": "https://www.coneyisland.com/event/cemeterycinema112126",
+          "venue": "Coney Island USA",
+          "price": "Free / No Cover",
+          "category": "film"
+        },
+        {
+          "name": "Bindlestiff Cavalcade of Youth",
+          "date": "2026-11-22T21:00:00.501000+00:00",
+          "url": "https://www.coneyisland.com/event/cavalcade-of-youth112226",
+          "venue": "Coney Island USA",
+          "price": "Free / No Cover",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.52,
       "cached": false
     },
     {
@@ -96744,7 +97301,7 @@
       ],
       "error": null,
       "duration": 0.75,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Queens Theatre",
@@ -96909,7 +97466,7 @@
       ],
       "error": null,
       "duration": 4.79,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Flushing Town Hall",
@@ -99979,7 +100536,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.28,
+      "duration": 0.26,
       "cached": false
     },
     {
@@ -100189,7 +100746,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.4,
+      "duration": 0.46,
       "cached": false
     },
     {
@@ -100197,7 +100754,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.35,
+      "duration": 0.43,
       "cached": false
     },
     {
@@ -100537,7 +101094,7 @@
       ],
       "error": null,
       "duration": 0.91,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Town Hall",
@@ -101097,7 +101654,7 @@
       ],
       "error": null,
       "duration": 0.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bowery Palace",
@@ -101241,7 +101798,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.16,
+      "duration": 0.44,
       "cached": false
     },
     {
@@ -101680,7 +102237,7 @@
       ],
       "error": null,
       "duration": 0.72,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Center (LGBTQ+ Community Center)",
@@ -102422,7 +102979,7 @@
       "events": [],
       "error": null,
       "duration": 0.25,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club Midtown",
@@ -102659,7 +103216,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.29,
+      "duration": 0.69,
       "cached": false
     },
     {
@@ -103047,7 +103604,7 @@
       ],
       "error": null,
       "duration": 0.38,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Lincoln Center Theater",
@@ -103173,7 +103730,7 @@
       ],
       "error": null,
       "duration": 1.67,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club Upper West Side",
@@ -103428,7 +103985,7 @@
       ],
       "error": null,
       "duration": 1.74,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Shrine Harlem",
@@ -103482,14 +104039,14 @@
       ],
       "error": null,
       "duration": 0.26,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Silvana NYC",
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.32,
+      "duration": 0.55,
       "cached": false
     },
     {
@@ -105688,8 +106245,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-public-library/ (serving stale cache)",
-      "duration": 0.24,
+      "error": null,
+      "duration": 3.71,
       "cached": true
     },
     {
@@ -106539,7 +107096,7 @@
       ],
       "error": null,
       "duration": 1.67,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Skinny Dennis",
@@ -106796,7 +107353,7 @@
       ],
       "error": null,
       "duration": 2.63,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Trivia League",
@@ -108610,7 +109167,7 @@
       ],
       "error": null,
       "duration": 0.69,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Nitehawk Cinema",
@@ -109808,7 +110365,7 @@
       ],
       "error": null,
       "duration": 0.89,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Joe's Pub (The Public Theater)",
@@ -110541,7 +111098,7 @@
       ],
       "error": null,
       "duration": 1.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "The Stand NYC",
@@ -111771,7 +112328,7 @@
       ],
       "error": null,
       "duration": 4.0,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Tight Pants Comedy",
@@ -112052,7 +112609,7 @@
       ],
       "error": null,
       "duration": 0.29,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -112569,8 +113126,8 @@
           "category": "comedy"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/ (serving stale cache)",
-      "duration": 0.22,
+      "error": null,
+      "duration": 4.22,
       "cached": true
     },
     {
@@ -114179,7 +114736,7 @@
       ],
       "error": null,
       "duration": 3.36,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "New York Comedy Club",
@@ -115257,7 +115814,7 @@
       ],
       "error": null,
       "duration": 1.93,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Brooklyn Comedy Collective (Eris Mainstage)",
@@ -120122,8 +120679,8 @@
           "category": "outdoors"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/prospect-park/ (serving stale cache)",
-      "duration": 0.15,
+      "error": null,
+      "duration": 2.69,
       "cached": true
     },
     {
@@ -121107,7 +121664,7 @@
       ],
       "error": null,
       "duration": 1.0,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Pop-Up Experiences & Activations",
@@ -121756,8 +122313,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-shed/ (serving stale cache)",
-      "duration": 0.3,
+      "error": null,
+      "duration": 2.26,
       "cached": true
     },
     {
@@ -122742,7 +123299,7 @@
       ],
       "error": null,
       "duration": 3.4,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Outdoor Hikes & Trails",
@@ -123089,7 +123646,7 @@
       ],
       "error": null,
       "duration": 3.04,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Running Clubs & 5K Socials",
@@ -123423,7 +123980,7 @@
       ],
       "error": null,
       "duration": 3.93,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Fashion Events & Sample Sales",
@@ -124324,7 +124881,7 @@
       ],
       "error": null,
       "duration": 2.1,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Bibliothèque Wine & Book Bar",
@@ -125169,7 +125726,7 @@
       ],
       "error": null,
       "duration": 3.99,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Writers & Creative Storytelling",
@@ -125490,7 +126047,7 @@
       ],
       "error": null,
       "duration": 4.7,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Threes Brewing (Gowanus & Greenpoint)",
@@ -126546,7 +127103,7 @@
       ],
       "error": null,
       "duration": 1.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Wonderville (Indie Arcade & Smashville)",
@@ -126915,7 +127472,7 @@
       ],
       "error": null,
       "duration": 2.64,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Hex & Company (Board Games & RPG)",
@@ -127989,7 +128546,7 @@
       ],
       "error": null,
       "duration": 3.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tabletop & RPG Games",
@@ -128349,7 +128906,7 @@
       ],
       "error": null,
       "duration": 4.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Bar Trivia Nights",
@@ -128796,7 +129353,7 @@
       ],
       "error": null,
       "duration": 4.78,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Luma NYC",
@@ -145955,7 +146512,7 @@
       ],
       "error": null,
       "duration": 6.18,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "House of Yes (Circus & Dance)",
@@ -146259,8 +146816,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/house-of-yes/ (serving stale cache)",
-      "duration": 0.18,
+      "error": null,
+      "duration": 4.8,
       "cached": true
     },
     {
@@ -147132,8 +147689,8 @@
           "category": "sports"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/midnight-runners/ (serving stale cache)",
-      "duration": 0.14,
+      "error": null,
+      "duration": 4.28,
       "cached": true
     },
     {
@@ -147455,7 +148012,7 @@
       ],
       "error": null,
       "duration": 0.58,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Photography Walks & Photo Tours",
@@ -147789,7 +148346,7 @@
       ],
       "error": null,
       "duration": 5.38,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Art Gallery Crawls & Openings",
@@ -148162,7 +148719,7 @@
       ],
       "error": null,
       "duration": 6.2,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Magnet Theater (Improv & Sketch)",
@@ -148900,7 +149457,7 @@
       ],
       "error": null,
       "duration": 0.95,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Asylum NYC (Alternative Comedy)",
@@ -149389,7 +149946,7 @@
       ],
       "error": null,
       "duration": 4.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "S.O.B.'s (Sounds of Brazil)",
@@ -149673,7 +150230,7 @@
       ],
       "error": null,
       "duration": 1.28,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Salsa & Bachata Socials",
@@ -150844,8 +151401,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "error": null,
+      "duration": 3.92,
       "cached": true
     },
     {
@@ -151495,8 +152052,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.06,
+      "error": null,
+      "duration": 3.12,
       "cached": true
     },
     {
@@ -151744,8 +152301,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 4.62,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/ (serving stale cache)",
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -152106,7 +152663,7 @@
       ],
       "error": null,
       "duration": 7.19,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "This Week in Swing NYC",
@@ -152475,7 +153032,7 @@
       ],
       "error": null,
       "duration": 1.65,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "NYC Swing Dancing & Lindy Hop",
@@ -152638,8 +153195,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.01,
+      "error": null,
+      "duration": 2.74,
       "cached": true
     },
     {
@@ -152863,8 +153420,8 @@
           "category": "dance"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.07,
+      "error": null,
+      "duration": 3.09,
       "cached": true
     },
     {
@@ -153076,8 +153633,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 3.06,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/prohibition-productions/ (serving stale cache)",
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -153230,7 +153787,7 @@
       ],
       "error": null,
       "duration": 3.68,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Live Jazz & Acoustic Sessions",
@@ -153421,7 +153978,7 @@
       ],
       "error": null,
       "duration": 4.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "3 Dollar Bill (Queer & Drag Venue)",
@@ -153745,8 +154302,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.08,
+      "error": null,
+      "duration": 2.61,
       "cached": true
     },
     {
@@ -153934,8 +154491,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 2.21,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/ (serving stale cache)",
+      "duration": 0.15,
       "cached": true
     },
     {
@@ -154171,8 +154728,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 2.8,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pieces-bar/ (serving stale cache)",
+      "duration": 0.15,
       "cached": true
     },
     {
@@ -154573,8 +155130,8 @@
           "category": "gaming"
         }
       ],
-      "error": null,
-      "duration": 2.78,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/smash-bros/ (serving stale cache)",
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -154786,8 +155343,8 @@
           "category": "gaming"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.0,
+      "error": null,
+      "duration": 2.56,
       "cached": true
     },
     {
@@ -155304,8 +155861,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 3.23,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -155663,11 +156220,44 @@
           "price": "Free",
           "description": "Put your random knowledge to the test across five exciting rounds.",
           "category": "gaming"
+        },
+        {
+          "name": "Twilight Movies Saga Trivia",
+          "date": "2026-12-02T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/twilight-movies-saga-trivia-tickets-2002978449461",
+          "venue": "Slattery's Midtown Pub (New York, NY)",
+          "lat": 40.7492011,
+          "lng": -73.9830382,
+          "price": "Free",
+          "description": "Team Edward. Team Jacob. One winning trivia team.",
+          "category": "gaming"
+        },
+        {
+          "name": "SpongeBob SquarePants Trivia",
+          "date": "2026-12-03T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/spongebob-squarepants-trivia-tickets-2002979196696",
+          "venue": "Slattery's Midtown Pub (New York, NY)",
+          "lat": 40.7492011,
+          "lng": -73.9830382,
+          "price": "Free",
+          "description": "Are you ready, trivia fans?",
+          "category": "gaming"
+        },
+        {
+          "name": "Gilmore Girls Trivia",
+          "date": "2026-12-08T00:00:00+00:00",
+          "url": "https://www.eventbrite.com/e/gilmore-girls-trivia-tickets-2002979290978",
+          "venue": "Slattery's Midtown Pub (New York, NY)",
+          "lat": 40.7492011,
+          "lng": -73.9830382,
+          "price": "Free",
+          "description": "Coffee first. Trivia second.",
+          "category": "gaming"
         }
       ],
       "error": null,
-      "duration": 1.04,
-      "cached": true
+      "duration": 1.06,
+      "cached": false
     },
     {
       "venue": "NYC Free Club Guestlists",
@@ -156151,8 +156741,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.03,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nightclub-guestlist/ (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -156613,8 +157203,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 2.69,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -157120,8 +157710,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.24,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.13,
       "cached": true
     },
     {
@@ -157309,8 +157899,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.49,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.11,
       "cached": true
     },
     {
@@ -157846,7 +158436,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 1.16,
+      "duration": 0.37,
       "cached": false
     },
     {
@@ -157854,7 +158444,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.71,
+      "duration": 0.61,
       "cached": false
     },
     {
@@ -158102,8 +158692,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 1.66,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -161126,7 +161716,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 1.51,
+      "duration": 1.25,
       "cached": false
     },
     {
@@ -162695,7 +163285,7 @@
       ],
       "error": null,
       "duration": 1.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Columbus Circle District Events",
@@ -167864,7 +168454,7 @@
       ],
       "error": null,
       "duration": 5.09,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Book Clubs & Reading Groups",
@@ -168237,7 +168827,7 @@
       ],
       "error": null,
       "duration": 5.73,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Board Games & Tabletop",
@@ -168636,7 +169226,7 @@
       ],
       "error": null,
       "duration": 5.38,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Running & Walking Clubs",
@@ -168801,7 +169391,7 @@
       ],
       "error": null,
       "duration": 4.98,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Tech, AI & Developers",
@@ -168966,7 +169556,7 @@
       ],
       "error": null,
       "duration": 5.0,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Williamsburg & Greenpoint Socials",
@@ -169118,7 +169708,7 @@
       ],
       "error": null,
       "duration": 5.87,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Park Slope & Prospect Park Community",
@@ -169283,7 +169873,7 @@
       ],
       "error": null,
       "duration": 6.54,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bushwick Creative & Social Meetups",
@@ -169448,7 +170038,7 @@
       ],
       "error": null,
       "duration": 5.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Neighborhood Socials & Mixers",
@@ -169639,7 +170229,7 @@
       ],
       "error": null,
       "duration": 7.14,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Community & Social Meetups",
@@ -169856,7 +170446,7 @@
       ],
       "error": null,
       "duration": 6.69,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Flushing Tech, Food & Language Meetups",
@@ -170021,7 +170611,7 @@
       ],
       "error": null,
       "duration": 6.36,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Sunnyside, Woodside & Jackson Heights",
@@ -170186,7 +170776,7 @@
       ],
       "error": null,
       "duration": 7.0,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Board Gamers Group",
@@ -170494,14 +171084,14 @@
       ],
       "error": null,
       "duration": 6.94,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tabletop Tuesday Sunnyside Game Night",
       "url": "https://www.meetup.com/tabletop-tuesday/events/",
       "events": [],
       "error": null,
-      "duration": 6.34,
+      "duration": 0.22,
       "cached": false
     },
     {
@@ -170537,7 +171127,7 @@
       ],
       "error": null,
       "duration": 6.37,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: The Brooklyn Board Games Group",
@@ -170611,7 +171201,7 @@
       ],
       "error": null,
       "duration": 7.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Strategist Evening Games",
@@ -170698,7 +171288,7 @@
       ],
       "error": null,
       "duration": 6.49,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Runners",
@@ -170915,7 +171505,7 @@
       ],
       "error": null,
       "duration": 6.77,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: RUN LIC (Long Island City Runners)",
@@ -171236,7 +171826,7 @@
       ],
       "error": null,
       "duration": 7.72,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Woodside-Sunnyside Runners",
@@ -171453,7 +172043,7 @@
       ],
       "error": null,
       "duration": 6.07,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: CALLEFUT Queens Soccer Community",
@@ -171527,7 +172117,7 @@
       ],
       "error": null,
       "duration": 5.7,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Queens Futsal Club",
@@ -171744,7 +172334,7 @@
       ],
       "error": null,
       "duration": 6.89,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn / Queens Coed Soccer Club",
@@ -171805,7 +172395,7 @@
       ],
       "error": null,
       "duration": 4.85,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Flushing Tech Hackathons & Meetups",
@@ -171840,7 +172430,7 @@
       ],
       "error": null,
       "duration": 4.5,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Astoria Tech Meetup",
@@ -171901,7 +172491,7 @@
       ],
       "error": null,
       "duration": 4.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Women's Writing Group",
@@ -172092,7 +172682,7 @@
       ],
       "error": null,
       "duration": 5.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bushwick Writers Group",
@@ -172231,7 +172821,7 @@
       ],
       "error": null,
       "duration": 6.43,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Forest Hills Book Group",
@@ -172266,7 +172856,7 @@
       ],
       "error": null,
       "duration": 4.64,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Silent Book Club NYC & Brooklyn",
@@ -172327,7 +172917,7 @@
       ],
       "error": null,
       "duration": 4.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Shut Up & Write! NYC (Brooklyn & Queens)",
@@ -172726,7 +173316,7 @@
       ],
       "error": null,
       "duration": 9.65,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Williamsburg French & Spanish Conversations",
@@ -172800,7 +173390,7 @@
       ],
       "error": null,
       "duration": 5.48,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Conversation française à Brooklyn",
@@ -172835,7 +173425,7 @@
       ],
       "error": null,
       "duration": 3.86,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Traditional Slow Jam (Park Slope)",
@@ -172870,7 +173460,7 @@
       ],
       "error": null,
       "duration": 4.47,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Ethical Culture Community (Park Slope)",
@@ -172918,7 +173508,7 @@
       ],
       "error": null,
       "duration": 4.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Mindful Astoria Meditation Community",
@@ -173005,7 +173595,7 @@
       ],
       "error": null,
       "duration": 3.29,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Friends from Bayside & Queens Socials",
@@ -173287,7 +173877,7 @@
       ],
       "error": null,
       "duration": 9.72,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Cucala Dance LIC Salsa Classes & Socials",
@@ -173569,7 +174159,7 @@
       ],
       "error": null,
       "duration": 4.95,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC 20s & 30s Board Game Group",
@@ -173617,7 +174207,7 @@
       ],
       "error": null,
       "duration": 4.99,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Borough Hoppers NYC",
@@ -173873,7 +174463,7 @@
       ],
       "error": null,
       "duration": 5.42,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Victory Pints Board Games & Beer",
@@ -173947,7 +174537,7 @@
       ],
       "error": null,
       "duration": 4.51,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Social Board Game Events",
@@ -173969,7 +174559,7 @@
       ],
       "error": null,
       "duration": 4.9,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tuesday Board Games NYC",
@@ -174017,14 +174607,14 @@
       ],
       "error": null,
       "duration": 4.48,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Brooklyn Table-Top Games Meetup",
       "url": "https://www.meetup.com/Brooklyn-Table-Top-Games-Meetup/events/",
       "events": [],
       "error": null,
-      "duration": 5.21,
+      "duration": 0.32,
       "cached": false
     },
     {
@@ -174032,7 +174622,7 @@
       "url": "https://www.meetup.com/astoria-board-game-club/events/",
       "events": [],
       "error": null,
-      "duration": 4.1,
+      "duration": 0.19,
       "cached": false
     },
     {
@@ -174081,7 +174671,7 @@
       ],
       "error": null,
       "duration": 5.05,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Backgammon New York City (BGNYC)",
@@ -174116,7 +174706,7 @@
       ],
       "error": null,
       "duration": 4.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: NYC Foodies Club",
@@ -174138,7 +174728,7 @@
       ],
       "error": null,
       "duration": 4.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Exploring NYC History & Neighborhoods",
@@ -174212,7 +174802,7 @@
       ],
       "error": null,
       "duration": 4.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: New York City Young Adults",
@@ -174234,7 +174824,7 @@
       ],
       "error": null,
       "duration": 4.97,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Run Clubs",
@@ -175101,7 +175691,7 @@
       ],
       "error": null,
       "duration": 10.05,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Social Runs",
@@ -175734,7 +176324,7 @@
       ],
       "error": null,
       "duration": 8.61,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Trail Running",
@@ -176575,7 +177165,7 @@
       ],
       "error": null,
       "duration": 11.61,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Outdoor Adventures",
@@ -177611,7 +178201,7 @@
       ],
       "error": null,
       "duration": 12.46,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Nature Walks",
@@ -178361,7 +178951,7 @@
       ],
       "error": null,
       "duration": 13.53,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Walking Groups",
@@ -179280,7 +179870,7 @@
       ],
       "error": null,
       "duration": 12.13,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Kayaking & Paddling",
@@ -179965,7 +180555,7 @@
       ],
       "error": null,
       "duration": 12.13,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Birding",
@@ -180611,7 +181201,7 @@
       ],
       "error": null,
       "duration": 13.35,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Camping",
@@ -181296,7 +181886,7 @@
       ],
       "error": null,
       "duration": 16.1,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Cycling",
@@ -181942,7 +182532,7 @@
       ],
       "error": null,
       "duration": 16.01,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bike Rides",
@@ -182575,7 +183165,7 @@
       ],
       "error": null,
       "duration": 15.71,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Rock Climbing",
@@ -183273,7 +183863,7 @@
       ],
       "error": null,
       "duration": 15.18,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bouldering",
@@ -183932,7 +184522,7 @@
       ],
       "error": null,
       "duration": 15.48,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Climbing",
@@ -184669,7 +185259,7 @@
       ],
       "error": null,
       "duration": 16.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Skating",
@@ -185328,7 +185918,7 @@
       ],
       "error": null,
       "duration": 20.29,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Yoga",
@@ -186078,7 +186668,7 @@
       ],
       "error": null,
       "duration": 20.88,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Pickleball",
@@ -188159,7 +188749,7 @@
       ],
       "error": null,
       "duration": 21.98,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Dance",
@@ -189117,7 +189707,7 @@
       ],
       "error": null,
       "duration": 21.39,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Bachata",
@@ -189906,7 +190496,7 @@
       ],
       "error": null,
       "duration": 20.56,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Tango",
@@ -199821,7 +200411,7 @@
       ],
       "error": null,
       "duration": 20.59,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: Make Friends",
@@ -200077,7 +200667,7 @@
       ],
       "error": null,
       "duration": 20.8,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: New in Town",
@@ -203259,7 +203849,7 @@
       ],
       "error": null,
       "duration": 21.3,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Meetup: LGBTQ+",

@@ -29,6 +29,19 @@
     "id": "auto-2026-11-05-2",
     "auto": true,
     "match": {
+      "name_contains": "NYC Trivia Night @ Rose’s R&R Bar",
+      "venue_contains": "Rose’s R&R Bar"
+    },
+    "badge": "🎲 Game Night Pick",
+    "note": "Free; listed on 4 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-05",
+    "expires": "2026-11-05"
+  },
+  {
+    "id": "auto-2026-11-05-3",
+    "auto": true,
+    "match": {
       "name_contains": "Once Upon a Time in Harlem",
       "venue_contains": "Film Society of Lincoln Center"
     },
@@ -39,7 +52,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-3",
+    "id": "auto-2026-11-05-4",
     "auto": true,
     "match": {
       "name_contains": "Honey Revenge",
@@ -52,7 +65,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-4",
+    "id": "auto-2026-11-05-5",
     "auto": true,
     "match": {
       "name_contains": "Millennial Speed-Dating (Monogamous)",
@@ -65,7 +78,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-5",
+    "id": "auto-2026-11-05-6",
     "auto": true,
     "match": {
       "name_contains": "Sammy Rae – Something for Everybody Tour",
@@ -78,7 +91,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-6",
+    "id": "auto-2026-11-05-7",
     "auto": true,
     "match": {
       "name_contains": "Christmas Spectacular Starring The Radio City Rockettes",
@@ -87,19 +100,6 @@
     "badge": "🎭 Stage Pick",
     "note": "Listed on 3 calendars; headline room at Radio City Music Hall; prime-time start.",
     "score": 16.5,
-    "start_date": "2026-11-05",
-    "expires": "2026-11-05"
-  },
-  {
-    "id": "auto-2026-11-05-7",
-    "auto": true,
-    "match": {
-      "name_contains": "NYC Trivia Night @ Rose’s R&R Bar",
-      "venue_contains": "Rose’s R&R Bar"
-    },
-    "badge": "🎲 Game Night Pick",
-    "note": "Free; listed on 3 calendars; prime-time start.",
-    "score": 15.0,
     "start_date": "2026-11-05",
     "expires": "2026-11-05"
   },
