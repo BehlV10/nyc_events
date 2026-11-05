@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T11:15:10.271229+00:00",
+  "generated_at": "2026-11-05T11:20:29.326749+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -45008,7 +45008,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 1.0,
+      "duration": 1.19,
       "cached": false
     },
     {
@@ -120488,7 +120488,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.26,
+      "duration": 0.32,
       "cached": false
     },
     {
@@ -121579,7 +121579,7 @@
       ],
       "error": null,
       "duration": 0.3,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Alphaville",
@@ -122848,7 +122848,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.22,
+      "duration": 0.31,
       "cached": false
     },
     {
@@ -128048,7 +128048,7 @@
       ],
       "error": null,
       "duration": 0.83,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Stand Up NY",
@@ -138919,8 +138919,8 @@
         }
       ],
       "error": null,
-      "duration": 0.2,
-      "cached": true
+      "duration": 0.33,
+      "cached": false
     },
     {
       "venue": "Birdland Jazz Club",
@@ -159611,8 +159611,8 @@
         }
       ],
       "error": null,
-      "duration": 0.89,
-      "cached": true
+      "duration": 1.55,
+      "cached": false
     },
     {
       "venue": "Linnaean Society Bird Walks",
@@ -159720,8 +159720,8 @@
         }
       ],
       "error": null,
-      "duration": 0.73,
-      "cached": true
+      "duration": 1.12,
+      "cached": false
     },
     {
       "venue": "NYCRUNS Races",
@@ -159753,8 +159753,8 @@
         }
       ],
       "error": null,
-      "duration": 0.59,
-      "cached": true
+      "duration": 0.72,
+      "cached": false
     },
     {
       "venue": "Transportation Alternatives (Rides & Walks)",
@@ -159818,8 +159818,8 @@
         }
       ],
       "error": null,
-      "duration": 0.6,
-      "cached": true
+      "duration": 0.39,
+      "cached": false
     },
     {
       "venue": "Volo Sports NYC (Pickup Pickleball, Basketball, Volleyball)",
@@ -159834,9 +159834,9 @@
           "category": "sports"
         },
         {
-          "name": "Pickup Thu Basketball Thursday 11/5 - Basketball (5v5) - The Post BK - 53 Knickerbocker Ave Williamsburg 7PM The Post BK - 53 Knickerbocker Ave 11/6 · 7 – 8pm 15 spot s left Closes tomorrow",
+          "name": "Pickup Thu Volleyball Thursday 11/5 - Volleyball (6v6) - New Design High School Lower East Side 7PM New Design High School 11/6 · 7 – 9pm 16 spot s left Closes tomorrow",
           "date": "2026-11-06T00:00:00+00:00",
-          "url": "https://www.volosports.com/d/8199c06f-8196-40e8-bcf5-4e887a81666f",
+          "url": "https://www.volosports.com/d/38c2dd0c-b650-4e4a-93fb-45862089d7aa",
           "venue": "Volo Sports NYC (Pickup Pickleball, Basketball, Volleyball)",
           "price": null,
           "category": "sports"
@@ -159859,8 +159859,8 @@
         }
       ],
       "error": null,
-      "duration": 1.89,
-      "cached": true
+      "duration": 2.11,
+      "cached": false
     },
     {
       "venue": "The Comedy Bureau (NYC indie & bar shows)",
@@ -194590,6 +194590,1688 @@
       ],
       "error": null,
       "duration": 0.93,
+      "cached": true
+    },
+    {
+      "venue": "AllEvents: Brooklyn Kids",
+      "url": "https://allevents.in/brooklyn/kids",
+      "events": [
+        {
+          "name": "In-Store: Xita Rubert: The Key Biscayne Affair w/ Leslie Jamison",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/in-store-xita-rubert-the-key-biscayne-affair-w-leslie-jamison/100002002834353466",
+          "venue": "Books Are Magic Montague",
+          "price": "$10.89–30.49",
+          "address": "122 Montague Street, Brooklyn, NY",
+          "lat": 40.694599,
+          "lng": -73.994644,
+          "category": "community"
+        },
+        {
+          "name": "Day Camp for Children - Nov 11(DUMBO) 4-10yo",
+          "date": "2026-11-11T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/day-camp-for-children-nov-11dumbo-4-10yo/100001988445802924",
+          "venue": "Speakitaly NYC Brooklyn / Speakitaly NYC Services",
+          "price": "$69–222.73",
+          "address": "110 York Street, Brooklyn, NY",
+          "lat": 40.701366,
+          "lng": -73.986946,
+          "category": "family"
+        },
+        {
+          "name": "Storytime w/ David Ezra Stein: Interrupting Chicken Raises Her Wing",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/storytime-w-david-ezra-stein-interrupting-chicken-raises-her-wing/100002003213301911",
+          "venue": "Books Are Magic Montague",
+          "price": null,
+          "address": "122 Montague Street, Brooklyn, NY",
+          "lat": 40.694599,
+          "lng": -73.994644,
+          "category": "family"
+        },
+        {
+          "name": "ARTOON NETWORK : The Cartoon Art Show : NYC",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/artoon-network-the-cartoon-art-show-nyc/100002003949650349",
+          "venue": "The Tiny Cupboard Comedy Club & Game Bar",
+          "price": null,
+          "address": "10 Cooper St, Brooklyn, NY",
+          "lat": 40.683716,
+          "lng": -73.911224,
+          "category": "comedy"
+        },
+        {
+          "name": "The Rock And Roll Playhouse Plays: Music of Grateful Dead for Kids",
+          "date": "2026-11-22T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/the-rock-and-roll-playhouse-plays-music-of-grateful-dead-for-kids/210003679785931",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "address": "Brooklyn, NY",
+          "lat": 40.721928,
+          "lng": -73.957344,
+          "category": "family"
+        },
+        {
+          "name": "Holiday Party at Kings Plaza",
+          "date": "2026-12-05T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/holiday-party-at-kings-plaza/100002004079377366",
+          "venue": "Kings Plaza Shopping Center",
+          "price": null,
+          "address": "5100 Kings Plaza, Brooklyn, NY",
+          "lat": 40.610046,
+          "lng": -73.920052,
+          "category": "clubbing"
+        },
+        {
+          "name": "Kids Pizza Making Class in Greenpoint, Brooklyn (Ages 3-12) – Sun Nov 15",
+          "date": "2026-11-15T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/kids-pizza-making-class-in-greenpoint-brooklyn-ages-3-12-sun-nov-15/100002003519956122",
+          "venue": "Salsa Pizzeria Greenpoint",
+          "price": "$60.54",
+          "address": "40 Clifford Pl, Brooklyn, NY",
+          "lat": 40.726448,
+          "lng": -73.955231,
+          "category": "family"
+        },
+        {
+          "name": "Family Biz: A Dance Party for Kids & Their Grown-Ups Sat Nov 14th| 2–5 PM",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/family-biz-a-dance-party-for-kids-and-their-grown-ups-sat-nov-14th-2-5-pm/100002004037412849",
+          "venue": "Friends and Lovers",
+          "price": "$12.51–17.85",
+          "address": "641 Classon Avenue, Brooklyn, NY",
+          "lat": 40.678535,
+          "lng": -73.958435,
+          "category": "family"
+        },
+        {
+          "name": "Pizza Making Class in Greenpoint, Brooklyn – Dinner Included – Wed Nov 11",
+          "date": "2026-11-11T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/pizza-making-class-in-greenpoint-brooklyn-dinner-included-wed-nov-11/100002003519292136",
+          "venue": "Salsa Pizzeria Greenpoint",
+          "price": "$103.22",
+          "address": "40 Clifford Pl, Brooklyn, NY",
+          "lat": 40.726448,
+          "lng": -73.955231,
+          "category": "community"
+        },
+        {
+          "name": "Free Kids Thanksgiving Concert with Hopalong Andrew at Time Out Market!",
+          "date": "2026-11-22T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/free-kids-thanksgiving-concert-with-hopalong-andrew-at-time-out-market/100002004397022451",
+          "venue": "Time Out Market New York",
+          "price": null,
+          "address": "55 Water Street, Brooklyn, NY",
+          "lat": 40.703419,
+          "lng": -73.991608,
+          "category": "family"
+        },
+        {
+          "name": "Offsite: Mona Chalabi: Ten Lives w/ Jia Tolentino",
+          "date": "2026-11-12T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/offsite-mona-chalabi-ten-lives-w-jia-tolentino/100002002315615908",
+          "venue": "First Unitarian Congregational Society in Brooklyn",
+          "price": "$10.89–39.2",
+          "address": "119 Pierrepont Street, Brooklyn, NY",
+          "lat": 40.695267,
+          "lng": -73.992622,
+          "category": "community"
+        },
+        {
+          "name": "Dia de los Muertos  Late Night Celebration",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/dia-de-los-muertos-late-night-celebration/100002002595915291",
+          "venue": "270 Meserole St",
+          "price": "$44–75.85",
+          "address": "270 Meserole Street, Brooklyn, NY",
+          "lat": 40.708454,
+          "lng": -73.937729,
+          "category": "community"
+        },
+        {
+          "name": "Brooklyn Cocktail Fest",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/brooklyn-cocktail-fest/100001993625372155",
+          "venue": "Industry City - Building 5 Indoor Event Venue",
+          "price": "$18.72–69.78",
+          "address": "33 35th St, Brooklyn, NY",
+          "lat": 40.656925,
+          "lng": -74.006828,
+          "category": "community"
+        },
+        {
+          "name": "New York Tattoo Convention 2026, November 13-15",
+          "date": "2026-11-13T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/new-york-tattoo-convention-2026-november-13-15/100001996490000335",
+          "venue": "The Duggal Greenhouse",
+          "price": "$33.85–65.87",
+          "address": "268-63 flushing ave, Brooklyn, NY",
+          "lat": 40.702515,
+          "lng": -73.977585,
+          "category": "community"
+        },
+        {
+          "name": "KoKo NYC Documentary Screening and Open Play Day at the KoKo Lot",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/koko-nyc-documentary-screening-and-open-play-day-at-the-koko-lot/100002003371270399",
+          "venue": "KoKo Lot",
+          "price": null,
+          "address": "440 19th Street, Brooklyn, NY",
+          "lat": 40.657738,
+          "lng": -73.984901,
+          "category": "film"
+        },
+        {
+          "name": "Roll & Restore: Daddy & Me Pilates",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/roll-and-restore-daddy-and-me-pilates/100002003430821518",
+          "venue": "Vivvi Dumbo",
+          "price": null,
+          "address": "55 Prospect Street, Brooklyn, NY",
+          "lat": 40.700783,
+          "lng": -73.988174,
+          "category": "sports"
+        },
+        {
+          "name": "Graphic Novel Workshop For Kids",
+          "date": "2026-11-12T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/graphic-novel-workshop-for-kids/100002003974010210",
+          "venue": "Global School Brooklyn",
+          "price": null,
+          "address": "760 Sterling Place, Brooklyn, NY",
+          "lat": 40.672489,
+          "lng": -73.953377,
+          "category": "family"
+        },
+        {
+          "name": "Saturday Storytime: Sarah Feingold launches \"T Is for Traffic Cone\"",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/saturday-storytime-sarah-feingold-launches-t-is-for-traffic-cone/100002003355293612",
+          "venue": "Lofty Pigeon Books, Church Avenue, Brooklyn, NY, USA",
+          "price": null,
+          "address": "743 Church Avenue, Brooklyn, NY",
+          "lat": 40.646122,
+          "lng": -73.971962,
+          "category": "family"
+        },
+        {
+          "name": "Holiday Kids Cooking Workshop: Festive Cookies (Ages 4-10) DUMBO",
+          "date": "2026-12-05T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/holiday-kids-cooking-workshop-festive-cookies-ages-4-10-dumbo/100001988362192844",
+          "venue": "Speakitaly NYC Brooklyn / Speakitaly NYC Services",
+          "price": "$75.47",
+          "address": "110 York Street, Brooklyn, NY",
+          "lat": 40.701366,
+          "lng": -73.986946,
+          "category": "family"
+        },
+        {
+          "name": "TIGA POP-UP STORE",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/tiga-pop-up-store/100002002826369586",
+          "venue": "168 N 1st St",
+          "price": null,
+          "address": "168 North 1st Street, Brooklyn, NY",
+          "lat": 40.7146,
+          "lng": -73.960579,
+          "category": "community"
+        },
+        {
+          "name": "Sunday Morning Treat-and-Greet with Dog Man!",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/sunday-morning-treat-and-greet-with-dog-man/100002002954522896",
+          "venue": "Lofty Pigeon Books, Church Avenue, Brooklyn, NY, USA",
+          "price": null,
+          "address": "743 Church Avenue, Brooklyn, NY",
+          "lat": 40.646122,
+          "lng": -73.971962,
+          "category": "community"
+        },
+        {
+          "name": "Nathan A. Gray launches \"The Human Remains,\" with Benjamin Schwartz",
+          "date": "2026-11-12T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/nathan-a-gray-launches-the-human-remains-with-benjamin-schwartz/100002003988834550",
+          "venue": "Lofty Pigeon Books, Church Avenue, Brooklyn, NY, USA",
+          "price": null,
+          "address": "743 Church Avenue, Brooklyn, NY",
+          "lat": 40.646122,
+          "lng": -73.971962,
+          "category": "community"
+        },
+        {
+          "name": "HTBAF:  Appetite",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/htbaf-appetite/100002003976674178",
+          "venue": "Open Source Gallery Inc.",
+          "price": null,
+          "address": "306 17th Street, Brooklyn, NY",
+          "lat": 40.662277,
+          "lng": -73.989128,
+          "category": "community"
+        },
+        {
+          "name": "@CPR | Shifting Grounds presents Drumming Golems: A Family Music Workshop",
+          "date": "2026-11-15T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/cpr-shifting-grounds-presents-drumming-golems-a-family-music-workshop/100002003683033892",
+          "venue": "CPR - Center for Performance Research",
+          "price": null,
+          "address": "361 Manhattan Avenue, Brooklyn, NY",
+          "lat": 40.716686,
+          "lng": -73.946609,
+          "category": "family"
+        },
+        {
+          "name": "NYC Magic Ensemble @ Young Ethel's (11/19)",
+          "date": "2026-11-19T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/nyc-magic-ensemble-young-ethels-11-19/100001994947881817",
+          "venue": "Young Ethel's",
+          "price": "$8.24–12.51",
+          "address": "506 5th Avenue, Brooklyn, NY",
+          "lat": 40.667213,
+          "lng": -73.988274,
+          "category": "community"
+        },
+        {
+          "name": "In-Store: Storytime w/ Anden Wilder: Elaine",
+          "date": "2026-11-15T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/in-store-storytime-w-anden-wilder-elaine/100002003377814974",
+          "venue": "Books Are Magic Montague",
+          "price": null,
+          "address": "122 Montague Street, Brooklyn, NY",
+          "lat": 40.694599,
+          "lng": -73.994644,
+          "category": "family"
+        },
+        {
+          "name": "TOY DRIVE COVER SHOW AT LUCKY 13",
+          "date": "2026-11-13T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/toy-drive-cover-show-at-lucky-13/100002001113920605",
+          "venue": "Lucky 13 Saloon",
+          "price": "$17.85",
+          "address": "644 Sackett Street, Brooklyn, NY",
+          "lat": 40.678246,
+          "lng": -73.983597,
+          "category": "community"
+        },
+        {
+          "name": "Youth Entrepreneur Readiness Summit 2026",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/youth-entrepreneur-readiness-summit-2026/100002003686875382",
+          "venue": "Building 92",
+          "price": null,
+          "address": "63 Flushing Avenue, Brooklyn, NY",
+          "lat": 40.698338,
+          "lng": -73.973602,
+          "category": "community"
+        },
+        {
+          "name": "The Rock And Roll Playhouse Plays: Music of The Beatles for Kids",
+          "date": "2026-11-29T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/the-rock-and-roll-playhouse-plays-music-of-the-beatles-for-kids/210003660056459",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "address": "Brooklyn, NY",
+          "lat": 40.721928,
+          "lng": -73.957344,
+          "category": "family"
+        },
+        {
+          "name": "Refrigerator Stories: A Search for Home",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/refrigerator-stories-a-search-for-home/80001185807172",
+          "venue": "Scholes Street Studio, Lorimer Street, Brooklyn, NY, USA",
+          "price": null,
+          "address": "375 Lorimer St, Brooklyn, NY",
+          "lat": 40.659401,
+          "lng": -73.962502,
+          "category": "community"
+        },
+        {
+          "name": "YOUNG MAKER WORKSHOPS: School's out Days",
+          "date": "2026-11-27T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/young-maker-workshops-schools-out-days/100002003023357783",
+          "venue": "MakerSpace NYC",
+          "price": "$108.55–193.92",
+          "address": "140 58th Street, Brooklyn, NY",
+          "lat": 40.645126,
+          "lng": -74.024208,
+          "category": "community"
+        },
+        {
+          "name": "2026 Smith Street Festival d'Hiver & Book Fair",
+          "date": "2026-12-05T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/2026-smith-street-festival-dhiver-and-book-fair/100002004019402981",
+          "venue": "Smith Street Maternelle",
+          "price": null,
+          "address": "80 Clinton Street, Brooklyn, NY",
+          "lat": 40.69413,
+          "lng": -73.992615,
+          "category": "community"
+        },
+        {
+          "name": "The Holiday Playhouse Pop-Up: Pediatric Dentistry Q&A with Babsy",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/the-holiday-playhouse-pop-up-pediatric-dentistry-qanda-with-babsy/100002003369393786",
+          "venue": "designers collab.",
+          "price": null,
+          "address": "96 N 5th St, Brooklyn, NY",
+          "lat": 40.717628,
+          "lng": -73.960709,
+          "category": "community"
+        },
+        {
+          "name": "Camila Kerwin with Mia Warren",
+          "date": "2026-11-16T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/camila-kerwin-with-mia-warren/100002001663068120",
+          "venue": "Greenlight Bookstore in Fort Greene",
+          "price": null,
+          "address": "686 Fulton Street, Brooklyn, NY",
+          "lat": 40.686176,
+          "lng": -73.974564,
+          "category": "community"
+        },
+        {
+          "name": "9th Annual Wallabout Wonderland Holiday Market",
+          "date": "2026-12-05T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/9th-annual-wallabout-wonderland-holiday-market/100002003980312059",
+          "venue": "Duggal Greenhouse",
+          "price": null,
+          "address": "63 Flushing Avenue, Brooklyn, NY",
+          "lat": 40.70261,
+          "lng": -73.97747,
+          "category": "community"
+        },
+        {
+          "name": "RIKUD FAMILY DANCE PARTY",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/rikud-family-dance-party/100002003711296426",
+          "venue": "Rikud Movement Studio",
+          "price": null,
+          "address": "607A Vanderbilt Avenue, Brooklyn, NY",
+          "lat": 40.679062,
+          "lng": -73.968025,
+          "category": "family"
+        },
+        {
+          "name": "The Electric Lab",
+          "date": "2026-11-22T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/the-electric-lab/100002003670372020",
+          "venue": "Squibb Park",
+          "price": "$12.51",
+          "address": "Middagh Street, Brooklyn, NY",
+          "lat": 40.701084,
+          "lng": -73.995468,
+          "category": "community"
+        },
+        {
+          "name": "The Rock And Roll Playhouse Plays: Music of Queen for Kids",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/the-rock-and-roll-playhouse-plays-music-of-queen-for-kids/210001950854582",
+          "venue": "Brooklyn Bowl",
+          "price": null,
+          "address": "Brooklyn, NY",
+          "lat": 40.721928,
+          "lng": -73.957344,
+          "category": "family"
+        },
+        {
+          "name": "Heaven's Kitchen",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/heavens-kitchen/200030865762035",
+          "venue": "Brooklyn Community UMC",
+          "price": null,
+          "address": "4201 4th Ave, Brooklyn, NY 11232-3605, United States, Brooklyn, NY",
+          "lat": 40.65033,
+          "lng": -74.008171,
+          "category": "community"
+        },
+        {
+          "name": "JPlay! Fall Kickoff w/ Kayitz Kef & Sprout Brooklyn",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/jplay-fall-kickoff-w-kayitz-kef-and-sprout-brooklyn/80001379260582",
+          "venue": "Hannah Senesh Community Day School",
+          "price": null,
+          "address": "342 Smith St, Brooklyn, NY 11231, United States, Brooklyn, NY",
+          "lat": 40.679665,
+          "lng": -73.995583,
+          "category": "community"
+        }
+      ],
+      "error": null,
+      "duration": 2.2,
+      "cached": false
+    },
+    {
+      "venue": "AllEvents: Brooklyn Family",
+      "url": "https://allevents.in/brooklyn/family",
+      "events": [
+        {
+          "name": "26TH ANNUAL SCORPIO AFFAIR",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/26th-annual-scorpio-affair/200030935731838",
+          "venue": "Tropical Paradise Ballroom",
+          "price": null,
+          "address": "1367 Utica Avenue,New York,NY,United States, Brooklyn, NY",
+          "lat": 40.639107,
+          "lng": -73.928757,
+          "category": "community"
+        },
+        {
+          "name": "Chevere Holiday Market in Brooklyn - Family Friendly",
+          "date": "2026-11-28T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/chevere-holiday-market-in-brooklyn-family-friendly/100002002664901631",
+          "venue": "Greenwood Park",
+          "price": null,
+          "address": "555 7th Avenue, Brooklyn, NY",
+          "lat": 40.659405,
+          "lng": -73.987862,
+          "category": "family"
+        },
+        {
+          "name": "Criminal Presents: Don't Worry with Phoebe Judge",
+          "date": "2026-11-22T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/criminal-presents-dont-worry-with-phoebe-judge/210002461432454",
+          "venue": "The Bell House",
+          "price": null,
+          "address": "Brooklyn, NY",
+          "lat": 40.673729,
+          "lng": -73.991562,
+          "category": "community"
+        },
+        {
+          "name": "Kids Pizza Making Class in Greenpoint, Brooklyn (Ages 3-12) – Sun Nov 15",
+          "date": "2026-11-15T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/kids-pizza-making-class-in-greenpoint-brooklyn-ages-3-12-sun-nov-15/100002003519956122",
+          "venue": "Salsa Pizzeria Greenpoint",
+          "price": "$60.54",
+          "address": "40 Clifford Pl, Brooklyn, NY",
+          "lat": 40.726448,
+          "lng": -73.955231,
+          "category": "family"
+        },
+        {
+          "name": "Bisexual 4 Bisexual Matchmaking",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/bisexual-4-bisexual-matchmaking/100002003678363924",
+          "venue": "BOYFRIEND co-op café + bar",
+          "price": "$25–37.5",
+          "address": "1157 Myrtle Avenue, Brooklyn, NY",
+          "lat": 40.697205,
+          "lng": -73.934669,
+          "category": "community"
+        },
+        {
+          "name": "Family Biz: A Dance Party for Kids & Their Grown-Ups Sat Nov 14th| 2–5 PM",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/family-biz-a-dance-party-for-kids-and-their-grown-ups-sat-nov-14th-2-5-pm/100002004037412849",
+          "venue": "Friends and Lovers",
+          "price": "$12.51–17.85",
+          "address": "641 Classon Avenue, Brooklyn, NY",
+          "lat": 40.678535,
+          "lng": -73.958435,
+          "category": "family"
+        },
+        {
+          "name": "Pressoir Dinner: Château l'Evangile",
+          "date": "2026-11-18T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/pressoir-dinner-château-levangile/100002001642003114",
+          "venue": "Francie",
+          "price": "$1083.36",
+          "address": "134 Broadway, Brooklyn, NY",
+          "lat": 40.710175,
+          "lng": -73.964058,
+          "category": "community"
+        },
+        {
+          "name": "New York Comedy Festival: Misfit Variety Show - ADHD Edition",
+          "date": "2026-11-15T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/new-york-comedy-festival-misfit-variety-show-adhd-edition/100001999298608959",
+          "venue": "Brooklyn Comedy Collective",
+          "price": null,
+          "address": "167 Graham Avenue, Brooklyn, NY",
+          "lat": 40.70771,
+          "lng": -73.943626,
+          "category": "comedy"
+        },
+        {
+          "name": "IKEA Brooklyn | The Lingonberry Lane Winter Holidays Market",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/ikea-brooklyn-the-lingonberry-lane-winter-holidays-market/200030948594048",
+          "venue": "1 Beard St, Brooklyn, NY 11231-1548, United States",
+          "price": null,
+          "address": "1 Beard St, Brooklyn, NY 11231-1548, United States, Brooklyn, NY",
+          "lat": 40.671928,
+          "lng": -74.011612,
+          "category": "community"
+        },
+        {
+          "name": "Reggae Rewind",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/reggae-rewind/100002004027441023",
+          "venue": "littlefield",
+          "price": "$29.5–44.94",
+          "address": "635 Sackett Street, Brooklyn, NY",
+          "lat": 40.678501,
+          "lng": -73.983299,
+          "category": "community"
+        },
+        {
+          "name": "Fall Family Adventure: Treats and Treasure Hunt on the Trolley!",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/fall-family-adventure-treats-and-treasure-hunt-on-the-trolley/100001995690163000",
+          "venue": "The Green-Wood Cemetery",
+          "price": "$21.49",
+          "address": "500 25th Street, Brooklyn, NY",
+          "lat": 40.657978,
+          "lng": -73.994064,
+          "category": "community"
+        },
+        {
+          "name": "Free Kids Thanksgiving Concert with Hopalong Andrew at Time Out Market!",
+          "date": "2026-11-22T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/free-kids-thanksgiving-concert-with-hopalong-andrew-at-time-out-market/100002004397022451",
+          "venue": "Time Out Market New York",
+          "price": null,
+          "address": "55 Water Street, Brooklyn, NY",
+          "lat": 40.703419,
+          "lng": -73.991608,
+          "category": "family"
+        },
+        {
+          "name": "Dinner for One Presents: Friendsgiving",
+          "date": "2026-11-24T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/dinner-for-one-presents-friendsgiving/100002004028401897",
+          "venue": "littlefield",
+          "price": "$18.71",
+          "address": "635 Sackett Street, Brooklyn, NY",
+          "lat": 40.678501,
+          "lng": -73.983299,
+          "category": "community"
+        },
+        {
+          "name": "New York Tattoo Convention 2026, November 13-15",
+          "date": "2026-11-13T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/new-york-tattoo-convention-2026-november-13-15/100001996490000335",
+          "venue": "The Duggal Greenhouse",
+          "price": "$33.85–65.87",
+          "address": "268-63 flushing ave, Brooklyn, NY",
+          "lat": 40.702515,
+          "lng": -73.977585,
+          "category": "community"
+        },
+        {
+          "name": "Theory of Seeing",
+          "date": "2026-11-17T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/theory-of-seeing/100002004033142075",
+          "venue": "e-flux",
+          "price": "$10–12",
+          "address": "172 Classon Avenue, Brooklyn, NY",
+          "lat": 40.694538,
+          "lng": -73.961395,
+          "category": "community"
+        },
+        {
+          "name": "GeeksOut QUEER VOICES IN HORROR PANEL",
+          "date": "2026-11-11T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/geeksout-queer-voices-in-horror-panel/100002001014392915",
+          "venue": "The Twisted Spine",
+          "price": null,
+          "address": "306 Grand Street, Brooklyn, NY",
+          "lat": 40.712788,
+          "lng": -73.957275,
+          "category": "community"
+        },
+        {
+          "name": "In-Store: Xita Rubert: The Key Biscayne Affair w/ Leslie Jamison",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/in-store-xita-rubert-the-key-biscayne-affair-w-leslie-jamison/100002002834353466",
+          "venue": "Books Are Magic Montague",
+          "price": "$10.89–30.49",
+          "address": "122 Montague Street, Brooklyn, NY",
+          "lat": 40.694599,
+          "lng": -73.994644,
+          "category": "community"
+        },
+        {
+          "name": "In-Store: Avni Doshi: The First House w/ Elizabeth Winkler",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/in-store-avni-doshi-the-first-house-w-elizabeth-winkler/100002002227182401",
+          "venue": "Books Are Magic Montague",
+          "price": "$10.89–30.49",
+          "address": "122 Montague Street, Brooklyn, NY",
+          "lat": 40.694599,
+          "lng": -73.994644,
+          "category": "community"
+        },
+        {
+          "name": "Akbar Shahid Ahmed & Rozina Ali: Crossing the Red Line; Seasons of Fury",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/akbar-shahid-ahmed-and-rozina-ali-crossing-the-red-line;-seasons-of-fury/100002002314782415",
+          "venue": "Books Are Magic Montague",
+          "price": "$10.89–34.84",
+          "address": "122 Montague Street, Brooklyn, NY",
+          "lat": 40.694599,
+          "lng": -73.994644,
+          "category": "community"
+        },
+        {
+          "name": "Alexandra Vasti Brooklyn Event for Swipe Bite",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/alexandra-vasti-brooklyn-event-for-swipe-bite/100002001011354828",
+          "venue": "The Ripped Bodice",
+          "price": "$29.66",
+          "address": "218 5th Avenue, Brooklyn, NY",
+          "lat": 40.676086,
+          "lng": -73.981003,
+          "category": "community"
+        },
+        {
+          "name": "Storytime w/ David Ezra Stein: Interrupting Chicken Raises Her Wing",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/storytime-w-david-ezra-stein-interrupting-chicken-raises-her-wing/100002003213301911",
+          "venue": "Books Are Magic Montague",
+          "price": null,
+          "address": "122 Montague Street, Brooklyn, NY",
+          "lat": 40.694599,
+          "lng": -73.994644,
+          "category": "family"
+        },
+        {
+          "name": "WELL & WORKING: A CAREER + WELLNESS WORKSHOP",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/well-and-working-a-career-wellness-workshop/100002001775913644",
+          "venue": "1458 Fulton St",
+          "price": null,
+          "address": "1458 Fulton Street, Brooklyn, NY",
+          "lat": 40.679836,
+          "lng": -73.942551,
+          "category": "community"
+        },
+        {
+          "name": "Comedy Sportz New York – Interactive Improv Competition",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/comedy-sportz-new-york-interactive-improv-competition/100002003871777429",
+          "venue": "The Rat NYC",
+          "price": "$17.85",
+          "address": "68-117 Jay Street, Brooklyn, NY",
+          "lat": 40.703014,
+          "lng": -73.986824,
+          "category": "comedy"
+        },
+        {
+          "name": "In-Store: Michelle Tea: Free Love w/ MJ Corey",
+          "date": "2026-11-20T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/in-store-michelle-tea-free-love-w-mj-corey/100002003618562055",
+          "venue": "Books Are Magic Montague",
+          "price": "$10.89–32.66",
+          "address": "122 Montague Street, Brooklyn, NY",
+          "lat": 40.694599,
+          "lng": -73.994644,
+          "category": "community"
+        },
+        {
+          "name": "Elisa Shua Dusapin presents The Old Fire",
+          "date": "2026-11-19T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/elisa-shua-dusapin-presents-the-old-fire/100002003214409223",
+          "venue": "Community Bookstore",
+          "price": null,
+          "address": "143 7th Avenue, Brooklyn, NY",
+          "lat": 40.672737,
+          "lng": -73.976471,
+          "category": "community"
+        },
+        {
+          "name": "Jana Prikryl presents The Channel",
+          "date": "2026-11-09T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/jana-prikryl-presents-the-channel/100002002651192627",
+          "venue": "Community Bookstore",
+          "price": null,
+          "address": "143 7th Avenue, Brooklyn, NY",
+          "lat": 40.672737,
+          "lng": -73.976471,
+          "category": "community"
+        },
+        {
+          "name": "Toast & Jams Fri Nov 13th | 10 PM - 4 AM",
+          "date": "2026-11-13T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/toast-and-jams-fri-nov-13th-10-pm-4-am/100002003990889697",
+          "venue": "Friends and Lovers",
+          "price": "$7.18",
+          "address": "641 Classon Avenue, Brooklyn, NY",
+          "lat": 40.678535,
+          "lng": -73.958435,
+          "category": "community"
+        },
+        {
+          "name": "Bklyn Holiday-Topia at City Point",
+          "date": "2026-12-05T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/bklyn-holiday-topia-at-city-point/100002004051539101",
+          "venue": "City Point BKLYN",
+          "price": null,
+          "address": "445 Albee Square West, Brooklyn, NY",
+          "lat": 40.690941,
+          "lng": -73.983063,
+          "category": "community"
+        },
+        {
+          "name": "Free Holiday Community Giveback Event",
+          "date": "2026-12-05T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/free-holiday-community-giveback-event/100002003622048483",
+          "venue": "St. Paul Pentecostal Church",
+          "price": null,
+          "address": "133 Thomas S. Boyland street, Brooklyn, NY",
+          "lat": 40.680382,
+          "lng": -73.913742,
+          "category": "community"
+        },
+        {
+          "name": "HOMECOMING 2026",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/homecoming-2026/100002001590676595",
+          "venue": "The Temple of Restoration",
+          "price": "$55.2–65.87",
+          "address": "490 Pacific Street, Brooklyn, NY",
+          "lat": 40.684601,
+          "lng": -73.981491,
+          "category": "community"
+        },
+        {
+          "name": "Rolie Polie Guacamole  - Children's Concert",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/rolie-polie-guacamole-childrens-concert/100002001250233320",
+          "venue": "Global School Brooklyn",
+          "price": null,
+          "address": "760 Sterling Place, Brooklyn, NY",
+          "lat": 40.672489,
+          "lng": -73.953377,
+          "category": "family"
+        },
+        {
+          "name": "Brooklyn Plays Brooklyn Presents: Alexa Barchini at Trove Wine Bar!",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/brooklyn-plays-brooklyn-presents-alexa-barchini-at-trove-wine-bar/100002000524639048",
+          "venue": "Trove Wine Bar & Kitchen",
+          "price": null,
+          "address": "406 Rogers Avenue, Brooklyn, NY",
+          "lat": 40.662827,
+          "lng": -73.954056,
+          "category": "community"
+        },
+        {
+          "name": "Turkey Giveaway",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/turkey-giveaway/100001998550374971",
+          "venue": "Nostrand Avenue & Park Avenue",
+          "price": null,
+          "address": "648 Park Avenue, Brooklyn, NY",
+          "lat": 40.696861,
+          "lng": -73.951408,
+          "category": "community"
+        },
+        {
+          "name": "HMID & Friends Present: Improvised Family Drama",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/hmid-and-friends-present-improvised-family-drama/100002004171046551",
+          "venue": "The BCC Pig Pen",
+          "price": null,
+          "address": "144 Boerum Street, Brooklyn, NY",
+          "lat": 40.705849,
+          "lng": -73.942543,
+          "category": "theater"
+        },
+        {
+          "name": "Brooklyn solidarity fundraiser",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/brooklyn-solidarity-fundraiser/100002004322743280",
+          "venue": "Starr Bar",
+          "price": "$13–15",
+          "address": "214 Starr Street, Brooklyn, NY",
+          "lat": 40.704987,
+          "lng": -73.922905,
+          "category": "community"
+        },
+        {
+          "name": "Jazz & R&B Tour",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/jazz-and-randb-tour/100002003748202814",
+          "venue": "245 Avenue U",
+          "price": "$23.18–55.2",
+          "address": "245 Avenue U, Brooklyn, NY",
+          "lat": 40.597,
+          "lng": -73.975266,
+          "category": "music"
+        },
+        {
+          "name": "Offsite: Ryan Schreiber: Weird Era w/ Amanda Petrusich",
+          "date": "2026-12-01T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/offsite-ryan-schreiber-weird-era-w-amanda-petrusich/100002003089546756",
+          "venue": "Public Records, Sound Room",
+          "price": "$16.33–41.37",
+          "address": "233 Butler Street, Brooklyn, NY",
+          "lat": 40.682266,
+          "lng": -73.986397,
+          "category": "community"
+        },
+        {
+          "name": "In-Store: Tina Chang & Camille T. Dungy: Lion & America, A Love Story",
+          "date": "2026-11-19T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/in-store-tina-chang-and-camille-t-dungy-lion-and-america-a-love-story/100002003376063736",
+          "venue": "Books Are Magic Smith",
+          "price": "$10.89–32.65",
+          "address": "225 Smith Street, Brooklyn, NY",
+          "lat": 40.683994,
+          "lng": -73.992073,
+          "category": "community"
+        },
+        {
+          "name": "DeeToursNYC Presents : Flatbush Avenue Pre-Thanksgiving Bar Crawl",
+          "date": "2026-11-20T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/deetoursnyc-presents-flatbush-avenue-pre-thanksgiving-bar-crawl/100002003816787954",
+          "venue": "Lincoln Road",
+          "price": "$25–35",
+          "address": "Lincoln Road, Brooklyn, NY",
+          "lat": 40.661182,
+          "lng": -73.956963,
+          "category": "community"
+        },
+        {
+          "name": "@CPR | Shifting Grounds: New Jewish Art Festival (Performance Tickets)",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/cpr-shifting-grounds-new-jewish-art-festival-performance-tickets/100002003682359876",
+          "venue": "CPR - Center for Performance Research",
+          "price": null,
+          "address": "361 Manhattan Avenue, Brooklyn, NY",
+          "lat": 40.716686,
+          "lng": -73.946609,
+          "category": "community"
+        },
+        {
+          "name": "Nathan A. Gray launches \"The Human Remains,\" with Benjamin Schwartz",
+          "date": "2026-11-12T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/nathan-a-gray-launches-the-human-remains-with-benjamin-schwartz/100002003988834550",
+          "venue": "Lofty Pigeon Books, Church Avenue, Brooklyn, NY, USA",
+          "price": null,
+          "address": "743 Church Avenue, Brooklyn, NY",
+          "lat": 40.646122,
+          "lng": -73.971962,
+          "category": "community"
+        },
+        {
+          "name": "Jeff Schlanger  musicWitness: His Life, His Work, His Passion",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/jeff-schlanger-musicwitness-his-life-his-work-his-passion/100002003838839912",
+          "venue": "The Clemente, Flamboyan Theater",
+          "price": null,
+          "address": "107 Suffolk Street, Brooklyn, NY",
+          "lat": 40.719154,
+          "lng": -73.986259,
+          "category": "community"
+        },
+        {
+          "name": "FREE Reading Yogis Trial & Family Celebration",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/free-reading-yogis-trial-and-family-celebration/100002004192617069",
+          "venue": "Rikud Movement Studio",
+          "price": null,
+          "address": "607A Vanderbilt Avenue, Brooklyn, NY",
+          "lat": 40.679062,
+          "lng": -73.968025,
+          "category": "family"
+        },
+        {
+          "name": "@CPR | Shifting Grounds: New Jewish Art Festival (Exhibition Tickets)",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/cpr-shifting-grounds-new-jewish-art-festival-exhibition-tickets/100002003681344840",
+          "venue": "CPR - Center for Performance Research",
+          "price": null,
+          "address": "361 Manhattan Avenue, Brooklyn, NY",
+          "lat": 40.716686,
+          "lng": -73.946609,
+          "category": "community"
+        },
+        {
+          "name": "Post Turkey Day Walking Tour",
+          "date": "2026-11-27T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/post-turkey-day-walking-tour/100001994690717632",
+          "venue": "The Green-Wood Cemetery",
+          "price": "$31.74",
+          "address": "500 25th Street, Brooklyn, NY",
+          "lat": 40.657978,
+          "lng": -73.994064,
+          "category": "outdoors"
+        },
+        {
+          "name": "BRUNCH WHILE THEY PLAY",
+          "date": "2026-11-15T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/brunch-while-they-play/100002003915423977",
+          "venue": "532 Court Restaurant",
+          "price": "$17.85–39.19",
+          "address": "532 court st, Brooklyn, NY",
+          "lat": 40.675659,
+          "lng": -73.999374,
+          "category": "community"
+        },
+        {
+          "name": "Gingerbread & Giggles Open House at TLE Bushwick",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/gingerbread-and-giggles-open-house-at-tle-bushwick/100002002798141154",
+          "venue": "The Learning Experience - Bed-Stuy/Bushwick",
+          "price": null,
+          "address": "600 Bushwick Avenue, Brooklyn, NY",
+          "lat": 40.698399,
+          "lng": -73.934509,
+          "category": "community"
+        },
+        {
+          "name": "In-Store: Storytime w/ Lucy Ruth Cummins: Love Bug",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/in-store-storytime-w-lucy-ruth-cummins-love-bug/100002002839072581",
+          "venue": "Books Are Magic Montague",
+          "price": null,
+          "address": "122 Montague Street, Brooklyn, NY",
+          "lat": 40.694599,
+          "lng": -73.994644,
+          "category": "family"
+        },
+        {
+          "name": "@CPR | Shifting Grounds presents Drumming Golems: A Family Music Workshop",
+          "date": "2026-11-15T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/cpr-shifting-grounds-presents-drumming-golems-a-family-music-workshop/100002003683033892",
+          "venue": "CPR - Center for Performance Research",
+          "price": null,
+          "address": "361 Manhattan Avenue, Brooklyn, NY",
+          "lat": 40.716686,
+          "lng": -73.946609,
+          "category": "family"
+        },
+        {
+          "name": "New York Holiday Cheer, Food & Makers Market 2026",
+          "date": "2026-11-28T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/new-york-holiday-cheer-food-and-makers-market-2026/100002003634125606",
+          "venue": "Brooklyn EXPO Center",
+          "price": null,
+          "address": "72 Noble Street, Brooklyn, NY",
+          "lat": 40.728107,
+          "lng": -73.957802,
+          "category": "community"
+        },
+        {
+          "name": "\"Manos: The Hands of Fate\" Live! A 60th Anniversary Shadowcast",
+          "date": "2026-11-20T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/manos-the-hands-of-fate-live-a-60th-anniversary-shadowcast/100002003751159658",
+          "venue": "Wild East Brewing Co.",
+          "price": "$10",
+          "address": "623 Sackett Street, Brooklyn, NY",
+          "lat": 40.678547,
+          "lng": -73.983612,
+          "category": "community"
+        },
+        {
+          "name": "FAMILY FEUD LIVE - Improv Trivia Game Show",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/family-feud-live-improv-trivia-game-show/100002002605226140",
+          "venue": "Secret Pour",
+          "price": null,
+          "address": "1114 Dekalb Avenue, Brooklyn, NY",
+          "lat": 40.693729,
+          "lng": -73.929802,
+          "category": "comedy"
+        },
+        {
+          "name": "Park Pals: Birds of Jamaica Bay",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/brooklyn/park-pals-birds-of-jamaica-bay/100002003004914619",
+          "venue": "135 Aviation Rd",
+          "price": null,
+          "address": "135 Aviation Road, Brooklyn, NY",
+          "lat": 40.581825,
+          "lng": -73.888771,
+          "category": "community"
+        }
+      ],
+      "error": null,
+      "duration": 2.33,
+      "cached": false
+    },
+    {
+      "venue": "AllEvents: Queens Kids",
+      "url": "https://allevents.in/queens/kids",
+      "events": [
+        {
+          "name": "St. Nicholas Day",
+          "date": "2026-12-06T05:00:00+00:00",
+          "url": "https://allevents.in/queens/st-nicholas-day/100002002102923740",
+          "venue": "The Vander Ende-Onderdonk House",
+          "price": null,
+          "address": "1820 Flushing Ave, Queens, NY",
+          "lat": 40.710949,
+          "lng": -73.919914,
+          "category": "community"
+        },
+        {
+          "name": "Camp Holiday- Black Friday Edition",
+          "date": "2026-11-27T05:00:00+00:00",
+          "url": "https://allevents.in/queens/camp-holiday-black-friday-edition/100002004081725389",
+          "venue": "The Center by Bricks 4 Kidz",
+          "price": "$60.54–87.21",
+          "address": "114-64 Merrick Boulevard, Queens, NY",
+          "lat": 40.689922,
+          "lng": -73.778305,
+          "category": "community"
+        },
+        {
+          "name": "Lights, Jazz, & Marigolds",
+          "date": "2026-11-20T05:00:00+00:00",
+          "url": "https://allevents.in/queens/lights-jazz-and-marigolds/100002003561452238",
+          "venue": "Brownson Center at Maple Grove Cemetery",
+          "price": null,
+          "address": "127-15 Kew Gardens Road, Queens, NY",
+          "lat": 40.708767,
+          "lng": -73.822792,
+          "category": "music"
+        },
+        {
+          "name": "Kids Cupcake Creations @ Partake NYC",
+          "date": "2026-11-29T05:00:00+00:00",
+          "url": "https://allevents.in/queens/kids-cupcake-creations-partake-nyc/100002004204055281",
+          "venue": "Partake NYC",
+          "price": null,
+          "address": "10-29 44th Road, Queens, NY",
+          "lat": 40.749512,
+          "lng": -73.949913,
+          "category": "family"
+        },
+        {
+          "name": "KIDS GIVING SIP AND PAINT",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/queens/kids-giving-sip-and-paint/100002004203672135",
+          "venue": "Southern Girls Soul Food",
+          "price": "$33.85",
+          "address": "218-28 Merrick Boulevard, Queens, NY",
+          "lat": 40.679222,
+          "lng": -73.750671,
+          "category": "family"
+        },
+        {
+          "name": "Camp Holiday- Veteran's Day",
+          "date": "2026-11-11T05:00:00+00:00",
+          "url": "https://allevents.in/queens/camp-holiday-veterans-day/100002004079673251",
+          "venue": "The Center by Bricks 4 Kidz",
+          "price": "$60.54–87.21",
+          "address": "114-64 Merrick Boulevard, Queens, NY",
+          "lat": 40.689922,
+          "lng": -73.778305,
+          "category": "community"
+        },
+        {
+          "name": "Personalized Mosaic Art: Mirrors or Coasters",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/queens/personalized-mosaic-art-mirrors-or-coasters/100002004324231732",
+          "venue": "31-89 Crescent St",
+          "price": "$31.05",
+          "address": "31-89 Crescent Street, Queens, NY",
+          "lat": 40.763531,
+          "lng": -73.928162,
+          "category": "community"
+        },
+        {
+          "name": "Diyas Dance & Delight",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/queens/diyas-dance-and-delight/100002004185915023",
+          "venue": "Queens Public Library at Hunters Point",
+          "price": null,
+          "address": "47-40 Center Boulevard, Queens, NY",
+          "lat": 40.745323,
+          "lng": -73.958069,
+          "category": "community"
+        },
+        {
+          "name": "Dinosaur Paint + Munch @ Partake NYC",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/queens/dinosaur-paint-munch-partake-nyc/100002004199955017",
+          "venue": "Partake NYC",
+          "price": null,
+          "address": "10-29 44th Road, Queens, NY",
+          "lat": 40.749512,
+          "lng": -73.949913,
+          "category": "community"
+        },
+        {
+          "name": "Thanksgiving Cookie Creations @ Partake NYC",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/queens/thanksgiving-cookie-creations-partake-nyc/100002004201287001",
+          "venue": "Partake NYC",
+          "price": null,
+          "address": "10-29 44th Road, Queens, NY",
+          "lat": 40.749512,
+          "lng": -73.949913,
+          "category": "community"
+        },
+        {
+          "name": "Angry Birds Paint + Brunch @ Partake NYC",
+          "date": "2026-11-15T05:00:00+00:00",
+          "url": "https://allevents.in/queens/angry-birds-paint-brunch-partake-nyc/100002003782635804",
+          "venue": "Partake NYC",
+          "price": null,
+          "address": "10-29 44th Road, Queens, NY",
+          "lat": 40.749512,
+          "lng": -73.949913,
+          "category": "community"
+        },
+        {
+          "name": "Neon Superheroes: DC vs. Marvel",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/queens/neon-superheroes-dc-vs-marvel/100002003830597258",
+          "venue": "The Center by Bricks 4 Kidz",
+          "price": "$17.85–55.2",
+          "address": "114-64 Merrick Boulevard, Queens, NY",
+          "lat": 40.689922,
+          "lng": -73.778305,
+          "category": "community"
+        },
+        {
+          "name": "Taller de Tinte Natural con Cempasúchil - Aztec Marigold Dye Bath Workshop",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/queens/taller-de-tinte-natural-con-cempasúchil-aztec-marigold-dye-bath-workshop/100002003937790877",
+          "venue": "Queens Museum",
+          "price": null,
+          "address": "Flushing Meadows Corona Park, Queens, NY",
+          "lat": 40.740086,
+          "lng": -73.841705,
+          "category": "community"
+        },
+        {
+          "name": "[2020-2023 Kids] Zeta Enrollment + FREE Chuck E. Cheese / 免费畅玩 / GRATIS",
+          "date": "2026-11-20T05:00:00+00:00",
+          "url": "https://allevents.in/queens/2020-2023-kids-zeta-enrollment-free-chuck-e-cheese-免费畅玩-gratis/100002004388718614",
+          "venue": "Chuck E. Cheese",
+          "price": null,
+          "address": "40-24 College Point Boulevard, Queens, NY",
+          "lat": 40.75737,
+          "lng": -73.835014,
+          "category": "family"
+        }
+      ],
+      "error": null,
+      "duration": 1.59,
+      "cached": false
+    },
+    {
+      "venue": "AllEvents: Queens Family",
+      "url": "https://allevents.in/queens/family",
+      "events": [
+        {
+          "name": "FIELD NOTES / NOTAS DEL CAMPO",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://allevents.in/queens/field-notes-notas-del-campo/100002003837808828",
+          "venue": "Arverne East Nature Preserve Welcome Center",
+          "price": null,
+          "address": "1-90 Beach 44th Street, Queens, NY",
+          "lat": 40.592411,
+          "lng": -73.774933,
+          "category": "community"
+        },
+        {
+          "name": "KIDS GIVING SIP AND PAINT",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/queens/kids-giving-sip-and-paint/100002004203672135",
+          "venue": "Southern Girls Soul Food",
+          "price": "$33.85",
+          "address": "218-28 Merrick Boulevard, Queens, NY",
+          "lat": 40.679222,
+          "lng": -73.750671,
+          "category": "family"
+        },
+        {
+          "name": "Ninja Turtle Paint + Brunch @ Partake NYC",
+          "date": "2026-11-22T05:00:00+00:00",
+          "url": "https://allevents.in/queens/ninja-turtle-paint-brunch-partake-nyc/100002004202983074",
+          "venue": "Partake NYC",
+          "price": null,
+          "address": "10-29 44th Road, Queens, NY",
+          "lat": 40.749512,
+          "lng": -73.949913,
+          "category": "community"
+        },
+        {
+          "name": "Jahris World with Autizm  Out Loud - Presents Autism Concert",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/queens/jahris-world-with-autizm-out-loud-presents-autism-concert/100002004390259222",
+          "venue": "Rochdale Community Center",
+          "price": null,
+          "address": "169-65 137th Avenue, Queens, NY",
+          "lat": 40.674435,
+          "lng": -73.771095,
+          "category": "music"
+        },
+        {
+          "name": "DADA x TEM present: Gabby's World & Sarah Katherine Lawless",
+          "date": "2026-11-13T05:00:00+00:00",
+          "url": "https://allevents.in/queens/dada-x-tem-present-gabbys-world-and-sarah-katherine-lawless/100002003015458155",
+          "venue": "Dada",
+          "price": "$21.05",
+          "address": "6047 Myrtle Avenue, Queens, NY",
+          "lat": 40.70079,
+          "lng": -73.896645,
+          "category": "community"
+        },
+        {
+          "name": "FRIENDSGIVING",
+          "date": "2026-11-24T05:00:00+00:00",
+          "url": "https://allevents.in/queens/friendsgiving/100002002667243636",
+          "venue": "PRIME ASTORIA",
+          "price": "$7.18–17.85",
+          "address": "40-06 Astoria Boulevard South, Queens, NY",
+          "lat": 40.768562,
+          "lng": -73.910728,
+          "category": "community"
+        },
+        {
+          "name": "Angry Birds Paint + Brunch @ Partake NYC",
+          "date": "2026-11-15T05:00:00+00:00",
+          "url": "https://allevents.in/queens/angry-birds-paint-brunch-partake-nyc/100002003782635804",
+          "venue": "Partake NYC",
+          "price": null,
+          "address": "10-29 44th Road, Queens, NY",
+          "lat": 40.749512,
+          "lng": -73.949913,
+          "category": "community"
+        },
+        {
+          "name": "ECF Holiday Kickoff Press Conference + Face Off's + Party (FREE)",
+          "date": "2026-11-24T05:00:00+00:00",
+          "url": "https://allevents.in/queens/ecf-holiday-kickoff-press-conference-face-offs-party-free/100002003603535109",
+          "venue": "Partake NYC",
+          "price": null,
+          "address": "10-29 44th Road, Queens, NY",
+          "lat": 40.749512,
+          "lng": -73.949913,
+          "category": "clubbing"
+        },
+        {
+          "name": "The Merboy Next Door: A New Musical in Concert",
+          "date": "2026-11-16T05:00:00+00:00",
+          "url": "https://allevents.in/queens/the-merboy-next-door-a-new-musical-in-concert/100001993022091727",
+          "venue": "Jamaica Center for Arts and Learning (JCAL)",
+          "price": "$23.18–28.52",
+          "address": "161-04 Jamaica Avenue, Queens, NY",
+          "lat": 40.703812,
+          "lng": -73.79821,
+          "category": "theater"
+        },
+        {
+          "name": "Flushing Magic Show for Ages 3–6 | 法拉盛社区魔术秀| Magia GRATIS para niños de 3–6",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/queens/flushing-magic-show-for-ages-3-6-法拉盛社区魔术秀-magia-gratis-para-niños-de-3-6/100002003576458121",
+          "venue": "Zeta Queens Flushing Elementary School",
+          "price": null,
+          "address": "133-50 41st Avenue, Queens, NY",
+          "lat": 40.757645,
+          "lng": -73.830185,
+          "category": "family"
+        },
+        {
+          "name": "[2020-2023 Kids] Zeta Enrollment + FREE Chuck E. Cheese / 免费畅玩 / GRATIS",
+          "date": "2026-11-20T05:00:00+00:00",
+          "url": "https://allevents.in/queens/2020-2023-kids-zeta-enrollment-free-chuck-e-cheese-免费畅玩-gratis/100002004388718614",
+          "venue": "Chuck E. Cheese",
+          "price": null,
+          "address": "40-24 College Point Boulevard, Queens, NY",
+          "lat": 40.75737,
+          "lng": -73.835014,
+          "category": "family"
+        },
+        {
+          "name": "Santa Cecilia Encuentro de Mariachis en NYC",
+          "date": "2026-11-25T05:00:00+00:00",
+          "url": "https://allevents.in/queens/santa-cecilia-encuentro-de-mariachis-en-nyc/100002002103709089",
+          "venue": "Flushing Town Hall",
+          "price": "$49.87",
+          "address": "137-35 Northern Boulevard, Queens, NY",
+          "lat": 40.763733,
+          "lng": -73.829956,
+          "category": "community"
+        },
+        {
+          "name": "Malikah's Little Egypt Fest",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/queens/malikahs-little-egypt-fest/100002003524191791",
+          "venue": "31st Avenue Open Street",
+          "price": null,
+          "address": "34-02 31st Avenue, Queens, NY",
+          "lat": 40.763145,
+          "lng": -73.92099,
+          "category": "community"
+        },
+        {
+          "name": "Open House",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/queens/open-house/100002003576358824",
+          "venue": "MoMA PS1",
+          "price": null,
+          "address": "22-25 Jackson Avenue, Queens, NY",
+          "lat": 40.745495,
+          "lng": -73.94735,
+          "category": "community"
+        },
+        {
+          "name": "Foundation to Generation",
+          "date": "2026-12-05T05:00:00+00:00",
+          "url": "https://allevents.in/queens/foundation-to-generation/100002002935563187",
+          "venue": "190-01 Linden Blvd",
+          "price": "$55.2–87.21",
+          "address": "190-01 Linden Boulevard, Queens, NY",
+          "lat": 40.69231,
+          "lng": -73.761017,
+          "category": "community"
+        },
+        {
+          "name": "Community Financial Access Resource Fair",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/queens/community-financial-access-resource-fair/100002002469194265",
+          "venue": "AAFE One Flushing Community Center",
+          "price": null,
+          "address": "133-29 41st Avenue, Queens, NY",
+          "lat": 40.757542,
+          "lng": -73.831161,
+          "category": "community"
+        },
+        {
+          "name": "Too Much & Extra: Open Mic (November)",
+          "date": "2026-11-12T05:00:00+00:00",
+          "url": "https://allevents.in/queens/too-much-and-extra-open-mic-november/100002002456391973",
+          "venue": "Sanger Hall",
+          "price": "$12.51–23.18",
+          "address": "4820 Skillman Avenue, Queens, NY",
+          "lat": 40.746151,
+          "lng": -73.915413,
+          "category": "community"
+        },
+        {
+          "name": "St. Nicholas Day",
+          "date": "2026-12-06T05:00:00+00:00",
+          "url": "https://allevents.in/queens/st-nicholas-day/100002002102923740",
+          "venue": "The Vander Ende-Onderdonk House",
+          "price": null,
+          "address": "1820 Flushing Ave, Queens, NY",
+          "lat": 40.710949,
+          "lng": -73.919914,
+          "category": "community"
+        },
+        {
+          "name": "S.T.E.A.M Saturday - Sewing History: Make Your Own Travel Kit",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/queens/steam-saturday-sewing-history-make-your-own-travel-kit/100002002569124158",
+          "venue": "Lewis Latimer House",
+          "price": null,
+          "address": "34-41 137th Street, Queens, NY",
+          "lat": 40.766121,
+          "lng": -73.829391,
+          "category": "community"
+        },
+        {
+          "name": "LJMS Fall in the Arts: A Night of Music and Performance",
+          "date": "2026-11-13T05:00:00+00:00",
+          "url": "https://allevents.in/queens/ljms-fall-in-the-arts-a-night-of-music-and-performance/100002003506515922",
+          "venue": "P.S. 136Q The Roy Wilkins School",
+          "price": null,
+          "address": "201-15 115th Avenue, Queens, NY",
+          "lat": 40.69857,
+          "lng": -73.752525,
+          "category": "community"
+        },
+        {
+          "name": "Fire Lady Family Connections | Albion Correctional Facility – Round Trip",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/queens/fire-lady-family-connections-albion-correctional-facility-round-trip/100002004411583002",
+          "venue": "Jackson Hts-Roosevelt Av",
+          "price": "$108.55",
+          "address": "74th Street, Queens, NY",
+          "lat": 40.746738,
+          "lng": -73.890999,
+          "category": "community"
+        },
+        {
+          "name": "\"Bowne Around Towne\" Flushing Walking Tour",
+          "date": "2026-11-14T05:00:00+00:00",
+          "url": "https://allevents.in/queens/bowne-around-towne-flushing-walking-tour/100002003244558400",
+          "venue": "Bowne House",
+          "price": "$17.85–23.18",
+          "address": "37-01 Bowne Street, Queens, NY",
+          "lat": 40.762875,
+          "lng": -73.824928,
+          "category": "outdoors"
+        }
+      ],
+      "error": null,
+      "duration": 1.92,
+      "cached": false
+    },
+    {
+      "venue": "AllEvents: Staten Island Family",
+      "url": "https://allevents.in/staten%20island/family",
+      "events": [
+        {
+          "name": "Tree Lighting at Historic Richmond Town",
+          "date": "2026-12-04T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/tree-lighting-at-historic-richmond-town/200030772770417",
+          "venue": "441 Clarke Ave, New York, NY, United States, New York 10306",
+          "price": null,
+          "address": "441 Clarke Ave, Staten Island, NY 10306-1125, United States, Staten Island, NY",
+          "lat": 40.569962,
+          "lng": -74.144638,
+          "category": "community"
+        },
+        {
+          "name": "Italian Bred — LIVE at Wagner College",
+          "date": "2026-12-04T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/italian-bred-live-at-wagner-college/200030868416713",
+          "venue": "Wagner College Campus Rd, Staten Island, NY 10301, United States",
+          "price": null,
+          "address": "Staten Island, NY",
+          "lat": 40.61274,
+          "lng": -74.092712,
+          "category": "community"
+        },
+        {
+          "name": "Winter Lantern Festival",
+          "date": "2026-11-19T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/winter-lantern-festival/200030843875052",
+          "venue": "Snug Harbor Cultural Center and Botanical Garden",
+          "price": null,
+          "address": "Staten Island Children's Museum, 1000 Richmond Ter, Staten Island, NY 10301, United States, Staten Island, NY",
+          "lat": 40.642094,
+          "lng": -74.102608,
+          "category": "community"
+        },
+        {
+          "name": "Do Portugal Circus - Staten Island November 2026",
+          "date": "2026-11-16T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/do-portugal-circus-staten-island-november-2026/200030921028017",
+          "venue": "Staten Island Mall Dr, Staten Island, NY 10314, United States",
+          "price": null,
+          "address": "Staten Island, NY",
+          "lat": 40.579769,
+          "lng": -74.163918,
+          "category": "community"
+        },
+        {
+          "name": "Family History Month Workshop 2: Transcribe-a-thon",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/family-history-month-workshop-2-transcribe-a-thon/200030921038727",
+          "venue": "1000 Richmond Terrace, Building A, Staten Island, NY, United States, New York 10301",
+          "price": null,
+          "address": "1000 Richmond Ter, Staten Island, NY 10301-1114, United States, Staten Island, NY",
+          "lat": 40.644981,
+          "lng": -74.101898,
+          "category": "community"
+        },
+        {
+          "name": "The Path to Relief: Modern Treatments for Hip & Knee Pain",
+          "date": "2026-11-11T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/the-path-to-relief-modern-treatments-for-hip-and-knee-pain/100002001238106047",
+          "venue": "Regina McGinn Education Center",
+          "price": null,
+          "address": "475 Seaview Avenue, Staten Island, NY",
+          "lat": 40.584084,
+          "lng": -74.085907,
+          "category": "community"
+        },
+        {
+          "name": "Lorenzo’s Miracle Mission",
+          "date": "2026-11-20T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/lorenzos-miracle-mission/100002003063514894",
+          "venue": "Baci",
+          "price": "$188.58",
+          "address": "1657 Richmond Road, Staten Island, NY",
+          "lat": 40.589706,
+          "lng": -74.101395,
+          "category": "community"
+        },
+        {
+          "name": "Faire & Flourish Holiday Market at Jody's Club Forest",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/faire-and-flourish-holiday-market-at-jodys-club-forest/100002003717944310",
+          "venue": "Jody's Club Forest",
+          "price": null,
+          "address": "372 Forest Avenue, Staten Island, NY",
+          "lat": 40.630905,
+          "lng": -74.101852,
+          "category": "community"
+        },
+        {
+          "name": "Capturing Change: Photography Tour",
+          "date": "2026-11-08T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/capturing-change-photography-tour/100002003666201546",
+          "venue": "Freshkills Park",
+          "price": null,
+          "address": "350 Wild Avenue, Staten Island, NY",
+          "lat": 40.586533,
+          "lng": -74.191727,
+          "category": "community"
+        },
+        {
+          "name": "Killmeyer’s 3rd Annual German Christmas Market by Faire & Flourish",
+          "date": "2026-11-29T05:00:00+00:00",
+          "url": "https://allevents.in/staten-island/killmeyers-3rd-annual-german-christmas-market-by-faire-and-flourish/100002004066317303",
+          "venue": "Killmeyer's",
+          "price": null,
+          "address": "4254 Arthur Kill Road, Staten Island, NY",
+          "lat": 40.538448,
+          "lng": -74.237167,
+          "category": "community"
+        }
+      ],
+      "error": null,
+      "duration": 1.62,
+      "cached": false
+    },
+    {
+      "venue": "AllEvents: Bronx Family",
+      "url": "https://allevents.in/bronx/family",
+      "events": [
+        {
+          "name": "Derfner x En Foco Panel Discussion: Portraiture in Contemporary Practice",
+          "date": "2026-12-03T05:00:00+00:00",
+          "url": "https://allevents.in/bronx/derfner-x-en-foco-panel-discussion-portraiture-in-contemporary-practice/100002001387070604",
+          "venue": "Derfner Judaica Museum",
+          "price": null,
+          "address": "5901 Palisade Ave, Bronx, NY",
+          "lat": 40.909134,
+          "lng": -73.908875,
+          "category": "community"
+        },
+        {
+          "name": "Where Dere's a Will, Dere's a Criminal- Bronx",
+          "date": "2026-12-05T05:00:00+00:00",
+          "url": "https://allevents.in/bronx/where-deres-a-will-deres-a-criminal-bronx/200030868360517",
+          "venue": "Harry S Truman High School",
+          "price": null,
+          "address": "750 Baychester Ave, Bronx, NY 10475-1701, United States, Bronx, NY",
+          "lat": 40.874512,
+          "lng": -73.833305,
+          "category": "community"
+        },
+        {
+          "name": "2nd Annual Cousins Gathering",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/bronx/2nd-annual-cousins-gathering/200030908468940",
+          "venue": "550 City Island Avenue",
+          "price": null,
+          "address": "550 City Island Ave, Bronx, NY 10464-1103, United States, Bronx, NY",
+          "lat": 40.853378,
+          "lng": -73.789818,
+          "category": "community"
+        },
+        {
+          "name": "Real Estate in Real Life: 2026 Case Studies + Your 2027 Wealth Plan",
+          "date": "2026-11-21T05:00:00+00:00",
+          "url": "https://allevents.in/bronx/real-estate-in-real-life-2026-case-studies-your-2027-wealth-plan/100002002849877900",
+          "venue": "2300 Eastchester Rd",
+          "price": null,
+          "address": "2300 Eastchester Road, Bronx, NY",
+          "lat": 40.859509,
+          "lng": -73.843002,
+          "category": "community"
+        },
+        {
+          "name": "Gianna’s Cheer Fundraiser Event",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/bronx/giannas-cheer-fundraiser-event/200030920998250",
+          "venue": "Pelham Bay",
+          "price": null,
+          "address": "New York,NY,United States, Bronx, NY",
+          "lat": 40.842266,
+          "lng": -73.832344,
+          "category": "community"
+        },
+        {
+          "name": "Free Hat, Gloves & Pizza :  Grab-n-Go with Zeta Charter Schools",
+          "date": "2026-11-10T05:00:00+00:00",
+          "url": "https://allevents.in/bronx/free-hat-gloves-and-pizza-grab-n-go-with-zeta-charter-schools/100002004122427129",
+          "venue": "BronxWorks",
+          "price": null,
+          "address": "1130 Grand Concourse, Bronx, NY",
+          "lat": 40.832687,
+          "lng": -73.918762,
+          "category": "community"
+        },
+        {
+          "name": "First Friday December 2026: Winter Holiday Market",
+          "date": "2026-12-04T05:00:00+00:00",
+          "url": "https://allevents.in/bronx/first-friday-december-2026-winter-holiday-market/100002004247760003",
+          "venue": "Bronx Museum",
+          "price": null,
+          "address": "1040 Grand Concourse, Bronx, NY",
+          "lat": 40.830883,
+          "lng": -73.920219,
+          "category": "community"
+        },
+        {
+          "name": "Talitha Dance 10yr Anniversary",
+          "date": "2026-11-22T05:00:00+00:00",
+          "url": "https://allevents.in/bronx/talitha-dance-10yr-anniversary/100002003619186924",
+          "venue": "Sankofa Haus",
+          "price": null,
+          "address": "2422 3rd Ave, Bronx, NY",
+          "lat": 40.80854,
+          "lng": -73.930092,
+          "category": "community"
+        },
+        {
+          "name": "Family Time: Día de Muertos 2026",
+          "date": "2026-11-07T05:00:00+00:00",
+          "url": "https://allevents.in/bronx/family-time-día-de-muertos-2026/100002003524267016",
+          "venue": "Bronx Museum",
+          "price": null,
+          "address": "1040 Grand Concourse, Bronx, NY",
+          "lat": 40.830883,
+          "lng": -73.920219,
+          "category": "family"
+        }
+      ],
+      "error": null,
+      "duration": 1.64,
       "cached": false
     },
     {
@@ -196881,8 +198563,8 @@
           "category": "books"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/ (serving stale cache)",
-      "duration": 0.24,
+      "error": null,
+      "duration": 2.34,
       "cached": true
     },
     {
@@ -197295,8 +198977,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sunnyside-queens/ (serving stale cache)",
-      "duration": 0.23,
+      "error": null,
+      "duration": 3.47,
       "cached": true
     },
     {
@@ -198669,7 +200351,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.12,
+      "duration": 0.24,
       "cached": false
     },
     {
@@ -198879,7 +200561,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.16,
+      "duration": 0.24,
       "cached": false
     },
     {
@@ -198887,7 +200569,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.15,
+      "duration": 0.19,
       "cached": false
     },
     {
@@ -200018,7 +201700,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.11,
+      "duration": 0.28,
       "cached": false
     },
     {
@@ -201536,7 +203218,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.17,
+      "duration": 0.26,
       "cached": false
     },
     {
@@ -202420,7 +204102,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.12,
+      "duration": 0.25,
       "cached": false
     },
     {
@@ -204178,8 +205860,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nypl/ (serving stale cache)",
-      "duration": 0.35,
+      "error": null,
+      "duration": 3.47,
       "cached": true
     },
     {
@@ -204628,8 +206310,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-public-library/ (serving stale cache)",
-      "duration": 0.15,
+      "error": null,
+      "duration": 3.71,
       "cached": true
     },
     {
@@ -208454,8 +210136,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rooftop-films/ (serving stale cache)",
-      "duration": 0.33,
+      "error": null,
+      "duration": 1.82,
       "cached": true
     },
     {
@@ -211340,8 +213022,8 @@
         }
       ],
       "error": null,
-      "duration": 0.3,
-      "cached": true
+      "duration": 0.28,
+      "cached": false
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -211729,8 +213411,8 @@
           "category": "comedy"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/grisly-pear-comedy/ (serving stale cache)",
-      "duration": 0.52,
+      "error": null,
+      "duration": 1.76,
       "cached": true
     },
     {
@@ -211942,8 +213624,8 @@
           "category": "comedy"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/ (serving stale cache)",
-      "duration": 0.14,
+      "error": null,
+      "duration": 4.22,
       "cached": true
     },
     {
@@ -219567,8 +221249,8 @@
           "category": "outdoors"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/prospect-park/ (serving stale cache)",
-      "duration": 0.22,
+      "error": null,
+      "duration": 2.69,
       "cached": true
     },
     {
@@ -221345,8 +223027,8 @@
           "category": "theater"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-shed/ (serving stale cache)",
-      "duration": 0.19,
+      "error": null,
+      "duration": 2.26,
       "cached": true
     },
     {
@@ -250556,8 +252238,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/salsa-social/ (serving stale cache)",
-      "duration": 0.47,
+      "error": null,
+      "duration": 3.92,
       "cached": true
     },
     {
@@ -251207,8 +252889,8 @@
           "category": "dance"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pa-la-calle/ (serving stale cache)",
-      "duration": 0.27,
+      "error": null,
+      "duration": 3.12,
       "cached": true
     },
     {
@@ -251456,8 +253138,8 @@
           "category": "dance"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/ (serving stale cache)",
-      "duration": 0.5,
+      "error": null,
+      "duration": 4.62,
       "cached": true
     },
     {
@@ -252350,8 +254032,8 @@
           "category": "dance"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/swing-dancing/ (serving stale cache)",
-      "duration": 0.56,
+      "error": null,
+      "duration": 2.74,
       "cached": true
     },
     {
@@ -252800,8 +254482,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 3.06,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/prohibition-productions/ (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -253658,8 +255340,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 2.21,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/ (serving stale cache)",
+      "duration": 0.51,
       "cached": true
     },
     {
@@ -253895,8 +255577,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 2.8,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pieces-bar/ (serving stale cache)",
+      "duration": 0.15,
       "cached": true
     },
     {
@@ -254297,8 +255979,8 @@
           "category": "gaming"
         }
       ],
-      "error": null,
-      "duration": 2.78,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/smash-bros/ (serving stale cache)",
+      "duration": 0.34,
       "cached": true
     },
     {
@@ -255062,8 +256744,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.46,
+      "error": null,
+      "duration": 3.23,
       "cached": true
     },
     {
@@ -255693,8 +257375,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-guestlist/ (serving stale cache)",
-      "duration": 0.49,
+      "error": null,
+      "duration": 3.55,
       "cached": true
     },
     {
@@ -255942,8 +257624,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.46,
+      "error": null,
+      "duration": 3.03,
       "cached": true
     },
     {
@@ -256404,8 +258086,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 2.69,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rooftop-party/ (serving stale cache)",
+      "duration": 0.54,
       "cached": true
     },
     {
@@ -256911,8 +258593,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.46,
+      "error": null,
+      "duration": 2.24,
       "cached": true
     },
     {
@@ -257100,8 +258782,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.46,
+      "error": null,
+      "duration": 2.49,
       "cached": true
     },
     {
@@ -257637,7 +259319,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.58,
+      "duration": 0.87,
       "cached": false
     },
     {
@@ -257645,7 +259327,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.51,
+      "duration": 0.59,
       "cached": false
     },
     {
@@ -257893,8 +259575,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.44,
+      "error": null,
+      "duration": 1.66,
       "cached": true
     },
     {
@@ -258082,8 +259764,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.45,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -258103,8 +259785,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.4,
+      "error": null,
+      "duration": 3.42,
       "cached": true
     },
     {
@@ -258706,8 +260388,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.49,
+      "error": null,
+      "duration": 2.76,
       "cached": true
     },
     {
@@ -259144,8 +260826,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.5,
+      "error": null,
+      "duration": 2.25,
       "cached": true
     },
     {
@@ -259783,8 +261465,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.47,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -260008,8 +261690,8 @@
           "category": "food"
         }
       ],
-      "error": null,
-      "duration": 2.49,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--food-and-drink--festivals/ (serving stale cache)",
+      "duration": 0.5,
       "cached": true
     },
     {
@@ -260953,7 +262635,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 1.56,
+      "duration": 0.77,
       "cached": false
     },
     {
@@ -262266,8 +263948,8 @@
           "category": "art"
         }
       ],
-      "error": null,
-      "duration": 2.63,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/art-festivals/ (serving stale cache)",
+      "duration": 0.66,
       "cached": true
     },
     {
@@ -262757,8 +264439,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.54,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.5,
       "cached": true
     },
     {
@@ -262958,8 +264640,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.84,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.5,
       "cached": true
     },
     {
@@ -263123,8 +264805,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.68,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.48,
       "cached": true
     },
     {
@@ -263240,8 +264922,8 @@
           "category": "outdoors"
         }
       ],
-      "error": null,
-      "duration": 2.42,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.51,
       "cached": true
     },
     {
@@ -264690,8 +266372,8 @@
           "category": "gaming"
         }
       ],
-      "error": null,
-      "duration": 2.33,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.48,
       "cached": true
     },
     {
