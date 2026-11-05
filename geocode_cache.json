@@ -1,6 +1,11 @@
 {
 "0 bond st, new york": null,
 "1 bayard street, brooklyn": null,
+"1 beard st, brooklyn": [
+40.671406,
+-74.011245,
+"brooklyn"
+],
 "1 campus rd, staten island": [
 40.613325,
 -74.092281,
@@ -122,6 +127,7 @@
 -73.867085,
 "bronx"
 ],
+"10003 east 9th street, 10003": null,
 "1001 bergen st, brooklyn": [
 40.676577,
 -73.953727,
@@ -360,6 +366,11 @@
 "brooklyn"
 ],
 "11229 bedford ave, 11229": null,
+"113 e 125th st, new york": [
+40.804966,
+-73.938093,
+"manhattan"
+],
 "113 franklin st, brooklyn": [
 40.730229,
 -73.957917,
@@ -730,6 +741,11 @@
 40.772826,
 -73.983019,
 "manhattan"
+],
+"132-29 blossom ave, flushing": [
+40.752123,
+-73.83126,
+"queens"
 ],
 "1329 willoughby ave, brooklyn": [
 40.706354,
@@ -1274,6 +1290,11 @@
 -73.953706,
 "manhattan"
 ],
+"177 kent st, brooklyn": [
+40.731209,
+-73.953608,
+"brooklyn"
+],
 "177 vanderbilt avenue, brooklyn": [
 40.692646,
 -73.96947,
@@ -1620,6 +1641,11 @@
 -73.9819,
 "manhattan"
 ],
+"207 bowery, new york": [
+40.721239,
+-73.993279,
+"manhattan"
+],
 "207 w 25th st, new york": [
 40.74585,
 -73.995285,
@@ -1730,6 +1756,7 @@
 -73.946652,
 "manhattan"
 ],
+"215 e.99th street, new york": null,
 "215 w 40th st, new york": [
 40.755314,
 -73.988616,
@@ -2073,6 +2100,11 @@
 -73.973876,
 "manhattan"
 ],
+"245 lenox ave, new york": [
+40.80619,
+-73.947083,
+"manhattan"
+],
 "245 w 29th st, new york": [
 40.748801,
 -73.994544,
@@ -2360,6 +2392,11 @@
 -73.991452,
 "brooklyn"
 ],
+"2800 victory blvd, staten island": [
+40.604836,
+-74.154111,
+"staten_island"
+],
 "2808 gerritsen ave, brooklyn": [
 40.591418,
 -73.92401,
@@ -2545,6 +2582,11 @@
 -73.988684,
 "manhattan"
 ],
+"309 e 108th st, new york": [
+40.791788,
+-73.940662,
+"manhattan"
+],
 "31-01 vernon blvd, astoria": [
 40.76923,
 -73.935188,
@@ -2649,6 +2691,11 @@
 "323 6th ave, new york": [
 40.731233,
 -74.001667,
+"manhattan"
+],
+"325 3rd ave, new york": [
+40.739625,
+-73.982247,
 "manhattan"
 ],
 "325 franklin ave, brooklyn": [
@@ -2921,6 +2968,11 @@
 -73.928682,
 "queens"
 ],
+"36-08 33rd st, astoria": [
+40.755628,
+-73.928682,
+"queens"
+],
 "361 bowery, new york": [
 40.726836,
 -73.991291,
@@ -2937,6 +2989,11 @@
 "brooklyn"
 ],
 "366 ten eyck st, brooklyn": null,
+"368 fulton st, brooklyn": [
+40.69137,
+-73.98791,
+"brooklyn"
+],
 "37 e. 50th street, new york": [
 40.757707,
 -73.974624,
@@ -3251,6 +3308,11 @@
 -73.761513,
 "queens"
 ],
+"433 1st ave, new york": [
+40.738693,
+-73.977691,
+"manhattan"
+],
 "438 e 163rd st, bronx": [
 40.824561,
 -73.911691,
@@ -3286,6 +3348,16 @@
 40.670657,
 -73.988771,
 "brooklyn"
+],
+"440 lafayette st, new york": [
+40.729517,
+-73.992254,
+"manhattan"
+],
+"441 clarke ave, staten island": [
+40.571245,
+-74.145957,
+"staten_island"
 ],
 "442 amsterdam avenue, new york city": [
 40.784762,
@@ -3387,6 +3459,11 @@
 -73.976843,
 "manhattan"
 ],
+"455 uss tennessee rd, staten island": [
+40.598385,
+-74.058335,
+"staten_island"
+],
 "46 w 16th st, new york": [
 40.738068,
 -73.995291,
@@ -3431,6 +3508,11 @@
 40.730789,
 -73.988649,
 "manhattan"
+],
+"47 bruckner blvd, bronx": [
+40.806842,
+-73.926872,
+"bronx"
 ],
 "47 withers st, brooklyn": [
 40.717025,
@@ -3515,6 +3597,11 @@
 "487 atlantic ave, brooklyn": [
 40.685915,
 -73.981622,
+"brooklyn"
+],
+"49 ash st, brooklyn": [
+40.738636,
+-73.953477,
 "brooklyn"
 ],
 "49-10 skillman ave, woodside": [
@@ -3908,6 +3995,11 @@
 -73.973654,
 "manhattan"
 ],
+"583 broadway, new york": [
+40.724974,
+-73.997733,
+"manhattan"
+],
 "588 amsterdam ave, new york": [
 40.789467,
 -73.974113,
@@ -4112,6 +4204,11 @@
 -73.979088,
 "brooklyn"
 ],
+"65 west 11th street, 10011": [
+40.735287,
+-73.997516,
+"manhattan"
+],
 "65-30 kissena blvd, queens": [
 40.73619,
 -73.816162,
@@ -4305,6 +4402,11 @@
 -73.968016,
 "manhattan"
 ],
+"731 washington ave, brooklyn": [
+40.674978,
+-73.962933,
+"brooklyn"
+],
 "732 8th ave, new york": [
 40.759331,
 -73.987929,
@@ -4388,6 +4490,11 @@
 "79 5th ave, new york": [
 40.736971,
 -73.992389,
+"manhattan"
+],
+"79 baxter st, 10013": [
+40.716499,
+-73.999769,
 "manhattan"
 ],
 "79 baxter st, new york": [
@@ -4580,6 +4687,16 @@
 -73.997339,
 "brooklyn"
 ],
+"87 bowery, new york": [
+40.716878,
+-73.995203,
+"manhattan"
+],
+"87-35 162nd st, jamaica": [
+40.70903,
+-73.800262,
+"queens"
+],
 "870 shore road, bronx pelham and split rock go": [
 40.873797,
 -73.808744,
@@ -4702,6 +4819,11 @@
 40.716851,
 -73.999488,
 "manhattan"
+],
+"91-12 144th pl, jamaica": [
+40.70018,
+-73.810393,
+"queens"
 ],
 "92 ludlow st, new york": [
 40.718394,
