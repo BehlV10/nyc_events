@@ -79,6 +79,10 @@ TRISTATE_NEEDLES = (
     # Long Island (Nassau / Suffolk)
     "long island", "nassau county", "suffolk county", "huntington", "garden city", "hempstead",
     "patchogue", "babylon", "montauk", "hamptons", "riverhead", "westbury, ny",
+    "mineola", "rockville centre", "nassau coliseum", "tilles center", "stephen talkhouse", "amagansett",
+    # Venues outside the city that city feeds list by name only
+    "metlife stadium", "wellmont theater", "count basie", "prudential center", "njpac",
+    "new jersey performing arts", "klein memorial", "atlantic city", "catskills", "tarrytown",
 )
 
 
@@ -128,10 +132,10 @@ _SUFFIX = (r"st|street|ave|avenue|av|blvd|boulevard|rd|road|pl|place|pkwy|parkwa
            r"ter|terrace|sq|square|way|plaza|plz|hwy|highway|ct|court|tpke|turnpike|broadway|bowery|loop|walk|slip|row")
 _ADDR_RE = re.compile(
     r"\b(\d{1,5}(?:-\d{1,4})?)\s+((?:[nsew]\.?\s+|north\s+|south\s+|east\s+|west\s+)?"
-    r"(?:broadway|bowery|(?:[a-z0-9.'&]+\s+){1,4}?(?:" + _SUFFIX + r")))\b\.?"
+    r"(?:broadway|bowery|avenue of the americas|ave(?:nue)?\.? [a-z](?![a-z])|(?:[a-z0-9.'&]+\s+){1,4}?(?:" + _SUFFIX + r")))\b\.?"
     r"(?:\s*(?:#|suite|ste\.?|fl\.?|floor|unit|apt\.?)\s*[\w-]+)?"
     r"(?:\s*,\s*([a-z .'-]{3,30}))?", re.I)
-_LOCALITY_OK = re.compile(r"new york|nyc|manhattan|brooklyn|queens|bronx|staten island|astoria|flushing|long island city|"
+_LOCALITY_OK = re.compile(r"new york|nyc|\bny\s*,\s*ny\b|(?:kings|queens|bronx|richmond|new york) county|manhattan|brooklyn|queens|bronx|staten island|astoria|flushing|long island city|"
                           r"ridgewood|jamaica|forest hills|jackson heights|elmhurst|woodside|sunnyside|corona|bayside|"
                           r"harlem|williamsburg|bushwick|greenpoint|maspeth|rockaway|kew gardens|rego park|whitestone", re.I)
 
@@ -161,10 +165,12 @@ _STREET_WORDS = {"street": "st", "avenue": "ave", "av": "ave", "boulevard": "blv
 
 def _street_key(street):
     street = re.sub(r"\bb'?way\b", "broadway", (street or "").lower())  # GeoSearch spells it B'WAY
+    street = street.replace("avenue of the americas", "6 avenue")
     words = re.sub(r"[^a-z0-9 ]", " ", street).split()
     words = [_STREET_WORDS.get(w, w) for w in words]
     words = [re.sub(r"^(\d+)(st|nd|rd|th)$", r"\1", w) for w in words]
-    return [w for w in words if w not in ("st", "ave", "blvd", "rd", "pl", "pkwy", "dr", "ln", "ter", "sq", "plz", "hwy", "ct", "tpke", "n", "s", "e", "w")]
+    core = [w for w in words if w not in ("st", "ave", "blvd", "rd", "pl", "pkwy", "dr", "ln", "ter", "sq", "plz", "hwy", "ct", "tpke", "n", "s", "e", "w")]
+    return core or words  # "Court St" -> ["ct", "st"], not [] (every Court St used to be rejected)
 
 
 GEOSEARCH_URL = "https://geosearch.planninglabs.nyc/v2/search"
@@ -230,3 +236,66 @@ def geocode_missing(addresses, cache, limit=400, gap=0.25, session=None):
             break  # service trouble: stop for this run, try the rest next time
         cache[addr] = list(hit) if hit else None
     return len(todo)
+
+
+_PARKS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "nyc_parks.json")
+
+
+@lru_cache(maxsize=1)
+def _parks():
+    try:
+        with open(_PARKS_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)["parks"]
+    except (OSError, ValueError, KeyError):
+        return {}
+
+
+def _norm_name(text):
+    t = (text or "").lower().replace("&", " and ")
+    return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]", " ", t)).strip()
+
+
+def park_pin(name, context=""):
+    """(lat, lng, borough) for the NYC Parks property named in `name` (longest match, 2+ words),
+    e.g. "Juniper Valley Park Tennis Courts" -> Juniper Valley Park. A name that exists in several
+    boroughs needs the borough in `name`/`context`, else None."""
+    words = _norm_name(name).split()
+    parks = _parks()
+    best = None
+    for size in range(min(6, len(words)), 1, -1):
+        for i in range(len(words) - size + 1):
+            key = " ".join(words[i:i + size])
+            # "Park Slope" is also the name of a Queens property: only names ending in a
+            # park word count, so neighborhoods don't match
+            if key in parks and words[i + size - 1] in _PARK_WORDS:
+                best = parks[key]
+                break
+        if best:
+            break
+    if not best:
+        return None
+    hay = f" {_norm_name(name)} {_norm_name(context)} "
+    named = [b for b in ("manhattan", "brooklyn", "queens", "bronx", "staten_island") if f" {b.replace('_', ' ')} " in hay]
+    for lat, lng, borough in best:
+        if (len(best) == 1 and not named) or borough in named:
+            return lat, lng, borough
+    return None
+
+
+_PARK_WORDS = {"park", "playground", "garden", "gardens", "triangle", "square", "plaza", "mall", "malls", "field",
+               "fields", "green", "pool", "grove", "woods", "island", "oval", "pier", "ballfield", "ballfields",
+               "beach", "preserve", "reservation", "wetlands", "lawn", "meadow", "meadows", "promenade", "esplanade"}
+
+
+def pin_contradicts_address(event):
+    """True when the event's own address (its address field, or the "(...)" part of the venue)
+    names exactly one borough and the feed's coordinates fall in another. The venue *name* is
+    not used: "Brooklyn Diner" is in Manhattan."""
+    venue = event.get("venue") or ""
+    paren = venue[venue.find("("):] if "(" in venue else ""
+    text = f" {_norm_name(event.get('address'))} {_norm_name(paren)} "
+    named = {b for b in ("manhattan", "brooklyn", "queens", "bronx", "staten_island") if f" {b.replace('_', ' ')} " in text}
+    if len(named) != 1:
+        return False
+    at = borough_at(event.get("lat"), event.get("lng"))
+    return at is not None and at not in named

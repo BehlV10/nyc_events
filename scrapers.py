@@ -8769,8 +8769,9 @@ def _apply_geocodes(results, limit=None, gap=None, cache_path=None):
     for res in results:
         for e in res.get("events") or []:
             if e.get("lat") is not None and (nyc_geo.is_placeholder(e.get("lat"), e.get("lng"))
-                                             or nyc_geo.city_level_only(e.get("address"), e.get("venue"))):
-                e["lat"] = e["lng"] = None  # "New York, NY"-only location: the feed's pin is a guess
+                                             or nyc_geo.city_level_only(e.get("address"), e.get("venue"))
+                                             or nyc_geo.pin_contradicts_address(e)):
+                e["lat"] = e["lng"] = None  # the feed's pin is a guess or points at the wrong borough
             if e.get("lat") is not None and e.get("lng") is not None:
                 continue
             v = (e.get("venue") or "").strip().lower()
@@ -8795,7 +8796,58 @@ def _apply_geocodes(results, limit=None, gap=None, cache_path=None):
             nyc_geo.save_geocode_cache(cache, cache_path)
         except OSError:
             pass
-    print(f"geocode: {pinned} events pinned from addresses; {looked_up} new lookups, {len(cache)} cached")
+    learned = _apply_learned_pins(results)
+    print(f"geocode: {pinned} events pinned from addresses ({looked_up} new lookups, {len(cache)} cached); "
+          f"{learned} from the same venue in other feeds")
+
+
+_GENERIC_VENUE_KEYS = {"lobby", "rooftop", "main stage", "gallery", "auditorium", "online", "tbd", "tba", "secret location",
+                       "multi use room", "main hall", "ballroom", "theater", "theatre", "studio", "the bar", "backyard",
+                       "various locations", "location tbd", "private residence", "nyc park", "city park", "community center"}
+
+
+def _venue_key(venue):
+    v = nyc_geo._norm_name((venue or "").split("(")[0])
+    v = re.sub(r"^the ", "", v)
+    v = re.sub(r" (nyc|new york|new york city)$", "", v).strip()
+    if v in _GENERIC_VENUE_KEYS:
+        return None
+    return v if len(v.split()) >= 2 else None  # one-word names ("Overlook") are too ambiguous
+
+
+def _apply_learned_pins(results):
+    """Copy a venue's pin to its unpinned events from other feeds: Ticketmaster knows where
+    "Chelsea Piers" is even when DoNYC only says the name. A name is used only when the pins
+    seen for it agree (80% within ~150 m)."""
+    import venues_geo
+    seen, unpinned = {}, []
+    for res in results:
+        for e in res.get("events") or []:
+            key = _venue_key(e.get("venue"))
+            if not key:
+                continue
+            probe = dict(e)
+            probe["_source_venue"] = res.get("venue") or ""
+            geo = venues_geo.resolve_event_geo(probe)
+            if geo:
+                seen.setdefault(key, []).append((geo["lat"], geo["lng"]))
+            elif not nyc_geo.outside_nyc_text(f"{e.get('venue') or ''} {e.get('address') or ''}"):
+                unpinned.append((key, e))
+    table = {}
+    for key, pts in seen.items():
+        lat = sorted(p[0] for p in pts)[len(pts) // 2]
+        lng = sorted(p[1] for p in pts)[len(pts) // 2]
+        if sum(1 for a, b in pts if abs(a - lat) < 0.0015 and abs(b - lng) < 0.0015) >= 0.8 * len(pts):
+            table[key] = (lat, lng)
+    n = 0
+    for key, e in unpinned:
+        if key in table:
+            named = venues_geo._named_borough(f"{e.get('venue') or ''} {e.get('address') or ''}".lower())
+            if named and nyc_geo.borough_at(*table[key]) != named:
+                continue  # "Central Library (Prospect Park)" is not Queens' Central Library
+            e["lat"], e["lng"] = table[key]
+            n += 1
+    return n
 
 
 def get_all_events(force=False):

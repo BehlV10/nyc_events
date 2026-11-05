@@ -959,7 +959,7 @@ class TestLocationPins(unittest.TestCase):
         geo = venues_geo.resolve_event_geo({"venue": "Bowery Ballroom", "lat": 40.7593, "lng": -73.9902})
         self.assertEqual((geo["lat"], geo["lng"]), (40.7204, -73.9934))
         # an address in the parentheses must not trigger the "atlantic ave" needle
-        self.assertIsNone(venues_geo.resolve_event_geo({"venue": "Squarrel Cafe (572 Atlantic Ave, Brooklyn, NY)"}))
+        self.assertIsNone(venues_geo.resolve_event_geo({"venue": "Corner Bakery Pop-Up (572 Atlantic Ave, Brooklyn, NY)"}))
         # out-of-city text never takes a needle pin
         self.assertIsNone(venues_geo.resolve_event_geo({"venue": "Ethical Culture Society of Bergen County (687 Larch Ave, Teaneck, NJ)"}))
         self.assertIsNone(venues_geo.resolve_event_geo({"venue": "Online (On-Demand Platform)", "lat": 40.7, "lng": -73.95}))
@@ -972,3 +972,26 @@ class TestLocationPins(unittest.TestCase):
         border = {"lat": 40.7055, "lng": -73.9234}
         self.assertEqual(template._event_city("Trans-Pecos (9-15 Wyckoff Ave, Queens, NY 11385)", "RA", border, {}), "queens")
         self.assertEqual(template._event_city("Knockdown Center (Queens, NY)", "TM", border, {}), "queens")
+
+
+class TestMorePins(unittest.TestCase):
+    def test_parks_learned_pins_and_parser_gaps(self):
+        import nyc_geo, venues_geo
+        self.assertEqual(nyc_geo.park_pin("Juniper Valley Park Tennis Courts")[2], "queens")
+        self.assertIsNone(nyc_geo.park_pin("Park Slope Area Social"))  # neighborhood, not the Queens strip named "Park Slope"
+        self.assertEqual(nyc_geo._street_key("court street"), ["ct", "st"])
+        self.assertEqual(nyc_geo.extract_address("Alphabet City Beer Co. (96 Avenue C, New York, NY)"), "96 avenue c, new york")
+        self.assertEqual(nyc_geo.extract_address("Cup Of Joe (8823 3rd Ave, Kings County, NY)"), "8823 3rd ave, kings county")
+        self.assertIsNone(nyc_geo.extract_address("Cornerstone Bar (288 Jericho Turnpike, Mineola, NY)"))
+        self.assertEqual(venues_geo.resolve_event_geo({"venue": "DROM (New York)"})["venue"], "Drom NYC")
+        self.assertTrue(nyc_geo.pin_contradicts_address({"venue": "The Overlook (Forest Park)", "address": "Myrtle Ave, Park Lane S, Queens",
+                                                         "lat": 40.7517, "lng": -73.9723}))
+        results = [{"venue": "TM", "events": [{"name": "a", "venue": "Chelsea Garden Hall", "lat": 40.7466, "lng": -74.0090}]},
+                   {"venue": "DoNYC", "events": [{"name": "b", "venue": "Chelsea Garden Hall"},
+                                                 {"name": "c", "venue": "Overlook"},
+                                                 {"name": "d", "venue": "Chelsea Garden Hall (Queens, NY)"}]}]
+        self.assertEqual(scrapers._apply_learned_pins(results), 1)
+        b, c, d = results[1]["events"]
+        self.assertEqual(b["lat"], 40.7466)
+        self.assertNotIn("lat", c)  # one-word names are not shared
+        self.assertNotIn("lat", d)  # text says Queens; the learned pin is Manhattan
