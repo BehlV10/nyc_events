@@ -406,5 +406,101 @@ class TestComedyClubScrapers(unittest.TestCase):
         self.assertEqual(events[0]["venue"], "West Side Comedy Club")
 
 
+class TestComedyRoundFour(unittest.TestCase):
+    def test_stand_skips_west_cards_and_walks_days(self):
+        d = _future_local(1, 21)
+        slug = d.strftime("%Y-%m-%d-%H%M00")
+        page = (
+            f'<div class="row show_row"><h2 class="showtitle"><a href="https://thestandnyc.com//shows/show/1/{slug}-a">Union Sq Show</a></h2></div>'
+            f'<div class="row show_row"><h6>This event will be held at The Stand West</h6>'
+            f'<h2 class="showtitle"><a href="https://thestandnyc.com//shows/show/2/{slug}-b">West Show</a></h2></div>'
+        )
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)) as get:
+            events = scrapers.scrape_the_stand_nyc("https://thestandnyc.com/shows", UA_CHROME, days=3)
+        self.assertEqual(get.call_count, 3)
+        self.assertEqual([e["name"] for e in events], ["Union Sq Show"])
+        self.assertEqual(_local(events[0]["date"]), d)
+        self.assertNotIn("//shows", events[0]["url"].replace("https://", ""))
+
+    def test_magnet_month_grid(self):
+        d = _future_local(2, 19, 30)
+        page = (f'<table><tr><td><strong class="date">{d.day}</strong>'
+                '<div class="an-event tab1"><abr class="time dtstart">7:30pm - $10</abr>'
+                '<a href="https://magnettheater.com/show/1"><p class="summary"><strong>Megawatt</strong></p></a></div></td></tr></table>')
+        empty = "<table></table>"
+        def fake_get(url, **kw):
+            return _resp(text=page if f"date={d.year}-{d.month:02d}-01" in url else empty)
+        with patch("scrapers._SESSION.get", side_effect=fake_get):
+            events = scrapers.scrape_magnet_theater("https://magnettheater.com/calendar/month/", UA_CHROME, months=3)
+        self.assertEqual(len(events), 1)
+        self.assertEqual(_local(events[0]["date"]), d)
+        self.assertEqual(events[0]["price"], "$10")
+
+    def test_pit_day_timestamps_and_rooms(self):
+        d = _future_local(2, 0)
+        page = (f"<div id='day-{int(d.timestamp())}' class='date day'><ul class='events'><li class='event'>"
+                '<a href="https://thepit-nyc.com/events/x/"><p class="event__title">Improv Jam</p></a><ul class="performances">'
+                '<li class="performance"><section class="action__time">7:00pm</section><div class="venue"><p class="venue__title">The PIT LAB</p></div></li>'
+                '<li class="performance"><section class="action__time">9:30pm</section><div class="venue"><p class="venue__title">The Fishbowl</p></div></li>'
+                '</ul></li></ul></div>')
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
+            events = scrapers.scrape_pit_calendar("https://thepit-nyc.com/calendar/", UA_CHROME, months=1)
+        self.assertEqual([(_local(e["date"]).hour, e["venue"]) for e in events], [(19, "The PIT LAB"), (21, "The PIT (The Fishbowl)")])
+
+    def test_improv_calendar_cards(self):
+        d = _future_local(3, 19)
+        card = (f'<a class="item" href="/brooklyn/event/x/"><div class="maindate"><dl><dt>{d:%b}</dt><dd>{d.day}<i> {d:%a}</i></dd></dl></div>'
+                '<div class="info"><h3>Usual Suspects</h3><div class="times"><span>7:00pm</span><span>9:30pm</span></div>'
+                '<div class="city"> @ The Lab</div></div></a>')
+        with patch("scrapers._SESSION.get", return_value=_resp(text=card)):
+            events = scrapers.scrape_improv_calendar("https://improv.com/brooklyn/calendar/", UA_CHROME, months=1)
+        self.assertEqual([_local(e["date"]).hour for e in events], [19, 21])
+        self.assertEqual(events[0]["venue"], "Brooklyn Improv (The Lab)")
+        self.assertTrue(events[0]["url"].startswith("https://improv.com/brooklyn/event/"))
+
+    def test_punchup_flight_data(self):
+        dt = _future_local(2, 20).strftime("%Y-%m-%dT%H:%M:%S")
+        obj = json.dumps({"id": "f17603a6-3c3f-49e7-a928-d2f57b80b8f0", "venue": "Greenpoint Comedy Club & Bar",
+                          "ticket_link": "https://event.tixologi.com/event/1/tickets", "datetime": dt, "title": "Friday Showcase"})
+        chunk = json.dumps('x:{"state":{"data":[' + obj + ']}}')[1:-1]
+        page = f'<script>self.__next_f.push([1,"{chunk}"])</script>'
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
+            events = scrapers.scrape_punchup_venue("https://punchup.live/venue/greenpointcomedyclub", UA_CHROME)
+        self.assertEqual(len(events), 1)
+        self.assertEqual(_local(events[0]["date"]).hour, 20)
+        self.assertEqual(events[0]["url"], "https://event.tixologi.com/event/1/tickets")
+
+    def test_wix_events_warmup(self):
+        start = (_future_local(2, 20).astimezone(timezone.utc)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+        data = {"events": {"events": [{"title": "Thursday Showcase", "slug": "thu-1",
+                "scheduling": {"config": {"startDate": start, "scheduleTbd": False}},
+                "location": {"name": "Bushwick Comedy Club", "address": "259 Melrose St, Brooklyn, NY 11206, USA",
+                             "coordinates": {"lat": 40.702, "lng": -73.93}}}], "hasMore": False}}
+        page = "<script>var w=" + json.dumps(data) + ";</script>"
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
+            events = scrapers.scrape_wix_events("https://www.bushwickcomedy.com/shows", UA_CHROME)
+        self.assertEqual(events[0]["url"], "https://www.bushwickcomedy.com/event-details/thu-1")
+        self.assertEqual(_local(events[0]["date"]).hour, 20)
+        self.assertEqual(events[0]["address"], "259 Melrose St, Brooklyn, NY 11206")
+
+    def test_tribe_follows_next_rest_url(self):
+        d = _future_local(2, 19).strftime("%Y-%m-%d %H:%M:%S")
+        p1 = {"events": [{"title": "Show A", "start_date": d, "url": "https://comedyvillage.com/a"}], "next_rest_url": "https://comedyvillage.com/p2"}
+        p2 = {"events": [{"title": "Show B", "start_date": d, "url": "https://comedyvillage.com/b"}]}
+        with patch("scrapers._SESSION.get", side_effect=[_resp(payload=p1), _resp(payload=p2)]):
+            events = scrapers.scrape_tribe_events_api("https://comedyvillage.com/wp-json/tribe/events/v1/events?per_page=50", UA_CHROME)
+        self.assertEqual([e["name"] for e in events], ["Show A", "Show B"])
+        self.assertEqual(events[0]["venue"], "Comedy Village")
+
+    def test_nycc_zero_price_tier_is_not_free(self):
+        start = _future_local(2, 19, 30).isoformat()
+        page = ('<script type="application/ld+json">' + json.dumps({"@type": "Event", "name": "Headliners", "startDate": start,
+                "location": {"name": "New York Comedy Club"}, "offers": {"@type": "Offer", "price": "0.00"}}) + "</script>")
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
+            events = scrapers.scrape_jsonld_months("https://newyorkcomedyclub.com/calendar", UA_CHROME, months=2)
+        self.assertEqual(len(events), 1)
+        self.assertIsNone(events[0]["price"])
+
+
 if __name__ == "__main__":
     unittest.main()
