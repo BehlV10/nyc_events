@@ -222,7 +222,7 @@ BROADWAY_THEATRES = {
 
 COMEDY_VENUES = {
     "comedy cellar", "the stand", "gotham comedy", "broadway comedy", "eastville comedy",
-    "greenwich village comedy", "grisly pear", "st. marks comedy", "stand up ny", "west side comedy", "tight pants comedy",
+    "greenwich village comedy", "grisly pear", "st. marks comedy", "stand up ny", "west side comedy", "stand west", "brooklyn improv", "greenpoint comedy", "bushwick comedy", "comedy village", "tight pants comedy",
     "new york comedy club", "magnet theater", "the pit", "peoples improv theater",
     "caveat", "flop house comedy", "brooklyn comedy collective", "tiny cupboard"
 }
@@ -2044,44 +2044,55 @@ def scrape_carnegie_hall_tm(_url, _ua):
     return events
 
 
-def scrape_the_stand_nyc(url, ua):
-    """Scrape live shows from The Stand NYC (thestandnyc.com/shows)."""
-    soup = fetch_soup(url, ua)
-    events = []
-    seen = set()
-    for h2 in soup.select("h2.showtitle"):
-        a = h2.find("a", href=True)
-        if not a:
+_STAND_SHOW_RE = re.compile(r"/shows/show/\d+/(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})\d{2}")
+
+
+def _stand_cards(soup, base, skip_west):
+    """Show cards on thestandnyc.com / thestandwest.com: links to /shows/show/<id>/<date-time-slug>."""
+    out = []
+    for a in soup.find_all("a", href=_STAND_SHOW_RE):
+        title = a.get_text(" ", strip=True)
+        if not title or title.lower() in ("book now", "more info", "buy tickets", "tickets"):
             continue
-        title = a.get_text(strip=True)
-        href = a["href"].strip()
-        m = re.search(r"(\d{4})-(\d{2})-(\d{2})-(\d{2})(\d{2})\d{2}", href)
-        if not m or not title:
+        row = a.find_parent(class_="show_row")
+        if skip_west and row and "held at the stand west" in row.get_text(" ", strip=True).lower():
             continue
-        y, mo, d, h, mi = map(int, m.groups())
+        y, mo, d, h, mi = map(int, _STAND_SHOW_RE.search(a["href"]).groups())
         try:
             dt = datetime(y, mo, d, h, mi, tzinfo=EASTERN)
-            iso = dt.astimezone(timezone.utc).isoformat()
         except ValueError:
             continue
-        clean_url = href.replace("https://thestandnyc.com//", "https://thestandnyc.com/")
-        if not clean_url.startswith("http"):
-            clean_url = f"https://thestandnyc.com{clean_url}"
-        key = (title.lower(), iso)
-        if key in seen:
-            continue
-        seen.add(key)
-        events.append({
-            "name": title,
-            "date": iso,
-            "url": clean_url,
-            "venue": "The Stand NYC",
-            "lat": 40.7358,
-            "lng": -73.9877,
-            "price": None,
-            "category": "comedy",
-        })
-    return events
+        href = re.sub(r"(?<!:)//+", "/", urljoin(base, a["href"].strip()))
+        out.append((title, dt.astimezone(timezone.utc).isoformat(), href))
+    return out
+
+
+def scrape_the_stand_nyc(url, ua, days=None):
+    """The Stand (Union Square). /shows only shows ~3 days, so walk the per-day pages
+    (/shows/YYYY-MM-DD). Cards flagged 'held at The Stand West' are left to that room's source."""
+    days = days or HORIZON_DAYS
+    today = datetime.now(EASTERN).date()
+    urls = [f"https://thestandnyc.com/shows/{today + timedelta(days=i)}" for i in range(days)]
+
+    def _day(u):
+        return _stand_cards(fetch_soup(u, ua), "https://thestandnyc.com/", skip_west=True)
+
+    events = [{
+        "name": t, "date": iso, "url": href, "venue": "The Stand NYC",
+        "address": "116 E 16th St, New York, NY 10003",
+        "lat": 40.7358, "lng": -73.9877, "price": None, "category": "comedy",
+    } for (t, iso, href) in _fetch_many(urls, _day, workers=6)]
+    return _dedupe_future(events)
+
+
+def scrape_the_stand_west(url, ua):
+    """The Stand West (407 W 15th St, Chelsea Market), which opened Nov 2026: /shows lists every on-sale show."""
+    soup = fetch_soup(url, ua)
+    events = [{
+        "name": t, "date": iso, "url": href, "venue": "The Stand West",
+        "address": "407 W 15th St, New York, NY 10011", "price": None, "category": "comedy",
+    } for (t, iso, href) in _stand_cards(soup, "https://thestandwest.com/", skip_west=False)]
+    return _dedupe_future(events)
 
 
 def scrape_elsewhere_brooklyn(url, ua):
@@ -5017,6 +5028,7 @@ def scrape_qed_astoria(url, ua):
 
 
 _TRIBE_VENUE_DEFAULTS = {
+    "comedyvillage.com": ("Comedy Village", "352 W 44th St, New York, NY", "Hell's Kitchen", 40.7593, -73.9905, "comedy"),
     "movingimage.org": ("Museum of the Moving Image", "36-01 35th Ave, Queens, NY", "Astoria", 40.7563, -73.9239, "film"),
     "queensbotanical.org": ("Queens Botanical Garden", "43-50 Main St, Queens, NY", "Flushing", 40.7510, -73.8290, "outdoors"),
     "queensfarm.org": ("Queens County Farm Museum", "73-50 Little Neck Pkwy, Queens, NY", "Floral Park / Glen Oaks", 40.7478, -73.7244, "outdoors"),
@@ -5046,10 +5058,17 @@ def scrape_tribe_events_api(url, ua):
             break
 
     try:
-        resp = _SESSION.get(req_url, headers={"User-Agent": ua}, timeout=15)
-        resp.raise_for_status()
-        data = resp.json()
-        raw_events = data.get("events", []) if isinstance(data, dict) else []
+        raw_events = []
+        for _page in range(4):  # the API caps per_page at 50; follow next_rest_url for busy calendars
+            resp = _SESSION.get(req_url, headers={"User-Agent": ua}, timeout=15)
+            resp.raise_for_status()
+            data = resp.json()
+            if not isinstance(data, dict):
+                break
+            raw_events.extend(data.get("events") or [])
+            req_url = data.get("next_rest_url")
+            if not req_url:
+                break
         for item in raw_events:
             raw_title = item.get("title") or ""
             title = BeautifulSoup(html.unescape(raw_title), "html.parser").get_text(" ", strip=True)
@@ -5504,6 +5523,287 @@ def scrape_venuepilot(url, ua, account_id=None):
                 entry["description"] = clean_description(text_desc[:600])
         events.append(entry)
     return events
+
+
+def _next_months(n=2):
+    """(year, month) for this month and the following n-1 months, Eastern time."""
+    d = datetime.now(EASTERN)
+    y, m = d.year, d.month
+    out = []
+    for _ in range(n):
+        out.append((y, m))
+        m += 1
+        if m > 12:
+            y, m = y + 1, 1
+    return out
+
+
+def _parse_clock(text, default=(20, 0)):
+    """'7:30pm' / '9 PM' / '6:00pm - $10' -> (hour, minute)."""
+    m = re.search(r"(\d{1,2})(?::(\d\d))?\s*([ap])\.?m", text or "", re.I)
+    if not m:
+        return default
+    return int(m.group(1)) % 12 + (12 if m.group(3).lower() == "p" else 0), int(m.group(2) or 0)
+
+
+def _fetch_many(urls, fn, workers=6):
+    """Run fn(url) over urls in parallel, skipping failures."""
+    def _one(u):
+        try:
+            return fn(u) or []
+        except Exception as e:
+            print(f"  fetch failed {u}: {e}")
+            return []
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        return [e for batch in ex.map(_one, urls) for e in batch]
+
+
+def _dedupe_future(events, grace_hours=3):
+    cutoff = (datetime.now(timezone.utc) - timedelta(hours=grace_hours)).isoformat()
+    seen, out = set(), []
+    for e in sorted(events, key=lambda x: x["date"]):
+        key = (e["name"].lower(), e["date"])
+        if e["date"] < cutoff or key in seen:
+            continue
+        seen.add(key)
+        out.append(e)
+    return out
+
+
+def scrape_jsonld_months(url, ua, months=2):
+    """JSON-LD calendar paged by month at `<url>/YYYY-MM` (New York Comedy Club's /calendar).
+
+    NYCC's JSON-LD reports its $0 military/student/Broadway-stub tier as the show's only Offer,
+    so a $0 price there is not free admission and is dropped."""
+    base = url.rstrip("/")
+    urls = [base] + [f"{base}/{y}-{m:02d}" for (y, m) in _next_months(months)[1:]]
+    events = _dedupe_future(_fetch_many(urls, lambda u: scrape_jsonld(u, ua), workers=3))
+    for e in events:
+        if e.get("price") == "Free":
+            e["price"] = None
+    return events
+
+
+_MAGNET_ADDRESS = "254 W 29th St, New York, NY 10001"
+
+
+def scrape_magnet_theater(url, ua, months=2):
+    """Magnet Theater month grid (/calendar/month/?date=YYYY-MM-01): day cells holding
+    `.an-event` blocks with '7:30pm - $10' and a /show/<id> link."""
+    base = url.split("?")[0]
+
+    def _month(args):
+        y, m = args
+        soup = fetch_soup(f"{base}?date={y}-{m:02d}-01", ua)
+        out = []
+        for td in soup.find_all("td"):
+            day_el = td.find("strong", class_="date")
+            day_txt = day_el.get_text(strip=True) if day_el else ""
+            if not day_txt.isdigit():
+                continue
+            for ev in td.select(".an-event"):
+                a = ev.find("a", href=True)
+                title_el = ev.select_one(".summary") or a
+                if not a or not title_el:
+                    continue
+                name = title_el.get_text(" ", strip=True)
+                t_el = ev.select_one(".time")
+                t_txt = t_el.get_text(" ", strip=True) if t_el else ""
+                hh, mm = _parse_clock(t_txt)
+                try:
+                    local = datetime(y, m, int(day_txt), hh, mm, tzinfo=EASTERN)
+                except ValueError:
+                    continue
+                pm = re.search(r"\$\s?(\d+(?:\.\d\d)?)", t_txt)
+                price = None
+                if pm:
+                    price = "Free" if float(pm.group(1)) == 0 else f"${pm.group(1)}"
+                elif "free" in t_txt.lower():
+                    price = "Free"
+                out.append({
+                    "name": name, "date": local.astimezone(timezone.utc).isoformat(),
+                    "url": urljoin(base, a["href"]), "venue": "Magnet Theater",
+                    "address": _MAGNET_ADDRESS, "price": price,
+                })
+        return out
+
+    events = []
+    for ym in _next_months(months):
+        try:
+            events.extend(_month(ym))
+        except Exception as e:
+            print(f"  Magnet month {ym} failed: {e}")
+    return _dedupe_future(events)
+
+
+def scrape_pit_calendar(url, ua, months=2):
+    """The PIT (People's Improv Theater) month calendar (/calendar/?month=November+2026).
+    Day cells are `div.day` with id='day-<unix midnight ET>'; each `li.event` has a title,
+    link, and one or more `.performance` rows with time and room."""
+    base = url.split("?")[0]
+
+    def _month(args):
+        y, m = args
+        label = datetime(y, m, 1).strftime("%B+%Y")
+        soup = fetch_soup(f"{base}?month={label}", ua)
+        out = []
+        for day in soup.find_all("div", id=re.compile(r"^day-\d+$")):
+            try:
+                d = datetime.fromtimestamp(int(day["id"][4:]), EASTERN).date()
+            except (ValueError, OSError):
+                continue
+            for li in day.select("li.event"):
+                a = li.find("a", href=True)
+                t_el = li.select_one(".event__title")
+                if not a or not t_el:
+                    continue
+                name = t_el.get_text(" ", strip=True)
+                for perf in li.select("li.performance") or [li]:
+                    tm = perf.select_one(".action__time")
+                    hh, mm = _parse_clock(tm.get_text(" ", strip=True) if tm else "")
+                    room_el = perf.select_one(".venue__title")
+                    room = room_el.get_text(" ", strip=True) if room_el else "The PIT"
+                    local = datetime(d.year, d.month, d.day, hh, mm, tzinfo=EASTERN)
+                    out.append({
+                        "name": name, "date": local.astimezone(timezone.utc).isoformat(),
+                        "url": a["href"], "venue": room if "pit" in room.lower() else f"The PIT ({room})",
+                        "address": "154 W 29th St, New York, NY 10001", "price": None,
+                    })
+        return out
+
+    events = []
+    for ym in _next_months(months):
+        try:
+            events.extend(_month(ym))
+        except Exception as e:
+            print(f"  PIT month {ym} failed: {e}")
+    return _dedupe_future(events)
+
+
+_IMPROV_ROOMS = {"brooklyn": ("Brooklyn Improv", "64 N 9th St, Brooklyn, NY 11249")}
+
+
+def scrape_improv_calendar(url, ua, months=3):
+    """Improv chain club calendar (improv.com/<club>/calendar/<mon-yyyy>/): `a.item` cards with
+    month/day in a <dl>, an <h3> title, one or more show times, and the room ('@ The Lab')."""
+    m_club = re.search(r"improv\.com/([a-z-]+)/", url)
+    club = m_club.group(1) if m_club else "brooklyn"
+    venue_name, address = _IMPROV_ROOMS.get(club, (f"Improv {club.title()}", None))
+    base = f"https://improv.com/{club}/calendar/"
+
+    def _month(args):
+        y, m = args
+        soup = fetch_soup(f"{base}{datetime(y, m, 1).strftime('%b').lower()}-{y}/", ua)
+        out = []
+        for a in soup.select("a.item"):
+            dt_el, dd_el, h3 = a.select_one(".maindate dt"), a.select_one(".maindate dd"), a.find("h3")
+            if not (dt_el and dd_el and h3):
+                continue
+            try:
+                mon = datetime.strptime(dt_el.get_text(strip=True)[:3], "%b").month
+                day = int(re.match(r"\d+", dd_el.get_text(strip=True)).group(0))
+            except (ValueError, AttributeError):
+                continue
+            year = y + 1 if mon < m and m == 12 else y
+            room_el = a.select_one(".city")
+            room = room_el.get_text(" ", strip=True).lstrip("@ ").strip() if room_el else ""
+            times = [s.get_text(strip=True) for s in a.select(".times span")] or [""]
+            for t in times:
+                hh, mm = _parse_clock(t)
+                try:
+                    local = datetime(year, mon, day, hh, mm, tzinfo=EASTERN)
+                except ValueError:
+                    continue
+                e = {
+                    "name": h3.get_text(" ", strip=True), "date": local.astimezone(timezone.utc).isoformat(),
+                    "url": urljoin(base, a.get("href") or ""),
+                    "venue": f"{venue_name} ({room})" if room else venue_name, "price": None,
+                }
+                if address:
+                    e["address"] = address
+                if "sold out" in a.get_text(" ", strip=True).lower():
+                    e["sold_out"] = True
+                out.append(e)
+        return out
+
+    return _dedupe_future(_fetch_many(_next_months(months), _month, workers=3))
+
+
+def _next_f_text(html_text):
+    """Concatenate a Next.js app-router page's self.__next_f flight chunks into one string."""
+    chunks = re.findall(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)</script>', html_text, re.S)
+    out = []
+    for c in chunks:
+        try:
+            out.append(json.loads(f'"{c}"'))
+        except ValueError:
+            continue
+    return "".join(out)
+
+
+def scrape_punchup_venue(url, ua):
+    """Punchup venue page (punchup.live/venue/<slug>): show objects with title, local `datetime`,
+    venue and ticket_link live in the Next.js flight data."""
+    _status, text = fetch_text(url, headers={"User-Agent": ua})
+    flight = _next_f_text(text)
+    dec = json.JSONDecoder()
+    events = []
+    for m in re.finditer(r'\{\s*"id"\s*:\s*"[0-9a-f-]{36}"', flight):
+        try:
+            obj, _ = dec.raw_decode(flight, m.start())
+        except ValueError:
+            continue
+        if not isinstance(obj, dict) or not obj.get("datetime") or not obj.get("title"):
+            continue
+        dt = _local_iso_to_utc(obj["datetime"])
+        if dt is None:
+            continue
+        e = {
+            "name": html.unescape(obj["title"]).strip(), "date": dt.isoformat(),
+            "url": obj.get("ticket_link") or url, "venue": obj.get("venue") or None, "price": None,
+        }
+        if obj.get("metadata_text"):
+            e["description"] = clean_description(str(obj["metadata_text"])[:600])
+        if obj.get("is_sold_out"):
+            e["sold_out"] = True
+        events.append(e)
+    return _dedupe_future(events)
+
+
+def scrape_wix_events(url, ua):
+    """Wix Events widget: the page's warmup data embeds {"events":{"events":[...]}} with
+    title, slug, scheduling.config.startDate (UTC) and a location."""
+    _status, text = fetch_text(url, headers={"User-Agent": ua})
+    dec = json.JSONDecoder()
+    origin = "{0.scheme}://{0.netloc}".format(urlparse(url))
+    events = []
+    for m in re.finditer(r'\{\s*"events"\s*:\s*\{\s*"events"\s*:\s*\[', text):
+        try:
+            obj, _ = dec.raw_decode(text, m.start())
+        except ValueError:
+            continue
+        for ev in (obj.get("events") or {}).get("events") or []:
+            cfg = ((ev.get("scheduling") or {}).get("config") or {})
+            if cfg.get("scheduleTbd") or not cfg.get("startDate") or not ev.get("title"):
+                continue
+            dt = _local_iso_to_utc(cfg["startDate"])
+            if dt is None:
+                continue
+            loc = ev.get("location") or {}
+            e = {
+                "name": html.unescape(ev["title"]).strip(), "date": dt.isoformat(),
+                "url": f"{origin}/event-details/{ev['slug']}" if ev.get("slug") else url,
+                "venue": loc.get("name") or None, "price": None,
+            }
+            if loc.get("address"):
+                e["address"] = loc["address"].replace(", USA", "")
+            coords = loc.get("coordinates") or {}
+            if coords.get("lat") and coords.get("lng"):
+                e["lat"], e["lng"] = float(coords["lat"]), float(coords["lng"])
+            if ev.get("description"):
+                e["description"] = clean_description(str(ev["description"])[:600])
+            events.append(e)
+    return _dedupe_future(events)
 
 
 _ST_MARKS_ADDRESS = "12 St Marks Pl, New York, NY 10003"
@@ -6597,10 +6897,17 @@ _ALL_VENUES = [
     {"name": "Queens Botanical Garden", "url": "https://queensbotanical.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Queens County Farm Museum", "url": "https://www.queensfarm.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Comedy in Harlem", "url": "https://www.comedyinharlem.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
-    {"name": "New York Comedy Club (all locations)", "url": "https://www.newyorkcomedyclub.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
+    {"name": "New York Comedy Club (all locations)", "url": "https://newyorkcomedyclub.com/calendar", "ua": UA_CHROME, "scraper": scrape_jsonld_months, "default_category": "comedy"},
     {"name": "Eastville Comedy Club", "url": "https://www.eastvillecomedy.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
     {"name": "Stand Up NY", "url": "https://standupny.com/", "ua": UA_CHROME, "scraper": scrape_venuepilot, "default_category": "comedy"},
     {"name": "West Side Comedy Club", "url": "https://westsidecomedyclub.com/shows", "ua": UA_CHROME, "scraper": scrape_jsonld_crawl, "default_category": "comedy"},
+    {"name": "The Stand West", "url": "https://thestandwest.com/shows", "ua": UA_CHROME, "scraper": scrape_the_stand_west, "default_category": "comedy"},
+    {"name": "The PIT (People's Improv Theater)", "url": "https://thepit-nyc.com/calendar/", "ua": UA_CHROME, "scraper": scrape_pit_calendar, "default_category": "comedy"},
+    {"name": "Brooklyn Improv", "url": "https://improv.com/brooklyn/calendar/", "ua": UA_CHROME, "scraper": scrape_improv_calendar, "default_category": "comedy"},
+    {"name": "Greenpoint Comedy Club", "url": "https://punchup.live/venue/greenpointcomedyclub", "ua": UA_CHROME, "scraper": scrape_punchup_venue, "default_category": "comedy"},
+    {"name": "Bushwick Comedy Club", "url": "https://www.bushwickcomedy.com/shows", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "comedy"},
+    {"name": "Bushwick Comedy Club Open Mics", "url": "https://www.bushwickcomedy.com/open-mics", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "comedy"},
+    {"name": "Comedy Village (Hell's Kitchen)", "url": "https://comedyvillage.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "comedy"},
     {"name": "St. Marks Comedy Club (calendar)", "url": "https://www.stmarkscomedyclub.com/calendar", "ua": UA_CHROME, "scraper": scrape_st_marks_comedy, "default_category": "comedy"},
     {"name": "Green-Wood Cemetery", "url": "https://www.green-wood.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Bargemusic", "url": "https://www.bargemusic.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
@@ -6803,8 +7110,8 @@ _ALL_VENUES = [
     {"name": "Meetup: NYC Art Gallery Crawls & Openings", "url": "https://www.meetup.com/find/?keywords=art%20gallery&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "art"},
 
     # Long-Form Improv, Sketch & Alternative Comedy
-    {"name": "Magnet Theater (Improv & Sketch)", "url": "https://www.eventbrite.com/d/ny--new-york/magnet-theater/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
-    {"name": "Asylum NYC (Alternative Comedy)", "url": "https://www.eventbrite.com/d/ny--new-york/asylum-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "comedy"},
+    {"name": "Magnet Theater (Improv & Sketch)", "url": "https://magnettheater.com/calendar/month/", "ua": UA_CHROME, "scraper": scrape_magnet_theater, "default_category": "comedy"},
+    {"name": "Asylum NYC (Alternative Comedy)", "url": "https://calendar.asylumnyc.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
     {"name": "Meetup: NYC Comedy, Improv & Open Mics", "url": "https://www.meetup.com/find/?keywords=improv&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "comedy"},
 
     # Historic Cultural Music Halls
