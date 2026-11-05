@@ -568,5 +568,20 @@ class TestGenericVenueParsers(unittest.TestCase):
         self.assertEqual(seen, {"link_re": "^/e/"})
 
 
+class TestFever(unittest.TestCase):
+    def test_fever_cards_local_time_and_filters(self):
+        when = _future_local(3, 18, 30).strftime("%Y-%m-%dT%H:%M:%S") + "+00:00"
+        page = (f'<a data-plan-id="1" data-plan-name="Candlelight: Vivaldi" data-plan-date="{when}" data-plan-price="35.5" href="/m/1">x</a>'
+                f'<a data-plan-id="1" data-plan-name="Candlelight: Vivaldi" data-plan-date="{when}" href="/m/1">dup</a>'
+                f'<a data-plan-id="2" data-plan-name="SUMMIT One Vanderbilt: Entry Ticket" data-plan-date="{when}" href="/m/2">x</a>'
+                f'<a data-plan-id="3" data-plan-name="Westchester Winter Wonderland" data-plan-date="{when}" href="/m/3">x</a>')
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
+            events = scrapers.scrape_fever("https://feverup.com/en/new-york", UA_CHROME)
+        self.assertEqual([e["name"] for e in events], ["Candlelight: Vivaldi"])
+        self.assertEqual((_local(events[0]["date"]).hour, _local(events[0]["date"]).minute), (18, 30))
+        self.assertEqual(events[0]["url"], "https://feverup.com/m/1")
+        self.assertEqual(events[0]["price"], "From $36")
+
+
 if __name__ == "__main__":
     unittest.main()
