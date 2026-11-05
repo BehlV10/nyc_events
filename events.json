@@ -195498,8 +195498,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 3.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/grove-34/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -196386,8 +196386,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.66,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/long-island-city/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -196824,8 +196824,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.86,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jackson-heights/ (serving stale cache)",
+      "duration": 0.22,
       "cached": true
     },
     {
@@ -197214,8 +197214,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.81,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/ (serving stale cache)",
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -203323,8 +203323,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 3.23,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/ (serving stale cache)",
+      "duration": 0.26,
       "cached": true
     },
     {
@@ -203560,8 +203560,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 1.86,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bluestockings/ (serving stale cache)",
+      "duration": 0.38,
       "cached": true
     },
     {
@@ -204109,8 +204109,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.1,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-public-library/ (serving stale cache)",
+      "duration": 0.3,
       "cached": true
     },
     {
@@ -210970,8 +210970,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 2.77,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.3,
       "cached": true
     },
     {
@@ -365613,9 +365613,9 @@
       "venue": "Eventbrite: Walking Tours",
       "url": "https://www.eventbrite.com/d/ny--new-york/walking-tour/",
       "events": [],
-      "error": null,
-      "duration": 0.3,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Bike Rides",
@@ -365653,9 +365653,9 @@
       "venue": "Eventbrite: Yoga",
       "url": "https://www.eventbrite.com/d/ny--new-york/yoga/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Pickleball",
@@ -365909,9 +365909,9 @@
       "venue": "Eventbrite: Workshops",
       "url": "https://www.eventbrite.com/d/ny--new-york/workshops/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Social Mixers",
@@ -365941,9 +365941,9 @@
       "venue": "Eventbrite: Wine Tastings",
       "url": "https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.0,
+      "cached": false
     },
     {
       "venue": "Union Square Greenmarket",

@@ -7643,6 +7643,7 @@ _ALL_VENUES = [
     {"name": "Broadway Comedy Club (own calendar)", "url": "https://www.broadwaycomedyclub.com/", "ua": UA_CHROME, "scraper": scrape_dated_show_links, "default_category": "comedy", "kwargs": {"venue": "Broadway Comedy Club", "address": "318 W 53rd St, New York, NY 10019"}},
     {"name": "Brooklyn Comedy Collective (own calendar)", "url": "https://www.brooklyncc.com/show-schedule", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "comedy"},
     {"name": "Pioneer Works", "url": "https://pioneerworks.org/programs", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/programs/[^/]+$", "venue": "Pioneer Works", "address": "159 Pioneer St, Brooklyn, NY 11231"}},
+    {"name": "Jackson Heights Insider (Queens events)", "url": "https://www.jacksonheightsinsider.com/events", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
