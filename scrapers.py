@@ -5068,8 +5068,10 @@ _TRIBE_VENUE_DEFAULTS = {
 }
 
 
-def scrape_tribe_events_api(url, ua):
-    """Scrape WordPress Tribe Events v1 REST API endpoints (/wp-json/tribe/events/v1/events)."""
+def scrape_tribe_events_api(url, ua, only_nyc=False):
+    """Scrape WordPress Tribe Events v1 REST API endpoints (/wp-json/tribe/events/v1/events).
+
+    only_nyc: multi-city chains (e.g. Sid Gold's) -- keep events whose venue address is in NYC."""
     events = []
     seen = set()
     now_et = datetime.now(EASTERN)
@@ -5161,6 +5163,8 @@ def scrape_tribe_events_api(url, ua):
                 "category": guess_category(f"{title} {desc}", default_cat, venue=v_name or default_vname),
                 "description": desc,
             }
+            if only_nyc and not re.search(r"\b(New York|Brooklyn|Queens|Bronx|Staten Island|NY 1[01]\d{3})\b", f"{ev_addr or ''} {v_name or ''}"):
+                continue
             if ev_addr:
                 ev_dict["address"] = ev_addr
             if default_hood:
@@ -5952,7 +5956,8 @@ def scrape_html_cards(url, ua, link_re=None, max_up=5, require_time=False, venue
             title = re.sub(r"^(buy tickets for|more information about|tickets for)\s+", "", title, flags=re.I)
         title = title.strip()
         if (len(title) < 3 or _CARD_SKIP_TITLES.match(title) or _CARD_DEAD_TITLES.search(title)
-                or _CARD_DATE_RE.match(title) or re.match(r"^(mon|tue|wed|thu|fri|sat|sun)[a-z]*\b", title, re.I)):
+                or _CARD_DATE_RE.match(title) or re.match(r"^(mon|tue|wed|thu|fri|sat|sun)[a-z]*\b", title, re.I)
+                or re.fullmatch(r"(\d{1,2}\+|all ages|pg(-13)?|r|nc-17|g|nr)", title, re.I)):
             continue
         seen_blocks.add(id(block))
         tm = _CARD_TIME_RE.search(text)
@@ -7188,6 +7193,16 @@ _ALL_VENUES = [
     {"name": "AllEvents: Film", "url": "https://allevents.in/new%20york/film", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "film"},
     {"name": "AllEvents: Gaming", "url": "https://allevents.in/new%20york/gaming", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "gaming"},
     {"name": "AllEvents: Classes", "url": "https://allevents.in/new%20york/classes", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
+    {"name": "Sid Gold's Request Room (Piano Karaoke)", "url": "https://www.sidgolds.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music", "kwargs": {"only_nyc": True}},
+    {"name": "Feinstein's/54 Below", "url": "https://54below.org/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/events/(?!livestream)[^/]+/?$", "venue": "Feinstein's/54 Below", "address": "254 W 54th St, New York, NY 10019"}},
+    {"name": "Metrograph", "url": "https://metrograph.com/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "film", "kwargs": {"link_re": "^/film/", "venue": "Metrograph", "address": "7 Ludlow St, New York, NY 10002"}},
+    {"name": "IFC Center (own calendar)", "url": "https://www.ifccenter.com/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "film", "kwargs": {"link_re": "^/films/", "venue": "IFC Center", "address": "323 6th Ave, New York, NY 10014"}},
+    {"name": "Anthology Film Archives", "url": "https://www.anthologyfilmarchives.org/film_screenings/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "film", "kwargs": {"venue": "Anthology Film Archives", "address": "32 2nd Ave, New York, NY 10003"}},
+    {"name": "Cinema Village", "url": "https://www.cinemavillage.com/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "film", "kwargs": {"link_re": "^/Now-Playing/", "venue": "Cinema Village", "address": "22 E 12th St, New York, NY 10003"}},
+    {"name": "Roxy Cinema (Q&As & Events)", "url": "https://www.roxycinemanewyork.com/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "film", "kwargs": {"link_re": "^/events/[^/]+/?$", "venue": "Roxy Cinema", "address": "2 6th Ave, New York, NY 10013"}},
+    {"name": "Rooftop Cinema Club (Midtown)", "url": "https://rooftopcinemaclub.com/new-york/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "film", "kwargs": {"link_re": "/screenings/", "venue": "Rooftop Cinema Club Midtown"}},
+    {"name": "Japan Society Film", "url": "https://japansociety.org/film/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "film", "kwargs": {"link_re": "^/film/[^/]+/?$", "venue": "Japan Society", "address": "333 E 47th St, New York, NY 10017"}},
+    {"name": "Film Noir Cinema", "url": "https://www.filmnoircinema.com/program", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "film"},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
