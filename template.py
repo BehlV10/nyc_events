@@ -35,29 +35,11 @@ from scrapers import (
     BROADWAY_THEATRES,
 )
 from venues_geo import resolve_event_geo
+from nyc_geo import TRISTATE_NEEDLES, borough_at
 
 # Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes).
 DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups"}
 
-
-TRISTATE_NEEDLES = (
-    # New Jersey markers & towns
-    "new jersey", ", nj", " nj ", " nj,", "hoboken", "jersey city", "newark", "asbury park",
-    "montclair", "paramus", "hackensack", "westwood", "maywood", "weehawken", "secaucus",
-    "englewood", "fort lee", "edgewater", "morristown", "lyndhurst", "wanaque", "loch arbour",
-    "wyckoff, nj", "wyckoff nj", "ridgewood, nj", "ridgewood nj",
-    "west orange", "paterson", "clifton", "passaic", "teaneck", "ridgefield",
-    # Connecticut markers & towns
-    "connecticut", ", ct", " ct ", " ct,", "stamford", "greenwich, ct", "greenwich ct",
-    "norwalk", "new haven", "bridgeport", "darien", "westport",
-    # Westchester, Hudson Valley & Upstate NY
-    "new rochelle", "white plains", "yonkers", "port chester", "tarrytown", "nyack",
-    "scarsdale", "mount vernon, ny", "mount vernon ny", "peekskill", "ossining", "mamaroneck", "rye, ny", "rye ny",
-    "bethel woods", "hudson valley", "woodbury", "poughkeepsie", "beacon, ny", "sleepy hollow",
-    # Long Island (Nassau / Suffolk)
-    "long island", "nassau county", "suffolk county", "huntington", "garden city", "hempstead",
-    "patchogue", "babylon", "montauk", "hamptons", "riverhead", "westbury, ny",
-)
 
 CITY_RULES = [
     ("bronx", (
@@ -397,9 +379,21 @@ def _city_from_zip(hay):
 
 
 def _event_city(venue, source, geo=None, event=None):
-    """Borough for an event. The event's own venue/address/neighborhood are matched first; the
-    source's name is only a last resort (a feed called "NYC Parks ..." used to put every
-    unaddressed park event in Manhattan via the "nyc" needle)."""
+    """Borough for an event. A map pin decides it when there is one (point-in-polygon against
+    the borough boundaries; a pin outside the city is "other"). Without a pin, the event's own
+    venue/address/neighborhood text is matched first and the source's name only as a last
+    resort (a feed called "NYC Parks ..." used to put every unaddressed park event in
+    Manhattan via the "nyc" needle)."""
+    if geo and geo.get("lat") is not None and geo.get("lng") is not None:
+        own = f"{venue or ''} {(event or {}).get('address') or ''}".lower()
+        if not _is_tristate(own):
+            zc = _city_from_zip(own)
+            if zc:
+                return zc  # an explicit ZIP beats a pin a few meters across a border (Wyckoff Ave)
+            m = re.search(r"\b(brooklyn|queens|bronx|staten island|manhattan)\s*,\s*(?:ny|new york)\b", own)
+            if m:
+                return m.group(1).replace(" ", "_")  # "Knockdown Center (Queens, NY)"
+        return borough_at(geo["lat"], geo["lng"]) or "other"
     city = _event_city_from(venue, "", geo, event)
     if city == "other" and source:
         city = _event_city_from(venue, source, geo, event)
