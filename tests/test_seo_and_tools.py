@@ -306,10 +306,12 @@ class TestFetchResilience(unittest.TestCase):
             calls.append(url)
             raise RuntimeError("throttled")
 
-        v = {"url": "https://www.eventbrite.com/d/ny--new-york/dj/", "ua": "x", "scraper": failing}
+        v = {"url": "https://www.meetup.com/find/?keywords=dj", "ua": "x", "scraper": failing}
         scrapers._reset_host_breakers()
-        for _ in range(scrapers.HOST_FAILURE_LIMIT + 3):
-            with self.assertRaises(RuntimeError):
-                scrapers._run_scraper(v)
-        self.assertEqual(len(calls), scrapers.HOST_FAILURE_LIMIT)
-        scrapers._reset_host_breakers()
+        try:
+            for _ in range(scrapers.HOST_FAILURE_LIMIT + 3):
+                with self.assertRaises(RuntimeError):
+                    scrapers._run_scraper(v)
+            self.assertEqual(len(calls), scrapers.HOST_FAILURE_LIMIT)
+        finally:
+            scrapers._reset_host_breakers()
