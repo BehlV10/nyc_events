@@ -6238,6 +6238,57 @@ def scrape_turntable(url, ua, venue=None, address=None):
     return _dedupe_future(events)
 
 
+_PARKS_OD_CATEGORY_MAP = (
+    (r"kids|family|teens|tots|children", "family"),
+    (r"dance", "dance"),
+    (r"fitness|shape up|sports|exercise|running|yoga|tennis|pickleball|swim", "sports"),
+    (r"concert|music", "music"),
+    (r"film|movie", "film"),
+    (r"theater|theatre|performance", "theater"),
+    (r"art|exhibit", "art"),
+    (r"nature|hike|hiking|birding|wildlife|rangers|garden|tour|kayak|astronomy", "outdoors"),
+    (r"festival|holiday|celebration", "community"),
+)
+
+
+def scrape_nyc_parks_opendata(url, ua):
+    """NYC Open Data "NYC Parks Public Events - Upcoming 14 Days" (w3wp-dpdi): ~550 events with
+    park, location, coordinates and categories. Served by Socrata, so it is not subject to the
+    nycgovparks.org WAF that throttles page crawls."""
+    resp = _SESSION.get(url, params={"$limit": 5000, "$order": "starttime"}, headers={"User-Agent": ua}, timeout=20)
+    resp.raise_for_status()
+    now = datetime.now(timezone.utc)
+    events = []
+    for r in resp.json() or []:
+        title = html.unescape((r.get("title") or "").strip())
+        dt = _local_iso_to_utc(r.get("starttime"))
+        if not title or dt is None or dt < now - timedelta(hours=2):
+            continue
+        cats = (r.get("categories") or "").lower()
+        cat = next((c for pat, c in _PARKS_OD_CATEGORY_MAP if re.search(pat, cats)), "outdoors")
+        park = (r.get("parknames") or "").strip()
+        loc = html.unescape((r.get("location") or park or "").strip())
+        link = (r.get("link") or {}).get("url") if isinstance(r.get("link"), dict) else r.get("link")
+        e = {
+            "name": title, "date": dt.isoformat(), "url": (link or "https://www.nycgovparks.org/events").replace("http://", "https://"),
+            "venue": loc or park or "NYC Parks", "price": "Free", "category": guess_category(title, cat, venue=loc),
+        }
+        boro = {"M": "New York", "B": "Brooklyn", "Q": "Queens", "X": "Bronx", "R": "Staten Island"}.get(
+            (r.get("parkids") or "?")[:1].upper(), "New York")
+        if park:
+            e["address"] = f"{park}, {boro}, NY"
+        try:
+            lat, lng = [float(x) for x in (r.get("coordinates") or "").split(",")[:2]]
+            e["lat"], e["lng"] = lat, lng
+        except ValueError:
+            pass
+        desc = r.get("description")
+        if desc:
+            e["description"] = clean_description(BeautifulSoup(desc, "html.parser").get_text(" ", strip=True)[:600])
+        events.append(e)
+    return events
+
+
 _ST_MARKS_ADDRESS = "12 St Marks Pl, New York, NY 10003"
 
 
@@ -7477,6 +7528,7 @@ _ALL_VENUES = [
     {"name": "Village Vanguard", "url": "https://villagevanguard.com/", "ua": UA_CHROME, "scraper": scrape_village_vanguard, "default_category": "music"},
     {"name": "The Django (Jazz)", "url": "https://www.thedjangonyc.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/events/[^/]+", "venue": "The Django", "address": "2 6th Ave, New York, NY 10013"}},
     {"name": "Smoke Jazz Club", "url": "https://tickets.smokejazz.com/", "ua": UA_CHROME, "scraper": scrape_turntable, "default_category": "music", "kwargs": {"venue": "Smoke Jazz Club", "address": "2751 Broadway, New York, NY 10025"}},
+    {"name": "NYC Parks Public Events (Open Data, 14 days)", "url": "https://data.cityofnewyork.us/resource/w3wp-dpdi.json", "ua": UA_CHROME, "scraper": scrape_nyc_parks_opendata, "default_category": "outdoors"},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
