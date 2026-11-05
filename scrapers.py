@@ -33,8 +33,15 @@ SLOW_VENUE_TTL = 12 * 3600      # 12 hours for evergreen/slow feeds (NYC Parks X
 EVENTBRITE_TTL = 6 * 3600       # 6 hours for Eventbrite feeds to prevent Cloudflare bot blocking
 # Eventbrite answers 429 after ~30 page loads in a burst, and the scrape runs every 30 min.
 # Each run refreshes at most this many Eventbrite sources (never-fetched first, then the
-# least recently attempted); the rest serve their cached copy. ~180 sources rotate in ~8h.
-EVENTBRITE_PER_RUN = 12
+# least recently attempted); the rest serve their cached copy. Search pages are mostly 405'd
+# from CI anyway, so this is kept to a trickle; organizer feeds below carry the load.
+EVENTBRITE_PER_RUN = 4
+# Organizer/venue JSON feeds (scrape_eventbrite_organizer) rotate separately from the search
+# pages, one request at a time with a pause between requests: at most ~25 sources per run,
+# each refreshed about every 6 hours, so we read at most a few pages a minute from Eventbrite.
+EVENTBRITE_API_PER_RUN = 25
+EVENTBRITE_API_GAP = 2.0
+EVENTBRITE_API_HOST = "eventbrite.com/api/v3/"
 MEETUP_PER_RUN = 60              # ~230 Meetup searches; refreshing all at once draws 503s in CI
 MEETUP_TTL = 6 * 3600
 
@@ -2854,77 +2861,134 @@ def scrape_eventbrite_jsonld(url, ua):
     return events
 
 
-def scrape_eventbrite_organizer(url, ua):
-    """Scrape official Eventbrite organizer API for complete venue event schedules."""
-    m = re.search(r"(\d{8,14})", url)
+_EB_API_RE = re.compile(r"/(organizers|venues)/(\d{6,14})")
+_NYC_CITIES = {"new york", "manhattan", "brooklyn", "queens", "bronx", "the bronx", "staten island",
+               "long island city", "astoria", "flushing", "jamaica", "ridgewood", "forest hills",
+               "jackson heights", "elmhurst", "woodside", "sunnyside", "corona", "bayside",
+               "far rockaway", "rockaway beach", "rockaway park", "arverne", "maspeth",
+               "middle village", "glendale", "richmond hill", "ozone park", "howard beach",
+               "fresh meadows", "kew gardens", "rego park", "whitestone", "college point",
+               "east elmhurst", "woodhaven", "south ozone park", "springfield gardens",
+               "saint albans", "st. albans", "hollis", "queens village", "bellerose",
+               "little neck", "douglaston", "oakland gardens", "cambria heights", "laurelton",
+               "rosedale", "new york city", "nyc"}
+
+
+def _eb_venue_in_nyc(vobj):
+    """True when an Eventbrite API venue is in the five boroughs (organizers also tour and
+    stream). Coordinates win; otherwise fall back to the city name."""
+    addr = (vobj or {}).get("address") or {}
+    try:
+        lat, lng = float(vobj.get("latitude") or addr.get("latitude")), float(vobj.get("longitude") or addr.get("longitude"))
+        if lat or lng:
+            return 40.49 <= lat <= 40.92 and -74.27 <= lng <= -73.68
+    except (TypeError, ValueError):
+        pass
+    city = (addr.get("city") or "").strip().lower()
+    return (addr.get("region") or "NY").upper() == "NY" and city in _NYC_CITIES
+
+
+def _eb_price(ev):
+    if ev.get("is_free"):
+        return "Free"
+    ta = ev.get("ticket_availability") or {}
+    if ta.get("is_sold_out"):
+        return "Sold Out"
+    lo = ((ta.get("minimum_ticket_price") or {}).get("major_value"))
+    hi = ((ta.get("maximum_ticket_price") or {}).get("major_value"))
+    try:
+        lo_s = f"${float(lo):.2f}".replace(".00", "") if lo is not None else None
+        hi_s = f"${float(hi):.2f}".replace(".00", "") if hi is not None else None
+    except (TypeError, ValueError):
+        return None
+    if lo_s and hi_s and lo_s != hi_s:
+        return f"{lo_s} - {hi_s}"
+    return lo_s
+
+
+def scrape_eventbrite_organizer(url, ua, max_pages=4):
+    """Upcoming events for one Eventbrite organizer or venue via the public v3 JSON endpoints
+    (/organizers/{id}/events/ or /venues/{id}/events/).
+
+    One request per 50 events instead of a search-page crawl: Eventbrite 405s search pages
+    from CI runners but serves these. The request asks only for our horizon window
+    (start_date.range_*), and pages are spaced EVENTBRITE_API_GAP seconds apart so a run
+    never bursts. Online-only events and events outside the five boroughs are dropped."""
+    m = _EB_API_RE.search(url or "")
     if not m:
         return []
-    org_id = m.group(1)
-    events = []
-    seen = set()
+    kind, obj_id = m.groups()
     now = datetime.now(timezone.utc)
-    api_url = f"https://www.eventbrite.com/api/v3/organizers/{org_id}/events/?order_by=start_asc&expand=venue"
-    headers = {
-        "User-Agent": ua or UA_CHROME,
-        "Accept": "application/json, text/plain, */*",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Referer": f"https://www.eventbrite.com/o/{org_id}",
-        "Sec-Fetch-Dest": "empty",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Site": "same-origin",
-    }
-    resp = _SESSION.get(api_url, headers=headers, timeout=12)
-    resp.raise_for_status()
-    data = resp.json()
-    for ev in data.get("events", []):
-        name = (ev.get("name") or {}).get("text")
-        start = (ev.get("start") or {}).get("utc")
-        event_url = ev.get("url")
-        if not name or not start:
-            continue
-        try:
-            dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
-        except Exception:
-            continue
-        if dt < now:
-            continue
-        key = (name.lower(), dt.date().isoformat())
-        if key in seen:
-            continue
-        seen.add(key)
-        is_free = ev.get("is_free", False)
-        price = "Free" if is_free else None
-        desc = (ev.get("summary") or "").strip()
-        vname = None
-        lat = None
-        lng = None
-        vobj = ev.get("venue")
-        if isinstance(vobj, dict):
-            vname = vobj.get("name")
-            addr_obj = vobj.get("address") or {}
-            loc_disp = addr_obj.get("localized_area_display") or addr_obj.get("city")
-            if vname and loc_disp and loc_disp.lower() not in vname.lower():
-                vname = f"{vname} ({loc_disp})"
-            if vobj.get("latitude"):
+    today = datetime.now(EASTERN).date()
+    window_end = today + timedelta(days=HORIZON_DAYS + 1)
+    api_url = (f"https://www.eventbrite.com/api/v3/{kind}/{obj_id}/events/"
+               "?order_by=start_asc&status=live&expand=venue,ticket_availability"
+               f"&start_date.range_start={today.isoformat()}T00:00:00"
+               f"&start_date.range_end={window_end.isoformat()}T00:00:00")
+    headers = {"User-Agent": ua or UA_CHROME, "Accept": "application/json"}
+    events, seen = [], set()
+    continuation = None
+    for page_no in range(max_pages):
+        if page_no:
+            time.sleep(EVENTBRITE_API_GAP)
+        target = api_url + (f"&continuation={continuation}" if continuation else "")
+        resp = _SESSION.get(target, headers=headers, timeout=12)
+        resp.raise_for_status()
+        data = resp.json()
+        for ev in data.get("events") or []:
+            name = ((ev.get("name") or {}).get("text") or "").strip()
+            start = (ev.get("start") or {}).get("utc")
+            if not name or not start:
+                continue
+            try:
+                dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
+            except ValueError:
+                continue
+            if dt < now or ev.get("online_event"):
+                continue
+            vobj = ev.get("venue") if isinstance(ev.get("venue"), dict) else None
+            if vobj and not _eb_venue_in_nyc(vobj):
+                continue
+            key = (name.lower(), dt.date().isoformat())
+            if key in seen:
+                continue
+            seen.add(key)
+            vname = address = lat = lng = None
+            if vobj:
+                vname = vobj.get("name")
+                addr_obj = vobj.get("address") or {}
+                address = addr_obj.get("localized_address_display")
+                loc_disp = addr_obj.get("localized_area_display") or addr_obj.get("city")
+                if vname and loc_disp and loc_disp.lower() not in vname.lower():
+                    vname = f"{vname} ({loc_disp})"
                 try:
-                    lat = float(vobj["latitude"])
-                    lng = float(vobj["longitude"])
-                except Exception:
-                    pass
-        if not vname:
-            m_at = re.search(r"\bat\s+([A-Z0-9][^|(,\n]+)", name)
-            if m_at:
-                vname = m_at.group(1).strip()
-        events.append({
-            "name": name,
-            "date": dt.isoformat(),
-            "url": event_url or f"https://www.eventbrite.com/o/{org_id}",
-            "venue": vname,
-            "lat": lat,
-            "lng": lng,
-            "price": price,
-            "description": clean_description(desc),
-        })
+                    lat = float(vobj.get("latitude") or addr_obj.get("latitude"))
+                    lng = float(vobj.get("longitude") or addr_obj.get("longitude"))
+                except (TypeError, ValueError):
+                    lat = lng = None
+            if not vname:
+                m_at = re.search(r"\bat\s+([A-Z0-9][^|(,\n]+)", name)
+                if m_at:
+                    vname = m_at.group(1).strip()
+            e = {
+                "name": name,
+                "date": dt.isoformat(),
+                "url": ev.get("url") or f"https://www.eventbrite.com/o/{obj_id}",
+                "venue": vname,
+                "lat": lat,
+                "lng": lng,
+                "price": _eb_price(ev),
+                "description": clean_description((ev.get("summary") or "").strip()),
+            }
+            if address:
+                e["address"] = address
+            if (ev.get("ticket_availability") or {}).get("is_sold_out"):
+                e["sold_out"] = True
+            events.append(e)
+        pag = data.get("pagination") or {}
+        continuation = pag.get("continuation")
+        if not pag.get("has_more_items") or not continuation:
+            break
     return events
 
 
@@ -8335,7 +8399,8 @@ def _clean_scraped_events(events):
 
 # Per-host concurrency caps for the 24-worker scrape. Bursting ~220 Eventbrite pages at once
 # gets challenge pages back, which used to silently fall back to stale cached events.
-_HOST_LIMITS = {"eventbrite.": 2, "meetup.com": 6, "donyc.com": 6}
+# Order matters: _host_key returns the first match, so the API key precedes "eventbrite.".
+_HOST_LIMITS = {EVENTBRITE_API_HOST: 1, "eventbrite.": 2, "meetup.com": 6, "donyc.com": 6}
 _HOST_SEMAPHORES = {k: threading.BoundedSemaphore(n) for k, n in _HOST_LIMITS.items()}
 
 
@@ -8343,6 +8408,9 @@ _HOST_SEMAPHORES = {k: threading.BoundedSemaphore(n) for k, n in _HOST_LIMITS.it
 # remaining sources fail fast (and serve their cached data) instead of each waiting out
 # timeouts and retries while holding scarce per-host slots.
 HOST_FAILURE_LIMIT = 6
+# Back off the Eventbrite API after two straight failures: if it starts refusing us, the
+# rest of the run serves cache rather than keep knocking.
+_HOST_FAILURE_LIMITS = {EVENTBRITE_API_HOST: 2}
 _host_failures = {}
 _host_failures_lock = threading.Lock()
 
@@ -8365,9 +8433,10 @@ def _run_scraper(v):
         return v["scraper"](v["url"], v["ua"], **v.get("kwargs", {}))
     with _HOST_SEMAPHORES[key]:
         with _host_failures_lock:
-            tripped = _host_failures.get(key, 0) >= HOST_FAILURE_LIMIT
+            limit = _HOST_FAILURE_LIMITS.get(key, HOST_FAILURE_LIMIT)
+            tripped = _host_failures.get(key, 0) >= limit
         if tripped:
-            raise RuntimeError(f"skipped: {key} failed {HOST_FAILURE_LIMIT}+ times in a row this run")
+            raise RuntimeError(f"skipped: {key} failed {limit}+ times in a row this run")
         try:
             result = v["scraper"](v["url"], v["ua"], **v.get("kwargs", {}))
         except Exception:
@@ -8447,6 +8516,7 @@ def _pick_eventbrite_refreshes(venues, force=False, limit=EVENTBRITE_PER_RUN, no
 # Hosts that throttle CI when every source refreshes at once: each run refreshes at most
 # `limit` of their sources (stalest first); the rest serve their last good copy.
 _ROTATED_HOSTS = {
+    EVENTBRITE_API_HOST: (lambda: EVENTBRITE_API_PER_RUN, lambda: EVENTBRITE_TTL),
     "eventbrite.": (lambda: EVENTBRITE_PER_RUN, lambda: EVENTBRITE_TTL),
     "meetup.com": (lambda: MEETUP_PER_RUN, lambda: MEETUP_TTL),
 }
@@ -8586,6 +8656,39 @@ def _load_community_events():
         return []
 
 
+# Hosts whose live fetches run one after another on their own thread, with a pause between
+# sources, alongside the main pool. Waiting on a 1-slot semaphore inside the pool instead
+# would park up to 24 workers behind it.
+_SERIAL_HOSTS = {EVENTBRITE_API_HOST: lambda: EVENTBRITE_API_GAP}
+
+
+def _run_with_serial_lane(venues, worker, live, workers=24):
+    serial_idx, pool_idx = [], []
+    for i, v in enumerate(venues):
+        host = _host_key(v.get("url"))
+        if host in _SERIAL_HOSTS and v["name"] in live.get(host, ()):
+            serial_idx.append(i)
+        else:
+            pool_idx.append(i)
+
+    def _lane():
+        out = {}
+        for n, i in enumerate(serial_idx):
+            if n:
+                time.sleep(_SERIAL_HOSTS[_host_key(venues[i].get("url"))]())
+            out[i] = worker(venues[i])
+        return out
+
+    results = [None] * len(venues)
+    with ThreadPoolExecutor(max_workers=1) as lane_ex, ThreadPoolExecutor(max_workers=workers) as ex:
+        lane_future = lane_ex.submit(_lane)
+        for i, r in zip(pool_idx, ex.map(worker, [venues[i] for i in pool_idx])):
+            results[i] = r
+        for i, r in lane_future.result().items():
+            results[i] = r
+    return results
+
+
 def get_all_events(force=False):
     now = time.time()
     if not force and _cache["data"] and (now - _cache["ts"] < CACHE_SECONDS):
@@ -8600,8 +8703,7 @@ def get_all_events(force=False):
         allow = host not in live or v["name"] in live[host]
         return _scrape_one(v, force=force, allow_live=allow)
 
-    with ThreadPoolExecutor(max_workers=24) as ex:
-        results = list(ex.map(_worker, VENUES))
+    results = _run_with_serial_lane(VENUES, _worker, live)
 
     # Add recurring events (expanded for 8 weeks / 56 days)
     results.extend(_expand_manual_recurring(weeks=8))
