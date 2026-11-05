@@ -5853,7 +5853,7 @@ _CARD_DATE_RE = re.compile(_MONTHS_RE + r"\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b(?:,?
 _CARD_NUMDATE_RE = re.compile(r"\b(1[0-2]|0?[1-9])/([0-3]?\d)(?:/(20\d\d|\d\d))?\b")
 _CARD_TIME_RE = re.compile(r"\b(1[0-2]|0?[1-9])(?::([0-5]\d))?\s*([ap])\.?\s?m\.?\b", re.I)
 _CARD_DEAD_TITLES = re.compile(r"cancel+ed|postponed|\bclosed\b|closure|deadline|sold out\b.*waitlist", re.I)
-_CARD_SKIP_TITLES = re.compile(r"^(buy|get|book|more|learn|read|view|see|details|tickets?|register|rsvp|info|share|add to|sign up|reserve|calendar|next|previous|load more|\W*$)", re.I)
+_CARD_SKIP_TITLES = re.compile(r"^\W*(join our|subscribe|home\b|current\b|featured events|events at|buy|get|book|more|learn|read|view|see|details|tickets?|register|rsvp|info|share|add to|sign up|reserve|calendar|next|previous|load more|\W*$)", re.I)
 
 
 def _card_date(text, today):
@@ -5922,7 +5922,8 @@ def scrape_html_cards(url, ua, link_re=None, max_up=5, require_time=False, venue
             title = a.get("aria-label") or a.get("title") or ""
             title = re.sub(r"^(buy tickets for|more information about|tickets for)\s+", "", title, flags=re.I)
         title = title.strip()
-        if len(title) < 3 or _CARD_SKIP_TITLES.match(title) or _CARD_DEAD_TITLES.search(title):
+        if (len(title) < 3 or _CARD_SKIP_TITLES.match(title) or _CARD_DEAD_TITLES.search(title)
+                or _CARD_DATE_RE.match(title) or re.match(r"^(mon|tue|wed|thu|fri|sat|sun)[a-z]*\b", title, re.I)):
             continue
         seen_blocks.add(id(block))
         tm = _CARD_TIME_RE.search(text)
@@ -7059,6 +7060,11 @@ _ALL_VENUES = [
     {"name": "Bronx Museum of the Arts", "url": "https://www.bronxmuseum.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/event/", "venue": "Bronx Museum of the Arts", "address": "1040 Grand Concourse, Bronx, NY 10456"}},
     {"name": "Kings Theatre", "url": "https://www.kingstheatre.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/events/", "venue": "Kings Theatre", "address": "1027 Flatbush Ave, Brooklyn, NY 11226"}},
     {"name": "BAM (Brooklyn Academy of Music)", "url": "https://www.bam.org/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"link_re": "^/[a-z-]+/20\\d\\d/[^/]+$", "venue": "BAM", "address": "30 Lafayette Ave, Brooklyn, NY 11217"}},
+    {"name": "NYRR Races & Group Runs", "url": "https://www.nyrr.org/run/race-calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "sports", "kwargs": {"link_re": "^/races-and-events/20\\d\\d/"}},
+    {"name": "The Joyce Theater", "url": "https://www.joyce.org/performances", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "dance", "kwargs": {"link_re": "^/performances/[^/]+$", "venue": "The Joyce Theater", "address": "175 8th Ave, New York, NY 10011"}},
+    {"name": "Seaport District Events", "url": "https://www.theseaport.nyc/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "community", "kwargs": {"link_re": "^/events/[^/]+/?$"}},
+    {"name": "The Jewish Museum", "url": "https://thejewishmuseum.org/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/program/", "venue": "The Jewish Museum", "address": "1109 Fifth Ave, New York, NY 10128"}},
+    {"name": "La MaMa", "url": "https://www.lamama.org/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"venue": "La MaMa", "address": "66 E 4th St, New York, NY 10003"}},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
@@ -7486,6 +7492,32 @@ _MEETUP_TOPICS = [
     ("Queer Socials", "queer", "community"), ("Women's Socials", "women social", "community"),
     ("Dog Meetups", "dog", "community"), ("Sound Baths", "sound bath", "community"), ("Food Tours", "food tour", "food"),
     ("Craft Beer", "craft beer", "food"),
+    # Round 5: activities the site was thin on
+    ("Bingo", "bingo", "gaming"), ("Drag Bingo", "drag bingo", "gaming"), ("Ping Pong", "table tennis", "sports"),
+    ("Pilates", "pilates", "sports"), ("Outdoor Workouts", "outdoor workout", "sports"), ("Bootcamp", "bootcamp", "sports"),
+    ("HIIT", "hiit", "sports"), ("Calisthenics", "calisthenics", "sports"), ("Boxing", "boxing", "sports"),
+    ("Martial Arts", "martial arts", "sports"), ("Jiu Jitsu", "jiu jitsu", "sports"), ("Fencing", "fencing", "sports"),
+    ("Archery", "archery", "sports"), ("Squash", "squash", "sports"), ("Golf", "golf", "sports"),
+    ("Rowing", "rowing", "sports"), ("Sailing", "sailing", "outdoors"), ("Surfing", "surfing", "outdoors"),
+    ("Hiking", "hiking", "outdoors"), ("Free Yoga", "free yoga", "sports"), ("Yoga in the Park", "yoga park", "sports"),
+    ("Tai Chi", "tai chi", "sports"), ("Breathwork", "breathwork", "community"), ("Sauna & Cold Plunge", "sauna", "community"),
+    ("Speed Dating", "speed dating", "community"), ("Dating", "dating", "community"), ("Gay Speed Dating", "lgbtq speed dating", "community"),
+    ("Dinner Parties", "dinner party", "food"), ("Supper Clubs", "supper club", "food"), ("Cooking Classes", "cooking class", "food"),
+    ("Coffee Meetups", "coffee", "food"), ("Picnics", "picnic", "outdoors"), ("Networking", "networking", "community"),
+    ("Founders & Startups", "startup", "tech"), ("Professional Women", "women professionals", "community"),
+    ("Expat Meetups", "expat", "community"), ("Parents & Kids", "parents", "family"), ("Family Activities", "family", "family"),
+    ("Moms Groups", "moms", "family"),
+    ("Dance Classes", "dance class", "dance"), ("Hip Hop Dance", "hip hop dance", "dance"), ("Contra Dance", "contra dance", "dance"),
+    ("Folk Dance", "folk dance", "dance"), ("Belly Dance", "belly dance", "dance"), ("West Coast Swing", "west coast swing", "dance"),
+    ("Kizomba", "kizomba", "dance"), ("Zouk", "zouk", "dance"), ("Ecstatic Dance", "ecstatic dance", "dance"),
+    ("Pole Dance", "pole dance", "dance"), ("Roller Skating", "roller skating", "sports"),
+    ("Figure Drawing", "figure drawing", "art"), ("Painting", "painting", "art"), ("Paint & Sip", "paint and sip", "art"),
+    ("Improv Classes", "improv class", "comedy"), ("Acting", "acting", "theater"), ("Singing Lessons", "singing", "music"),
+    ("Drum Circles", "drum circle", "music"), ("Silent Disco", "silent disco", "clubbing"), ("Raves", "rave", "clubbing"),
+    ("Flea Markets", "flea market", "food"), ("Walking Tours", "walking tour", "outdoors"), ("Ghost Tours", "ghost tour", "outdoors"),
+    ("Gardening", "gardening", "outdoors"), ("Beach Cleanups", "cleanup", "community"), ("Spirituality", "spiritual", "community"),
+    ("Tarot & Astrology", "astrology", "community"), ("Magic: The Gathering", "magic the gathering", "gaming"),
+    ("Escape Rooms", "escape room", "gaming"), ("Puzzle Hunts", "puzzle", "gaming"),
 ]
 
 _EVENTBRITE_TOPICS = [
