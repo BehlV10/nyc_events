@@ -45008,7 +45008,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.96,
+      "duration": 0.76,
       "cached": false
     },
     {
@@ -263517,8 +263517,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.84,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-meetup/ (serving stale cache)",
+      "duration": 0.27,
       "cached": true
     },
     {
@@ -263706,8 +263706,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 3.41,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-trivia/ (serving stale cache)",
+      "duration": 0.18,
       "cached": true
     },
     {
@@ -361938,17 +361938,17 @@
       "venue": "Eventbrite: Hiking",
       "url": "https://www.eventbrite.com/d/ny--new-york/hiking/",
       "events": [],
-      "error": null,
-      "duration": 0.19,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hiking/",
+      "duration": 0.11,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Hikes",
       "url": "https://www.eventbrite.com/d/ny--new-york/hike/",
       "events": [],
-      "error": null,
-      "duration": 0.37,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hike/",
+      "duration": 0.4,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Outdoor Adventures",
@@ -362026,9 +362026,9 @@
       "venue": "Eventbrite: Kickball",
       "url": "https://www.eventbrite.com/d/ny--new-york/kickball/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/kickball/",
+      "duration": 0.1,
+      "cached": false
     },
     {
       "venue": "Eventbrite: DJ Sets",
@@ -362050,9 +362050,9 @@
       "venue": "Eventbrite: House Music",
       "url": "https://www.eventbrite.com/d/ny--new-york/house-music/",
       "events": [],
-      "error": null,
-      "duration": 0.08,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/house-music/",
+      "duration": 0.36,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Dance Parties",
@@ -362098,17 +362098,17 @@
       "venue": "Eventbrite: Hip-Hop Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/hip-hop-party/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.41,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Latin Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/latin-party/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/latin-party/",
+      "duration": 0.6,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Silent Discos",
@@ -362154,9 +362154,9 @@
       "venue": "Eventbrite: Karaoke",
       "url": "https://www.eventbrite.com/d/ny--new-york/karaoke/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.44,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Open Mics",
@@ -362202,9 +362202,9 @@
       "venue": "Eventbrite: Immersive Theater",
       "url": "https://www.eventbrite.com/d/ny--new-york/immersive-theater/",
       "events": [],
-      "error": null,
-      "duration": 0.03,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.44,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Cabaret",
@@ -362226,9 +362226,9 @@
       "venue": "Eventbrite: Film Screenings",
       "url": "https://www.eventbrite.com/d/ny--new-york/film-screening/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.47,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Art Shows",
@@ -362242,9 +362242,9 @@
       "venue": "Eventbrite: Gallery Openings",
       "url": "https://www.eventbrite.com/d/ny--new-york/gallery-opening/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.5,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Paint & Sip",
