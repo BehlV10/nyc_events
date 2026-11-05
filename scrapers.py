@@ -31,18 +31,21 @@ DEFAULT_VENUE_TTL = 3 * 3600    # 3 hours for standard venue feeds
 FAST_VENUE_TTL = 1 * 3600       # 1 hour for high-turnover feeds (Ticketmaster, SeatGeek, RA, Dice, DoNYC)
 SLOW_VENUE_TTL = 12 * 3600      # 12 hours for evergreen/slow feeds (NYC Parks XML, Trivia, Bookstores)
 EVENTBRITE_TTL = 6 * 3600       # 6 hours for Eventbrite feeds to prevent Cloudflare bot blocking
-# Eventbrite answers 429 after ~30 page loads in a burst, and the scrape runs every 30 min.
-# Each run refreshes at most this many Eventbrite sources (never-fetched first, then the
-# least recently attempted); the rest serve their cached copy. Search pages are mostly 405'd
-# from CI anyway, so this is kept to a trickle; organizer feeds below carry the load.
-EVENTBRITE_PER_RUN = 4
-# Organizer/venue JSON feeds (scrape_eventbrite_organizer) rotate separately from the search
-# pages, one request at a time with a pause between requests: at most ~25 sources per run,
-# each refreshed about every 6 hours, so we read at most a few pages a minute from Eventbrite.
-EVENTBRITE_API_PER_RUN = 25
+# The scrape runs twice a day, so every source that is past its TTL refreshes each run.
+# Throttle-sensitive hosts don't burst: their live fetches run on their own slow lanes
+# (see _LANES) alongside the main pool, and the run is allowed to take ~20 minutes.
+# Eventbrite search pages are the exception: they 429 after ~30 quick loads and 405 from CI
+# runners, so only a few refresh per run (stalest first) and the rest serve their cached copy.
+EVENTBRITE_PER_RUN = 24
+EVENTBRITE_SEARCH_GAP = 20.0     # seconds between search sources (and 5s between their pages)
+# Organizer/venue JSON feeds (scrape_eventbrite_organizer): all due sources, one request at a
+# time, EVENTBRITE_API_GAP seconds apart.
+EVENTBRITE_API_PER_RUN = None
 EVENTBRITE_API_GAP = 2.0
 EVENTBRITE_API_HOST = "eventbrite.com/api/v3/"
-MEETUP_PER_RUN = 60              # ~230 Meetup searches; refreshing all at once draws 503s in CI
+MEETUP_PER_RUN = None            # all due; 3 at a time with a pause (all 230 at 6-wide drew 503s)
+MEETUP_LANE_THREADS = 3
+MEETUP_GAP = 1.5
 MEETUP_TTL = 6 * 3600
 
 
@@ -6557,7 +6560,7 @@ def scrape_eventbrite_pages(url, ua, pages=3):
             fresh += 1
         if not fresh:
             break
-        time.sleep(0.5)
+        time.sleep(5)
     return events
 
 
@@ -8497,9 +8500,9 @@ _HOST_SEMAPHORES = {k: threading.BoundedSemaphore(n) for k, n in _HOST_LIMITS.it
 # remaining sources fail fast (and serve their cached data) instead of each waiting out
 # timeouts and retries while holding scarce per-host slots.
 HOST_FAILURE_LIMIT = 6
-# Back off the Eventbrite API after two straight failures: if it starts refusing us, the
-# rest of the run serves cache rather than keep knocking.
-_HOST_FAILURE_LIMITS = {EVENTBRITE_API_HOST: 2}
+# Back off Eventbrite after two straight failures: if it starts refusing us, the rest of
+# the run serves cache rather than keep knocking.
+_HOST_FAILURE_LIMITS = {EVENTBRITE_API_HOST: 2, "eventbrite.": 2}
 _host_failures = {}
 _host_failures_lock = threading.Lock()
 
@@ -8586,7 +8589,7 @@ def _pick_rotation_refreshes(venues, host_key, limit, ttl, force=False, now=None
         last = max(cache_ts, attempts.get(name, 0))
         due.append((cached is not None, last, name))
     due.sort()
-    picked = {name for _, _, name in due[:limit]}
+    picked = {name for _, _, name in (due if limit is None else due[:limit])}
     for name in picked:
         attempts[name] = now
     try:
@@ -8602,8 +8605,8 @@ def _pick_eventbrite_refreshes(venues, force=False, limit=EVENTBRITE_PER_RUN, no
     return _pick_rotation_refreshes(venues, "eventbrite.", limit, EVENTBRITE_TTL, force=force, now=now)
 
 
-# Hosts that throttle CI when every source refreshes at once: each run refreshes at most
-# `limit` of their sources (stalest first); the rest serve their last good copy.
+# Hosts that throttle CI: their due sources (stalest first, at most `limit` per run, or all
+# when it is None) fetch on that host's lane; the rest serve their last good copy.
 _ROTATED_HOSTS = {
     EVENTBRITE_API_HOST: (lambda: EVENTBRITE_API_PER_RUN, lambda: EVENTBRITE_TTL),
     "eventbrite.": (lambda: EVENTBRITE_PER_RUN, lambda: EVENTBRITE_TTL),
@@ -8745,36 +8748,56 @@ def _load_community_events():
         return []
 
 
-# Hosts whose live fetches run one after another on their own thread, with a pause between
-# sources, alongside the main pool. Waiting on a 1-slot semaphore inside the pool instead
-# would park up to 24 workers behind it.
-_SERIAL_HOSTS = {EVENTBRITE_API_HOST: lambda: EVENTBRITE_API_GAP}
+# Hosts whose live fetches run on their own small thread pool, each thread pausing between
+# sources, alongside the main pool: {host: (threads, lambda: gap_seconds)}. Waiting on a
+# narrow semaphore inside the main pool instead would park its workers behind it.
+_LANES = {
+    EVENTBRITE_API_HOST: (1, lambda: EVENTBRITE_API_GAP),
+    "eventbrite.": (1, lambda: EVENTBRITE_SEARCH_GAP),
+    "meetup.com": (MEETUP_LANE_THREADS, lambda: MEETUP_GAP),
+}
 
 
-def _run_with_serial_lane(venues, worker, live, workers=24):
-    serial_idx, pool_idx = [], []
+def _run_with_lanes(venues, worker, live, workers=24):
+    lane_idx = {host: [] for host in _LANES}
+    pool_idx = []
     for i, v in enumerate(venues):
         host = _host_key(v.get("url"))
-        if host in _SERIAL_HOSTS and v["name"] in live.get(host, ()):
-            serial_idx.append(i)
+        if host in _LANES and v["name"] in live.get(host, ()):
+            lane_idx[host].append(i)
         else:
             pool_idx.append(i)
 
-    def _lane():
-        out = {}
-        for n, i in enumerate(serial_idx):
-            if n:
-                time.sleep(_SERIAL_HOSTS[_host_key(venues[i].get("url"))]())
-            out[i] = worker(venues[i])
-        return out
-
     results = [None] * len(venues)
-    with ThreadPoolExecutor(max_workers=1) as lane_ex, ThreadPoolExecutor(max_workers=workers) as ex:
-        lane_future = lane_ex.submit(_lane)
+
+    def _lane(host, idxs, threads):
+        gap = _LANES[host][1]
+        queue = list(idxs)
+        lock = threading.Lock()
+
+        def _drain():
+            first = True
+            while True:
+                with lock:
+                    if not queue:
+                        return
+                    i = queue.pop(0)
+                if not first:
+                    time.sleep(gap())
+                first = False
+                results[i] = worker(venues[i])
+
+        with ThreadPoolExecutor(max_workers=threads) as lane_ex:
+            for f in [lane_ex.submit(_drain) for _ in range(min(threads, len(queue)) or 1)]:
+                f.result()
+
+    active = {h: idx for h, idx in lane_idx.items() if idx}
+    with ThreadPoolExecutor(max_workers=max(1, len(active))) as lanes_ex, ThreadPoolExecutor(max_workers=workers) as ex:
+        lane_futures = [lanes_ex.submit(_lane, h, idx, _LANES[h][0]) for h, idx in active.items()]
         for i, r in zip(pool_idx, ex.map(worker, [venues[i] for i in pool_idx])):
             results[i] = r
-        for i, r in lane_future.result().items():
-            results[i] = r
+        for f in lane_futures:
+            f.result()
     return results
 
 
@@ -8792,7 +8815,7 @@ def get_all_events(force=False):
         allow = host not in live or v["name"] in live[host]
         return _scrape_one(v, force=force, allow_live=allow)
 
-    results = _run_with_serial_lane(VENUES, _worker, live)
+    results = _run_with_lanes(VENUES, _worker, live)
 
     # Add recurring events (expanded for 8 weeks / 56 days)
     results.extend(_expand_manual_recurring(weeks=8))
