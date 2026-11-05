@@ -603,5 +603,13 @@ class TestTicketmasterWindows(unittest.TestCase):
         self.assertEqual([e["name"] for e in events], ["Hamilton"])
 
 
+class TestFamilyClassifier(unittest.TestCase):
+    def test_family_phrases_and_adult_exclusions(self):
+        for t in ("Weekend Family Workshop", "Stroller Walk in Prospect Park", "Parents' Night Out", "Ages 3-6 Music Class", "Bluey Live", "Puppet Show"):
+            self.assertTrue(is_kid_family_event(t), t)
+        for t in ("Family Guy Trivia", "Teenage Fanclub", "Puppet Slam 21+", "Family-style dinner club", "Crime Family Comedy"):
+            self.assertFalse(is_kid_family_event(t), t)
+
+
 if __name__ == "__main__":
     unittest.main()
