@@ -904,3 +904,71 @@ class TestNycGeo(unittest.TestCase):
         for lat, lng in ((40.7440, -74.0324), (40.7178, -74.0431), (40.9312, -73.8988)):  # Hoboken, Jersey City, Yonkers
             self.assertIsNone(nyc_geo.borough_at(lat, lng))
         self.assertFalse(scrapers._eb_venue_in_nyc({"latitude": "40.7440", "longitude": "-74.0324", "address": {"city": "Hoboken"}}))
+
+
+class TestLocationPins(unittest.TestCase):
+    def test_extract_address_only_for_nyc(self):
+        import nyc_geo
+        self.assertEqual(nyc_geo.extract_address("Producers Club Theaters (358 W 44th St, New York, NY)"), "358 w 44th st, new york")
+        self.assertEqual(nyc_geo.extract_address("Cassette (68-38 forest avenue, ridgewood, new york 11385"), "68-38 forest avenue, ridgewood")
+        self.assertEqual(nyc_geo.extract_address("Venue (1412 Broadway, New York, NY)"), "1412 broadway, new york")
+        for t in ("Just One Dance Studio (500 Stuyvesant Avenue, Lyndhurst, NJ)", "Lancer's (459 Ferry St, Newark, NJ)",
+                  "123 Main St, Stamford 06901", "Smoke Jazz Club", "Room 224, 19 St, New York"):
+            self.assertIsNone(nyc_geo.extract_address(t), t)
+
+    def test_geocode_rejects_closest_match_guesses(self):
+        import nyc_geo
+        def fake(label_house, street, lat=40.759485, lng=-73.991458):
+            return _resp(payload={"features": [{"geometry": {"coordinates": [lng, lat]},
+                                                "properties": {"housenumber": label_house, "street": street}}]})
+        s = MagicMock()
+        s.get.return_value = fake("358", "WEST 44 STREET")
+        self.assertEqual(nyc_geo.geocode("358 w 44th st, new york", session=s), (40.759485, -73.991458, "manhattan"))
+        s.get.return_value = fake("1412", "B'WAY")
+        self.assertIsNotNone(nyc_geo.geocode("1412 broadway, new york", session=s))
+        s.get.return_value = fake("999", "HEMLOCK STREET")  # "999 Nowhere St" -> nearest real street
+        self.assertIsNone(nyc_geo.geocode("999 nowhere st, brooklyn", session=s))
+        s.get.return_value = fake("120", "FURMAN STREET")  # wrong house number
+        self.assertIsNone(nyc_geo.geocode("304 furman street, brooklyn", session=s))
+
+    def test_apply_geocodes_pins_and_drops_placeholders(self):
+        import tempfile
+        cache = {"358 w 44th st, new york": [40.7595, -73.9915, "manhattan"]}
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+            json.dump(cache, f)
+        results = [{"events": [
+            {"name": "A", "venue": "Producers Club (358 W 44th St, New York, NY)"},
+            {"name": "B", "venue": "Madison Square Garden", "lat": 40.7128, "lng": -74.0060},
+            {"name": "C", "venue": "Misse Tango Company", "address": "Misse Tango Company, New York City, United States", "lat": 40.87, "lng": -73.88},
+            {"name": "D", "venue": "Real Spot", "address": "520 8th Ave, New York, NY", "lat": 40.7537, "lng": -73.9921},
+        ]}]
+        try:
+            with patch("nyc_geo.geocode", side_effect=AssertionError("cached; must not call")):
+                scrapers._apply_geocodes(results, limit=10, gap=0, cache_path=f.name)
+        finally:
+            os.unlink(f.name)
+        a, b, c, d = results[0]["events"]
+        self.assertEqual((a["lat"], a["borough"]), (40.7595, "manhattan"))
+        self.assertIsNone(b["lat"])  # City Hall placeholder
+        self.assertIsNone(c["lat"])  # city-level address: the feed's pin was a guess
+        self.assertEqual(d["lat"], 40.7537)
+
+    def test_resolve_priority_and_needle_guards(self):
+        import venues_geo
+        # curated pin beats a feed's district centroid
+        geo = venues_geo.resolve_event_geo({"venue": "Bowery Ballroom", "lat": 40.7593, "lng": -73.9902})
+        self.assertEqual((geo["lat"], geo["lng"]), (40.7204, -73.9934))
+        # an address in the parentheses must not trigger the "atlantic ave" needle
+        self.assertIsNone(venues_geo.resolve_event_geo({"venue": "Squarrel Cafe (572 Atlantic Ave, Brooklyn, NY)"}))
+        # out-of-city text never takes a needle pin
+        self.assertIsNone(venues_geo.resolve_event_geo({"venue": "Ethical Culture Society of Bergen County (687 Larch Ave, Teaneck, NJ)"}))
+        self.assertIsNone(venues_geo.resolve_event_geo({"venue": "Online (On-Demand Platform)", "lat": 40.7, "lng": -73.95}))
+
+    def test_borough_from_pin_zip_and_label(self):
+        import template
+        self.assertEqual(template._event_city("Some Studio", "DanceUS", {"lat": 40.7706, "lng": -73.9561}, {}), "manhattan")
+        self.assertEqual(template._event_city("Hoboken Bar", "X", {"lat": 40.7440, "lng": -74.0324}, {}), "other")
+        # pin a few meters into Brooklyn on Wyckoff Ave, but the ZIP / label says Queens
+        border = {"lat": 40.7055, "lng": -73.9234}
+        self.assertEqual(template._event_city("Trans-Pecos (9-15 Wyckoff Ave, Queens, NY 11385)", "RA", border, {}), "queens")
+        self.assertEqual(template._event_city("Knockdown Center (Queens, NY)", "TM", border, {}), "queens")
