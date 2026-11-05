@@ -152,7 +152,19 @@ def _make_session():
 
     s = requests.Session()
     s.mount("https://", _Adapter())
+    s.hooks["response"].append(_default_utf8)
     return s
+
+
+def _default_utf8(resp, *args, **kwargs):
+    """requests falls back to ISO-8859-1 for text/* responses with no charset, which turned
+    UTF-8 titles into mojibake ("Dvo\u0158\u00e1k" -> "Dvo\u00c5\u0098\u00c3\u00a1k"). Browsers effectively assume
+    UTF-8 there, and so do we."""
+    ctype = (resp.headers.get("content-type") or "").lower()
+    if "charset" not in ctype and (resp.encoding or "").lower() in ("iso-8859-1", "latin-1", ""):
+        if not ctype or any(t in ctype for t in ("html", "xml", "json", "text", "javascript", "calendar")):
+            resp.encoding = "utf-8"
+    return resp
 
 
 _SESSION = _make_session()

@@ -707,5 +707,21 @@ class TestDatedShowLinks(unittest.TestCase):
         self.assertEqual((_local(by["Late Show"]["date"]).hour, _local(by["Late Show"]["date"]).minute), (23, 30))
 
 
+class TestEncodingDefault(unittest.TestCase):
+    def test_missing_charset_decodes_as_utf8(self):
+        import requests as _rq
+        r = _rq.models.Response()
+        r.headers["content-type"] = "text/html"
+        r._content = "Dvo\u0159\u00e1k \u00ae".encode("utf-8")
+        r.encoding = "ISO-8859-1"
+        scrapers._default_utf8(r)
+        self.assertEqual(r.text, "Dvo\u0159\u00e1k \u00ae")
+        r2 = _rq.models.Response()
+        r2.headers["content-type"] = "text/html; charset=windows-1252"
+        r2.encoding = "windows-1252"
+        scrapers._default_utf8(r2)
+        self.assertEqual(r2.encoding, "windows-1252")  # declared charsets are respected
+
+
 if __name__ == "__main__":
     unittest.main()
