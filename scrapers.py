@@ -5183,6 +5183,7 @@ _TRIBE_VENUE_DEFAULTS = {
     "nytransitmuseum.org": ("New York Transit Museum", "99 Schermerhorn St, Brooklyn, NY 11201", "Downtown Brooklyn", 40.6905, -73.9900, "family"),
     "scandinaviahouse.org": ("Scandinavia House", "58 Park Ave, New York, NY 10016", "Murray Hill", 40.7492, -73.9802, "art"),
     "ukrainianinstitute.org": ("Ukrainian Institute of America", "2 E 79th St, New York, NY 10075", "Upper East Side", 40.7774, -73.9637, "art"),
+    "societyillustrators.org": ("Society of Illustrators", "128 E 63rd St, New York, NY 10065", "Upper East Side", 40.7648, -73.9645, "art"),
     "comedyvillage.com": ("Comedy Village", "352 W 44th St, New York, NY", "Hell's Kitchen", 40.7593, -73.9905, "comedy"),
     "movingimage.org": ("Museum of the Moving Image", "36-01 35th Ave, Queens, NY", "Astoria", 40.7563, -73.9239, "film"),
     "queensbotanical.org": ("Queens Botanical Garden", "43-50 Main St, Queens, NY", "Flushing", 40.7510, -73.8290, "outdoors"),
@@ -6018,7 +6019,7 @@ _CARD_DATE_RE = re.compile(_MONTHS_RE + r"\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b(?:,?
 _CARD_NUMDATE_RE = re.compile(r"\b(1[0-2]|0?[1-9])/([0-3]?\d)(?:/(20\d\d|\d\d))?\b")
 _CARD_TIME_RE = re.compile(r"\b(1[0-2]|0?[1-9])(?::([0-5]\d))?\s*([ap])\.?\s?m\.?\b", re.I)
 _CARD_DEAD_TITLES = re.compile(r"cancel+ed|postponed|\bclosed\b|closure|deadline|sold out\b.*waitlist", re.I)
-_CARD_SKIP_TITLES = re.compile(r"^\W*(select seats|show page|now playing|on-sale|best availability|applications? open|today$|ics$|google calendar|contact\b|join our|subscribe|home\b|current\b|featured events|events at|buy|get|book|more|learn|read|view|see|details|tickets?|register|rsvp|info|share|add to|sign up|reserve|calendar|next|previous|load more|\W*$)", re.I)
+_CARD_SKIP_TITLES = re.compile(r"^\W*(this class has \d+ more|team building|private events?|gift cards?|select seats|show page|now playing|on-sale|best availability|applications? open|today$|ics$|google calendar|contact\b|join our|subscribe|home\b|current\b|featured events|events at|buy|get|book|more|learn|read|view|see|details|tickets?|register|rsvp|info|share|add to|sign up|reserve|calendar|next|previous|load more|\W*$)", re.I)
 
 
 def _card_date(text, today):
@@ -7565,6 +7566,11 @@ _ALL_VENUES = [
     {"name": "NYU Violets Home Games", "url": "https://gonyuathletics.com/calendar.ashx/calendar.ics?sport_id=0", "ua": UA_CHROME, "scraper": scrape_sidearm_home_games, "default_category": "sports", "kwargs": {"home_re": "New York", "school": "NYU", "borough": "New York"}},
     {"name": "Yeshiva Maccabees Home Games", "url": "https://yumacs.com/calendar.ashx/calendar.ics?sport_id=0", "ua": UA_CHROME, "scraper": scrape_sidearm_home_games, "default_category": "sports", "kwargs": {"home_re": "New York", "school": "Yeshiva University", "borough": "New York"}},
     {"name": "Mount Saint Vincent Dolphins Home Games", "url": "https://cmsvathletics.com/calendar.ashx/calendar.ics?sport_id=0", "ua": UA_CHROME, "scraper": scrape_sidearm_home_games, "default_category": "sports", "kwargs": {"home_re": "Riverdale|Bronx", "school": "College of Mount Saint Vincent", "borough": "Bronx"}},
+    {"name": "Society of Illustrators", "url": "https://www.societyillustrators.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
+    {"name": "CozyMeal NYC Cooking Classes", "url": "https://www.cozymeal.com/nyc/cooking-classes", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "food", "kwargs": {"link_re": "^/cooking-class/\\d+"}},
+    {"name": "CourseHorse NYC Classes (pottery, cocktails, crafts)", "url": "https://coursehorse.com/nyc/classes", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "community", "kwargs": {"link_re": "^/nyc/classes/[^/]+/"}},
+    {"name": "Chelsea Market Events", "url": "https://www.chelseamarket.com/events-all", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "food"},
+    {"name": "Essex Market Events", "url": "https://www.essexmarket.nyc/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "food"},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
