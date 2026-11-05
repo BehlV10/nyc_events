@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T08:32:25.199253+00:00",
+  "generated_at": "2026-11-05T08:35:02.333879+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -43461,7 +43461,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.94,
+      "duration": 0.92,
       "cached": false
     },
     {
@@ -60530,7 +60530,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.27,
+      "duration": 0.42,
       "cached": false
     },
     {
@@ -60785,7 +60785,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.26,
+      "duration": 0.46,
       "cached": false
     },
     {
@@ -62729,7 +62729,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.22,
+      "duration": 0.4,
       "cached": false
     },
     {
@@ -67928,8 +67928,8 @@
         }
       ],
       "error": null,
-      "duration": 0.62,
-      "cached": true
+      "duration": 0.67,
+      "cached": false
     },
     {
       "venue": "Stand Up NY",
@@ -96967,7 +96967,7 @@
       ],
       "error": null,
       "duration": 2.02,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "DanceUS: NYC Salsa",
@@ -97300,7 +97300,7 @@
       ],
       "error": null,
       "duration": 1.93,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "DanceUS: NYC Swing",
@@ -97729,7 +97729,7 @@
       ],
       "error": null,
       "duration": 1.96,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "DanceUS: NYC Hip Hop",
@@ -98242,7 +98242,7 @@
       ],
       "error": null,
       "duration": 2.11,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "DanceUS: NYC Ballet",
@@ -98635,7 +98635,7 @@
       ],
       "error": null,
       "duration": 1.55,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "DanceUS: NYC Belly Dance",
@@ -98884,7 +98884,7 @@
       ],
       "error": null,
       "duration": 1.6,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "SalsaVida NYC Socials",
@@ -99181,7 +99181,7 @@
       ],
       "error": null,
       "duration": 0.41,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "SalsaVida NYC Socials (list)",
@@ -99494,7 +99494,7 @@
       ],
       "error": null,
       "duration": 0.74,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Dance/NYC Community Calendar",
@@ -99847,6 +99847,1280 @@
       ],
       "error": null,
       "duration": 0.99,
+      "cached": true
+    },
+    {
+      "venue": "New York Transit Museum",
+      "url": "https://www.nytransitmuseum.org/wp-json/tribe/events/v1/events?per_page=50",
+      "events": [
+        {
+          "name": "Ready to Ride Event",
+          "date": "2026-11-05T21:30:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/ready-to-ride-event-fall2026/",
+          "venue": "New York Transit Museum",
+          "price": "$10",
+          "category": "family",
+          "description": "Teens and adults with disabilities can learn more about navigating our subway system.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Fly Away Redbirds – Morning Ride",
+          "date": "2026-11-07T15:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/redbirds-morning/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$30 – $60",
+          "category": "family",
+          "description": "Take a round-trip ride on the iconic Redbirds.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Fly Away Redbirds – Afternoon Ride",
+          "date": "2026-11-07T19:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/redbirds-afternoon/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$30 – $60",
+          "category": "family",
+          "description": "Take a round-trip ride on the iconic Redbirds.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Transit Tots",
+          "date": "2026-11-08T14:30:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/transit-tots-8nov/",
+          "venue": "New York Transit Museum",
+          "price": "$40",
+          "category": "family",
+          "description": "Join us on select Sundays for an early morning hour of story-time, crafts, imaginative play.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Movers and Makers: Family Tour and Workshop",
+          "date": "2026-11-08T19:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/movers-and-makers-family-tour-and-workshop-nov8/",
+          "venue": "New York Transit Museum",
+          "price": "$10 – $20",
+          "category": "family",
+          "description": "Join us the second Sunday of each month for a family tour and workshop.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Underground NYC Tour: Subway 101",
+          "date": "2026-11-12T16:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/underground-11-12/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$30",
+          "category": "family",
+          "description": "There’s so much New York transit history hiding in plain sight!",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Subway Swing: A Boogie for the Ages",
+          "date": "2026-11-13T23:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/subwayswing26/",
+          "venue": "New York Transit Museum",
+          "price": "$35",
+          "category": "family",
+          "description": "Put on your dancing shoes and vintage best for a night to remember!",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Transit Tots",
+          "date": "2026-11-15T14:30:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/transit-tots-15nov/",
+          "venue": "New York Transit Museum",
+          "price": "$40",
+          "category": "family",
+          "description": "Join us on select Sundays for an early morning hour of story-time, crafts, imaginative play.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Day Habilitation Day",
+          "date": "2026-11-17T15:30:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/day-habilitation-day-fall2026/",
+          "venue": "New York Transit Museum",
+          "price": "Free",
+          "category": "family",
+          "description": "Day habilitation groups of adults with disabilities are invited to join us for this special open house event. Registration required.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Jewel in the Crown: Old City Hall Station",
+          "date": "2026-11-18T16:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/cityhall-11-18/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$50",
+          "category": "art",
+          "description": "Museum members have the opportunity to explore this New York landmark through exclusive guided tours.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Transit Walk: Downtown Brooklyn",
+          "date": "2026-11-21T16:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/brooklyn-11-21/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$35 – $40",
+          "category": "outdoors",
+          "description": "On this walking tour, trace the transit evolution of Downtown Brooklyn from ferries to subways.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Transit Walk: Second Avenue’s Art and Transit History",
+          "date": "2026-11-21T19:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/secondav-11-21/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$35 – $40",
+          "category": "family",
+          "description": "Visit stations along the 2 Ave subway to learn about transit history and view stunning public artwork.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Transit Tots",
+          "date": "2026-11-22T14:30:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/transit-tots-22nov/",
+          "venue": "New York Transit Museum",
+          "price": "$40",
+          "category": "family",
+          "description": "Join us on select Sundays for an early morning hour of story-time, crafts, imaginative play.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Jewel in the Crown: Old City Hall Station",
+          "date": "2026-11-24T16:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/cityhall-11-24/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$50",
+          "category": "art",
+          "description": "Museum members have the opportunity to explore this New York landmark through exclusive guided tours.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Jewel in the Crown: Old City Hall Station",
+          "date": "2026-11-24T19:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/cityhall-11-24-2/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$50",
+          "category": "art",
+          "description": "Museum members have the opportunity to explore this New York landmark through exclusive guided tours.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Jewel in the Crown: Old City Hall Station",
+          "date": "2026-12-02T16:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/cityhall-12-2/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$50",
+          "category": "art",
+          "description": "Museum members have the opportunity to explore this New York landmark through exclusive guided tours.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Jewel in the Crown: Old City Hall Station",
+          "date": "2026-12-02T19:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/cityhall-12-2-2/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$50",
+          "category": "art",
+          "description": "Museum members have the opportunity to explore this New York landmark through exclusive guided tours.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Jewel in the Crown: Old City Hall Station",
+          "date": "2026-12-05T16:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/cityhall-12-5/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$50",
+          "category": "art",
+          "description": "Museum members have the opportunity to explore this New York landmark through exclusive guided tours.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Jewel in the Crown: Old City Hall Station",
+          "date": "2026-12-05T19:00:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/cityhall-12-5-2/",
+          "venue": "New York Transit Museum (Off-Site)",
+          "price": "$50",
+          "category": "art",
+          "description": "Museum members have the opportunity to explore this New York landmark through exclusive guided tours.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        },
+        {
+          "name": "Transit Tots",
+          "date": "2026-12-06T14:30:00+00:00",
+          "url": "https://www.nytransitmuseum.org/program/transit-tots-6dec/",
+          "venue": "New York Transit Museum",
+          "price": "$40",
+          "category": "family",
+          "description": "Join us on select Sundays for an early morning hour of story-time, crafts, imaginative play.",
+          "address": "99 Schermerhorn St, Brooklyn, NY 11201",
+          "neighborhood": "Downtown Brooklyn",
+          "lat": 40.6905,
+          "lng": -73.99
+        }
+      ],
+      "error": null,
+      "duration": 0.45,
+      "cached": false
+    },
+    {
+      "venue": "Scandinavia House",
+      "url": "https://www.scandinaviahouse.org/wp-json/tribe/events/v1/events?per_page=50",
+      "events": [
+        {
+          "name": "THE 2026 NEW YORK BALTIC FILM FESTIVAL",
+          "date": "2026-11-05T05:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/nybff-2026/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "The 9th Annual New York Baltic Film Festival (NYBFF) presented by Scandinavia House returns this November with the best new films from the Baltic region.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "IMPRESSIONS: LINOCUT | CARVED AND PRESSED WITH MARGRETHE AANESTAD",
+          "date": "2026-11-05T22:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/impressions-botanical-relief-printing-carved-and-pressed-with-margrethe-aanestad/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Explore and experiment with linocut printmaking in this workshop for adults led by Norwegian artist Margarethe Aanestad.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "SOLD OUT — OPENING NIGHT: A GOODNIGHT KISS | NYBFF",
+          "date": "2026-11-05T23:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/opening-night-a-goodnight-kiss-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See the East Coast Premiere of Lithuania’s 2026 NYBFF Showcase Film, A GOODNIGHT KISS, with director Giedrė Žickytė.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "BALTIC ANIMATED SHORTS | NYBFF",
+          "date": "2026-11-06T23:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/baltic-animated-shorts-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See an evening of unique and innovative short animated films from Estonia, Latvia and Lithuania in this year’s NY Baltic Film Festival.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "SCARECROWS | NYBFF",
+          "date": "2026-11-07T00:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/scarecrows-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See the gripping documentary SCARECROWS with a film talk by director Laila Pakalniņa in this year’s NYBFF.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "A GOODNIGHT KISS | NYBFF",
+          "date": "2026-11-07T17:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/a-goodnight-kiss-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See Lithuania’s 2026 NYBFF Showcase Film, A GOODNIGHT KISS.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "BALTIC SHORTS | NYBFF",
+          "date": "2026-11-07T19:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/baltic-shorts-nybff-2/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See live action short films from Estonia, Latvia and Lithuania in this year’s NY Baltic Film Festival.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "MORTEN | NYBFF",
+          "date": "2026-11-07T20:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/morten-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See the coming-of-age film MORTEN with a talk by director Ivan Pavljutskov in this year’s NY Baltic Film Festival.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "HOLY DESTRUCTORS | NYBFF",
+          "date": "2026-11-07T22:45:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/holy-destructors-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "Two powerful forces collide in director Aistė Žegulytė’s HOLY DESTRUCTORS, screening with a talk by film composer Gediminas Jakubka.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "SOLD OUT — ULYA | NYBFF",
+          "date": "2026-11-08T01:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/ulya-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See the North American Premiere of Latvia’s 2026 NYBFF Showcase Film, ULYA, with director Viesturs Kairišs.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "MY FAMILY AND OTHER CLOWNS | NYBFF",
+          "date": "2026-11-08T17:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/my-family-and-other-clowns-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "community",
+          "description": "MY FAMILY AND OTHER CLOWNS screens in NYBFF 2026 on November 8 with a talk by co-director Liina Särkinen.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "BORDERLINE | NYBFF",
+          "date": "2026-11-08T19:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/borderline-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "community",
+          "description": "See the Lithuanian thriller BORDERLINE with a talk by lead actor Šarūnas Zenkevičius at NYBFF 2026.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "THE CHILD | NYBFF",
+          "date": "2026-11-08T21:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/the-child-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "community",
+          "description": "See THE CHILD in NYBFF 2026 on November 8 with a talk by director Linda Olte.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "CLOSING NIGHT: OUR ERIKA | NYBFF",
+          "date": "2026-11-09T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/closing-night-our-erika-nybff/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See the North American Premiere of Estonia’s 2026 NYBFF Showcase Film, OUR ERIKA, with director German Golub.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "NORTHERN PATTERNS: LEARN TRADITIONAL ARCTIC BEADING DETAILS",
+          "date": "2026-11-10T22:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/northern-patterns-learn-traditional-arctic-beading-details-2/2026-11-10/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Explore Northern ornamental traditions through beadweaving and create an original jewelry piece in this workshop with Nenets artist Inna Eilyuvna Iadne.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "FJORD | NORDIC & BALTIC OSCAR CONTENDERS",
+          "date": "2026-11-11T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/fjord-nordic-baltic-oscar-contenders/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "theater",
+          "description": "On November 10, see the thorny, riveting, and Norwegian-set drama FJORD, winner of the 2026 Palme d’Or.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "GROWTH OF THE SOIL | WITH HANS PETTER MOLAND & ASTA KAMMA AUGUST",
+          "date": "2026-11-12T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/growth-of-the-soil-nordic-baltic-oscar-contenders/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See a screening and director talk of classical epic GROWTH OF THE SOIL, Norway’s entry for Best International Feature Film at the 99th Academy Awards.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "IMPRESSIONS: BOTANICAL RELIEF PRINTING | CARVED AND PRESSED WITH MARGRETHE AANESTAD",
+          "date": "2026-11-12T22:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/impressions-botanical-relief-printing-with-margrethe-aanestad/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Explore and experiment with botanical relief printmaking in this workshop for adults led by Norwegian artist Margarethe Aanestad.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "BELOVED | SCREENING & FILM TALK: FILMS FROM THE FJORDS",
+          "date": "2026-11-13T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/beloved-films-from-the-fjords/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "theater",
+          "description": "On November 12, see a special screening to wrap up our Films From the Fjords series: the sparse, beautifully-rendered drama BELOVED.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "NORDIC WISDOM ON THE ROAD | BOOK LAUNCH & ORACLE READINGS",
+          "date": "2026-11-13T23:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/nordic-wisdom-on-the-road-book-launch-oracle-readings/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "books",
+          "description": "Join us for a reception and Finnish mythology-inspired oracle readings in celebration of Reetta Ranta’s new book TIMELESS NORDIC RITUALS!",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "CRAFT YOUR OWN GLÖGG: A NORDIC EXPERIENCE",
+          "date": "2026-11-14T20:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/craft-your-own-glogg-a-nordic-experience/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Join us to create your own customized blend of glögg for this year’s holiday season!",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "SEASIDERS | SCREENING & DIRECTOR TALK: FILMS FROM THE FJORDS",
+          "date": "2026-11-14T22:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/seasiders/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "On November 12, Scandinavia House presents a special screening as a part of our Films From the Fjords series: the witty, unrestrained documentary SEASIDERS.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "INSIDE GAZA | SCREENING & FILM TALK",
+          "date": "2026-11-15T19:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/inside-gaza-screening-film-talk-with-reporters-without-borders/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "On November 15 with Reporters Without Borders, Scandinavia House presents a screening of INSIDE GAZA, offering a rare firsthand account from journalists who have lived and reported from inside the conflict.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "NERVE IMPULSES ON THE HIGH-VOLTAGE POWER LINE | BOOK TALK",
+          "date": "2026-11-17T18:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/nerve-impulses-on-the-high-voltage-power-line-book-talk/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "community",
+          "description": "Join us on November 17 for a book talk with Rachel Britton on “Nerve Impulses on the High-Voltage Power Line,” a philosophical and imagistic poetry collection and the winner of the 2025 Malinda A. Markham Translation Prize.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "NORTHERN PATTERNS: LEARN TRADITIONAL ARCTIC BEADING DETAILS",
+          "date": "2026-11-17T22:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/northern-patterns-learn-traditional-arctic-beading-details-2/2026-11-17/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Explore Northern ornamental traditions through beadweaving and create an original jewelry piece in this workshop with Nenets artist Inna Eilyuvna Iadne.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "THE SQUIRREL | SCREENING & DIRECTOR TALK",
+          "date": "2026-11-18T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/the-squirrel-screening-director-talk/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "theater",
+          "description": "See a screening and director talk of Finland’s official entry for Best International Feature Film at the 99th Academy Awards: the absurd, warm-hearted dystopian drama THE SQUIRREL.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "AMERICAN DOCTOR | NORDIC & BALTIC OSCAR CONTENDERS",
+          "date": "2026-11-19T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/american-doctor-nordic-baltic-oscar-contenders/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "On November 18, see the unflinching, visceral documentary AMERICAN DOCTOR, a Danish qualifier for Best Documentary Feature Film at the 99th Academy Awards.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "IMPRESSIONS: POTATO PRINTING | CARVED AND PRESSED WITH MARGRETHE AANESTAD",
+          "date": "2026-11-19T22:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/impressions-potato-printing-carved-and-pressed-with-margrethe-aanestad/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Explore and experiment with potato printmaking in this workshop for adults led by Norwegian artist Margarethe Aanestad.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "A CHOPIN TRIBUTE WITH PER TENGSTRAND",
+          "date": "2026-11-20T00:30:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/a-chopin-tribute-with-per-tengstrand/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Join us on November 19 for the next installment of Music on Park Avenue, where pianist Per Tengstrand will embark on a journey through the piano works of Frédéric Chopin.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "SIRI HUSTVEDT – DANCE AROUND THE SELF",
+          "date": "2026-11-21T19:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/siri-hustvedt-dance-around-the-self/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "On November 21, see the trenchant, tender documentary “Siri Hustvedt – Dance Around the Self!” Siri Hustvedt will be present for a Q&A following the screening.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "THANKSGIVING FEAST AT BJÖRK CAFE & BISTRO",
+          "date": "2026-11-26T16:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/thanksgiving-feast-at-bjork-cafe-bistro-4/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Celebrate Thanksgiving at Scandinavia House with a special prix-fixe menu from Björk Cafe & Bistro!",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "BLACK FRIDAY BRUNCH 2026 AT BJÖRK CAFE & BISTRO",
+          "date": "2026-11-27T16:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/black-friday-brunch-at-bjork-cafe-bistro-2026/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Join us for a special post-Thanksgiving Black Friday Brunch!",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "FIRST OF ADVENT SPECIAL | BJÖRK CAFE & BISTRO",
+          "date": "2026-11-27T16:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/first-of-advent-special-bjork-cafe-bistro/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "Celebrate the First of Advent (Första Advent) at Björk Cafe & Bistro! Enjoy warm glögg and saffron buns on this day marking the start of the holiday season.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "JUST LOOK UP | SCREENING + FILM TALK",
+          "date": "2026-12-01T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/just-look-up-screening-film-talk/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "On November 30, see a screening and film talk of the defiant, propulsive climate documentary JUST LOOK UP, a Danish qualifier for Best Documentary Feature Film at the 99th Academy Awards.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "THE SECRET READING CLUB OF KABUL | NORDIC & BALTIC OSCAR CONTENDERS",
+          "date": "2026-12-03T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/the-secret-reading-club-of-kabul-nordic-baltic-oscar-contenders/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "books",
+          "description": "See a special screening and director talk of a Finnish qualifier for Best Documentary Feature Film at the 99th Academy Awards: the powerful documentary THE SECRET READING CLUB OF KABUL.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "HOW TO DIVORCE DURING THE WAR | NORDIC & BALTIC OSCAR CONTENDERS",
+          "date": "2026-12-04T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/how-to-divorce-during-the-war-nordic-baltic-oscar-contenders/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See Lithuania’s official entry for Best International Feature Film at the 99th Academy Awards: the dryly humorous, widely lauded HOW TO DIVORCE DURING THE WAR.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "SIX OSCAR-ELIGIBLE SHORTS",
+          "date": "2026-12-05T19:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/six-oscar-eligible-shorts/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "art",
+          "description": "On December 5, see six Oscar-eligible short films from the Nordic countries: “Sauna Sickness,” “Please,” “The End,” “Fear Fokol,” “Time of Plenty,” and “Postcards.”",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "HOLIDAY CONCERT",
+          "date": "2026-12-06T22:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/holiday-concert-5/2026-12-06/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "music",
+          "description": "Enjoy a traditional Swedish Lucia procession at Scandinavia House’s annual Holiday Concert.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        },
+        {
+          "name": "TRACES | NORDIC & BALTIC OSCAR CONTENDERS",
+          "date": "2026-12-09T00:00:00+00:00",
+          "url": "https://www.scandinaviahouse.org/event/traces-nordic-baltic-oscar-contenders/",
+          "venue": "Scandinavia House",
+          "price": null,
+          "category": "film",
+          "description": "See a special screening and film talk of Ukraine’s entry for Best International Feature Film at the 99th Academy Awards: the powerful, defiant war documentary TRACES.",
+          "address": "58 Park Ave, New York, NY 10016",
+          "neighborhood": "Murray Hill",
+          "lat": 40.7492,
+          "lng": -73.9802
+        }
+      ],
+      "error": null,
+      "duration": 0.48,
+      "cached": false
+    },
+    {
+      "venue": "Ukrainian Institute of America",
+      "url": "https://ukrainianinstitute.org/wp-json/tribe/events/v1/events?per_page=50",
+      "events": [
+        {
+          "name": "Ukrainian Student Mixer: Meet at the Mansion",
+          "date": "2026-11-06T22:00:00+00:00",
+          "url": "https://ukrainianinstitute.org/event/2026-11-7-student-mixer/",
+          "venue": "Ukrainian Institute of America",
+          "price": null,
+          "category": "community",
+          "description": ".",
+          "address": "2 E 79th St, New York, NY 10075",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7774,
+          "lng": -73.9637
+        },
+        {
+          "name": "Sounds of Solidarity – An Evening of Jazz with Nicole Zuraitis",
+          "date": "2026-11-18T00:00:00+00:00",
+          "url": "https://ukrainianinstitute.org/event/2026-11-17-an-evening-of-jazz/",
+          "venue": "Ukrainian Institute of America",
+          "price": null,
+          "category": "music",
+          "description": ".",
+          "address": "2 E 79th St, New York, NY 10075",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7774,
+          "lng": -73.9637
+        },
+        {
+          "name": "Celebrating Fedir Yakymenko: A 150 Year Legacy",
+          "date": "2026-11-21T00:00:00+00:00",
+          "url": "https://ukrainianinstitute.org/event/event-2026-11-20-mati/",
+          "venue": "Ukrainian Institute of America",
+          "price": null,
+          "category": "art",
+          "description": ".",
+          "address": "2 E 79th St, New York, NY 10075",
+          "neighborhood": "Upper East Side",
+          "lat": 40.7774,
+          "lng": -73.9637
+        }
+      ],
+      "error": null,
+      "duration": 1.86,
+      "cached": false
+    },
+    {
+      "venue": "Austrian Cultural Forum",
+      "url": "https://www.acfny.org/events/",
+      "events": [
+        {
+          "name": "Frederic Morton Library Filmklub: Three Days",
+          "date": "2026-11-06T05:00:00+00:00",
+          "url": "https://acfny.org/event/frederic-morton-library-filmklub-three-days/",
+          "venue": "Austrian Cultural Forum",
+          "price": null,
+          "description": "November 6, 2026 | 7 PM (6.30 PM Doors) RESERVE YOUR SPOT HERE (EXCLUSIVE TO FREDERIC MORTON LIBRARY MEMBERS) Join us for the Frederic Morton Library Filmklub, a screening series dedicated to Austrian film and its many connections to literature, hist",
+          "category": "art"
+        },
+        {
+          "name": "Lucid Duo: Tradition & Innovation – 15 Years of Marimba Duo Performance",
+          "date": "2026-11-19T05:00:00+00:00",
+          "url": "https://acfny.org/event/lucid-duo/",
+          "venue": "Austrian Cultural Forum",
+          "price": null,
+          "description": "Images: ViennaRecordings November 19, 2026 | 6:30 PM TICKETS AVAILABLE HERE Join us for an evening celebrating 15 years of Lucid Duo , as Austr",
+          "category": "art"
+        },
+        {
+          "name": "Mahler in New York: Film-Screening & Talk with Emmy Award-winning Director Hilan Warshaw",
+          "date": "2026-12-01T05:00:00+00:00",
+          "url": "https://acfny.org/event/mahler-in-new-york/",
+          "venue": "Austrian Cultural Forum",
+          "price": null,
+          "description": "Image: Overtone Films December 1, 2026 | 6:30 PM TICKETS AVAILABLE IN DUE COURSE Join us at the Austrian Cultural Forum New York for a screening of Mahler in New York , an acclaimed feature documentary by Emmy Award-winning filmmaker",
+          "category": "film"
+        },
+        {
+          "name": "Steinkellner / Novak: A Christmas Journey",
+          "date": "2026-12-08T05:00:00+00:00",
+          "url": "https://acfny.org/event/steinkellner-novak/",
+          "venue": "Austrian Cultural Forum",
+          "price": null,
+          "description": "Image: Nico Kaiser December 8, 2026 | 6:30 PM TICKETS AVAILABLE IN DUE COURSE Experience a festive musical journey from the snow-covered Alps to North America as Austrian musicians Jakob Steinkellner and <a href=&quo",
+          "category": "art"
+        },
+        {
+          "name": "WUNDERBAR! Stories from Austria",
+          "date": "2026-12-10T05:00:00+00:00",
+          "url": "https://acfny.org/event/wunderbar/",
+          "venue": "Austrian Cultural Forum",
+          "price": null,
+          "description": "Image: Courtesy of Hidden Treasure Music Festival December 10, 2026 | 6:30 PM TICKETS AVAILABLE IN DUE COURSE Join us for WUNDERBAR! Stories from Austria , in collaboration with the Hidden Treasure Music Festival. Featuring acclaimed countertenor Jef",
+          "category": "art"
+        }
+      ],
+      "error": null,
+      "duration": 2.06,
+      "cached": false
+    },
+    {
+      "venue": "Fraunces Tavern Museum",
+      "url": "https://www.frauncestavernmuseum.org/events-calendar",
+      "events": [
+        {
+          "name": "Martha, The First Founding Mother Revealed Exhibition Preview",
+          "date": "2026-11-16T23:30:00.883000+00:00",
+          "url": "https://www.frauncestavernmuseum.org/events-calendar/2026/11/16/martha-the-first-founding-mother-revealed-exhibit-opening",
+          "venue": "Fraunces Tavern Museum",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Evacuation Day Dinner",
+          "date": "2026-11-23T23:30:00.920000+00:00",
+          "url": "https://www.frauncestavernmuseum.org/events-calendar/evacuationday",
+          "venue": "Fraunces Tavern Museum",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Chords & Cocktails",
+          "date": "2026-11-30T23:30:00.682000+00:00",
+          "url": "https://www.frauncestavernmuseum.org/events-calendar/2026/11/30/chords-amp-cocktails",
+          "venue": "Fraunces Tavern Museum",
+          "price": "Free / No Cover",
+          "category": "music"
+        },
+        {
+          "name": "Reenactment of Washington's Farewell to his Officers in the Long Room",
+          "date": "2026-12-06T17:00:00.496000+00:00",
+          "url": "https://www.frauncestavernmuseum.org/events-calendar/reenactment",
+          "venue": "Fraunces Tavern Museum",
+          "price": "Free / No Cover",
+          "category": "music"
+        }
+      ],
+      "error": null,
+      "duration": 0.61,
+      "cached": false
+    },
+    {
+      "venue": "The Poetry Project (St. Mark's Church)",
+      "url": "https://www.poetryproject.org/events/",
+      "events": [
+        {
+          "name": "Christeene + Geo Wyex",
+          "date": "2026-11-10T01:00:00+00:00",
+          "url": "https://www.poetryproject.org/events/christeene-geo-wyex",
+          "venue": "The Poetry Project",
+          "price": null,
+          "address": "131 E 10th St, New York, NY 10003",
+          "category": "books"
+        },
+        {
+          "name": "Sophia Dahlin + Harron Walker",
+          "date": "2026-11-17T01:00:00+00:00",
+          "url": "https://www.poetryproject.org/events/sophia-dahlin-harron-walker",
+          "venue": "The Poetry Project",
+          "price": null,
+          "address": "131 E 10th St, New York, NY 10003",
+          "category": "books"
+        },
+        {
+          "name": "Amy Ching-Yan Lam + Jacqueline Waters",
+          "date": "2026-11-19T01:00:00+00:00",
+          "url": "https://www.poetryproject.org/events/amy-ching-yan-lam-jacqueline-waters",
+          "venue": "The Poetry Project",
+          "price": null,
+          "address": "131 E 10th St, New York, NY 10003",
+          "category": "books"
+        },
+        {
+          "name": "Crackhead Barney + Ann Liv Young",
+          "date": "2026-11-21T01:00:00+00:00",
+          "url": "https://www.poetryproject.org/events/crackhead-barney-ann-liv-young",
+          "venue": "The Poetry Project",
+          "price": null,
+          "address": "131 E 10th St, New York, NY 10003",
+          "category": "books"
+        },
+        {
+          "name": "Carolina Ebeid + Mark Nowak",
+          "date": "2026-12-03T01:00:00+00:00",
+          "url": "https://www.poetryproject.org/events/carolina-ebeid-mark-nowak",
+          "venue": "The Poetry Project",
+          "price": null,
+          "address": "131 E 10th St, New York, NY 10003",
+          "category": "books"
+        },
+        {
+          "name": "S*an D. Henry-Smith + julie ezelle patton",
+          "date": "2026-12-05T01:00:00+00:00",
+          "url": "https://www.poetryproject.org/events/s-an-d-henry-smith-julie-patton",
+          "venue": "The Poetry Project",
+          "price": null,
+          "address": "131 E 10th St, New York, NY 10003",
+          "category": "books"
+        }
+      ],
+      "error": null,
+      "duration": 0.31,
+      "cached": false
+    },
+    {
+      "venue": "Poetry Society of America",
+      "url": "https://poetrysociety.org/events",
+      "events": [
+        {
+          "name": "Make Room: A New Voices Salon with Chase Berggrun, Gia Gonzales & Rachelle Rahmé",
+          "date": "2026-11-07T00:00:00+00:00",
+          "url": "https://poetrysociety.org/events/psa-reading-series-gonzales-okeke-rahmé",
+          "venue": "Poetry Society of America",
+          "price": null,
+          "category": "books"
+        },
+        {
+          "name": "Advanced Poetry Workshop with Kazim Ali",
+          "date": "2026-11-11T02:00:00+00:00",
+          "url": "https://poetrysociety.org/events/advanced-poetry-workshop-ali",
+          "venue": "Poetry Society of America",
+          "price": null,
+          "category": "books"
+        },
+        {
+          "name": "Felsenthal Ammons",
+          "date": "2026-11-12T01:30:00+00:00",
+          "url": "https://poetrysociety.org/events/felsenthal-ammons",
+          "venue": "Poetry Society of America",
+          "price": null,
+          "category": "books"
+        },
+        {
+          "name": "PSA Reading Series: Rick Barot & Paisley Rekdal",
+          "date": "2026-11-13T00:00:00+00:00",
+          "url": "https://poetrysociety.org/events/psa-reading-series-barot-rekdal",
+          "venue": "Poetry Society of America",
+          "price": null,
+          "category": "books"
+        },
+        {
+          "name": "PSA Reading Series: Dawn Lundy Martin & Juliana Spahr",
+          "date": "2026-12-04T00:00:00+00:00",
+          "url": "https://poetrysociety.org/events/psa-reading-series-martin-spahr",
+          "venue": "Poetry Society of America",
+          "price": null,
+          "category": "books"
+        }
+      ],
+      "error": null,
+      "duration": 0.31,
+      "cached": false
+    },
+    {
+      "venue": "Printed Matter",
+      "url": "https://www.printedmatter.org/programs/events",
+      "events": [
+        {
+          "name": "The Radical Unpresent — Gregory Sholette in conversation with Naeem Mohaiemen",
+          "date": "2026-11-05T17:00:00+00:00",
+          "url": "https://www.printedmatter.org/programs/events/2291",
+          "venue": "Printed Matter",
+          "price": null,
+          "address": "231 11th Ave, New York, NY 10001",
+          "category": "art"
+        },
+        {
+          "name": "Correspondences: de Appel 1975–2025",
+          "date": "2026-11-10T17:00:00+00:00",
+          "url": "https://www.printedmatter.org/programs/events/2333",
+          "venue": "Printed Matter",
+          "price": null,
+          "address": "231 11th Ave, New York, NY 10001",
+          "category": "art"
+        },
+        {
+          "name": "Paris Photo — Book Talks",
+          "date": "2026-11-12T17:00:00+00:00",
+          "url": "https://www.printedmatter.org/programs/events/2336",
+          "venue": "Printed Matter",
+          "price": null,
+          "address": "231 11th Ave, New York, NY 10001",
+          "category": "art"
+        },
+        {
+          "name": "Panel Discussion: Homes for People, Not for Profit",
+          "date": "2026-11-13T17:00:00+00:00",
+          "url": "https://www.printedmatter.org/programs/events/2342",
+          "venue": "Printed Matter",
+          "price": null,
+          "address": "231 11th Ave, New York, NY 10001",
+          "category": "community"
+        },
+        {
+          "name": "Eric Copeland on Demon Portraits with Dem Passwords",
+          "date": "2026-11-19T17:00:00+00:00",
+          "url": "https://www.printedmatter.org/programs/events/2338",
+          "venue": "Printed Matter",
+          "price": null,
+          "address": "231 11th Ave, New York, NY 10001",
+          "category": "art"
+        },
+        {
+          "name": "Tellus Audio Cassette Magazine Anthology Vol. 1",
+          "date": "2026-11-24T17:00:00+00:00",
+          "url": "https://www.printedmatter.org/programs/events/2340",
+          "venue": "Printed Matter",
+          "price": null,
+          "address": "231 11th Ave, New York, NY 10001",
+          "category": "art"
+        },
+        {
+          "name": "Our Gay Children : New York City Gay Liberation Marches, 1979-80",
+          "date": "2026-12-08T17:00:00+00:00",
+          "url": "https://www.printedmatter.org/programs/events/2343",
+          "venue": "Printed Matter",
+          "price": null,
+          "address": "231 11th Ave, New York, NY 10001",
+          "category": "family"
+        }
+      ],
+      "error": null,
+      "duration": 1.13,
+      "cached": false
+    },
+    {
+      "venue": "Noguchi Museum (own calendar)",
+      "url": "https://www.noguchi.org/museum/calendar/",
+      "events": [
+        {
+          "name": "Free First Friday",
+          "date": "2026-11-06T15:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-06-1000-free-first-friday/",
+          "venue": "Noguchi Museum",
+          "price": "Free",
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Tour Público Museum Tour in Spanish",
+          "date": "2026-11-06T18:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-06-1300-tour-publico-museum-tour-in-spanish/",
+          "venue": "Noguchi Museum",
+          "price": "Free",
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Gallery Kit",
+          "date": "2026-11-06T19:30:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-06-1430-gallery-kit/",
+          "venue": "Noguchi Museum",
+          "price": "Free",
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Gallery Kit",
+          "date": "2026-11-07T19:30:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-07-1430-gallery-kit/",
+          "venue": "Noguchi Museum",
+          "price": "Free",
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Mindfulness in the Galleries: Ikebana",
+          "date": "2026-11-14T15:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-14-1000-mindfulness-in-the-galleries-ikebana/",
+          "venue": "Noguchi Museum",
+          "price": null,
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Open Studio: Play with Paper",
+          "date": "2026-11-15T16:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-15-1100-open-studio-play-with-paper/",
+          "venue": "Noguchi Museum",
+          "price": "Free",
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Hands-On: Drawing",
+          "date": "2026-11-15T20:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-15-1500-hands-on-drawing/",
+          "venue": "Noguchi Museum",
+          "price": null,
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "中文公眾導覽 Museum Tour in Mandarin Chinese",
+          "date": "2026-11-15T20:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-15-1500-%e4%b8%ad%e6%96%87%e5%85%ac%e7%9c%be%e5%b0%8e%e8%a6%bd-museum-tour-in-mandarin-chinese/",
+          "venue": "Noguchi Museum",
+          "price": null,
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Drawing from a Distance",
+          "date": "2026-11-17T00:30:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-16-1930-drawing-from-a-distance/",
+          "venue": "Noguchi Museum",
+          "price": "Free",
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Noguchi Talks: Alanna Heiss and Martin Puryear Two American Sculptors in the Venice Biennale",
+          "date": "2026-11-18T23:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-18-1800-noguchi-talksalanna-heiss-and-martin-puryeartwo-american-sculptors-in-the-venice-biennale/",
+          "venue": "Noguchi Museum",
+          "price": null,
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Art for Families: Continuity",
+          "date": "2026-11-21T15:30:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-21-1030-art-for-families-continuity/",
+          "venue": "Noguchi Museum",
+          "price": null,
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Art for Tots (Ages 3–4): Light",
+          "date": "2026-11-22T15:30:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-22-1030-art-for-tots-ages-3-4-light/",
+          "venue": "Noguchi Museum",
+          "price": null,
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Art for Tots (Ages 1–2): Light",
+          "date": "2026-11-24T15:30:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-11-24-1030-art-for-tots-ages-1-2-light/",
+          "venue": "Noguchi Museum",
+          "price": null,
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Free First Friday",
+          "date": "2026-12-04T15:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-12-04-1000-free-first-friday/",
+          "venue": "Noguchi Museum",
+          "price": "Free",
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Tour Público Museum Tour in Spanish",
+          "date": "2026-12-04T18:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-12-04-1300-tour-publico-museum-tour-in-spanish/",
+          "venue": "Noguchi Museum",
+          "price": "Free",
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "Gallery Kit",
+          "date": "2026-12-04T19:30:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-12-04-1430-gallery-kit/",
+          "venue": "Noguchi Museum",
+          "price": "Free",
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        },
+        {
+          "name": "日本語でのツアー Museum Tour in Japanese",
+          "date": "2026-12-05T20:00:00+00:00",
+          "url": "https://www.noguchi.org/museum/calendar/event/2026-12-05-1500-%e6%97%a5%e6%9c%ac%e8%aa%9e%e3%81%a7%e3%81%ae%e3%83%84%e3%82%a2%e3%83%bc-museum-tour-in-japanese/",
+          "venue": "Noguchi Museum",
+          "price": null,
+          "address": "9-01 33rd Rd, Long Island City, NY 11106",
+          "category": "art"
+        }
+      ],
+      "error": null,
+      "duration": 0.86,
       "cached": false
     },
     {
@@ -103821,7 +105095,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.13,
+      "duration": 0.32,
       "cached": false
     },
     {
@@ -104031,7 +105305,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.2,
+      "duration": 0.31,
       "cached": false
     },
     {
@@ -104039,7 +105313,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.15,
+      "duration": 0.36,
       "cached": false
     },
     {
@@ -105083,7 +106357,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.23,
+      "duration": 0.48,
       "cached": false
     },
     {
@@ -106501,7 +107775,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.53,
       "cached": false
     },
     {
@@ -107331,7 +108605,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.26,
+      "duration": 0.6,
       "cached": false
     },
     {
@@ -115894,7 +117168,7 @@
       ],
       "error": null,
       "duration": 0.33,
-      "cached": false
+      "cached": true
     },
     {
       "venue": "Greenwich Village Comedy Club",
@@ -158202,8 +159476,8 @@
           "category": "gaming"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/video-game-tournament/ (serving stale cache)",
-      "duration": 0.09,
+      "error": null,
+      "duration": 2.94,
       "cached": true
     },
     {
@@ -158933,8 +160207,8 @@
           "category": "music"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/ (serving stale cache)",
-      "duration": 0.09,
+      "error": null,
+      "duration": 3.14,
       "cached": true
     },
     {
@@ -159777,8 +161051,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-guestlist/ (serving stale cache)",
-      "duration": 0.21,
+      "error": null,
+      "duration": 3.55,
       "cached": true
     },
     {
@@ -160275,8 +161549,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-rsvp-party/ (serving stale cache)",
-      "duration": 0.19,
+      "error": null,
+      "duration": 3.26,
       "cached": true
     },
     {
@@ -160854,8 +162128,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.12,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-dl/ (serving stale cache)",
+      "duration": 0.16,
       "cached": true
     },
     {
@@ -161421,8 +162695,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/slate-nyc/ (serving stale cache)",
-      "duration": 0.31,
+      "error": null,
+      "duration": 2.47,
       "cached": true
     },
     {
@@ -161634,8 +162908,8 @@
           "category": "film"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nebula/ (serving stale cache)",
-      "duration": 0.31,
+      "error": null,
+      "duration": 2.01,
       "cached": true
     },
     {
@@ -161721,7 +162995,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.31,
+      "duration": 0.52,
       "cached": false
     },
     {
@@ -161729,7 +163003,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.56,
+      "duration": 0.66,
       "cached": false
     },
     {
@@ -162166,8 +163440,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/holi/ (serving stale cache)",
-      "duration": 0.57,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -162187,8 +163461,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.28,
+      "error": null,
+      "duration": 3.42,
       "cached": true
     },
     {
@@ -162388,8 +163662,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.75,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/parade/ (serving stale cache)",
+      "duration": 0.15,
       "cached": true
     },
     {
@@ -162790,8 +164064,8 @@
           "category": "music"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.27,
+      "error": null,
+      "duration": 2.76,
       "cached": true
     },
     {
@@ -163228,8 +164502,8 @@
           "category": "community"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.27,
+      "error": null,
+      "duration": 2.25,
       "cached": true
     },
     {
@@ -163429,8 +164703,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.32,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free--street-fair/ (serving stale cache)",
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -163867,8 +165141,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.26,
+      "error": null,
+      "duration": 2.68,
       "cached": true
     },
     {
@@ -164092,8 +165366,8 @@
           "category": "food"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.21,
+      "error": null,
+      "duration": 2.49,
       "cached": true
     },
     {
@@ -165001,7 +166275,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 1.53,
+      "duration": 1.96,
       "cached": false
     },
     {
@@ -165687,8 +166961,8 @@
           "category": "party"
         }
       ],
-      "error": null,
-      "duration": 1.63,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/parties/ (serving stale cache)",
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -166314,8 +167588,8 @@
           "category": "art"
         }
       ],
-      "error": null,
-      "duration": 2.63,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/art-festivals/ (serving stale cache)",
+      "duration": 0.07,
       "cached": true
     },
     {
@@ -166551,8 +167825,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.39,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/craft-fair/ (serving stale cache)",
+      "duration": 0.06,
       "cached": true
     },
     {
@@ -166805,8 +168079,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.54,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/columbus-circle/ (serving stale cache)",
+      "duration": 0.17,
       "cached": true
     },
     {
@@ -167006,8 +168280,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.84,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -167171,8 +168445,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.68,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -167288,8 +168562,8 @@
           "category": "outdoors"
         }
       ],
-      "error": null,
-      "duration": 2.42,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -168690,8 +169964,8 @@
           "category": "gaming"
         }
       ],
-      "error": null,
-      "duration": 2.33,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -169566,8 +170840,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.16,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.02,
       "cached": true
     },
     {
@@ -174376,7 +175650,7 @@
       "url": "https://www.meetup.com/tabletop-tuesday/events/",
       "events": [],
       "error": null,
-      "duration": 0.43,
+      "duration": 0.34,
       "cached": false
     },
     {
@@ -177899,7 +179173,7 @@
       "url": "https://www.meetup.com/Brooklyn-Table-Top-Games-Meetup/events/",
       "events": [],
       "error": null,
-      "duration": 0.5,
+      "duration": 0.33,
       "cached": false
     },
     {
@@ -177907,7 +179181,7 @@
       "url": "https://www.meetup.com/astoria-board-game-club/events/",
       "events": [],
       "error": null,
-      "duration": 0.43,
+      "duration": 0.27,
       "cached": false
     },
     {
