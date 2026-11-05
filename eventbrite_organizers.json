@@ -1,0 +1,540 @@
+{
+ "_doc": "Eventbrite organizers/venues read via their public JSON feed (scrape_eventbrite_organizer). Maintained by scripts/discover_eventbrite.py, run occasionally from a home connection; edit freely. 'excluded' entries are never re-added by discovery.",
+ "sources": [
+  {
+   "id": "113265046921",
+   "kind": "organizer",
+   "name": "Time Out Market Union Square",
+   "category": "food",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "10797526283",
+   "kind": "organizer",
+   "name": "New York City Social Events",
+   "category": "party",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "99682610781",
+   "kind": "organizer",
+   "name": "Diversity and Inclusion Film Festival",
+   "category": "film",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "79969695593",
+   "kind": "organizer",
+   "name": "Grove 34 Comedy (James Quesada)",
+   "category": "comedy",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "70818623373",
+   "kind": "organizer",
+   "name": "Gotham Park",
+   "category": "sports",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "6201076797",
+   "kind": "organizer",
+   "name": "New York Adventure Club",
+   "category": "outdoors",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "76065455893",
+   "kind": "organizer",
+   "name": "EastWest Collective Networking",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "37080538453",
+   "kind": "organizer",
+   "name": "Chelsea Table + Stage",
+   "category": "music",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "33571507987",
+   "kind": "organizer",
+   "name": "The Dendro Lab",
+   "category": "outdoors",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "33177285613",
+   "kind": "organizer",
+   "name": "NYPL Career Services",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "19886909683",
+   "kind": "organizer",
+   "name": "EastVille Comedy Club (Eventbrite)",
+   "category": "comedy",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "115954955391",
+   "kind": "organizer",
+   "name": "NYC Events Guide",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "10013510321",
+   "kind": "organizer",
+   "name": "Czech Center New York",
+   "category": "art",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "76612649623",
+   "kind": "organizer",
+   "name": "Tiny Arts Supply",
+   "category": "art",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "5993389089",
+   "kind": "organizer",
+   "name": "NYPL for the Performing Arts",
+   "category": "music",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "58374016673",
+   "kind": "organizer",
+   "name": "VIP Sample Sale",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "54944809083",
+   "kind": "organizer",
+   "name": "NYC Thanksgiving Parade Events & Experiences",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "43013127903",
+   "kind": "organizer",
+   "name": "Barnes & Noble - Union Square",
+   "category": "books",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "31639983301",
+   "kind": "organizer",
+   "name": "NYC Social Group",
+   "category": "party",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "64632290063",
+   "kind": "organizer",
+   "name": "Funny People At",
+   "category": "comedy",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "64377861443",
+   "kind": "organizer",
+   "name": "Shock A Go Go Film Festival",
+   "category": "film",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "58042250453",
+   "kind": "organizer",
+   "name": "Kiss Lounge Queens",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "53470389893",
+   "kind": "organizer",
+   "name": "Cucala Dance Company",
+   "category": "dance",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "4279966505",
+   "kind": "organizer",
+   "name": "UrbanGlass",
+   "category": "art",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "39653796043",
+   "kind": "organizer",
+   "name": "NYPL Center for Educators and Schools",
+   "category": "family",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "31200117645",
+   "kind": "organizer",
+   "name": "CPR - Center for Performance Research",
+   "category": "art",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "31080353121",
+   "kind": "organizer",
+   "name": "Old Stone House & Washington Park",
+   "category": "outdoors",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "28434919813",
+   "kind": "organizer",
+   "name": "Long Live the Runway",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "2045320721",
+   "kind": "organizer",
+   "name": "GBH Parties (TV Eye, DROM)",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "20080920317",
+   "kind": "organizer",
+   "name": "Time Out Market New York",
+   "category": "food",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "17235422291",
+   "kind": "organizer",
+   "name": "The Greater Ridgewood Historical Society",
+   "category": "outdoors",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "11920997917",
+   "kind": "organizer",
+   "name": "MTS Productions (Latin Parties)",
+   "category": "dance",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "11755215507",
+   "kind": "organizer",
+   "name": "Hudson Park Library",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "11144694568",
+   "kind": "organizer",
+   "name": "NYPL Thomas Yoseloff Business Center",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "91898788783",
+   "kind": "organizer",
+   "name": "High Line Comedy Club",
+   "category": "comedy",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "8892496774",
+   "kind": "organizer",
+   "name": "Frankie Banks Parties (Queens & Brooklyn)",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "87580057813",
+   "kind": "organizer",
+   "name": "Tealeaf Collective",
+   "category": "music",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "86136754923",
+   "kind": "organizer",
+   "name": "Lectures on Tap",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "74577442203",
+   "kind": "organizer",
+   "name": "Touring Treasures",
+   "category": "food",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "67306368493",
+   "kind": "organizer",
+   "name": "The People's Forum",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "6350090643",
+   "kind": "organizer",
+   "name": "Newtown Creek Alliance",
+   "category": "outdoors",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "60462031173",
+   "kind": "organizer",
+   "name": "Blue Glove Hospitality Parties",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "48539543903",
+   "kind": "organizer",
+   "name": "Salsa Pizzeria",
+   "category": "dance",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "41991254513",
+   "kind": "organizer",
+   "name": "FRIGID New York",
+   "category": "theater",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "39289382883",
+   "kind": "organizer",
+   "name": "National Academy of Design",
+   "category": "art",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "3903604283",
+   "kind": "organizer",
+   "name": "Mike Geffner Presents (Brooklyn Music Kitchen)",
+   "category": "music",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "36746617253",
+   "kind": "organizer",
+   "name": "WalksNYC Tours & Cruises",
+   "category": "outdoors",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "34192319459",
+   "kind": "organizer",
+   "name": "1014 Space (873 Broadway)",
+   "category": "art",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "25203170825",
+   "kind": "organizer",
+   "name": "Ismada Productions",
+   "category": "music",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "18615337552",
+   "kind": "organizer",
+   "name": "MakerSpace NYC",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "17659708650",
+   "kind": "organizer",
+   "name": "Comedy Mob",
+   "category": "comedy",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "17292272476",
+   "kind": "organizer",
+   "name": "Improv Theatre LLC",
+   "category": "theater",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "1717273352",
+   "kind": "organizer",
+   "name": "ICLUBNYC Parties & Cruises",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "17022023886",
+   "kind": "organizer",
+   "name": "Main Event Hospitality (South Beach Astoria)",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "16028691897",
+   "kind": "organizer",
+   "name": "El Museo del Barrio",
+   "category": "art",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "15236594760",
+   "kind": "organizer",
+   "name": "The Latin Social",
+   "category": "dance",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "1513263208",
+   "kind": "organizer",
+   "name": "Open House New York",
+   "category": "outdoors",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "12316350145",
+   "kind": "organizer",
+   "name": "iBoatNYC Party Cruises",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "121282020636",
+   "kind": "organizer",
+   "name": "NYPL Roosevelt Island Library",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "120777580098",
+   "kind": "organizer",
+   "name": "Brooklyn Public Library - Community Health",
+   "category": "community",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "120760418804",
+   "kind": "organizer",
+   "name": "The Ornate Project",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "11795946643",
+   "kind": "organizer",
+   "name": "Attractions4us NYC Tours & Cruises",
+   "category": "outdoors",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "115824599241",
+   "kind": "organizer",
+   "name": "Brooklyn Attic Books",
+   "category": "books",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "115594308411",
+   "kind": "organizer",
+   "name": "Comedia en Times Square (Grisly Pear)",
+   "category": "comedy",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "114781508361",
+   "kind": "organizer",
+   "name": "The Twisted Spine",
+   "category": "books",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "110275304201",
+   "kind": "organizer",
+   "name": "South Beach NY (Olympia Lounge)",
+   "category": "clubbing",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "108250881751",
+   "kind": "organizer",
+   "name": "Dada Bar",
+   "category": "music",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "107812353391",
+   "kind": "organizer",
+   "name": "Ermantourage NYC (Foodie Socials)",
+   "category": "party",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "106883929601",
+   "kind": "organizer",
+   "name": "Arts and Architecture Conservancy at Saint Peter's",
+   "category": "music",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "103104074541",
+   "kind": "organizer",
+   "name": "Enoch's",
+   "category": "comedy",
+   "added": "2026-11-05"
+  },
+  {
+   "id": "103091184941",
+   "kind": "organizer",
+   "name": "Tipsy Scoop Queens",
+   "category": "food",
+   "added": "2026-11-05"
+  }
+ ],
+ "excluded": [
+  {
+   "id": "18073089199",
+   "kind": "organizer",
+   "name": "Teri Jon",
+   "reason": "lists ticket tiers (VIP/GA), not events"
+  },
+  {
+   "id": "16960673418",
+   "kind": "organizer",
+   "name": "Pagans Paradise",
+   "reason": "adults-only kink parties"
+  },
+  {
+   "id": "1373401985",
+   "kind": "organizer",
+   "name": "The Green-Wood Cemetery",
+   "reason": "already read from its own calendar"
+  },
+  {
+   "id": "74484939183",
+   "kind": "organizer",
+   "name": "Flop House Comedy",
+   "reason": "already read from its own scraper"
+  },
+  {
+   "id": "91209759103",
+   "kind": "organizer",
+   "name": "Comedy Village",
+   "reason": "already read from its own calendar"
+  },
+  {
+   "id": "8513706675",
+   "kind": "organizer",
+   "name": "Prospect Park Alliance",
+   "reason": "already read from its own calendar"
+  }
+ ]
+}
