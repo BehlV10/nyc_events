@@ -5059,6 +5059,7 @@ _TRIBE_VENUE_DEFAULTS = {
     "mocanyc.org": ("Museum of Chinese in America", "215 Centre St, New York, NY", "Chinatown", 40.7194, -73.9993, "art"),
     "riversideparknyc.org": ("Riverside Park Conservancy", None, "Upper West Side", None, None, "outdoors"),
     "zincbar.com": ("Zinc Bar", "82 W 3rd St, New York, NY 10012", "Greenwich Village", 40.7297, -73.9990, "music"),
+    "prospectpark.org": ("Prospect Park", None, "Prospect Park", None, None, "outdoors"),
     "comedyvillage.com": ("Comedy Village", "352 W 44th St, New York, NY", "Hell's Kitchen", 40.7593, -73.9905, "comedy"),
     "movingimage.org": ("Museum of the Moving Image", "36-01 35th Ave, Queens, NY", "Astoria", 40.7563, -73.9239, "film"),
     "queensbotanical.org": ("Queens Botanical Garden", "43-50 Main St, Queens, NY", "Flushing", 40.7510, -73.8290, "outdoors"),
@@ -5831,7 +5832,8 @@ def scrape_wix_events(url, ua):
             continue
         for ev in (obj.get("events") or {}).get("events") or []:
             cfg = ((ev.get("scheduling") or {}).get("config") or {})
-            if cfg.get("scheduleTbd") or not cfg.get("startDate") or not ev.get("title"):
+            if cfg.get("scheduleTbd") or not cfg.get("startDate") or not ev.get("title") \
+                    or re.fullmatch(r"(museum |general |daily )?admission( tickets?)?", ev["title"].strip(), re.I):
                 continue
             dt = _local_iso_to_utc(cfg["startDate"])
             if dt is None:
@@ -5858,7 +5860,7 @@ _CARD_DATE_RE = re.compile(_MONTHS_RE + r"\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b(?:,?
 _CARD_NUMDATE_RE = re.compile(r"\b(1[0-2]|0?[1-9])/([0-3]?\d)(?:/(20\d\d|\d\d))?\b")
 _CARD_TIME_RE = re.compile(r"\b(1[0-2]|0?[1-9])(?::([0-5]\d))?\s*([ap])\.?\s?m\.?\b", re.I)
 _CARD_DEAD_TITLES = re.compile(r"cancel+ed|postponed|\bclosed\b|closure|deadline|sold out\b.*waitlist", re.I)
-_CARD_SKIP_TITLES = re.compile(r"^\W*(join our|subscribe|home\b|current\b|featured events|events at|buy|get|book|more|learn|read|view|see|details|tickets?|register|rsvp|info|share|add to|sign up|reserve|calendar|next|previous|load more|\W*$)", re.I)
+_CARD_SKIP_TITLES = re.compile(r"^\W*(ics$|google calendar|contact\b|join our|subscribe|home\b|current\b|featured events|events at|buy|get|book|more|learn|read|view|see|details|tickets?|register|rsvp|info|share|add to|sign up|reserve|calendar|next|previous|load more|\W*$)", re.I)
 
 
 def _card_date(text, today):
@@ -7013,7 +7015,7 @@ _ALL_VENUES = [
     {"name": "Partiful NYC", "url": "https://partiful.com/explore/l/nyc/events", "ua": UA_CHROME, "scraper": scrape_partiful, "default_category": "community"},
     {"name": "NYC Parks Hikes, Rangers & Outdoor Programs", "url": "https://www.nycgovparks.org/events/hiking", "ua": UA_CHROME, "scraper": scrape_nyc_parks_categories, "default_category": "outdoors"},
     {"name": "Riverside Park Conservancy", "url": "https://riversideparknyc.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
-    {"name": "Prospect Park Alliance", "url": "https://www.prospectpark.org/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
+    {"name": "Prospect Park Alliance", "url": "https://www.prospectpark.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Brooklyn Paramount (Official Calendar)", "url": "https://www.brooklynparamount.com/shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
 
     # Brooklyn Music & Nightlife
@@ -7121,6 +7123,23 @@ _ALL_VENUES = [
     {"name": "New York Theatre Guide", "url": "https://www.newyorktheatreguide.com/whats-on/all-shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "theater"},
     {"name": "AllEvents NYC", "url": "https://allevents.in/new%20york", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "AllEvents NYC (All)", "url": "https://allevents.in/new%20york/all", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
+    {"name": "Jacques Marchais Museum of Tibetan Art", "url": "https://www.tibetanmuseum.org/calendar", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "art"},
+    {"name": "City Island Chamber Events", "url": "https://cityislandchamber.org/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
+    {"name": "Uptown Grand Central (East Harlem)", "url": "https://www.uptowngrandcentral.org/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "community"},
+    {"name": "Lewis Latimer House Museum", "url": "https://latimernow.org/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "art"},
+    {"name": "Weeksville Heritage Center", "url": "https://www.weeksvillesociety.org/events", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "art"},
+    {"name": "Bronx Arts Ensemble", "url": "https://bronxartsensemble.org/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
+    {"name": "Historic Richmond Town", "url": "https://www.historicrichmondtown.org/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "family"},
+    {"name": "King Manor Museum", "url": "https://kingmanor.org/events-1-1-1", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "art"},
+    {"name": "JCC Manhattan", "url": "https://mmjccm.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "community", "kwargs": {"link_re": "^/events/[^/]+$", "venue": "JCC Manhattan", "address": "334 Amsterdam Ave, New York, NY 10023"}},
+    {"name": "Brooklyn Children's Museum", "url": "https://www.brooklynkids.org/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "family", "kwargs": {"link_re": "^/(events|programs)/[^/]+/?$", "venue": "Brooklyn Children's Museum", "address": "145 Brooklyn Ave, Brooklyn, NY 11213"}},
+    {"name": "Flushing Town Hall (own calendar)", "url": "https://www.flushingtownhall.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/show-details/", "venue": "Flushing Town Hall", "address": "137-35 Northern Blvd, Flushing, NY 11354"}},
+    {"name": "Snug Harbor Botanical Garden & Classes", "url": "https://www.snug-harbor.org/botanical-garden/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "^/(event|class)/", "venue": "Snug Harbor Cultural Center & Botanical Garden", "address": "1000 Richmond Terrace, Staten Island, NY 10301"}},
+    {"name": "Center for Brooklyn History", "url": "https://www.bklynlibrary.org/cbh", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "books", "kwargs": {"venue": "Center for Brooklyn History", "address": "128 Pierrepont St, Brooklyn, NY 11201"}},
+    {"name": "Pregones/PRTT", "url": "https://pregonesprtt.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"venue": "Pregones Theater", "address": "575 Walton Ave, Bronx, NY 10451"}},
+    {"name": "Lehman Center for the Performing Arts (own calendar)", "url": "https://www.lehmancenter.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/events/[^/]+$", "venue": "Lehman Center for the Performing Arts", "address": "250 Bedford Park Blvd W, Bronx, NY 10468"}},
+    {"name": "New York Botanical Garden", "url": "https://www.nybg.org/whats-on/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "^/event/", "venue": "New York Botanical Garden", "address": "2900 Southern Blvd, Bronx, NY 10458"}},
+    {"name": "Bartow-Pell Mansion Museum", "url": "https://www.bartowpellmansionmuseum.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/events/[^/]+/?$", "venue": "Bartow-Pell Mansion Museum", "address": "895 Shore Rd, Bronx, NY 10464"}},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
