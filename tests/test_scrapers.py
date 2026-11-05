@@ -843,7 +843,7 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(ev1["venue"], "100 Broadway, New York")
         self.assertEqual(ev1["price"], "$15")
         self.assertEqual(ev1["url"], "https://lu.ma/nyc-ai-summit-2026")
-        self.assertEqual(ev1["category"], "community")
+        self.assertEqual(ev1["category"], "tech")  # startup/AI events go to the default-off Tech bucket
         self.assertEqual(ev1["lat"], 40.7081)
         self.assertEqual(ev1["lng"], -74.0112)
         self.assertIn("Hosted by NY Tech Collective", ev1["description"])
@@ -853,7 +853,7 @@ class TestNYCEvents(unittest.TestCase):
         self.assertEqual(ev2["name"], "Brooklyn Tech Founder Mixer")
         self.assertEqual(ev2["venue"], "DUMBO (RSVP for address)")
         self.assertEqual(ev2["price"], "Free")
-        self.assertEqual(ev2["category"], "community")
+        self.assertEqual(ev2["category"], "tech")  # "Founders" host/title reads as a startup event
 
         # Check geo resolution
         geo1 = resolve_event_geo(ev1)
@@ -1349,3 +1349,44 @@ class TestEventbriteRotation(unittest.TestCase):
         res = s._scrape_one(v, allow_live=False)
         self.assertIsNone(res["error"])
         self.assertEqual([e["name"] for e in res["events"]], ["Cached Party"])
+
+
+class TestBostonPortRound2(unittest.TestCase):
+    def test_deal_and_service_ad_filters(self):
+        from scrapers import is_deal_event, is_service_ad, guess_category
+        self.assertTrue(is_deal_event("Happy Hour Deals!"))
+        self.assertFalse(is_deal_event("Standup Comedy Show and $4 Drinks"))
+        self.assertEqual(guess_category("$1 Oysters Every Monday", "food"), "deals")
+        self.assertTrue(is_service_ad("Spa After Dark", "Some Hotel"))
+        self.assertFalse(is_service_ad("Partner Thai Massage Workshop", "Brooklyn Brainery"))
+
+    def test_music_genre_inference(self):
+        from scrapers import infer_music_genre
+        self.assertEqual(infer_music_genre("Kenny Barron Trio", "Village Vanguard", category="music"), "jazz_blues")
+        self.assertEqual(infer_music_genre("All Night Long", "Nowadays", category="clubbing"), "electronic")
+        self.assertEqual(infer_music_genre("Salsa Social", "Taj Lounge", category="dance"), "latin_global")
+        self.assertIsNone(infer_music_genre("Ballroom Social", "Dance Studio", category="dance"))
+
+    def test_rsvp_link_helpers(self):
+        from template import _is_event_specific_link, _is_generic_link
+        self.assertTrue(_is_event_specific_link("https://lu.ma/8ugz1m1n"))
+        self.assertFalse(_is_event_specific_link("https://lu.ma/nyc"))
+        self.assertTrue(_is_generic_link("https://example.com/events/"))
+        self.assertFalse(_is_generic_link("https://example.com/events/jazz-night-2026"))
+
+    def test_hidden_meetup_venue_adopts_real_venue(self):
+        from template import group_by_date
+        when = (datetime.now(timezone.utc) + timedelta(days=2)).replace(hour=23, minute=0, second=0, microsecond=0).isoformat()
+        results = [
+            {"venue": "Meetup: NYC Board Gamers", "url": "https://www.meetup.com/nyc-board-gamers/", "events": [
+                {"name": "Board Game Night at The Uncommons", "date": when, "url": "https://www.meetup.com/nyc-board-gamers/events/123456/",
+                 "venue": "NYC Board Gamers", "venue_unknown": True}]},
+            {"venue": "The Uncommons", "url": "https://uncommonsnyc.com/events/", "events": [
+                {"name": "Board Game Night at The Uncommons", "date": when, "url": "https://uncommonsnyc.com/events/",
+                 "venue": "The Uncommons"}]},
+        ]
+        dated, _tba, _ongoing = group_by_date(results)
+        evs = [e for _, es in dated for e in es if "Board Game Night" in e["name"]]
+        self.assertEqual(len(evs), 1)
+        self.assertEqual(evs[0]["venue"], "The Uncommons")
+        self.assertIn("meetup.com", evs[0]["url"])
