@@ -338106,17 +338106,17 @@
       "venue": "Eventbrite: Run Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/run-club/",
       "events": [],
-      "error": null,
-      "duration": 0.29,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/run-club/",
+      "duration": 0.07,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Running Clubs",
       "url": "https://www.eventbrite.com/d/ny--new-york/running-club/",
       "events": [],
-      "error": null,
-      "duration": 0.51,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/running-club/",
+      "duration": 0.07,
+      "cached": false
     },
     {
       "venue": "Eventbrite: 5K Races",
@@ -338178,17 +338178,17 @@
       "venue": "Eventbrite: Rock Climbing",
       "url": "https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
       "events": [],
-      "error": null,
-      "duration": 0.31,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rock-climbing/",
+      "duration": 0.13,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Roller Skating",
       "url": "https://www.eventbrite.com/d/ny--new-york/roller-skating/",
       "events": [],
-      "error": null,
-      "duration": 0.08,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/roller-skating/",
+      "duration": 0.06,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Yoga",
@@ -338266,9 +338266,9 @@
       "venue": "Eventbrite: Raves",
       "url": "https://www.eventbrite.com/d/ny--new-york/rave/",
       "events": [],
-      "error": null,
-      "duration": 0.03,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rave/",
+      "duration": 0.15,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Afrobeats",
@@ -338282,9 +338282,9 @@
       "venue": "Eventbrite: Reggaeton",
       "url": "https://www.eventbrite.com/d/ny--new-york/reggaeton/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/reggaeton/",
+      "duration": 0.15,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Hip-Hop Parties",
@@ -338306,9 +338306,9 @@
       "venue": "Eventbrite: Silent Discos",
       "url": "https://www.eventbrite.com/d/ny--new-york/silent-disco/",
       "events": [],
-      "error": null,
-      "duration": 0.26,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/silent-disco/",
+      "duration": 0.17,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Brunch Parties",
@@ -338341,6 +338341,14 @@
       "error": null,
       "duration": 0.02,
       "cached": true
+    },
+    {
+      "venue": "Eventbrite: Singer-Songwriters",
+      "url": "https://www.eventbrite.com/d/ny--new-york/singer-songwriter/",
+      "events": [],
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Karaoke",
@@ -338378,9 +338386,9 @@
       "venue": "Eventbrite: Stand-Up Comedy",
       "url": "https://www.eventbrite.com/d/ny--new-york/stand-up-comedy/",
       "events": [],
-      "error": null,
-      "duration": 0.23,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Theater",
@@ -338458,25 +338466,25 @@
       "venue": "Eventbrite: Social Mixers",
       "url": "https://www.eventbrite.com/d/ny--new-york/social-mixer/",
       "events": [],
-      "error": null,
-      "duration": 0.23,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Singles Events",
       "url": "https://www.eventbrite.com/d/ny--new-york/singles/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Speed Dating",
       "url": "https://www.eventbrite.com/d/ny--new-york/speed-dating/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.12,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Wine Tastings",
