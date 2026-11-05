@@ -241610,8 +241610,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.84,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-meetup/ (serving stale cache)",
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -241799,8 +241799,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 3.41,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-trivia/ (serving stale cache)",
+      "duration": 0.05,
       "cached": true
     },
     {
@@ -336700,17 +336700,17 @@
       "venue": "Eventbrite: Hiking",
       "url": "https://www.eventbrite.com/d/ny--new-york/hiking/",
       "events": [],
-      "error": null,
-      "duration": 0.19,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hiking/",
+      "duration": 0.05,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Hikes",
       "url": "https://www.eventbrite.com/d/ny--new-york/hike/",
       "events": [],
-      "error": null,
-      "duration": 0.37,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/hike/",
+      "duration": 0.05,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Outdoor Adventures",
@@ -336740,9 +336740,9 @@
       "venue": "Eventbrite: Cycling",
       "url": "https://www.eventbrite.com/d/ny--new-york/cycling/",
       "events": [],
-      "error": null,
-      "duration": 0.06,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/cycling/",
+      "duration": 0.08,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Rock Climbing",
@@ -336796,9 +336796,9 @@
       "venue": "Eventbrite: DJ Sets",
       "url": "https://www.eventbrite.com/d/ny--new-york/dj/",
       "events": [],
-      "error": null,
-      "duration": 0.17,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/dj/",
+      "duration": 0.08,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Techno",
@@ -336820,17 +336820,17 @@
       "venue": "Eventbrite: Dance Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/dance-party/",
       "events": [],
-      "error": null,
-      "duration": 0.15,
-      "cached": true
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/dance-party/",
+      "duration": 0.13,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Day Parties",
       "url": "https://www.eventbrite.com/d/ny--new-york/day-party/",
       "events": [],
-      "error": null,
-      "duration": 0.04,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.08,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Raves",
@@ -336900,9 +336900,9 @@
       "venue": "Eventbrite: Concerts",
       "url": "https://www.eventbrite.com/d/ny--new-york/concerts/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.06,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Singer-Songwriters",
@@ -336980,17 +336980,17 @@
       "venue": "Eventbrite: Dance Performances",
       "url": "https://www.eventbrite.com/d/ny--new-york/dance-performance/",
       "events": [],
-      "error": null,
-      "duration": 0.06,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.04,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Film Screenings",
       "url": "https://www.eventbrite.com/d/ny--new-york/film-screening/",
       "events": [],
-      "error": null,
-      "duration": 0.02,
-      "cached": true
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
+      "duration": 0.03,
+      "cached": false
     },
     {
       "venue": "Eventbrite: Art Shows",
@@ -337004,9 +337004,9 @@
       "venue": "Eventbrite: Gallery Openings",
       "url": "https://www.eventbrite.com/d/ny--new-york/gallery-opening/",
       "events": [],
-      "error": null,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run",
       "duration": 0.04,
-      "cached": true
+      "cached": false
     },
     {
       "venue": "Eventbrite: Paint & Sip",
