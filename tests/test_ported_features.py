@@ -529,5 +529,44 @@ class TestCacheFingerprint(unittest.TestCase):
             scrapers._last_known_good.pop(name, None)
 
 
+class TestGenericVenueParsers(unittest.TestCase):
+    def test_html_cards_dates_times_and_skips(self):
+        d = _future_local(3, 18, 30)
+        page = ("<ul>"
+                f'<li><h3>Gallery Late Night</h3><p>{d:%A, %B} {d.day}, {d.year} 6:30 pm</p><a href="/events/late-night">Learn more</a></li>'
+                f'<li><h3>Museum Closed for Holiday</h3><p>{d:%B} {d.day}</p><a href="/events/closed">x</a></li>'
+                f'<li><a href="/events/family-day">Family Day</a><span>{d:%b} {d.day}</span></li>'
+                f'<li><a href="/about">About</a><span>{d:%b} {d.day}</span></li>'
+                "</ul>")
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
+            events = scrapers.scrape_html_cards("https://example.org/calendar", UA_CHROME, link_re=r"^/events/", venue="Example Museum")
+        names = {e["name"]: e for e in events}
+        self.assertEqual(set(names), {"Gallery Late Night", "Family Day"})
+        self.assertEqual(_local(names["Gallery Late Night"]["date"]), d)
+        self.assertEqual(_local(names["Family Day"]["date"]).hour, 12)  # untimed -> noon placeholder
+        self.assertEqual(names["Family Day"]["url"], "https://example.org/events/family-day")
+        self.assertEqual(names["Family Day"]["venue"], "Example Museum")
+
+    def test_tribe_unknown_domain_uses_event_venue(self):
+        d = _future_local(2, 19).strftime("%Y-%m-%d %H:%M:%S")
+        payload = {"events": [{"title": "Story Time", "start_date": d, "url": "https://kids.example.org/e/1",
+                   "venue": {"venue": "Main Branch", "address": "1 Main St", "city": "Brooklyn", "zip": "11201",
+                             "geo_lat": "40.69", "geo_lng": "-73.99"}}]}
+        with patch("scrapers._SESSION.get", return_value=_resp(payload=payload)):
+            events = scrapers.scrape_tribe_events_api("https://kids.example.org/wp-json/tribe/events/v1/events", UA_CHROME)
+        self.assertEqual(events[0]["venue"], "Main Branch")
+        self.assertEqual(events[0]["address"], "1 Main St, Brooklyn, NY 11201")
+        self.assertNotIn("Queens", json.dumps(events[0]))
+        self.assertAlmostEqual(events[0]["lat"], 40.69)
+
+    def test_source_kwargs_are_passed(self):
+        seen = {}
+        def fake(url, ua, **kw):
+            seen.update(kw)
+            return []
+        scrapers._run_scraper({"url": "https://x.example.org/", "ua": "UA", "scraper": fake, "kwargs": {"link_re": "^/e/"}})
+        self.assertEqual(seen, {"link_re": "^/e/"})
+
+
 if __name__ == "__main__":
     unittest.main()
