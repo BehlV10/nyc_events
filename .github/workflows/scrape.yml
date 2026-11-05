@@ -44,6 +44,13 @@ jobs:
       - name: Unit tests
         run: python -m unittest discover tests
 
+      # Run-to-run state lives on the `data` branch (one commit, replaced every run), not main.
+      - name: Restore geocode cache from the data branch
+        run: |
+          if git fetch -q --depth=1 origin data; then
+            git show FETCH_HEAD:geocode_cache.json > geocode_cache.json || true
+          fi
+
       - run: python server.py export events.json
       - name: Curate daily editor's picks
         run: python scripts/curate_highlights.py
@@ -52,24 +59,41 @@ jobs:
       - run: python server.py export html index.html
       - run: cp index.html events.html
 
-      - name: Commit data and static site if changed
+      - name: Check output
         run: |
-          # Guard against corrupted or zero-byte data files overwriting good data
+          # Guard against publishing corrupted or zero-byte output
           if [ ! -s events.json ] || [ $(wc -c < events.json) -lt 100000 ]; then
-            echo "ERROR: Corrupt or zero-byte events.json ($(wc -c < events.json 2>/dev/null || echo 0) bytes). Aborting commit."
+            echo "ERROR: Corrupt or zero-byte events.json ($(wc -c < events.json 2>/dev/null || echo 0) bytes)."
             exit 1
           fi
           if [ ! -s index.html ] || [ $(wc -c < index.html) -lt 100000 ]; then
-            echo "ERROR: Corrupt or zero-byte index.html detected. Aborting commit."
+            echo "ERROR: Corrupt or zero-byte index.html."
             exit 1
           fi
+
+      - name: Publish latest data snapshot to the data branch
+        run: |
+          # The generated site ships in the Pages artifact below. The latest events.json (and the
+          # geocode cache the next run needs) go to `data` as a single parentless commit that
+          # replaces the previous one, so old ~50 MB snapshots don't pile up in git history.
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add events.json index.html events.html deferred_days.html highlights.json community_events.json luckyseat_shows.json geocode_cache.json
+          rm -rf "$RUNNER_TEMP/data" && mkdir -p "$RUNNER_TEMP/data"
+          cp events.json geocode_cache.json "$RUNNER_TEMP/data/"
+          export GIT_INDEX_FILE="$RUNNER_TEMP/data.index"
+          git --work-tree="$RUNNER_TEMP/data" add -A .
+          tree=$(git write-tree)
+          commit=$(git commit-tree "$tree" -m "Data snapshot $(date -u +%Y-%m-%dT%H:%MZ)")
+          unset GIT_INDEX_FILE
+          git push -f origin "$commit:refs/heads/data"
+
+      - name: Commit small state files to main if changed
+        run: |
+          git add highlights.json luckyseat_shows.json
           if git diff --staged --quiet; then
             echo "no changes"
           else
-            git commit -m "Update events and site: $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+            git commit -m "Update highlights: $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
             for i in 1 2 3; do
               git push && break
               echo "git push attempt $i failed; retrying..."

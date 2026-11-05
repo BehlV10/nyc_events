@@ -15,11 +15,10 @@ on:
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
+  actions: write
 
 concurrency:
-  group: pages
+  group: community-submissions
   cancel-in-progress: false
 
 jobs:
@@ -66,33 +65,25 @@ jobs:
         run: |
           python scripts/add_suggested_venue.py "$VENUE_PAYLOAD"
 
-      - name: Commit updated files and site
+      - name: Commit the submission
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add community_events.json suggested_venues.json events.json index.html events.html
+          git add community_events.json suggested_venues.json
           if git diff --staged --quiet; then
             echo "no changes"
           else
             git commit -m "Process community submission: $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
             git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-  deploy:
-    needs: process_submission
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      # The site is built and deployed by the scrape workflow (generated HTML is not committed).
+      # A push made with GITHUB_TOKEN doesn't trigger workflows, so dispatch it explicitly; venue
+      # caches keep that run short.
+      - name: Rebuild and deploy the site
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run scrape.yml --ref main
