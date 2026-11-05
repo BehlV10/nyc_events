@@ -2298,7 +2298,16 @@ def scrape_seatgeek_nyc(_url, _ua):
     cid = os.environ.get("SEATGEEK_CLIENT_ID") or "MTg5NjE5MzZ8MTc3NjcwMTYxNS4yODM3MDE3"
     events = []
     seen = set()
-    for page in range(1, 3):
+    # One query per local day (see scrape_ticketmaster_nyc): two date-sorted pages of 100
+    # only ever reached about a day ahead.
+    today = datetime.now(EASTERN).replace(hour=0, minute=0, second=0, microsecond=0)
+    windows = []
+    for i in range(HORIZON_DAYS):
+        start = max(today + timedelta(days=i), datetime.now(EASTERN))
+        windows.append((start.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
+                        (today + timedelta(days=i + 1)).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")))
+    failures = 0
+    for win_start, win_end in windows:
         try:
             resp = _SESSION.get(
                 "https://api.seatgeek.com/2/events",
@@ -2306,18 +2315,19 @@ def scrape_seatgeek_nyc(_url, _ua):
                     "client_id": cid,
                     "lat": 40.7128,
                     "lon": -74.0060,
-                    "range": "20mi",
-                    "per_page": 100,
-                    "page": page,
+                    "range": "12mi",
+                    "per_page": 200,
                     "sort": "datetime_local.asc",
-                    "datetime_utc.gte": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
+                    "datetime_utc.gte": win_start,
+                    "datetime_utc.lt": win_end,
                 },
                 timeout=15,
             )
             resp.raise_for_status()
             batch = resp.json().get("events", [])
+            time.sleep(0.2)
             if not batch:
-                break
+                continue
             for ev in batch:
                 title = ev.get("title")
                 iso = ev.get("datetime_utc")
@@ -2338,6 +2348,8 @@ def scrape_seatgeek_nyc(_url, _ua):
                 vname = v_obj.get("name") or "NYC Venue"
                 city = v_obj.get("city")
                 state = v_obj.get("state")
+                if state and state != "NY":
+                    continue
                 venue = f"{vname} ({city}, {state})" if city and city.lower() not in vname.lower() else vname
                 v_loc = v_obj.get("location") or {}
                 lat = v_loc.get("lat")
@@ -2377,8 +2389,13 @@ def scrape_seatgeek_nyc(_url, _ua):
                     "category": guess_category(title, cat, venue=venue),
                     "genre": next((g for p in ev.get("performers") or [] for gn in (p.get("genres") or []) for g in [map_native_genre(gn.get("name"))] if g), None),
                 })
-        except Exception:
-            break
+        except Exception as exc:
+            failures += 1
+            print(f"  SeatGeek window {win_start} failed: {exc}")
+            if failures >= 3:
+                if not events:
+                    raise
+                break
     return events
 
 
