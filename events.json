@@ -196881,8 +196881,8 @@
           "category": "books"
         }
       ],
-      "error": null,
-      "duration": 2.34,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/ridgewood-queens/ (serving stale cache)",
+      "duration": 0.24,
       "cached": true
     },
     {
@@ -197295,8 +197295,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 3.47,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/sunnyside-queens/ (serving stale cache)",
+      "duration": 0.23,
       "cached": true
     },
     {
@@ -204178,8 +204178,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.47,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/nypl/ (serving stale cache)",
+      "duration": 0.35,
       "cached": true
     },
     {
@@ -208454,8 +208454,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 1.82,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/rooftop-films/ (serving stale cache)",
+      "duration": 0.33,
       "cached": true
     },
     {
@@ -211729,8 +211729,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 1.76,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/grisly-pear-comedy/ (serving stale cache)",
+      "duration": 0.52,
       "cached": true
     },
     {
@@ -250556,8 +250556,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.92,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/salsa-social/ (serving stale cache)",
+      "duration": 0.47,
       "cached": true
     },
     {
@@ -252350,8 +252350,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 2.74,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/swing-dancing/ (serving stale cache)",
+      "duration": 0.56,
       "cached": true
     },
     {
@@ -255062,8 +255062,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 3.23,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.46,
       "cached": true
     },
     {
@@ -255942,8 +255942,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.03,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.46,
       "cached": true
     },
     {
@@ -256911,8 +256911,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.24,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.46,
       "cached": true
     },
     {
@@ -257100,8 +257100,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.49,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.46,
       "cached": true
     },
     {
@@ -257893,8 +257893,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 1.66,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.44,
       "cached": true
     },
     {
