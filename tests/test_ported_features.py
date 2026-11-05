@@ -583,5 +583,25 @@ class TestFever(unittest.TestCase):
         self.assertEqual(events[0]["price"], "From $36")
 
 
+class TestTicketmasterWindows(unittest.TestCase):
+    def test_per_day_windows_keep_api_key_and_filter(self):
+        start = _future_local(1, 20).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        def ev(name, venue, state="NY"):
+            return {"name": name, "url": "https://tm/e", "dates": {"start": {"dateTime": start}, "status": {"code": "onsale"}},
+                    "_embedded": {"venues": [{"name": venue, "city": {"name": "New York"}, "state": {"stateCode": state}}]}}
+        payload = {"_embedded": {"events": [ev("Hamilton", "Richard Rodgers Theatre"), ev("Parking Pass", "MSG"),
+                                            ev("Jersey Show", "Prudential Center", "NJ"), ev("Banksy Museum - Flexiticket", "Banksy Museum")]}}
+        calls = []
+        def fake_get(url, params=None, **kw):
+            calls.append(dict(params or {}))
+            return _resp(payload=payload)
+        with patch("scrapers._SESSION.get", side_effect=fake_get), patch("scrapers.time.sleep"):
+            events = scrapers.scrape_ticketmaster_nyc("", "")
+        self.assertEqual(len(calls), scrapers.HORIZON_DAYS)
+        self.assertEqual(len({c["apikey"] for c in calls}), 1)  # the dedupe key used to clobber the API key
+        self.assertTrue(all(c.get("endDateTime") for c in calls))
+        self.assertEqual([e["name"] for e in events], ["Hamilton"])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -1840,35 +1840,51 @@ def scrape_sesh_comedy(url, ua):
     return events
 
 
+# Add-on products Ticketmaster lists as events.
+_TM_NON_EVENT_RE = re.compile(r"general admission|flex(i)?ticket|flex(ible)? (entry|admission)|\bparking\b|\bupgrade\b|vip package|hospitality package|suite rental|gift card|souvenir|merch(andise)? (pre-?order|bundle)|fast lane|premium seating add", re.I)
+
+
 def scrape_ticketmaster_nyc(_url, _ua):
     """Ticketmaster Discovery API for NYC venues (MSG, Barclays, Webster Hall, Bowery, etc.)."""
-    key = os.environ.get("TICKETMASTER_API_KEY") or "oo1qd0wzLe7WJpm61ALQuUCTMXGK7U5z"
+    api_key = os.environ.get("TICKETMASTER_API_KEY") or "oo1qd0wzLe7WJpm61ALQuUCTMXGK7U5z"
     events = []
     seen = set()
-    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    for page in range(3):
+    # One query per local day: the Discovery API stops deep paging at 1,000 results, and NYC
+    # has ~170 Ticketmaster events a day (5,900 over the horizon), so a single date-sorted
+    # query only ever reached the next couple of days.
+    today = datetime.now(EASTERN).replace(hour=0, minute=0, second=0, microsecond=0)
+    windows = []
+    for i in range(HORIZON_DAYS):
+        start = max(today + timedelta(days=i), datetime.now(EASTERN))
+        end = today + timedelta(days=i + 1)
+        windows.append((start.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                        end.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")))
+    failures = 0
+    for win_start, win_end in windows:
         try:
             resp = _SESSION.get(
                 "https://app.ticketmaster.com/discovery/v2/events.json",
                 params={
-                    "apikey": key,
+                    "apikey": api_key,
                     "latlong": "40.7128,-74.0060",
-                    "radius": 20,
+                    "radius": 12,
                     "unit": "miles",
-                    "size": 100,
-                    "page": page,
+                    "size": 200,
                     "sort": "date,asc",
-                    "startDateTime": now_str,
+                    "startDateTime": win_start,
+                    "endDateTime": win_end,
                 },
                 timeout=15,
             )
+            if resp.status_code == 429:
+                time.sleep(1.5)
+                resp = _SESSION.get(resp.url, timeout=15)
             resp.raise_for_status()
             batch = resp.json().get("_embedded", {}).get("events", [])
-            if not batch:
-                break
+            time.sleep(0.25)  # Discovery API allows 5 requests/second
             for ev in batch:
                 name = ev.get("name")
-                if is_closed_show(name):
+                if is_closed_show(name) or _TM_NON_EVENT_RE.search(name or ""):
                     continue
                 status_code = (ev.get("dates", {}).get("status", {}) or {}).get("code", "").lower()
                 if status_code in ("cancelled", "canceled", "postponed"):
@@ -1887,6 +1903,11 @@ def scrape_ticketmaster_nyc(_url, _ua):
                 vname = vobj.get("name") or "NYC Venue"
                 city_name = (vobj.get("city") or {}).get("name") or ""
                 state_code = (vobj.get("state") or {}).get("stateCode") or ""
+                if state_code and state_code != "NY":
+                    continue  # the radius reaches New Jersey; also drops stray out-of-market listings
+                if "museum" in vname.lower() and "museum" in (name or "").lower() \
+                        and not re.search(r"workshop|tour|talk|class|concert|party|night|lecture|screening", name, re.I):
+                    continue  # the museum's own timed-entry ticket, not an event
                 if city_name and city_name.lower() not in vname.lower():
                     venue = f"{vname} ({city_name}, {state_code})" if state_code else f"{vname} ({city_name})"
                 else:
@@ -1954,8 +1975,13 @@ def scrape_ticketmaster_nyc(_url, _ua):
                     "category": guess_category(ev.get("name"), cat, venue=venue),
                     "genre": _tm_native_genre(ev),
                 })
-        except Exception:
-            break
+        except Exception as exc:
+            failures += 1
+            print(f"  Ticketmaster window {win_start} failed: {exc}")
+            if failures >= 3:
+                if not events:
+                    raise
+                break
     return events
 
 
