@@ -2477,13 +2477,37 @@ DICE_NYC_FILTERS = (
 )
 
 
-def _dice_events_from_page(page_url, ua):
+def _dice_page_props(page_url, ua):
     resp = _SESSION.get(page_url, headers={"User-Agent": ua or UA_CHROME}, timeout=12)
     resp.raise_for_status()
     tag = BeautifulSoup(resp.text, "html.parser").find("script", id="__NEXT_DATA__")
     if not tag or not tag.string:
-        return []
-    return (json.loads(tag.string).get("props", {}).get("pageProps", {}) or {}).get("events") or []
+        return {}
+    return json.loads(tag.string).get("props", {}).get("pageProps", {}) or {}
+
+
+def _dice_events_from_page(page_url, ua):
+    return _dice_page_props(page_url, ua).get("events") or []
+
+
+DICE_MAX_GENRE_PAGES = 70
+
+
+def _dice_genre_suffixes(ua):
+    """Genre sub-pages (/music/gig/jazz, /music/dj/techno, ...) listed by each primary page's
+    secondaryFilters; each browse page only carries ~24 events, so genres widen coverage."""
+    out = []
+    for primary in ("/music/gig", "/music/dj", "/music/party", "/culture/comedy", "/culture/social"):
+        try:
+            props = _dice_page_props(DICE_NYC_BASE + primary, ua)
+        except Exception:
+            continue
+        for f in props.get("secondaryFilters") or []:
+            link = f.get("activateLink") or ""
+            m = re.search(r"/browse/[^/]+(/.+)$", link)
+            if m and m.group(1) not in out and m.group(1) not in DICE_NYC_FILTERS:
+                out.append(m.group(1))
+    return out[:DICE_MAX_GENRE_PAGES]
 
 
 def scrape_dice_nyc(url, ua):
@@ -2491,11 +2515,17 @@ def scrape_dice_nyc(url, ua):
     (one request per browse filter)."""
     events = []
     seen = set()
-    for suffix in DICE_NYC_FILTERS:
+    suffixes = list(DICE_NYC_FILTERS) + _dice_genre_suffixes(ua)
+
+    def _fetch(suffix):
         try:
-            raw_events = _dice_events_from_page(DICE_NYC_BASE + suffix, ua)
+            return suffix, _dice_events_from_page(DICE_NYC_BASE + suffix, ua)
         except Exception:
-            continue
+            return suffix, []
+
+    with ThreadPoolExecutor(max_workers=4) as ex:
+        pages = list(ex.map(_fetch, suffixes))
+    for suffix, raw_events in pages:
         for ev in raw_events:
             name = (ev.get("name") or "").strip()
             dates = ev.get("dates") or {}
@@ -2529,7 +2559,7 @@ def scrape_dice_nyc(url, ua):
             # Browse payloads carry only the event id; dice.fm/event/<id> redirects to the event page.
             ev_key = ev.get("perm_name") or ev.get("id")
             event_url = f"https://dice.fm/event/{ev_key}" if ev_key else DICE_NYC_BASE + suffix
-            default_cat = "comedy" if "comedy" in suffix else "film" if "film" in suffix else "theater" if "theatre" in suffix else "clubbing" if suffix in ("/music/dj", "/music/party") else "music" if suffix.startswith("/music") or not suffix else "community"
+            default_cat = "comedy" if "comedy" in suffix else "film" if "film" in suffix else "theater" if "theatre" in suffix else "clubbing" if suffix.startswith(("/music/dj", "/music/party")) else "music" if suffix.startswith("/music") or not suffix else "community"
             entry = {
                 "name": name,
                 "date": iso,
