@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T11:08:42.877028+00:00",
+  "generated_at": "2026-11-05T11:15:10.271229+00:00",
   "venues": [
     {
       "venue": "DoNYC Citywide",
@@ -45008,7 +45008,7 @@
       "url": "https://secretnyc.co/",
       "events": [],
       "error": null,
-      "duration": 0.99,
+      "duration": 1.0,
       "cached": false
     },
     {
@@ -120488,7 +120488,7 @@
       "url": "https://donyc.com/venues/market-hotel",
       "events": [],
       "error": null,
-      "duration": 0.44,
+      "duration": 0.26,
       "cached": false
     },
     {
@@ -120751,7 +120751,7 @@
       "url": "https://donyc.com/venues/basement-ny",
       "events": [],
       "error": null,
-      "duration": 0.5,
+      "duration": 0.26,
       "cached": false
     },
     {
@@ -121578,7 +121578,7 @@
         }
       ],
       "error": null,
-      "duration": 0.5,
+      "duration": 0.3,
       "cached": false
     },
     {
@@ -122848,7 +122848,7 @@
       "url": "https://donyc.com/venues/brooklyn-storehouse",
       "events": [],
       "error": null,
-      "duration": 0.41,
+      "duration": 0.22,
       "cached": false
     },
     {
@@ -128047,7 +128047,7 @@
         }
       ],
       "error": null,
-      "duration": 0.66,
+      "duration": 0.83,
       "cached": false
     },
     {
@@ -138919,7 +138919,7 @@
         }
       ],
       "error": null,
-      "duration": 0.24,
+      "duration": 0.2,
       "cached": true
     },
     {
@@ -194242,6 +194242,357 @@
       "cached": true
     },
     {
+      "venue": "Pioneer Works",
+      "url": "https://pioneerworks.org/programs",
+      "events": [
+        {
+          "name": "Fall Saturdays",
+          "date": "2026-11-07T17:00:00+00:00",
+          "url": "https://pioneerworks.org/programs/fall-saturdays3",
+          "venue": "Pioneer Works",
+          "price": null,
+          "address": "159 Pioneer St, Brooklyn, NY 11231",
+          "category": "art"
+        },
+        {
+          "name": "Second Sundays: November 2026",
+          "date": "2026-11-08T17:00:00+00:00",
+          "url": "https://pioneerworks.org/programs/second-sundays-november-2026",
+          "venue": "Pioneer Works",
+          "price": null,
+          "address": "159 Pioneer St, Brooklyn, NY 11231",
+          "category": "art"
+        },
+        {
+          "name": "Eiko Ishibashi",
+          "date": "2026-11-12T17:00:00+00:00",
+          "url": "https://pioneerworks.org/programs/eiko-ishibashi",
+          "venue": "Pioneer Works",
+          "price": null,
+          "address": "159 Pioneer St, Brooklyn, NY 11231",
+          "category": "art"
+        },
+        {
+          "name": "Terence Tao: Six Math Essentials",
+          "date": "2026-11-15T17:00:00+00:00",
+          "url": "https://pioneerworks.org/programs/terence-tao-six-math-essentials",
+          "venue": "Pioneer Works",
+          "price": null,
+          "address": "159 Pioneer St, Brooklyn, NY 11231",
+          "category": "art"
+        },
+        {
+          "name": "Rachel Cusk: Life of M",
+          "date": "2026-11-17T17:00:00+00:00",
+          "url": "https://pioneerworks.org/programs/rachel-cusk-life-of-m",
+          "venue": "Pioneer Works",
+          "price": null,
+          "address": "159 Pioneer St, Brooklyn, NY 11231",
+          "category": "art"
+        },
+        {
+          "name": "Fall Saturdays",
+          "date": "2026-11-21T17:00:00+00:00",
+          "url": "https://pioneerworks.org/programs/fall-saturdays4",
+          "venue": "Pioneer Works",
+          "price": null,
+          "address": "159 Pioneer St, Brooklyn, NY 11231",
+          "category": "art"
+        },
+        {
+          "name": "Members Night: Broadcast and Beers",
+          "date": "2026-12-02T17:00:00+00:00",
+          "url": "https://pioneerworks.org/programs/members-night-broadcast-and-beers",
+          "venue": "Pioneer Works",
+          "price": null,
+          "address": "159 Pioneer St, Brooklyn, NY 11231",
+          "category": "art"
+        },
+        {
+          "name": "American Sign Language (ASL) Tour of There's no me without you",
+          "date": "2026-12-06T17:00:00+00:00",
+          "url": "https://pioneerworks.org/programs/ASL-tour-of-there-s-no-me-without-you",
+          "venue": "Pioneer Works",
+          "price": null,
+          "address": "159 Pioneer St, Brooklyn, NY 11231",
+          "category": "art"
+        }
+      ],
+      "error": null,
+      "duration": 1.87,
+      "cached": true
+    },
+    {
+      "venue": "Jackson Heights Insider (Queens events)",
+      "url": "https://www.jacksonheightsinsider.com/events",
+      "events": [
+        {
+          "name": "Malika Zarra",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/malika-zarra/",
+          "venue": "Lefrak Concert Hall, 153-49 Reeves Ave, Flushing, NY 11367, USA",
+          "price": "$25",
+          "description": "Jazz, rooted in African and diasporic traditions, is defined by its spirit of improvisation—and few embody this more than Malika Zarra. A Moroccan-born, French-raised, and globally celebrated singer, composer, and producer, Zarra fuses North African ",
+          "category": "community"
+        },
+        {
+          "name": "Clara Ulrich: Yo Quiero Ser Mi Marido",
+          "date": "2026-11-07T01:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/clara-ulrich-yo-quiero-ser-mi-marido/",
+          "venue": "Queens Theatre, Flushing Meadows Corona Park, 14 United Nations Ave S, Corona, NY 11368, USA",
+          "price": null,
+          "description": "Clara Ulrich realiza una investigación muy poco seria sobre la relación de pareja. Entre escenas cotidianas desopilantes y una observación detallada de los comportamientos masculinos vs los femeninos, Clara construye la risoterapia ideal para parejas",
+          "category": "community"
+        },
+        {
+          "name": "Grove Comedy",
+          "date": "2026-11-07T00:30:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/grove-comedy-8/",
+          "venue": "Grove 34 Comedy Club, 31-83 34th St, Astoria, NY 11106, USA",
+          "price": "$16.33",
+          "description": "Grove Comedy returns with a curated lineup of big names, original performances and up and coming all stars.",
+          "category": "comedy"
+        },
+        {
+          "name": "Wilder Titan Theatre Company presents Our Town",
+          "date": "2026-11-07T00:30:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/wilder-titan-theatre-company-presents-our-town-2/",
+          "venue": "Queens Theatre, Flushing Meadows Corona Park, 14 United Nations Ave S, Corona, NY 11368, USA",
+          "price": "$37",
+          "description": "Wilder Titan Theatre Company presents Our Town by Thornton Wilder Thornton Wilder’s Pulitzer Prize-winning drama presents a timeless commentary on the transience of human existence. Emergent love. Stunning comprehension. Shattering grief. Brilliant s",
+          "category": "theater"
+        },
+        {
+          "name": "Fernando García Group | Afro-Puerto Rican Jazz",
+          "date": "2026-11-07T00:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/fernando-garcia-group-afro-puerto-rican-jazz/",
+          "venue": "Terraza 7, 40-19 Gleane St, Elmhurst, NY 11373, USA",
+          "price": "$20",
+          "description": "An evening of Afro-Puerto Rican jazz with drummer and composer Fernando García, blending traditional rhythms, contemporary jazz, and vibrant improvisation in a celebration of Puerto Rico’s rich musical heritage. 7:00PM to 8:00PM (First Set) 9:00PM to",
+          "category": "music"
+        },
+        {
+          "name": "Marie Antoinette",
+          "date": "2026-11-07T00:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/marie-antoinette-2/",
+          "venue": "153-49 Reeves Ave, Flushing, NY 11367, USA",
+          "price": null,
+          "description": "Presented by the QC Department of Theatre, Dance & Fashion, Marie Antoinette is Tony Award-winning playwright David Adjmi’s stylized retelling of the life and final days of the queen who helped inspire a revolution. PERFORMANCE SCHEDULE: OCT 29-NOV 8",
+          "category": "community"
+        },
+        {
+          "name": "Poncia",
+          "date": "2026-11-07T00:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/poncia/",
+          "venue": "Thalia Spanish Theatre, 41-17 Greenpoint Ave, Sunnyside, NY 11104, USA",
+          "price": null,
+          "description": "La Premiada Actris / The award wining Actress SOLEDAD LOPEZ en / in PONCIA del prestigioso escritor español / by the prestigious Playwright from SPAIN LUIS LUQUE Producida, Diseñada y Dirigida por / Produced, Designed & Directed by Angel Gil Orrios P",
+          "category": "community"
+        },
+        {
+          "name": "Animal Capitalism and the Biodiversity Crisis Event with Ashely Dawson and Terike Haapoja",
+          "date": "2026-11-06T23:30:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/animal-capitalism-and-the-biodiversity-crisis-event-with-ashely-dawson-and-terike-haapoja/",
+          "venue": "The World’s Borough Bookshop, 34-06 73rd St, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "Terike Haapoja is an interdisciplinary visual artist. Her large-scale installations, writings, and collaborations explore the possibility of nonviolent coexistence across differences, with a specific focus on more-than-human relations. Haapoja is cur",
+          "category": "community"
+        },
+        {
+          "name": "Clases de tejido / Crochet Classes",
+          "date": "2026-11-06T23:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/clases-de-tejido-crochet-classes/",
+          "venue": "93rd St & 34th Ave, Queens, NY 11372, USA",
+          "price": null,
+          "description": "Ven a relajarte con nosotros mientras aprendes a tejer. Esta clase es para todos los niveles, materiales incluidos. Actividad 100% familiar. Todos son bienvenidos!! Come relax with us while you learn to knit. This class is for all levels, materials i",
+          "category": "community"
+        },
+        {
+          "name": "Baile Folklórico",
+          "date": "2026-11-06T23:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/baile-folklorico-2/",
+          "venue": "34th Avenue & 93rd Street, 34th Ave & 93rd St, Queens, NY 11372, USA",
+          "price": null,
+          "description": "Join us for our beginner baile folklórico classes. All ages welcome. Run by 34th Avenue Open Streets Coalition",
+          "category": "community"
+        },
+        {
+          "name": "Zines with Citation Needed",
+          "date": "2026-11-06T21:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/zines-with-citation-needed/",
+          "venue": "Queens Public Library at Jackson Heights, 35-51 81st St, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "Hands-on teen workshop series exploring DIY publishing and zine formats, including informational, art, and fan zines. Participants leave with a self-published zine. Full details on the Queens Library event page.",
+          "category": "community"
+        },
+        {
+          "name": "Hula Lessons with Verona",
+          "date": "2026-11-06T19:30:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/hula-lessons-with-verona-7/",
+          "venue": "34th Ave & 93rd St, Queens, NY 11372, USA",
+          "price": null,
+          "description": "Hula Hooping & jump roping with Verona. Free and open to all. Sponsored by the 34th Avenue Open Streets Coalition.",
+          "category": "community"
+        },
+        {
+          "name": "Free Notary Services",
+          "date": "2026-11-06T14:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/free-notary-services/",
+          "venue": "K L Sanchez Law Office, P.C., 37-06 82nd St #304, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "At K L Sanchez Law Office, we are happy to offer free notary services to the New York community as a way of giving back. If you have personal documents that need to be notarized, we are here to help. Need a document notarized? Call us today at 646-70",
+          "category": "community"
+        },
+        {
+          "name": "Open Mic Night",
+          "date": "2026-11-06T01:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/open-mic-night/",
+          "venue": "Nancy Blake’s Tavern + Tap, 82-19 Northern Blvd, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "We are bringing together the different varied talent of our wonderful Queens community every Thursday night. Come sing a song, tell some jokes, play your instrument, whatever you like! Play or perform as long as you like. Kitchen is open until 11pm, ",
+          "category": "community"
+        },
+        {
+          "name": "New York Classical Players Presents Brahms & Puts: A Journey to Belief",
+          "date": "2026-11-06T00:30:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/new-york-classical-players-presents-brahms-puts-a-journey-to-belief/",
+          "venue": "Flushing Town Hall, 137-35 Northern Blvd, Flushing, NY 11354, USA",
+          "price": null,
+          "description": "DATE: Thursday, November 5, 2026 TIME: 7:30 PM Admission: FREE w/ RSVP The New York Classical Players (NYCP) returns to Flushing Town Hall for a program of clarity, inward reflection, and emotional breadth. NYCP’s November program traces a journey fr",
+          "category": "community"
+        },
+        {
+          "name": "Wilder Titan Theatre Company presents Our Town",
+          "date": "2026-11-06T00:30:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/wilder-titan-theatre-company-presents-our-town/",
+          "venue": "Queens Theatre, Flushing Meadows Corona Park, 14 United Nations Ave S, Corona, NY 11368, USA",
+          "price": "$37",
+          "description": "Wilder Titan Theatre Company presents Our Town by Thornton Wilder Thornton Wilder’s Pulitzer Prize-winning drama presents a timeless commentary on the transience of human existence. Emergent love. Stunning comprehension. Shattering grief. Brilliant s",
+          "category": "theater"
+        },
+        {
+          "name": "Drag Zumba with Drag Artists for Expression!",
+          "date": "2026-11-06T00:30:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/drag-zumba-with-drag-artists-for-expression/",
+          "venue": "Queens Public Library at Jackson Heights, 35-51 81st St, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "Zumba fitness class combining cardio dance routines with drag entertainment, led by KokoMomo and Drag Artists for Expression NYC. Adults 18 and up, first come, first served. Full details on the Queens Library event page.",
+          "category": "community"
+        },
+        {
+          "name": "The Pedro Giraudo Quartet — Contemporary Tango",
+          "date": "2026-11-06T00:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/the-pedro-giraudo-quartet-contemporary-tango-7/",
+          "venue": "Terraza 7, 40-19 Gleane St, Elmhurst, NY 11373, USA",
+          "price": "$20",
+          "description": "The Pedro Giraudo Quartet opens the evening with contemporary tango led by Latin GRAMMY Award–winning bassist and composer Pedro Giraudo, blending Argentine tradition with modern energy, lyrical depth, and expressive improvisation. 7:00 pm to 8:00 pm",
+          "category": "dance"
+        },
+        {
+          "name": "Subcampeón",
+          "date": "2026-11-06T00:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/subcampeon/",
+          "venue": "Thalia Spanish Theatre, 41-17 Greenpoint Ave, Sunnyside, NY 11104, USA",
+          "price": null,
+          "description": "ZUHAITZ GURRUTXAGA en - in STAND-UP COMEDY SHOW ZUHAITZ GURRUTXAGA (1980), former professional soccer player, was a European Under-16 Champion and won a bronze medal at the Under-17 World Cup with the Spanish national team. Years later, he finished a",
+          "category": "community"
+        },
+        {
+          "name": "Marie Antoinette",
+          "date": "2026-11-06T00:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/marie-antoinette/",
+          "venue": "153-49 Reeves Ave, Flushing, NY 11367, USA",
+          "price": null,
+          "description": "Presented by the QC Department of Theatre, Dance & Fashion, Marie Antoinette is Tony Award-winning playwright David Adjmi’s stylized retelling of the life and final days of the queen who helped inspire a revolution. PERFORMANCE SCHEDULE: OCT 29-NOV 8",
+          "category": "community"
+        },
+        {
+          "name": "Weekly ¡DALE! Runs",
+          "date": "2026-11-05T23:30:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/weekly-dale-runs-2/",
+          "venue": "Queens Beer Factory, 86-13 Northern Blvd, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "Meet 6:30 PM · Run 7:00 PM · 2.5K & 5K RSVP via Strava and come ready to run.",
+          "category": "community"
+        },
+        {
+          "name": "Visible Humans",
+          "date": "2026-11-05T23:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/visible-humans/",
+          "venue": "Museum of the Moving Image, 36-01 35th Ave, Queens, NY 11106, USA",
+          "price": null,
+          "description": "Location: Bartos Screening Room With artist and ophthalmologist Benjamin Freeman and curator Elisabeth Sherman in person The Visible Human Project began in the late 1990s with sponsorship from the National Library of Medicine. Its aim was to make a c",
+          "category": "community"
+        },
+        {
+          "name": "One-on-One Email Help",
+          "date": "2026-11-05T23:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/one-on-one-email-help-7/",
+          "venue": "Queens Public Library at Jackson Heights, 35-51 81st St, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "30-minute one-on-one computer help sessions focused on using email. Preregistration is required, register by phone or in person. Full details on the Queens Library event page.",
+          "category": "community"
+        },
+        {
+          "name": "New Beginner Salsa Classes",
+          "date": "2026-11-05T23:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/new-beginner-salsa-classes/",
+          "venue": "Ballet Factory, 97-12 Roosevelt Ave, Flushing, NY 11368, USA",
+          "price": null,
+          "description": "Beginner Salsa Classes in Jackson Heights, Queens – No Experience Needed! Ready to dance? Join us at Cucala Dance Company for fun, welcoming, community-driven beginner salsa classes. Whether you’ve never danced before or want to brush up on the basic",
+          "category": "dance"
+        },
+        {
+          "name": "ESL Conversation Club – For Beginners",
+          "date": "2026-11-05T21:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/esl-conversation-club-for-beginners-4/",
+          "venue": "93rd St & 34th Ave or Zoom, Queens, NY 11372, USA",
+          "price": null,
+          "description": "Come practice English with us! Ven a practicar inglés con nosotros. Es gratis y para todos los niveles. Sponsored by the 34th Avenue Open Streets Coalition.",
+          "category": "services"
+        },
+        {
+          "name": "Celebrate Diwali: Henna Hand Painting with Shahnaz Begum",
+          "date": "2026-11-05T21:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/celebrate-diwali-henna-hand-painting-with-shahnaz-begum/",
+          "venue": "Queens Public Library at Jackson Heights, 35-51 81st St, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "Diwali cultural arts event with henna hand painting using 100% natural henna. Supplies are limited, first come, first served. Full details on the Queens Library event page.",
+          "category": "art"
+        },
+        {
+          "name": "Free Dance Classes",
+          "date": "2026-11-05T20:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/free-dance-classes-2/",
+          "venue": "P.S. 149 Christa McAuliffe, 93-11 34th Ave, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "MindLeaps is a 100% free afterschool program for youth in New York City. Kids will explore different dance styles like Ballet, Hip Hop, Jazz & Breaking while building grit, confidence and teamwork in a fun and supportive environment! Classes Tuesdays",
+          "category": "community"
+        },
+        {
+          "name": "Easy Chair Yoga for Older Adults (English and Spanish)",
+          "date": "2026-11-05T19:30:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/easy-chair-yoga-for-older-adults-english-and-spanish-12/",
+          "venue": "Queens Public Library at Jackson Heights, 35-51 81st St, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "Gentle chair yoga class for older adults offered in English and Spanish with instructor Paola M. Cardenas. Full details on the Queens Library event page.",
+          "category": "sports"
+        },
+        {
+          "name": "Art Class (Adults)",
+          "date": "2026-11-05T18:00:00+00:00",
+          "url": "https://jacksonheightsinsider.com/event/art-class-adults-2/",
+          "venue": "St. Mark’s Episcopal Church, 33-50 82nd St, Jackson Heights, NY 11372, USA",
+          "price": null,
+          "description": "The Jackson Heights Art Club offers several weekly adult classes in watercolor, oil, acrylic, pastel and drawing. Each student receives individual guidance and assistance from our professional instructors at the Club’s Studio. One may register or lea",
+          "category": "community"
+        }
+      ],
+      "error": null,
+      "duration": 0.93,
+      "cached": false
+    },
+    {
       "venue": "Industry City",
       "url": "https://industrycity.com/events/",
       "events": [
@@ -195417,8 +195768,8 @@
           "category": "comedy"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/grove-34/ (serving stale cache)",
-      "duration": 0.14,
+      "error": null,
+      "duration": 3.34,
       "cached": true
     },
     {
@@ -196305,8 +196656,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/long-island-city/ (serving stale cache)",
-      "duration": 0.14,
+      "error": null,
+      "duration": 2.66,
       "cached": true
     },
     {
@@ -196743,8 +197094,8 @@
           "category": "community"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/jackson-heights/ (serving stale cache)",
-      "duration": 0.22,
+      "error": null,
+      "duration": 2.86,
       "cached": true
     },
     {
@@ -197133,8 +197484,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/forest-hills-queens/ (serving stale cache)",
-      "duration": 0.2,
+      "error": null,
+      "duration": 2.81,
       "cached": true
     },
     {
@@ -198318,7 +198669,7 @@
       "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center",
       "events": [],
       "error": null,
-      "duration": 0.38,
+      "duration": 0.12,
       "cached": false
     },
     {
@@ -198528,7 +198879,7 @@
       "url": "https://donyc.com/venues/the-new-school",
       "events": [],
       "error": null,
-      "duration": 0.4,
+      "duration": 0.16,
       "cached": false
     },
     {
@@ -198536,7 +198887,7 @@
       "url": "https://donyc.com/venues/mannes-school-of-music",
       "events": [],
       "error": null,
-      "duration": 0.47,
+      "duration": 0.15,
       "cached": false
     },
     {
@@ -199667,7 +200018,7 @@
       "url": "https://donyc.com/venues/the-rooftop-at-pier-17",
       "events": [],
       "error": null,
-      "duration": 0.41,
+      "duration": 0.11,
       "cached": false
     },
     {
@@ -201185,7 +201536,7 @@
       "url": "https://donyc.com/venues/donttellmama",
       "events": [],
       "error": null,
-      "duration": 0.46,
+      "duration": 0.17,
       "cached": false
     },
     {
@@ -202069,7 +202420,7 @@
       "url": "https://donyc.com/venues/silvana-nyc",
       "events": [],
       "error": null,
-      "duration": 0.53,
+      "duration": 0.12,
       "cached": false
     },
     {
@@ -203242,8 +203593,8 @@
           "category": "books"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/mcnally-jackson/ (serving stale cache)",
-      "duration": 0.26,
+      "error": null,
+      "duration": 3.23,
       "cached": true
     },
     {
@@ -203479,8 +203830,8 @@
           "category": "music"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/bluestockings/ (serving stale cache)",
-      "duration": 0.38,
+      "error": null,
+      "duration": 1.86,
       "cached": true
     },
     {
@@ -204028,8 +204379,8 @@
           "category": "clubbing"
         }
       ],
-      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/brooklyn-public-library/ (serving stale cache)",
-      "duration": 0.3,
+      "error": null,
+      "duration": 3.1,
       "cached": true
     },
     {
@@ -204277,8 +204628,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.71,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--queens/queens-public-library/ (serving stale cache)",
+      "duration": 0.15,
       "cached": true
     },
     {
@@ -210889,8 +211240,8 @@
           "category": "comedy"
         }
       ],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
-      "duration": 0.3,
+      "error": null,
+      "duration": 2.77,
       "cached": true
     },
     {
@@ -210989,7 +211340,7 @@
         }
       ],
       "error": null,
-      "duration": 0.21,
+      "duration": 0.3,
       "cached": true
     },
     {
@@ -211591,8 +211942,8 @@
           "category": "comedy"
         }
       ],
-      "error": null,
-      "duration": 4.22,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/st-marks-comedy-club/ (serving stale cache)",
+      "duration": 0.14,
       "cached": true
     },
     {
@@ -219216,8 +219567,8 @@
           "category": "outdoors"
         }
       ],
-      "error": null,
-      "duration": 2.69,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--brooklyn/prospect-park/ (serving stale cache)",
+      "duration": 0.22,
       "cached": true
     },
     {
@@ -220994,8 +221345,8 @@
           "category": "theater"
         }
       ],
-      "error": null,
-      "duration": 2.26,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/the-shed/ (serving stale cache)",
+      "duration": 0.19,
       "cached": true
     },
     {
@@ -250856,8 +251207,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 3.12,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/pa-la-calle/ (serving stale cache)",
+      "duration": 0.27,
       "cached": true
     },
     {
@@ -251105,8 +251456,8 @@
           "category": "dance"
         }
       ],
-      "error": null,
-      "duration": 4.62,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/outdoor-salsa/ (serving stale cache)",
+      "duration": 0.5,
       "cached": true
     },
     {
@@ -255342,8 +255693,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 3.55,
+      "error": "405 Client Error: Not Allowed for url: https://www.eventbrite.com/d/ny--new-york/free-guestlist/ (serving stale cache)",
+      "duration": 0.49,
       "cached": true
     },
     {
@@ -257286,7 +257637,7 @@
       "url": "https://diwalitimessquare.com/",
       "events": [],
       "error": null,
-      "duration": 0.72,
+      "duration": 0.58,
       "cached": false
     },
     {
@@ -257294,7 +257645,7 @@
       "url": "https://vendors.clearviewfestival.com",
       "events": [],
       "error": null,
-      "duration": 0.65,
+      "duration": 0.51,
       "cached": false
     },
     {
@@ -257731,8 +258082,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.68,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.45,
       "cached": true
     },
     {
@@ -257752,8 +258103,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 3.42,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.4,
       "cached": true
     },
     {
@@ -258355,8 +258706,8 @@
           "category": "music"
         }
       ],
-      "error": null,
-      "duration": 2.76,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.49,
       "cached": true
     },
     {
@@ -258793,8 +259144,8 @@
           "category": "community"
         }
       ],
-      "error": null,
-      "duration": 2.25,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.5,
       "cached": true
     },
     {
@@ -259432,8 +259783,8 @@
           "category": "clubbing"
         }
       ],
-      "error": null,
-      "duration": 2.68,
+      "error": "skipped: eventbrite. failed 6+ times in a row this run (serving stale cache)",
+      "duration": 0.47,
       "cached": true
     },
     {
@@ -260602,7 +260953,7 @@
       "url": "https://queensnightmarket.com/",
       "events": [],
       "error": null,
-      "duration": 1.3,
+      "duration": 1.56,
       "cached": false
     },
     {
@@ -365532,9 +365883,9 @@
       "venue": "Eventbrite: Walking Tours",
       "url": "https://www.eventbrite.com/d/ny--new-york/walking-tour/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.3,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Bike Rides",
@@ -365572,9 +365923,9 @@
       "venue": "Eventbrite: Yoga",
       "url": "https://www.eventbrite.com/d/ny--new-york/yoga/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Pickleball",
@@ -365828,9 +366179,9 @@
       "venue": "Eventbrite: Workshops",
       "url": "https://www.eventbrite.com/d/ny--new-york/workshops/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.04,
+      "cached": true
     },
     {
       "venue": "Eventbrite: Social Mixers",
@@ -365860,9 +366211,9 @@
       "venue": "Eventbrite: Wine Tastings",
       "url": "https://www.eventbrite.com/d/ny--new-york/wine-tasting/",
       "events": [],
-      "error": "skipped: eventbrite. failed 6+ times in a row this run",
-      "duration": 0.0,
-      "cached": false
+      "error": null,
+      "duration": 0.02,
+      "cached": true
     },
     {
       "venue": "Union Square Greenmarket",
