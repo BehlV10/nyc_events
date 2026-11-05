@@ -5152,7 +5152,7 @@ _TRIBE_VENUE_DEFAULTS = {
 }
 
 
-def scrape_tribe_events_api(url, ua, only_nyc=False):
+def scrape_tribe_events_api(url, ua, only_nyc=False, max_pages=4):
     """Scrape WordPress Tribe Events v1 REST API endpoints (/wp-json/tribe/events/v1/events).
 
     only_nyc: multi-city chains (e.g. Sid Gold's) -- keep events whose venue address is in NYC."""
@@ -5179,7 +5179,7 @@ def scrape_tribe_events_api(url, ua, only_nyc=False):
 
     try:
         raw_events = []
-        for _page in range(4):  # the API caps per_page at 50; follow next_rest_url for busy calendars
+        for _page in range(max_pages):  # the API caps per_page at 50; follow next_rest_url for busy calendars
             resp = _SESSION.get(req_url, headers={"User-Agent": ua}, timeout=15)
             resp.raise_for_status()
             data = resp.json()
@@ -5192,6 +5192,7 @@ def scrape_tribe_events_api(url, ua, only_nyc=False):
         for item in raw_events:
             raw_title = item.get("title") or ""
             title = BeautifulSoup(html.unescape(raw_title), "html.parser").get_text(" ", strip=True)
+            title = re.sub(r"\s*\(in (NYC|LA|New York)\)\s*$", "", title)  # Comedy Bureau suffixes
             if not title or is_placeholder_or_closed_event(title):
                 continue
 
@@ -7310,6 +7311,7 @@ _ALL_VENUES = [
     {"name": "NYCRUNS Races", "url": "https://nycruns.com/races", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "sports", "kwargs": {"link_re": "^/race/"}},
     {"name": "Transportation Alternatives (Rides & Walks)", "url": "https://transalt.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "^/events/[^/]+$"}},
     {"name": "Volo Sports NYC (Pickup Pickleball, Basketball, Volleyball)", "url": "https://www.volosports.com/new-york", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "sports", "kwargs": {"link_re": "^/d/"}},
+    {"name": "The Comedy Bureau (NYC indie & bar shows)", "url": "https://thecomedybureau.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "comedy", "kwargs": {"only_nyc": True, "max_pages": 12}},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
