@@ -8,6 +8,7 @@ import json
 import os
 import re
 import sys
+import time
 import unittest
 from datetime import datetime, timedelta, timezone
 from unittest.mock import MagicMock, patch
@@ -656,6 +657,25 @@ class TestParksOpenData(unittest.TestCase):
         self.assertEqual(_local(e["date"]).hour, 10)
         self.assertTrue(e["url"].startswith("https://"))
         self.assertAlmostEqual(e["lat"], 40.6735)
+
+
+class TestHostRotation(unittest.TestCase):
+    def test_meetup_rotation_limits_live_refreshes(self):
+        import tempfile
+        old = scrapers.CACHE_DIR
+        scrapers.CACHE_DIR = tempfile.mkdtemp()
+        try:
+            venues = [{"name": f"Meetup: T{i}", "url": f"https://www.meetup.com/find/?keywords=t{i}"} for i in range(10)]
+            venues.append({"name": "Other", "url": "https://example.org/"})
+            scrapers._save_venue_cache("Meetup: T0", [{"name": "x", "date": "2030-01-01T00:00:00+00:00"}])  # fresh
+            picked = scrapers._pick_rotation_refreshes(venues, "meetup.com", limit=4, ttl=3600, now=time.time())
+            self.assertEqual(len(picked), 4)
+            self.assertNotIn("Meetup: T0", picked)  # fresh cache is not due
+            self.assertNotIn("Other", picked)
+            again = scrapers._pick_rotation_refreshes(venues, "meetup.com", limit=4, ttl=3600, now=time.time() + 1)
+            self.assertFalse(picked & again)  # attempted sources go to the back of the line
+        finally:
+            scrapers.CACHE_DIR = old
 
 
 if __name__ == "__main__":
