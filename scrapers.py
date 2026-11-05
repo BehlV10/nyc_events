@@ -5184,6 +5184,7 @@ _TRIBE_VENUE_DEFAULTS = {
     "scandinaviahouse.org": ("Scandinavia House", "58 Park Ave, New York, NY 10016", "Murray Hill", 40.7492, -73.9802, "art"),
     "ukrainianinstitute.org": ("Ukrainian Institute of America", "2 E 79th St, New York, NY 10075", "Upper East Side", 40.7774, -73.9637, "art"),
     "societyillustrators.org": ("Society of Illustrators", "128 E 63rd St, New York, NY 10065", "Upper East Side", 40.7648, -73.9645, "art"),
+    "explorers.org": ("The Explorers Club", "46 E 70th St, New York, NY 10021", "Upper East Side", 40.7703, -73.9653, "community"),
     "comedyvillage.com": ("Comedy Village", "352 W 44th St, New York, NY", "Hell's Kitchen", 40.7593, -73.9905, "comedy"),
     "movingimage.org": ("Museum of the Moving Image", "36-01 35th Ave, Queens, NY", "Astoria", 40.7563, -73.9239, "film"),
     "queensbotanical.org": ("Queens Botanical Garden", "43-50 Main St, Queens, NY", "Flushing", 40.7510, -73.8290, "outdoors"),
@@ -6312,6 +6313,48 @@ def scrape_sidearm_home_games(url, ua, home_re="New York", school=None, borough=
         e["category"] = "sports"
         out.append(e)
     return out
+
+
+_DATED_SHOW_RE = re.compile(r"/shows/(\d{4})-(\d\d)-(\d\d)-(.+?)-(\d{1,2})(\d\d)-(am|pm)/?$", re.I)
+
+
+def scrape_dated_show_links(url, ua, venue=None, address=None):
+    """Comedy-club sites whose show URLs encode date and time
+    (/shows/2026-11-05-mac-ohara-and-friends-900-pm/): Greenwich Village Comedy Club,
+    Broadway Comedy Club. Title from the link text (minus a trailing "November 5th 9PM"),
+    else the slug."""
+    soup = fetch_soup(url, ua)
+    texts = {}
+    for a in soup.find_all("a", href=True):
+        href = urljoin(url, a["href"].split("?")[0])
+        if _DATED_SHOW_RE.search(urlparse(href).path):
+            t = a.get_text(" ", strip=True)
+            if t and not _CARD_SKIP_TITLES.match(t):
+                texts.setdefault(href, []).append(t)
+            else:
+                texts.setdefault(href, [])
+    events = []
+    for href, cands in texts.items():
+        m = _DATED_SHOW_RE.search(urlparse(href).path)
+        y, mo, d, slug, hh, mm, ap = m.groups()
+        hour = int(hh) % 12 + (12 if ap.lower() == "pm" else 0)
+        try:
+            local = datetime(int(y), int(mo), int(d), hour, int(mm), tzinfo=EASTERN)
+        except ValueError:
+            continue
+        title = ""
+        for t in sorted(cands, key=len):
+            t = re.sub(r"\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d{1,2}(st|nd|rd|th)?\s+\d{1,2}(:\d\d)?\s*[AP]M\s*$", "", t, flags=re.I).strip()
+            if len(t) >= 3:
+                title = t
+                break
+        if not title:
+            title = " ".join(w.capitalize() for w in slug.split("-"))
+        e = {"name": title, "date": local.astimezone(timezone.utc).isoformat(), "url": href, "venue": venue, "price": None, "category": "comedy"}
+        if address:
+            e["address"] = address
+        events.append(e)
+    return _dedupe_future(events)
 
 
 _ST_MARKS_ADDRESS = "12 St Marks Pl, New York, NY 10003"
@@ -7578,6 +7621,15 @@ _ALL_VENUES = [
     {"name": "CourseHorse NYC Classes (pottery, cocktails, crafts)", "url": "https://coursehorse.com/nyc/classes", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "community", "kwargs": {"link_re": "^/nyc/classes/[^/]+/"}},
     {"name": "Chelsea Market Events", "url": "https://www.chelseamarket.com/events-all", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "food"},
     {"name": "Essex Market Events", "url": "https://www.essexmarket.nyc/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "food"},
+    {"name": "Big Onion Walking Tours", "url": "https://bigonion.com/the-schedule/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
+    {"name": "The Explorers Club", "url": "https://www.explorers.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "community"},
+    {"name": "Municipal Art Society Tours & Talks", "url": "https://www.mas.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors"},
+    {"name": "New York Society Library", "url": "https://www.nysoclib.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "books", "kwargs": {"link_re": "^/events/[^/]+$", "venue": "New York Society Library", "address": "53 E 79th St, New York, NY 10075"}},
+    {"name": "Cooper Union Public Programs", "url": "https://cooper.edu/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "community", "kwargs": {"link_re": "/events-and-exhibitions/events/", "venue": "The Cooper Union", "address": "7 E 7th St, New York, NY 10003"}},
+    {"name": "Littlefield (own calendar)", "url": "https://littlefieldnyc.com/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "comedy", "kwargs": {"link_re": "^/event/", "venue": "Littlefield", "address": "635 Sackett St, Brooklyn, NY 11217"}},
+    {"name": "Greenwich Village Comedy Club (own calendar)", "url": "https://www.greenwichvillagecomedyclub.com/", "ua": UA_CHROME, "scraper": scrape_dated_show_links, "default_category": "comedy", "kwargs": {"venue": "Greenwich Village Comedy Club", "address": "99 MacDougal St, New York, NY 10012"}},
+    {"name": "Broadway Comedy Club (own calendar)", "url": "https://www.broadwaycomedyclub.com/", "ua": UA_CHROME, "scraper": scrape_dated_show_links, "default_category": "comedy", "kwargs": {"venue": "Broadway Comedy Club", "address": "318 W 53rd St, New York, NY 10019"}},
+    {"name": "Brooklyn Comedy Collective (own calendar)", "url": "https://www.brooklyncc.com/show-schedule", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "comedy"},
     {"name": "Industry City", "url": "https://industrycity.com/events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "community"},
     {"name": "City Parks Foundation (SummerStage, Marionettes, Playgrounds)", "url": "https://cityparksfoundation.org/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "outdoors"},
     {"name": "Fort Greene Park Conservancy", "url": "https://www.fortgreenepark.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "outdoors"},
