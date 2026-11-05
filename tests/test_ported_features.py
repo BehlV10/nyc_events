@@ -627,5 +627,20 @@ class TestVillageVanguard(unittest.TestCase):
         self.assertTrue(any(x["name"] == "Vanguard Jazz Orchestra" for x in events))
 
 
+class TestTurntable(unittest.TestCase):
+    def test_turntable_performances(self):
+        when = _future_local(2, 20).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        payload = {"count": 2, "results": [
+            {"datetime": when, "show_id": 7, "show": {"id": 7, "name": "Charles McPherson Quintet"}, "sold": False, "availability_state": "selling_fast"},
+            {"datetime": when, "show_id": 8, "show": {"id": 8, "name": "Gone Show"}, "sold": False, "availability_state": "cancelled"}]}
+        with patch("scrapers._SESSION.get", return_value=_resp(payload=payload)) as get:
+            events = scrapers.scrape_turntable("https://tickets.smokejazz.com/", UA_CHROME, venue="Smoke Jazz Club")
+        self.assertEqual(get.call_args[1]["params"]["page_size"], 200)
+        self.assertEqual([e["name"] for e in events], ["Charles McPherson Quintet"])
+        self.assertEqual(_local(events[0]["date"]).hour, 20)
+        self.assertNotIn("sold_out", events[0])
+        self.assertTrue(events[0]["url"].startswith("https://tickets.smokejazz.com/shows/7/"))
+
+
 if __name__ == "__main__":
     unittest.main()
