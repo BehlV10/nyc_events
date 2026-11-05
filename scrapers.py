@@ -252,6 +252,8 @@ CATEGORY_BUCKETS = [
     ("Theater",            ["theater"]),
     ("Classes & Services", ["services"]),
     ("Kids & Family",      ["family", "kids"]),
+    ("Deals & Specials",   ["deals"]),
+    ("Tech & Startups",    ["tech"]),
 ]
 
 CATEGORY_STYLES = {
@@ -270,6 +272,8 @@ CATEGORY_STYLES = {
     "community": ("#c0caf5", "👥"),
     "services":  ("#8fa1b3", "🛠"),
     "family":    ("#ffb8d1", "✦"),
+    "deals":     ("#c678dd", "🏷"),
+    "tech":      ("#73daca", "⌨"),
     "other":     ("#6b7280", "·"),
 }
 
@@ -480,6 +484,8 @@ def guess_category(text, default="community", venue=None):
         return "services"
     if is_kid_family_event(text, venue):
         return "family"
+    if is_deal_event(text):
+        return "deals"
     if venue:
         v_low = venue.lower()
         if any(cv in v_low for cv in COMEDY_VENUES):
@@ -684,6 +690,46 @@ KID_FAMILY_EVENT_RE = re.compile(
     r")\b",
     re.IGNORECASE,
 )
+
+
+# Recurring bar/restaurant specials that sources list as daily "events" ("Happy Hour Deals!",
+# "$1 Oysters at X", "1/2 OFF APPS"). They go in their own default-off "Deals & Specials" bucket.
+DEAL_EVENT_RE = re.compile(
+    r"happy\s+hour\s+deals?|half[-\s]?price[ds]?\b|half\s+off|1/2\s+off|"
+    r"\bbogo\s+(?!-)\w|\$\d+\s+(?:oysters|martinis|cocktails|margaritas|wings|tacos|burgers|pizza|apps|appetizers)\b|"
+    r"\boysters\b.*\$\d|bottomless\s+(?:pasta|maki|steak|mimosas)|\bbottomless\s+brunch!|"
+    r"taco\s+tuesday|\bdiscount\b|free\s+biscuit|no\s+weigh\s+wednesday|\$\d+\s+girl\s+dinner",
+    re.IGNORECASE,
+)
+# A price mention inside a real ticketed show or activity ("Standup Comedy Show and $4 Drinks").
+EXCLUDE_DEAL_RE = re.compile(
+    r"comedy|stand-?up|stroll|\btour\b|trivia|bingo|\bdj\b|live\s+music|\bshow\b|class|tasting|"
+    r"commuter\s+rail|day\s+trip|developers|food\s+drive",
+    re.IGNORECASE,
+)
+
+
+def is_deal_event(name):
+    """True for a recurring food/drink special rather than an event you attend."""
+    if not name or not DEAL_EVENT_RE.search(name):
+        return False
+    return not EXCLUDE_DEAL_RE.search(name)
+
+
+# Paid spa/massage services posted as events: promos from massage businesses, hotel spa
+# packages ("Spa After Dark", $145), members-club spa nights. Massage *classes* and free wellness walks are real events and stay.
+_SERVICE_AD_VENUE_RE = re.compile(r"\bmassage\b(?!.*\bschool\b)|\bmed\s*spa\b|\bremedy place\b", re.I)
+_SERVICE_AD_TITLE_RE = re.compile(
+    r"\bspa (?:night|after dark|day|package|weekend)\b|\breflexology experience\b|\bstress[- ]free week\b|"
+    r"\b(?:botox|filler|iv (?:drip|therapy))\b",
+    re.I,
+)
+
+
+def is_service_ad(name, venue=None):
+    if _SERVICE_AD_TITLE_RE.search(name or ""):
+        return True
+    return bool(venue and _SERVICE_AD_VENUE_RE.search(venue))
 
 
 def is_kid_family_event(name, venue=None):
@@ -3266,6 +3312,12 @@ def scrape_skip_the_small_talk(url, ua):
     return events
 
 
+def _meetup_venue_hidden(vname_raw, street):
+    """Meetup hides the venue from non-members: the listing then only names the group."""
+    v = (vname_raw or "").strip().lower()
+    return not (street or "").strip() and (not v or v in ("none", "see event description", "view point", "null", "needs a location", "tbd", "tba"))
+
+
 def scrape_meetup(url, ua):
     """Meetup.com — in-person community events (search pages and direct group pages)."""
     events = []
@@ -3414,6 +3466,7 @@ def scrape_meetup(url, ua):
                         "date": dt.isoformat(),
                         "url": event_url,
                         "venue": vname,
+                        "venue_unknown": _meetup_venue_hidden(vname_raw, street),
                         "address": full_addr,
                         "lat": lat,
                         "lng": lng,
@@ -3497,6 +3550,7 @@ def scrape_meetup(url, ua):
                         "date": dt.isoformat(),
                         "url": event_url,
                         "venue": vname,
+                        "venue_unknown": _meetup_venue_hidden(vname_raw, street),
                         "address": full_addr,
                         "lat": lat,
                         "lng": lng,
@@ -3511,9 +3565,242 @@ def scrape_meetup(url, ua):
 
 
 
+# Startup/tech events (mostly Luma): founders, VCs, AI, hackathons, demo/pitch nights.
+TECH_EVENT_RE = re.compile(
+    r"\b(?:startups?|founders?|co-?founder|vcs?|venture|investors?|fundrais\w*|pitch(?:es| night| showcase)?|"
+    r"demo (?:day|night)|hackathon|hack night|ai|llms?|agents?|genai|gen ai|machine learning|ml|deep ?tech|"
+    r"saas|devs?|developers?|engineers?|engineering|coding|code|software|product (?:managers?|teams?)|"
+    r"robotics?|crypto|blockchain|web3|biotech|climate ?tech|accelerator|incubator|co-?working|"
+    r"langchain|y ?combinator|cloud|agile|scrum|claude|chatgpt|openai|kubernetes|"
+    r"data science|cybersecurity|infra|devops|b2b|gtm|life sciences|demo day|ecosystem)\b|"
+    r"tech|robot",  # substrings: AgeTech, Health2Tech, TechWalk, TechCrunch, RoboNYC
+    re.I,
+)
+
+
+def _luma_entry_to_event(entry, now, default_category="community"):
+    """One Luma API entry ({event, calendar, hosts, ticket_info}) -> our event dict, or None."""
+    ev = entry.get("event") or {}
+    name = (ev.get("name") or "").strip()
+    if not name or is_placeholder_or_closed_event(name):
+        return None
+
+    start_at = ev.get("start_at")
+    if not start_at:
+        return None
+    try:
+        dt = datetime.fromisoformat(start_at.replace("Z", "+00:00"))
+        if dt.astimezone(timezone.utc) < now:
+            return None
+        iso_date = dt.astimezone(timezone.utc).isoformat()
+    except Exception:
+        return None
+
+    slug = ev.get("url") or ""
+    link = slug if slug.startswith("http") else f"https://lu.ma/{slug}"
+
+    geo = ev.get("geo_address_info") or {}
+    cal = entry.get("calendar") or {}
+
+    if geo.get("mode") == "shown" and (geo.get("address") or geo.get("short_address")):
+        addr = geo.get("address") or geo.get("short_address")
+        city = geo.get("city") or "New York"
+        venue = addr if city.lower() in addr.lower() else f"{addr}, {city}"
+    elif geo.get("sublocality") or geo.get("city"):
+        subloc = geo.get("sublocality") or geo.get("city")
+        venue = f"{subloc} (RSVP for address)"
+    elif cal.get("name") and cal.get("name").lower() != "personal":
+        venue = cal.get("name")
+    else:
+        venue = "New York"
+
+    coord = ev.get("coordinate") or geo.get("place_coordinate") or {}
+    lat = coord.get("latitude")
+    lng = coord.get("longitude")
+    address = geo.get("full_address") or geo.get("address") or ""
+    neighborhood = geo.get("sublocality") or ""
+
+    t_info = entry.get("ticket_info") or {}
+    price = None
+    if t_info.get("is_free"):
+        price = "Free"
+    elif t_info.get("price"):
+        cents = t_info["price"].get("cents")
+        if cents == 0:
+            price = "Free"
+        elif cents is not None:
+            price = f"${cents / 100:.2f}".rstrip("0").rstrip(".")
+
+    hosts = [h.get("name") for h in (entry.get("hosts") or []) if h.get("name")]
+    cal_desc = cal.get("description_short")
+    desc_parts = []
+    if hosts:
+        h_str = ", ".join(hosts[:3])
+        desc_parts.append(f"Hosted by {h_str}")
+    if cal_desc:
+        desc_parts.append(cal_desc)
+    desc = " • ".join(desc_parts)[:250] if desc_parts else None
+
+    cat = guess_category(name, default_category, venue=venue)
+    cal_name = ((entry.get("calendar") or {}).get("name") or "")
+    if cat in ("community", "other") and (TECH_EVENT_RE.search(name) or TECH_EVENT_RE.search(cal_name)):
+        cat = "tech"
+
+    ev_dict = {
+        "name": name,
+        "date": iso_date,
+        "url": link,
+        "venue": venue,
+        "price": price,
+        "category": cat,
+        "description": desc,
+    }
+    if lat is not None and lng is not None:
+        ev_dict["lat"] = lat
+        ev_dict["lng"] = lng
+    if address:
+        ev_dict["address"] = address
+    if neighborhood:
+        ev_dict["neighborhood"] = neighborhood
+
+    return ev_dict
+
+
+# Luma calendars to follow. Seeded by hand; scrape_luma and other sources' lu.ma links add more
+# (cached), so new NYC organizers on Luma get picked up without code changes.
+LUMA_CALENDAR_SEEDS = {}
+LUMA_CALENDARS_CACHE_PATH = os.path.join(CACHE_DIR, "luma_calendars.json")
+LUMA_LOCAL_CATEGORIES = {
+    "cat-family": "Family", "cat-books": "Books", "cat-games": "Games", "cat-fooddrink": "Food & Drink",
+    "cat-running": "Running", "cat-AzVAf6VmE9JEre4": "Arts & Culture", "cat-climate": "Climate",
+    "cat-0Km9ZnuBjFAjwFl": "Fitness", "cat-C1VaNLnt25w9t6c": "Wellness",
+    "cat-tech": "Tech", "cat-ai": "AI", "cat-crypto": "Crypto",
+}
+_LUMA_CATEGORY_DEFAULTS = {
+    "cat-tech": "tech", "cat-ai": "tech", "cat-crypto": "tech",
+    "cat-family": "family", "cat-books": "books", "cat-games": "gaming", "cat-fooddrink": "food",
+    "cat-running": "sports", "cat-AzVAf6VmE9JEre4": "art", "cat-0Km9ZnuBjFAjwFl": "sports",
+}
+_NYC_CENTER = (40.7306, -73.9866)
+
+
+def _load_luma_calendars():
+    cals = dict(LUMA_CALENDAR_SEEDS)
+    try:
+        with open(LUMA_CALENDARS_CACHE_PATH) as f:
+            cals.update(json.load(f).get("calendars") or {})
+    except (OSError, ValueError):
+        pass
+    return cals
+
+
+def _save_luma_calendars(cals, resolved_urls):
+    try:
+        os.makedirs(CACHE_DIR, exist_ok=True)
+        with open(LUMA_CALENDARS_CACHE_PATH, "w") as f:
+            json.dump({"calendars": cals, "resolved_urls": sorted(resolved_urls)}, f)
+    except OSError:
+        pass
+
+
+_LUMA_DISCOVERED = {}
+_luma_tech_urls = set()
+
+
+def _remember_luma_calendar(cal):
+    cal = cal or {}
+    api_id, name = cal.get("api_id"), (cal.get("name") or "").strip()
+    if api_id and api_id.startswith("cal-") and name and name.lower() != "personal":
+        _LUMA_DISCOVERED[api_id] = name
+
+
+def _near_nyc(ev, km=40):
+    import math
+    lat, lng = ev.get("lat"), ev.get("lng")
+    if lat is None or lng is None:
+        return False  # online or hidden-location: can't tell it's local
+    dy = (float(lat) - _NYC_CENTER[0]) * 111.0
+    dx = (float(lng) - _NYC_CENTER[1]) * 111.0 * math.cos(math.radians(_NYC_CENTER[0]))
+    return math.hypot(dx, dy) <= km
+
+
+def _luma_links_from_last_run():
+    """lu.ma / luma.com event links any source published last run (e.g. Partiful, Do617, venues)."""
+    try:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "events.json")) as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return set()
+    out = set()
+    for v in data.get("venues") or []:
+        for e in v.get("events") or []:
+            for u in [e.get("url")] + [a.get("url") for a in e.get("_alt_sources") or []]:
+                m = re.match(r"https?://(?:www\.)?(?:lu\.ma|luma\.com)/([A-Za-z0-9_-]+)/?$", (u or "").strip())
+                if m and m.group(1) not in ("nyc", "discover", "home", "explore"):
+                    out.add(m.group(1))
+    return out
+
+
+def scrape_luma_calendars(url, ua):
+    """Upcoming NYC-area events from every Luma calendar we follow (seeds + discovered)."""
+    from concurrent.futures import ThreadPoolExecutor
+    headers = {"User-Agent": ua, "Accept": "application/json"}
+    cals = _load_luma_calendars()
+    cals.update(_LUMA_DISCOVERED)
+    try:
+        with open(LUMA_CALENDARS_CACHE_PATH) as f:
+            resolved = set(json.load(f).get("resolved_urls") or [])
+    except (OSError, ValueError):
+        resolved = set()
+
+    # Learn the calendar behind event links other sources published (capped per run)
+    for slug in sorted(_luma_links_from_last_run() - resolved)[:25]:
+        resolved.add(slug)
+        try:
+            d = _SESSION.get(f"https://api.lu.ma/url?url={slug}", headers=headers, timeout=10).json().get("data") or {}
+        except Exception:
+            continue
+        cal = d.get("calendar") or {}
+        if cal.get("api_id") and cal.get("name") and cal["name"].lower() != "personal":
+            cals[cal["api_id"]] = cal["name"]
+
+    now = datetime.now(timezone.utc)
+
+    def fetch(cal_id):
+        try:
+            r = _SESSION.get("https://api.lu.ma/calendar/get-items",
+                             params={"calendar_api_id": cal_id, "period": "future", "pagination_limit": 50},
+                             headers=headers, timeout=15)
+            r.raise_for_status()
+            return r.json().get("entries") or []
+        except Exception:
+            return []
+
+    events, seen = [], set()
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        for entries in ex.map(fetch, list(cals)[:80]):
+            cal_events = []
+            for entry in entries:
+                ev = _luma_entry_to_event(entry, now)
+                if not ev or not _near_nyc(ev):
+                    continue
+                key = (ev["name"].lower(), ev["date"][:16])
+                if key not in seen:
+                    seen.add(key)
+                    cal_events.append(ev)
+            # A mostly-tech organizer's other events (mixers, lunches, info sessions) are tech too
+            if cal_events and sum(e["category"] == "tech" for e in cal_events) * 2 >= len(cal_events):
+                for e in cal_events:
+                    if e["category"] in ("community", "other"):
+                        e["category"] = "tech"
+            events.extend(cal_events)
+    _save_luma_calendars(cals, resolved)
+    return events
+
+
 def scrape_luma(url, ua):
     """Scrape curated NYC tech, AI, startup, and community events from Luma."""
-    api_url = "https://api.lu.ma/discover/get-paginated-events?discover_place_api_id=discplace-Izx1rQVSh8njYpP&pagination_limit=50"
+    api_url = "https://api.lu.ma/discover/get-paginated-events?discover_place_api_id=discplace-Izx1rQVSh8njYpP"
     headers = {
         "User-Agent": ua,
         "Accept": "application/json",
@@ -3536,97 +3823,62 @@ def scrape_luma(url, ua):
 
         entries = data.get("entries") or []
         for entry in entries:
-            ev = entry.get("event") or {}
-            name = (ev.get("name") or "").strip()
-            if not name or is_placeholder_or_closed_event(name):
+            ev_dict = _luma_entry_to_event(entry, now)
+            if not ev_dict:
                 continue
-
-            start_at = ev.get("start_at")
-            if not start_at:
-                continue
-            try:
-                dt = datetime.fromisoformat(start_at.replace("Z", "+00:00"))
-                if dt.astimezone(timezone.utc) < now:
-                    continue
-                iso_date = dt.astimezone(timezone.utc).isoformat()
-            except Exception:
-                continue
-
-            slug = ev.get("url") or ""
-            link = slug if slug.startswith("http") else f"https://lu.ma/{slug}"
-
-            key = (name.lower(), iso_date[:10])
+            key = (ev_dict["name"].lower(), ev_dict["date"][:10])
             if key in seen:
                 continue
             seen.add(key)
-
-            geo = ev.get("geo_address_info") or {}
-            cal = entry.get("calendar") or {}
-
-            if geo.get("mode") == "shown" and (geo.get("address") or geo.get("short_address")):
-                addr = geo.get("address") or geo.get("short_address")
-                city = geo.get("city") or "New York"
-                venue = addr if city.lower() in addr.lower() else f"{addr}, {city}"
-            elif geo.get("sublocality") or geo.get("city"):
-                subloc = geo.get("sublocality") or geo.get("city")
-                venue = f"{subloc} (RSVP for address)"
-            elif cal.get("name") and cal.get("name").lower() != "personal":
-                venue = cal.get("name")
-            else:
-                venue = "New York"
-
-            coord = ev.get("coordinate") or geo.get("place_coordinate") or {}
-            lat = coord.get("latitude")
-            lng = coord.get("longitude")
-            address = geo.get("full_address") or geo.get("address") or ""
-            neighborhood = geo.get("sublocality") or ""
-
-            t_info = entry.get("ticket_info") or {}
-            price = None
-            if t_info.get("is_free"):
-                price = "Free"
-            elif t_info.get("price"):
-                cents = t_info["price"].get("cents")
-                if cents == 0:
-                    price = "Free"
-                elif cents is not None:
-                    price = f"${cents / 100:.2f}".rstrip("0").rstrip(".")
-
-            hosts = [h.get("name") for h in (entry.get("hosts") or []) if h.get("name")]
-            cal_desc = cal.get("description_short")
-            desc_parts = []
-            if hosts:
-                h_str = ", ".join(hosts[:3])
-                desc_parts.append(f"Hosted by {h_str}")
-            if cal_desc:
-                desc_parts.append(cal_desc)
-            desc = " • ".join(desc_parts)[:250] if desc_parts else None
-
-            cat = guess_category(name, default="community", venue=venue)
-
-            ev_dict = {
-                "name": name,
-                "date": iso_date,
-                "url": link,
-                "venue": venue,
-                "price": price,
-                "category": cat,
-                "description": clean_description(desc),
-            }
-            if lat is not None and lng is not None:
-                ev_dict["lat"] = lat
-                ev_dict["lng"] = lng
-            if address:
-                ev_dict["address"] = address
-            if neighborhood:
-                ev_dict["neighborhood"] = neighborhood
-
+            _remember_luma_calendar(entry.get("calendar"))
             events.append(ev_dict)
 
         if not data.get("has_more") or not data.get("next_cursor"):
             break
         cursor = data.get("next_cursor")
 
+    # Category feeds by coordinates reach well past the ~22 curated "NYC" picks. Tech/AI/crypto
+    # (~150 startup events a fortnight) go to the default-off "Tech & Startups" bucket.
+    for cat_id in LUMA_LOCAL_CATEGORIES:
+        cursor = None
+        for _ in range(6):
+            q = (f"https://api.lu.ma/discover/get-paginated-events?latitude={_NYC_CENTER[0]}"
+                 f"&longitude={_NYC_CENTER[1]}&pagination_limit=50&discover_category_api_id={cat_id}")
+            if cursor:
+                q += f"&pagination_cursor={cursor}"
+            try:
+                data = _SESSION.get(q, headers=headers, timeout=15).json()
+            except Exception:
+                break
+            for entry in data.get("entries") or []:
+                ev_dict = _luma_entry_to_event(entry, now, _LUMA_CATEGORY_DEFAULTS.get(cat_id, "community"))
+                if ev_dict and cat_id in ("cat-tech", "cat-ai", "cat-crypto"):
+                    _luma_tech_urls.add(ev_dict["url"])  # tech even if first seen in another feed
+                if not ev_dict or not _near_nyc(ev_dict) or re.match(r"\s*private event\b", ev_dict["name"], re.I):
+                    continue
+                key = (ev_dict["name"].lower(), ev_dict["date"][:10])
+                if key in seen:
+                    continue
+                seen.add(key)
+                _remember_luma_calendar(entry.get("calendar"))
+                events.append(ev_dict)
+            if not data.get("has_more") or not data.get("next_cursor"):
+                break
+            cursor = data["next_cursor"]
+
+    for ev_dict in events:
+        if ev_dict.get("category") in ("community", "other") and ev_dict["url"] in _luma_tech_urls:
+            ev_dict["category"] = "tech"
+    _luma_tech_urls.clear()
+
+    if _LUMA_DISCOVERED:  # persist so scrape_luma_calendars follows them (it may run concurrently)
+        try:
+            with open(LUMA_CALENDARS_CACHE_PATH) as f:
+                cached = json.load(f)
+        except (OSError, ValueError):
+            cached = {}
+        cals = {**(cached.get("calendars") or {}), **_LUMA_DISCOVERED}
+        _save_luma_calendars(cals, set(cached.get("resolved_urls") or []))
     return events
 
 
@@ -6231,6 +6483,7 @@ _ALL_VENUES = [
     {"name": "Meetup: NYC Bar Trivia Nights", "url": "https://www.meetup.com/find/?keywords=trivia&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "gaming"},
     {"name": "Meetup: NYC Tech, AI & Developer Meetups", "url": "https://www.meetup.com/find/?keywords=tech&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
     {"name": "Luma NYC", "url": "https://lu.ma/nyc", "ua": UA_CHROME, "scraper": scrape_luma, "default_category": "community"},
+    {"name": "Luma Calendars", "url": "https://lu.ma/discover", "ua": UA_CHROME, "scraper": scrape_luma_calendars, "default_category": "community"},
     {"name": "Meetup: NYC Language Exchange & Polyglot Socials", "url": "https://www.meetup.com/find/?keywords=language%20exchange&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
 
     # Nightlife, Immersive Spectacle & Theatrical Circus

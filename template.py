@@ -8,7 +8,7 @@ from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 import html
 from html import escape, unescape
-from urllib.parse import quote, quote_plus
+from urllib.parse import quote, quote_plus, urlparse
 
 from scrapers import (
     EASTERN,
@@ -28,6 +28,8 @@ from scrapers import (
     is_standing_exhibit,
     is_utility_event,
     is_kid_family_event,
+    is_deal_event,
+    is_service_ad,
     fix_doubled_url,
     sanitize_event_url,
     BROADWAY_THEATRES,
@@ -35,7 +37,7 @@ from scrapers import (
 from venues_geo import resolve_event_geo
 
 # Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes).
-DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family"}
+DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups"}
 
 
 TRISTATE_NEEDLES = (
@@ -815,7 +817,9 @@ def compute_recurring(dated):
             name = (e.get("name") or "").strip().lower()
             if not t or not name:
                 continue
-            key = (name, e.get("_source_venue") or "")
+            # Venue is part of the key: a group posting the same title at a different bar each
+            # week isn't one recurring event.
+            key = (name, e.get("_source_venue") or "", (e.get("venue") or "").strip().lower())
             groups[key].append(t)
     recurring = set()
     for key, times in groups.items():
@@ -1183,12 +1187,40 @@ def _cached_variants(e):
 def _same_physical_venue(e1, e2):
     """Stricter venue check than _merge_duplicates' _venue_match: same geo pin, or a shared
     distinctive word ("Nowadays", "Elsewhere") — not just "Public Library" or "Music Hall"."""
+    if e1.get("_venue_unknown") or e2.get("_venue_unknown"):
+        return True
     if _venue_words(e1) & _venue_words(e2):
         return True
     g1, g2 = _cached_geo(e1), _cached_geo(e2)
     if g1 and g2:
         return abs(g1["lat"] - g2["lat"]) < 0.0015 and abs(g1["lng"] - g2["lng"]) < 0.0015
     return False
+
+
+_RSVP_HOSTS = ("lu.ma", "luma.com", "eventbrite.", "meetup.com", "partiful.com", "heylo.com",
+               "dice.fm", "posh.vip", "ticketmaster.", "seatgeek.com", "axs.com", "tixr.com")
+
+
+def _is_event_specific_link(url):
+    """An RSVP/ticket page for one event (lu.ma/8ugz1m1n, eventbrite.com/e/...)."""
+    try:
+        u = urlparse((url or "").strip())
+    except ValueError:
+        return False
+    path = u.path.strip("/")
+    return any(h in u.netloc.lower() for h in _RSVP_HOSTS) and len(path) >= 6 and bool(re.search(r"\d|/", path))
+
+
+def _is_generic_link(url):
+    """A site root or listing page rather than an event page: "x.com", "x.com/events/"."""
+    try:
+        u = urlparse((url or "").strip())
+    except ValueError:
+        return True
+    if not u.netloc:
+        return True
+    path = u.path.strip("/").lower()
+    return path in ("", "events", "calendar", "event-calendar", "upcoming-events", "whats-on") and not u.query
 
 
 def _titles_equivalent(a, b):
@@ -1514,6 +1546,15 @@ def _merge_duplicates(events):
             if src_url and not any(a.get("url") == src_url for a in match["_alt_sources"]) and src_url != match.get("url"):
                 match["_alt_sources"].append({"venue": src_label, "source": raw_src, "url": src_url, "price": e.get("price")})
 
+            if match.get("_venue_unknown") and not e.get("_venue_unknown") and e.get("venue"):
+                match["venue"] = e["venue"]
+                match.pop("_venue_unknown", None)
+                for k in ("lat", "lng", "address"):
+                    if e.get(k):
+                        match[k] = e[k]
+                for k in _MEMO_KEYS:
+                    match.pop(k, None)
+
             cand_t_url = e.get("ticket_url")
             if cand_t_url and cand_t_url != match.get("url"):
                 t_label = _source_display_label(raw_src, cand_t_url)
@@ -1533,8 +1574,9 @@ def _merge_duplicates(events):
                 match["name"] = e.get("name")
                 for k in _MEMO_KEYS:
                     match.pop(k, None)
-                if match.get("venue", "").lower() in generic_sources or _is_generic_feed(match) or (e.get("venue") and not _is_generic_feed(e)):
-                    match["venue"] = e.get("venue")
+                if (match.get("venue", "").lower() in generic_sources or _is_generic_feed(match) or (e.get("venue") and not _is_generic_feed(e))) \
+                        and (not e.get("_venue_unknown") or match.get("_venue_unknown")):
+                    match["venue"] = e.get("venue")  # never replace a real venue with a placeholder
                 match["_source_venue"] = e.get("_source_venue") or e.get("source")
                 if e.get("venue_url"):
                     match["venue_url"] = e.get("venue_url")
@@ -1542,6 +1584,18 @@ def _merge_duplicates(events):
                     match["_time"] = e["_time"]
                 # Clean up _alt_sources so match["url"] is not duplicated in its own alt list
                 match["_alt_sources"] = [a for a in match["_alt_sources"] if a.get("url") != match.get("url")]
+
+            # A venue feed may link only an organizer homepage or /events page; an RSVP page for
+            # this specific event (Luma, Eventbrite, Meetup, ...) is the better primary link.
+            if _is_generic_link(match.get("url")):
+                rsvp = next((a for a in match["_alt_sources"] if _is_event_specific_link(a.get("url"))), None)
+                if rsvp:
+                    old_url = match.get("url")
+                    match["_alt_sources"] = [a for a in match["_alt_sources"] if a is not rsvp]
+                    if old_url and not any(a.get("url") == old_url for a in match["_alt_sources"]):
+                        old_src = match.get("_source_venue") or "source"
+                        match["_alt_sources"].append({"venue": _source_display_label(old_src, old_url), "source": old_src, "url": old_url, "price": match.get("price")})
+                    match["url"] = rsvp["url"]
 
             # If match has 19:00:00 (Eventbrite discovery fallback) while e has a real/earlier time, prefer e
             m_time = match.get("_time")
@@ -1615,14 +1669,22 @@ def group_by_date(results):
         for e in r.get("events", []):
             if is_placeholder_or_closed_event(e.get("name")) or is_closed_show(e.get("venue")) or is_standing_exhibit(e):
                 continue
+            if is_service_ad(e.get("name"), e.get("venue")):
+                continue
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["url"] = sanitize_event_url(fix_doubled_url(entry.get("url")), fallback=r.get("url") or None)
             entry["venue"] = e.get("venue") or r.get("venue", "")
+            if e.get("venue_unknown") or not (e.get("venue") or "").strip():
+                # The source hid the venue (Meetup does for non-members), so "venue" is only the
+                # group name. Dedup may adopt the real venue from another listing.
+                entry["_venue_unknown"] = True
             existing_cat = e.get("category")
             if is_utility_event(e.get("name")):
                 entry["category"] = "services"
             elif is_kid_family_event(e.get("name"), entry["venue"]):
                 entry["category"] = "family"
+            elif is_deal_event(e.get("name")):
+                entry["category"] = "deals"
             elif existing_cat == "theater":
                 entry["category"] = "theater"
             else:
