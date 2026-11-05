@@ -42,19 +42,6 @@
     "id": "auto-2026-11-05-3",
     "auto": true,
     "match": {
-      "name_contains": "Flower Face – Brooklyn",
-      "venue_contains": "Public Records"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 4 calendars; prime-time start.",
-    "score": 17.5,
-    "start_date": "2026-11-05",
-    "expires": "2026-11-05"
-  },
-  {
-    "id": "auto-2026-11-05-4",
-    "auto": true,
-    "match": {
       "name_contains": "Honey Revenge",
       "venue_contains": "Warsaw"
     },
@@ -65,7 +52,7 @@
     "expires": "2026-11-05"
   },
   {
-    "id": "auto-2026-11-05-5",
+    "id": "auto-2026-11-05-4",
     "auto": true,
     "match": {
       "name_contains": "Millennial Speed-Dating (Monogamous)",
@@ -73,6 +60,19 @@
     },
     "badge": "🤝 Community Pick",
     "note": "Listed on 4 calendars; prime-time start.",
+    "score": 17.5,
+    "start_date": "2026-11-05",
+    "expires": "2026-11-05"
+  },
+  {
+    "id": "auto-2026-11-05-5",
+    "auto": true,
+    "match": {
+      "name_contains": "Sammy Rae – Something for Everybody Tour",
+      "venue_contains": "Brooklyn Paramount"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 7 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-05",
     "expires": "2026-11-05"
@@ -523,11 +523,11 @@
     "id": "auto-2026-11-07-40",
     "auto": true,
     "match": {
-      "name_contains": "OUTLINE: Danny L Harle, yeule, Saya Gray & Contact Sports",
-      "venue_contains": "Knockdown Center"
+      "name_contains": "Reggaeton & The City: Noche de Rakata | 2000s Reggaeton Party NYC",
+      "venue_contains": "Hotel Chantelle"
     },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; headline room at Knockdown Center; prime-time start.",
+    "badge": "🪩 Nightlife Pick",
+    "note": "Free; listed on 5 calendars; prime-time start.",
     "score": 16.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
@@ -536,11 +536,11 @@
     "id": "auto-2026-11-07-41",
     "auto": true,
     "match": {
-      "name_contains": "Reggaeton & The City: Noche de Rakata | 2000s Reggaeton Party NYC",
-      "venue_contains": "Hotel Chantelle"
+      "name_contains": "Reggaeton Paradise Rooftop Party at Lost in Paradise – November 7",
+      "venue_contains": "Lost in Paradise Rooftop"
     },
     "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
+    "note": "Free; listed on 4 calendars; prime-time start.",
     "score": 16.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
@@ -826,8 +826,8 @@
       "venue_contains": "Public Records"
     },
     "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 5 calendars.",
-    "score": 14.0,
+    "note": "Listed on 4 calendars.",
+    "score": 12.0,
     "start_date": "2026-11-09",
     "expires": "2026-11-09"
   },
@@ -1017,19 +1017,6 @@
     "id": "auto-2026-11-10-78",
     "auto": true,
     "match": {
-      "name_contains": "Hurricane In The Fog Machine with JesÃºs Hilario-Reyes & Benjamin Krusling",
-      "venue_contains": "Public Records"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 3 calendars; prime-time start.",
-    "score": 15.0,
-    "start_date": "2026-11-10",
-    "expires": "2026-11-10"
-  },
-  {
-    "id": "auto-2026-11-10-79",
-    "auto": true,
-    "match": {
       "name_contains": "NYC Trivia Night @ Emmy Squared Pizza — East Village",
       "venue_contains": "Emmy Squared Pizza — East Village"
     },
@@ -1040,7 +1027,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-80",
+    "id": "auto-2026-11-10-79",
     "auto": true,
     "match": {
       "name_contains": "NYC Trivia Night @ Hei Tiki",
@@ -1053,7 +1040,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-81",
+    "id": "auto-2026-11-10-80",
     "auto": true,
     "match": {
       "name_contains": "NYC Trivia Night @ Rocco’s Sports&Rec.",
@@ -1066,7 +1053,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-82",
+    "id": "auto-2026-11-10-81",
     "auto": true,
     "match": {
       "name_contains": "Laughing Buddha Open Mic",
@@ -1079,7 +1066,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-83",
+    "id": "auto-2026-11-10-82",
     "auto": true,
     "match": {
       "name_contains": "All Starrs Movie Night",
@@ -1092,7 +1079,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-84",
+    "id": "auto-2026-11-10-83",
     "auto": true,
     "match": {
       "name_contains": "Bedouine w/ Steady Holiday",
@@ -1105,7 +1092,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-85",
+    "id": "auto-2026-11-10-84",
     "auto": true,
     "match": {
       "name_contains": "Evening Glow",
@@ -1118,7 +1105,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-86",
+    "id": "auto-2026-11-10-85",
     "auto": true,
     "match": {
       "name_contains": "Statue & Skyline Sightseeing Cruise",
@@ -1131,7 +1118,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-87",
+    "id": "auto-2026-11-10-86",
     "auto": true,
     "match": {
       "name_contains": "Woodside-Sunnyside Runners Tuesday Evening Group Run",
@@ -1140,6 +1127,19 @@
     "badge": "🏃 Active Pick",
     "note": "Free; listed on 2 calendars; prime-time start.",
     "score": 11.5,
+    "start_date": "2026-11-10",
+    "expires": "2026-11-10"
+  },
+  {
+    "id": "auto-2026-11-10-87",
+    "auto": true,
+    "match": {
+      "name_contains": "Orville Peck",
+      "venue_contains": "Brooklyn Paramount"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 3 calendars; prime-time start.",
+    "score": 10.0,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
   },
@@ -1342,12 +1342,12 @@
     "id": "auto-2026-11-11-103",
     "auto": true,
     "match": {
-      "name_contains": "Return to Pearl Harbor",
-      "venue_contains": "C'mon Everybody"
+      "name_contains": "RomComIRL",
+      "venue_contains": "New York Sid Gold’s Request Room"
     },
     "badge": "🎭 Stage Pick",
     "note": "Listed on 2 calendars; prime-time start.",
-    "score": 9.0,
+    "score": 9.5,
     "start_date": "2026-11-11",
     "expires": "2026-11-11"
   },
@@ -1355,12 +1355,12 @@
     "id": "auto-2026-11-11-104",
     "auto": true,
     "match": {
-      "name_contains": "Glimpse of Greatness",
-      "venue_contains": "Yankee Stadium"
+      "name_contains": "Return to Pearl Harbor",
+      "venue_contains": "C'mon Everybody"
     },
-    "badge": "🏃 Active Pick",
-    "note": "Headline room at Yankee Stadium; prime-time start.",
-    "score": 8.0,
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 2 calendars; prime-time start.",
+    "score": 9.0,
     "start_date": "2026-11-11",
     "expires": "2026-11-11"
   },
