@@ -177,6 +177,8 @@ class TestThemesAndBoroughs(unittest.TestCase):
         self.assertEqual(g(11, 26), "thanksgiving")  # 4th Thursday
         self.assertEqual(g(11, 27), "blackfriday")
         self.assertEqual(g(11, 30), "cybermonday")
+        self.assertEqual(g(11, 1), "marathon")       # first Sunday
+        self.assertEqual(g(11, 8), "diwali")
         self.assertIsNone(g(11, 4))
 
     def test_flyer_seasons(self):

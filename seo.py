@@ -26,7 +26,7 @@ GITHUB_PAGES_URL = "https://behlv10.github.io/nyc_events"
 DEFAULT_TITLE = "NYC Events · Concerts, DJ Nights, Comedy, Theater, Run Clubs & Free Things to Do in New York"
 DEFAULT_DESCRIPTION = (
     "Live calendar of {count} concerts, DJ nights, comedy, theater, run clubs, hikes, meetups, and free "
-    "events across Manhattan, Brooklyn, Queens, the Bronx, and Staten Island. Updated every 30 minutes."
+    "events across Manhattan, Brooklyn, Queens, the Bronx, and Staten Island. Updated twice a day."
 )
 
 
@@ -89,7 +89,11 @@ def build_seo_meta_tags(title=None, description=None, path="", image_path="og-im
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{t}">
 <meta name="twitter:description" content="{d}">
-<meta name="twitter:image" content="{escape(img)}">"""
+<meta name="twitter:image" content="{escape(img)}">
+<link rel="icon" href="{escape(page_url('favicon.ico', site_url))}" sizes="48x48">
+<link rel="icon" href="{escape(page_url('favicon.svg', site_url))}" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{escape(page_url('apple-touch-icon.png', site_url))}">
+<link rel="manifest" href="{escape(page_url('site.webmanifest', site_url))}">"""
 
 
 # --- schema.org ---
@@ -386,7 +390,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
     highlights = _load_highlights()
     meta = build_seo_meta_tags(
         title=f"{hub['title']} · {SITE_NAME}",
-        description=f"{hub['subtitle']} {len(events):,} upcoming listings, updated every 30 minutes.",
+        description=f"{hub['subtitle']} {len(events):,} upcoming listings, updated twice a day.",
         path=f"{slug}/",
         image_path=f"og-{slug}.jpg",
         site_url=site_url,
@@ -514,7 +518,7 @@ def build_llms_txt(total_events, n_sources, site_url=None):
     hubs = "\n".join(f"- [{h['title']}]({page_url(s + '/', site_url)}): {h['subtitle']}" for s, h in HUBS.items())
     return f"""# {SITE_NAME}
 
-> Independent, ad-free live calendar of {_rounded_count(total_events)} upcoming New York City events — concerts, DJ nights, comedy, theater, run clubs, hikes, meetups, and free events across all five boroughs — aggregated from {n_sources}+ venue calendars and community feeds and refreshed every 30 minutes. Listings link to the venue's or organizer's own page.
+> Independent, ad-free live calendar of {_rounded_count(total_events)} upcoming New York City events — concerts, DJ nights, comedy, theater, run clubs, hikes, meetups, and free events across all five boroughs — aggregated from {n_sources}+ venue calendars and community feeds and refreshed twice a day. Listings link to the venue's or organizer's own page.
 
 ## Data
 - [Interactive calendar]({page_url('', site_url)}): filter by borough, neighborhood, category, price, and time; map and "near me" views.
