@@ -653,6 +653,19 @@
     "id": "auto-2026-11-08-50",
     "auto": true,
     "match": {
+      "name_contains": "Pumpkin Smash",
+      "venue_contains": "La Plaza Cultural"
+    },
+    "badge": "🖼️ Art Pick",
+    "note": "Free; listed on 4 calendars; weekend daytime.",
+    "score": 19.0,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-52",
+    "auto": true,
+    "match": {
       "name_contains": "Kenneth Chenault Book Tour - Harlem",
       "venue_contains": "The Abyssinian Baptist Church"
     },
