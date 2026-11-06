@@ -39,7 +39,7 @@ from scrapers import (
 from holiday_themes import HOLIDAY_KEYS, greeting_html, holiday_calendar, holiday_on, holiday_theme_css
 from lgbtq import is_lgbtq_event
 from light_theme import LIGHT_THEME_CSS
-from scrapers import admission_price, mentions_free
+from scrapers import _MARKET_OVERRIDABLE, admission_price, is_market_or_festival, keep_music_venue_category, mentions_free
 from venues_geo import resolve_event_geo
 from nyc_geo import TRISTATE_NEEDLES, borough_at, outside_area
 
@@ -1991,7 +1991,12 @@ def group_by_date(results):
             elif existing_cat == "theater":
                 entry["category"] = "theater"
             else:
-                entry["category"] = guess_category(e.get("name"), existing_cat or r.get("default_category") or "community", venue=entry["venue"])
+                entry["category"] = keep_music_venue_category(
+                    guess_category(e.get("name"), existing_cat or r.get("default_category") or "community", venue=entry["venue"]),
+                    existing_cat, e.get("description"))
+            # At render time, so listings cached before this category existed fill the Markets page
+            if entry["category"] in _MARKET_OVERRIDABLE and is_market_or_festival(e.get("name"), r.get("venue")):
+                entry["category"] = "markets"
             raw = e.get("date")
             key = None
             if raw:

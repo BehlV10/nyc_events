@@ -476,6 +476,7 @@ CATEGORY_BUCKETS = [
     ("Social & community", ["community", "food", "gaming", "other"]),
     ("Theater",            ["theater"]),
     ("Classes & Services", ["services"]),
+    ("Markets & Festivals", ["markets"]),
     ("Kids & Family",      ["family", "kids"]),
     ("Deals & Specials",   ["deals"]),
     ("Tech & Startups",    ["tech"]),
@@ -498,9 +499,65 @@ CATEGORY_STYLES = {
     "services":  ("#8fa1b3", "🛠"),
     "family":    ("#ffb8d1", "✦"),
     "deals":     ("#c678dd", "🏷"),
+    "markets":   ("#e0a458", "🎪"),
     "tech":      ("#73daca", "⌨"),
     "other":     ("#6b7280", "·"),
 }
+
+
+# Markets, fairs & festivals: flea and night markets, farmers markets, holiday markets and
+# bazaars, craft/vintage/artisan fairs, street festivals and food fests. Matched on the title.
+MARKET_FESTIVAL_RE = re.compile(
+    r"(?i)\b(?:flea(?:\s+market)?|night\s+market|farmers'?\s*market|greenmarket|smorgasburg|open[- ]air\s+(?:produce\s+)?market|produce\s+market|"
+    r"(?:holiday|christmas|winter|spring|summer|fall|autumn|harvest|artisan|craft|crafts|makers?|maker's|vintage|antiques?|"
+    r"pop[- ]?up|open|art|artists'?|record|book|zine|plant|night|street|asian|thai|vietnamese|latin|caribbean|"
+    r"local|indie|handmade|community|sunday|saturday)\s+(?:market|bazaar|fair|faire|village|festival|fest)s?|"
+    r"(?:craft|antiques?|vintage|record|plant|flower)\s+shows?|"  # not "art show": that's a gallery show
+    r"bazaar|street\s+(?:fair|festival|party)|block\s+party|renaissance\s+faire?|"
+    r"(?:food|beer|wine|cider|taco|dumpling|chili|oyster|lobster|pie|cheese|chocolate|halal|vegan|ramen|bbq|"
+    r"lantern|lights?|moon|dragon\s+boat|harvest|heritage|cultural|music|arts?|folk|fall|autumn|winter|spring|summer|"
+    r"holiday|oktober|octoberfest|sukkot|diwali|lunar\s+new\s+year|loy\s+krathong)\s*(?:fest(?:ival)?)|"
+    r"festival|oktoberfest|swap\s+meet|yard\s+sale|craft\s+show|makers?\s+mart|"
+    r"winter\s+village|holiday\s+(?:stroll|pop[- ]?up(?!\s*bar))|tree\s+lighting)\b")
+# Fairs that aren't a day out: job fairs, college fairs, resource fairs.
+NOT_MARKET_FESTIVAL_RE = re.compile(
+    r"(?i)\b(?:job|career|college|resource|health|hiring|grad(?:uate)?|graduate school|internship|volunteer|stem|steam|"
+    r"benefits?|employment|recruit(?:ing|ment)|housing|financial aid|study abroad|science|vendor application|"
+    r"call for (?:vendors|artists)|vendor sign[- ]?up)\s+(?:fairs?|expos?|markets?|festivals?)\b|"
+    r"\bfilm\s+fest|\bfestival\s+(?:of\s+)?(?:films?|shorts)\b|"
+    r"\bcall for (?:vendors|artists|makers|artisans)\b|\bvendor (?:applications?|registration|sign[- ]?ups?)\b")
+# Categories a market/festival title may replace (a jazz or film festival stays music/film).
+_MARKET_OVERRIDABLE = {"community", "other", "food", "art", "arts", "outdoors"}
+
+
+# A music venue's own listing whose title happens to contain another category's keyword: "Book
+# Club" is a band, "Hollow Harvest" a benefit show. If the description says it's music, it stays
+# music. Categories music venues really host (trivia, comedy, dance nights) are left alone.
+_MUSIC_EVIDENCE_RE = re.compile(
+    r"\b(bands?|live music|concert|gig|singer|songwriter|album|ep release|record release|"
+    r"jazz|folk|blues|bluegrass|americana|rock|punk|indie|soul|funk|reggae|hip[- ]hop|"
+    r"acoustic|quartet|trio|quintet|ensemble|lineup|headlin\w*|opener|tour)\b",
+    re.IGNORECASE,
+)
+_MUSIC_VENUE_OVERRIDABLE = {"books", "outdoors", "food", "community", "art", "other"}
+
+
+def keep_music_venue_category(cat, source_cat, description):
+    """cat, unless the source is a music venue and the description says this is music."""
+    if source_cat == "music" and cat in _MUSIC_VENUE_OVERRIDABLE and _MUSIC_EVIDENCE_RE.search(description or ""):
+        return "music"
+    return cat
+
+
+# Concert feeds: their "festivals" are concerts, or a band's name ("All Ohio Balloon Festival").
+_NOT_MARKET_SOURCES = ("songkick", "seatgeek", "ticketmaster", "dice.fm", "resident advisor", "smoke jazz")
+
+
+def is_market_or_festival(name, source=None):
+    name = name or ""
+    if (source or "").lower().startswith(_NOT_MARKET_SOURCES):
+        return False
+    return bool(MARKET_FESTIVAL_RE.search(name)) and not NOT_MARKET_FESTIVAL_RE.search(name)
 
 
 def category_bucket(cat):
@@ -8707,6 +8764,27 @@ _ONLINE_TITLE_RE = re.compile(
 _VIRTUAL_VENUES = {"online", "online event", "virtual", "zoom", "virtual event", "livestream", "online only"}
 
 
+_SOLD_OUT_PREFIX_RE = re.compile(r"^\s*[\[(*]{0,3}\s*sold[\s-]*out\s*[\])*!]{0,3}\s*[:\-–—|]?\s*", re.I)
+# At the end: after a separator or in brackets, or in capitals. "Women Sold Out" says one side of a
+# singles night is full, so a plain title-case ending stays.
+_SOLD_OUT_BARE_RE = re.compile(r"\s+SOLD[\s-]*OUT!*\s*$")
+
+
+def _tidy_sold_out(e, name):
+    """"[SOLD OUT] Show" -> "Show" with the note on the price, so a sold-out early show and its late
+    show read as two times of one event."""
+    m = _SOLD_OUT_PREFIX_RE.match(name)
+    tidied = name[m.end():].strip() if m else ""
+    if not tidied:
+        m = re.search(r"\s*[\[(*:\-–—|]+\s*sold[\s-]*out\s*[\])*!]*\s*$", name, re.I) or _SOLD_OUT_BARE_RE.search(name)
+        tidied = name[:m.start()].strip() if m else ""
+    if not tidied:
+        return name
+    price = (e.get("price") or "").strip()
+    e["price"] = price if "sold out" in price.lower() else (f"{price} (sold out)" if price else "Sold out")
+    return tidied
+
+
 def _clean_scraped_events(events):
     """Normalize one source's events: unescape HTML entities in titles ("Rock &amp; Roll"),
     repair glued-together URLs, drop virtual/online events and placeholders, and collapse
@@ -8717,6 +8795,7 @@ def _clean_scraped_events(events):
         name = html.unescape(e.get("name") or "").strip()
         if not name or is_placeholder_or_closed_event(name):
             continue
+        name = _tidy_sold_out(e, name)
         e["name"] = name
         v_low = (e.get("venue") or "").strip().lower()
         n_low = name.lower()
@@ -8908,6 +8987,7 @@ def _scrape_one(v, force=False, allow_live=True):
                 e["category"] = guess_category(e.get("name"), default_cat, venue=e.get("venue"))
             else:
                 e["category"] = guess_category(e.get("name"), existing_cat, venue=e.get("venue"))
+            e["category"] = keep_music_venue_category(e["category"], default_cat, e.get("description"))
 
         dur = round(time.time() - t0, 2)
 

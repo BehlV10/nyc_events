@@ -18,6 +18,8 @@ import re
 from datetime import datetime, timedelta, timezone
 from html import escape
 
+import edm_hub
+import kids_hub
 from scrapers import EASTERN, category_bucket
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -237,6 +239,16 @@ HUBS = {
         "subtitle": "Free concerts, NYC Parks programs, museum nights, library talks, open mics, and club guestlists.",
         "badge": "FREE EVENTS", "query": "#free=1",
     },
+    "kids-family-events-nyc": {
+        "title": "Kids & Family Events in NYC", "bucket": "Kids & Family", "style": "kids", "limit": kids_hub.CARD_LIMIT,
+        "subtitle": "Storytimes, puppet shows, museum days, nature walks, music classes and free family programs. Filter by age and activity.",
+        "badge": "KIDS & FAMILY", "query": "#cat=Kids+%26+Family",
+    },
+    "markets-festivals-nyc": {
+        "title": "Markets, Fairs & Festivals in NYC", "bucket": "Markets & Festivals", "collapse_series": True, "limit": 250,
+        "subtitle": "Flea markets, night markets, greenmarkets, holiday markets and bazaars, craft and vintage fairs, food fests and street fairs.",
+        "badge": "MARKETS & FESTIVALS", "query": "#cat=Markets+%26+Festivals",
+    },
     # Activity guides
     "live-music-nyc": {
         "title": "Live Music & Concerts in NYC", "bucket": "Music & nightlife", "cats": {"music"},
@@ -244,7 +256,7 @@ HUBS = {
         "badge": "LIVE MUSIC", "query": "#cat=Music+%26+nightlife",
     },
     "dj-techno-nights-nyc": {
-        "title": "DJ Nights, Techno & Dance Parties in NYC", "cats": {"clubbing"},
+        "title": "DJ Nights, Techno & Dance Parties in NYC", "style": "edm", "limit": edm_hub.CARD_LIMIT,
         "subtitle": "Techno, house, and dance parties at Nowadays, Elsewhere, Knockdown Center, Bossa Nova Civic Club, and more.",
         "badge": "DJ & NIGHTLIFE", "query": "#cat=Music+%26+nightlife",
     },
@@ -306,7 +318,9 @@ def hub_events(hub, dated, limit=None):
         if time_rule == "weekend" and d not in _weekend_dates(today):
             continue
         cat = e.get("category") or "other"
-        if cat in ("services", "family"):
+        if cat in ("services", "family") and hub.get("bucket") != "Kids & Family":
+            continue
+        if hub.get("style") == "edm" and not edm_hub.is_edm_event(e):
             continue
         cat_ok = True
         if hub.get("cats") or hub.get("bucket"):
@@ -365,6 +379,7 @@ _HUB_CSS = """
   .card h3 a { color:var(--fg); text-decoration:none; }
   .card h3 a:hover { color:var(--accent); text-decoration:underline; }
   .venue { font-size:12.5px; color:var(--muted); overflow-wrap:anywhere; }
+  .also { font-size:12px; color:var(--accent); margin-top:4px; }
   footer { border-top:1px solid var(--border); padding:22px 16px; text-align:center; font-size:12px; color:var(--muted); }
   footer a { color:var(--accent); text-decoration:none; }
 """
@@ -379,6 +394,34 @@ def _hub_nav(active_slug):
     return "\n    ".join(links)
 
 
+def _series_key(e):
+    name = re.sub(r"\b20\d\d\b|[^a-z0-9 ]+", " ", (e.get("name") or "").lower())
+    # First word of the venue: listings of one series spell it "Grand Bazaar" / "Grand Bazaar NYC"
+    venue = re.sub(r"^the |[^a-z0-9 ]+", " ", (e.get("venue") or e.get("_source_venue") or "").lower())
+    return " ".join(name.split()), (venue.split() or [""])[0]
+
+
+def _collapse_series(events, show_dates=3):
+    """One card per repeating series (a weekly greenmarket, a month-long holiday market) at its next
+    date, its later dates in the card: "Also Sat, Nov 28 · Sun, Nov 29 and 11 more dates." Events
+    must be date-sorted."""
+    groups = {}
+    for e in events:
+        groups.setdefault(_series_key(e), []).append(e)
+    out = []
+    for first, *rest in groups.values():
+        days = []
+        for r in rest:
+            label = r["_time"].strftime("%a, %b %-d")
+            if label not in days and r["_time"].date() != first["_time"].date():
+                days.append(label)
+        if days:
+            more = f" and {len(days) - show_dates} more dates" if len(days) > show_dates else ""
+            first = {**first, "_also": f"Also {' · '.join(days[:show_dates])}{more}."}
+        out.append(first)
+    return out
+
+
 def render_hub_page(slug, dated, site_url=None, max_events=120):
     from template import CITY_LABELS, _event_city, _get_event_highlight, _is_event_free, _load_highlights
     from venues_geo import resolve_event_geo
@@ -386,6 +429,12 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
     hub = HUBS[slug]
     site_url = site_url or get_site_url()
     events = hub_events(hub, dated)
+    city_of = lambda e: _event_city(e.get("venue"), e.get("_source_venue"), geo=resolve_event_geo(e), event=e)
+    if hub.get("style") in ("kids", "edm"):
+        events = [e for e in events if city_of(e) != "other"]  # the page is laid out by borough
+    if hub.get("collapse_series"):
+        events = _collapse_series(events)
+    max_events = hub.get("limit", max_events)
     shown = events[:max_events]
     highlights = _load_highlights()
     meta = build_seo_meta_tags(
@@ -438,12 +487,28 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
         cards.append(
             f'<article class="card{" pick" if hl else ""}"><div class="meta"><time datetime="{e["_time"].isoformat()}">{when}</time>'
             f'<span>{badge}</span></div><h3><a href="{escape(e.get("url") or "../")}" target="_blank" rel="noopener">'
-            f'{escape(e.get("name") or "Event")}</a></h3><div class="venue">{escape(where)}</div></article>'
+            f'{escape(e.get("name") or "Event")}</a></h3><div class="venue">{escape(where)}</div>'
+            + (f'<div class="also">{escape(e["_also"])}</div>' if e.get("_also") else "") + "</article>"
         )
     if cards:
         sections.append(f'<div class="grid">{"".join(cards)}</div>')
     body = "\n".join(sections) or "<p>No upcoming listings match right now — the full calendar has everything.</p>"
     more = f"Showing {len(shown):,} of {len(events):,} upcoming listings." if len(events) > len(shown) else f"{len(events):,} upcoming listings."
+
+    hero = f"""<div class="hero">
+    <h1>{escape(hub['title'])}</h1>
+    <p>{escape(hub['subtitle'])}</p>
+    <a class="cta" href="../{hub['query']}">Open the interactive calendar &amp; map →</a>
+  </div>"""
+    extra_head, extra_css, body_tag, filters, foot_js = "", "", "<body>", "", ""
+    if hub.get("style") == "kids":
+        hero, filters, body = kids_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
+        extra_head, extra_css, foot_js = kids_hub._KIDS_FONTS, kids_hub._KIDS_CSS, kids_hub._KIDS_FILTER_JS
+        body_tag = '<body class="kids-hub">'
+    elif hub.get("style") == "edm":
+        hero, filters, body = edm_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
+        extra_head, extra_css, foot_js = edm_hub._EDM_FONTS, edm_hub._EDM_CSS, edm_hub._EDM_FILTER_JS
+        body_tag = '<body class="edm-hub">'
 
     return f"""<!doctype html>
 <html lang="en">
@@ -451,11 +516,12 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {meta}
+{extra_head}
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 <script type="application/ld+json">{json.dumps(crumbs, ensure_ascii=False)}</script>
-<style>{_HUB_CSS}</style>
+<style>{_HUB_CSS}{extra_css}</style>
 </head>
-<body>
+{body_tag}
 <header>
   <a href="../" class="logo"><span>NYC</span> Events</a>
   <nav class="hub-nav">
@@ -463,16 +529,14 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
   </nav>
 </header>
 <main>
-  <div class="hero">
-    <h1>{escape(hub['title'])}</h1>
-    <p>{escape(hub['subtitle'])}</p>
-    <a class="cta" href="../{hub['query']}">Open the interactive calendar &amp; map →</a>
-  </div>
+  {hero}
+  {filters}
   <div class="count">{more} Updated {datetime.now(EASTERN).strftime('%b %-d, %-I:%M %p')} ET.</div>
   {body}
 </main>
 <footer><a href="../">{SITE_NAME}</a> · independent, ad-free calendar of New York City events ·
   <a href="../feed.xml">RSS</a> · <a href="../events.ics">Subscribe (iCal)</a></footer>
+{foot_js}
 </body>
 </html>"""
 
