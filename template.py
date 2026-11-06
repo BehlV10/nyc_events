@@ -36,6 +36,8 @@ from scrapers import (
     sanitize_event_url,
     BROADWAY_THEATRES,
 )
+from lgbtq import is_lgbtq_event
+from light_theme import LIGHT_THEME_CSS
 from scrapers import admission_price, mentions_free
 from venues_geo import resolve_event_geo
 from nyc_geo import TRISTATE_NEEDLES, borough_at, outside_area
@@ -2278,7 +2280,7 @@ def render_page(results, split_deferred=False, context_out=None):
                 note_html = f'<div class="curator-note"><span class="note-label">Why it\'s a pick:</span> {escape(note)}</div>'
         # Flags are emitted only when true (the page tests `=== 'true'`), and nothing that the
         # page can derive (subarea name, HH:MM) is repeated per event: deferred days are ~17k <li>s.
-        flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "")
+        flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
         return _compact_li(f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{hl_attr}{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
           <div class="what">{link}{price_tag}{guestlist_badge}{hl_badge}{recur_badge}
@@ -2604,11 +2606,17 @@ def render_page(results, split_deferred=False, context_out=None):
     }}
     return null;
   }}
+  function systemTheme() {{
+    try {{
+      return (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'classic';
+    }} catch (e) {{ return 'classic'; }}
+  }}
   try {{
     var manualTheme = localStorage.getItem('nyc_events_theme_manual');
     var storedTheme = localStorage.getItem('nyc_events_theme');
     var seasonalTheme = getClientSeasonalTheme(new Date());
-    var t = (!manualTheme && seasonalTheme) ? seasonalTheme : (storedTheme || seasonalTheme || 'classic');
+    // Visitors who haven't picked a theme get their device's setting: light or dark.
+    var t = (!manualTheme && seasonalTheme) ? seasonalTheme : (storedTheme || seasonalTheme || systemTheme());
     document.documentElement.setAttribute('data-theme', t);
   }} catch (e) {{}}
 </script>
@@ -3147,6 +3155,8 @@ def render_page(results, split_deferred=False, context_out=None):
   .city-swatch {{ display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }}
   .free-toggle {{ display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--green); user-select: none; }}
   .free-toggle input {{ accent-color: var(--green); width: 14px; height: 14px; cursor: pointer; margin: 0; }}
+  .lgbtq-toggle {{ display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; font-weight: 600; cursor: pointer; color: #a855f7; user-select: none; }}
+  .lgbtq-toggle input {{ accent-color: #a855f7; width: 14px; height: 14px; cursor: pointer; margin: 0; }}
 
   /* Search Box */
   .search-input-wrap {{ position: relative; display: flex; align-items: center; }}
@@ -4360,6 +4370,22 @@ def render_page(results, split_deferred=False, context_out=None):
     box-shadow: 0 1px 4px rgba(0,0,0,0.3);
   }}
 
+  [data-theme="light"] {{
+    color-scheme: light;
+    --bg: #f5f6fa;
+    --card: #ffffff;
+    --card-hover: #f0f2f8;
+    --fg: #161a24;
+    --muted: #5b6475;
+    --accent: #2563eb;
+    --accent-glow: rgba(37, 99, 235, 0.16);
+    --border: rgba(15, 23, 42, 0.11);
+    --border-hover: rgba(15, 23, 42, 0.24);
+    --green: #15803d;
+    --green-bg: rgba(22, 163, 74, 0.10);
+    --green-border: rgba(22, 163, 74, 0.35);
+    --warn: #c2410c;
+  }}
   [data-theme="indie"] {{
     --bg: #0e1014;
     --card: #15181e;
@@ -5244,6 +5270,9 @@ def render_page(results, split_deferred=False, context_out=None):
     background: var(--accent);
     color: #0c0e14;
   }}
+
+  /* Light theme overrides (light_theme.py) */
+{LIGHT_THEME_CSS}
 </style>
 </head>
 <body>
@@ -5253,6 +5282,7 @@ def render_page(results, split_deferred=False, context_out=None):
         <div class="theme-toggle-pills" role="radiogroup" aria-label="Visual theme">
           {seasonal_btn_html}
           <button type="button" class="theme-pill-btn{' active' if default_theme == 'classic' else ''}" data-theme="classic" role="radio" aria-checked="{'true' if default_theme == 'classic' else 'false'}" title="Classic dark theme">🌙</button>
+          <button type="button" class="theme-pill-btn" data-theme="light" role="radio" aria-checked="false" title="Light theme">☀️</button>
           <button type="button" class="theme-pill-btn" data-theme="indie" role="radio" aria-checked="false" title="Indie guide theme">📰</button>
           <button type="button" class="theme-pill-btn" data-theme="anime" role="radio" aria-checked="false" title="Anime theme">🌸</button>
         </div>
@@ -5309,6 +5339,10 @@ def render_page(results, split_deferred=False, context_out=None):
         <label class="free-toggle" for="guestlist-only-chk" style="margin-top:6px;">
           <input type="checkbox" id="guestlist-only-chk">
           <span><span class="chip-icon">🎟️ </span>Free club guestlists only</span>
+        </label>
+        <label class="lgbtq-toggle" for="lgbtq-only-chk">
+          <input type="checkbox" id="lgbtq-only-chk">
+          <span><span class="chip-icon">🏳️‍🌈 </span>LGBTQ+ events only</span>
         </label>
         <div class="timeframe-toggle-wrap" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);">
           <label class="timeframe-toggle" for="timeframe-enable-chk">
@@ -5694,6 +5728,7 @@ def render_page(results, split_deferred=False, context_out=None):
     const searchCount = document.getElementById('search-count');
     const freeOnlyChk = document.getElementById('free-only-chk');
     const guestlistOnlyChk = document.getElementById('guestlist-only-chk');
+    const lgbtqOnlyChk = document.getElementById('lgbtq-only-chk');
 
     const locChips = document.querySelectorAll('#location-chips .loc-chip');
     const subareaBar = document.getElementById('subarea-chips-bar');
@@ -6570,9 +6605,10 @@ def render_page(results, split_deferred=False, context_out=None):
       const chkRecurs = Array.from(recurBoxes).filter(b => b.checked).length;
       const isFree = freeOnlyChk && freeOnlyChk.checked;
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
+      const isLgbtq = lgbtqOnlyChk && lgbtqOnlyChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
       const isGenreFiltered = Array.from(genreBoxes).some(b => !b.checked);
-      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || isLgbtq || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -6626,6 +6662,7 @@ def render_page(results, split_deferred=False, context_out=None):
 
       if (freeOnlyChk && freeOnlyChk.checked) params.set('free', '1');
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
+      if (lgbtqOnlyChk && lgbtqOnlyChk.checked) params.set('lgbtq', '1');
       if (picksOnly) params.set('picks', '1');
       if (timeFrom !== null || timeTo !== null) {{
         if (timeFrom !== null) params.set('from', formatMinutesToHHMM(timeFrom));
@@ -6654,6 +6691,7 @@ def render_page(results, split_deferred=False, context_out=None):
         if (params.has('q')) searchInput.value = params.get('q');
         if (params.get('free') === '1' && freeOnlyChk) freeOnlyChk.checked = true;
         if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
+        if (params.get('lgbtq') === '1' && lgbtqOnlyChk) lgbtqOnlyChk.checked = true;
         if (params.get('picks') === '1') picksOnly = true;
         if (params.get('past') === '1') showPastToday = true;
         if (params.get('v') === 'map') {{
@@ -6769,6 +6807,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const searchText = searchInput.value.trim().toLowerCase();
       const freeOnly = freeOnlyChk ? freeOnlyChk.checked : false;
       const guestlistOnly = guestlistOnlyChk ? guestlistOnlyChk.checked : false;
+      const lgbtqOnly = lgbtqOnlyChk ? lgbtqOnlyChk.checked : false;
       const week = new Set(weekDates());
 
       const nowEpoch = Math.floor(Date.now() / 1000);
@@ -6887,6 +6926,7 @@ def render_page(results, split_deferred=False, context_out=None):
                   subarea: li.dataset.subarea,
                   free: li.dataset.free === 'true',
                   guestlist: li.dataset.guestlist === 'true',
+                  lgbtq: li.dataset.lgbtq === 'true',
                   featured: li.dataset.highlight === 'true',
                   timeMins: tm ? parseInt(tm, 10) : -1,
                   epoch: li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0,
@@ -6901,6 +6941,7 @@ def render_page(results, split_deferred=False, context_out=None):
               const subareaOk = (activeSubarea === 'all') || (m.subarea === activeSubarea);
               const freeOk = !freeOnly || m.free;
               const guestlistOk = !guestlistOnly || m.guestlist;
+              const lgbtqOk = !lgbtqOnly || m.lgbtq;
               const picksOk = !picksOnly || m.featured;
               const searchOk = !searchText || (m.text || (m.text = li.textContent.toLowerCase())).includes(searchText);
 
@@ -6926,7 +6967,7 @@ def render_page(results, split_deferred=False, context_out=None):
               }}
 
               const genreOk = genreOkFor(m.bucket, m.genre);
-              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && picksOk && todOk && timePastOk;
+              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && picksOk && todOk && timePastOk;
               if (m.hidden === isVisible) {{ m.hidden = !isVisible; li.classList.toggle('hidden', !isVisible); }}
               if (isVisible) {{
                 bucketVisible++;
@@ -7084,9 +7125,10 @@ def render_page(results, split_deferred=False, context_out=None):
             const subareaOk = (activeSubarea === 'all') || (li.dataset.subarea === activeSubarea);
             const freeOk = !freeOnly || li.dataset.free === 'true';
             const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
+            const lgbtqOk = !lgbtqOnly || li.dataset.lgbtq === 'true';
             const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
             const genreOk = genreOkFor(li.dataset.bucket, li.dataset.genre);
-            const isVisible = catOk && genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk;
+            const isVisible = catOk && genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk;
             li.classList.toggle('hidden', !isVisible);
           }});
         }}
@@ -7211,6 +7253,7 @@ def render_page(results, split_deferred=False, context_out=None):
 
     if (quickPicksChip) quickPicksChip.addEventListener('click', () => {{ picksOnly = !picksOnly; apply(); stateToHash(); }});
     if (guestlistOnlyChk) guestlistOnlyChk.addEventListener('change', apply);
+    if (lgbtqOnlyChk) lgbtqOnlyChk.addEventListener('change', apply);
 
     document.addEventListener('keydown', (e) => {{
       if ((e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) &&
@@ -7383,6 +7426,7 @@ def render_page(results, split_deferred=False, context_out=None):
       if (searchInput) searchInput.value = '';
       if (freeOnlyChk) freeOnlyChk.checked = false;
       if (guestlistOnlyChk) guestlistOnlyChk.checked = false;
+      if (lgbtqOnlyChk) lgbtqOnlyChk.checked = false;
       picksOnly = false;
       clearRange();
       timeFrom = null;
@@ -8122,7 +8166,7 @@ def render_page(results, split_deferred=False, context_out=None):
     initTimeDropdowns();
     const THEME_KEY = 'nyc_events_theme';
     const THEME_MANUAL_KEY = 'nyc_events_theme_manual';
-    const VALID_THEMES = ['classic', 'indie', 'anime', 'halloween', 'election', 'veterans', 'thanksgiving', 'blackfriday', 'cybermonday'];
+    const VALID_THEMES = ['classic', 'light', 'indie', 'anime', 'halloween', 'election', 'veterans', 'thanksgiving', 'blackfriday', 'cybermonday'];
     function setTheme(t, save) {{
       const theme = VALID_THEMES.includes(t) ? t : 'classic';
       document.documentElement.setAttribute('data-theme', theme);
@@ -8137,6 +8181,17 @@ def render_page(results, split_deferred=False, context_out=None):
     }}
     document.querySelectorAll('.theme-pill-btn').forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.theme, true)));
     setTheme(document.documentElement.getAttribute('data-theme') || '{default_theme}', false);
+    // Until the visitor picks a theme, follow their device when it switches (e.g. at sunset).
+    try {{
+      const schemeQuery = window.matchMedia('(prefers-color-scheme: light)');
+      const followDevice = () => {{
+        let picked = null;
+        try {{ picked = localStorage.getItem(THEME_KEY); }} catch (_) {{}}
+        if (!picked && !getClientSeasonalTheme(new Date())) setTheme(schemeQuery.matches ? 'light' : 'classic', false);
+      }};
+      if (schemeQuery.addEventListener) schemeQuery.addEventListener('change', followDevice);
+      else if (schemeQuery.addListener) schemeQuery.addListener(followDevice);
+    }} catch (_) {{}}
 
     hashToState();
     apply();
