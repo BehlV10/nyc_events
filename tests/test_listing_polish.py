@@ -54,5 +54,12 @@ class MusicVenueBands(unittest.TestCase):
             self.assertEqual(keep_music_venue_category(cat, "music", "Live band"), cat)
 
 
+class KidWordsInAdultShows(unittest.TestCase):
+    def test_a_comedy_show_named_baby_isnt_for_kids(self):
+        self.assertFalse(scrapers.is_kid_family_event("Baby Shoes Comedy Show"))
+        self.assertTrue(scrapers.is_kid_family_event("Baby Music Class"))
+        self.assertTrue(scrapers.is_kid_family_event("Family-Friendly Comedy Show for Kids"))
+
+
 if __name__ == "__main__":
     unittest.main()

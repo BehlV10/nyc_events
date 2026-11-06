@@ -247,6 +247,19 @@ class TestScripts(unittest.TestCase):
         self.assertEqual(p["keyLocation"], "https://behlv10.github.io/nyc_events/abc123.txt")
         self.assertTrue(all(u.startswith("https://behlv10.github.io/nyc_events/") for u in p["urlList"]))
 
+    def test_reddit_week_helpers(self):
+        import generate_reddit_week as W
+
+        monday = W._week_start("2026-11-11")
+        self.assertEqual(monday.isoformat(), "2026-11-09")
+        self.assertEqual(W._venue({"venue": "Sony Hall (New York, NY)"}), "Sony Hall")
+        self.assertEqual(W._clean_title("Hadestown - New York"), "Hadestown")
+        self.assertEqual(W._price({"price": "Check link", "name": "x", "url": "https://www.ticketmaster.com/e"}), "")
+        self.assertTrue(W._is_kids({"name": "Story Time", "category": "family"}))
+        self.assertFalse(W._is_kids({"name": "Baby Shoes Comedy Show", "category": "comedy"}))
+        self.assertFalse(W._is_kids({"name": "Adult Night", "category": "family"}))
+        self.assertTrue(W.OUT_OF_TOWN_RE.search("Sleepy Hollow Day Trip"))
+
     def test_reddit_roundup_sections(self):
         from generate_reddit_roundup import build_post, weekend_dates
 
