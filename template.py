@@ -36,6 +36,7 @@ from scrapers import (
     sanitize_event_url,
     BROADWAY_THEATRES,
 )
+from scrapers import admission_price, mentions_free
 from venues_geo import resolve_event_geo
 from nyc_geo import TRISTATE_NEEDLES, borough_at, outside_area
 
@@ -463,15 +464,11 @@ def _maps_link(venue, city):
     return f"https://www.google.com/maps/search/?api=1&query={quote(f'{venue}, {label}, NY')}"
 
 
-_FREE_TITLE_RE = re.compile(
+# Activities that are usually free ("open mic", "board games", "run club"). Only a hint: the venue
+# may still charge, so a listed price, a ticket link or an admission-only venue outweighs it.
+_FREE_ACTIVITY_RE = re.compile(
     r"\b("
-    r"free|"
     r"guestlist|"
-    r"free guestlist|"
-    r"free rsvp|"
-    r"rsvp free|"
-    r"free entry|"
-    r"complimentary|"
     r"parade|"
     r"car-free|"
     r"open streets?|"
@@ -493,11 +490,27 @@ _FREE_TITLE_RE = re.compile(
     r"board games?|"
     r"storytimes?|"
     r"fun runs?|"
-    r"run clubs?|"
-    r"no cover"
+    r"run clubs?"
     r")\b",
     re.IGNORECASE,
 )
+
+# Sites that sell paid tickets, so a missing price there never means free ("Iliza Shlesinger:
+# Free Nights & Weekends" is a tour name).
+_PAID_SELLER_RE = re.compile(
+    r"(?:^|[/.])(?:ticketmaster|livenation|axs|ticketweb|etix|seetickets|dice\.fm|tixr|showclix|prekindle|"
+    r"holdmyticket|eventim|seatgeek|stubhub|vividseats|telecharge|ovationtix)\.",
+    re.IGNORECASE,
+)
+# Any ticketing page, free or paid; enough to doubt a free guess drawn from an activity word.
+_TICKET_LINK_RE = re.compile(
+    r"(?:^|[/.])(?:eventbrite|tickettailor|simpletix|ticketleap|brownpapertickets|humanitix|universe|ludus|"
+    r"seatengine|eventcombo|withfriends)\.|//tickets?\.|/tickets?(?:[/?#-]|$)|/checkout|/buy-tickets",
+    re.IGNORECASE,
+)
+# Places where an activity is included with paid admission (storytime at a children's museum).
+_ADMISSION_VENUES = ("children's museum", "childrens museum", "museum of natural history", "hall of science",
+                     "aquarium", "zoo", "botanic", "intrepid", "legoland")
 
 _FREE_DESC_PHRASES = [
     "admission: free",
@@ -536,10 +549,19 @@ def _is_event_free(e):
         if re.search(r"\$[1-9]", price):
             return False
 
+    # Another listing of the same event names a price ("$5" on the venue's page).
+    alts = e.get("_alt_sources") or []
+    if not price and any(re.search(r"\$\s?[1-9]", a.get("price") or "") for a in alts):
+        return False
+
     name = (e.get("name") or "").lower()
     desc = (e.get("description") or "").lower()
     source = (e.get("_source_venue") or "").lower()
     venue = (e.get("venue") or "").lower()
+    urls = [e.get("url") or ""] + [a.get("url") or "" for a in alts]
+
+    if any(_PAID_SELLER_RE.search(u) for u in urls):
+        return False
 
     if any(k in source or k in venue for k in [
         "library", "nypl", "bpl", "parks free", "summerstage", "bryant park",
@@ -549,11 +571,16 @@ def _is_event_free(e):
     ]):
         return True
 
-    if _FREE_TITLE_RE.search(name):
+    if mentions_free(name):
         return True
 
     if any(p in desc for p in _FREE_DESC_PHRASES):
         return True
+
+    if _FREE_ACTIVITY_RE.search(name):
+        sells_tickets = any(_TICKET_LINK_RE.search(u) for u in urls)
+        charges_admission = any(k in venue or k in source for k in _ADMISSION_VENUES)
+        return not (admission_price(desc) or sells_tickets or charges_admission)
 
     return False
 
@@ -1867,7 +1894,8 @@ def _merge_duplicates(events, word_freq=None):
             else:
                 match["_presenter"] = None
 
-            if not match.get("price") and e.get("price"):
+            # The venue's own price beats a listings site's ("$5 + fee" over "Free").
+            if e.get("price") and (not match.get("price") or new_prio > cur_prio):
                 # A free Meetup/RSVP listing for a group outing doesn't make a ticketed show free.
                 free_claim = bool(re.search(r"\bfree\b|^\$?0(\.00)?$", str(e["price"]).strip(), re.I))
                 if not (free_claim and _TICKET_SELLER_RE.search(match.get("url") or "")):
