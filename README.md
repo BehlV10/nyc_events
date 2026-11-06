@@ -138,7 +138,7 @@ Hand-written picks can be added to `highlights.json` (entries without `"auto": t
 
 ## 🤖 Automated Scraper Workflow
 
-[`.github/workflows/scrape.yml`](.github/workflows/scrape.yml) runs every **30 minutes** (and on push to `main`):
+[`.github/workflows/scrape.yml`](.github/workflows/scrape.yml) runs **twice a day** (and on push to `main`):
 - Runs the unit tests, then re-scrapes every source (per-host rate limits keep Eventbrite/Meetup from throttling).
 - Curates the daily picks and renders the site, landing pages, feeds, and social cards.
 - Commits `events.json`, `index.html`, `events.html`, `deferred_days.html`, and `highlights.json`. Landing pages,

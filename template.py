@@ -36,6 +36,7 @@ from scrapers import (
     sanitize_event_url,
     BROADWAY_THEATRES,
 )
+from holiday_themes import HOLIDAY_KEYS, greeting_html, holiday_calendar, holiday_on, holiday_theme_css
 from lgbtq import is_lgbtq_event
 from light_theme import LIGHT_THEME_CSS
 from scrapers import admission_price, mentions_free
@@ -638,19 +639,19 @@ BANNER_SVG = """
 <svg viewBox="0 0 1200 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%"   stop-color="#0c0926"/>
-      <stop offset="35%"  stop-color="#31124d"/>
-      <stop offset="65%"  stop-color="#b8325a"/>
-      <stop offset="85%"  stop-color="#f5793a"/>
-      <stop offset="100%" stop-color="#ffc355"/>
+      <stop offset="0%" style="stop-color: var(--sky1, #0c0926)"/>
+      <stop offset="35%" style="stop-color: var(--sky2, #31124d)"/>
+      <stop offset="65%" style="stop-color: var(--sky3, #b8325a)"/>
+      <stop offset="85%" style="stop-color: var(--sky4, #f5793a)"/>
+      <stop offset="100%" style="stop-color: var(--sky5, #ffc355)"/>
     </linearGradient>
     <radialGradient id="moon" cx="0.5" cy="0.5" r="0.5">
       <stop offset="0%" stop-color="#fff8e7"/>
       <stop offset="100%" stop-color="#fff8e7" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#142852"/>
-      <stop offset="100%" stop-color="#071124"/>
+      <stop offset="0%" style="stop-color: var(--water1, #142852)"/>
+      <stop offset="100%" style="stop-color: var(--water2, #071124)"/>
     </linearGradient>
     <linearGradient id="chrysler_crown" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#ffffff"/>
@@ -2018,26 +2019,10 @@ def group_by_date(results):
 
 
 def get_seasonal_theme(dt):
-    """(theme_key, icon, label) when dt falls on a seasonal NYC moment, else (None, None, None).
-    Mirrors getClientSeasonalTheme() in the page so the server-rendered picker matches."""
-    y, m, d = dt.year, dt.month, dt.day
-    if (m == 10 and d >= 29) or (m == 11 and d <= 1):
-        return ("halloween", "🎃", "Village Halloween Parade")
-    if m == 11:
-        first_mon = next(day for day in range(1, 8) if datetime(y, 11, day).weekday() == 0)
-        if d == first_mon + 1:
-            return ("election", "🗳️", "Election Day")
-        if d == 11:
-            return ("veterans", "🎖️", "Veterans Day Parade")
-        first_thu = next(day for day in range(1, 8) if datetime(y, 11, day).weekday() == 3)
-        thanksgiving = first_thu + 21
-        if d in (thanksgiving - 1, thanksgiving):
-            return ("thanksgiving", "🦃", "Thanksgiving Parade")
-        if d in (thanksgiving + 1, thanksgiving + 2):
-            return ("blackfriday", "🏷️", "Black Friday")
-        if d == thanksgiving + 4:
-            return ("cybermonday", "⚡", "Cyber Monday")
-    return (None, None, None)
+    """(theme_key, icon, label) for the holiday on dt's date, or (None, None, None).
+    The holiday list, dates and palettes live in holiday_themes.py."""
+    h = holiday_on(dt.date() if isinstance(dt, datetime) else dt)
+    return (h["key"], h["emoji"], h["label"]) if h else (None, None, None)
 
 
 def _load_highlights():
@@ -2590,37 +2575,39 @@ def render_page(results, split_deferred=False, context_out=None):
 {seo_head}
 {json_ld}
 <script>
-  // Seasonal themes switch on automatically unless the visitor picked one themselves.
-  function getClientSeasonalTheme(dt) {{
-    var y = dt.getFullYear(), m = dt.getMonth() + 1, d = dt.getDate();
-    if ((m === 10 && d >= 29) || (m === 11 && d <= 1)) return 'halloween';
-    if (m === 11) {{
-      var firstMon = 1; while (new Date(y, 10, firstMon).getDay() !== 1) firstMon++;
-      if (d === firstMon + 1) return 'election';
-      if (d === 11) return 'veterans';
-      var firstThu = 1; while (new Date(y, 10, firstThu).getDay() !== 4) firstThu++;
-      var tDay = firstThu + 21;
-      if (d === tDay - 1 || d === tDay) return 'thanksgiving';
-      if (d === tDay + 1 || d === tDay + 2) return 'blackfriday';
-      if (d === tDay + 4) return 'cybermonday';
-    }}
-    return null;
+  // Seasonal themes switch on automatically unless the visitor picked one today.
+  var HOLIDAY_CALENDAR = {json.dumps(holiday_calendar(datetime.now(EASTERN).date() - timedelta(days=2), 400))};
+  var HOLIDAY_KEYS = {json.dumps(HOLIDAY_KEYS)};
+  var BASE_THEMES = ['classic', 'light', 'indie', 'anime'];
+  function localISODate(dt) {{
+    return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
   }}
+  function getClientSeasonalTheme(dt) {{
+    return HOLIDAY_CALENDAR[localISODate(dt)] || null;
+  }}
+  // Visitors who haven't picked a theme get their device's setting: light or dark.
   function systemTheme() {{
     try {{
       return (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'classic';
     }} catch (e) {{ return 'classic'; }}
   }}
+  // Which theme to show: a ?theme= preview; else today's holiday, unless the visitor picked a
+  // theme today; else the visitor's last regular theme; else their device's light/dark setting.
+  function pickTheme() {{
+    var preview = new URLSearchParams(location.search).get('theme');
+    if (preview && (BASE_THEMES.indexOf(preview) !== -1 || HOLIDAY_KEYS.indexOf(preview) !== -1)) return preview;
+    var now = new Date(), today = localISODate(now), holiday = getClientSeasonalTheme(now), stored = null, pickedOn = null;
+    try {{
+      stored = localStorage.getItem('nyc_events_theme');
+      pickedOn = localStorage.getItem('nyc_events_theme_manual');
+    }} catch (e) {{}}
+    if (holiday) return (pickedOn === today && stored) ? stored : holiday;
+    return (stored && BASE_THEMES.indexOf(stored) !== -1) ? stored : systemTheme();
+  }}
   try {{
-    var manualTheme = localStorage.getItem('nyc_events_theme_manual');
-    var storedTheme = localStorage.getItem('nyc_events_theme');
-    var seasonalTheme = getClientSeasonalTheme(new Date());
-    // Visitors who haven't picked a theme get their device's setting: light or dark.
-    var t = (!manualTheme && seasonalTheme) ? seasonalTheme : (storedTheme || seasonalTheme || systemTheme());
-    document.documentElement.setAttribute('data-theme', t);
+    document.documentElement.setAttribute('data-theme', pickTheme());
   }} catch (e) {{}}
 </script>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230c0e14'/%3E%3Crect x='3' y='3' width='58' height='58' rx='13' fill='none' stroke='%23ffcc00' stroke-width='3'/%3E%3Ctext x='32' y='46' font-family='Impact, Arial Black, sans-serif' font-weight='900' font-size='34' fill='%235d9bff' text-anchor='middle'%3ENYC%3C/text%3E%3C/svg%3E">
 <style>
   {_pill_css()}
   :root {{
@@ -4171,7 +4158,6 @@ def render_page(results, split_deferred=False, context_out=None):
   .schedule-share-send {{ background: rgba(127, 127, 127, 0.18); color: var(--fg); }}
   .schedule-share-open {{ color: var(--accent); font-size: 14px; }}
   .modal-overlay {{
-    position: fixed;  .modal-overlay {{
     position: fixed;
     top: 0;
     left: 0;
@@ -5367,6 +5353,9 @@ def render_page(results, split_deferred=False, context_out=None):
     color: #0c0e14;
   }}
 
+  /* Holiday themes generated from holiday_themes.py: skyline colors, greeting, palettes */
+  {holiday_theme_css()}
+
   /* Light theme overrides (light_theme.py) */
 {LIGHT_THEME_CSS}
 </style>
@@ -5390,6 +5379,7 @@ def render_page(results, split_deferred=False, context_out=None):
     <div class="banner-gradient-overlay"></div>
     <div class="banner-inner">
       <div class="banner-top-tag"><span class="live-pulse"></span> NYC LIVE EVENTS &amp; SHOWS</div>
+      {greeting_html()}
       <h1 class="banner-title">NYC Events</h1>
       <div class="banner-meta-pill">
         {weather_pill_html}
@@ -8422,7 +8412,7 @@ def render_page(results, split_deferred=False, context_out=None):
     initTimeDropdowns();
     const THEME_KEY = 'nyc_events_theme';
     const THEME_MANUAL_KEY = 'nyc_events_theme_manual';
-    const VALID_THEMES = ['classic', 'light', 'indie', 'anime', 'halloween', 'election', 'veterans', 'thanksgiving', 'blackfriday', 'cybermonday'];
+    const VALID_THEMES = BASE_THEMES.concat(HOLIDAY_KEYS);
     function setTheme(t, save) {{
       const theme = VALID_THEMES.includes(t) ? t : 'classic';
       document.documentElement.setAttribute('data-theme', theme);
@@ -8432,7 +8422,7 @@ def render_page(results, split_deferred=False, context_out=None):
         b.setAttribute('aria-checked', on ? 'true' : 'false');
       }});
       if (save) {{
-        try {{ localStorage.setItem(THEME_KEY, theme); localStorage.setItem(THEME_MANUAL_KEY, '1'); }} catch (_) {{}}
+        try {{ localStorage.setItem(THEME_KEY, theme); localStorage.setItem(THEME_MANUAL_KEY, localISODate(new Date())); }} catch (_) {{}}
       }}
     }}
     document.querySelectorAll('.theme-pill-btn').forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.theme, true)));
@@ -8443,7 +8433,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const followDevice = () => {{
         let picked = null;
         try {{ picked = localStorage.getItem(THEME_KEY); }} catch (_) {{}}
-        if (!picked && !getClientSeasonalTheme(new Date())) setTheme(schemeQuery.matches ? 'light' : 'classic', false);
+        if (!picked) setTheme(pickTheme(), false);
       }};
       if (schemeQuery.addEventListener) schemeQuery.addEventListener('change', followDevice);
       else if (schemeQuery.addListener) schemeQuery.addListener(followDevice);
