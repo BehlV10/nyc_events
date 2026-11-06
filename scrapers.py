@@ -476,6 +476,7 @@ CATEGORY_BUCKETS = [
     ("Social & community", ["community", "food", "gaming", "other"]),
     ("Theater",            ["theater"]),
     ("Classes & Services", ["services"]),
+    ("Markets & Festivals", ["markets"]),
     ("Kids & Family",      ["family", "kids"]),
     ("Deals & Specials",   ["deals"]),
     ("Tech & Startups",    ["tech"]),
@@ -498,9 +499,46 @@ CATEGORY_STYLES = {
     "services":  ("#8fa1b3", "🛠"),
     "family":    ("#ffb8d1", "✦"),
     "deals":     ("#c678dd", "🏷"),
+    "markets":   ("#e0a458", "🎪"),
     "tech":      ("#73daca", "⌨"),
     "other":     ("#6b7280", "·"),
 }
+
+
+# Markets, fairs & festivals: flea and night markets, farmers markets, holiday markets and
+# bazaars, craft/vintage/artisan fairs, street festivals and food fests. Matched on the title.
+MARKET_FESTIVAL_RE = re.compile(
+    r"(?i)\b(?:flea(?:\s+market)?|night\s+market|farmers'?\s*market|greenmarket|smorgasburg|open[- ]air\s+(?:produce\s+)?market|produce\s+market|"
+    r"(?:holiday|christmas|winter|spring|summer|fall|autumn|harvest|artisan|craft|crafts|makers?|maker's|vintage|antiques?|"
+    r"pop[- ]?up|open|art|artists'?|record|book|zine|plant|night|street|asian|thai|vietnamese|latin|caribbean|"
+    r"local|indie|handmade|community|sunday|saturday)\s+(?:market|bazaar|fair|faire|village|festival|fest)s?|"
+    r"(?:craft|antiques?|vintage|record|plant|flower)\s+shows?|"  # not "art show": that's a gallery show
+    r"bazaar|street\s+(?:fair|festival|party)|block\s+party|renaissance\s+faire?|"
+    r"(?:food|beer|wine|cider|taco|dumpling|chili|oyster|lobster|pie|cheese|chocolate|halal|vegan|ramen|bbq|"
+    r"lantern|lights?|moon|dragon\s+boat|harvest|heritage|cultural|music|arts?|folk|fall|autumn|winter|spring|summer|"
+    r"holiday|oktober|octoberfest|sukkot|diwali|lunar\s+new\s+year|loy\s+krathong)\s*(?:fest(?:ival)?)|"
+    r"festival|oktoberfest|swap\s+meet|yard\s+sale|craft\s+show|makers?\s+mart|"
+    r"winter\s+village|holiday\s+(?:stroll|pop[- ]?up(?!\s*bar))|tree\s+lighting)\b")
+# Fairs that aren't a day out: job fairs, college fairs, resource fairs.
+NOT_MARKET_FESTIVAL_RE = re.compile(
+    r"(?i)\b(?:job|career|college|resource|health|hiring|grad(?:uate)?|graduate school|internship|volunteer|stem|steam|"
+    r"benefits?|employment|recruit(?:ing|ment)|housing|financial aid|study abroad|science|vendor application|"
+    r"call for (?:vendors|artists)|vendor sign[- ]?up)\s+(?:fairs?|expos?|markets?|festivals?)\b|"
+    r"\bfilm\s+fest|\bfestival\s+(?:of\s+)?(?:films?|shorts)\b|"
+    r"\bcall for (?:vendors|artists|makers|artisans)\b|\bvendor (?:applications?|registration|sign[- ]?ups?)\b")
+# Categories a market/festival title may replace (a jazz or film festival stays music/film).
+_MARKET_OVERRIDABLE = {"community", "other", "food", "art", "arts", "outdoors"}
+
+
+# Concert feeds: their "festivals" are concerts, or a band's name ("All Ohio Balloon Festival").
+_NOT_MARKET_SOURCES = ("songkick", "seatgeek", "ticketmaster", "dice.fm", "resident advisor", "smoke jazz")
+
+
+def is_market_or_festival(name, source=None):
+    name = name or ""
+    if (source or "").lower().startswith(_NOT_MARKET_SOURCES):
+        return False
+    return bool(MARKET_FESTIVAL_RE.search(name)) and not NOT_MARKET_FESTIVAL_RE.search(name)
 
 
 def category_bucket(cat):
