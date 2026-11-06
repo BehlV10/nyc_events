@@ -368,6 +368,42 @@ def fetch_soup(url, ua=UA_CHROME, timeout=15):
     return BeautifulSoup(text, "html.parser")
 
 
+# "Free" means admission, not "stress-free", "gluten-free", "feel free" or a band called "Dogs Run Free".
+_FREE_RE = re.compile(
+    r"(?<![\w-])(?<!stress )(?<!gluten )(?<!sugar )(?<!dairy )(?<!alcohol )(?<!care )(?<!cruelty )(?<!fragrance )"
+    r"(?<!feel )(?<!run )(?<!runs )(?<!born )"
+    r"(?:free|no cover|complimentary)\b(?!\s*(?:week|zone|spirit|style|flow|form|hold))",
+    re.I,
+)
+
+
+def mentions_free(text):
+    """True when text says getting in is free ("Free show", "no cover"), not "Freebo" or "gluten-free"."""
+    return bool(_FREE_RE.search(text or ""))
+
+
+# A dollar amount that is the price of getting in ("$10 cover", "Tickets: $15", "$5 Tickets",
+# "$10 CASH OR VENMO", "$15.00 + fee"), not a prize, a menu price or a fundraising total.
+# One amount or a run of them: "$15", "$40 & $30", "$20 - $30", "$10/$15".
+_PRICE_GROUP = r"\$\s?\d{1,3}(?:\.\d{2})?(?![\d,])(?:\s*(?:&|/|-|–|or|and)\s*\$?\s?\d{1,3}(?:\.\d{2})?(?![\d,]))*"
+_ADMISSION_PRICE_RE = re.compile(
+    r"(" + _PRICE_GROUP + r")(?=\s+to (?:enter|attend|play|join|register)\b|[^.!?\n$]{0,20}?(?<!\w)(?:cover|tickets?|"
+    r"admission|entry|entrance|at the door|doors?|cash|venmo|\+\s*fees?|fees?|in advance|advance|adv|per person)\b)"
+    r"|(?<!\w)(?:cover(?: charge)?|tickets?|admission|entry|entrance|cost|price)\b[^.!?\n$\d]{0,15}(" + _PRICE_GROUP + r")",
+    re.I,
+)
+
+
+def admission_price(text):
+    """'$10 CASH ONLY cover' -> '$10'; 'Tickets $15 adv / $20 door' -> '$15–$20'; None if no admission price."""
+    amounts = sorted({float(a) for m in _ADMISSION_PRICE_RE.finditer(text or "")
+                      for a in re.findall(r"\d{1,3}(?:\.\d{2})?", m.group(1) or m.group(2))} - {0.0})
+    if not amounts:
+        return None
+    fmt = lambda v: f"${v:g}" if v == int(v) else f"${v:.2f}"
+    return fmt(amounts[0]) if len(amounts) == 1 else f"{fmt(amounts[0])}–{fmt(amounts[-1])}"
+
+
 def _format_price_range(lo, hi, curr="USD"):
     sym = "$" if curr in ("USD", "$", None) else f"{curr} "
     def _fmt(val):
@@ -2131,7 +2167,7 @@ def scrape_ticketmaster_nyc(_url, _ua):
                 price = None
                 prs = ev.get("priceRanges") or []
                 if prs:
-                    price = _format_price_range(prs[0].get("min"), prs[0].get("max"), prs[0].get("currency", "USD"))
+                    price = _format_price_range(prs[0].get("min") or None, prs[0].get("max") or None, prs[0].get("currency", "USD"))
 
                 cat = "music"
                 v_low = venue.lower()
@@ -2259,7 +2295,7 @@ def scrape_carnegie_hall_tm(_url, _ua):
             price = None
             prs = ev.get("priceRanges") or []
             if prs:
-                price = _format_price_range(prs[0].get("min"), prs[0].get("max"), prs[0].get("currency", "USD"))
+                price = _format_price_range(prs[0].get("min") or None, prs[0].get("max") or None, prs[0].get("currency", "USD"))
 
             key_tup = (name.lower(), iso[:10])
             if key_tup in seen:
@@ -3227,7 +3263,7 @@ def scrape_lincoln_square_bid(url, ua):
                 "date": ev_dt.isoformat(),
                 "url": ev_url,
                 "venue": venue_text or "Lincoln Square / Columbus Circle",
-                "price": "Free" if "free" in item.get("class", []) or "free" in name.lower() else None,
+                "price": "Free" if "free" in item.get("class", []) or mentions_free(name) else None,
                 "category": "theater" if any(k in name.lower() for k in ["opera", "theatre", "theater", "play", "dance"]) else "art",
             })
     except Exception:
@@ -5382,7 +5418,7 @@ def scrape_qed_astoria(url, ua):
             min_p = src_data.get("min_price")
             max_p = src_data.get("max_price")
             price = None
-            if "free" in title.lower():
+            if mentions_free(title):
                 price = "Free"
             elif min_p is not None:
                 try:
@@ -6149,7 +6185,7 @@ def scrape_magnet_theater(url, ua, months=2):
                 price = None
                 if pm:
                     price = "Free" if float(pm.group(1)) == 0 else f"${pm.group(1)}"
-                elif "free" in t_txt.lower():
+                elif mentions_free(t_txt):
                     price = "Free"
                 out.append({
                     "name": name, "date": local.astimezone(timezone.utc).isoformat(),
@@ -6828,6 +6864,13 @@ def _get_partiful_targets(primary_url):
     return targets
 
 
+def _partiful_price(ev):
+    """A cover the host names in the description ("21+, $10 CASH ONLY cover"), or "Free" if they
+    say so. Otherwise unknown: being public on Partiful doesn't make an event free."""
+    text = f"{ev.get('title') or ''}\n{ev.get('description') or ''}"
+    return admission_price(text) or ("Free" if mentions_free(text) else None)
+
+
 def _partiful_entry(ev, fallback_url):
     title = (ev.get("title") or "").strip()
     start_iso = ev.get("startDate")
@@ -6844,7 +6887,7 @@ def _partiful_entry(ev, fallback_url):
         "date": dt.isoformat(),
         "url": f"https://partiful.com/e/{ev['id']}" if ev.get("id") else fallback_url,
         "venue": vname,
-        "price": None,
+        "price": _partiful_price(ev),
         "category": guess_category(title, "community", venue=vname),
     }
     addr_lines = maps.get("addressLines")
