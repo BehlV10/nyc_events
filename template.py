@@ -1153,6 +1153,9 @@ def _title_variants(title):
     t = re.sub(r"[\(\[][^\)\]]*[\)\]]", " ", t)          # (18+), [SOLD OUT]
     t = re.sub(r"\s+(?:at|@)\s+(?:the\s+)?[\w'\s\.&-]+$", "", t)  # trailing "at Brooklyn Steel"
     t = re.sub(r"\s*[-–—|,]\s*(?:nyc|new york(?: city)?|brooklyn|queens|manhattan)(?:,?\s*ny)?\s*$", "", t)
+    # Broadway listings: "MJ - The Musical - New York", "Six: The Musical", "Hamilton on Broadway"
+    t = re.sub(r"\s*[-–—:|,]?\s*(?:the\s+|a\s+new\s+)?musical\s*$", "", t)
+    t = re.sub(r"\s+(?:on\s+)?broadway\s*$|\s+tickets\s*$", "", t)
     pieces = [t]
     m = re.search(r"\bpresents?:?\s+(.+)$", t)
     if m:
@@ -1163,7 +1166,7 @@ def _title_variants(title):
             pieces.append(t.split(sep, 1)[1])
     out = []
     for piece in pieces:
-        toks = [w for w in re.findall(r"[a-z0-9]+", piece) if w not in _TITLE_FILLER]
+        toks = [w for w in re.findall(r"[^\W_]+", piece) if w not in _TITLE_FILLER]  # keeps "qué"
         c = "".join(toks)
         if c and c not in _GENERIC_TITLE_VARIANTS:
             out.append(c)
@@ -1240,7 +1243,7 @@ def _titles_equivalent(a, b):
     """True when any variant pair is identical, or one is a prefix of the other (>= 6 chars)."""
     for x in a:
         for y in b:
-            if x == y and len(x) >= 3:
+            if x == y and len(x) >= 2:  # "MJ" vs "MJ (NY)"; callers already require same venue/time
                 return True
             short, long_ = (x, y) if len(x) <= len(y) else (y, x)
             if len(short) >= 6 and long_.startswith(short):
@@ -1297,6 +1300,15 @@ def _is_aggregator_source(source, venue_url=None):
     u = (venue_url or "").lower()
     return (s in _AGGREGATOR_SOURCE_NAMES or s.startswith(("eventbrite: ", "meetup: "))
             or "/d/ny--" in u or "/find/?keywords=" in u or "donyc.com/events" in u)
+
+
+_TITLE_WORD_STOP = {"the", "a", "an", "at", "and", "of", "in", "with", "for", "live", "nyc", "new", "york", "presents",
+                    "feat", "ft", "w", "tickets", "event", "i", "to", "on", "by"}
+
+
+def _title_words(title):
+    t = re.sub(r"[\(\[][^\)\]]*[\)\]]", " ", unescape(title or "").lower())
+    return {w for w in re.findall(r"[^\W_]+", t) if w not in _TITLE_WORD_STOP and len(w) > 1}
 
 
 def _merge_duplicates(events):
@@ -1526,6 +1538,36 @@ def _merge_duplicates(events):
                 if _titles_equivalent(keys_e, _cached_variants(cand)):
                     match = cand
                     break
+
+        # 6. A promoter's double posting of one club night: same source, same venue string,
+        #    same start minute, both nightlife/party ("#1 REGGAETON BAR in Manhattan" and
+        #    "#1 LATIN THURSDAY Party in Manhattan" at San Antonios, 10 PM). Classes and
+        #    shows at multi-room venues keep their separate listings.
+        if not match and venue and (e.get("category") or "").lower() in ("clubbing", "party"):
+            t_e = e.get("_time")
+            s_e = (e.get("_source_venue") or "").lower()
+            for cand in out:
+                if (t_e and cand.get("_time") == t_e and (cand.get("venue") or "").lower() == venue
+                        and (cand.get("_source_venue") or "").lower() == s_e
+                        and (cand.get("category") or "").lower() in ("clubbing", "party")):
+                    match = cand
+                    break
+
+        # 7. Cross-listed by different organizers: same physical venue, same start minute and
+        #    3/4 of the distinctive title words shared ("Speed Dating for Single Professionals
+        #    Ages 40s & 50s" / "Single Professionals Ages 40s & 50s Speed Dating"). Intermediate
+        #    vs Advanced Hip-Hop at one studio (2/3 shared) stays two listings.
+        if not match and venue:
+            t_e = e.get("_time")
+            w_e = _title_words(raw_name)
+            if t_e and len(w_e) >= 2:
+                for cand in out:
+                    if cand.get("_time") != t_e or not _same_physical_venue(e, cand):
+                        continue
+                    w_c = _title_words(cand.get("name"))
+                    if len(w_c) >= 2 and len(w_e & w_c) >= 0.75 * len(w_e | w_c):
+                        match = cand
+                        break
 
         if match:
             # Consolidate hourly tour departures into a single daily listing
