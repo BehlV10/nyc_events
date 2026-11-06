@@ -1069,3 +1069,14 @@ class TestDeferredWeeks(unittest.TestCase):
         for gone in ("data-subarea-name", "data-event-id", "data-time-str", 'data-guestlist="false"', "style=", "\n  "):
             self.assertNotIn(gone, li)
         self.assertIn(".pc-c-", page)  # pill colours live in the stylesheet
+
+
+class TestDonycBorough(unittest.TestCase):
+    def test_area_maps_to_borough_and_is_used_without_pin(self):
+        import template
+        self.assertEqual(scrapers._donyc_area_borough("Midtown Manhattan"), "manhattan")
+        self.assertEqual(scrapers._donyc_area_borough("East Village / NoHo"), "manhattan")
+        self.assertEqual(scrapers._donyc_area_borough("The Bronx"), "bronx")
+        self.assertEqual(scrapers._donyc_area_borough("New Jersey"), "other")
+        self.assertIsNone(scrapers._donyc_area_borough(""))
+        self.assertEqual(template._event_city("Sleepwalk", "DoNYC Citywide", None, {"borough": "brooklyn"}), "brooklyn")
