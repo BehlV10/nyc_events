@@ -215,6 +215,7 @@ HOST_POLICY = {
     "eventbrite.com": (1, 1.0),   # the API lane is slower still (EVENTBRITE_API_GAP)
     "meetup.com": (2, 1.0),       # ~1,000 pages a run, ~17 min at this pace; 6 at a time drew 503s
     "partiful.com": (1, 1.0),
+    "allevents.in": (1, 1.5),     # answered 429 at two every half second
     "donyc.com": (2, 0.5),
     "nycgovparks.org": (1, 1.0),  # its WAF answers rapid crawls with an empty 202
 }
