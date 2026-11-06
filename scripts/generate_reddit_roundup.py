@@ -110,7 +110,7 @@ def build_post(dated, per_section=6, now=None):
     lines += [
         "---",
         f"*Pulled from [NYC Events]({page_url('')}), a free, ad-free calendar of upcoming NYC events from 600+ venue "
-        f"calendars and community feeds, updated every 30 minutes. More: [this weekend]({page_url('things-to-do-nyc-this-weekend/')}) · "
+        f"calendars and community feeds, updated twice a day. More: [this weekend]({page_url('things-to-do-nyc-this-weekend/')}) · "
         f"[free this weekend]({page_url('free-events-nyc-this-weekend/')}) · [run clubs]({page_url('run-clubs-nyc/')}) · "
         f"[DJ nights]({page_url('dj-techno-nights-nyc/')}).*",
     ]
