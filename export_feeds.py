@@ -44,7 +44,8 @@ def build_rss(events, site_url=None):
     for e in events:
         t = e["_time"]
         venue = e.get("venue") or e.get("_source_venue") or "New York"
-        title = f"{e.get('name')} — {venue} ({t.strftime('%a %b')} {t.day}, {t.strftime('%-I:%M %p')})"
+        when = "time TBA" if e.get("_time_unknown") else t.strftime("%-I:%M %p")
+        title = f"{e.get('name')} — {venue} ({t.strftime('%a %b')} {t.day}, {when})"
         desc = e.get("description") or f"{e.get('name')} at {venue}."
         if e.get("price"):
             desc = f"{desc} Price: {e['price']}."
@@ -114,8 +115,10 @@ def build_ics(events, site_url=None):
             "BEGIN:VEVENT",
             f"UID:{_event_uid(e)}@{host}",
             f"DTSTAMP:{stamp}",
-            f"DTSTART:{start.strftime('%Y%m%dT%H%M%SZ')}",
-            f"DTEND:{(start + timedelta(hours=2)).strftime('%Y%m%dT%H%M%SZ')}",
+            *([f"DTSTART;VALUE=DATE:{t.strftime('%Y%m%d')}"] if e.get("_time_unknown") else [
+                f"DTSTART:{start.strftime('%Y%m%dT%H%M%SZ')}",
+                f"DTEND:{(start + timedelta(hours=2)).strftime('%Y%m%dT%H%M%SZ')}",
+            ]),
             f"SUMMARY:{_ics_text(e.get('name'))}",
             f"LOCATION:{_ics_text(location)}",
             f"DESCRIPTION:{_ics_text(desc)}",

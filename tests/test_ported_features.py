@@ -1080,3 +1080,58 @@ class TestDonycBorough(unittest.TestCase):
         self.assertEqual(scrapers._donyc_area_borough("New Jersey"), "other")
         self.assertIsNone(scrapers._donyc_area_borough(""))
         self.assertEqual(template._event_city("Sleepwalk", "DoNYC Citywide", None, {"borough": "brooklyn"}), "brooklyn")
+
+
+class TestEventTimes(unittest.TestCase):
+    def _ev(self, name, days, hour, minute=0, venue="Some Hall", **kw):
+        return {"name": name, "venue": venue, "url": f"https://x.example/{name.replace(' ', '')}",
+                "date": _future_local(days, hour, minute).astimezone(timezone.utc).isoformat(), **kw}
+
+    def test_time_from_text(self):
+        self.assertEqual(scrapers.time_from_text("<b>Showtimes:</b> 7:00 PM &amp; 8:30 PM"), (19, 0))
+        self.assertEqual(scrapers.time_from_text("a class every Friday at 6:00pm"), (18, 0))
+        self.assertEqual(scrapers.time_from_text("party from 10 p.m."), (22, 0))
+        self.assertIsNone(scrapers.time_from_text("Room 5 pm"))
+        self.assertIsNone(scrapers.time_from_text("Age 13 and up"))
+
+    def test_allevents_card_times(self):
+        from bs4 import BeautifulSoup
+        page = """<div class="meta"><div class="meta-top"><div class="date"> Fri, 06 Nov, 2026 - 07:30 PM </div></div>
+                  <div class="meta-middle"><div class="title"><a href="https://allevents.in/new-york/show/200030717316036"> Big Show </a></div></div></div>
+                  <div class="top"><div class="sec"><h3 class="event-title-v3"> Featured Thing </h3></div>
+                  <div class="wrap"><div class="event-date-v3"> Tue, 24 Nov • 09:00 AM + 19 more </div></div></div>
+                  <div class="meta"><div class="date">Fri, 05 Mar • 12:00 AM</div><div class="title"><a href="/x/111111111111">No Time</a></div></div>"""
+        t = scrapers._allevents_card_times(BeautifulSoup(page, "html.parser"))
+        self.assertEqual(t["200030717316036"], ((11, 6), (19, 30)))
+        self.assertEqual(t[scrapers._title_key("Featured Thing")], ((11, 24), (9, 0)))
+        self.assertNotIn("111111111111", t)
+
+    def test_merged_time_resorts_and_unknown_goes_last(self):
+        import template
+        feed = [self._ev(f"Date Only {i}", 2, 0, venue=f"Hall {i}") for i in range(3)] + [self._ev("Late Show", 2, 0, venue="Bowery Ballroom")]
+        timed = [self._ev("Early Show", 2, 18, venue="Mercury Lounge"), self._ev("Late Show", 2, 22, venue="Bowery Ballroom"),
+                 self._ev("Museum Talk", 2, 0, venue="Queens Museum", category="art"),
+                 self._ev("Midnight Rave", 2, 0, venue="Elsewhere", category="clubbing")]
+        dated, _tba, _on = template.group_by_date([{"venue": "AllEvents", "url": "https://a.example", "events": feed},
+                                                   {"venue": "Mixed", "url": "https://b.example", "events": timed}])
+        evs = dated[0][1]
+        names = [e["name"] for e in evs]
+        self.assertLess(names.index("Early Show"), names.index("Late Show"))     # re-sorted after the merge
+        late = evs[names.index("Late Show")]
+        self.assertFalse(late.get("_time_unknown"))
+        self.assertEqual(late["_time"].hour, 22)
+        unknown = [e for e in evs if e.get("_time_unknown")]
+        self.assertEqual({e["name"] for e in unknown}, {"Date Only 0", "Date Only 1", "Date Only 2", "Museum Talk"})
+        self.assertTrue(all(e.get("_time_unknown") for e in evs[-len(unknown):]))  # unknown times sort last
+        self.assertIn("Midnight Rave", names[:1])                                  # a real midnight start stays timed
+        self.assertEqual(template.format_when(unknown[0]), "Time TBA")
+
+    def test_unknown_time_has_no_epoch_so_today_keeps_it(self):
+        events = [self._ev(f"Date Only {i}", 0, 0, venue=f"Hall {i}") for i in range(3)]
+        for e in events:
+            e["date"] = _future_local(0, 0).astimezone(timezone.utc).isoformat()
+        page = render_page({"venues": [{"venue": "AllEvents", "url": "https://a.example", "events": events}]})
+        li = re.search(r'<li class="event.*?</li>', page, re.S).group(0)
+        self.assertNotIn("data-epoch", li)
+        self.assertIn('data-time-mins="-1"', li)
+        self.assertIn("Time TBA", li)

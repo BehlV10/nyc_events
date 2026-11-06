@@ -801,6 +801,8 @@ def format_time(s):
 
 
 def format_when(e):
+    if e.get("_time_unknown"):
+        return "Time TBA"
     if not e.get("date") and e.get("ends"):
         try:
             end = datetime.strptime(e["ends"], "%Y-%m-%d")
@@ -1610,9 +1612,11 @@ def _merge_duplicates(events):
 
             # Upgrade a placeholder time (midnight / noon) once a confirmed evening showtime arrives
             m_time, e_time = match.get("_time"), e.get("_time")
-            if (m_time and e_time and e_time.hour >= 16
-                    and (m_time.hour == 0 or (m_time.hour == 12 and m_time.minute == 0))):
+            if (m_time and e_time and not e.get("_time_unknown")
+                    and (match.get("_time_unknown") or (e_time.hour >= 16
+                         and (m_time.hour == 0 or (m_time.hour == 12 and m_time.minute == 0))))):
                 match["_time"] = e_time
+                match["_time_unknown"] = False
                 if e.get("date"):
                     match["date"] = e["date"]
 
@@ -1737,12 +1741,37 @@ def _merge_duplicates(events):
     return out
 
 
+# A start at exactly midnight is believable for these; anywhere else it means "no time given".
+_REAL_MIDNIGHT_CATEGORIES = {"clubbing", "party", "music", "comedy", "film"}
+
+
+def _is_date_only_feed(events):
+    """True when nearly all of a feed's events sit at local midnight, i.e. it publishes dates
+    without times (AllEvents, DanceUS) and its midnights mean nothing."""
+    total = midnight = 0
+    for e in events:
+        try:
+            t = datetime.fromisoformat(str(e.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
+        except (TypeError, ValueError):
+            continue
+        total += 1
+        midnight += t.hour == 0 and t.minute == 0
+    return total >= 3 and midnight >= 0.8 * total
+
+
+def _day_order(e):
+    """Timed events by start time, then events with no known time."""
+    t = e.get("_time")
+    return (bool(e.get("_time_unknown")), t or datetime.max.replace(tzinfo=EASTERN), (e.get("name") or "").lower())
+
+
 def group_by_date(results):
     today = datetime.now(EASTERN).date()
     buckets = {}
     tba = []
     ongoing = []
     for r in results:
+        date_only_feed = _is_date_only_feed(r.get("events", []))
         for e in r.get("events", []):
             if is_placeholder_or_closed_event(e.get("name")) or is_closed_show(e.get("venue")) or is_standing_exhibit(e):
                 continue
@@ -1773,6 +1802,8 @@ def group_by_date(results):
                     dt = datetime.fromisoformat(raw.replace("Z", "+00:00")).astimezone(EASTERN)
                     key = dt.date()
                     entry["_time"] = dt
+                    if dt.hour == 0 and dt.minute == 0 and (date_only_feed or entry["category"] not in _REAL_MIDNIGHT_CATEGORIES):
+                        entry["_time_unknown"] = True
                 except (TypeError, ValueError):
                     pass
             if key is None:
@@ -1783,7 +1814,8 @@ def group_by_date(results):
                 buckets.setdefault(key, []).append(entry)
     for date_key, events in list(buckets.items()):
         events.sort(key=lambda e: e.get("_time", datetime.min.replace(tzinfo=EASTERN)))
-        buckets[date_key] = _merge_duplicates(events)
+        # Merging can give a listing a real time, so the day's final order is set afterwards.
+        buckets[date_key] = sorted(_merge_duplicates(events), key=_day_order)
     ongoing.sort(key=lambda e: e.get("_time") or datetime.min.replace(tzinfo=EASTERN), reverse=True)
     return sorted(buckets.items()), tba, ongoing
 
@@ -2013,11 +2045,12 @@ def render_page(results, split_deferred=False, context_out=None):
         guestlist_flag = "true" if is_guestlist else "false"
         guestlist_badge = '<span class="badge-guestlist" title="Free club guestlist or RSVP entry">🎟️ Guestlist</span>' if is_guestlist else ""
         free_flag = "true" if (is_free or is_guestlist) else "false"
-        epoch_attr = f' data-epoch="{int(e["_time"].timestamp())}"' if e.get("_time") else ''
+        # No epoch for an unknown time: it would read as "started at midnight" and hide the event.
+        epoch_attr = f' data-epoch="{int(e["_time"].timestamp())}"' if e.get("_time") and not e.get("_time_unknown") else ''
         t_obj = e.get("_time")
         raw_date = e.get("date") or ""
         is_date_only = len(raw_date) == 10 or ("T00:00:00" in raw_date and not (t_obj and (t_obj.hour != 0 or t_obj.minute != 0)))
-        if t_obj and not is_date_only:
+        if t_obj and not is_date_only and not e.get("_time_unknown"):
             time_mins = t_obj.hour * 60 + t_obj.minute
             time_attr = f' data-time-mins="{time_mins}"'
         else:
