@@ -7,6 +7,7 @@ from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import edm_hub  # noqa: E402
 import kids_hub  # noqa: E402
 import scrapers  # noqa: E402
 import seo  # noqa: E402
@@ -116,6 +117,39 @@ class KidsHub(unittest.TestCase):
 
     def test_filter_script_runs_after_the_cards(self):
         self.assertLess(self.html.rindex('class="hub-card'), self.html.index("var chips = document.querySelectorAll('.kid-chip')"))
+
+
+class DjHub(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        when = _day_at(2, 23)
+        cls.html = seo.render_hub_page("dj-techno-nights-nyc", _dated({"Nowadays": [
+            ("Hard Techno All Night", when, {"category": "clubbing", "venue": "Nowadays", "address": "56-06 Cooper Ave, Queens, NY 11385"}),
+            ("Reggaeton Rooftop Fridays", when, {"category": "clubbing", "venue": "Elsewhere", "address": "599 Johnson Ave, Brooklyn, NY 11237"}),
+            ("Comedy Open Mic", when, {"category": "comedy", "venue": "Elsewhere", "address": "599 Johnson Ave, Brooklyn, NY 11237"}),
+        ]}))
+
+    def test_uses_the_neon_design_with_filters(self):
+        self.assertIn('<body class="edm-hub">', self.html)
+        self.assertIn('class="edm-filters"', self.html)
+        self.assertNotIn("BOSTON", self.html.upper().replace("BOSTON_EVENTS", ""))
+
+    def test_vibes_include_nyc_club_styles(self):
+        self.assertIn('data-genre="techno" data-area="queens"', self.html)
+        self.assertIn('data-genre="latin" data-area="brooklyn"', self.html)
+
+    def test_comedy_stays_out(self):
+        self.assertNotIn("Comedy Open Mic", self.html)
+
+    def test_area_chips_only_for_boroughs_with_events(self):
+        self.assertIn('data-group="area" data-val="queens"', self.html)
+        self.assertNotIn('data-group="area" data-val="bronx"', self.html)
+
+    def test_what_counts(self):
+        self.assertTrue(edm_hub.is_edm_event({"name": "Some Party", "category": "clubbing"}))
+        self.assertTrue(edm_hub.is_edm_event({"name": "Boiler Room", "category": "music", "genre": "electronic"}))
+        self.assertFalse(edm_hub.is_edm_event({"name": "Blue Note Trio", "category": "music", "genre": "jazz_blues"}))
+        self.assertFalse(edm_hub.is_edm_event({"name": "Karaoke Night", "category": "clubbing"}))
 
 
 if __name__ == "__main__":
