@@ -530,6 +530,25 @@ NOT_MARKET_FESTIVAL_RE = re.compile(
 _MARKET_OVERRIDABLE = {"community", "other", "food", "art", "arts", "outdoors"}
 
 
+# A music venue's own listing whose title happens to contain another category's keyword: "Book
+# Club" is a band, "Hollow Harvest" a benefit show. If the description says it's music, it stays
+# music. Categories music venues really host (trivia, comedy, dance nights) are left alone.
+_MUSIC_EVIDENCE_RE = re.compile(
+    r"\b(bands?|live music|concert|gig|singer|songwriter|album|ep release|record release|"
+    r"jazz|folk|blues|bluegrass|americana|rock|punk|indie|soul|funk|reggae|hip[- ]hop|"
+    r"acoustic|quartet|trio|quintet|ensemble|lineup|headlin\w*|opener|tour)\b",
+    re.IGNORECASE,
+)
+_MUSIC_VENUE_OVERRIDABLE = {"books", "outdoors", "food", "community", "art", "other"}
+
+
+def keep_music_venue_category(cat, source_cat, description):
+    """cat, unless the source is a music venue and the description says this is music."""
+    if source_cat == "music" and cat in _MUSIC_VENUE_OVERRIDABLE and _MUSIC_EVIDENCE_RE.search(description or ""):
+        return "music"
+    return cat
+
+
 # Concert feeds: their "festivals" are concerts, or a band's name ("All Ohio Balloon Festival").
 _NOT_MARKET_SOURCES = ("songkick", "seatgeek", "ticketmaster", "dice.fm", "resident advisor", "smoke jazz")
 
@@ -8745,6 +8764,27 @@ _ONLINE_TITLE_RE = re.compile(
 _VIRTUAL_VENUES = {"online", "online event", "virtual", "zoom", "virtual event", "livestream", "online only"}
 
 
+_SOLD_OUT_PREFIX_RE = re.compile(r"^\s*[\[(*]{0,3}\s*sold[\s-]*out\s*[\])*!]{0,3}\s*[:\-–—|]?\s*", re.I)
+# At the end: after a separator or in brackets, or in capitals. "Women Sold Out" says one side of a
+# singles night is full, so a plain title-case ending stays.
+_SOLD_OUT_BARE_RE = re.compile(r"\s+SOLD[\s-]*OUT!*\s*$")
+
+
+def _tidy_sold_out(e, name):
+    """"[SOLD OUT] Show" -> "Show" with the note on the price, so a sold-out early show and its late
+    show read as two times of one event."""
+    m = _SOLD_OUT_PREFIX_RE.match(name)
+    tidied = name[m.end():].strip() if m else ""
+    if not tidied:
+        m = re.search(r"\s*[\[(*:\-–—|]+\s*sold[\s-]*out\s*[\])*!]*\s*$", name, re.I) or _SOLD_OUT_BARE_RE.search(name)
+        tidied = name[:m.start()].strip() if m else ""
+    if not tidied:
+        return name
+    price = (e.get("price") or "").strip()
+    e["price"] = price if "sold out" in price.lower() else (f"{price} (sold out)" if price else "Sold out")
+    return tidied
+
+
 def _clean_scraped_events(events):
     """Normalize one source's events: unescape HTML entities in titles ("Rock &amp; Roll"),
     repair glued-together URLs, drop virtual/online events and placeholders, and collapse
@@ -8755,6 +8795,7 @@ def _clean_scraped_events(events):
         name = html.unescape(e.get("name") or "").strip()
         if not name or is_placeholder_or_closed_event(name):
             continue
+        name = _tidy_sold_out(e, name)
         e["name"] = name
         v_low = (e.get("venue") or "").strip().lower()
         n_low = name.lower()
@@ -8946,6 +8987,7 @@ def _scrape_one(v, force=False, allow_live=True):
                 e["category"] = guess_category(e.get("name"), default_cat, venue=e.get("venue"))
             else:
                 e["category"] = guess_category(e.get("name"), existing_cat, venue=e.get("venue"))
+            e["category"] = keep_music_venue_category(e["category"], default_cat, e.get("description"))
 
         dur = round(time.time() - t0, 2)
 
