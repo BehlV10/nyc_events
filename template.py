@@ -4,8 +4,10 @@ import hashlib
 import json
 import os
 import re
-from collections import defaultdict
+import unicodedata
+from collections import Counter, defaultdict
 from datetime import datetime, timedelta, timezone
+from functools import lru_cache
 import html
 from html import escape, unescape
 from urllib.parse import quote, quote_plus, urlparse
@@ -1076,10 +1078,23 @@ def _source_display_label(src, url=None):
     return s or "Tickets"
 
 
+# Query parameters that name the event itself ("book?perfcode=931", "?eventid=206566108"). Without
+# them every event on such a site has the same URL and they'd all merge.
+_EVENT_ID_PARAMS = {"evt", "eid", "eventid", "event_id", "event", "id", "perfcode", "performance", "showid",
+                    "show_id", "occurrence", "e"}
+
+
 def _clean_event_url(u):
     if not u or not isinstance(u, str):
         return ""
+    try:
+        q = urlparse(u.strip()).query
+    except ValueError:
+        q = ""
+    keep = sorted(p for p in q.split("&") if p.split("=", 1)[0].lower() in _EVENT_ID_PARAMS)
     u = re.sub(r"[?#].*$", "", u).strip().rstrip("/")
+    if keep and u:
+        return u + "?" + "&".join(keep)
     generic = {
         "https://donyc.com",
         "https://theskint.com",
@@ -1146,6 +1161,8 @@ _VENUE_GENERIC_WORDS = {
     "university", "college", "school", "church", "museum", "theatre", "theater", "hall", "center", "centre",
     "club", "bar", "pub", "cafe", "café", "lounge", "room", "house", "studio", "brewing", "brewery", "company",
     "co", "downtown", "presented", "by", "music", "arts", "art", "park", "street", "st", "ave", "avenue",
+    # building-type and neighborhood words shared by unrelated places
+    "square", "sq", "arena", "stadium", "gymnasium", "gym", "ice", "rink", "field",
 }
 
 
@@ -1193,7 +1210,7 @@ def _cached_geo(e):
 
 
 def _venue_words(e):
-    return _memo(e, "_m_vwords", lambda: {re.sub(r"s$", "", x) for x in re.findall(r"\w+", (e.get("venue") or "").lower())} - _VENUE_GENERIC_WORDS)
+    return _memo(e, "_m_vwords", lambda: {re.sub(r"s$", "", x) for x in re.findall(r"\w+", (e.get("venue") or "").lower()) if len(x) >= 2} - _VENUE_GENERIC_WORDS)
 
 
 def _cached_head(e):
@@ -1315,6 +1332,95 @@ def _title_words(title):
     return {w for w in re.findall(r"[^\W_]+", t) if w not in _TITLE_WORD_STOP and len(w) > 1}
 
 
+_UNRELATED_STOP = {"night", "show", "tour", "featuring", "events"}
+
+
+def _titles_unrelated(t1, t2):
+    """No meaningful word in common, and not just a spacing/punctuation variant ("half•alive"/"halfalive")."""
+    if not t1 or not t2:
+        return False
+    w1 = {w for w in _title_words(t1) if len(w) > 2} - _UNRELATED_STOP
+    w2 = {w for w in _title_words(t2) if len(w) > 2} - _UNRELATED_STOP
+    if not w1 or not w2 or (w1 & w2):
+        return False
+    squash = lambda t: re.sub(r"[^a-z0-9]+", "", unescape(t).lower())
+    s1, s2 = squash(t1), squash(t2)
+    return not (s1 and s2 and (s1 in s2 or s2 in s1))
+
+
+_SHARED_WORD_STOP = _TITLE_WORD_STOP | _UNRELATED_STOP | {
+    "this", "that", "your", "our", "you", "all", "from", "day", "edition", "special", "guest", "guests", "sold",
+    "out", "free", "party", "series", "club", "group", "meeting", "session", "nights", "music", "concert",
+    "festival", "celebration", "annual", "part", "vs", "mens", "womens", "presented", "conversation", "talk",
+    "book", "author", "premiere", "world", "american", "brooklyn", "manhattan", "queens", "bronx", "class",
+    "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "weekly", "monthly",
+}
+
+
+@lru_cache(maxsize=None)
+def _fold(t):
+    return unicodedata.normalize("NFKD", unescape(t or "")).encode("ascii", "ignore").decode().lower()
+
+
+def _distinctive_words(title, venue_words=()):
+    return {w for w in re.findall(r"[a-z]+", _fold(title))
+            if len(w) >= 3 and w not in _SHARED_WORD_STOP and w not in venue_words}
+
+
+# Numbers that describe the night rather than the show: door ages ("18+", "21 and over"), dates
+# ("11/06", "December 11th") and times ("7:30", "8pm").
+_NOT_A_TITLE_NUMBER = re.compile(
+    r"\b\d{2}\s*(?:\+|and (?:over|up)|& (?:over|up))|\b\d{1,2}/\d{1,2}(?:/\d{2,4})?\b|\b\d{1,2}(?:st|nd|rd|th)\b|"
+    r"\b\d{1,2}(?::\d{2})?\s*(?:am|pm)\b|\b\d{1,2}:\d{2}\b")
+
+
+@lru_cache(maxsize=None)
+def _title_numbers(title):
+    """Numbers in a title other than years: "Round 3", "Day 2", "No. 5"."""
+    return frozenset(n for n in re.findall(r"\d+", _NOT_A_TITLE_NUMBER.sub(" ", _fold(title)))
+            if not re.fullmatch(r"(?:19|20)\d\d", n))
+
+
+def _numbers_conflict(t1, t2):
+    """Both titles carry numbers and they differ: "Ages 27-37" vs "Ages 36-48", "Round 3" vs "Round 5"."""
+    n1, n2 = _title_numbers(t1), _title_numbers(t2)
+    # Neither contains the other: "Brutalismus 3000" vs "Brutalismus 3000 (18+)" is the same show
+    # with an extra detail, not a different one.
+    return bool(n1 and n2 and not (n1 <= n2 or n2 <= n1))
+
+
+def title_word_freq(events):
+    """How many distinct titles each distinctive word appears in, across the whole calendar."""
+    freq = Counter()
+    for t in {_fold(e.get("name")).strip() for e in events}:
+        freq.update(_distinctive_words(t))
+    return freq
+
+
+def _same_event_retitled(e1, e2, freq):
+    """Two sources, same venue, same time, titled differently: "A Conversation with Ada Limon"
+    (the venue) and "SOLD OUT! Ada Limon: The Hurting Kind" (the bookstore). Requires shared words
+    that are rare across the calendar, so "Sunday Jazz Brunch" and "Sunday Drag Brunch" never merge."""
+    t1, t2 = e1.get("_time"), e2.get("_time")
+    if not t1 or not t2 or abs((t1 - t2).total_seconds()) > 30 * 60:
+        return False
+    if (e1.get("_source_venue") or "") == (e2.get("_source_venue") or ""):
+        return False
+    if (t1.hour, t1.minute) == (0, 0) or (t2.hour, t2.minute) == (0, 0):
+        return False
+    vw1, vw2 = _venue_words(e1), _venue_words(e2)
+    if not (vw1 & vw2) or _numbers_conflict(e1.get("name"), e2.get("name")):
+        return False
+    vw = vw1 | vw2 | {w.rstrip("s") for w in vw1 | vw2}
+    shared = _distinctive_words(e1.get("name"), vw) & _distinctive_words(e2.get("name"), vw)
+    if len(shared) >= 3:
+        return True
+    rare = [w for w in shared if freq.get(w, 0) <= 6]
+    if len(shared) == 2 and rare:
+        return True
+    return len(shared) == 1 and len(rare) == 1 and len(rare[0]) >= 5 and freq.get(rare[0], 0) <= 4
+
+
 def _pill_slug(cat):
     return re.sub(r"[^a-z0-9]+", "-", (cat or "other").lower()).strip("-") or "other"
 
@@ -1335,7 +1441,7 @@ def _pill_css():
     return "".join(rules)
 
 
-def _merge_duplicates(events):
+def _merge_duplicates(events, word_freq=None):
     """Collapse events sharing a normalized name or head title within the same day bucket.
 
     Preserves the best physical venue, merges prices across primary and alt sources,
@@ -1406,13 +1512,43 @@ def _merge_duplicates(events):
         diff_mins = abs((t1 - t2).total_seconds()) / 60.0
         s1 = (e1.get("_source_venue") or e1.get("source") or "").lower()
         s2 = (e2.get("_source_venue") or e2.get("source") or "").lower()
-        if s1 and s1 == s2 and diff_mins >= 45:
+        # Same source >= 45 min apart: separate sets (7:00 and 9:30), unless one listing comes from a
+        # ticket reseller, whose times are often doors or off by an hour.
+        resale = any(h in f"{e1.get('url')} {e2.get('url')}".lower() for h in (
+            "eventschaser.com", "vividseats.com", "stubhub.com", "ticketnetwork.com", "tickpick.com"))
+        if s1 and s1 == s2 and diff_mins >= 45 and not resale:
             return True
         if s1 != s2 and diff_mins <= 90:
             return False
         if diff_mins > 90:
             return True
         return False
+
+    def _separate_listings(e1, e2):
+        """A source's own calendar with a page for each: it lists them as two events, so never
+        merge them on loose venue/time/keyword similarity. Citywide feeds and promoters do post
+        one event twice ("Wicked" / "Wicked New York Tickets"), so this doesn't apply to them."""
+        s1 = (e1.get("_source_venue") or "").lower()
+        u1, u2 = (e1.get("url") or "").rstrip("/"), (e2.get("url") or "").rstrip("/")
+        if not (s1 and s1 == (e2.get("_source_venue") or "").lower() and u1 and u2 and u1 != u2):
+            return False
+        if (_is_generic_feed(e1) or _is_aggregator_source(s1, e1.get("venue_url"))
+                or s1.startswith(("allevents", "luma", "songkick"))):
+            return False
+        if {(e1.get("category") or "").lower(), (e2.get("category") or "").lower()} <= {"clubbing", "party"}:
+            return False
+        # A shared fallback (the source's calendar page) is not an event page
+        return u1 != (e1.get("venue_url") or "").rstrip("/") and u2 != (e2.get("venue_url") or "").rstrip("/")
+
+    def _far_apart(e1, e2):
+        """Same title at two places we can locate, over half a mile apart: separate events
+        ("Trivia Night" at two bars, a citywide program at two museums)."""
+        g1, g2 = _cached_geo(e1), _cached_geo(e2)
+        if not (g1 and g2) or g1.get("lat") is None or g2.get("lat") is None:
+            return False
+        dlat = (g1["lat"] - g2["lat"]) * 69.0
+        dlng = (g1["lng"] - g2["lng"]) * 52.5  # miles per degree of longitude at NYC's latitude
+        return (dlat * dlat + dlng * dlng) ** 0.5 > 0.5
 
     def _venue_match(v1, v2, e1, e2):
         if not v1 or not v2:
@@ -1426,10 +1562,13 @@ def _merge_duplicates(events):
         generic_vwords = {
             "the", "at", "in", "of", "and", "new", "york", "nyc", "manhattan", "brooklyn", "queens", "bronx",
             "theatre", "theater", "tavern", "pub", "bar", "lounge", "brewery",
-            "brewing", "cafe", "café", "center", "hall", "club", "studio", "house", "room"
+            "brewing", "cafe", "café", "center", "hall", "club", "studio", "house", "room",
+            # every library shares these; branches are told apart by their own names
+            "public", "library", "branch", "main", "central", "square", "sq", "arena", "stadium",
         }
-        w1 = {re.sub(r"s$", "", w) for w in re.findall(r"\w+", v1_low)} - generic_vwords
-        w2 = {re.sub(r"s$", "", w) for w in re.findall(r"\w+", v2_low)} - generic_vwords
+        # len >= 2: the "s" of "Rudy's" / "Lou's" is not a shared venue word
+        w1 = {re.sub(r"s$", "", w) for w in re.findall(r"\w+", v1_low) if len(w) >= 2} - generic_vwords
+        w2 = {re.sub(r"s$", "", w) for w in re.findall(r"\w+", v2_low) if len(w) >= 2} - generic_vwords
         if w1 and w2 and (w1 & w2):
             return True
         if e1 and e2:
@@ -1487,7 +1626,7 @@ def _merge_duplicates(events):
         # 1. Exact match check
         if not match and full and len(full) >= 4 and full in seen_exact:
             for cand in seen_exact[full]:
-                if not _is_different_show(e, cand):
+                if not _is_different_show(e, cand) and not _far_apart(e, cand):
                     match = cand
                     break
 
@@ -1495,6 +1634,8 @@ def _merge_duplicates(events):
         if not match and head and len(head) >= 4 and head not in GENERIC_HEADS and head in seen_head:
             for cand in seen_head[head]:
                 c_venue = (cand.get("venue") or "").lower()
+                if _numbers_conflict(raw_name, cand.get("name")) or _separate_listings(e, cand):
+                    continue
                 if _venue_match(venue, c_venue, e, cand):
                     if not _is_different_show(e, cand):
                         match = cand
@@ -1504,6 +1645,8 @@ def _merge_duplicates(events):
         if not match and head and len(head) >= 4 and head not in GENERIC_HEADS:
             for cand in out:
                 c_venue = (cand.get("venue") or "").lower()
+                if _numbers_conflict(raw_name, cand.get("name")) or _separate_listings(e, cand):
+                    continue
                 if _venue_match(venue, c_venue, e, cand) and not _is_different_show(e, cand):
                     cand_head = _cached_head(cand)
                     if cand_head and cand_head not in GENERIC_HEADS:
@@ -1539,6 +1682,8 @@ def _merge_duplicates(events):
                     continue
                 if cat_e != (cand.get("category") or "").lower():
                     continue
+                if _separate_listings(e, cand) or _numbers_conflict(raw_name, cand.get("name")):
+                    continue
                 if not _same_physical_venue(e, cand) or _is_different_show(e, cand):
                     continue
                 stop = _STEP4_STOPWORDS | set(re.findall(r"\w+", venue)) | set(re.findall(r"\w+", (cand.get("venue") or "").lower()))
@@ -1559,7 +1704,16 @@ def _merge_duplicates(events):
                     continue
                 if not _same_physical_venue(e, cand) or _is_different_show(e, cand):
                     continue
-                if _titles_equivalent(keys_e, _cached_variants(cand)):
+                if _numbers_conflict(raw_name, cand.get("name")):
+                    continue  # "Ages 27-37" vs "Ages 36-48", "Round 3" vs "Round 5"
+                keys_c = _cached_variants(cand)
+                if _separate_listings(e, cand) and not (
+                        (t_e == t_c and keys_e[:1] == keys_c[:1])
+                        or (_is_generic_feed(e) and _titles_equivalent(keys_e, keys_c))):
+                    # Same source, two pages: separate events, except the same title at the same
+                    # minute ("X" / "X (21 and Over)") or a citywide feed listing one show twice
+                    continue
+                if _titles_equivalent(keys_e, keys_c):
                     match = cand
                     break
 
@@ -1589,9 +1743,17 @@ def _merge_duplicates(events):
                     if cand.get("_time") != t_e or not _same_physical_venue(e, cand):
                         continue
                     w_c = _title_words(cand.get("name"))
-                    if len(w_c) >= 2 and len(w_e & w_c) >= 0.75 * len(w_e | w_c):
+                    if (len(w_c) >= 2 and len(w_e & w_c) >= 0.75 * len(w_e | w_c)
+                            and not _numbers_conflict(raw_name, cand.get("name"))):
                         match = cand
                         break
+
+        # 8. Same venue and time from two sources under different titles (see _same_event_retitled)
+        if not match and word_freq:
+            for cand in out:
+                if _same_event_retitled(e, cand, word_freq):
+                    match = cand
+                    break
 
         if match:
             # Consolidate hourly tour departures into a single daily listing
@@ -1625,7 +1787,7 @@ def _merge_duplicates(events):
             raw_src = e.get("_source_venue") or e.get("source") or e.get("venue") or "source"
             src_label = _source_display_label(raw_src, src_url)
             if src_url and not any(a.get("url") == src_url for a in match["_alt_sources"]) and src_url != match.get("url"):
-                match["_alt_sources"].append({"venue": src_label, "source": raw_src, "url": src_url, "price": e.get("price")})
+                match["_alt_sources"].append({"venue": src_label, "source": raw_src, "url": src_url, "price": e.get("price"), "name": e.get("name")})
 
             if match.get("_venue_unknown") and not e.get("_venue_unknown") and e.get("venue"):
                 match["venue"] = e["venue"]
@@ -1645,12 +1807,16 @@ def _merge_duplicates(events):
             # Upgrade primary source if newly arrived event has higher source specificity or URL priority
             cur_prio = _source_score(match)
             new_prio = _source_score(e)
+            # Equal rank: the venue's own listing beats another organization's
+            own = lambda x: bool(_venue_words({"venue": x.get("_source_venue")}) & _venue_words(x))
+            if new_prio == cur_prio and own(e) and not own(match):
+                new_prio += 1
             if new_prio > cur_prio:
                 old_url = match.get("url")
                 old_src = match.get("_source_venue") or match.get("source") or "source"
                 old_label = _source_display_label(old_src, old_url)
                 if old_url and not any(a.get("url") == old_url for a in match["_alt_sources"]):
-                    match["_alt_sources"].append({"venue": old_label, "source": old_src, "url": old_url, "price": match.get("price")})
+                    match["_alt_sources"].append({"venue": old_label, "source": old_src, "url": old_url, "price": match.get("price"), "name": match.get("name")})
                 match["url"] = e.get("url")
                 match["name"] = e.get("name")
                 for k in _MEMO_KEYS:
@@ -1675,7 +1841,7 @@ def _merge_duplicates(events):
                     match["_alt_sources"] = [a for a in match["_alt_sources"] if a is not rsvp]
                     if old_url and not any(a.get("url") == old_url for a in match["_alt_sources"]):
                         old_src = match.get("_source_venue") or "source"
-                        match["_alt_sources"].append({"venue": _source_display_label(old_src, old_url), "source": old_src, "url": old_url, "price": match.get("price")})
+                        match["_alt_sources"].append({"venue": _source_display_label(old_src, old_url), "source": old_src, "url": old_url, "price": match.get("price"), "name": match.get("name")})
                     match["url"] = rsvp["url"]
 
             # If match has 19:00:00 (Eventbrite discovery fallback) while e has a real/earlier time, prefer e
@@ -1812,10 +1978,11 @@ def group_by_date(results):
                 ongoing.append(entry)
             else:
                 buckets.setdefault(key, []).append(entry)
+    word_freq = title_word_freq([e for evs in buckets.values() for e in evs])
     for date_key, events in list(buckets.items()):
         events.sort(key=lambda e: e.get("_time", datetime.min.replace(tzinfo=EASTERN)))
         # Merging can give a listing a real time, so the day's final order is set afterwards.
-        buckets[date_key] = sorted(_merge_duplicates(events), key=_day_order)
+        buckets[date_key] = sorted(_merge_duplicates(events, word_freq), key=_day_order)
     ongoing.sort(key=lambda e: e.get("_time") or datetime.min.replace(tzinfo=EASTERN), reverse=True)
     return sorted(buckets.items()), tba, ongoing
 
@@ -1988,12 +2155,21 @@ def render_page(results, split_deferred=False, context_out=None):
         alt_html = ""
         # One link per provider label: the same listing reached through several topic feeds
         # (Eventbrite run-club / 5K / outdoor searches) only needs to be offered once.
-        alts, seen_alt_urls, seen_alt_labels = [], {_clean_event_url(e.get("url")) or e.get("url")}, set()
+        alts, other_titles, seen_alt_urls, seen_alt_labels = [], [], {_clean_event_url(e.get("url")) or e.get("url")}, set()
         for a in e.get("_alt_sources") or []:
             a_url = a.get("url")
             a_key = _clean_event_url(a_url) or a_url
+            if not a_url or a_key in seen_alt_urls:
+                continue
+            if _titles_unrelated(raw_title, a.get("name")):
+                # Merged as the same time and place but titled differently: maybe a different event
+                # (or a tour name vs the band). Show its title so it's never hidden.
+                seen_alt_urls.add(a_key)
+                other_titles.append(f'<a href="{escape(a_url)}" target="_blank" rel="noopener">{escape(a["name"])}</a>'
+                                    f' <span class="also-src">({escape(a.get("venue") or "source")})</span>')
+                continue
             label = (a.get("venue") or "").strip().lower()
-            if not a_url or a_key in seen_alt_urls or label in seen_alt_labels:
+            if label in seen_alt_labels:
                 continue
             seen_alt_urls.add(a_key)
             seen_alt_labels.add(label)
@@ -2005,6 +2181,8 @@ def render_page(results, split_deferred=False, context_out=None):
             )
             if alt_links:
                 alt_html = f'<span class="alt-sources">also on {alt_links}</span>'
+        if other_titles:
+            alt_html += f'<span class="also-listed">Also listed: {" · ".join(other_titles)}</span>'
 
         compare_html = _build_compare_links(e, raw_title)
 
@@ -2872,6 +3050,9 @@ def render_page(results, split_deferred=False, context_out=None):
   .alt-sources {{ color: var(--muted); font-size: 11px; }}
   .alt-sources a {{ color: var(--accent); text-decoration: none; }}
   .alt-sources a:hover {{ text-decoration: underline; }}
+  .also-listed {{ display: block; color: var(--muted); font-size: 11px; margin-top: 2px; }}
+  .also-listed a {{ color: var(--accent); text-decoration: none; }}
+  .also-listed a:hover {{ text-decoration: underline; }}
   .desc {{
     color: var(--muted);
     font-size: 12px;
