@@ -127,6 +127,12 @@ def api_events():
 def export_json(dest="events.json"):
     force = os.environ.get("FORCE_SCRAPE", "").lower() in ("1", "true")
     data = get_all_events(force=force)
+    try:  # which sources errored, refused us, or have nothing coming up (CI run summary + .cache/)
+        from scrapers import HOST_GATE
+        from source_health import write_report
+        write_report(data.get("venues") or [], HOST_GATE.refused)
+    except Exception as ex:
+        print(f"source health report failed: {ex}")
     new_total = sum(len(v.get("events", [])) for v in data.get("venues", []))
 
     # Guard against degraded cloud scrapes (e.g. CI runner datacenter IP blocks losing thousands of events)
