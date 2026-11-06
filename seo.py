@@ -18,6 +18,7 @@ import re
 from datetime import datetime, timedelta, timezone
 from html import escape
 
+import edm_hub
 import kids_hub
 from scrapers import EASTERN, category_bucket
 
@@ -255,7 +256,7 @@ HUBS = {
         "badge": "LIVE MUSIC", "query": "#cat=Music+%26+nightlife",
     },
     "dj-techno-nights-nyc": {
-        "title": "DJ Nights, Techno & Dance Parties in NYC", "cats": {"clubbing"},
+        "title": "DJ Nights, Techno & Dance Parties in NYC", "style": "edm", "limit": edm_hub.CARD_LIMIT,
         "subtitle": "Techno, house, and dance parties at Nowadays, Elsewhere, Knockdown Center, Bossa Nova Civic Club, and more.",
         "badge": "DJ & NIGHTLIFE", "query": "#cat=Music+%26+nightlife",
     },
@@ -318,6 +319,8 @@ def hub_events(hub, dated, limit=None):
             continue
         cat = e.get("category") or "other"
         if cat in ("services", "family") and hub.get("bucket") != "Kids & Family":
+            continue
+        if hub.get("style") == "edm" and not edm_hub.is_edm_event(e):
             continue
         cat_ok = True
         if hub.get("cats") or hub.get("bucket"):
@@ -427,7 +430,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
     site_url = site_url or get_site_url()
     events = hub_events(hub, dated)
     city_of = lambda e: _event_city(e.get("venue"), e.get("_source_venue"), geo=resolve_event_geo(e), event=e)
-    if hub.get("style") == "kids":
+    if hub.get("style") in ("kids", "edm"):
         events = [e for e in events if city_of(e) != "other"]  # the page is laid out by borough
     if hub.get("collapse_series"):
         events = _collapse_series(events)
@@ -502,6 +505,10 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
         hero, filters, body = kids_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
         extra_head, extra_css, foot_js = kids_hub._KIDS_FONTS, kids_hub._KIDS_CSS, kids_hub._KIDS_FILTER_JS
         body_tag = '<body class="kids-hub">'
+    elif hub.get("style") == "edm":
+        hero, filters, body = edm_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
+        extra_head, extra_css, foot_js = edm_hub._EDM_FONTS, edm_hub._EDM_CSS, edm_hub._EDM_FILTER_JS
+        body_tag = '<body class="edm-hub">'
 
     return f"""<!doctype html>
 <html lang="en">
