@@ -4171,7 +4171,6 @@ def render_page(results, split_deferred=False, context_out=None):
   .schedule-share-send {{ background: rgba(127, 127, 127, 0.18); color: var(--fg); }}
   .schedule-share-open {{ color: var(--accent); font-size: 14px; }}
   .modal-overlay {{
-    position: fixed;  .modal-overlay {{
     position: fixed;
     top: 0;
     left: 0;

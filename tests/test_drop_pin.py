@@ -57,6 +57,18 @@ class DropPinTest(unittest.TestCase):
         self.assertIn("if (li.closest('.empty')) return;", self.html)
         self.assertIn("filter(ev => !ev.closest('.empty'))", self.html)
 
+    def test_page_css_braces_balance(self):
+        """One unclosed rule nests everything after it, which silently dropped the light theme,
+        the modals and every holiday style."""
+        css = re.search(r"<style>(.*?)</style>", self.html, re.S).group(1)
+        css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+        depth = 0
+        for ch in css:
+            depth += (ch == "{") - (ch == "}")
+            self.assertGreaterEqual(depth, 0)
+        self.assertEqual(depth, 0)
+        self.assertNotRegex(css, r"position: fixed;\s*\.modal-overlay")
+
     @unittest.skipUnless(shutil.which("node"), "needs node")
     def test_page_script_parses(self):
         """The page's script lives in a Python f-string; a stray brace would break the whole site."""
