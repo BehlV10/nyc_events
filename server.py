@@ -108,7 +108,8 @@ def static_export(filename):
     target = os.path.join(base, filename)
     if os.path.isdir(target):
         filename = os.path.join(filename, "index.html")
-    allowed = filename.endswith((".xml", ".ics", ".txt", ".jpg", ".json", "index.html"))
+    allowed = filename.endswith((".xml", ".ics", ".txt", ".jpg", ".json", "index.html",
+                                 ".ico", ".svg", ".png", ".webmanifest"))
     if not allowed or ".." in filename or not os.path.isfile(os.path.join(base, filename)):
         return ("Not found", 404)
     return send_from_directory(base, filename)

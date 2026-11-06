@@ -86,7 +86,7 @@ class LightTheme(unittest.TestCase):
 
     def test_first_visit_follows_the_device_and_a_pick_sticks(self):
         self.assertIn("matches) ? 'light' : 'classic'", self.html)
-        self.assertIn("(storedTheme || seasonalTheme || systemTheme())", self.html)
+        self.assertIn("(stored && BASE_THEMES.indexOf(stored) !== -1) ? stored : systemTheme()", self.html)
         self.assertIn("schemeQuery.addEventListener('change', followDevice)", self.html)
 
     def test_palette_defined(self):
