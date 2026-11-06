@@ -130,20 +130,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-11",
-    "auto": true,
-    "match": {
-      "name_contains": "Speed Dating for Singles  30s/40s  I Men Sold Out",
-      "venue_contains": "One Station Plaza"
-    },
-    "badge": "🎲 Game Night Pick",
-    "note": "Free; listed on 9 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-12",
+    "id": "auto-2026-11-06-10",
     "auto": true,
     "match": {
       "name_contains": "NuevaYol Fridays: Latin & Reggaeton Party in Midtown NYC at Out Of Ordinary",
@@ -393,12 +380,12 @@
     "id": "auto-2026-11-07-29",
     "auto": true,
     "match": {
-      "name_contains": "Public Gallery Tour",
-      "venue_contains": "Wave Hill"
+      "name_contains": "Mix & Mingle Meetup",
+      "venue_contains": "Blind Barber"
     },
-    "badge": "🖼️ Art Pick",
-    "note": "Free; listed on 4 calendars; weekend daytime.",
-    "score": 19.0,
+    "badge": "🍜 Food Pick",
+    "note": "Listed on 11 calendars; prime-time start.",
+    "score": 17.5,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
@@ -416,20 +403,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-33",
-    "auto": true,
-    "match": {
-      "name_contains": "St. John's Red Storm Men's Basketball v. Iona",
-      "venue_contains": "Madison Square Garden"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Listed on 4 calendars; headline room at Madison Square Garden; weekend daytime.",
-    "score": 19.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-34",
+    "id": "auto-2026-11-08-31",
     "auto": true,
     "match": {
       "name_contains": "Nicole Byer with Sasheer Zamata",
@@ -442,7 +416,7 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-35",
+    "id": "auto-2026-11-08-32",
     "auto": true,
     "match": {
       "name_contains": "St. John's Red Storm Men's Basketball v. Iona",
@@ -965,11 +939,11 @@
     "id": "auto-2026-11-10-72",
     "auto": true,
     "match": {
-      "name_contains": "Bedouine w/ Steady Holiday",
-      "venue_contains": "Le Poisson Rouge"
+      "name_contains": "New York Knicks vs. Milwaukee Bucks",
+      "venue_contains": "Madison Square Garden"
     },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; headline room at Le Poisson Rouge; prime-time start.",
+    "badge": "🏃 Active Pick",
+    "note": "Listed on 3 calendars; headline room at Madison Square Garden; prime-time start.",
     "score": 16.0,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
@@ -978,11 +952,11 @@
     "id": "auto-2026-11-10-73",
     "auto": true,
     "match": {
-      "name_contains": "New York Knicks vs. Milwaukee Bucks",
-      "venue_contains": "Madison Square Garden"
+      "name_contains": "Q Marsden",
+      "venue_contains": "The Bowery Ballroom"
     },
-    "badge": "🏃 Active Pick",
-    "note": "Listed on 3 calendars; headline room at Madison Square Garden; prime-time start.",
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 3 calendars; headline room at The Bowery Ballroom; prime-time start.",
     "score": 16.0,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
@@ -1179,32 +1153,6 @@
     "badge": "🏃 Active Pick",
     "note": "Free; listed on 3 calendars; prime-time start.",
     "score": 15.5,
-    "start_date": "2026-11-11",
-    "expires": "2026-11-11"
-  },
-  {
-    "id": "auto-2026-11-11-87",
-    "auto": true,
-    "match": {
-      "name_contains": "Zumba",
-      "venue_contains": "Gymnasium"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Free; listed on 3 calendars; prime-time start.",
-    "score": 15.5,
-    "start_date": "2026-11-11",
-    "expires": "2026-11-11"
-  },
-  {
-    "id": "auto-2026-11-11-88",
-    "auto": true,
-    "match": {
-      "name_contains": "Startup Pitch Events NYC: 5 Founders on Stage",
-      "venue_contains": "The Lobby Bar & Garden"
-    },
-    "badge": "🤝 Community Pick",
-    "note": "Listed on 6 calendars; prime-time start.",
-    "score": 14.5,
     "start_date": "2026-11-11",
     "expires": "2026-11-11"
   },
@@ -1742,7 +1690,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-129",
+    "id": "auto-2026-11-14-130",
     "auto": true,
     "match": {
       "name_contains": "NYC Social Club - Social Mixer | Meet People Over Food & Drinks",
@@ -1750,19 +1698,6 @@
     },
     "badge": "🤝 Community Pick",
     "note": "Free; listed on 4 calendars; weekend daytime.",
-    "score": 19.0,
-    "start_date": "2026-11-14",
-    "expires": "2026-11-14"
-  },
-  {
-    "id": "auto-2026-11-14-130",
-    "auto": true,
-    "match": {
-      "name_contains": "Religious Procession",
-      "venue_contains": "242-25 Braddock Avenue"
-    },
-    "badge": "🖼️ Art Pick",
-    "note": "Free; listed on 256 calendars; weekend daytime.",
     "score": 19.0,
     "start_date": "2026-11-14",
     "expires": "2026-11-14"
