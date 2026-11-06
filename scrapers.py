@@ -1060,8 +1060,35 @@ def _parse_donyc_svelte(page, now):
                 ev["genre"] = g
         if district:
             ev["neighborhood"] = _js_unquote(district)
+        borough = _donyc_area_borough(_js_unquote(area) if area else "")
+        if borough:
+            ev["borough"] = borough
         events.append(ev)
     return events
+
+
+_DONYC_MANHATTAN_AREAS = ("manhattan", "east village", "noho", "chelsea", "upper west side", "upper east side",
+                          "greenwich village", "harlem", "washington heights", "soho", "tribeca", "lower east side",
+                          "midtown", "flatiron", "gramercy", "murray hill", "inwood", "financial district")
+
+
+def _donyc_area_borough(area):
+    """DoNYC's venue area ("Brooklyn", "Midtown Manhattan", "East Village / NoHo", "New Jersey")
+    as a borough key, "other" for outside the city, or None."""
+    a = (area or "").strip().lower()
+    if not a:
+        return None
+    if a in ("brooklyn", "queens"):
+        return a
+    if a in ("the bronx", "bronx"):
+        return "bronx"
+    if a == "staten island":
+        return "staten_island"
+    if any(k in a for k in _DONYC_MANHATTAN_AREAS):
+        return "manhattan"
+    if any(k in a for k in ("new jersey", "long island", "westchester", "connecticut", "hudson valley")):
+        return "other"
+    return None
 
 
 def scrape_donyc(url, ua):
@@ -7508,7 +7535,7 @@ _ALL_VENUES = [
     {"name": "Basement NY", "url": "https://donyc.com/venues/basement-ny", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "The Brooklyn Monarch", "url": "https://donyc.com/venues/the-brooklyn-monarch", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Meadows Brooklyn", "url": "https://donyc.com/venues/the-meadows", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Brooklyn Paramount", "url": "https://donyc.com/venues/brooklyn-paramount", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Brooklyn Paramount", "url": "https://www.bklynparamount.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
     {"name": "Under the K Bridge Park", "url": "https://donyc.com/venues/under-the-k-bridge-park", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Roulette Intermedium", "url": "https://donyc.com/venues/roulette", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "National Sawdust", "url": "https://donyc.com/venues/national-sawdust", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -7516,7 +7543,7 @@ _ALL_VENUES = [
     {"name": "Saint Vitus Bar", "url": "https://donyc.com/venues/saint-vitus-bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Bar LunÀtico", "url": "https://donyc.com/venues/lunatico", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Alphaville", "url": "https://donyc.com/venues/alphaville", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "The Broadway (Bushwick)", "url": "https://donyc.com/venues/the-broadway", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "The Broadway (Bushwick)", "url": "https://www.thebroadway.nyc/showcalendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
     {"name": "Sleepwalk", "url": "https://donyc.com/venues/sleepwalk", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Red Pavilion", "url": "https://donyc.com/venues/the-red-pavilion", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Purgatory", "url": "https://donyc.com/venues/purgatory", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -7528,7 +7555,7 @@ _ALL_VENUES = [
     {"name": "Brooklyn Comedy Collective Pig Pen", "url": "https://donyc.com/venues/brooklyn-comedy-collective-pig-pen", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Brooklyn Art Haus", "url": "https://donyc.com/venues/brooklyn-art-haus", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Crown Hill Theater", "url": "https://donyc.com/venues/crown-hill-theater", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Mama Tried", "url": "https://donyc.com/venues/mama-tried", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Mama Tried", "url": "https://mamatriedbk.com/upcoming-events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
     {"name": "Brooklyn Storehouse", "url": "https://donyc.com/venues/brooklyn-storehouse", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Liz's Book_Bar", "url": "https://donyc.com/venues/liz-s-book_bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "books"},
     {"name": "Alamo Drafthouse Cinema (Brooklyn)", "url": "https://donyc.com/venues/alamo-drafthouse", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
@@ -7754,13 +7781,13 @@ _ALL_VENUES = [
     {"name": "Mercury Lounge", "url": "https://donyc.com/venues/mercury-lounge", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Webster Hall", "url": "https://donyc.com/venues/webster-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Terminal 5", "url": "https://donyc.com/venues/terminal-5", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Irving Plaza", "url": "https://donyc.com/venues/irving-plaza", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Irving Plaza", "url": "https://www.irvingplaza.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
     {"name": "Racket NYC", "url": "https://donyc.com/venues/racket-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Le Poisson Rouge", "url": "https://donyc.com/venues/le-poisson-rouge", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Blue Note Jazz Club", "url": "https://donyc.com/venues/blue-note-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Caveat NYC", "url": "https://donyc.com/venues/caveat", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "David Rubenstein Atrium (Lincoln Center)", "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Brooklyn Music Kitchen", "url": "https://donyc.com/venues/brooklyn-music-kitchen", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Brooklyn Music Kitchen", "url": "https://brooklynmusickitchen.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Sugar Mouse NYC", "url": "https://www.eventbrite.com/api/v3/organizers/121119407255/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "gaming"},
     {"name": "The New School", "url": "https://donyc.com/venues/the-new-school", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Mannes School of Music", "url": "https://donyc.com/venues/mannes-school-of-music", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -7771,7 +7798,7 @@ _ALL_VENUES = [
     {"name": "Carnegie Hall", "url": "https://www.carnegiehall.org/Events", "ua": UA_CHROME, "scraper": scrape_carnegie_hall_tm, "default_category": "music"},
     {"name": "The Town Hall", "url": "https://donyc.com/venues/the-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Sony Hall", "url": "https://donyc.com/venues/sony-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Gramercy Theatre", "url": "https://donyc.com/venues/gramercy-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Gramercy Theatre", "url": "http://thegramercytheatre.com/shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
     {"name": "Cafe Wha? (Greenwich Village)", "url": "https://donyc.com/venues/cafe-wha", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Club Cumming (East Village)", "url": "https://donyc.com/venues/club-cumming", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Rough Trade NYC", "url": "https://donyc.com/venues/rough-trade-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -7843,7 +7870,7 @@ _ALL_VENUES = [
 
     # Legendary Greenwich Village & Lower East Side Music Halls
     {"name": "Joe's Pub (The Public Theater)", "url": "https://donyc.com/venues/joes-pub", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "The Bitter End (Greenwich Village)", "url": "https://donyc.com/venues/the-bitter-end", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "The Bitter End (Greenwich Village)", "url": "http://www.bitterend.com/", "ua": UA_CHROME, "scraper": scrape_venuepilot, "default_category": "music"},
     {"name": "Arlene's Grocery (LES Rock & Karaoke)", "url": "https://donyc.com/venues/arlenes-grocery", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Nublu 151 (Alphabet City)", "url": "https://donyc.com/venues/nublu-151", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Drom NYC (East Village Global Music)", "url": "https://donyc.com/venues/drom", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -7913,7 +7940,7 @@ _ALL_VENUES = [
     # Nightlife, Immersive Spectacle & Theatrical Circus
     {"name": "House of Yes (Circus & Dance)", "url": "https://donyc.com/venues/house-of-yes", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "party"},
     {"name": "House of Yes (Brooklyn Spectacle)", "url": "https://www.eventbrite.com/d/ny--brooklyn/house-of-yes/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
-    {"name": "The Slipper Room (NYC Burlesque)", "url": "https://donyc.com/venues/the-slipper-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
+    {"name": "The Slipper Room (NYC Burlesque)", "url": "http://www.slipperroom.com/", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "theater"},
     {"name": "NYC Burlesque Shows & Cabaret", "url": "https://www.eventbrite.com/d/ny--new-york/burlesque/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
 
     # Art Galleries, Food Festivals & Community Learning
@@ -7980,7 +8007,7 @@ _ALL_VENUES = [
     {"name": "230 Fifth Rooftop Nightclub", "url": "https://www.eventbrite.com/api/v3/organizers/34430736779/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "clubbing"},
     {"name": "Slate NYC (Chelsea Lounge & Club)", "url": "https://www.eventbrite.com/d/ny--new-york/slate-nyc/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
     {"name": "Nebula NYC (Midtown Nightclub)", "url": "https://www.eventbrite.com/d/ny--new-york/nebula/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "clubbing"},
-    {"name": "Superior Ingredients (Williamsburg)", "url": "https://donyc.com/venues/superior-ingredients", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Superior Ingredients (Williamsburg)", "url": "https://www.si-bk.com/shows", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "clubbing"},
 
     # Free Street Fairs, Cultural Fests & Outdoor Celebrations
     {"name": "Diwali at Times Square Festival", "url": "https://diwalitimessquare.com/", "ua": UA_CHROME, "scraper": scrape_diwali_times_square, "default_category": "community"},
@@ -8238,6 +8265,21 @@ def _topic_terms(query):
         terms.add(re.sub(r"(ing|ers|er|s)$", "", w) if len(w) > 5 else w)
     return tuple(sorted(terms))
 
+
+# Venues found through DoNYC whose own calendars we can read directly (DoNYC venue pages
+# were the only source for some of them).
+_ALL_VENUES += [
+    {"name": "Pangea (own calendar)", "url": "http://www.pangeanyc.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
+    {"name": "The Jazz Gallery", "url": "http://www.jazzgallery.org/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
+    {"name": "230 Fifth (own calendar)", "url": "https://230-fifth.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "clubbing"},
+    {"name": "Upper East Side Comedy Club (own calendar)", "url": "https://www.uppereastsidecomedyclub.com/comedy-shows-bedfordfalls-nyc", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "comedy"},
+    {"name": "Keybar", "url": "http://keybar.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
+    {"name": "Soho Live", "url": "https://www.soholivenyc.com/", "ua": UA_CHROME, "scraper": scrape_venuepilot, "default_category": "music"},
+    {"name": "B Scene", "url": "https://www.bscenenyc.com/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
+    {"name": "Gerald W. Lynch Theater (John Jay)", "url": "https://geraldwlynchtheater.com/calendar-events/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "theater"},
+    {"name": "Medgar Evers College Events", "url": "https://www.mec.cuny.edu/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "community"},
+    {"name": "Urbane Arts Club", "url": "https://www.urbanebrooklyn.com/upcoming-events", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "art"},
+]
 
 _ALL_VENUES += [
     {

@@ -414,6 +414,8 @@ def _event_city(venue, source, geo=None, event=None):
                 return m.group(1).replace(" ", "_")  # "Knockdown Center (Queens, NY)"
         return borough_at(geo["lat"], geo["lng"]) or "other"
     city = _event_city_from(venue, "", geo, event)
+    if city == "citywide" and (event or {}).get("borough") in CITY_LABELS:
+        return event["borough"]  # the feed's own borough/area (DoNYC venue area, geocoded address)
     if city == "citywide" and source:
         city = _event_city_from(venue, source, geo, event)
     return city
