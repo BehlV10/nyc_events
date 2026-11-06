@@ -10,6 +10,8 @@ import time
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
+from functools import lru_cache
 from urllib.parse import parse_qs, quote, quote_plus, urlencode, urljoin, urlparse, urlunparse
 from zoneinfo import ZoneInfo
 import warnings
@@ -96,7 +98,26 @@ def _source_fingerprint(v):
     return f"{v.get('url')}|{getattr(fn, '__name__', fn)}" + (f"|{json.dumps(kw, sort_keys=True)}" if kw else "")
 
 
-def _load_venue_cache(vname, max_age=None, src=None):
+@lru_cache(maxsize=None)
+def _code_hash(fn):
+    """Hash of a scraper function's source."""
+    import hashlib
+    import inspect
+    try:
+        code = inspect.getsource(fn)
+    except (OSError, TypeError):
+        code = getattr(fn, "__name__", str(fn))
+    return hashlib.sha1(code.encode("utf-8")).hexdigest()[:12]
+
+
+def _source_code(v):
+    """A fresh cache entry from different scraper code is ignored, so a scraper fix shows up on
+    the next deploy instead of after the TTL. Separate from _source_fingerprint because the
+    network-error fallback should still use it: same source, just older code."""
+    return _code_hash(v["scraper"]) if isinstance(v, dict) and v.get("scraper") else None
+
+
+def _load_venue_cache(vname, max_age=None, src=None, code=None):
     path = _venue_cache_path(vname)
     if not os.path.exists(path):
         return None
@@ -106,6 +127,8 @@ def _load_venue_cache(vname, max_age=None, src=None):
         # Entries written before fingerprints existed have no "src"; accept those so a deploy
         # doesn't invalidate every cache at once (and stampede rate-limited hosts).
         if src and cached.get("src") and cached["src"] != src:
+            return None
+        if code and cached.get("code") != code:
             return None
         if max_age is not None:
             age = time.time() - cached.get("ts", 0)
@@ -127,12 +150,14 @@ def _load_venue_cache(vname, max_age=None, src=None):
         return None
 
 
-def _save_venue_cache(vname, events, duration=0.0, src=None):
+def _save_venue_cache(vname, events, duration=0.0, src=None, code=None):
     path = _venue_cache_path(vname)
     try:
         payload = {"ts": time.time(), "venue": vname, "duration": duration, "events": events}
         if src:
             payload["src"] = src
+        if code:
+            payload["code"] = code
         with open(path, "w", encoding="utf-8") as f:
             json.dump(payload, f, ensure_ascii=False)
     except Exception:
@@ -162,7 +187,7 @@ def _make_session():
             kwargs["ssl_context"] = ctx
             super().init_poolmanager(*args, **kwargs)
 
-    s = requests.Session()
+    s = _PoliteSession()
     s.mount("https://", _Adapter())
     s.hooks["response"].append(_default_utf8)
     return s
@@ -177,6 +202,122 @@ def _default_utf8(resp, *args, **kwargs):
         if not ctype or any(t in ctype for t in ("html", "xml", "json", "text", "javascript", "calendar")):
             resp.encoding = "utf-8"
     return resp
+
+
+# --- Polite crawling ------------------------------------------------------------------------
+# A run sends thousands of requests to hundreds of sites. Every request goes through _SESSION and
+# this gate, so no site sees a burst, whichever scraper or thread pool is asking: at most two
+# requests in flight per site with a pause between them. A 429 ("slow down") or 5xx gets one
+# retry after a pause; a site that refuses us (403, or 429 again) isn't asked again for the rest
+# of the run, and its sources keep their last good data.
+HOST_POLICY_DEFAULT = (2, 0.5)  # (max requests in flight, min seconds between request starts)
+HOST_POLICY = {
+    "eventbrite.com": (1, 1.0),   # the API lane is slower still (EVENTBRITE_API_GAP)
+    "meetup.com": (2, 1.0),       # ~1,000 pages a run, ~17 min at this pace; 6 at a time drew 503s
+    "partiful.com": (1, 1.0),
+    "donyc.com": (2, 0.5),
+    "nycgovparks.org": (1, 1.0),  # its WAF answers rapid crawls with an empty 202
+}
+RETRY_STATUSES = {429, 502, 503, 504}
+MAX_RETRY_WAIT = 30
+OVERLOADED_AFTER = 3  # 5xx answers (after retrying) before we leave a site alone for the run
+
+
+class SiteRefused(requests.RequestException):
+    """A site refused us earlier this run (403/429), so we don't ask it again."""
+
+
+def _host_of(url):
+    try:
+        return (urlparse(url).hostname or "").lower()
+    except ValueError:
+        return ""
+
+
+def _host_policy(host):
+    for domain, policy in HOST_POLICY.items():
+        if host == domain or host.endswith("." + domain):
+            return policy
+    return HOST_POLICY_DEFAULT
+
+
+class _HostGate:
+    """Per-site concurrency and spacing, plus the sites that refused us this run."""
+
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._slots = {}
+        self._next_start = {}
+        self._overloads = {}
+        self.refused = {}
+
+    def reset(self):
+        with self._lock:
+            self.refused.clear()
+            self._overloads.clear()
+
+    def acquire(self, host):
+        in_flight, gap = _host_policy(host)
+        with self._lock:
+            slot = self._slots.setdefault(host, threading.BoundedSemaphore(in_flight))
+        slot.acquire()
+        with self._lock:
+            now = time.monotonic()
+            start = max(now, self._next_start.get(host, 0.0))
+            self._next_start[host] = start + gap
+        if start > now:
+            time.sleep(start - now)
+
+    def release(self, host):
+        self._slots[host].release()
+
+    def refuse(self, host, reason):
+        with self._lock:
+            self.refused.setdefault(host, reason)
+
+    def overloaded(self, host):
+        with self._lock:
+            self._overloads[host] = self._overloads.get(host, 0) + 1
+            if self._overloads[host] >= OVERLOADED_AFTER:
+                self.refused.setdefault(host, "overloaded")
+
+
+HOST_GATE = _HostGate()
+
+
+def _retry_after_secs(resp):
+    raw = (resp.headers or {}).get("Retry-After", "")
+    if raw.strip().isdigit():
+        return min(int(raw), MAX_RETRY_WAIT)
+    try:
+        when = parsedate_to_datetime(raw)
+        return max(0, min((when - datetime.now(timezone.utc)).total_seconds(), MAX_RETRY_WAIT))
+    except (TypeError, ValueError):
+        return 5
+
+
+class _PoliteSession(requests.Session):
+    def request(self, method, url, *args, **kwargs):
+        host = _host_of(url)
+        if host in HOST_GATE.refused:
+            raise SiteRefused(f"{host} refused us earlier this run ({HOST_GATE.refused[host]})")
+        for attempt in (1, 2):
+            HOST_GATE.acquire(host)
+            try:
+                resp = super().request(method, url, *args, **kwargs)
+            finally:
+                HOST_GATE.release(host)
+            status = resp.status_code
+            if status in RETRY_STATUSES and attempt == 1:
+                resp.close()
+                time.sleep(_retry_after_secs(resp))
+                continue
+            if status in (403, 429):
+                HOST_GATE.refuse(host, str(status))
+            elif status in RETRY_STATUSES:
+                HOST_GATE.overloaded(host)
+            return resp
+        return resp
 
 
 _SESSION = _make_session()
@@ -5199,7 +5340,6 @@ def scrape_film_forum(url, ua):
 
 def scrape_qed_astoria(url, ua):
     """Scrape Q.E.D. Astoria's Evey Events calendar JSON API."""
-    import subprocess
     events = []
     seen = set()
     now_et = datetime.now(EASTERN)
@@ -5210,13 +5350,9 @@ def scrape_qed_astoria(url, ua):
         f"?shop=qed-astoria.myshopify.com&startDate={start_str}&endDate={end_str}&currentDate={start_str}&lang=en"
     )
     try:
-        try:
-            resp = _SESSION.get(api_url, headers={"User-Agent": ua}, timeout=12)
-            resp.raise_for_status()
-            data = resp.json()
-        except Exception:
-            out = subprocess.check_output(["curl", "-sL", api_url], timeout=12)
-            data = json.loads(out.decode("utf-8", errors="ignore"))
+        resp = _SESSION.get(api_url, headers={"User-Agent": ua}, timeout=12)
+        resp.raise_for_status()
+        data = resp.json()
 
         sched = data.get("schedule", []) if isinstance(data, dict) else []
         for item in sched:
@@ -8685,6 +8821,7 @@ def _scrape_one(v, force=False, allow_live=True):
     vname = v["name"]
     ttl = _get_venue_ttl(vname, v=v)
     src = _source_fingerprint(v)
+    code = _source_code(v)
 
     if not allow_live:
         # Rate-limited host and not this source's turn: keep its last good copy, any age.
@@ -8695,7 +8832,7 @@ def _scrape_one(v, force=False, allow_live=True):
 
     # 1. Check if cached data exists and is within TTL
     if not force:
-        cached = _load_venue_cache(vname, max_age=ttl, src=src)
+        cached = _load_venue_cache(vname, max_age=ttl, src=src, code=code)
         if cached and cached.get("events") is not None:
             events = [e for e in _clean_scraped_events(cached["events"]) if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_closed_show(e.get("name"))]
             return {
@@ -8729,9 +8866,28 @@ def _scrape_one(v, force=False, allow_live=True):
                 e["category"] = guess_category(e.get("name"), existing_cat, venue=e.get("venue"))
 
         dur = round(time.time() - t0, 2)
+
+        # The site refused us partway (403/429): keep what we had rather than saving a short list.
+        if _host_of(v["url"]) in HOST_GATE.refused:
+            stale_cache = _load_venue_cache(vname, max_age=None, src=src)
+            old = (stale_cache.get("events") if stale_cache else None) or _last_known_good.get(vname, [])
+            have = {((e.get("name") or "").lower(), e.get("date")) for e in events}
+            old = [e for e in old if ((e.get("name") or "").lower(), e.get("date")) not in have
+                   and not is_placeholder_or_closed_event(e.get("name"))]
+            if old:
+                return {
+                    "venue": vname,
+                    "url": v["url"],
+                    "events": [e for e in events + old if _is_within_horizon(e, max_days=HORIZON_DAYS)],
+                    "error": None,
+                    "fallback": True,
+                    "duration": dur,
+                    "cached": True,
+                }
+
         if events:
             _last_known_good[vname] = events
-            _save_venue_cache(vname, events, duration=dur, src=src)
+            _save_venue_cache(vname, events, duration=dur, src=src, code=code)
         else:
             # Scraper returned 0 events: preserve previous cached events if available
             stale_cache = _load_venue_cache(vname, max_age=None, src=src)
@@ -8758,11 +8914,13 @@ def _scrape_one(v, force=False, allow_live=True):
         prev = (stale_cache.get("events") if stale_cache else None) or _last_known_good.get(vname, [])
         if prev:
             events = [e for e in prev if _is_within_horizon(e, max_days=HORIZON_DAYS) and not is_placeholder_or_closed_event(e.get("name"))]
+            refused = isinstance(exc, SiteRefused)
             return {
                 "venue": vname,
                 "url": v["url"],
                 "events": events,
-                "error": f"{exc} (serving stale cache)",
+                "error": None if refused else f"{exc} (serving stale cache)",
+                "fallback": refused,
                 "duration": round(time.time() - t0, 2),
                 "cached": True,
             }
@@ -8972,6 +9130,7 @@ def get_all_events(force=False):
         return _cache["data"]
 
     _reset_host_breakers()
+    HOST_GATE.reset()  # a site that refused us last run gets asked again, once
     live = {host: _pick_rotation_refreshes(VENUES, host, lim(), ttl(), force=force)
             for host, (lim, ttl) in _ROTATED_HOSTS.items()}
 
