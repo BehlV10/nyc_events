@@ -3446,6 +3446,33 @@ def render_page(results, split_deferred=False, context_out=None):
     gap: 10px;
     flex-wrap: wrap;
   }}
+  .near-stream-actions {{
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }}
+  .pin-hint {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 8px 12px;
+    border: 1px dashed var(--accent);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    color: var(--fg);
+  }}
+  .pin-hint[hidden] {{ display: none; }}
+  .leaflet-map.placing-pin,
+  .leaflet-map.placing-pin .leaflet-interactive {{ cursor: crosshair; }}
+  .drop-pin-marker {{ background: none; border: none; }}
+  .drop-pin-marker span {{
+    font-size: 28px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.6));
+    cursor: grab;
+  }}
   .near-stream-info {{
     display: flex;
     align-items: center;
@@ -5391,6 +5418,9 @@ def render_page(results, split_deferred=False, context_out=None):
           <button type="button" class="view-btn" id="btn-near-me" data-view="near" title="Sort events by distance to your current location">
             <span id="near-me-btn-label">Near Me</span>
           </button>
+          <button type="button" class="view-btn" id="btn-drop-pin" data-view="pin" title="Tap the map to drop a pin and sort events by distance from it">
+            <span id="drop-pin-btn-label">Drop Pin</span>
+          </button>
         </div>
         <div class="view-actions">
           <span id="map-venue-stat" class="map-venue-stat" style="display: none;">
@@ -5440,6 +5470,10 @@ def render_page(results, split_deferred=False, context_out=None):
             <button type="button" id="map-label-toggle-btn" class="map-tool-btn" title="Toggle between venue names and numbers only">🏷️ Names: On</button>
             <button type="button" id="map-recenter-btn" class="map-tool-btn" title="Center map on NYC">🎯 Center NYC</button>
           </div>
+        </div>
+        <div id="pin-hint" class="pin-hint" hidden>
+          <span><span class="chip-icon">📌 </span><strong>Tap the map to drop your pin.</strong> Events will be sorted by distance from it.</span>
+          <button type="button" id="pin-cancel-btn" class="map-tool-btn">Cancel</button>
         </div>
         <div id="leaflet-map" class="leaflet-map"></div>
         <div id="map-selected-venue" class="map-venue-card" style="display: none;">
@@ -5758,7 +5792,79 @@ def render_page(results, split_deferred=False, context_out=None):
     let markersLayer = null;
     let mapLoading = false;
     let nearMeActive = false;
+    // A dropped pin works like Near Me, measured from wherever the pin is instead of from you.
+    let pinCoords = null;
+    let pinPlacing = false;
+    let pinMarker = null;
     let userCoords = null;
+
+    function nearOrigin() {{
+      if (pinCoords) return {{ lat: pinCoords.lat, lng: pinCoords.lng, kind: 'pin' }};
+      if (userCoords && userCoords.lat && userCoords.lng) return {{ lat: userCoords.lat, lng: userCoords.lng, kind: 'me' }};
+      return null;
+    }}
+
+    function updatePinUI() {{
+      const hint = document.getElementById('pin-hint');
+      if (hint) hint.hidden = !pinPlacing;
+      const mapEl = document.getElementById('leaflet-map');
+      if (mapEl) mapEl.classList.toggle('placing-pin', pinPlacing);
+      const pinBtn = document.getElementById('btn-drop-pin');
+      if (pinBtn) pinBtn.classList.toggle('active', pinPlacing || (nearMeActive && !!pinCoords));
+      const nearBtn = document.getElementById('btn-near-me');
+      if (nearBtn) nearBtn.classList.toggle('active', nearMeActive && !pinCoords);
+      const label = document.getElementById('drop-pin-btn-label');
+      if (label) label.textContent = pinPlacing ? 'Tap the map…' : (pinCoords ? 'Move Pin' : 'Drop Pin');
+    }}
+
+    function drawPin() {{
+      if (!leafletMap || typeof L === 'undefined') return;
+      if (!pinCoords) {{
+        if (pinMarker) {{ leafletMap.removeLayer(pinMarker); pinMarker = null; }}
+        return;
+      }}
+      if (!pinMarker) {{
+        pinMarker = L.marker([pinCoords.lat, pinCoords.lng], {{
+          icon: L.divIcon({{ className: 'drop-pin-marker', html: '<span>📌</span>', iconSize: [32, 32], iconAnchor: [9, 30] }}),
+          draggable: true,
+          zIndexOffset: 1000,
+          title: 'Your pin: drag to move it',
+        }}).addTo(leafletMap);
+        pinMarker.on('dragend', () => {{
+          const p = pinMarker.getLatLng();
+          placePin(p.lat, p.lng);
+        }});
+      }} else {{
+        pinMarker.setLatLng([pinCoords.lat, pinCoords.lng]);
+      }}
+    }}
+
+    function startPinDrop() {{
+      pinPlacing = true;
+      updatePinUI();
+      toggleMap(true);
+      const mapWrapper = document.getElementById('map-view-wrapper');
+      if (mapWrapper && mapWrapper.scrollIntoView) mapWrapper.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+    }}
+
+    function cancelPinDrop() {{
+      pinPlacing = false;
+      updatePinUI();
+    }}
+
+    function placePin(lat, lng) {{
+      pinCoords = {{ lat: Math.round(lat * 1e5) / 1e5, lng: Math.round(lng * 1e5) / 1e5 }};
+      pinPlacing = false;
+      drawPin();
+      setNearMe(true);
+    }}
+
+    function clearPin() {{
+      pinCoords = null;
+      pinPlacing = false;
+      drawPin();
+      updatePinUI();
+    }}
 
     const HOURLY_TIMES = [
       {{ val: '00:00', mins: 0, label: '12:00 AM (Midnight)' }},
@@ -5965,9 +6071,13 @@ def render_page(results, split_deferred=False, context_out=None):
     }}
 
     function toggleNearMe() {{
-      if (nearMeActive) {{
+      if (nearMeActive && !pinCoords) {{
         setNearMe(false);
         return;
+      }}
+      if (pinCoords) {{  // Near Me measures from you, not the pin
+        clearPin();
+        setNearMe(false);
       }}
       if (userCoords && userCoords.lat && userCoords.lng) {{
         setNearMe(true);
@@ -6000,6 +6110,8 @@ def render_page(results, split_deferred=False, context_out=None):
       const listBtn = document.getElementById('btn-view-list');
       if (nearBtn) nearBtn.classList.toggle('active', nearMeActive);
       if (listBtn) listBtn.classList.toggle('active', !nearMeActive);
+      if (!nearMeActive && pinCoords) clearPin();
+      updatePinUI();
       apply();
       stateToHash();
     }}
@@ -6321,6 +6433,11 @@ def render_page(results, split_deferred=False, context_out=None):
       tiles.addTo(leafletMap);
       markersLayer = L.layerGroup().addTo(leafletMap);
       updateMapMarkers();
+      leafletMap.on('click', (ev) => {{
+        if (pinPlacing) placePin(ev.latlng.lat, ev.latlng.lng);
+      }});
+      drawPin();
+      if (pinCoords) leafletMap.setView([pinCoords.lat, pinCoords.lng], 14);  // a shared pin link opens on the pin
     }}
 
     // The map opens above the feed and is independent of the Category / Near Me choice.
@@ -6330,6 +6447,7 @@ def render_page(results, split_deferred=False, context_out=None):
 
     function switchView(mode) {{
       currentView = mode;
+      if (mode !== 'map' && pinPlacing) cancelPinDrop();
       const mapBtn = document.getElementById('btn-view-map');
       const mapWrapper = document.getElementById('map-view-wrapper');
       const mapStat = document.getElementById('map-venue-stat');
@@ -6418,6 +6536,8 @@ def render_page(results, split_deferred=False, context_out=None):
       visibleDaySecs.forEach(day => {{
         const dayDate = day.dataset.date;
         day.querySelectorAll('.event:not(.hidden)').forEach(li => {{
+          // Unchecked boroughs/categories collapse their section (.empty) without hiding each event
+          if (li.closest('.empty')) return;
           const lat = parseFloat(li.dataset.lat);
           const lng = parseFloat(li.dataset.lng);
           if (isNaN(lat) || isNaN(lng)) return;
@@ -6639,6 +6759,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const params = new URLSearchParams();
       const q = searchInput.value.trim();
       if (q) params.set('q', q);
+      if (nearMeActive && pinCoords) params.set('pin', `${{pinCoords.lat}},${{pinCoords.lng}}`);
 
       if (isCatFilteredFn()) {{
         const checkedCats = Array.from(catBoxes).filter(b => b.checked).map(b => b.value);
@@ -6695,6 +6816,14 @@ def render_page(results, split_deferred=False, context_out=None):
         if (params.get('picks') === '1') picksOnly = true;
         if (params.get('past') === '1') showPastToday = true;
         if (params.get('v') === 'map') {{
+          switchView('map');
+        }}
+        const pinParam = params.has('pin') ? params.get('pin').split(',').map(Number) : null;
+        if (pinParam && pinParam.length === 2 && pinParam.every(n => isFinite(n)) &&
+            Math.abs(pinParam[0]) <= 90 && Math.abs(pinParam[1]) <= 180) {{
+          pinCoords = {{ lat: pinParam[0], lng: pinParam[1] }};
+          nearMeActive = true;
+          updatePinUI();
           switchView('map');
         }}
 
@@ -6992,12 +7121,13 @@ def render_page(results, split_deferred=False, context_out=None):
         const citiesDiv = day.querySelector('.cities');
 
         if (nearStream && citiesDiv) {{
-          if (nearMeActive && userCoords && userCoords.lat && userCoords.lng) {{
+          const origin = nearMeActive ? nearOrigin() : null;
+          if (origin) {{
             citiesDiv.style.display = 'none';
             nearStream.style.display = 'block';
 
             // Always query the master list of visible events in citiesDiv
-            const visibleEvents = Array.from(citiesDiv.querySelectorAll('.event:not(.hidden)'));
+            const visibleEvents = Array.from(citiesDiv.querySelectorAll('.event:not(.hidden)')).filter(ev => !ev.closest('.empty'));
 
             const eventDistances = [];
             visibleEvents.forEach(ev => {{
@@ -7005,7 +7135,7 @@ def render_page(results, split_deferred=False, context_out=None):
               const lng = parseFloat(ev.dataset.lng);
               let dist = 99999;
               if (!isNaN(lat) && !isNaN(lng)) {{
-                dist = haversineMiles(userCoords.lat, userCoords.lng, lat, lng);
+                dist = haversineMiles(origin.lat, origin.lng, lat, lng);
               }}
               const timeMins = parseInt(ev.dataset.timeMins || '9999', 10);
               eventDistances.push({{ ev: ev, dist: dist, timeMins: timeMins }});
@@ -7024,12 +7154,16 @@ def render_page(results, split_deferred=False, context_out=None):
               banner.className = 'near-stream-banner';
               nearStream.appendChild(banner);
             }}
+            const fromPin = origin.kind === 'pin';
             banner.innerHTML = `
               <div class="near-stream-info">
-                <span class="chip-icon">📍 </span>
-                <span><strong>Sorted by distance from your location</strong> (${{locatedCount}} events nearby)</span>
+                <span class="chip-icon">${{fromPin ? '📌' : '📍'}} </span>
+                <span><strong>Sorted by distance from ${{fromPin ? 'your pin' : 'your location'}}</strong> (${{locatedCount}} events nearby)</span>
               </div>
-              <button type="button" class="near-stream-clear-btn" id="btn-reset-near">Reset to Category View</button>
+              <div class="near-stream-actions">
+                ${{fromPin ? '<button type="button" class="near-stream-clear-btn" id="btn-move-pin">Move Pin</button>' : ''}}
+                <button type="button" class="near-stream-clear-btn" id="btn-reset-near">Reset to Category View</button>
+              </div>
             `;
 
             let list = nearStream.querySelector('.near-events-list');
@@ -7046,7 +7180,8 @@ def render_page(results, split_deferred=False, context_out=None):
               clone.classList.remove('hidden');
 
               if (item.dist < 9999) {{
-                const dStr = item.dist < 0.1 ? '< 0.1 mi away' : `${{item.dist.toFixed(1)}} mi away`;
+                const away = origin.kind === 'pin' ? 'from pin' : 'away';
+                const dStr = item.dist < 0.1 ? `< 0.1 mi ${{away}}` : `${{item.dist.toFixed(1)}} mi ${{away}}`;
                 let badge = clone.querySelector('.dist-badge');
                 if (!badge) {{
                   badge = document.createElement('span');
@@ -7054,7 +7189,7 @@ def render_page(results, split_deferred=False, context_out=None):
                   const vTag = clone.querySelector('.venue-tag');
                   if (vTag) vTag.appendChild(badge);
                 }}
-                badge.title = `${{item.dist.toFixed(2)}} miles away`;
+                badge.title = `${{item.dist.toFixed(2)}} miles ${{away}}`;
                 badge.innerHTML = `<span class="chip-icon">📍 </span>${{dStr}}`;
               }}
 
@@ -7543,6 +7678,15 @@ def render_page(results, split_deferred=False, context_out=None):
 
     const btnNearMe = document.getElementById('btn-near-me');
     if (btnNearMe) btnNearMe.addEventListener('click', () => toggleNearMe());
+    const btnDropPin = document.getElementById('btn-drop-pin');
+    if (btnDropPin) {{
+      btnDropPin.addEventListener('click', () => {{
+        if (pinPlacing) cancelPinDrop();
+        else startPinDrop();
+      }});
+    }}
+    const pinCancelBtn = document.getElementById('pin-cancel-btn');
+    if (pinCancelBtn) pinCancelBtn.addEventListener('click', cancelPinDrop);
 
     const mapRecenterBtn = document.getElementById('map-recenter-btn');
     if (mapRecenterBtn) {{
@@ -7615,6 +7759,8 @@ def render_page(results, split_deferred=False, context_out=None):
     document.addEventListener('click', (e) => {{
       if (e.target && e.target.id === 'btn-reset-near') {{
         setNearMe(false);
+      }} else if (e.target && e.target.id === 'btn-move-pin') {{
+        startPinDrop();
       }} else if (e.target && e.target.id === 'btn-toggle-past') {{
         showPastToday = !showPastToday;
         apply();
