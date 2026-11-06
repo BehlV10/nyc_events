@@ -124,7 +124,7 @@ def event_schema(e, site_url=None):
     item = {
         "@type": "Event",
         "name": name,
-        "startDate": t.isoformat(),
+        "startDate": t.date().isoformat() if e.get("_time_unknown") else t.isoformat(),
         "eventStatus": "https://schema.org/EventScheduled",
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "location": place,
