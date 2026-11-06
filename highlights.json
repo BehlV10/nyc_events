@@ -55,6 +55,19 @@
     "id": "auto-2026-11-06-4",
     "auto": true,
     "match": {
+      "name_contains": "#BESTAFTERWORK PARTY FRIDAYS @ PARLAY IN ASTORIA QUEENS",
+      "venue_contains": "Parlay Astoria"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Free; listed on 5 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-5",
+    "auto": true,
+    "match": {
       "name_contains": "ANTRO FRIDAYS",
       "venue_contains": "Cantaritos Mexican Restaurant"
     },
@@ -65,7 +78,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-5",
+    "id": "auto-2026-11-06-6",
     "auto": true,
     "match": {
       "name_contains": "DONNA’S BEEF IMPROV",
@@ -78,7 +91,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-6",
+    "id": "auto-2026-11-06-7",
     "auto": true,
     "match": {
       "name_contains": "First Friday",
@@ -91,7 +104,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-7",
+    "id": "auto-2026-11-06-8",
     "auto": true,
     "match": {
       "name_contains": "Free Hookah Fridays in Queens (Reggae Hiphop & Soca)",
@@ -99,19 +112,6 @@
     },
     "badge": "🪩 Nightlife Pick",
     "note": "Free; listed on 9 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-8",
-    "auto": true,
-    "match": {
-      "name_contains": "Friday Night Open Mic (6:30PM)",
-      "venue_contains": "Bushwick Comedy Club"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Free; listed on 6 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
@@ -163,7 +163,7 @@
       "venue_contains": "The Cloud One Lounge New York-Downtown"
     },
     "badge": "🤝 Community Pick",
-    "note": "Listed on 9 calendars; prime-time start.",
+    "note": "Listed on 7 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
@@ -176,7 +176,7 @@
       "venue_contains": "The World’s Borough Bookshop"
     },
     "badge": "🤝 Community Pick",
-    "note": "Listed on 10 calendars; prime-time start.",
+    "note": "Listed on 5 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
@@ -315,7 +315,7 @@
     "id": "auto-2026-11-07-24",
     "auto": true,
     "match": {
-      "name_contains": "Brooklyn Bridge Singles Sunset Date Walk (Sold Out For Men!)",
+      "name_contains": "Brooklyn Bridge Singles Sunset Date Walk",
       "venue_contains": "Starbucks"
     },
     "badge": "🌿 Outdoors Pick",
@@ -384,7 +384,7 @@
       "venue_contains": "Blind Barber"
     },
     "badge": "🍜 Food Pick",
-    "note": "Listed on 11 calendars; prime-time start.",
+    "note": "Listed on 10 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
@@ -488,7 +488,7 @@
       "venue_contains": "Shake Shack Meatpacking District"
     },
     "badge": "🌿 Outdoors Pick",
-    "note": "Free; listed on 18 calendars; weekend daytime.",
+    "note": "Free; listed on 17 calendars; weekend daytime.",
     "score": 19.0,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
@@ -1238,19 +1238,6 @@
     "id": "auto-2026-11-12-95",
     "auto": true,
     "match": {
-      "name_contains": "Thursday Free Comedy Show Tickets!",
-      "venue_contains": "Greenwich Village Comedy Club"
-    },
-    "badge": "😂 Comedy Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-12",
-    "expires": "2026-11-12"
-  },
-  {
-    "id": "auto-2026-11-12-96",
-    "auto": true,
-    "match": {
       "name_contains": "Best of Smacking Balls & Talking Smack w/ Shivani Dave Presented by the New York Comedy Festival",
       "venue_contains": "New York Comedy Club"
     },
@@ -1261,7 +1248,7 @@
     "expires": "2026-11-12"
   },
   {
-    "id": "auto-2026-11-12-97",
+    "id": "auto-2026-11-12-96",
     "auto": true,
     "match": {
       "name_contains": "Blue Man Group “A New Holiday Surprise”",
@@ -1274,7 +1261,7 @@
     "expires": "2026-11-12"
   },
   {
-    "id": "auto-2026-11-12-98",
+    "id": "auto-2026-11-12-97",
     "auto": true,
     "match": {
       "name_contains": "Gen X Speed Dating  Event @ Pod Hotel Bar 42 |  Speed Dating Ages 40s - 50s",
@@ -1287,7 +1274,7 @@
     "expires": "2026-11-12"
   },
   {
-    "id": "auto-2026-11-12-99",
+    "id": "auto-2026-11-12-98",
     "auto": true,
     "match": {
       "name_contains": "NY Comedy Festival Presents: 2/3rds of a Threesome",
@@ -1295,6 +1282,19 @@
     },
     "badge": "😂 Comedy Pick",
     "note": "Listed on 6 calendars; prime-time start.",
+    "score": 17.5,
+    "start_date": "2026-11-12",
+    "expires": "2026-11-12"
+  },
+  {
+    "id": "auto-2026-11-12-99",
+    "auto": true,
+    "match": {
+      "name_contains": "New York Comedy Festival: What's In A Name?",
+      "venue_contains": "New York Comedy Club - Midtown"
+    },
+    "badge": "😂 Comedy Pick",
+    "note": "Listed on 11 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-12",
     "expires": "2026-11-12"
