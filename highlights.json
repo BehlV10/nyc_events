@@ -3,11 +3,11 @@
     "id": "auto-2026-11-06-0",
     "auto": true,
     "match": {
-      "name_contains": "Somewhere Funny, Nowhere Serious",
-      "venue_contains": "Somewhere Nowhere NYC - Lounge & Rooftop Pool"
+      "name_contains": "Somewhere Funny, Nowhere Serious!",
+      "venue_contains": "Somewhere Nowhere"
     },
     "badge": "😂 Comedy Pick",
-    "note": "Listed on 4 calendars; headline room at Somewhere Nowhere NYC - Lounge & Rooftop Pool; prime-time start.",
+    "note": "Listed on 4 calendars; headline room at Somewhere Nowhere; prime-time start.",
     "score": 20.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
@@ -17,10 +17,10 @@
     "auto": true,
     "match": {
       "name_contains": "A Few Good Men",
-      "venue_contains": "Lincoln Center - Vivian Beaumont"
+      "venue_contains": "Lincoln Center Theater"
     },
     "badge": "🎭 Stage Pick",
-    "note": "Listed on 4 calendars; headline room at Lincoln Center - Vivian Beaumont; prime-time start.",
+    "note": "Listed on 4 calendars; headline room at Lincoln Center Theater; prime-time start.",
     "score": 20.0,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
@@ -72,7 +72,7 @@
       "venue_contains": "Cantaritos Mexican Restaurant"
     },
     "badge": "⭐ Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
+    "note": "Free; listed on 6 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
@@ -81,10 +81,10 @@
     "id": "auto-2026-11-06-6",
     "auto": true,
     "match": {
-      "name_contains": "Free Hookah Fridays in Queens (Reggae Hiphop & Soca)",
-      "venue_contains": "Jouvay Night Club"
+      "name_contains": "First Friday",
+      "venue_contains": "Poster House"
     },
-    "badge": "🪩 Nightlife Pick",
+    "badge": "🖼️ Art Pick",
     "note": "Free; listed on 4 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-06",
@@ -92,6 +92,19 @@
   },
   {
     "id": "auto-2026-11-06-7",
+    "auto": true,
+    "match": {
+      "name_contains": "Free Hookah Fridays in Queens (Reggae Hiphop & Soca)",
+      "venue_contains": "Jouvay Night Club"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Free; listed on 9 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-8",
     "auto": true,
     "match": {
       "name_contains": "Friday Night Open Mic (6:30PM)",
@@ -104,7 +117,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-8",
+    "id": "auto-2026-11-06-9",
     "auto": true,
     "match": {
       "name_contains": "NuevaYol Fridays: Latin & Reggaeton Party in Midtown NYC at Out Of Ordinary",
@@ -117,20 +130,33 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-9",
+    "id": "auto-2026-11-06-10",
     "auto": true,
     "match": {
       "name_contains": "Singles with Advanced Degrees Ages 30s & 40s Speed Dating (Sold Out)",
       "venue_contains": "Amelia's NYC"
     },
     "badge": "⭐ Pick",
-    "note": "Free; listed on 8 calendars; prime-time start.",
+    "note": "Free; listed on 7 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-10",
+    "id": "auto-2026-11-06-11",
+    "auto": true,
+    "match": {
+      "name_contains": "Speed Dating for Singles  30s/40s  I Men Sold Out",
+      "venue_contains": "One Station Plaza"
+    },
+    "badge": "🎲 Game Night Pick",
+    "note": "Free; listed on 9 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-12",
     "auto": true,
     "match": {
       "name_contains": "Stand Up Comedy In Greenwich Village–First Stop Friday",
@@ -143,37 +169,11 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-11",
-    "auto": true,
-    "match": {
-      "name_contains": "20s Skip the Small Talk Night at Bibliotheque NYC with SaySimons",
-      "venue_contains": "Bibliotheque NYC"
-    },
-    "badge": "🤝 Community Pick",
-    "note": "Listed on 5 calendars; prime-time start.",
-    "score": 17.5,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-12",
-    "auto": true,
-    "match": {
-      "name_contains": "First Friday",
-      "venue_contains": "Poster House"
-    },
-    "badge": "🖼️ Art Pick",
-    "note": "Free; listed on 4 calendars.",
-    "score": 17.5,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
     "id": "auto-2026-11-06-13",
     "auto": true,
     "match": {
-      "name_contains": "NY Comedy Festival Presents: Putería con PAPIROSSA: Celebration of Life",
-      "venue_contains": "Littlefield"
+      "name_contains": "DONNA’S BEEF IMPROV",
+      "venue_contains": "Brooklyn Comedy Collective"
     },
     "badge": "😂 Comedy Pick",
     "note": "Listed on 4 calendars; prime-time start.",
@@ -198,17 +198,30 @@
     "id": "auto-2026-11-07-15",
     "auto": true,
     "match": {
-      "name_contains": "11.07.26 District Saturdays Perreo Passport - Colombia Edition @NexoNYC",
-      "venue_contains": "NEXO NYC"
+      "name_contains": "NY Comedy Festival: Joanne McNally: Pinotphile Netflix Special Taping",
+      "venue_contains": "The Town Hall"
     },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
-    "score": 19.5,
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 4 calendars; headline room at The Town Hall; prime-time start.",
+    "score": 20.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
   {
     "id": "auto-2026-11-07-16",
+    "auto": true,
+    "match": {
+      "name_contains": "11.07.26 District Saturdays Perreo Passport - Colombia Edition @NexoNYC",
+      "venue_contains": "NEXO NYC"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Free; listed on 4 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-17",
     "auto": true,
     "match": {
       "name_contains": "AFROBEATS & AMAPIANO: AfroWaves Party at Mehanata NYC",
@@ -221,7 +234,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-17",
+    "id": "auto-2026-11-07-18",
     "auto": true,
     "match": {
       "name_contains": "Cabros Chicos - Underground Y2K & Top 40 Parrty (18+)",
@@ -234,33 +247,46 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-18",
-    "auto": true,
-    "match": {
-      "name_contains": "DISTRICT PERREO  @ NEXO SATURDAYS  - Latin Reggaeton Dance Party",
-      "venue_contains": "29 W 36th St."
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 13 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-07",
-    "expires": "2026-11-07"
-  },
-  {
     "id": "auto-2026-11-07-19",
     "auto": true,
     "match": {
-      "name_contains": "Metropolitan Opera: Medea",
-      "venue_contains": "Metropolitan Opera at Lincoln Center"
+      "name_contains": "DISTRICT PERREO - Latin & Reggaeton Dance Party - NEXO CLUB NYC",
+      "venue_contains": "NEXO"
     },
-    "badge": "🎭 Stage Pick",
-    "note": "Listed on 5 calendars; headline room at Metropolitan Opera at Lincoln Center; weekend daytime.",
+    "badge": "🪩 Nightlife Pick",
+    "note": "Free; listed on 11 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
   {
     "id": "auto-2026-11-07-20",
+    "auto": true,
+    "match": {
+      "name_contains": "Hip Hop Meets Reggae in Queens (Big Room Saturdays)",
+      "venue_contains": "Kiss Lounge - Best Nightclub & DJs - Queens NY"
+    },
+    "badge": "⭐ Pick",
+    "note": "Free; listed on 5 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-21",
+    "auto": true,
+    "match": {
+      "name_contains": "Metropolitan Opera: Lincoln In The Bardo",
+      "venue_contains": "Metropolitan Opera at Lincoln Center"
+    },
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 4 calendars; headline room at Metropolitan Opera at Lincoln Center; weekend daytime.",
+    "score": 19.5,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-22",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Festival: Can You Take Our Picture: Now A Silly One",
@@ -273,7 +299,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-21",
+    "id": "auto-2026-11-07-23",
     "auto": true,
     "match": {
       "name_contains": "Saturday Night Open Mic (6:30 PM)",
@@ -286,7 +312,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-22",
+    "id": "auto-2026-11-07-24",
     "auto": true,
     "match": {
       "name_contains": "Speed Dating for Single Professionals Ages 40s & 50s, NYC (Sold Out)",
@@ -299,7 +325,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-23",
+    "id": "auto-2026-11-07-25",
     "auto": true,
     "match": {
       "name_contains": "Brooklyn Bridge Singles Sunset Date Walk (Sold Out For Men!)",
@@ -312,7 +338,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-24",
+    "id": "auto-2026-11-07-26",
     "auto": true,
     "match": {
       "name_contains": "NYC Social Club - Social Mixer | Meet People Over Food & Drinks",
@@ -325,41 +351,15 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-25",
-    "auto": true,
-    "match": {
-      "name_contains": "Queens Fiber Arts Festival",
-      "venue_contains": "King Manor Museum"
-    },
-    "badge": "🤝 Community Pick",
-    "note": "Free; listed on 4 calendars; weekend daytime.",
-    "score": 19.0,
-    "start_date": "2026-11-07",
-    "expires": "2026-11-07"
-  },
-  {
-    "id": "auto-2026-11-07-26",
-    "auto": true,
-    "match": {
-      "name_contains": "It's My Park at Westerleigh Park",
-      "venue_contains": "Westerleigh Park"
-    },
-    "badge": "🌿 Outdoors Pick",
-    "note": "Free; listed on 4 calendars.",
-    "score": 17.5,
-    "start_date": "2026-11-07",
-    "expires": "2026-11-07"
-  },
-  {
     "id": "auto-2026-11-07-27",
     "auto": true,
     "match": {
-      "name_contains": "Mix & Mingle Meetup",
-      "venue_contains": "Blind Barber"
+      "name_contains": "Public Gallery Tour",
+      "venue_contains": "Wave Hill"
     },
-    "badge": "🍜 Food Pick",
-    "note": "Listed on 11 calendars; prime-time start.",
-    "score": 17.5,
+    "badge": "🖼️ Art Pick",
+    "note": "Free; listed on 4 calendars; weekend daytime.",
+    "score": 19.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
@@ -367,12 +367,12 @@
     "id": "auto-2026-11-07-28",
     "auto": true,
     "match": {
-      "name_contains": "NYC Stand-Up | Sat, November 7th @9 PM",
-      "venue_contains": "Comedy Village"
+      "name_contains": "Queens Fiber Arts Festival",
+      "venue_contains": "King Manor Museum"
     },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 5 calendars; prime-time start.",
-    "score": 17.5,
+    "badge": "🤝 Community Pick",
+    "note": "Free; listed on 5 calendars; weekend daytime.",
+    "score": 19.0,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
   },
@@ -380,11 +380,11 @@
     "id": "auto-2026-11-07-29",
     "auto": true,
     "match": {
-      "name_contains": "NYRR Open Run: Canarsie Park",
-      "venue_contains": "Canarsie Park House"
+      "name_contains": "9:30 Comedy Show - Williamsburg",
+      "venue_contains": "362 Grand St"
     },
-    "badge": "🏃 Active Pick",
-    "note": "Free; listed on 16 calendars.",
+    "badge": "😂 Comedy Pick",
+    "note": "Listed on 7 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-07",
     "expires": "2026-11-07"
@@ -393,7 +393,33 @@
     "id": "auto-2026-11-08-30",
     "auto": true,
     "match": {
-      "name_contains": "Sock Hop Sundays",
+      "name_contains": "Sarah Sherman and Patti Harrison",
+      "venue_contains": "The Town Hall"
+    },
+    "badge": "😂 Comedy Pick",
+    "note": "Listed on 5 calendars; headline room at The Town Hall; prime-time start.",
+    "score": 20.5,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-31",
+    "auto": true,
+    "match": {
+      "name_contains": "Nicole Byer with Sasheer Zamata",
+      "venue_contains": "Gramercy Theatre"
+    },
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 4 calendars; headline room at Gramercy Theatre; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-32",
+    "auto": true,
+    "match": {
+      "name_contains": "Sock Hop Sundays (50s/60s Rock-n-Roll & Swing Dance)",
       "venue_contains": "Connolly's Pub"
     },
     "badge": "💃 Dance Pick",
@@ -403,20 +429,33 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-31",
+    "id": "auto-2026-11-08-33",
+    "auto": true,
+    "match": {
+      "name_contains": "St. John's Red Storm Men's Basketball v. Iona",
+      "venue_contains": "Madison Square Garden"
+    },
+    "badge": "🏃 Active Pick",
+    "note": "Listed on 4 calendars; headline room at Madison Square Garden; weekend daytime.",
+    "score": 19.5,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-34",
     "auto": true,
     "match": {
       "name_contains": "TOP TIER SUNDAYS, EVERY SUNDAY",
       "venue_contains": "Code Astoria"
     },
     "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
+    "note": "Free; listed on 6 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-32",
+    "id": "auto-2026-11-08-35",
     "auto": true,
     "match": {
       "name_contains": "VIP SUNDAYS AT KISS LOUNGE NY",
@@ -429,46 +468,46 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-33",
+    "id": "auto-2026-11-08-36",
     "auto": true,
     "match": {
       "name_contains": "2-for-1 Drinks in San Juan - Latin Reggaeton Sunday Party @ LES, NYC",
       "venue_contains": "San Antonios"
     },
     "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 5 calendars; weekend daytime.",
+    "note": "Free; listed on 6 calendars; weekend daytime.",
     "score": 19.0,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-34",
+    "id": "auto-2026-11-08-37",
     "auto": true,
     "match": {
       "name_contains": "High Line & Hudson Yards Walk (50 & Over)",
       "venue_contains": "Shake Shack Meatpacking District"
     },
     "badge": "🌿 Outdoors Pick",
-    "note": "Free; listed on 16 calendars; weekend daytime.",
+    "note": "Free; listed on 18 calendars; weekend daytime.",
     "score": 19.0,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-35",
+    "id": "auto-2026-11-08-38",
     "auto": true,
     "match": {
-      "name_contains": "NYRR Open Run: Conference House Park",
-      "venue_contains": "Conference House Park"
+      "name_contains": "Foodies + New Friends: Queens | 40’s Edition",
+      "venue_contains": "Restaurant of the Week"
     },
-    "badge": "🏃 Active Pick",
-    "note": "Free; listed on 6 calendars.",
+    "badge": "⭐ Pick",
+    "note": "Listed on 4 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-36",
+    "id": "auto-2026-11-08-39",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Festival Presents: Cartoon Strips with Hilary Campbell",
@@ -481,33 +520,46 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-37",
+    "id": "auto-2026-11-08-40",
+    "auto": true,
+    "match": {
+      "name_contains": "Fiery Fall Sunset Yoga",
+      "venue_contains": "Wave Hill"
+    },
+    "badge": "🏃 Active Pick",
+    "note": "Listed on 4 calendars; weekend daytime.",
+    "score": 17.0,
+    "start_date": "2026-11-08",
+    "expires": "2026-11-08"
+  },
+  {
+    "id": "auto-2026-11-08-41",
     "auto": true,
     "match": {
       "name_contains": "Millennial Speed Dating  Event @ Tavern 29 | Speed Dating Ages 28-45",
       "venue_contains": "Tavern 29"
     },
     "badge": "⭐ Pick",
-    "note": "Listed on 5 calendars; weekend daytime.",
+    "note": "Listed on 4 calendars; weekend daytime.",
     "score": 17.0,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-38",
+    "id": "auto-2026-11-08-42",
     "auto": true,
     "match": {
-      "name_contains": "New York Comedy Festival: Mike Cannon",
-      "venue_contains": "New York Comedy Club - Midtown"
+      "name_contains": "NY Comedy Festival Presents: Hot Guy Draft: A Comedy Fantasy Draft",
+      "venue_contains": "Littlefield"
     },
     "badge": "😂 Comedy Pick",
-    "note": "Listed on 5 calendars; weekend daytime.",
+    "note": "Listed on 4 calendars; weekend daytime.",
     "score": 17.0,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-39",
+    "id": "auto-2026-11-08-43",
     "auto": true,
     "match": {
       "name_contains": "Jamie Allan's Amaze",
@@ -520,67 +572,15 @@
     "expires": "2026-11-08"
   },
   {
-    "id": "auto-2026-11-08-40",
-    "auto": true,
-    "match": {
-      "name_contains": "Marc Maron: Yammering into the Void Tour",
-      "venue_contains": "The Beacon Theatre"
-    },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 3 calendars; headline room at The Beacon Theatre; prime-time start.",
-    "score": 16.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-41",
-    "auto": true,
-    "match": {
-      "name_contains": "New York Comedy Festival - Sarah Sherman and Patti Harrison at Town Hall New York",
-      "venue_contains": "Town Hall New York"
-    },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 3 calendars; headline room at Town Hall New York; prime-time start.",
-    "score": 16.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-42",
-    "auto": true,
-    "match": {
-      "name_contains": "Christmas Spectacular Starring The Radio City Rockettes",
-      "venue_contains": "Radio City Music Hall"
-    },
-    "badge": "🎭 Stage Pick",
-    "note": "Listed on 3 calendars; headline room at Radio City Music Hall; prime-time start.",
-    "score": 16.0,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
-    "id": "auto-2026-11-08-43",
-    "auto": true,
-    "match": {
-      "name_contains": "A Few Good Men",
-      "venue_contains": "Lincoln Center Theater"
-    },
-    "badge": "🎭 Stage Pick",
-    "note": "Listed on 3 calendars; headline room at Lincoln Center Theater; weekend daytime.",
-    "score": 15.5,
-    "start_date": "2026-11-08",
-    "expires": "2026-11-08"
-  },
-  {
     "id": "auto-2026-11-08-44",
     "auto": true,
     "match": {
-      "name_contains": "Satsang : Meditation - Chanting  - Yoga Philosophy",
-      "venue_contains": "243 W 24th St"
+      "name_contains": "Marc Maron, New York Comedy Festival",
+      "venue_contains": "Beacon Theatre"
     },
-    "badge": "🏃 Active Pick",
-    "note": "Free; listed on 3 calendars; prime-time start.",
-    "score": 15.5,
+    "badge": "😂 Comedy Pick",
+    "note": "Listed on 3 calendars; headline room at Beacon Theatre; prime-time start.",
+    "score": 16.5,
     "start_date": "2026-11-08",
     "expires": "2026-11-08"
   },
@@ -614,6 +614,32 @@
     "id": "auto-2026-11-09-47",
     "auto": true,
     "match": {
+      "name_contains": "Daniel Lanois Trio In The Round",
+      "venue_contains": "Le Poisson Rouge"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; headline room at Le Poisson Rouge; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-09",
+    "expires": "2026-11-09"
+  },
+  {
+    "id": "auto-2026-11-09-48",
+    "auto": true,
+    "match": {
+      "name_contains": "Hamilton Leithauser + Rostam",
+      "venue_contains": "Music Hall of Williamsburg"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; headline room at Music Hall of Williamsburg; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-09",
+    "expires": "2026-11-09"
+  },
+  {
+    "id": "auto-2026-11-09-49",
+    "auto": true,
+    "match": {
       "name_contains": "The Paradox",
       "venue_contains": "Mercury Lounge"
     },
@@ -624,7 +650,20 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-48",
+    "id": "auto-2026-11-09-50",
+    "auto": true,
+    "match": {
+      "name_contains": "ADULT. + A Place To Bury Strangers, Kill Alters",
+      "venue_contains": "Elsewhere Brooklyn"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; prime-time start.",
+    "score": 17.5,
+    "start_date": "2026-11-09",
+    "expires": "2026-11-09"
+  },
+  {
+    "id": "auto-2026-11-09-51",
     "auto": true,
     "match": {
       "name_contains": "An Evening of Stand-Up Comedy with Jason Choi and Friends Presented by the New York Comedy Festival",
@@ -637,7 +676,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-49",
+    "id": "auto-2026-11-09-52",
     "auto": true,
     "match": {
       "name_contains": "Spencer Sutherland: One Night at the Piano",
@@ -650,7 +689,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-50",
+    "id": "auto-2026-11-09-53",
     "auto": true,
     "match": {
       "name_contains": "The Workout | New York Comedy Festival",
@@ -659,45 +698,6 @@
     "badge": "😂 Comedy Pick",
     "note": "Listed on 6 calendars; prime-time start.",
     "score": 17.5,
-    "start_date": "2026-11-09",
-    "expires": "2026-11-09"
-  },
-  {
-    "id": "auto-2026-11-09-51",
-    "auto": true,
-    "match": {
-      "name_contains": "Daniel Lanois",
-      "venue_contains": "Le Poisson Rouge"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 4 calendars; headline room at Le Poisson Rouge; prime-time start.",
-    "score": 17.0,
-    "start_date": "2026-11-09",
-    "expires": "2026-11-09"
-  },
-  {
-    "id": "auto-2026-11-09-52",
-    "auto": true,
-    "match": {
-      "name_contains": "ROSTAM",
-      "venue_contains": "Music Hall of Williamsburg"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 4 calendars; headline room at Music Hall of Williamsburg; prime-time start.",
-    "score": 17.0,
-    "start_date": "2026-11-09",
-    "expires": "2026-11-09"
-  },
-  {
-    "id": "auto-2026-11-09-53",
-    "auto": true,
-    "match": {
-      "name_contains": "New Constellations: It Comes In Waves Tour",
-      "venue_contains": "The Bowery Ballroom"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; headline room at The Bowery Ballroom; prime-time start.",
-    "score": 16.0,
     "start_date": "2026-11-09",
     "expires": "2026-11-09"
   },
@@ -731,32 +731,6 @@
     "id": "auto-2026-11-09-56",
     "auto": true,
     "match": {
-      "name_contains": "NYC Trivia Night @ Talea Beer Co. — Upper West Side",
-      "venue_contains": "Talea Beer Co. — Upper West Side"
-    },
-    "badge": "🎲 Game Night Pick",
-    "note": "Free; listed on 3 calendars; prime-time start.",
-    "score": 15.0,
-    "start_date": "2026-11-09",
-    "expires": "2026-11-09"
-  },
-  {
-    "id": "auto-2026-11-09-57",
-    "auto": true,
-    "match": {
-      "name_contains": "Bodyweight Circuit Training",
-      "venue_contains": "MVMNT Fitness and Health Studio"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Free; listed on 3 calendars.",
-    "score": 13.5,
-    "start_date": "2026-11-09",
-    "expires": "2026-11-09"
-  },
-  {
-    "id": "auto-2026-11-09-58",
-    "auto": true,
-    "match": {
       "name_contains": "Compost Build Community Volunteer Days",
       "venue_contains": "Queens Botanical Garden"
     },
@@ -767,7 +741,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-59",
+    "id": "auto-2026-11-09-57",
     "auto": true,
     "match": {
       "name_contains": "Foodies + New Friends: Queens | 50’s Edition",
@@ -776,6 +750,32 @@
     "badge": "⭐ Pick",
     "note": "Listed on 3 calendars; prime-time start.",
     "score": 13.5,
+    "start_date": "2026-11-09",
+    "expires": "2026-11-09"
+  },
+  {
+    "id": "auto-2026-11-09-58",
+    "auto": true,
+    "match": {
+      "name_contains": "Glimpse of Greatness",
+      "venue_contains": "Yankee Stadium"
+    },
+    "badge": "🏃 Active Pick",
+    "note": "Listed on 2 calendars; headline room at Yankee Stadium; prime-time start.",
+    "score": 12.0,
+    "start_date": "2026-11-09",
+    "expires": "2026-11-09"
+  },
+  {
+    "id": "auto-2026-11-09-59",
+    "auto": true,
+    "match": {
+      "name_contains": "Bodyweight Circuit Training",
+      "venue_contains": "Multi-Use Room"
+    },
+    "badge": "🏃 Active Pick",
+    "note": "Free; listed on 2 calendars; prime-time start.",
+    "score": 11.5,
     "start_date": "2026-11-09",
     "expires": "2026-11-09"
   },
@@ -796,6 +796,32 @@
     "id": "auto-2026-11-10-61",
     "auto": true,
     "match": {
+      "name_contains": "Chat Pile",
+      "venue_contains": "Brooklyn Steel"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; headline room at Brooklyn Steel; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-10",
+    "expires": "2026-11-10"
+  },
+  {
+    "id": "auto-2026-11-10-62",
+    "auto": true,
+    "match": {
+      "name_contains": "Hamilton Leithauser + Rostam",
+      "venue_contains": "Music Hall of Williamsburg"
+    },
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 6 calendars; headline room at Music Hall of Williamsburg; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-10",
+    "expires": "2026-11-10"
+  },
+  {
+    "id": "auto-2026-11-10-63",
+    "auto": true,
+    "match": {
       "name_contains": "Crowd workin Comedy show",
       "venue_contains": "Fever NYC"
     },
@@ -806,7 +832,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-62",
+    "id": "auto-2026-11-10-64",
     "auto": true,
     "match": {
       "name_contains": "Hurricane In The Fog Machine with Jesús Hilario-Reyes & Benjamin Krusling",
@@ -819,7 +845,20 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-63",
+    "id": "auto-2026-11-10-65",
+    "auto": true,
+    "match": {
+      "name_contains": "Vic Mensa with Live Band",
+      "venue_contains": "Blue Note Jazz Club"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Free; listed on 3 calendars; headline room at Blue Note Jazz Club; prime-time start.",
+    "score": 18.0,
+    "start_date": "2026-11-10",
+    "expires": "2026-11-10"
+  },
+  {
+    "id": "auto-2026-11-10-66",
     "auto": true,
     "match": {
       "name_contains": "Ester Steinberg Presented by the New York Comedy Festival",
@@ -832,7 +871,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-64",
+    "id": "auto-2026-11-10-67",
     "auto": true,
     "match": {
       "name_contains": "Farm Community Volunteer Days",
@@ -845,20 +884,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-65",
-    "auto": true,
-    "match": {
-      "name_contains": "Midtown Swings Intro to Lindy Hop",
-      "venue_contains": "Danznik Studios"
-    },
-    "badge": "💃 Dance Pick",
-    "note": "Listed on 6 calendars; prime-time start.",
-    "score": 17.5,
-    "start_date": "2026-11-10",
-    "expires": "2026-11-10"
-  },
-  {
-    "id": "auto-2026-11-10-66",
+    "id": "auto-2026-11-10-68",
     "auto": true,
     "match": {
       "name_contains": "Millennial Skip the Small Talk Night at Threes Brewing Gowanus",
@@ -871,20 +897,20 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-67",
+    "id": "auto-2026-11-10-69",
     "auto": true,
     "match": {
       "name_contains": "NYC Stand-Up | Tues, November 10th @7 PM",
       "venue_contains": "Comedy Village"
     },
     "badge": "😂 Comedy Pick",
-    "note": "Listed on 5 calendars; prime-time start.",
+    "note": "Listed on 6 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-68",
+    "id": "auto-2026-11-10-70",
     "auto": true,
     "match": {
       "name_contains": "Overheard New York Presents: The Roast of NYC",
@@ -893,32 +919,6 @@
     "badge": "😂 Comedy Pick",
     "note": "Listed on 4 calendars; prime-time start.",
     "score": 17.5,
-    "start_date": "2026-11-10",
-    "expires": "2026-11-10"
-  },
-  {
-    "id": "auto-2026-11-10-69",
-    "auto": true,
-    "match": {
-      "name_contains": "Chat Pile",
-      "venue_contains": "Brooklyn Steel"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 4 calendars; headline room at Brooklyn Steel; prime-time start.",
-    "score": 17.0,
-    "start_date": "2026-11-10",
-    "expires": "2026-11-10"
-  },
-  {
-    "id": "auto-2026-11-10-70",
-    "auto": true,
-    "match": {
-      "name_contains": "ROSTAM",
-      "venue_contains": "Music Hall of Williamsburg"
-    },
-    "badge": "🎭 Stage Pick",
-    "note": "Listed on 6 calendars; headline room at Music Hall of Williamsburg; prime-time start.",
-    "score": 17.0,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
   },
@@ -939,11 +939,11 @@
     "id": "auto-2026-11-10-72",
     "auto": true,
     "match": {
-      "name_contains": "New York Knicks vs. Milwaukee Bucks",
-      "venue_contains": "Madison Square Garden"
+      "name_contains": "Bedouine w/ Steady Holiday",
+      "venue_contains": "Le Poisson Rouge"
     },
-    "badge": "🏃 Active Pick",
-    "note": "Listed on 3 calendars; headline room at Madison Square Garden; prime-time start.",
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 3 calendars; headline room at Le Poisson Rouge; prime-time start.",
     "score": 16.0,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
@@ -952,11 +952,11 @@
     "id": "auto-2026-11-10-73",
     "auto": true,
     "match": {
-      "name_contains": "Q Marsden",
-      "venue_contains": "The Bowery Ballroom"
+      "name_contains": "New York Knicks vs. Milwaukee Bucks",
+      "venue_contains": "Madison Square Garden"
     },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; headline room at The Bowery Ballroom; prime-time start.",
+    "badge": "🏃 Active Pick",
+    "note": "Listed on 3 calendars; headline room at Madison Square Garden; prime-time start.",
     "score": 16.0,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
@@ -978,56 +978,17 @@
     "id": "auto-2026-11-11-75",
     "auto": true,
     "match": {
-      "name_contains": "GOTHAM JAZZ Wednesdays at Somewhere Nowhere NYC",
-      "venue_contains": "Somewhere Nowhere NYC"
+      "name_contains": "Gotham Jazz",
+      "venue_contains": "Somewhere Nowhere"
     },
     "badge": "🎸 Music Pick",
-    "note": "Free; listed on 4 calendars; headline room at Somewhere Nowhere NYC.",
+    "note": "Free; listed on 4 calendars; headline room at Somewhere Nowhere.",
     "score": 20.5,
     "start_date": "2026-11-11",
     "expires": "2026-11-11"
   },
   {
     "id": "auto-2026-11-11-76",
-    "auto": true,
-    "match": {
-      "name_contains": "Free  Comedy Show Tickets! Stand-Up Comedy at Broadway Comedy Club!",
-      "venue_contains": "Broadway Comedy Club"
-    },
-    "badge": "😂 Comedy Pick",
-    "note": "Free; listed on 4 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-11",
-    "expires": "2026-11-11"
-  },
-  {
-    "id": "auto-2026-11-11-77",
-    "auto": true,
-    "match": {
-      "name_contains": "Zumba",
-      "venue_contains": "Gymnasium"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Free; listed on 5 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-11",
-    "expires": "2026-11-11"
-  },
-  {
-    "id": "auto-2026-11-11-78",
-    "auto": true,
-    "match": {
-      "name_contains": "NYC Trivia Night @ Finback Brewery — LIC",
-      "venue_contains": "Finback Brewery — LIC"
-    },
-    "badge": "🍜 Food Pick",
-    "note": "Free; listed on 4 calendars; prime-time start.",
-    "score": 19.0,
-    "start_date": "2026-11-11",
-    "expires": "2026-11-11"
-  },
-  {
-    "id": "auto-2026-11-11-79",
     "auto": true,
     "match": {
       "name_contains": "Remember, We Are Born In The Garden with Meredith Graves",
@@ -1040,7 +1001,7 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-80",
+    "id": "auto-2026-11-11-77",
     "auto": true,
     "match": {
       "name_contains": "Foodies + New Friends: Queens | Musicians Edition",
@@ -1053,33 +1014,33 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-81",
+    "id": "auto-2026-11-11-78",
     "auto": true,
     "match": {
       "name_contains": "Millennial Speed Dating in Brooklyn @ Radegast Hall | Speed Dating NYC",
       "venue_contains": "Radegast Hall & Biergarten"
     },
     "badge": "⭐ Pick",
-    "note": "Listed on 6 calendars; prime-time start.",
+    "note": "Listed on 9 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-11",
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-82",
+    "id": "auto-2026-11-11-79",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Festival | Samuel Orson November 11th @9pm",
       "venue_contains": "Comedy Village"
     },
     "badge": "😂 Comedy Pick",
-    "note": "Listed on 10 calendars; prime-time start.",
+    "note": "Listed on 9 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-11",
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-83",
+    "id": "auto-2026-11-11-80",
     "auto": true,
     "match": {
       "name_contains": "Skip the Small Talk Night at Pianos",
@@ -1092,7 +1053,7 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-84",
+    "id": "auto-2026-11-11-81",
     "auto": true,
     "match": {
       "name_contains": "Valeria Vulpe Presented by the New York Comedy Festival",
@@ -1105,7 +1066,7 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-85",
+    "id": "auto-2026-11-11-82",
     "auto": true,
     "match": {
       "name_contains": "Veterans Day Parade",
@@ -1118,7 +1079,20 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-86",
+    "id": "auto-2026-11-11-83",
+    "auto": true,
+    "match": {
+      "name_contains": "Fruit Bats",
+      "venue_contains": "Webster Hall"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; headline room at Webster Hall; prime-time start.",
+    "score": 17.0,
+    "start_date": "2026-11-11",
+    "expires": "2026-11-11"
+  },
+  {
+    "id": "auto-2026-11-11-84",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Festival: Pat McGann",
@@ -1131,7 +1105,7 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-87",
+    "id": "auto-2026-11-11-85",
     "auto": true,
     "match": {
       "name_contains": "New York Knicks vs. Cleveland Cavaliers",
@@ -1144,20 +1118,33 @@
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-88",
+    "id": "auto-2026-11-11-86",
     "auto": true,
     "match": {
-      "name_contains": "Red Leather - Tahoe Tour",
-      "venue_contains": "Mercury Lounge"
+      "name_contains": "Free  Comedy Show Tickets! Stand-Up Comedy at Broadway Comedy Club!",
+      "venue_contains": "Broadway Comedy Club"
     },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 3 calendars; headline room at Mercury Lounge; prime-time start.",
-    "score": 16.0,
+    "badge": "😂 Comedy Pick",
+    "note": "Free; listed on 3 calendars; prime-time start.",
+    "score": 15.5,
     "start_date": "2026-11-11",
     "expires": "2026-11-11"
   },
   {
-    "id": "auto-2026-11-11-89",
+    "id": "auto-2026-11-11-87",
+    "auto": true,
+    "match": {
+      "name_contains": "Zumba",
+      "venue_contains": "Gymnasium"
+    },
+    "badge": "🏃 Active Pick",
+    "note": "Free; listed on 3 calendars; prime-time start.",
+    "score": 15.5,
+    "start_date": "2026-11-11",
+    "expires": "2026-11-11"
+  },
+  {
+    "id": "auto-2026-11-11-88",
     "auto": true,
     "match": {
       "name_contains": "Ongoing Museum Exhibit: Voices of 1776",
@@ -1170,7 +1157,59 @@
     "expires": "2026-11-11"
   },
   {
+    "id": "auto-2026-11-11-89",
+    "auto": true,
+    "match": {
+      "name_contains": "Startup Pitch Events NYC: 5 Founders on Stage",
+      "venue_contains": "The Lobby Bar & Garden"
+    },
+    "badge": "🤝 Community Pick",
+    "note": "Listed on 6 calendars; prime-time start.",
+    "score": 14.5,
+    "start_date": "2026-11-11",
+    "expires": "2026-11-11"
+  },
+  {
     "id": "auto-2026-11-12-90",
+    "auto": true,
+    "match": {
+      "name_contains": "Jordan Jensen, New York Comedy Festival",
+      "venue_contains": "Beacon Theatre"
+    },
+    "badge": "😂 Comedy Pick",
+    "note": "Listed on 4 calendars; headline room at Beacon Theatre; prime-time start.",
+    "score": 20.5,
+    "start_date": "2026-11-12",
+    "expires": "2026-11-12"
+  },
+  {
+    "id": "auto-2026-11-12-91",
+    "auto": true,
+    "match": {
+      "name_contains": "Dave Matthews Band",
+      "venue_contains": "Madison Square Garden"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 5 calendars; headline room at Madison Square Garden; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-12",
+    "expires": "2026-11-12"
+  },
+  {
+    "id": "auto-2026-11-12-92",
+    "auto": true,
+    "match": {
+      "name_contains": "Protomartyr",
+      "venue_contains": "Webster Hall"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; headline room at Webster Hall; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-12",
+    "expires": "2026-11-12"
+  },
+  {
+    "id": "auto-2026-11-12-93",
     "auto": true,
     "match": {
       "name_contains": "Thao",
@@ -1183,46 +1222,20 @@
     "expires": "2026-11-12"
   },
   {
-    "id": "auto-2026-11-12-91",
-    "auto": true,
-    "match": {
-      "name_contains": "Grand Central Murder Mystery Scavenger Hunt",
-      "venue_contains": "Grand Central Oyster Bar"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 22 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-12",
-    "expires": "2026-11-12"
-  },
-  {
-    "id": "auto-2026-11-12-92",
-    "auto": true,
-    "match": {
-      "name_contains": "NYC Trivia Night @ Rose’s R&R Bar",
-      "venue_contains": "Rose’s R&R Bar"
-    },
-    "badge": "🎲 Game Night Pick",
-    "note": "Free; listed on 4 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-12",
-    "expires": "2026-11-12"
-  },
-  {
-    "id": "auto-2026-11-12-93",
-    "auto": true,
-    "match": {
-      "name_contains": "Salsa Thursdays at Time Out Market",
-      "venue_contains": "Time Out Market New York"
-    },
-    "badge": "💃 Dance Pick",
-    "note": "Free; listed on 4 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-12",
-    "expires": "2026-11-12"
-  },
-  {
     "id": "auto-2026-11-12-94",
+    "auto": true,
+    "match": {
+      "name_contains": "Trivium",
+      "venue_contains": "Terminal 5"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 6 calendars; headline room at Terminal 5; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-12",
+    "expires": "2026-11-12"
+  },
+  {
+    "id": "auto-2026-11-12-95",
     "auto": true,
     "match": {
       "name_contains": "Thursday Free Comedy Show Tickets!",
@@ -1231,19 +1244,6 @@
     "badge": "😂 Comedy Pick",
     "note": "Free; listed on 5 calendars; prime-time start.",
     "score": 19.5,
-    "start_date": "2026-11-12",
-    "expires": "2026-11-12"
-  },
-  {
-    "id": "auto-2026-11-12-95",
-    "auto": true,
-    "match": {
-      "name_contains": "Trivium, In Flames, Fit For An Autopsy, Frozen Soul in New York",
-      "venue_contains": "Terminal 5"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 7 calendars; headline room at Terminal 5.",
-    "score": 18.0,
     "start_date": "2026-11-12",
     "expires": "2026-11-12"
   },
@@ -1277,10 +1277,10 @@
     "id": "auto-2026-11-12-98",
     "auto": true,
     "match": {
-      "name_contains": "Exclusive Business Networking & Social Mixer at Hudson Yards",
-      "venue_contains": "The Lobby Bar & Garden"
+      "name_contains": "Gen X Speed Dating  Event @ Pod Hotel Bar 42 |  Speed Dating Ages 40s - 50s",
+      "venue_contains": "Pod Times Square"
     },
-    "badge": "🤝 Community Pick",
+    "badge": "⭐ Pick",
     "note": "Listed on 5 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-12",
@@ -1288,19 +1288,6 @@
   },
   {
     "id": "auto-2026-11-12-99",
-    "auto": true,
-    "match": {
-      "name_contains": "Gen X Speed Dating  Event @ Pod Hotel Bar 42 |  Speed Dating Ages 40s - 50s",
-      "venue_contains": "Pod Times Square"
-    },
-    "badge": "⭐ Pick",
-    "note": "Listed on 6 calendars; prime-time start.",
-    "score": 17.5,
-    "start_date": "2026-11-12",
-    "expires": "2026-11-12"
-  },
-  {
-    "id": "auto-2026-11-12-100",
     "auto": true,
     "match": {
       "name_contains": "NY Comedy Festival Presents: 2/3rds of a Threesome",
@@ -1313,14 +1300,27 @@
     "expires": "2026-11-12"
   },
   {
+    "id": "auto-2026-11-12-100",
+    "auto": true,
+    "match": {
+      "name_contains": "Size Matters: Tall Men Only (5'11+) | 30s/40s | NYC | Women Sold Out",
+      "venue_contains": "Blind Barber"
+    },
+    "badge": "⭐ Pick",
+    "note": "Listed on 5 calendars; prime-time start.",
+    "score": 17.5,
+    "start_date": "2026-11-12",
+    "expires": "2026-11-12"
+  },
+  {
     "id": "auto-2026-11-12-101",
     "auto": true,
     "match": {
-      "name_contains": "New York Comedy Festival: What's In A Name?",
-      "venue_contains": "New York Comedy Club - Midtown"
+      "name_contains": "Sober And Socializing: Queer Tag: Laser Tag & Bowling Night",
+      "venue_contains": "Bowlmor Chelsea Piers"
     },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 9 calendars; prime-time start.",
+    "badge": "⭐ Pick",
+    "note": "Listed on 4 calendars; prime-time start.",
     "score": 17.5,
     "start_date": "2026-11-12",
     "expires": "2026-11-12"
@@ -1355,8 +1355,8 @@
     "id": "auto-2026-11-12-104",
     "auto": true,
     "match": {
-      "name_contains": "Bodyweight Circuit Training",
-      "venue_contains": "P.S./I.S. 109"
+      "name_contains": "Field House Mat Pilates",
+      "venue_contains": "Riverside Park Conservancy"
     },
     "badge": "🏃 Active Pick",
     "note": "Free; listed on 3 calendars.",
@@ -1366,6 +1366,32 @@
   },
   {
     "id": "auto-2026-11-13-105",
+    "auto": true,
+    "match": {
+      "name_contains": "Dave Matthews Band",
+      "venue_contains": "Madison Square Garden"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; headline room at Madison Square Garden; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-13",
+    "expires": "2026-11-13"
+  },
+  {
+    "id": "auto-2026-11-13-106",
+    "auto": true,
+    "match": {
+      "name_contains": "Eggy: The Final Tour (of 2026)",
+      "venue_contains": "The Bowery Ballroom"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; headline room at The Bowery Ballroom; prime-time start.",
+    "score": 20.0,
+    "start_date": "2026-11-13",
+    "expires": "2026-11-13"
+  },
+  {
+    "id": "auto-2026-11-13-107",
     "auto": true,
     "match": {
       "name_contains": "Giant Rooks",
@@ -1378,46 +1404,46 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-106",
+    "id": "auto-2026-11-13-108",
     "auto": true,
     "match": {
-      "name_contains": "NY Comedy Festival Presents Ilana Glazer Live!",
+      "name_contains": "Ilana Glazer, New York Comedy Festival",
       "venue_contains": "Beacon Theatre"
     },
-    "badge": "😂 Comedy Pick",
+    "badge": "🎭 Stage Pick",
     "note": "Listed on 4 calendars; headline room at Beacon Theatre; prime-time start.",
     "score": 20.0,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-107",
+    "id": "auto-2026-11-13-109",
     "auto": true,
     "match": {
-      "name_contains": "Nia Archives",
-      "venue_contains": "Webster Hall"
+      "name_contains": "Nation of Language",
+      "venue_contains": "Music Hall of Williamsburg"
     },
     "badge": "🎸 Music Pick",
-    "note": "Listed on 5 calendars; headline room at Webster Hall; prime-time start.",
+    "note": "Listed on 4 calendars; headline room at Music Hall of Williamsburg; prime-time start.",
     "score": 20.0,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-108",
+    "id": "auto-2026-11-13-110",
     "auto": true,
     "match": {
       "name_contains": "\"SWEET SERENDIPITY\" SPEED DATING FOR SINGLES AGES 21-36!",
       "venue_contains": "Sour Mouse"
     },
     "badge": "🤝 Community Pick",
-    "note": "Free; listed on 10 calendars; prime-time start.",
+    "note": "Free; listed on 9 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-109",
+    "id": "auto-2026-11-13-111",
     "auto": true,
     "match": {
       "name_contains": "ANTRO FRIDAYS",
@@ -1430,40 +1456,14 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-110",
-    "auto": true,
-    "match": {
-      "name_contains": "Cabros Chicos - Underground Y2K & Top 40 Parrty (18+)",
-      "venue_contains": "Mehanata Bulgarian Bar"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 4 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-13",
-    "expires": "2026-11-13"
-  },
-  {
-    "id": "auto-2026-11-13-111",
-    "auto": true,
-    "match": {
-      "name_contains": "Game Night Mixer",
-      "venue_contains": "Sour Mouse"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 17 calendars; prime-time start.",
-    "score": 19.5,
-    "start_date": "2026-11-13",
-    "expires": "2026-11-13"
-  },
-  {
     "id": "auto-2026-11-13-112",
     "auto": true,
     "match": {
-      "name_contains": "Speed Dating for Long-Term & Marriage-Minded Singles",
-      "venue_contains": "Motto Chelsea"
+      "name_contains": "In Person Speed Dating for NYC Professional Singles 48-65 I WOMEN SOLD OUT",
+      "venue_contains": "Nosh!"
     },
-    "badge": "⭐ Pick",
-    "note": "Free; listed on 6 calendars; prime-time start.",
+    "badge": "🎲 Game Night Pick",
+    "note": "Free; listed on 15 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
@@ -1472,12 +1472,12 @@
     "id": "auto-2026-11-13-113",
     "auto": true,
     "match": {
-      "name_contains": "Entrepreneurs & Small Business Owners Networking @ Pod Hotel Bar 42",
-      "venue_contains": "Pod Times Square"
+      "name_contains": "Speed Dating for Long-Term & Marriage-Minded Singles",
+      "venue_contains": "Motto Chelsea"
     },
-    "badge": "🤝 Community Pick",
-    "note": "Listed on 14 calendars; prime-time start.",
-    "score": 17.5,
+    "badge": "⭐ Pick",
+    "note": "Free; listed on 6 calendars; prime-time start.",
+    "score": 19.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
   },
@@ -1524,6 +1524,19 @@
     "id": "auto-2026-11-13-117",
     "auto": true,
     "match": {
+      "name_contains": "New York Comedy Club Presents",
+      "venue_contains": "New York Comedy Club Upper West Side"
+    },
+    "badge": "😂 Comedy Pick",
+    "note": "Listed on 5 calendars; prime-time start.",
+    "score": 17.5,
+    "start_date": "2026-11-13",
+    "expires": "2026-11-13"
+  },
+  {
+    "id": "auto-2026-11-13-118",
+    "auto": true,
+    "match": {
       "name_contains": "New York Comedy Festival Presents: New York's Funniest Stand-Ups",
       "venue_contains": "The Stand West"
     },
@@ -1534,7 +1547,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-118",
+    "id": "auto-2026-11-13-119",
     "auto": true,
     "match": {
       "name_contains": "Adam Friedland",
@@ -1547,46 +1560,20 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-119",
-    "auto": true,
-    "match": {
-      "name_contains": "Christmas Spectacular Starring The Radio City Rockettes",
-      "venue_contains": "Radio City Music Hall"
-    },
-    "badge": "🎭 Stage Pick",
-    "note": "Listed on 218 calendars; headline room at Radio City Music Hall (New York, NY).",
-    "score": 15.0,
-    "start_date": "2026-11-13",
-    "expires": "2026-11-13"
-  },
-  {
     "id": "auto-2026-11-14-120",
     "auto": true,
     "match": {
-      "name_contains": "NY Comedy Festival Presents Sh&t Show Hosted by Jordan Klepper",
-      "venue_contains": "Town Hall"
+      "name_contains": "Sh&t Show Hosted by Jordan Klepper",
+      "venue_contains": "The Town Hall"
     },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 6 calendars; headline room at Town Hall; prime-time start.",
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 5 calendars; headline room at The Town Hall; prime-time start.",
     "score": 20.5,
     "start_date": "2026-11-14",
     "expires": "2026-11-14"
   },
   {
     "id": "auto-2026-11-14-121",
-    "auto": true,
-    "match": {
-      "name_contains": "New York Comedy Festival: Daniel Sloss",
-      "venue_contains": "Beacon Theatre - NY"
-    },
-    "badge": "😂 Comedy Pick",
-    "note": "Listed on 8 calendars; headline room at Beacon Theatre - NY; prime-time start.",
-    "score": 20.5,
-    "start_date": "2026-11-14",
-    "expires": "2026-11-14"
-  },
-  {
-    "id": "auto-2026-11-14-122",
     "auto": true,
     "match": {
       "name_contains": "Silk Road Ensemble - New York",
@@ -1599,7 +1586,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-123",
+    "id": "auto-2026-11-14-122",
     "auto": true,
     "match": {
       "name_contains": "#1 SATURDAY HIGHLIFE ROOFTOP PARTY - NYC 360 views @ Highbar",
@@ -1612,7 +1599,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-124",
+    "id": "auto-2026-11-14-123",
     "auto": true,
     "match": {
       "name_contains": "11.14.26 District Saturdays @ NexoNYC",
@@ -1625,7 +1612,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-125",
+    "id": "auto-2026-11-14-124",
     "auto": true,
     "match": {
       "name_contains": "AFROBEATS & AMAPIANO: AfroWaves Party at Mehanata NYC",
@@ -1638,7 +1625,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-126",
+    "id": "auto-2026-11-14-125",
     "auto": true,
     "match": {
       "name_contains": "Cabros Chicos - Underground Y2K & Top 40 Parrty (18+)",
@@ -1651,7 +1638,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-127",
+    "id": "auto-2026-11-14-126",
     "auto": true,
     "match": {
       "name_contains": "DIFF NYC '2026 - Panel: The Next Generation of Heroes",
@@ -1664,7 +1651,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-128",
+    "id": "auto-2026-11-14-127",
     "auto": true,
     "match": {
       "name_contains": "Free Hookah Saturdays",
@@ -1677,7 +1664,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-129",
+    "id": "auto-2026-11-14-128",
     "auto": true,
     "match": {
       "name_contains": "Little Island Date Walk (Sunset Singles Stroll)  Sold Out For Men!",
@@ -1690,7 +1677,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-130",
+    "id": "auto-2026-11-14-129",
     "auto": true,
     "match": {
       "name_contains": "NYC Social Club - Social Mixer | Meet People Over Food & Drinks",
@@ -1703,33 +1690,33 @@
     "expires": "2026-11-14"
   },
   {
+    "id": "auto-2026-11-14-130",
+    "auto": true,
+    "match": {
+      "name_contains": "Religious Procession",
+      "venue_contains": "242-25 Braddock Avenue"
+    },
+    "badge": "🖼️ Art Pick",
+    "note": "Free; listed on 256 calendars; weekend daytime.",
+    "score": 19.0,
+    "start_date": "2026-11-14",
+    "expires": "2026-11-14"
+  },
+  {
     "id": "auto-2026-11-14-131",
     "auto": true,
     "match": {
-      "name_contains": "Jewish Speed Dating for singles (30s/40s) Jewish Dating I 4 Spots Left",
-      "venue_contains": "Nosh!"
+      "name_contains": "Stand Up Comedy In Greenwich Village–First Stop Saturday",
+      "venue_contains": "Greenwich Village Comedy Club"
     },
-    "badge": "⭐ Pick",
-    "note": "Listed on 5 calendars; prime-time start.",
-    "score": 17.5,
+    "badge": "😂 Comedy Pick",
+    "note": "Free; listed on 4 calendars; weekend daytime.",
+    "score": 19.0,
     "start_date": "2026-11-14",
     "expires": "2026-11-14"
   },
   {
     "id": "auto-2026-11-14-132",
-    "auto": true,
-    "match": {
-      "name_contains": "NYRR Open Run: Canarsie Park",
-      "venue_contains": "Canarsie Park House"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Free; listed on 16 calendars.",
-    "score": 17.5,
-    "start_date": "2026-11-14",
-    "expires": "2026-11-14"
-  },
-  {
-    "id": "auto-2026-11-14-133",
     "auto": true,
     "match": {
       "name_contains": "Single Professionals Ages 20s & 30s Speed Dating, NYC",
@@ -1742,7 +1729,7 @@
     "expires": "2026-11-14"
   },
   {
-    "id": "auto-2026-11-14-134",
+    "id": "auto-2026-11-14-133",
     "auto": true,
     "match": {
       "name_contains": "Zumba",
@@ -1751,6 +1738,19 @@
     "badge": "🏃 Active Pick",
     "note": "Free; listed on 4 calendars.",
     "score": 17.5,
+    "start_date": "2026-11-14",
+    "expires": "2026-11-14"
+  },
+  {
+    "id": "auto-2026-11-14-134",
+    "auto": true,
+    "match": {
+      "name_contains": "Bisexual & Pansexual Speed Dating in NYC | All-Gender Dating | LGBTQ+",
+      "venue_contains": "Bananas"
+    },
+    "badge": "⭐ Pick",
+    "note": "Listed on 5 calendars; weekend daytime.",
+    "score": 17.0,
     "start_date": "2026-11-14",
     "expires": "2026-11-14"
   }
