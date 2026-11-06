@@ -471,6 +471,19 @@
     "id": "auto-2026-11-07-36",
     "auto": true,
     "match": {
+      "name_contains": "PREMIERE SATURDAYS (LADIES FREE B4 12AM)",
+      "venue_contains": "28-18 31st St"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Free; listed on 13 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-37",
+    "auto": true,
+    "match": {
       "name_contains": "Saturday Night Comedy  - 10PM in Brooklyn!",
       "venue_contains": "EastVille Comedy Club"
     },
@@ -481,7 +494,7 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-37",
+    "id": "auto-2026-11-07-38",
     "auto": true,
     "match": {
       "name_contains": "Speed Dating for Single Professionals Ages 40s & 50s, NYC (Sold Out)",
@@ -494,7 +507,20 @@
     "expires": "2026-11-07"
   },
   {
-    "id": "auto-2026-11-07-38",
+    "id": "auto-2026-11-07-39",
+    "auto": true,
+    "match": {
+      "name_contains": "Brooklyn Bridge Singles Sunset Date Walk (Sold Out For Men!)",
+      "venue_contains": "Starbucks"
+    },
+    "badge": "🌿 Outdoors Pick",
+    "note": "Free; listed on 18 calendars; weekend daytime.",
+    "score": 19.0,
+    "start_date": "2026-11-07",
+    "expires": "2026-11-07"
+  },
+  {
+    "id": "auto-2026-11-07-40",
     "auto": true,
     "match": {
       "name_contains": "Brooklyn Bridge Singles Sunset Date Walk (Sold Out For Men!)",
@@ -1638,7 +1664,7 @@
     "expires": "2026-11-13"
   },
   {
-    "id": "auto-2026-11-13-126",
+    "id": "auto-2026-11-13-125",
     "auto": true,
     "match": {
       "name_contains": "Friday Night Open Mic (6:30PM)",
@@ -1646,6 +1672,19 @@
     },
     "badge": "🎸 Music Pick",
     "note": "Free; listed on 5 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-13",
+    "expires": "2026-11-13"
+  },
+  {
+    "id": "auto-2026-11-13-126",
+    "auto": true,
+    "match": {
+      "name_contains": "Game Night Mixer",
+      "venue_contains": "Sour Mouse"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Free; listed on 17 calendars; prime-time start.",
     "score": 19.5,
     "start_date": "2026-11-13",
     "expires": "2026-11-13"
