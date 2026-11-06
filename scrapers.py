@@ -5357,6 +5357,11 @@ def scrape_tribe_events_api(url, ua, only_nyc=False, max_pages=4):
                 dt = dt_naive.replace(tzinfo=EASTERN)
             except Exception:
                 continue
+            if dt.hour == 0 and dt.minute == 0:
+                # "All day" listings often give the real time in the text (Zinc Bar: "Showtimes: 7:00 PM")
+                found = time_from_text(f"{title} {item.get('description') or ''}")
+                if found:
+                    dt = dt.replace(hour=found[0], minute=found[1])
 
             key = (title.lower(), dt.strftime("%Y-%m-%d %H:%M"))
             if key in seen:
@@ -5706,6 +5711,62 @@ def _jsonld_event_to_entry(ev, base_url=None):
     return entry
 
 
+_TEXT_TIME_RE = re.compile(
+    r"(?:showtimes?|shows?|starts?(?:ing)?|begins?|doors?|\bat\b|\bfrom\b|@)\W{0,4}(\d{1,2})(?::(\d{2}))?\s*([ap])\.?m\b", re.I)
+
+
+def time_from_text(text):
+    """(hour, minute) of the first stated start time ("Showtimes: 7:00 PM", "every Friday at
+    6:00pm"), or None. For feeds that publish a date but put the time in prose."""
+    plain = html.unescape(re.sub(r"<[^>]+>", " ", text or ""))
+    m = _TEXT_TIME_RE.search(plain)
+    if not m:
+        return None
+    hour = int(m.group(1)) % 12 + (12 if m.group(3).lower() == "p" else 0)
+    minute = int(m.group(2) or 0)
+    return (hour, minute) if int(m.group(1)) in range(1, 13) and minute < 60 else None
+
+
+def _title_key(title):
+    return re.sub(r"[^a-z0-9]+", "", html.unescape(title or "").lower())
+
+
+def _allevents_id(url):
+    m = re.search(r"/(\d{9,})(?:[/?#]|$)", url or "")
+    return m.group(1) if m else None
+
+
+_ALLEVENTS_MONTHS = {m: i for i, m in enumerate(("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"), 1)}
+_ALLEVENTS_CARD_RE = re.compile(r"(\d{1,2}) ([A-Za-z]{3})(?:, \d{4})?\s*[-•]\s*(\d{1,2}):(\d{2})\s*([AP]M)")
+
+
+def _allevents_card_times(soup):
+    """AllEvents' JSON-LD has dates only, but its cards print the time ("Fri, 06 Nov • 07:30 PM").
+    Returns {event id or title key: ((month, day), (hour, minute))}; 12:00 AM means "not set"."""
+    out = {}
+    for el in soup.select("div.date, div.event-date-v3"):
+        m = _ALLEVENTS_CARD_RE.search(el.get_text(" ", strip=True))
+        if not m or m.group(2).lower() not in _ALLEVENTS_MONTHS:
+            continue
+        hour = int(m.group(3)) % 12 + (12 if m.group(5) == "PM" else 0)
+        if hour == 0 and m.group(4) == "00":
+            continue
+        when = ((_ALLEVENTS_MONTHS[m.group(2).lower()], int(m.group(1))), (hour, int(m.group(4))))
+        card = el
+        for _ in range(6):
+            card = card.parent
+            if card is None:
+                break
+            title_el = card.select_one(".title a[href], h3.event-title-v3")
+            if title_el:
+                out[_title_key(title_el.get_text(" ", strip=True))] = when
+                eid = _allevents_id(title_el.get("href"))
+                if eid:
+                    out[eid] = when
+                break
+    return out
+
+
 def scrape_jsonld(url, ua, venue_prefix=None, address_fallback=None):
     """Generic schema.org JSON-LD Event scraper for any page that embeds Events.
 
@@ -5715,11 +5776,24 @@ def scrape_jsonld(url, ua, venue_prefix=None, address_fallback=None):
     events = []
     seen = set()
     now = datetime.now(timezone.utc)
+    card_times = _allevents_card_times(soup) if "allevents.in" in url else {}
     for ev in _extract_jsonld_events(soup, url):
         entry = _jsonld_event_to_entry(ev, url)
         if not entry or not entry.get("name"):
             continue
-        if entry["date"] < now.isoformat():
+        local = datetime.fromisoformat(entry["date"]).astimezone(EASTERN)
+        if local.hour == 0 and local.minute == 0:
+            # Date-only feed: take the time from the listing card or the text if there is one.
+            hit = (card_times.get(_allevents_id(entry.get("url"))) or card_times.get(_title_key(entry["name"]))
+                   if card_times else None)
+            found = hit[1] if hit and hit[0] == (local.month, local.day) else None
+            found = found or time_from_text(f"{entry['name']} {ev.get('description') or ''}")
+            if found:
+                local = local.replace(hour=found[0], minute=found[1])
+                entry["date"] = local.astimezone(timezone.utc).isoformat()
+            elif local.date() == now.astimezone(EASTERN).date():
+                entry.setdefault("_keep_today", True)
+        if entry["date"] < now.isoformat() and not entry.pop("_keep_today", False):
             continue
         if venue_prefix:
             v = entry.get("venue")
