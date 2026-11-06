@@ -1013,3 +1013,37 @@ class TestOutsideNyc(unittest.TestCase):
         self.assertEqual(nyc_geo.outside_area("", 40.931, -73.899), "westchester_hv")  # Yonkers pin
         self.assertEqual(nyc_geo.outside_area("Fort Lauderdale", 26.1, -80.1), "outside_other")
         self.assertEqual(template.resolve_subarea("other", {"venue": "Wellmont Theater"}, None)[1], "nj")
+
+
+class TestDuplicateMerging(unittest.TestCase):
+    def _ev(self, name, venue, src, hour=20, minute=0, cat="music", lat=None, lng=None):
+        when = _future_local(3, hour, minute)
+        e = {"name": name, "venue": venue, "_source_venue": src, "date": when.astimezone(timezone.utc).isoformat(),
+             "_time": when.astimezone(scrapers.EASTERN), "category": cat, "url": f"https://x.example/{abs(hash((name, src)))}"}
+        if lat:
+            e["lat"], e["lng"] = lat, lng
+        return e
+
+    def test_broadway_suffixes_unicode_and_cross_listings(self):
+        import template
+        evs = [
+            self._ev("MJ", "Neil Simon Theatre (New York, NY)", "Ticketmaster NYC"),
+            self._ev("MJ (NY)", "Neil Simon Theatre (New York, NY)", "Ticketmaster NYC"),
+            self._ev("MJ - The Musical - New York", "Neil Simon Theatre", "SeatGeek NYC"),
+            self._ev("¿Qué?", "Eris Deep Space", "Eris Deep Space", 21, 15, "comedy", 40.7249, -73.9420),
+            self._ev("¿Qué?", "Eris Deep Space", "Brooklyn Comedy Collective", 21, 30, "comedy", 40.7249, -73.9420),
+            self._ev("#1 REGGAETON BAR in Manhattan Party", "San Antonios", "Perreo Parrty", 22, 0, "clubbing"),
+            self._ev("#1 LATIN THURSDAY Party in Manhattan", "San Antonios", "Perreo Parrty", 22, 0, "clubbing"),
+            self._ev("Speed Dating for Single Professionals Ages 40s & 50s", "Motto Chelsea", "NY Minute Dating", 19, 0, "community"),
+            self._ev("Single Professionals Ages 40s & 50s Speed Dating", "Motto Chelsea", "Singles Events", 19, 0, "community"),
+            self._ev("Intermediate Hip-Hop", "The Dance Loft", "DanceUS", 18, 0, "dance"),
+            self._ev("Advanced Hip-Hop", "The Dance Loft", "DanceUS", 18, 0, "dance"),
+        ]
+        out = template._merge_duplicates(evs)
+        names = sorted(e["name"] for e in out)
+        self.assertEqual(len([n for n in names if n.startswith("MJ")]), 1)
+        self.assertEqual(names.count("¿Qué?"), 1)
+        self.assertEqual(len([n for n in names if n.startswith("#1")]), 1)
+        self.assertEqual(len([n for n in names if "Speed Dating" in n]), 1)
+        self.assertIn("Intermediate Hip-Hop", names)
+        self.assertIn("Advanced Hip-Hop", names)
