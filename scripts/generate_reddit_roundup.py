@@ -49,7 +49,7 @@ def _line(e, free_note=False):
     t = e["_time"]
     city = _event_city(e.get("venue"), e.get("_source_venue"), geo=resolve_event_geo(e), event=e)
     where = e.get("venue") or e.get("_source_venue") or ""
-    if city in CITY_LABELS and city != "other":
+    if city in CITY_LABELS and city not in ("other", "citywide"):
         where = f"{where} ({CITY_LABELS[city]})"
     price = " — free" if free_note else (f" — {e['price']}" if e.get("price") else "")
     when = f"{t.strftime('%a')} {t.strftime('%-I:%M %p')}"
