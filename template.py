@@ -2283,7 +2283,7 @@ def render_page(results, split_deferred=False, context_out=None):
         flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
         return _compact_li(f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{hl_attr}{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
-          <div class="what">{link}{price_tag}{guestlist_badge}{hl_badge}{recur_badge}
+          <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{hl_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
             {note_html}{desc_html}
           </div>
@@ -4101,8 +4101,77 @@ def render_page(results, split_deferred=False, context_out=None):
     vertical-align: middle;
   }}
 
-  /* Submission Modal Overlay */
+  .star-btn {{
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+    padding: 0 6px 0 0;
+    vertical-align: baseline;
+  }}
+  .star-btn:hover {{ color: #ffd866; }}
+  .star-btn.starred {{ color: #ffd866; text-shadow: 0 0 8px rgba(255, 216, 102, 0.45); }}
+  @media (pointer: coarse) {{
+    .star-btn {{ font-size: 18px; padding: 8px 10px 8px 2px; }}
+  }}
+  .schedule-bar {{
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    z-index: 9000;
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--card);
+    border: 1px solid var(--border-hover, var(--border));
+    border-radius: 999px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    max-width: calc(100vw - 32px);
+  }}
+  .schedule-bar button {{
+    border: 0;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }}
+  .schedule-bar-view {{ background: transparent; color: var(--fg); }}
+  .schedule-bar-view[aria-pressed="true"] {{ background: rgba(127, 127, 127, 0.18); }}
+  .schedule-bar-share {{ background: var(--accent); color: #0c0e14; }}
+  .schedule-bar button:focus-visible {{ outline: 2px solid var(--accent); outline-offset: 2px; }}
+  .schedule-share-card {{ max-width: 460px; display: grid; gap: 8px; }}
+  .schedule-share-label {{ font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 6px; }}
+  .schedule-share-card input {{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 9px 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: rgba(127, 127, 127, 0.1);
+    color: var(--fg);
+    font: inherit;
+    font-size: 14px;
+  }}
+  .schedule-share-actions {{ display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 10px; }}
+  .schedule-share-copy, .schedule-share-send {{
+    border: 0;
+    border-radius: var(--radius-sm);
+    padding: 9px 16px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }}
+  .schedule-share-copy {{ background: var(--accent); color: #0c0e14; }}
+  .schedule-share-send {{ background: rgba(127, 127, 127, 0.18); color: var(--fg); }}
+  .schedule-share-open {{ color: var(--accent); font-size: 14px; }}
   .modal-overlay {{
+    position: fixed;  .modal-overlay {{
     position: fixed;
     top: 0;
     left: 0;
@@ -5513,6 +5582,30 @@ def render_page(results, split_deferred=False, context_out=None):
   </footer>
 
   <!-- Community Event & Venue Submission Modal -->
+  <div id="schedule-bar" class="schedule-bar" style="display:none;">
+    <button type="button" class="schedule-bar-view" id="schedule-view" aria-pressed="false">★ My Schedule <span id="schedule-count"></span></button>
+    <button type="button" class="schedule-bar-share" id="schedule-share">Share</button>
+  </div>
+  <div id="schedule-share-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="schedule-share-title" style="display:none;">
+    <div class="modal-card schedule-share-card">
+      <div class="modal-header">
+        <div>
+          <h2 class="modal-title" id="schedule-share-title">Share your schedule</h2>
+          <p class="modal-sub" id="schedule-share-sub"></p>
+        </div>
+        <button type="button" class="modal-close-btn" id="schedule-share-close" aria-label="Close">✕</button>
+      </div>
+      <label class="schedule-share-label" for="schedule-share-name">Your name (optional)</label>
+      <input type="text" id="schedule-share-name" maxlength="40" placeholder="Shows as “Sam's weekend”" autocomplete="given-name">
+      <label class="schedule-share-label" for="schedule-share-link">Link to send</label>
+      <input type="text" id="schedule-share-link" readonly>
+      <div class="schedule-share-actions">
+        <button type="button" class="schedule-share-copy" id="schedule-share-copy">Copy link</button>
+        <button type="button" class="schedule-share-send" id="schedule-share-send" style="display:none;">Send</button>
+        <a class="schedule-share-open" id="schedule-share-open" href="schedule/" target="_blank" rel="noopener">Preview</a>
+      </div>
+    </div>
+  </div>
   <div id="submit-event-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-submit-title" style="display:none;">
     <div class="modal-card" id="submit-modal-card">
       <div class="modal-header">
@@ -5776,6 +5869,13 @@ def render_page(results, split_deferred=False, context_out=None):
     let renderedSubareaCity = null;
     const quickPicksChip = document.getElementById('quick-picks-chip');
     let picksOnly = false;
+    // My Schedule: starred cards, kept in this browser. Keys are built from the card itself
+    // (day|start|title), so the page doesn't carry an id on every event.
+    let starredOnly = false;
+    let starredEvents = new Set();
+    const scheduleBar = document.getElementById('schedule-bar');
+    const scheduleCount = document.getElementById('schedule-count');
+    const scheduleView = document.getElementById('schedule-view');
     const quickCustomTimeChip = document.getElementById('quick-custom-time-chip');
     const activeTimeframeLabel = document.getElementById('active-timeframe-label');
     const timeFromSelect = document.getElementById('time-from-select');
@@ -6142,6 +6242,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const later = first ? Array.from(document.querySelectorAll('.day[data-date]'))
         .find(d => d.dataset.date !== 'tba' && (first === 'tba' ? false : d.dataset.date > first)) : null;
       const before = later || bottomNav;
+      days.forEach(markStars);
       if (before && before.parentNode) before.parentNode.insertBefore(fragment, before);
       daySections = Array.from(document.querySelectorAll('.day[data-date]'));
       updateDayHeadings();
@@ -6235,15 +6336,10 @@ def render_page(results, split_deferred=False, context_out=None):
         const countHtml = countSpan ? countSpan.outerHTML : '';
         const dayName = DAYS_FULL[dObj.getDay()];
         const shortStr = `${{MONTHS[dObj.getMonth()]}} ${{dObj.getDate()}}`;
-        let prefix = dayName;
-        if (diffDays === 0) {{
-          prefix = 'Today';
-        }} else if (diffDays === 1) {{
-          prefix = 'Tomorrow';
-        }} else if (diffDays === -1) {{
-          prefix = 'Yesterday';
-        }}
-        h2.innerHTML = `${{prefix}} · ${{dayName}}, ${{shortStr}}${{countHtml}}`;
+        // "Today · Thursday, Nov 5", but just "Saturday, Nov 7" for other days (not "Saturday · Saturday")
+        const prefix = diffDays === 0 ? 'Today' : diffDays === 1 ? 'Tomorrow' : diffDays === -1 ? 'Yesterday' : '';
+        h2.innerHTML = `${{prefix ? prefix + ' · ' : ''}}${{dayName}}, ${{shortStr}}${{countHtml}}`;
+        day._countEl = null;  // the heading was rebuilt, so the cached count element is gone
       }});
     }}
 
@@ -6728,7 +6824,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const isLgbtq = lgbtqOnlyChk && lgbtqOnlyChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
       const isGenreFiltered = Array.from(genreBoxes).some(b => !b.checked);
-      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || isLgbtq || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || isLgbtq || starredOnly || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -6785,6 +6881,7 @@ def render_page(results, split_deferred=False, context_out=None):
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
       if (lgbtqOnlyChk && lgbtqOnlyChk.checked) params.set('lgbtq', '1');
       if (picksOnly) params.set('picks', '1');
+      if (starredOnly) params.set('saved', '1');
       if (timeFrom !== null || timeTo !== null) {{
         if (timeFrom !== null) params.set('from', formatMinutesToHHMM(timeFrom));
         if (timeTo !== null) params.set('to', formatMinutesToHHMM(timeTo));
@@ -6814,6 +6911,7 @@ def render_page(results, split_deferred=False, context_out=None):
         if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
         if (params.get('lgbtq') === '1' && lgbtqOnlyChk) lgbtqOnlyChk.checked = true;
         if (params.get('picks') === '1') picksOnly = true;
+        if (params.get('saved') === '1') starredOnly = true;
         if (params.get('past') === '1') showPastToday = true;
         if (params.get('v') === 'map') {{
           switchView('map');
@@ -6926,13 +7024,16 @@ def render_page(results, split_deferred=False, context_out=None):
     }}
 
     function apply() {{
-      const cats = new Set(Array.from(catBoxes).filter(b => b.checked).map(b => b.value));
-      const genres = new Set(Array.from(genreBoxes).filter(b => b.checked).map(b => b.value));
+      // My Schedule shows everything saved, whatever the category and borough boxes say.
+      const boxOn = b => starredOnly || b.checked;
+      const cats = new Set(Array.from(catBoxes).filter(boxOn).map(b => b.value));
+      const genres = new Set(Array.from(genreBoxes).filter(boxOn).map(b => b.value));
       const allGenresOn = genres.size === genreBoxes.length;
       const genreOkFor = (bucket, genre) => allGenresOn || bucket !== MUSIC_BUCKET || (!!genre && genres.has(genre));
-      const venues = new Set(Array.from(venueBoxes).filter(b => b.checked).map(b => b.value));
-      const recurs = new Set(Array.from(recurBoxes).filter(b => b.checked).map(b => b.value));
-      const cities = new Set(Array.from(cityBoxes).filter(b => b.checked).map(b => b.value));
+      const venues = new Set(Array.from(venueBoxes).filter(boxOn).map(b => b.value));
+      const recurs = new Set(Array.from(recurBoxes).filter(boxOn).map(b => b.value));
+      const cities = new Set(Array.from(cityBoxes).filter(boxOn).map(b => b.value));
+      const starDates = starredOnly ? new Set(Array.from(starredEvents).map(k => k.split('|')[0])) : null;
       const searchText = searchInput.value.trim().toLowerCase();
       const freeOnly = freeOnlyChk ? freeOnlyChk.checked : false;
       const guestlistOnly = guestlistOnlyChk ? guestlistOnlyChk.checked : false;
@@ -6963,7 +7064,11 @@ def render_page(results, split_deferred=False, context_out=None):
 
       // Load the deferred weeks this view needs ("all dates" and search need every week)
       if (!deferredHydrated) {{
-        if (timeFilter === 'all' || showAll || searchText.length > 0) {{
+        if (starredOnly) {{
+          const loaded = new Set(daySections.map(d => d.dataset.date));
+          const missing = Array.from(starDates).filter(dt => eventDates.has(dt) && !loaded.has(dt));
+          if (missing.length) ensureDeferredDaysHydrated(missing);
+        }} else if (timeFilter === 'all' || showAll || searchText.length > 0) {{
           ensureDeferredDaysHydrated(null);
         }} else {{
           const wanted = timeFilter === 'today' ? [todayISO]
@@ -6982,7 +7087,9 @@ def render_page(results, split_deferred=False, context_out=None):
       const activeDays = daySections.filter(day => {{
         const date = day.dataset.date;
         let inTime = true;
-        if (timeFilter === 'today') {{
+        if (starredOnly) {{
+          inTime = starDates.has(date);
+        }} else if (timeFilter === 'today') {{
           inTime = (date === todayISO);
         }} else if (timeFilter === 'tomorrow') {{
           inTime = (date === tomorrowISO);
@@ -7072,6 +7179,7 @@ def render_page(results, split_deferred=False, context_out=None):
               const guestlistOk = !guestlistOnly || m.guestlist;
               const lgbtqOk = !lgbtqOnly || m.lgbtq;
               const picksOk = !picksOnly || m.featured;
+              const starOk = !starredOnly || starredEvents.has(eventKey(li));
               const searchOk = !searchText || (m.text || (m.text = li.textContent.toLowerCase())).includes(searchText);
 
               let todOk = true;
@@ -7090,13 +7198,13 @@ def render_page(results, split_deferred=False, context_out=None):
               if (m.past !== isPast) {{ m.past = isPast; li.classList.toggle('past-time', isPast); }}
 
               let timePastOk = true;
-              if (isPast && !showPastToday) {{
+              if (isPast && !showPastToday && !starredOnly) {{
                 timePastOk = false;
                 hiddenPastCount++;
               }}
 
               const genreOk = genreOkFor(m.bucket, m.genre);
-              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && picksOk && todOk && timePastOk;
+              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && picksOk && starOk && todOk && timePastOk;
               if (m.hidden === isVisible) {{ m.hidden = !isVisible; li.classList.toggle('hidden', !isVisible); }}
               if (isVisible) {{
                 bucketVisible++;
@@ -7278,6 +7386,7 @@ def render_page(results, split_deferred=False, context_out=None):
       renderCal();
       updateWeekLabel();
       updateQuickChipsUI();
+      updateScheduleBar();
       updateLocChipsUI();
       updateSearchUI();
 
@@ -7563,6 +7672,7 @@ def render_page(results, split_deferred=False, context_out=None):
       if (guestlistOnlyChk) guestlistOnlyChk.checked = false;
       if (lgbtqOnlyChk) lgbtqOnlyChk.checked = false;
       picksOnly = false;
+      starredOnly = false;
       clearRange();
       timeFrom = null;
       timeTo = null;
@@ -8339,6 +8449,192 @@ def render_page(results, split_deferred=False, context_out=None):
       else if (schemeQuery.addListener) schemeQuery.addListener(followDevice);
     }} catch (_) {{}}
 
+    // My Schedule. Sharing puts the event details in the link itself, so a shared schedule needs no
+    // account or server and keeps working after its events roll off the site.
+    const scheduleModal = document.getElementById('schedule-share-modal');
+    const scheduleName = document.getElementById('schedule-share-name');
+    const scheduleLink = document.getElementById('schedule-share-link');
+    const scheduleSub = document.getElementById('schedule-share-sub');
+    const scheduleCopy = document.getElementById('schedule-share-copy');
+    const scheduleSend = document.getElementById('schedule-share-send');
+    const scheduleOpen = document.getElementById('schedule-share-open');
+    const STARRED_KEY = 'nyc_starred_events';
+    const SCHEDULE_DETAILS_KEY = 'nyc_schedule_events';
+    const SCHEDULE_NAME_KEY = 'nyc_schedule_name';
+    let scheduleEvents = [];
+
+    function eventKey(li) {{
+      const day = li.closest('.day');
+      const a = li.querySelector('.what a');
+      return `${{day ? day.dataset.date : ''}}|${{li.dataset.epoch || ''}}|${{a ? a.textContent.trim() : ''}}`;
+    }}
+
+    function setStar(btn, on) {{
+      btn.classList.toggle('starred', on);
+      btn.textContent = on ? '★' : '☆';
+      btn.setAttribute('aria-label', on ? 'Remove from My Schedule' : 'Add to My Schedule');
+    }}
+
+    function markStars(root) {{
+      if (!starredEvents.size) return;
+      root.querySelectorAll('.event').forEach(li => {{
+        const btn = li.querySelector('.star-btn');
+        if (btn && starredEvents.has(eventKey(li))) setStar(btn, true);
+      }});
+    }}
+
+    function updateScheduleBar() {{
+      if (!scheduleBar) return;
+      const n = starredEvents.size;
+      scheduleBar.style.display = n > 0 ? 'flex' : 'none';
+      scheduleCount.textContent = n > 0 ? `(${{n}})` : '';
+      scheduleView.setAttribute('aria-pressed', starredOnly ? 'true' : 'false');
+      if (!n && starredOnly) {{ starredOnly = false; apply(); stateToHash(); }}
+    }}
+
+    function scheduleDetails() {{
+      try {{
+        const d = JSON.parse(localStorage.getItem(SCHEDULE_DETAILS_KEY) || '{{}}');
+        return (d && typeof d === 'object') ? d : {{}};
+      }} catch (_) {{ return {{}}; }}
+    }}
+
+    function scheduleRow(li) {{
+      const m = extractEventMetaFromLi(li);
+      if (!m.dt || isNaN(m.dt.getTime())) return null;
+      const epoch = li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : Math.floor(m.dt.getTime() / 1000);
+      // The last field marks a listing with a date but no time, so it isn't shown at a made-up hour
+      return [m.title, epoch, m.venue, m.url, li.dataset.epoch ? 0 : 1];
+    }}
+
+    function saveStars(details) {{
+      try {{
+        localStorage.setItem(STARRED_KEY, JSON.stringify(Array.from(starredEvents)));
+        localStorage.setItem(SCHEDULE_DETAILS_KEY, JSON.stringify(details));
+      }} catch (_) {{}}
+    }}
+
+    // My Schedule keeps an event for 24 hours after it starts
+    function loadStarredState() {{
+      try {{
+        const raw = JSON.parse(localStorage.getItem(STARRED_KEY) || '[]');
+        if (Array.isArray(raw)) starredEvents = new Set(raw);
+      }} catch (_) {{}}
+      const details = scheduleDetails();
+      const cutoff = Math.floor(Date.now() / 1000) - 86400;
+      const past = Object.keys(details).filter(k => Array.isArray(details[k]) && details[k][1] < cutoff);
+      if (past.length) {{
+        past.forEach(k => {{ delete details[k]; starredEvents.delete(k); }});
+        saveStars(details);
+      }}
+      markStars(document);
+    }}
+
+    document.addEventListener('click', e => {{
+      const btn = e.target.closest && e.target.closest('.star-btn');
+      if (!btn) return;
+      e.preventDefault();
+      const li = btn.closest('.event');
+      if (!li) return;
+      const key = eventKey(li);
+      const nowStarred = !starredEvents.has(key);
+      const details = scheduleDetails();
+      if (nowStarred) {{
+        starredEvents.add(key);
+        const row = scheduleRow(li);
+        if (row) details[key] = row;
+      }} else {{
+        starredEvents.delete(key);
+        delete details[key];
+      }}
+      saveStars(details);
+      // A Near Me list holds copies of the cards, so update every copy of this one
+      const day = li.closest('.day');
+      (day || document).querySelectorAll('.event').forEach(other => {{
+        if (eventKey(other) === key) {{
+          const b = other.querySelector('.star-btn');
+          if (b) setStar(b, nowStarred);
+        }}
+      }});
+      updateScheduleBar();
+      if (starredOnly) apply();
+    }});
+
+    async function encodeSchedule(obj) {{
+      let bytes = new TextEncoder().encode(JSON.stringify(obj));
+      let tag = 'j';
+      if (window.CompressionStream) {{
+        try {{
+          const stream = new Blob([bytes]).stream().pipeThrough(new CompressionStream('deflate-raw'));
+          bytes = new Uint8Array(await new Response(stream).arrayBuffer());
+          tag = 'z';
+        }} catch (_) {{}}
+      }}
+      let bin = '';
+      bytes.forEach(b => {{ bin += String.fromCharCode(b); }});
+      return tag + btoa(bin).split('+').join('-').split('/').join('_').split('=').join('');
+    }}
+
+    async function refreshScheduleLink() {{
+      const name = scheduleName.value.trim();
+      try {{ localStorage.setItem(SCHEDULE_NAME_KEY, name); }} catch (_) {{}}
+      const hash = await encodeSchedule({{ v: 1, n: name, e: scheduleEvents }});
+      // Relative to this page: the site lives under /nyc_events/ on GitHub Pages
+      const link = `${{new URL('schedule/', location.href).href}}#${{hash}}`;
+      scheduleLink.value = link;
+      scheduleOpen.href = link;
+    }}
+
+    async function openScheduleShare() {{
+      const saved = scheduleDetails();
+      const cutoff = Math.floor(Date.now() / 1000) - 86400;
+      scheduleEvents = Array.from(starredEvents).map(k => saved[k]).filter(r => Array.isArray(r) && r[1] >= cutoff)
+        .sort((a, b) => a[1] - b[1]);
+      const left = starredEvents.size - scheduleEvents.length;
+      scheduleSub.textContent = `${{scheduleEvents.length}} upcoming ${{scheduleEvents.length === 1 ? 'event' : 'events'}}` +
+        (left > 0 ? `. ${{left}} past or undated ${{left === 1 ? 'event is' : 'events are'}} left out.` : '.');
+      try {{ scheduleName.value = localStorage.getItem(SCHEDULE_NAME_KEY) || ''; }} catch (_) {{}}
+      await refreshScheduleLink();
+      scheduleSend.style.display = navigator.share ? 'inline-block' : 'none';
+      scheduleCopy.disabled = scheduleEvents.length === 0;
+      scheduleModal.style.display = 'flex';
+      scheduleCopy.focus();
+    }}
+
+    function closeScheduleShare() {{
+      scheduleModal.style.display = 'none';
+    }}
+
+    if (scheduleBar) {{
+      scheduleView.addEventListener('click', () => {{
+        starredOnly = !starredOnly;
+        apply();
+        stateToHash();
+        if (starredOnly) window.scrollTo({{ top: 0 }});
+      }});
+      document.getElementById('schedule-share').addEventListener('click', openScheduleShare);
+      document.getElementById('schedule-share-close').addEventListener('click', closeScheduleShare);
+      scheduleModal.addEventListener('click', e => {{ if (e.target === scheduleModal) closeScheduleShare(); }});
+      document.addEventListener('keydown', e => {{
+        if (e.key === 'Escape' && scheduleModal.style.display !== 'none') closeScheduleShare();
+      }});
+      scheduleName.addEventListener('input', refreshScheduleLink);
+      scheduleCopy.addEventListener('click', async () => {{
+        try {{
+          await navigator.clipboard.writeText(scheduleLink.value);
+        }} catch (_) {{
+          scheduleLink.select();
+          document.execCommand('copy');
+        }}
+        scheduleCopy.textContent = 'Copied';
+        setTimeout(() => {{ scheduleCopy.textContent = 'Copy link'; }}, 1500);
+      }});
+      scheduleSend.addEventListener('click', () => {{
+        navigator.share({{ title: 'My schedule', url: scheduleLink.value }}).catch(() => {{}});
+      }});
+    }}
+
+    loadStarredState();
     hashToState();
     apply();
   </script>

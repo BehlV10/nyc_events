@@ -38,6 +38,7 @@ __pycache__/
 # geocode cache live on the `data` branch (git fetch origin data && git show FETCH_HEAD:events.json)
 events.json
 index.html
+!/schedule/index.html
 events.html
 deferred_days.html
 geocode_cache.json
