@@ -5,6 +5,7 @@ Run via:
 """
 
 import json
+from html import unescape as html_unescape
 import os
 import re
 import sys
@@ -312,8 +313,10 @@ class TestRenderSplit(unittest.TestCase):
         events.append({"name": "Toddler Storytime", "venue": "Brooklyn Public Library",
                        "date": _future_local(1, 10).astimezone(timezone.utc).isoformat(), "url": "https://x.com/s"})
         payload = {"venues": [{"venue": "Brooklyn Bowl", "url": "https://x.com", "events": events}]}
-        page, deferred = render_page(payload, split_deferred=True)
-        self.assertIn('data-src="deferred_days.html?v=', page)
+        page, files = render_page(payload, split_deferred=True)
+        self.assertRegex(page, r"data-chunks='\[\{&quot;src&quot;: &quot;deferred_days_1\.html\?v=")
+        self.assertEqual([n for n, _ in files], ["deferred_days_1.html"])
+        deferred = files[0][1]
         # Visible markup only: JSON-LD for search engines intentionally lists the coming week.
         visible = re.sub(r'<script type="application/ld\+json">.*?</script>', "", page, flags=re.S)
         self.assertIn("Show 0", visible)
@@ -1047,3 +1050,22 @@ class TestDuplicateMerging(unittest.TestCase):
         self.assertEqual(len([n for n in names if "Speed Dating" in n]), 1)
         self.assertIn("Intermediate Hip-Hop", names)
         self.assertIn("Advanced Hip-Hop", names)
+
+
+class TestDeferredWeeks(unittest.TestCase):
+    def test_days_split_into_weekly_files_and_lean_markup(self):
+        events = [{"name": f"Show {i}", "venue": "Brooklyn Bowl", "category": "music",
+                   "date": _future_local(i, 20).astimezone(timezone.utc).isoformat(), "url": f"https://x.com/{i}"}
+                  for i in range(0, 20)]
+        payload = {"venues": [{"venue": "Brooklyn Bowl", "url": "https://x.com", "events": events}]}
+        page, files = render_page(payload, split_deferred=True)
+        self.assertEqual([n for n, _ in files], ["deferred_days_1.html", "deferred_days_2.html", "deferred_days_3.html"])
+        m = re.search(r"data-chunks='([^']+)'", page)
+        manifest = json.loads(html_unescape(m.group(1)))
+        self.assertEqual([len(c["dates"]) for c in manifest], [7, 7, 3])
+        self.assertIn("Show 3", files[0][1])
+        self.assertIn("Show 19", files[2][1])
+        li = re.search(r'<li class="event.*?</li>', files[0][1], re.S).group(0)
+        for gone in ("data-subarea-name", "data-event-id", "data-time-str", 'data-guestlist="false"', "style=", "\n  "):
+            self.assertNotIn(gone, li)
+        self.assertIn(".pc-c-", page)  # pill colours live in the stylesheet
