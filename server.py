@@ -3,6 +3,7 @@
 
 import json
 import os
+import re
 import sys
 import threading
 import time
@@ -113,9 +114,9 @@ def static_export(filename):
     return send_from_directory(base, filename)
 
 
-@app.get("/deferred_days.html")
-def deferred_days_html():
-    return send_from_directory(os.path.dirname(os.path.abspath(__file__)), "deferred_days.html")
+@app.get("/deferred_days_<int:n>.html")
+def deferred_days_html(n):
+    return send_from_directory(os.path.dirname(os.path.abspath(__file__)), f"deferred_days_{n}.html")
 
 
 @app.get("/api/events")
@@ -166,15 +167,19 @@ def export_html(dest="index.html", source_json="events.json"):
     if "luckyseat" not in data or not data.get("luckyseat"):
         data["luckyseat"] = fetch_luckyseat_nyc()
     ctx = {}
-    html, deferred_html = render_page(data, split_deferred=True, context_out=ctx)
+    html, deferred_files = render_page(data, split_deferred=True, context_out=ctx)
     with open(dest, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"wrote {dest}: {len(html.encode('utf-8')):,} bytes")
-    # Days past the first week load on demand from a sibling file (see render_page).
-    deferred_path = os.path.join(os.path.dirname(os.path.abspath(dest)), "deferred_days.html")
-    with open(deferred_path, "w", encoding="utf-8") as f:
-        f.write(deferred_html)
-    print(f"wrote {deferred_path}: {len(deferred_html.encode('utf-8')):,} bytes")
+    # Later days load on demand from weekly sibling files (see render_page).
+    out_dir = os.path.dirname(os.path.abspath(dest))
+    for name in os.listdir(out_dir):
+        if re.fullmatch(r"deferred_days(_\d+)?\.html", name):
+            os.remove(os.path.join(out_dir, name))  # stale weeks from an earlier export
+    for name, body in deferred_files:
+        with open(os.path.join(out_dir, name), "w", encoding="utf-8") as f:
+            f.write(body)
+        print(f"wrote {name}: {len(body.encode('utf-8')):,} bytes")
 
     # Search/social outputs: landing pages, sitemap/robots/llms.txt, RSS + iCal feeds, OG images.
     # Each step is independent so one failure never blocks publishing the main page.

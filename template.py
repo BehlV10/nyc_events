@@ -1311,6 +1311,26 @@ def _title_words(title):
     return {w for w in re.findall(r"[^\W_]+", t) if w not in _TITLE_WORD_STOP and len(w) > 1}
 
 
+def _pill_slug(cat):
+    return re.sub(r"[^a-z0-9]+", "-", (cat or "other").lower()).strip("-") or "other"
+
+
+def _compact_li(html_str):
+    """Drop the source indentation between an event's block-level children."""
+    return re.sub(r"\n\s*", "", html_str)
+
+
+def _pill_css():
+    """One rule per category/genre colour instead of an inline style on ~20k pills."""
+    rules = []
+    for cat, (color, _icon) in CATEGORY_STYLES.items():
+        rules.append(f".pc-c-{_pill_slug(cat)}{{--cat-c:{color};background:{color}18;border-color:{color}33;color:{color}}}")
+    for key, info in MUSIC_GENRES.items():
+        c = info["color"]
+        rules.append(f".pc-g-{key}{{--cat-c:{c};background:{c}18;border-color:{c}33;color:{c}}}")
+    return "".join(rules)
+
+
 def _merge_duplicates(events):
     """Collapse events sharing a normalized name or head title within the same day bucket.
 
@@ -1839,10 +1859,14 @@ def event_genre(e):
     return e["_genre"]
 
 
+DEFERRED_CHUNK_DAYS = 7
+
+
 def render_page(results, split_deferred=False, context_out=None):
     """Render the full page. If context_out is a dict, it receives the deduplicated `dated`
     events plus totals, so the exporter can build SEO pages and feeds without re-merging. With split_deferred=True, days beyond the first week are left
-    out of the HTML and returned separately as (page_html, deferred_html); the page fetches
+    out of the HTML and returned separately as (page_html, [(filename, html), ...]), one file per
+    week of days; the page fetches
     them from deferred_days.html after first paint, keeping index.html small."""
     if isinstance(results, dict):
         venue_list = results.get("venues", [])
@@ -1907,11 +1931,10 @@ def render_page(results, split_deferred=False, context_out=None):
         if genre:
             ginfo = MUSIC_GENRES[genre]
             gcolor = ginfo["color"]
-            cat_tag = (f'<button type="button" class="cat-pill genre-pill" data-genre="{genre}" title="Show only {escape(ginfo["label"])}" '
-                       f'style="--cat-c:{gcolor}; background:{gcolor}18; border-color:{gcolor}33; color:{gcolor}">{escape(ginfo["label"])}</button>')
+            cat_tag = f'<button type="button" class="cat-pill genre-pill pc-g-{genre}" data-genre="{genre}">{escape(ginfo["label"])}</button>'
         else:
             color, icon = CATEGORY_STYLES.get(cat, CATEGORY_STYLES["other"])
-            cat_tag = f'<span class="cat-pill" style="--cat-c:{color}; background:{color}18; border-color:{color}33; color:{color}"><span class="chip-icon">{icon} </span>{escape(cat)}</span>'
+            cat_tag = f'<span class="cat-pill pc-c-{_pill_slug(cat if cat in CATEGORY_STYLES else "other")}"><span class="chip-icon">{icon} </span>{escape(cat)}</span>'
         venue = e.get("venue") or ""
         source = e.get("_source_venue") or ""
         geo = resolve_event_geo(e)
@@ -1919,7 +1942,7 @@ def render_page(results, split_deferred=False, context_out=None):
         geo_btn = ""
         if geo:
             geo_attrs = f' data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue-name="{escape(geo["venue"])}" data-neighborhood="{escape(geo["neighborhood"])}"'
-            geo_btn = f' <button type="button" class="venue-map-jump" data-lat="{geo["lat"]}" data-lng="{geo["lng"]}" data-venue="{escape(geo["venue"])}" title="View {escape(geo["venue"])} on Map">📍</button>'
+            geo_btn = ' <button type="button" class="venue-map-jump" aria-label="Show on map">📍</button>'
 
         city = _event_city(venue, source, geo=geo, event=e)
         sub_name, sub_slug = resolve_subarea(city, e, geo=geo)
@@ -1971,7 +1994,7 @@ def render_page(results, split_deferred=False, context_out=None):
         else:
             venue_html = f'{community_badge}{subarea_tag}'.strip()
 
-        cal_html = '<span class="cal-links"><button type="button" class="cal-btn gcal-btn" title="Add to Google Calendar">+ GCal</button> <button type="button" class="cal-btn ics-btn" title="Download .ics">+ .ics</button></span>' if e.get("date") else ""
+        cal_html = '<span class="cal-links"><button type="button" class="cal-btn gcal-btn">+ GCal</button> <button type="button" class="cal-btn ics-btn">+ .ics</button></span>' if e.get("date") else ""
 
         raw_desc = (e.get("description") or "").replace("***", "").replace("**", "").replace("__", "").replace("`", "").strip()
         if "[" in raw_desc:
@@ -1994,7 +2017,7 @@ def render_page(results, split_deferred=False, context_out=None):
         is_date_only = len(raw_date) == 10 or ("T00:00:00" in raw_date and not (t_obj and (t_obj.hour != 0 or t_obj.minute != 0)))
         if t_obj and not is_date_only:
             time_mins = t_obj.hour * 60 + t_obj.minute
-            time_attr = f' data-time-mins="{time_mins}" data-time-str="{t_obj.strftime("%H:%M")}"'
+            time_attr = f' data-time-mins="{time_mins}"'
         else:
             time_attr = ' data-time-mins="-1"'
         extra_html = f' · {compare_html}' if compare_html else ''
@@ -2012,13 +2035,16 @@ def render_page(results, split_deferred=False, context_out=None):
             hl_badge = f' <span class="badge-highlight" title="{escape(tooltip)}">{escape(b_text)}</span>'
             if note:
                 note_html = f'<div class="curator-note"><span class="note-label">Why it\'s a pick:</span> {escape(note)}</div>'
-        return f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-subarea-name="{escape(sub_name)}" data-recur="{recur_flag}" data-free="{free_flag}" data-guestlist="{guestlist_flag}"{hl_attr} data-event-id="{ev_id}"{epoch_attr}{time_attr}{geo_attrs}>
+        # Flags are emitted only when true (the page tests `=== 'true'`), and nothing that the
+        # page can derive (subarea name, HH:MM) is repeated per event: deferred days are ~17k <li>s.
+        flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "")
+        return _compact_li(f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{hl_attr}{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
           <div class="what">{link}{price_tag}{guestlist_badge}{hl_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
             {note_html}{desc_html}
           </div>
-        </li>'''
+        </li>''')
 
     bucket_name_order = [b for b, _ in CATEGORY_BUCKETS]
     city_day_order = ["manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide", "other"]
@@ -2086,22 +2112,36 @@ def render_page(results, split_deferred=False, context_out=None):
         </section>'''
 
     initial_sections = []
-    deferred_sections = []
+    # Days after the first three load after first paint, in weekly files, so a visitor who
+    # looks at next Saturday fetches and parses one week rather than all five.
+    deferred_chunks = []  # [{"dates": [...], "html": [...]}]
     for idx, (date_obj, events) in enumerate(dated):
         sec_html = _render_day_section(escape(format_date_heading(date_obj)), events, date_obj.isoformat())
-        if idx < 3:  # today + next two days inline; the rest load after first paint
+        if idx < 3:  # today + next two days inline
             initial_sections.append(sec_html)
-        else:
-            deferred_sections.append(sec_html)
+            continue
+        if not deferred_chunks or len(deferred_chunks[-1]["dates"]) >= DEFERRED_CHUNK_DAYS:
+            deferred_chunks.append({"dates": [], "html": []})
+        deferred_chunks[-1]["dates"].append(date_obj.isoformat())
+        deferred_chunks[-1]["html"].append(sec_html)
     if tba:
-        deferred_sections.append(_render_day_section("Date TBA", tba, "tba"))
+        if not deferred_chunks:
+            deferred_chunks.append({"dates": [], "html": []})
+        deferred_chunks[-1]["dates"].append("tba")
+        deferred_chunks[-1]["html"].append(_render_day_section("Date TBA", tba, "tba"))
 
     all_event_dates = [d.isoformat() for d, _ in dated]
 
-    deferred_html = "".join(deferred_sections)
+    deferred_html = "".join(h for c in deferred_chunks for h in c["html"])
+    deferred_files = []
     if split_deferred:
-        deferred_ver = hashlib.sha1(deferred_html.encode("utf-8")).hexdigest()[:10]
-        deferred_tag = f'<template id="deferred-days" data-src="deferred_days.html?v={deferred_ver}"></template>'
+        manifest = []
+        for n, chunk in enumerate(deferred_chunks, 1):
+            body = "".join(chunk["html"])
+            name = f"deferred_days_{n}.html"
+            deferred_files.append((name, body))
+            manifest.append({"src": f"{name}?v={hashlib.sha1(body.encode('utf-8')).hexdigest()[:10]}", "dates": chunk["dates"]})
+        deferred_tag = f"<template id=\"deferred-days\" data-chunks='{escape(json.dumps(manifest), quote=True)}'></template>"
     else:
         deferred_tag = f'<template id="deferred-days">{deferred_html}</template>'
 
@@ -2333,6 +2373,7 @@ def render_page(results, split_deferred=False, context_out=None):
 </script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230c0e14'/%3E%3Crect x='3' y='3' width='58' height='58' rx='13' fill='none' stroke='%23ffcc00' stroke-width='3'/%3E%3Ctext x='32' y='46' font-family='Impact, Arial Black, sans-serif' font-weight='900' font-size='34' fill='%235d9bff' text-anchor='middle'%3ENYC%3C/text%3E%3C/svg%3E">
 <style>
+  {_pill_css()}
   :root {{
     --bg: #0c0e14;
     --card: #151822;
@@ -5413,6 +5454,10 @@ def render_page(results, split_deferred=False, context_out=None):
     const locChips = document.querySelectorAll('#location-chips .loc-chip');
     const subareaBar = document.getElementById('subarea-chips-bar');
     const SUBAREAS_DATA = {json.dumps(SUBAREAS_BY_CITY)};
+    function subareaLabel(li) {{
+      const hit = (SUBAREAS_DATA[li.dataset.city] || []).find(s => s[0] === li.dataset.subarea);
+      return hit ? hit[1] : '';
+    }}
     const CITY_LABELS_MAP = {json.dumps(CITY_LABELS)};
     let activeSubarea = 'all';
     let renderedSubareaCity = null;
@@ -5689,48 +5734,62 @@ def render_page(results, split_deferred=False, context_out=None):
     const ALL_EVENT_DATES = {json.dumps(all_event_dates)};
     const eventDates = new Set(ALL_EVENT_DATES);
 
+    // Days past the first three are inlined in <template> (live server) or split into weekly
+    // deferred_days_N.html files (static export). A view fetches only the weeks it shows; the
+    // next week is prefetched on idle; "all dates" and search load every week.
     let deferredHydrated = false;
-    let deferredFetch = null;
-    function insertDeferredDays(fragment) {{
+    const deferredTmpl = document.getElementById('deferred-days');
+    let deferredChunks = [];
+    try {{ deferredChunks = JSON.parse((deferredTmpl && deferredTmpl.dataset.chunks) || '[]'); }} catch (_) {{}}
+    deferredChunks.forEach(c => {{ c.state = 'idle'; }});
+    if (!deferredTmpl) deferredHydrated = true;
+    function insertDayFragment(fragment) {{
       const bottomNav = document.querySelector('.week-nav.bottom');
-      if (fragment && bottomNav && bottomNav.parentNode) {{
-        bottomNav.parentNode.insertBefore(fragment, bottomNav);
-      }}
-      const tmpl = document.getElementById('deferred-days');
-      if (tmpl) tmpl.remove();
-      deferredHydrated = true;
+      const days = Array.from(fragment.querySelectorAll ? fragment.querySelectorAll('.day[data-date]') : []);
+      const first = days.length ? days[0].dataset.date : null;
+      // Keep days in date order whatever order the weeks arrive in ("tba" sorts last).
+      const later = first ? Array.from(document.querySelectorAll('.day[data-date]'))
+        .find(d => d.dataset.date !== 'tba' && (first === 'tba' ? false : d.dataset.date > first)) : null;
+      const before = later || bottomNav;
+      if (before && before.parentNode) before.parentNode.insertBefore(fragment, before);
       daySections = Array.from(document.querySelectorAll('.day[data-date]'));
       updateDayHeadings();
     }}
-    // Days past the first three are either inlined in <template> (live server) or kept in
-    // deferred_days.html (static export). The file is downloaded on idle, but only parsed
-    // into the DOM when a view actually needs those days; apply() re-runs once it lands.
-    let deferredInserting = false;
-    function fetchDeferredText() {{
-      const tmpl = document.getElementById('deferred-days');
-      if (!deferredFetch && tmpl && tmpl.dataset.src) {{
-        deferredFetch = fetch(tmpl.dataset.src).then(r => r.ok ? r.text() : '').catch(() => '');
-      }}
-      return deferredFetch;
+    function fetchChunk(c) {{
+      if (!c.fetch) c.fetch = fetch(c.src).then(r => r.ok ? r.text() : '').catch(() => '');
+      return c.fetch;
     }}
-    function ensureDeferredDaysHydrated() {{
-      if (deferredHydrated || deferredInserting) return;
-      const tmpl = document.getElementById('deferred-days');
-      if (!tmpl) {{ deferredHydrated = true; return; }}
-      if (!tmpl.dataset.src) {{ insertDeferredDays(tmpl.content); return; }}
-      deferredInserting = true;
-      fetchDeferredText().then(text => {{
-        const holder = document.createElement('template');
-        holder.innerHTML = text || '';
-        insertDeferredDays(holder.content);
-        apply();
+    function ensureDeferredDaysHydrated(wantedDates) {{
+      if (deferredHydrated) return;
+      if (!deferredChunks.length) {{
+        // Live server: everything is inline in the <template>.
+        if (deferredTmpl) {{ insertDayFragment(deferredTmpl.content); deferredTmpl.remove(); }}
+        deferredHydrated = true;
+        return;
+      }}
+      const want = wantedDates ? new Set(wantedDates) : null;
+      deferredChunks.forEach(c => {{
+        if (c.state !== 'idle') return;
+        if (want && !c.dates.some(d => want.has(d))) return;
+        c.state = 'loading';
+        fetchChunk(c).then(text => {{
+          const holder = document.createElement('template');
+          holder.innerHTML = text || '';
+          insertDayFragment(holder.content);
+          c.state = 'done';
+          if (deferredChunks.every(x => x.state === 'done')) {{
+            deferredHydrated = true;
+            if (deferredTmpl) deferredTmpl.remove();
+          }}
+          apply();
+        }});
       }});
     }}
-    (function prefetchDeferredDays() {{
-      const tmpl = document.getElementById('deferred-days');
-      if (!tmpl || !tmpl.dataset.src) return;
-      if ('requestIdleCallback' in window) requestIdleCallback(fetchDeferredText, {{ timeout: 4000 }});
-      else setTimeout(fetchDeferredText, 2000);
+    (function prefetchNextWeek() {{
+      const next = deferredChunks[0];
+      if (!next) return;
+      if ('requestIdleCallback' in window) requestIdleCallback(() => fetchChunk(next), {{ timeout: 4000 }});
+      else setTimeout(() => fetchChunk(next), 2000);
     }})();
     function parseISO(s) {{ const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); }}
     function fmtISO(d) {{
@@ -6090,7 +6149,7 @@ def render_page(results, split_deferred=False, context_out=None):
             venueMap.set(key, {{
               lat, lng,
               name: vName,
-              neighborhood: li.dataset.neighborhood || li.dataset.subareaName || '',
+              neighborhood: li.dataset.neighborhood || subareaLabel(li) || '',
               events: []
             }});
           }}
@@ -6490,25 +6549,21 @@ def render_page(results, split_deferred=False, context_out=None):
       let totalTodayEventsCount = 0;
       let visibleTonightCount = 0;
 
-      // Hydrate deferred days if needed
-      let needsHydration = (
-        timeFilter === 'all' ||
-        showAll ||
-        searchText.length > 0
-      );
-      if (!needsHydration && !deferredHydrated) {{
-        // Hydrate when the current view needs a day that has events but isn't in the DOM yet
-        const wanted = timeFilter === 'today' ? [todayISO]
-          : timeFilter === 'tomorrow' ? [tomorrowISO]
-          : timeFilter === 'weekend' ? [satISO, sunISO]
-          : timeFilter === 'day' ? [anchorISO]
-          : timeFilter === 'range' ? rangeDates()
-          : Array.from(week || []);
-        const loaded = new Set(daySections.map(d => d.dataset.date));
-        needsHydration = wanted.some(dt => eventDates.has(dt) && !loaded.has(dt));
-      }}
-      if (needsHydration) {{
-        ensureDeferredDaysHydrated();
+      // Load the deferred weeks this view needs ("all dates" and search need every week)
+      if (!deferredHydrated) {{
+        if (timeFilter === 'all' || showAll || searchText.length > 0) {{
+          ensureDeferredDaysHydrated(null);
+        }} else {{
+          const wanted = timeFilter === 'today' ? [todayISO]
+            : timeFilter === 'tomorrow' ? [tomorrowISO]
+            : timeFilter === 'weekend' ? [satISO, sunISO]
+            : timeFilter === 'day' ? [anchorISO]
+            : timeFilter === 'range' ? rangeDates()
+            : Array.from(week || []);
+          const loaded = new Set(daySections.map(d => d.dataset.date));
+          const missing = wanted.filter(dt => eventDates.has(dt) && !loaded.has(dt));
+          if (missing.length) ensureDeferredDaysHydrated(missing);
+        }}
       }}
 
       // Determine active days first so we only filter DOM nodes inside visible days
@@ -7253,8 +7308,9 @@ def render_page(results, split_deferred=False, context_out=None):
       const jumpBtn = e.target.closest('.venue-map-jump');
       if (jumpBtn) {{
         e.preventDefault();
-        const lat = parseFloat(jumpBtn.dataset.lat);
-        const lng = parseFloat(jumpBtn.dataset.lng);
+        const pinLi = jumpBtn.closest('li') || jumpBtn;
+        const lat = parseFloat(jumpBtn.dataset.lat || pinLi.dataset.lat);
+        const lng = parseFloat(jumpBtn.dataset.lng || pinLi.dataset.lng);
         if (isNaN(lat) || isNaN(lng)) return;
         switchView('map');
         loadLeaflet(() => {{
@@ -7844,5 +7900,5 @@ def render_page(results, split_deferred=False, context_out=None):
 </body>
 </html>"""
     if split_deferred:
-        return page_html, deferred_html
+        return page_html, deferred_files
     return page_html
