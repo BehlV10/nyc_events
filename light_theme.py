@@ -49,6 +49,10 @@ LIGHT_THEME_CSS = """
   [data-theme="light"] .badge-guestlist { color: #be185d; }
   [data-theme="light"] .useful-cat-head { color: #92400e; }
   [data-theme="light"] .dist-badge { color: #047857; }
+  [data-theme="light"] .star-btn:hover,
+  [data-theme="light"] .star-btn.starred { color: #b45309; text-shadow: none; }
+  [data-theme="light"] .schedule-bar-share,
+  [data-theme="light"] .schedule-share-copy { color: #fff; }
 
   /* Surfaces that were white-on-dark tints */
   [data-theme="light"] .event { background: transparent; border-color: rgba(15, 23, 42, 0.07); }
