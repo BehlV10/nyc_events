@@ -3454,7 +3454,14 @@ def scrape_petes_candy_store(url, ua):
     return events
 
 
-def scrape_squarespace_calendar(url, ua):
+def _squarespace_price(item):
+    """A price the listing states, or None. Being on a venue's calendar doesn't make an event free."""
+    body = re.sub(r"<[^>]+>", " ", f"{item.get('excerpt') or ''} {item.get('body') or ''}")
+    text = html.unescape(f"{item.get('title') or ''}\n{body}")
+    return admission_price(text) or ("Free" if mentions_free(text) else None)
+
+
+def scrape_squarespace_calendar(url, ua, venue=None, address=None):
     """Squarespace native JSON calendar API scraper."""
     events = []
     now = datetime.now(timezone.utc)
@@ -3479,14 +3486,17 @@ def scrape_squarespace_calendar(url, ua):
             if full_url and not full_url.startswith("http"):
                 domain = "/".join(url.split("/")[:3])
                 full_url = f"{domain}{full_url}"
-            events.append({
+            entry = {
                 "name": title,
                 "date": iso,
                 "url": full_url or url,
-                "venue": None,
-                "price": "Free / No Cover",
+                "venue": venue,
+                "price": _squarespace_price(item),
                 "category": "music",
-            })
+            }
+            if address:
+                entry["address"] = address
+            events.append(entry)
     except Exception:
         pass
     return events
@@ -8805,6 +8815,26 @@ def _is_eventbrite_search(v):
 # are kept only as the starting points for scripts/discover_eventbrite.py, which turns what
 # they list into organizer feeds.
 EVENTBRITE_DISCOVERY_SEARCHES = [v["url"] for v in _ALL_VENUES if _is_eventbrite_search(v)]
+# Venues read from their own calendars rather than DoNYC, which stops at each one's next 10 events.
+DIRECT_CALENDARS = [
+    {"name": "Terra Blues (own calendar)", "url": "https://www.terrablues.com/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar,
+     "default_category": "music", "kwargs": {"venue": "Terra Blues", "address": "149 Bleecker St, New York, NY 10012"}},
+    {"name": "Club Cumming (own calendar)", "url": "https://clubcummingnyc.com/schedule", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar,
+     "default_category": "clubbing", "kwargs": {"venue": "Club Cumming", "address": "505 East 6th Street, New York, NY"}},
+    {"name": "Nebula (own calendar)", "url": "https://www.nebulanewyork.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards,
+     "default_category": "clubbing", "kwargs": {"venue": "Nebula", "address": "135 W 41st St, New York, NY 10036"}},
+    {"name": "The Paley Center (own calendar)", "url": "https://www.paleycenter.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards,
+     "default_category": "film", "kwargs": {"venue": "The Paley Center for Media", "address": "25 W 52nd St, New York, NY 10019"}},
+    {"name": "The Sheen Center (own calendar)", "url": "https://www.sheencenter.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards,
+     "default_category": "theater", "kwargs": {"venue": "The Sheen Center", "address": "18 Bleecker St, New York, NY 10012"}},
+    {"name": "The High Line (own calendar)", "url": "https://www.thehighline.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards,
+     "default_category": "outdoors", "kwargs": {"venue": "The High Line"}},
+    # The site also lists tour stops in other cities; only its Lincoln Center pages are local.
+    {"name": "Chamber Music Society (own calendar)", "url": "https://www.chambermusicsociety.org/our-concerts/at-alice-tully-hall/", "ua": UA_CHROME,
+     "scraper": scrape_html_cards, "default_category": "music",
+     "kwargs": {"venue": "Chamber Music Society of Lincoln Center", "link_re": r".*lincoln-center/"}},
+]
+_ALL_VENUES += DIRECT_CALENDARS
 _existing_source_names = {v["name"].lower() for v in _ALL_VENUES}
 _ALL_VENUES += [
     {"name": name if name.lower() not in _existing_source_names else f"{name} (DICE)",
