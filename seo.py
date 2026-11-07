@@ -380,6 +380,12 @@ _HUB_CSS = """
   .card h3 a:hover { color:var(--accent); text-decoration:underline; }
   .venue { font-size:12.5px; color:var(--muted); overflow-wrap:anywhere; }
   .also { font-size:12px; color:var(--accent); margin-top:4px; }
+  .card[hidden], h2.day[hidden] { display:none; }
+  .hub-city-chips { display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin-bottom:16px; }
+  .hub-city-chip { background:transparent; color:var(--fg); border:1px solid var(--border); border-radius:999px; padding:5px 14px;
+                   font:inherit; font-size:13px; cursor:pointer; }
+  .hub-city-chip:hover { border-color:var(--accent); }
+  .hub-city-chip.active { background:var(--accent); border-color:var(--accent); color:#0c0e14; font-weight:700; }
   footer { border-top:1px solid var(--border); padding:22px 16px; text-align:center; font-size:12px; color:var(--muted); }
   footer a { color:var(--accent); text-decoration:none; }
 """
@@ -422,6 +428,46 @@ def _collapse_series(events, show_dates=3):
     return out
 
 
+def _share_across_days(events, limit):
+    """A weekend's slots split across its days, so a busy Friday doesn't crowd out Saturday."""
+    by_day = {}
+    for e in events:
+        by_day.setdefault(e["_time"].date(), []).append(e)
+    per_day = limit // max(len(by_day), 1)
+    return [e for evs in by_day.values() for e in evs[:per_day]]
+
+
+_HUB_BOROUGHS = (("manhattan", "Manhattan"), ("brooklyn", "Brooklyn"), ("queens", "Queens"), ("bronx", "The Bronx"),
+                 ("staten_island", "Staten Island"), ("citywide", "Citywide"), ("other", "Outside NYC"))
+
+_HUB_CITY_JS = """<script>
+(function () {
+  var chips = document.querySelectorAll('.hub-city-chip');
+  if (!chips.length) return;
+  var cards = document.querySelectorAll('.card[data-city]');
+  var heads = document.querySelectorAll('h2.day');
+  function show(city) {
+    var days = {};
+    cards.forEach(function (c) {
+      var on = city === 'all' || c.dataset.city === city;
+      c.hidden = !on;
+      if (on) days[c.dataset.day] = 1;
+    });
+    heads.forEach(function (h) { h.hidden = !days[h.dataset.day]; });
+    chips.forEach(function (b) { b.classList.toggle('active', b.dataset.city === city); });
+  }
+  chips.forEach(function (b) {
+    b.addEventListener('click', function () {
+      show(b.dataset.city);
+      history.replaceState(null, '', b.dataset.city === 'all' ? location.pathname : '#city=' + b.dataset.city);
+    });
+  });
+  var m = location.hash.match(/city=(\\w+)/);
+  show(m && document.querySelector('.hub-city-chip[data-city="' + m[1] + '"]') ? m[1] : 'all');
+})();
+</script>"""
+
+
 def render_hub_page(slug, dated, site_url=None, max_events=120):
     from template import CITY_LABELS, _event_city, _get_event_highlight, _is_event_free, _load_highlights
     from venues_geo import resolve_event_geo
@@ -434,8 +480,8 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
         events = [e for e in events if city_of(e) != "other"]  # the page is laid out by borough
     if hub.get("collapse_series"):
         events = _collapse_series(events)
-    max_events = hub.get("limit", max_events)
-    shown = events[:max_events]
+    max_events = hub.get("limit", 300 if hub.get("time") == "weekend" else max_events)
+    shown = _share_across_days(events, max_events) if hub.get("time") == "weekend" else events[:max_events]
     highlights = _load_highlights()
     meta = build_seo_meta_tags(
         title=f"{hub['title']} · {SITE_NAME}",
@@ -467,7 +513,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
             if cards:
                 sections.append(f'<div class="grid">{"".join(cards)}</div>')
                 cards = []
-            sections.append(f'<h2 class="day">{e["_time"].strftime("%A, %B")} {d.day}</h2>')
+            sections.append(f'<h2 class="day" data-day="{d.isoformat()}">{e["_time"].strftime("%A, %B")} {d.day}</h2>')
             cur_day = d
         geo = resolve_event_geo(e)
         city = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo, event=e)
@@ -485,7 +531,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
             badge = f'<span class="badge pickb">{escape(hl.get("badge") or "Pick")}</span>' + badge
         when = e["_time"].strftime("%-I:%M %p") if (e["_time"].hour or e["_time"].minute) else "All day"
         cards.append(
-            f'<article class="card{" pick" if hl else ""}"><div class="meta"><time datetime="{e["_time"].isoformat()}">{when}</time>'
+            f'<article class="card{" pick" if hl else ""}" data-city="{city}" data-day="{d.isoformat()}"><div class="meta"><time datetime="{e["_time"].isoformat()}">{when}</time>'
             f'<span>{badge}</span></div><h3><a href="{escape(e.get("url") or "../")}" target="_blank" rel="noopener">'
             f'{escape(e.get("name") or "Event")}</a></h3><div class="venue">{escape(where)}</div>'
             + (f'<div class="also">{escape(e["_also"])}</div>' if e.get("_also") else "") + "</article>"
@@ -501,6 +547,11 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
     <a class="cta" href="../{hub['query']}">Open the interactive calendar &amp; map →</a>
   </div>"""
     extra_head, extra_css, body_tag, filters, foot_js = "", "", "<body>", "", ""
+    present = set(re.findall(r'data-city="(\w+)"', "".join(sections)))
+    if not hub.get("city") and len(present) > 1:
+        chips = "".join(f'<button type="button" class="hub-city-chip" data-city="{k}">{lbl}</button>'
+                        for k, lbl in (("all", "All"),) + _HUB_BOROUGHS if k == "all" or k in present)
+        filters, foot_js = f'<div class="hub-city-chips" role="group" aria-label="Filter by borough">{chips}</div>', _HUB_CITY_JS
     if hub.get("style") == "kids":
         hero, filters, body = kids_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
         extra_head, extra_css, foot_js = kids_hub._KIDS_FONTS, kids_hub._KIDS_CSS, kids_hub._KIDS_FILTER_JS
