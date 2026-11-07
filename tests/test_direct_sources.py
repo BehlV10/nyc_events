@@ -63,5 +63,38 @@ class CitywideDiceStillWorks(unittest.TestCase):
         self.assertEqual({e["name"] for e in events}, {"Torche, Spotlights"})
 
 
+class SquarespaceCalendars(unittest.TestCase):
+    def _scrape(self, items, **kw):
+        start = int((datetime.now(timezone.utc) + timedelta(days=3)).timestamp() * 1000)
+        resp = mock.Mock(raise_for_status=mock.Mock(), json=mock.Mock(return_value={
+            "upcoming": [dict({"startDate": start, "fullUrl": "/events/x"}, **i) for i in items]}))
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            return scrapers.scrape_squarespace_calendar("https://venue.example/events", "ua", **kw)
+
+    def test_a_paid_show_isnt_called_free(self):
+        """Every event on 25 Squarespace calendars was stamped "Free / No Cover"."""
+        self.assertIsNone(self._scrape([{"title": "Jazz Quintet"}])[0]["price"])
+
+    def test_reads_what_the_listing_says(self):
+        self.assertEqual(self._scrape([{"title": "Blues Night", "excerpt": "<p>$20 cover</p>"}])[0]["price"], "$20")
+        self.assertEqual(self._scrape([{"title": "Blues Night", "body": "<p>No cover!</p>"}])[0]["price"], "Free")
+
+    def test_venue_and_address_can_be_set(self):
+        e = self._scrape([{"title": "Show"}], venue="Terra Blues", address="149 Bleecker St")[0]
+        self.assertEqual((e["venue"], e["address"]), ("Terra Blues", "149 Bleecker St"))
+
+    def test_source_kwargs_are_accepted(self):
+        import inspect
+        for v in scrapers.DIRECT_CALENDARS:
+            params = inspect.signature(v["scraper"]).parameters
+            self.assertTrue(set(v["kwargs"]) <= set(params), v["name"])
+
+
+class ComicStrip(unittest.TestCase):
+    def test_organizer_is_listed(self):
+        ids = {i for _k, i, _n, _c in scrapers._load_eventbrite_organizers()}
+        self.assertIn("8100188167", ids)
+
+
 if __name__ == "__main__":
     unittest.main()
