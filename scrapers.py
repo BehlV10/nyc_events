@@ -1025,6 +1025,8 @@ def is_kid_family_event(name, venue=None):
     """Return True if an event is meant for infants, toddlers, kids, or family storytimes."""
     if not name:
         return False
+    if re.search(r"(?i)\bstand[- ]?up\b|\bcomedy show\b|\bcomedians?\b", name) and not re.search(r"(?i)\bfamily[- ]friendly\b|\bfor kids\b", name):
+        return False  # "Baby Shoes Comedy Show"
     if EXCLUDE_KID_FAMILY_RE.search(name) or re.search(r"\b(?:18|21)\s*\+|\badults? only\b|\bburlesque\b|\bdating\b|\bsingles\b|\bmixer\b|\bages? (?:1[89]|[2-9]\d)\b", name, re.I):
         return False
     return bool(KID_FAMILY_EVENT_RE.search(name))
