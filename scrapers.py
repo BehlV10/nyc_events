@@ -9,7 +9,7 @@ import threading
 import time
 import xml.etree.ElementTree as ET
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from functools import lru_cache
 from urllib.parse import parse_qs, quote, quote_plus, urlencode, urljoin, urlparse, urlunparse
@@ -7806,6 +7806,120 @@ def _expand_manual_recurring(weeks=8):
 
 
 # --- Registered Venues ---
+# --- Museum exhibitions -------------------------------------------------------------------------
+_EXHIBIT_MONTHS = ("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
+_EXHIBIT_DATE = r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b(?:,?\s+(20\d\d))?"
+_EXHIBIT_DATE_RE = re.compile(_EXHIBIT_DATE, re.I)
+_EXHIBIT_THROUGH_RE = re.compile(r"\b(?:through|thru|until|closes)\s+(?:\w+day,?\s+)?" + _EXHIBIT_DATE, re.I)
+_EXHIBIT_NOISE_RE = re.compile(r"^(?:(?:on view|now on view|current|image|exhibition|get tickets|learn more|focus gallery)\b:?\s*)+", re.I)
+
+
+def _exhibit_dates(text, today):
+    """(start or None, end) from "Through January 24, 2027", "Oct. 15, 2026 – Jan. 11, 2027" or
+    "October 29–December 6, 2026". (None, None) for "Opens March 12" and "Ongoing"."""
+    text = (text or "").replace("\xa0", " ")
+
+    def to_date(mon, day, year, fallback):
+        try:
+            return date(int(year or fallback), _EXHIBIT_MONTHS.index(mon.lower()[:3]) + 1, int(day))
+        except ValueError:
+            return None
+
+    m = _EXHIBIT_THROUGH_RE.search(text)
+    if m:
+        end = to_date(m.group(1), m.group(2), m.group(3), today.year)
+        if end and not m.group(3) and end < today:  # "Through January 18" seen in November
+            end = end.replace(year=end.year + 1)
+        return None, end
+    found = _EXHIBIT_DATE_RE.findall(text[:160])
+    if len(found) < 2 or re.match(r"\s*(?:opens|opening|coming|upcoming)\b", text[:text.lower().find(found[0][0])] or "", re.I):
+        return None, None
+    end = to_date(found[1][0], found[1][1], found[1][2] or found[0][2], today.year)
+    if not end:
+        return None, None
+    start = to_date(found[0][0], found[0][1], found[0][2], end.year)
+    return (start.replace(year=start.year - 1) if start and start > end else start), end
+
+
+def _exhibit_title(a, box, text):
+    heading = a.find(["h1", "h2", "h3", "h4"]) or box.find(["h1", "h2", "h3", "h4"])
+    name = (heading or a).get_text(" ", strip=True).replace("\xa0", " ")
+    name = re.sub(r"^read more about\s+", "", _EXHIBIT_NOISE_RE.sub("", name), flags=re.I)
+    if not name:  # an image link: the title is in the card's text
+        name = _EXHIBIT_NOISE_RE.sub("", text)
+    # A card with no heading runs its title into the dates
+    name = re.split(r"\s+(?:through|thru|until|opens|ongoing)\b|\s+" + _EXHIBIT_DATE, name, maxsplit=1, flags=re.I)[0]
+    name = re.split(r"\s+read more about\b", name, maxsplit=1, flags=re.I)[0]
+    words = name.split()
+    half = len(words) // 2
+    if half and len(words) % 2 == 0 and words[:half] == words[half:]:  # image alt text + title
+        name = " ".join(words[:half])
+    return re.sub(r"\s+", " ", name).strip(" .:|–—-")
+
+
+def _exhibit_cards(soup, base, href_re):
+    """(title, link, text) per exhibition link. Climbs to the nearest box with dates in it, and
+    gives up at one that holds other exhibitions' links, whose dates aren't this one's."""
+    for bad in soup(["script", "style", "nav", "footer"]):
+        bad.decompose()
+    rx = re.compile(href_re)
+    seen = set()
+    for a in soup.find_all("a", href=rx):
+        link = urljoin(base, a["href"]).split("?")[0]
+        if link in seen or link.rstrip("/") == base.rstrip("/"):
+            continue
+        box, text = a, ""
+        while box is not None and box.name != "body":
+            links = {urljoin(base, x["href"]).split("?")[0] for x in box.find_all("a", href=rx)}
+            if len(links | {link}) > 1:
+                break
+            candidate = box.get_text(" ", strip=True).replace("\xa0", " ")
+            if _EXHIBIT_DATE_RE.search(candidate):
+                text = candidate
+                break
+            box = box.parent
+        if text and len(text) < 600:
+            seen.add(link)
+            yield _exhibit_title(a, box, text), link, text
+
+
+_EXHIBITION_PAGES = (  # venue, address, page, exhibition link pattern
+    ("Whitney Museum of American Art", "99 Gansevoort St, New York, NY 10014", "https://whitney.org/exhibitions", r"/exhibitions/[a-z0-9-]+$"),
+    ("Museum of the City of New York", "1220 5th Ave, New York, NY 10029", "https://www.mcny.org/exhibitions", r"/exhibition/[a-z0-9-]+"),
+    ("The Jewish Museum", "1109 5th Ave, New York, NY 10128", "https://thejewishmuseum.org/exhibitions/", r"/exhibitions/[a-z0-9-]+"),
+    ("Noguchi Museum", "9-01 33rd Rd, Queens, NY 11106", "https://www.noguchi.org/museum/exhibitions/current", r"/museum/exhibitions/view/"),
+    ("The Studio Museum in Harlem", "144 W 125th St, New York, NY 10027", "https://www.studiomuseum.org/exhibitions", r"/exhibitions/[a-z0-9-]+"),
+    ("International Center of Photography", "84 Ludlow St, New York, NY 10002", "https://www.icp.org/exhibitions", r"/exhibitions/[a-z0-9%-]+"),
+    ("Museum of the Moving Image", "36-01 35th Ave, Queens, NY 11106", "https://movingimage.org/whats-on/exhibitions/", r"/event/[a-z0-9-]+"),
+    ("The Bronx Museum of the Arts", "1040 Grand Concourse, Bronx, NY 10456", "https://bronxmuseum.org/exhibitions/", r"/exhibition/[a-z0-9-]+"),
+    ("Neue Galerie", "1048 5th Ave, New York, NY 10028", "https://www.neuegalerie.org/exhibitions", r"/exhibitions/[a-z0-9-]+"),
+)
+
+
+def scrape_museum_exhibitions(url, ua):
+    """What's on view at the museums whose exhibition pages can be read. These have no date of their
+    own, so they go in the site's "On view now" section instead of on a day. Shows that haven't
+    opened or have closed are left out."""
+    today = datetime.now(EASTERN).date()
+    events, errors = [], []
+    for venue, address, page, href_re in _EXHIBITION_PAGES:
+        try:
+            soup = fetch_soup(page, ua)
+        except Exception as ex:
+            errors.append(f"{venue}: {ex}")
+            continue
+        for name, link, text in _exhibit_cards(soup, page, href_re):
+            start, end = _exhibit_dates(text, today)
+            if not name or not end or end < today or (start and start > today):
+                continue
+            events.append({"name": name, "date": None, "ends": end.isoformat(), "url": link, "venue": venue, "address": address,
+                           "price": None, "category": "art", "_exhibition": True,
+                           "description": f"Exhibition on view through {end.strftime('%B')} {end.day}, {end.year}."})
+    if len(errors) == len(_EXHIBITION_PAGES):
+        raise RuntimeError(errors[0][:200])
+    return events
+
+
 _ALL_VENUES = [
     # Megasites & Aggregators
     {"name": "DoNYC Citywide", "url": "https://donyc.com/events", "ua": UA_CHROME, "scraper": scrape_donyc_calendar, "default_category": None},
@@ -7963,6 +8077,7 @@ _ALL_VENUES = [
     {"name": "AllEvents: Lgbt", "url": "https://allevents.in/new%20york/lgbt", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
     {"name": "AllEvents: Free", "url": "https://allevents.in/new%20york/free", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
     {"name": "AllEvents: Performances", "url": "https://allevents.in/new%20york/performances", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "theater"},
+    {"name": "Museum Exhibitions", "url": "https://whitney.org/exhibitions", "ua": UA_CHROME, "scraper": scrape_museum_exhibitions, "default_category": "art"},
     {"name": "AllEvents: Exhibitions", "url": "https://allevents.in/new%20york/exhibitions", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "art"},
     {"name": "AllEvents: Meetups", "url": "https://allevents.in/new%20york/meetups", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
     {"name": "AllEvents: Community", "url": "https://allevents.in/new%20york/community", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community"},
