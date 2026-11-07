@@ -1425,7 +1425,8 @@ def _enrich_donyc_events(results, ua=None, limit=None, path=None):
 def scrape_donyc(url, ua):
     """DoNYC venue & category scraper. Reads the event list embedded in the SvelteKit page;
     falls back to the older Schema.org microdata markup. Links the venue's own website (or a
-    search) rather than doNYC.
+    search) rather than doNYC, until _enrich_donyc_events finds the event's ticket link. A venue
+    page stops at the next 10 events, so a venue with its own readable calendar shouldn't use this.
     """
     try:
         resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=15)
@@ -8108,10 +8109,8 @@ _ALL_VENUES = [
     # Brooklyn Music & Nightlife
     {"name": "Brooklyn Bowl", "url": "https://donyc.com/venues/brooklyn-bowl", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Elsewhere Brooklyn", "url": "https://www.elsewherebrooklyn.com/calendar", "ua": UA_CHROME, "scraper": scrape_elsewhere_brooklyn, "default_category": "clubbing"},
-    {"name": "Knockdown Center", "url": "https://donyc.com/venues/knockdown-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Good Room Greenpoint", "url": "https://donyc.com/venues/good-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "TV Eye Ridgewood", "url": "https://donyc.com/venues/tv-eye", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Public Records Gowanus", "url": "https://donyc.com/venues/public-records", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "The Bell House", "url": "https://www.thebellhouseny.com/shows", "ua": UA_CHROME, "scraper": scrape_bell_house, "default_category": "comedy"},
     {"name": "Littlefield Brooklyn", "url": "https://www.eventbrite.com/api/v3/organizers/18046024060/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "Music Hall of Williamsburg", "url": "https://donyc.com/venues/music-hall-of-williamsburg", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -8122,9 +8121,7 @@ _ALL_VENUES = [
     {"name": "Baby's All Right Williamsburg", "url": "https://donyc.com/venues/baby-s-all-right", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Sultan Room Bushwick", "url": "https://donyc.com/venues/the-sultan-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Pioneer Works Red Hook", "url": "https://donyc.com/venues/pioneer-works", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
-    {"name": "C'mon Everybody Bed-Stuy", "url": "https://donyc.com/venues/c-mon-everybody", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Market Hotel", "url": "https://donyc.com/venues/market-hotel", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "SILO Brooklyn", "url": "https://donyc.com/venues/silo-brooklyn", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Avant Gardner", "url": "https://donyc.com/venues/avant-gardner", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Brooklyn Mirage", "url": "https://donyc.com/venues/the-brooklyn-mirage", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Basement NY", "url": "https://donyc.com/venues/basement-ny", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
@@ -8134,14 +8131,9 @@ _ALL_VENUES = [
     {"name": "Under the K Bridge Park", "url": "https://donyc.com/venues/under-the-k-bridge-park", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Roulette Intermedium", "url": "https://donyc.com/venues/roulette", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "National Sawdust", "url": "https://donyc.com/venues/national-sawdust", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Xanadu Roller Arts", "url": "https://donyc.com/venues/xanadu", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "party"},
-    {"name": "Saint Vitus Bar", "url": "https://donyc.com/venues/saint-vitus-bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Bar LunÀtico", "url": "https://donyc.com/venues/lunatico", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Alphaville", "url": "https://donyc.com/venues/alphaville", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Broadway (Bushwick)", "url": "https://www.thebroadway.nyc/showcalendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
-    {"name": "Sleepwalk", "url": "https://donyc.com/venues/sleepwalk", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Red Pavilion", "url": "https://donyc.com/venues/the-red-pavilion", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
-    {"name": "Purgatory", "url": "https://donyc.com/venues/purgatory", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Mood Ring", "url": "https://donyc.com/venues/mood-ring", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Starr Bar", "url": "https://donyc.com/venues/starr-bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Eris Deep Space", "url": "https://donyc.com/venues/eris-deep-space", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
@@ -8396,8 +8388,6 @@ _ALL_VENUES = [
     {"name": "Sony Hall", "url": "https://donyc.com/venues/sony-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Gramercy Theatre", "url": "http://thegramercytheatre.com/shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
     {"name": "Cafe Wha? (Greenwich Village)", "url": "https://donyc.com/venues/cafe-wha", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Club Cumming (East Village)", "url": "https://donyc.com/venues/club-cumming", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
-    {"name": "Rough Trade NYC", "url": "https://donyc.com/venues/rough-trade-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Bryant Park NYC", "url": "https://bryantpark.org/calendar", "ua": UA_CHROME, "scraper": scrape_bryant_park, "default_category": "outdoors"},
     {"name": "Bowery Palace", "url": "https://donyc.com/venues/bowery-palace", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Pianos NYC (Lower East Side)", "url": "https://donyc.com/venues/pianos", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -8414,14 +8404,11 @@ _ALL_VENUES = [
     {"name": "New York Comedy Club East Village", "url": "https://donyc.com/venues/new-york-comedy-club-east-village", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "The Cooper Union", "url": "https://donyc.com/venues/the-cooper-union", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "community"},
     {"name": "Somewhere Nowhere", "url": "https://donyc.com/venues/somewhere-nowhere", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
-    {"name": "The High Line", "url": "https://donyc.com/venues/the-high-line", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "outdoors"},
     {"name": "City Winery NYC", "url": "https://donyc.com/venues/city-winery", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "New York Comedy Club Midtown", "url": "https://donyc.com/venues/new-york-comedy-club-midtown", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "Nebula", "url": "https://donyc.com/venues/nebula", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "The Broadway Comedy Club", "url": "https://donyc.com/venues/the-broadway-comedy-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Don't Tell Mama", "url": "https://donyc.com/venues/donttellmama", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Paley Center for Media", "url": "https://donyc.com/venues/the-paley-center-for-media", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
-    {"name": "The Sheen Center", "url": "https://donyc.com/venues/the-sheen-center-for-thought-culture", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Kaufman Music Center", "url": "https://donyc.com/venues/kaufman-music-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Chamber Music Society of Lincoln Center", "url": "https://donyc.com/venues/chamber-music-society-of-lincoln-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "New York City Ballet", "url": "https://donyc.com/venues/new-york-city-ballet", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "dance"},
@@ -8470,7 +8457,6 @@ _ALL_VENUES = [
     {"name": "Arlene's Grocery (LES Rock & Karaoke)", "url": "https://donyc.com/venues/arlenes-grocery", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Nublu 151 (Alphabet City)", "url": "https://donyc.com/venues/nublu-151", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Drom NYC (East Village Global Music)", "url": "https://donyc.com/venues/drom", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Terra Blues (Bleecker St)", "url": "https://donyc.com/venues/terra-blues", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Symphony Space (Upper West Side)", "url": "https://www.symphonyspace.org/events", "ua": UA_CHROME, "scraper": scrape_symphony_space, "default_category": "theater"},
 
     # Comedy Clubs & Queens Performance Spaces
@@ -8587,7 +8573,6 @@ _ALL_VENUES = [
     {"name": "Barcade (Arcade & Craft Beer)", "url": "https://www.eventbrite.com/d/ny--new-york/barcade/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "gaming"},
 
     # Neighborhood Bar Concerts, Live Music Bars & Pop Culture Pub Trivia
-    {"name": "Union Pool (Williamsburg Live Music Bar)", "url": "https://donyc.com/venues/union-pool", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Our Wicked Lady (Bushwick Live Music)", "url": "https://www.eventbrite.com/d/ny--brooklyn/our-wicked-lady/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
     {"name": "NYC Bar Concerts & Live Music", "url": "https://www.eventbrite.com/d/ny--new-york/live-music-bar/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
     {"name": "Trivia A.D. (NYC Bar Trivia)", "url": "https://www.eventbrite.com/api/v3/organizers/4701927701/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "gaming"},

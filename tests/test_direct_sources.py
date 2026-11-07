@@ -90,6 +90,21 @@ class SquarespaceCalendars(unittest.TestCase):
             self.assertTrue(set(v["kwargs"]) <= set(params), v["name"])
 
 
+class RetiredDonycFeeds(unittest.TestCase):
+    def test_venues_with_a_better_direct_feed_dont_use_donyc(self):
+        urls = {v["url"] for v in scrapers.VENUES}
+        for slug in ("saint-vitus", "public-records", "terra-blues", "nebula"):
+            self.assertFalse([u for u in urls if u.startswith(f"https://donyc.com/venues/{slug}")], slug)
+
+    def test_venues_that_sell_beyond_dice_keep_it(self):
+        urls = " ".join(v["url"] for v in scrapers.VENUES)
+        self.assertIn("donyc.com/venues/baby-s-all-right", urls)
+        self.assertIn("donyc.com/venues/drom", urls)
+
+    def test_citywide_feed_stays_as_a_safety_net(self):
+        self.assertTrue([v for v in scrapers.VENUES if v["scraper"] is scrapers.scrape_donyc_calendar])
+
+
 class ComicStrip(unittest.TestCase):
     def test_organizer_is_listed(self):
         ids = {i for _k, i, _n, _c in scrapers._load_eventbrite_organizers()}
