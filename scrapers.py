@@ -1265,7 +1265,7 @@ def _parse_donyc_svelte(page, now):
             venue_site = _js_unquote(w.group(1))
     events, seen = [], set()
     for em in _DONYC_EVENT_RE.finditer(page):
-        _id, title, _permalink, body, venue, district, area = em.groups()
+        _id, title, permalink, body, venue, district, area = em.groups()
         name = re.sub(r"\s{2,}", " ", html.unescape(_js_unquote(title))).strip()
         t = re.search(r'tz_adjusted_begin_time:"([^"]+)"', body)
         if not name or not t:
@@ -1282,7 +1282,8 @@ def _parse_donyc_svelte(page, now):
             continue
         seen.add(key)
         url = venue_site or f"https://www.google.com/search?q={quote_plus(f'{name} {venue_name} NYC')}"
-        ev = {"name": name, "date": dt.isoformat(), "url": url, "venue": venue_name, "price": None}
+        ev = {"name": name, "date": dt.isoformat(), "url": url, "venue": venue_name, "price": None,
+              "_donyc_path": _js_unquote(permalink)}
         cat = re.search(r'category:"([^"]*)"', body)
         genres = re.findall(_JS_STR, (re.search(r'genres:\[(.*?)\]', body) or [None, ""])[1] or "")
         if cat:
@@ -1327,6 +1328,98 @@ def _donyc_area_borough(area):
     if any(k in a for k in ("new jersey", "long island", "westchester", "connecticut", "hudson valley")):
         return "other"
     return None
+
+
+# DoNYC's list pages have no prices or ticket links, and there's no batch request for them: each
+# event has its own small data file. Only events no other source lists are looked up, soonest
+# first, and each answer is kept for days, so a run fetches little beyond what's new.
+DONYC_DETAILS_PATH = os.path.join(CACHE_DIR, "_donyc_details.json")
+DONYC_DETAILS_PER_RUN = 300
+DONYC_DETAIL_TTL = 5 * 86400
+_DONYC_PRICE_RE = re.compile(r"\$\s?\d+(?:[.,]\d+)*(?:\s*[-\u2013]\s*\$?\s?\d+(?:[.,]\d+)*)?")
+
+
+def _donyc_detail(path, ua):
+    """{"url", "info", "free", "sold_out"} from an event's data file, or None if it has none."""
+    resp = _SESSION.get(f"https://donyc.com{path}/__data.json", headers={"User-Agent": ua}, timeout=12)
+    resp.raise_for_status()
+    nodes = [n for n in resp.json().get("nodes") or [] if n and n.get("type") == "data"]
+    data = nodes[-1].get("data") if nodes else None
+    event = next((x for x in data or [] if isinstance(x, dict) and "buy_tickets" in x), None)
+    if not event:
+        return None
+
+    def value(key):  # SvelteKit flattens the page's data: a field holds the index of its value
+        i = event.get(key)
+        return data[i] if isinstance(i, int) and 0 <= i < len(data) else None
+
+    url = value("buy_tickets")
+    return {"url": url if isinstance(url, str) and url.startswith("http") else None,
+            "info": value("ticket_info") if isinstance(value("ticket_info"), str) else None,
+            "free": value("free_event") is True, "sold_out": value("tickets_sold_out") is True}
+
+
+def _apply_donyc_detail(e, detail):
+    if detail.get("url") and "donyc.com" not in detail["url"]:
+        e["url"] = e["ticket_url"] = detail["url"]
+    if not e.get("price"):
+        m = _DONYC_PRICE_RE.search(detail.get("info") or "")
+        e["price"] = "Free" if detail.get("free") else (m.group(0).replace(" ", "") if m else None)
+    if detail.get("sold_out"):
+        e["price"] = f"{e['price']} (sold out)" if e.get("price") else "Sold out"
+
+
+def _enrich_donyc_events(results, ua=None, limit=None, path=None):
+    """Give DoNYC-only events their real ticket link and price. Runs once, after every source."""
+    ua = ua or UA_CHROME
+    limit = DONYC_DETAILS_PER_RUN if limit is None else limit
+    path = path or DONYC_DETAILS_PATH
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            cache = json.load(f)
+    except (OSError, ValueError):
+        cache = {}
+    now = time.time()
+    key = lambda e: ((e.get("name") or "").strip().lower(), (e.get("date") or "")[:10])
+    is_donyc = lambda r: "donyc.com" in (r.get("url") or "")
+    elsewhere = {key(e) for r in results if not is_donyc(r) for e in r.get("events") or []}
+    by_path, wanted = {}, []
+    for r in results:
+        if not is_donyc(r):
+            continue
+        for e in r.get("events") or []:
+            p = e.get("_donyc_path")
+            if not p:
+                continue
+            by_path.setdefault(p, []).append(e)
+            fresh = now - (cache.get(p) or {}).get("ts", 0) < DONYC_DETAIL_TTL
+            if not fresh and key(e) not in elsewhere and len(by_path[p]) == 1:
+                wanted.append((e.get("date") or "", p))
+    fetched = 0
+    for _when, p in sorted(wanted)[:limit]:
+        try:
+            cache[p] = dict(_donyc_detail(p, ua) or {}, ts=now)
+            fetched += 1
+        except SiteRefused:
+            break
+        except Exception:
+            continue  # asked again next run
+    applied = 0
+    for p, events in by_path.items():
+        detail = cache.get(p)
+        for e in events:
+            e.pop("_donyc_path", None)
+            if detail and (detail.get("url") or detail.get("info") or detail.get("free") or detail.get("sold_out")):
+                _apply_donyc_detail(e, detail)
+                applied += 1
+    cache = {p: d for p, d in cache.items() if now - d.get("ts", 0) < 3 * DONYC_DETAIL_TTL}
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(cache, f)
+    except OSError:
+        pass
+    print(f"DoNYC details: {fetched} fetched, {applied} events improved, {max(len(wanted) - fetched, 0)} left for later runs")
+    return fetched
 
 
 def scrape_donyc(url, ua):
@@ -3454,7 +3547,14 @@ def scrape_petes_candy_store(url, ua):
     return events
 
 
-def scrape_squarespace_calendar(url, ua):
+def _squarespace_price(item):
+    """A price the listing states, or None. Being on a venue's calendar doesn't make an event free."""
+    body = re.sub(r"<[^>]+>", " ", f"{item.get('excerpt') or ''} {item.get('body') or ''}")
+    text = html.unescape(f"{item.get('title') or ''}\n{body}")
+    return admission_price(text) or ("Free" if mentions_free(text) else None)
+
+
+def scrape_squarespace_calendar(url, ua, venue=None, address=None):
     """Squarespace native JSON calendar API scraper."""
     events = []
     now = datetime.now(timezone.utc)
@@ -3479,14 +3579,17 @@ def scrape_squarespace_calendar(url, ua):
             if full_url and not full_url.startswith("http"):
                 domain = "/".join(url.split("/")[:3])
                 full_url = f"{domain}{full_url}"
-            events.append({
+            entry = {
                 "name": title,
                 "date": iso,
                 "url": full_url or url,
-                "venue": None,
-                "price": "Free / No Cover",
+                "venue": venue,
+                "price": _squarespace_price(item),
                 "category": "music",
-            })
+            }
+            if address:
+                entry["address"] = address
+            events.append(entry)
     except Exception:
         pass
     return events
@@ -8805,6 +8908,26 @@ def _is_eventbrite_search(v):
 # are kept only as the starting points for scripts/discover_eventbrite.py, which turns what
 # they list into organizer feeds.
 EVENTBRITE_DISCOVERY_SEARCHES = [v["url"] for v in _ALL_VENUES if _is_eventbrite_search(v)]
+# Venues read from their own calendars rather than DoNYC, which stops at each one's next 10 events.
+DIRECT_CALENDARS = [
+    {"name": "Terra Blues (own calendar)", "url": "https://www.terrablues.com/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar,
+     "default_category": "music", "kwargs": {"venue": "Terra Blues", "address": "149 Bleecker St, New York, NY 10012"}},
+    {"name": "Club Cumming (own calendar)", "url": "https://clubcummingnyc.com/schedule", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar,
+     "default_category": "clubbing", "kwargs": {"venue": "Club Cumming", "address": "505 East 6th Street, New York, NY"}},
+    {"name": "Nebula (own calendar)", "url": "https://www.nebulanewyork.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards,
+     "default_category": "clubbing", "kwargs": {"venue": "Nebula", "address": "135 W 41st St, New York, NY 10036"}},
+    {"name": "The Paley Center (own calendar)", "url": "https://www.paleycenter.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards,
+     "default_category": "film", "kwargs": {"venue": "The Paley Center for Media", "address": "25 W 52nd St, New York, NY 10019"}},
+    {"name": "The Sheen Center (own calendar)", "url": "https://www.sheencenter.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards,
+     "default_category": "theater", "kwargs": {"venue": "The Sheen Center", "address": "18 Bleecker St, New York, NY 10012"}},
+    {"name": "The High Line (own calendar)", "url": "https://www.thehighline.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards,
+     "default_category": "outdoors", "kwargs": {"venue": "The High Line"}},
+    # The site also lists tour stops in other cities; only its Lincoln Center pages are local.
+    {"name": "Chamber Music Society (own calendar)", "url": "https://www.chambermusicsociety.org/our-concerts/at-alice-tully-hall/", "ua": UA_CHROME,
+     "scraper": scrape_html_cards, "default_category": "music",
+     "kwargs": {"venue": "Chamber Music Society of Lincoln Center", "link_re": r".*lincoln-center/"}},
+]
+_ALL_VENUES += DIRECT_CALENDARS
 _existing_source_names = {v["name"].lower() for v in _ALL_VENUES}
 _ALL_VENUES += [
     {"name": name if name.lower() not in _existing_source_names else f"{name} (DICE)",
@@ -9457,6 +9580,7 @@ def get_all_events(force=False):
     # Add recurring events (expanded for 8 weeks / 56 days)
     results.extend(_expand_manual_recurring(weeks=8))
     results.extend(_load_community_events())
+    _enrich_donyc_events(results)
     _apply_geocodes(results)
 
     payload = {
