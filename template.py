@@ -1849,6 +1849,9 @@ def _merge_duplicates(events, word_freq=None):
                     match["_alt_sources"].append({"venue": old_label, "source": old_src, "url": old_url, "price": match.get("price"), "name": match.get("name")})
                 match["url"] = e.get("url")
                 match["name"] = e.get("name")
+                # The card takes the category of the listing whose title it shows
+                if e.get("category") not in (None, "other", "community"):
+                    match["category"] = e["category"]
                 for k in _MEMO_KEYS:
                     match.pop(k, None)
                 if (match.get("venue", "").lower() in generic_sources or _is_generic_feed(match) or (e.get("venue") and not _is_generic_feed(e))) \
@@ -2323,7 +2326,7 @@ def render_page(results, split_deferred=False, context_out=None):
                 continue
             city_blocks.append(f'''
           <div class="city-section" data-city="{escape(cname)}">
-            <h3 class="city-head"><span>{escape(CITY_LABELS[cname])}</span><span class="count">{len(city_events)}</span></h3>
+            <h3 class="city-head"><span class="city-pill"><span class="city-dot"></span>{escape(CITY_LABELS[cname])}</span><span class="count">{len(city_events)}</span></h3>
             <div class="buckets">{_render_buckets(city_events)}</div>
           </div>''')
         is_today = (date_attr == today_iso)
@@ -3030,8 +3033,42 @@ def render_page(results, split_deferred=False, context_out=None):
   .city-section[data-city="staten_island"] {{ --city-color: #a78bfa; }}
   .city-section[data-city="citywide"]      {{ --city-color: #7dd3c0; }}
   .city-section[data-city="other"]         {{ --city-color: #9aa3b2; }}
-  .city-head {{ margin: 0 0 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--city-color); display: flex; align-items: center; gap: 8px; }}
-  .city-head .count {{ background: transparent; color: var(--muted); font-weight: 500; letter-spacing: 0; }}
+  .cities {{ display: flex; flex-direction: column; gap: 18px; margin-top: 6px; }}
+  .city-section {{
+    --city-bg: rgba(255, 255, 255, 0.02);
+    background: var(--city-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--city-color, var(--accent));
+    border-radius: var(--radius-md);
+    padding: 14px 14px 10px 14px;
+  }}
+  .city-head {{
+    margin: 0 0 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--fg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }}
+  .city-pill {{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(127, 127, 127, 0.1);
+    color: var(--city-color, var(--accent));
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }}
+  .city-pill .city-dot {{ width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--city-color, var(--accent)); box-shadow: 0 0 8px var(--city-color, var(--accent)); }}
+  .city-head .count {{ background: rgba(127, 127, 127, 0.12); color: var(--muted); font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }}
   .buckets {{ display: flex; flex-direction: column; gap: 10px; }}
   .bucket {{ border-left: 3px solid var(--accent, #444); padding: 2px 0 2px 12px; border-left-color: var(--accent); }}
   .bucket-head {{ display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }}
@@ -4096,6 +4133,7 @@ def render_page(results, split_deferred=False, context_out=None):
     vertical-align: middle;
   }}
 
+  .footer-pwa-btn {{ background: none; border: none; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }}
   .star-btn {{
     background: none;
     border: none;
@@ -5575,6 +5613,7 @@ def render_page(results, split_deferred=False, context_out=None):
   </div>
   <footer>
     <p>NYC Events · Live local music, comedy, arts, outdoors &amp; community events across New York City.</p>
+    <p id="pwa-install-wrap" hidden style="margin-top:6px; font-size:11px;"><button type="button" class="footer-pwa-btn" id="pwa-install-btn">Add NYC Events to your home screen</button></p>
     <p style="margin-top:6px; font-size:11px; opacity:0.85;">Data compiled directly from venue calendars and official local community feeds. Not affiliated with any commercial ticketing broker.</p>
     {seo_directory_html}
   </footer>
@@ -8631,6 +8670,22 @@ def render_page(results, split_deferred=False, context_out=None):
         navigator.share({{ title: 'My schedule', url: scheduleLink.value }}).catch(() => {{}});
       }});
     }}
+
+    // No install banner: the browser's offer waits behind a small link in the footer.
+    let pwaPrompt = null;
+    window.addEventListener('beforeinstallprompt', e => {{
+      e.preventDefault();
+      pwaPrompt = e;
+      document.getElementById('pwa-install-wrap').hidden = false;
+    }});
+    document.getElementById('pwa-install-btn').addEventListener('click', () => {{
+      if (!pwaPrompt) return;
+      pwaPrompt.prompt();
+      pwaPrompt.userChoice.finally(() => {{
+        pwaPrompt = null;
+        document.getElementById('pwa-install-wrap').hidden = true;
+      }});
+    }});
 
     loadStarredState();
     hashToState();

@@ -152,5 +152,74 @@ class DjHub(unittest.TestCase):
         self.assertFalse(edm_hub.is_edm_event({"name": "Karaoke Night", "category": "clubbing"}))
 
 
+class GuidePages(unittest.TestCase):
+    def _weekend(self):
+        today = datetime.now(EASTERN).date()
+        fri = sorted(seo._weekend_dates(today))
+        return fri
+
+    def test_weekend_slots_are_shared_across_the_days(self):
+        """Friday alone filled all 120 slots, so Saturday and Sunday never appeared."""
+        days = self._weekend()
+        events = [{"_time": datetime(d.year, d.month, d.day, 12, tzinfo=EASTERN)} for d in days for _ in range(500)]
+        shown = seo._share_across_days(events, 300)
+        self.assertEqual(len(shown), 300)
+        counts = {}
+        for e in shown:
+            counts[e["_time"].date()] = counts.get(e["_time"].date(), 0) + 1
+        self.assertEqual(sorted(counts.values()), [100, 100, 100])
+
+    def test_a_quiet_day_doesnt_shrink_the_others_below_their_share(self):
+        d = self._weekend()
+        events = [{"_time": datetime(x.year, x.month, x.day, 12, tzinfo=EASTERN)} for x in d[:2] for _ in range(500)]
+        self.assertEqual(len(seo._share_across_days(events, 300)), 300)
+
+    def _dated_boroughs(self):
+        when = _day_at(2, 19)
+        return _dated({"Feed": [
+            ("Brooklyn Show", when, {"category": "music", "venue": "Elsewhere", "address": "599 Johnson Ave, Brooklyn, NY 11237"}),
+            ("Queens Show", when, {"category": "music", "venue": "Knockdown Center", "address": "52-19 Flushing Ave, Queens, NY 11378"}),
+        ]})
+
+    def test_citywide_guides_get_borough_buttons_for_what_they_list(self):
+        html = seo.render_hub_page("live-music-nyc", self._dated_boroughs())
+        self.assertIn('class="hub-city-chip" data-city="brooklyn"', html)
+        self.assertIn('class="hub-city-chip" data-city="queens"', html)
+        self.assertNotIn('class="hub-city-chip" data-city="bronx"', html)
+        self.assertRegex(html, r'class="card" data-city="brooklyn" data-day="')
+        self.assertLess(html.rindex('class="card"'), html.index("querySelectorAll('.hub-city-chip')"), "script runs after the cards")
+
+    def test_a_single_borough_guide_doesnt(self):
+        self.assertNotIn('class="hub-city-chip"', seo.render_hub_page("brooklyn", self._dated_boroughs()))
+
+
+class HomePageGaps(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        when = _day_at(1, 20).astimezone(timezone.utc).isoformat()
+        cls.html = T.render_page({"generated_at": when, "venues": [
+            {"venue": "Rockwood", "url": "https://r.example/", "error": None,
+             "events": [{"name": "Folk Night", "date": when, "venue": "Rockwood", "url": "https://r.example/1", "category": "music"}]}]})
+
+    def test_browsers_dont_pop_up_an_install_banner(self):
+        self.assertIn("window.addEventListener('beforeinstallprompt'", self.html)
+        self.assertIn('id="pwa-install-wrap" hidden', self.html)
+
+    def test_borough_sections_have_pill_headers(self):
+        self.assertIn('class="city-pill"', self.html)
+
+
+class MergedCategory(unittest.TestCase):
+    def test_a_card_takes_the_category_of_the_title_it_shows(self):
+        t = _day_at(4, 20)
+        base = {"_time": t, "date": t.isoformat(), "venue": "Rockwood Music Hall"}
+        out = T._merge_duplicates([
+            dict(base, name="Some Show", _source_venue="DoNYC Citywide", url="https://donyc.com/e/1", category="theater"),
+            dict(base, name="Some Show", _source_venue="Rockwood Music Hall", url="https://rockwood.example/1", category="music"),
+        ])
+        self.assertEqual(len(out), 1)
+        self.assertEqual(out[0]["category"], "music")
+
+
 if __name__ == "__main__":
     unittest.main()
