@@ -2008,7 +2008,9 @@ def group_by_date(results):
                         entry["_time_unknown"] = True
                 except (TypeError, ValueError):
                     pass
-            if key is None:
+            if e.get("_exhibition"):
+                ongoing.append(entry)
+            elif key is None:
                 tba.append(entry)
             elif key < today:
                 ongoing.append(entry)
@@ -2019,7 +2021,8 @@ def group_by_date(results):
         events.sort(key=lambda e: e.get("_time", datetime.min.replace(tzinfo=EASTERN)))
         # Merging can give a listing a real time, so the day's final order is set afterwards.
         buckets[date_key] = sorted(_merge_duplicates(events, word_freq), key=_day_order)
-    ongoing.sort(key=lambda e: e.get("_time") or datetime.min.replace(tzinfo=EASTERN), reverse=True)
+    # Closing soonest first, so a show about to end is near the top
+    ongoing.sort(key=lambda e: (e.get("ends") or "9999", e.get("venue") or "", e.get("name") or ""))
     return sorted(buckets.items()), tba, ongoing
 
 
@@ -2477,8 +2480,8 @@ def render_page(results, split_deferred=False, context_out=None):
         items = "\n".join(render_event(e) for e in ongoing)
         ongoing_section = f'''
       <section class="ongoing">
-        <h2>Ongoing &amp; evergreen<span class="count">{len(ongoing)}</span></h2>
-        <p class="hint">Listings dated before today (long-running or pinned by the source).</p>
+        <h2>On view now<span class="count">{len(ongoing)}</span></h2>
+        <p class="hint">Museum exhibitions and other long runs, closing soonest first.</p>
         <ul>{items}</ul>
       </section>'''
 
@@ -7352,7 +7355,7 @@ def render_page(results, split_deferred=False, context_out=None):
 
       const ongoingEl = document.querySelector('.ongoing');
       if (ongoingEl) {{
-        const showOngoing = (timeFilter === 'all' || showAll);
+        const showOngoing = !starredOnly && (timeFilter === 'all' || timeFilter === 'today' || timeFilter === 'week' || showAll);
         ongoingEl.style.display = showOngoing ? '' : 'none';
         if (showOngoing) {{
           ongoingEl.querySelectorAll('.event').forEach(li => {{
