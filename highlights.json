@@ -357,7 +357,7 @@
       "name_contains": "Queens Fiber Arts Festival",
       "venue_contains": "King Manor Museum"
     },
-    "badge": "🤝 Community Pick",
+    "badge": "⭐ Pick",
     "note": "Free; listed on 5 calendars; weekend daytime.",
     "score": 19.0,
     "start_date": "2026-11-07",
@@ -591,7 +591,7 @@
       "name_contains": "The 5th Annual LegalizedNYC Festival",
       "venue_contains": "Sony Hall"
     },
-    "badge": "🤝 Community Pick",
+    "badge": "⭐ Pick",
     "note": "Listed on 4 calendars; headline room at Sony Hall; prime-time start.",
     "score": 20.5,
     "start_date": "2026-11-09",
@@ -731,6 +731,19 @@
     "id": "auto-2026-11-09-56",
     "auto": true,
     "match": {
+      "name_contains": "DURATIONS 2026 Festival Pass",
+      "venue_contains": "Public Records"
+    },
+    "badge": "⭐ Pick",
+    "note": "Listed on 6 calendars.",
+    "score": 15.0,
+    "start_date": "2026-11-09",
+    "expires": "2026-11-09"
+  },
+  {
+    "id": "auto-2026-11-09-57",
+    "auto": true,
+    "match": {
       "name_contains": "Compost Build Community Volunteer Days",
       "venue_contains": "Queens Botanical Garden"
     },
@@ -741,7 +754,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-57",
+    "id": "auto-2026-11-09-58",
     "auto": true,
     "match": {
       "name_contains": "Foodies + New Friends: Queens | 50’s Edition",
@@ -754,7 +767,7 @@
     "expires": "2026-11-09"
   },
   {
-    "id": "auto-2026-11-09-58",
+    "id": "auto-2026-11-09-59",
     "auto": true,
     "match": {
       "name_contains": "Glimpse of Greatness",
@@ -763,19 +776,6 @@
     "badge": "🏃 Active Pick",
     "note": "Listed on 2 calendars; headline room at Yankee Stadium; prime-time start.",
     "score": 12.0,
-    "start_date": "2026-11-09",
-    "expires": "2026-11-09"
-  },
-  {
-    "id": "auto-2026-11-09-59",
-    "auto": true,
-    "match": {
-      "name_contains": "Bodyweight Circuit Training",
-      "venue_contains": "Multi-Use Room"
-    },
-    "badge": "🏃 Active Pick",
-    "note": "Free; listed on 2 calendars; prime-time start.",
-    "score": 11.5,
     "start_date": "2026-11-09",
     "expires": "2026-11-09"
   },
@@ -1498,7 +1498,7 @@
     "id": "auto-2026-11-13-115",
     "auto": true,
     "match": {
-      "name_contains": "In Person Speed Dating for NYC Professional Singles 48-65 I WOMEN SOLD OUT",
+      "name_contains": "In Person Speed Dating for NYC Professional Singles 48-65 I WOMEN",
       "venue_contains": "Nosh!"
     },
     "badge": "🎲 Game Night Pick",
