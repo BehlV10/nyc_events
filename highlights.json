@@ -16,7 +16,7 @@
     "id": "auto-2026-11-06-1",
     "auto": true,
     "match": {
-      "name_contains": "A Few Good Men",
+      "name_contains": "August Wilson's Seven Guitars",
       "venue_contains": "Lincoln Center Theater"
     },
     "badge": "🎭 Stage Pick",
@@ -29,32 +29,6 @@
     "id": "auto-2026-11-06-2",
     "auto": true,
     "match": {
-      "name_contains": "August Wilson's Seven Guitars",
-      "venue_contains": "Lincoln Center Theater"
-    },
-    "badge": "🎭 Stage Pick",
-    "note": "Listed on 4 calendars; headline room at Lincoln Center Theater; prime-time start.",
-    "score": 20.0,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-3",
-    "auto": true,
-    "match": {
-      "name_contains": "B3K INVITES NY: Brutalismus 3000, SPFDJ, Dorian Electra, & More!",
-      "venue_contains": "Knockdown Center"
-    },
-    "badge": "🎸 Music Pick",
-    "note": "Listed on 4 calendars; headline room at Knockdown Center; prime-time start.",
-    "score": 20.0,
-    "start_date": "2026-11-06",
-    "expires": "2026-11-06"
-  },
-  {
-    "id": "auto-2026-11-06-4",
-    "auto": true,
-    "match": {
       "name_contains": "#BESTAFTERWORK PARTY FRIDAYS @ PARLAY IN ASTORIA QUEENS",
       "venue_contains": "Parlay Astoria"
     },
@@ -65,7 +39,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-5",
+    "id": "auto-2026-11-06-3",
     "auto": true,
     "match": {
       "name_contains": "ANTRO FRIDAYS",
@@ -78,7 +52,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-6",
+    "id": "auto-2026-11-06-4",
     "auto": true,
     "match": {
       "name_contains": "DONNA’S BEEF IMPROV",
@@ -91,7 +65,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-7",
+    "id": "auto-2026-11-06-5",
     "auto": true,
     "match": {
       "name_contains": "First Friday",
@@ -104,7 +78,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-8",
+    "id": "auto-2026-11-06-6",
     "auto": true,
     "match": {
       "name_contains": "Free Hookah Fridays in Queens (Reggae Hiphop & Soca)",
@@ -117,7 +91,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-9",
+    "id": "auto-2026-11-06-7",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Festival: TGIF with Duchovny & Olestra",
@@ -130,7 +104,20 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-10",
+    "id": "auto-2026-11-06-8",
+    "auto": true,
+    "match": {
+      "name_contains": "NuevaYol Fridays: Latin & Reggaeton Party in Midtown NYC at Out Of Ordinary",
+      "venue_contains": "OUT OF ORDINARY"
+    },
+    "badge": "🪩 Nightlife Pick",
+    "note": "Free; listed on 4 calendars; prime-time start.",
+    "score": 19.5,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-9",
     "auto": true,
     "match": {
       "name_contains": "20s Skip the Small Talk Night at Bibliotheque NYC with SaySimons",
@@ -143,7 +130,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-11",
+    "id": "auto-2026-11-06-10",
     "auto": true,
     "match": {
       "name_contains": "40s & Over Singles Mixer",
@@ -156,7 +143,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-12",
+    "id": "auto-2026-11-06-11",
     "auto": true,
     "match": {
       "name_contains": "Animal Capitalism and the Biodiversity Crisis Event with Ashely Dawson and Terike Haapoja",
@@ -169,7 +156,7 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-13",
+    "id": "auto-2026-11-06-12",
     "auto": true,
     "match": {
       "name_contains": "Friday Night Open Mic (6:30PM)",
@@ -182,15 +169,28 @@
     "expires": "2026-11-06"
   },
   {
-    "id": "auto-2026-11-06-14",
+    "id": "auto-2026-11-06-13",
     "auto": true,
     "match": {
-      "name_contains": "The Book Of Mormon",
-      "venue_contains": "Eugene O’Neill Theatre"
+      "name_contains": "Billy Crystal - 860 at Imperial Theatre - NY",
+      "venue_contains": "Imperial Theatre - NY"
     },
     "badge": "🎭 Stage Pick",
     "note": "Listed on 4 calendars; prime-time start.",
-    "score": 17.5,
+    "score": 17.0,
+    "start_date": "2026-11-06",
+    "expires": "2026-11-06"
+  },
+  {
+    "id": "auto-2026-11-06-14",
+    "auto": true,
+    "match": {
+      "name_contains": "Chicago on Broadway",
+      "venue_contains": "Fever NYC"
+    },
+    "badge": "🎭 Stage Pick",
+    "note": "Listed on 5 calendars; prime-time start.",
+    "score": 17.0,
     "start_date": "2026-11-06",
     "expires": "2026-11-06"
   },
