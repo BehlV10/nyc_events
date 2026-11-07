@@ -51,6 +51,8 @@ LIGHT_THEME_CSS = """
   [data-theme="light"] .dist-badge { color: #047857; }
   [data-theme="light"] .star-btn:hover,
   [data-theme="light"] .star-btn.starred { color: #b45309; text-shadow: none; }
+  [data-theme="light"] .city-section { --city-bg: #ffffff; }
+  [data-theme="light"] .city-pill { color: color-mix(in srgb, var(--city-color, var(--accent)) 65%, #000); }
   [data-theme="light"] .schedule-bar-share,
   [data-theme="light"] .schedule-share-copy { color: #fff; }
 
