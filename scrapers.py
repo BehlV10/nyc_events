@@ -215,6 +215,7 @@ HOST_POLICY = {
     "eventbrite.com": (1, 1.0),   # the API lane is slower still (EVENTBRITE_API_GAP)
     "meetup.com": (2, 1.0),       # ~1,000 pages a run, ~17 min at this pace; 6 at a time drew 503s
     "partiful.com": (1, 1.0),
+    "dice.fm": (2, 1.0),
     "allevents.in": (1, 1.5),     # answered 429 at two every half second
     "donyc.com": (2, 0.5),
     "nycgovparks.org": (1, 1.0),  # its WAF answers rapid crawls with an empty 202
@@ -2853,6 +2854,44 @@ def _dice_genre_suffixes(ua):
     return out[:DICE_MAX_GENRE_PAGES]
 
 
+def _dice_entry(ev, default_cat, fallback_url):
+    """One event from a DICE page's data, or None if it has no name or start."""
+    name = (ev.get("name") or "").strip()
+    start = (ev.get("dates") or {}).get("event_start_date")
+    if not name or not start:
+        return None
+    try:
+        iso = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc).isoformat()
+    except ValueError:
+        return None
+    venues = ev.get("venues") or []
+    vobj = venues[0] if venues else {}
+    vname = (vobj.get("name") or "NYC Venue").strip()
+    vcity_raw = vobj.get("city")
+    vcity = (vcity_raw.get("name") or "").strip() if isinstance(vcity_raw, dict) else (vcity_raw or "").strip()
+    venue = f"{vname} ({vcity})" if vcity and vcity.lower() not in vname.lower() else vname
+    price = None
+    pr_obj = ev.get("price") or {}
+    amt = pr_obj.get("amount") if pr_obj.get("amount") is not None else pr_obj.get("amount_from")
+    if amt in (0, "0"):
+        price = "Free"
+    elif isinstance(amt, (int, float)) and amt > 0:
+        price = f"${amt / 100:.2f}".replace(".00", "")  # Dice prices are in cents
+    # Browse payloads carry only the event id; dice.fm/event/<id> redirects to the event page.
+    ev_key = ev.get("perm_name") or ev.get("id")
+    entry = {
+        "name": name,
+        "date": iso,
+        "url": f"https://dice.fm/event/{ev_key}" if ev_key else fallback_url,
+        "venue": venue,
+        "price": price,
+        "category": guess_category(name, default_cat, venue=venue),
+    }
+    if vobj.get("address"):
+        entry["address"] = vobj["address"]
+    return entry
+
+
 def scrape_dice_nyc(url, ua):
     """Dice.fm — NYC gigs, DJ sets, parties, comedy, film, talks, and social events
     (one request per browse filter)."""
@@ -2870,52 +2909,78 @@ def scrape_dice_nyc(url, ua):
         pages = list(ex.map(_fetch, suffixes))
     for suffix, raw_events in pages:
         for ev in raw_events:
-            name = (ev.get("name") or "").strip()
-            dates = ev.get("dates") or {}
-            start = dates.get("event_start_date")
-            if not name or not start:
+            default_cat = "comedy" if "comedy" in suffix else "film" if "film" in suffix else "theater" if "theatre" in suffix else "music"
+            entry = _dice_entry(ev, default_cat, DICE_NYC_BASE + suffix)
+            if not entry:
                 continue
-            try:
-                iso = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc).isoformat()
-            except ValueError:
-                continue
-            key = (name.lower(), iso[:10])
+            key = (entry["name"].lower(), entry["date"][:10])
             if key in seen:
                 continue
             seen.add(key)
-
-            venues = ev.get("venues") or []
-            vobj = venues[0] if venues else {}
-            vname = (vobj.get("name") or "NYC Venue").strip()
-            vcity_raw = vobj.get("city")
-            vcity = (vcity_raw.get("name") or "").strip() if isinstance(vcity_raw, dict) else (vcity_raw or "").strip()
-            venue = f"{vname} ({vcity})" if vcity and vcity.lower() not in vname.lower() else vname
-
-            price = None
-            pr_obj = ev.get("price") or {}
-            amt = pr_obj.get("amount") if pr_obj.get("amount") is not None else pr_obj.get("amount_from")
-            if amt in (0, "0"):
-                price = "Free"
-            elif isinstance(amt, (int, float)) and amt > 0:
-                price = f"${amt / 100:.2f}".replace(".00", "")  # Dice prices are in cents
-
-            # Browse payloads carry only the event id; dice.fm/event/<id> redirects to the event page.
-            ev_key = ev.get("perm_name") or ev.get("id")
-            event_url = f"https://dice.fm/event/{ev_key}" if ev_key else DICE_NYC_BASE + suffix
-            default_cat = "comedy" if "comedy" in suffix else "film" if "film" in suffix else "theater" if "theatre" in suffix else "clubbing" if suffix.startswith(("/music/dj", "/music/party")) else "music" if suffix.startswith("/music") or not suffix else "community"
-            entry = {
-                "name": name,
-                "date": iso,
-                "url": event_url,
-                "venue": venue,
-                "price": price,
-                "category": guess_category(name, default_cat, venue=venue),
-            }
-            if vobj.get("address"):
-                entry["address"] = vobj["address"]
             events.append(entry)
         time.sleep(0.2)
     return events
+
+
+def scrape_dice_venue(url, ua):
+    """A venue's DICE page (dice.fm/venue/xanadu-5knl): its next 30 events, each with price, address
+    and ticket link. Busy rooms outrun the citywide browse pages, which carry ~25 events each."""
+    profile = _dice_page_props(url, ua).get("profile") or {}
+    events, seen = [], set()
+    for section in profile.get("sections") or []:
+        for ev in section.get("events") or []:
+            entry = _dice_entry(ev, "music", url)
+            if entry and entry["url"] not in seen:
+                seen.add(entry["url"])
+                events.append(entry)
+    return events
+
+
+# Rooms that sell through DICE: (name, dice.fm/venue/ path). A path comes from any of the venue's
+# event pages. DoNYC stops at each venue's next 10 events and has no prices.
+DICE_VENUE_PAGES = (
+    ('Purgatory', 'purgatory-kmwp'),
+    ('Public Records', 'public-records-w2qg'),
+    ('ALPHAVILLE', 'alphaville-a6kq'),
+    ('Xanadu', 'xanadu-5knl'),
+    ('Cassette', 'cassette-922xo'),
+    ('Saint Vitus', 'saint-vitus-rgrv'),
+    ('The Sultan Room', 'the-sultan-room-e27w'),
+    ('Union Pool', 'union-pool-nbvl'),
+    ("C'mon Everybody", 'cmon-everybody-ad2x'),
+    ('House of Yes', 'house-of-yes-aw6d'),
+    ('Sleepwalk', 'sleepwalk-dqgv'),
+    ('Brooklyn Music Kitchen', 'brooklyn-music-kitchen-rqyr'),
+    ('Seventh Heaven Bar & Karaoke', 'seventh-heaven-bar--karaoke-dkkwg'),
+    ('DROM', 'drom-megw'),
+    ('Somewhere Nowhere NYC', 'somewhere-nowhere-nyc-g2k2'),
+    ('Gold Sounds', 'gold-sounds-y3qr'),
+    ('Signal', 'signal-8ee9w'),
+    ('Pianos: Showroom', 'pianos-showroom-bpxm'),
+    ('Rough Trade Below', 'rough-trade-below-eoklo'),
+    ('Ernest Records', 'ernest-records-bopm'),
+    ('Church of our Saviour', 'church-of-our-saviour-v37rd'),
+    ('Knockdown Center', 'knockdown-center-e776'),
+    ('Deluxx Fluxx', 'deluxx-fluxx-ynmp'),
+    ('Mercer Labs', 'mercer-labs-mxebv'),
+    ('Desert 5 Spot NY', 'desert-5-spot-ny-pyy5w'),
+    ('Los Depressos', 'los-depressos-rympq'),
+    ('pinkFROG cafe', 'pinkfrog-cafe-bbm7m'),
+    ('SILO Brooklyn', 'silo-brooklyn-eb72'),
+    ('1 Hotel Brooklyn Bridge', '1-hotel-brooklyn-bridge-pwpy'),
+    ('Acoustik Garden Lounge', 'acoustik-garden-lounge-2wwpa'),
+    ("Baby's All Right", 'babys-all-right-g7qb'),
+    ('ArtSpace', 'artspace-26xm'),
+    ('The Chocolate Factory', 'the-chocolate-factory-23vo'),
+    ('Baci Studio', 'baci-studio-yok6x'),
+    ('The Gin Mill Speakeasy', 'the-gin-mill-speakeasy-l8exr'),
+    ('Paragon', 'paragon-n958'),
+    ('The Delancey', 'the-delancey-dvd6'),
+    ("Althea's Hideaway NYC", 'altheas-hideaway-nyc-6yxb'),
+    ('LISTEN', 'listen-e8aw'),
+    ("Harriet's Lounge - 1 Hotel", 'harriets-lounge---1-hotel-dda6'),
+    ('Paramount Times Square in Generator Hotel', 'paramount-times-square-in-generator-hotel-g5eq6'),
+)
 
 
 def scrape_tablelist(url, ua):
@@ -8740,6 +8805,13 @@ def _is_eventbrite_search(v):
 # are kept only as the starting points for scripts/discover_eventbrite.py, which turns what
 # they list into organizer feeds.
 EVENTBRITE_DISCOVERY_SEARCHES = [v["url"] for v in _ALL_VENUES if _is_eventbrite_search(v)]
+_existing_source_names = {v["name"].lower() for v in _ALL_VENUES}
+_ALL_VENUES += [
+    {"name": name if name.lower() not in _existing_source_names else f"{name} (DICE)",
+     "url": f"https://dice.fm/venue/{path}", "ua": UA_CHROME, "scraper": scrape_dice_venue, "default_category": "music"}
+    for name, path in DICE_VENUE_PAGES
+]
+
 VENUES = [v for v in _ALL_VENUES if not _is_eventbrite_search(v)]
 
 
