@@ -96,5 +96,95 @@ class ComicStrip(unittest.TestCase):
         self.assertIn("8100188167", ids)
 
 
+class DonycDetails(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        self.dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.dir.cleanup)
+        self.path = os.path.join(self.dir.name, "details.json")
+        self.when = (datetime.now(timezone.utc) + timedelta(days=4)).isoformat()
+
+    def _event(self, name, p="/events/2026/12/1/a", **kw):
+        return dict({"name": name, "date": self.when, "url": "https://venue.example/", "price": None, "_donyc_path": p}, **kw)
+
+    def _run(self, results, answers, **kw):
+        self.calls = []
+
+        def fake(path, ua):
+            self.calls.append(path)
+            answer = answers.get(path)
+            if isinstance(answer, Exception):
+                raise answer
+            return answer
+
+        with mock.patch.object(scrapers, "_donyc_detail", side_effect=fake), mock.patch("builtins.print"):
+            scrapers._enrich_donyc_events(results, ua="ua", path=self.path, **kw)
+        return results
+
+    def _donyc(self, *events):
+        return {"venue": "Some Venue", "url": "https://donyc.com/venues/x", "events": list(events)}
+
+    def test_adds_the_real_link_and_price(self):
+        e = self._event("Lera Lynn")
+        self._run([self._donyc(e)], {"/events/2026/12/1/a": {"url": "https://ticketweb.com/e/1", "info": "$28, 21+", "free": False, "sold_out": False}})
+        self.assertEqual((e["url"], e["ticket_url"], e["price"]), ("https://ticketweb.com/e/1", "https://ticketweb.com/e/1", "$28"))
+        self.assertNotIn("_donyc_path", e)
+
+    def test_an_age_limit_isnt_a_price(self):
+        e = self._event("Show")
+        self._run([self._donyc(e)], {"/events/2026/12/1/a": {"url": None, "info": "21+", "free": False, "sold_out": False}})
+        self.assertIsNone(e["price"])
+
+    def test_free_and_sold_out_flags(self):
+        free, gone = self._event("A"), self._event("B", p="/b", price="$20")
+        self._run([self._donyc(free, gone)], {"/events/2026/12/1/a": {"free": True}, "/b": {"sold_out": True}})
+        self.assertEqual((free["price"], gone["price"]), ("Free", "$20 (sold out)"))
+
+    def test_skips_events_another_source_lists(self):
+        e = self._event("Big Show")
+        self._run([self._donyc(e), {"venue": "Ticketmaster NYC", "url": "https://ticketmaster.com/", "events": [{"name": "big show", "date": self.when}]}], {})
+        self.assertEqual(self.calls, [])
+
+    def test_a_later_run_uses_what_it_learned_without_asking_again(self):
+        answers = {"/events/2026/12/1/a": {"url": "https://axs.com/e", "info": None, "free": False, "sold_out": False}}
+        self._run([self._donyc(self._event("Show"))], answers)
+        again = self._event("Show")
+        self._run([self._donyc(again)], {})
+        self.assertEqual(self.calls, [])
+        self.assertEqual(again["url"], "https://axs.com/e")
+
+    def test_an_event_in_two_feeds_is_asked_once_and_both_improve(self):
+        a, b = self._event("Show"), self._event("Show")
+        self._run([self._donyc(a), self._donyc(b)], {"/events/2026/12/1/a": {"url": "https://axs.com/e"}})
+        self.assertEqual(len(self.calls), 1)
+        self.assertEqual((a["url"], b["url"]), ("https://axs.com/e", "https://axs.com/e"))
+
+    def test_soonest_first_and_capped(self):
+        soon = self._event("Soon", p="/soon", date=(datetime.now(timezone.utc) + timedelta(days=1)).isoformat())
+        later = self._event("Later", p="/later")
+        self._run([self._donyc(later, soon)], {"/soon": {}, "/later": {}}, limit=1)
+        self.assertEqual(self.calls, ["/soon"])
+
+    def test_stops_when_donyc_refuses(self):
+        a, b = self._event("A", p="/a"), self._event("B", p="/b")
+        self._run([self._donyc(a, b)], {"/a": scrapers.SiteRefused("403"), "/b": {}})
+        self.assertEqual(len(self.calls), 1)
+
+    def test_reads_sveltekit_data_file(self):
+        payload = {"nodes": [None, {"type": "data", "data": [
+            {"event": 1}, {"buy_tickets": 2, "ticket_info": 3, "free_event": 4, "tickets_sold_out": 4},
+            "https://axs.com/e", "$28, 21+", False]}]}
+        resp = mock.Mock(raise_for_status=mock.Mock(), json=mock.Mock(return_value=payload))
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            d = scrapers._donyc_detail("/events/x", "ua")
+        self.assertEqual(d, {"url": "https://axs.com/e", "info": "$28, 21+", "free": False, "sold_out": False})
+
+    def test_paths_are_captured_from_list_pages(self):
+        page = ('{id:1,type:"event",title:"Show",permalink:"/events/2030/1/1/show-tickets",tz_adjusted_begin_time:"2030-01-01T20:00:00-05:00",'
+                'category:"Music",genres:[],venue:{id:2,title:"Room",district_id:1,district_name:"X",area_id:1,area_name:"Y"}}')
+        ev = scrapers._parse_donyc_svelte(page, datetime(2026, 1, 1, tzinfo=timezone.utc))
+        self.assertEqual(ev[0]["_donyc_path"], "/events/2030/1/1/show-tickets")
+
+
 if __name__ == "__main__":
     unittest.main()
