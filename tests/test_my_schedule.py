@@ -47,6 +47,10 @@ class SchedulePage(unittest.TestCase):
     def test_untimed_events_are_all_day_on_the_calendar(self):
         self.assertIn("'DTSTART;VALUE=DATE:'", self.page)
 
+    def test_only_one_weekend_is_called_a_weekend(self):
+        """Two Fridays three weeks apart read as "Sam's weekend"."""
+        self.assertIn("span < 3 * 86400", self.page)
+
     def test_is_tracked_by_git(self):
         """A bare "index.html" ignore rule hid this page, so it would never have deployed."""
         self.assertIn("!/schedule/index.html", read(".gitignore"))

@@ -165,8 +165,9 @@
     a.remove();
   }
 
-  function isWeekend(days) {
-    return days.length <= 3 && days.every(function (d) { return ['Fri', 'Sat', 'Sun'].indexOf(d.weekday) !== -1; });
+  function isWeekend(days, events) {
+    var span = events[events.length - 1].epoch - events[0].epoch;
+    return days.length <= 3 && span < 3 * 86400 && days.every(function (d) { return ['Fri', 'Sat', 'Sun'].indexOf(d.weekday) !== -1; });
   }
 
   function render(data) {
@@ -182,7 +183,7 @@
       }
       byKey[key].events.push(ev);
     });
-    var kind = isWeekend(days) ? 'weekend' : 'schedule';
+    var kind = isWeekend(days, events) ? 'weekend' : 'schedule';
     var heading = name ? name + (/s$/i.test(name) ? "' " : "'s ") + kind : (kind === 'weekend' ? 'A weekend plan' : 'A schedule');
     document.getElementById('title').textContent = heading;
     document.title = heading + ' | NYC Events';
