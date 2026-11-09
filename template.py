@@ -5644,7 +5644,7 @@ def render_page(results, split_deferred=False, context_out=None):
             <span class="map-hint">· OpenStreetMap · Pins update with your date &amp; filters</span>
           </div>
           <div class="map-header-actions">
-            <button type="button" id="map-label-toggle-btn" class="map-tool-btn" title="Toggle between venue names and numbers only">🏷️ Names: On</button>
+            <button type="button" id="map-label-toggle-btn" class="map-tool-btn" title="Show venue names on pins">🔢 Numbers Only</button>
             <button type="button" id="map-recenter-btn" class="map-tool-btn" title="Center map on NYC">🎯 Center NYC</button>
           </div>
         </div>
@@ -5652,7 +5652,7 @@ def render_page(results, split_deferred=False, context_out=None):
           <span><span class="chip-icon">📌 </span><strong>Tap the map to drop your pin.</strong> Events will be sorted by distance from it.</span>
           <button type="button" id="pin-cancel-btn" class="map-tool-btn">Cancel</button>
         </div>
-        <div id="leaflet-map" class="leaflet-map"></div>
+        <div id="leaflet-map" class="leaflet-map hide-pin-names"></div>
         <div id="map-selected-venue" class="map-venue-card" style="display: none;">
           <div class="map-venue-card-head">
             <div>
