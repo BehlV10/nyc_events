@@ -32,6 +32,7 @@ from scrapers import (
     is_utility_event,
     is_kid_family_event,
     is_deal_event,
+    special_note,
     is_service_ad,
     fix_doubled_url,
     sanitize_event_url,
@@ -2045,17 +2046,21 @@ def group_by_date(results):
                 # group name. Dedup may adopt the real venue from another listing.
                 entry["_venue_unknown"] = True
             existing_cat = e.get("category")
+            deal_src = f'{r.get("url") or ""} {e.get("url") or ""}'
+            if existing_cat == "deals" and not is_deal_event(e.get("name"), deal_src):
+                existing_cat = None  # the feed filed a karaoke night under its drink specials
             if is_utility_event(e.get("name")):
                 entry["category"] = "services"
             elif is_kid_family_event(e.get("name"), entry["venue"]):
                 entry["category"] = "family"
-            elif is_deal_event(e.get("name")):
+            elif is_deal_event(e.get("name"), deal_src):
                 entry["category"] = "deals"
             elif existing_cat == "theater":
                 entry["category"] = "theater"
             else:
                 entry["category"] = keep_music_venue_category(
-                    guess_category(e.get("name"), existing_cat or r.get("default_category") or "community", venue=entry["venue"]),
+                    guess_category(e.get("name"), existing_cat or r.get("default_category") or "community",
+                                   venue=entry["venue"], source_url=deal_src),
                     existing_cat, e.get("description"))
             # At render time, so listings cached before this category existed fill the Markets page
             if entry["category"] in _MARKET_OVERRIDABLE and is_market_or_festival(e.get("name"), r.get("venue")):
@@ -2310,6 +2315,9 @@ def render_page(results, split_deferred=False, context_out=None):
         is_guestlist = _is_event_guestlist(e)
         guestlist_flag = "true" if is_guestlist else "false"
         guestlist_badge = '<span class="badge-guestlist" title="Free club guestlist or RSVP entry">🎟️ Guestlist</span>' if is_guestlist else ""
+        special = special_note(f'{e.get("name") or ""} {e.get("description") or ""}') if cat != "deals" else None
+        if special:
+            guestlist_badge += f'<span class="badge-special" title="Special: {escape(special)}">🏷 {escape(special)}</span>'
         free_flag = "true" if is_free else "false"
         # No epoch for an unknown time: it would read as "started at midnight" and hide the event.
         epoch_attr = f' data-epoch="{int(e["_time"].timestamp())}"' if e.get("_time") and not e.get("_time_unknown") else ''
@@ -3052,6 +3060,7 @@ def render_page(results, split_deferred=False, context_out=None):
   }}
   .curator-note .note-label {{ font-weight: 700; color: #ffd866; }}
   .week-nav button.chip-picks.active {{ background: rgba(255, 184, 0, 0.2); border-color: #ffd866; color: #ffd866; }}
+  .badge-special {{ display:inline-block; margin-left: 6px; font-size: 10px; padding: 1px 6px; border-radius: 5px; color: #c678dd; border: 1px solid rgba(198,120,221,.35); white-space: nowrap; }}
   .badge-guestlist {{
     display: inline-flex;
     align-items: center;
