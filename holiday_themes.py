@@ -10,7 +10,10 @@ Veterans Day, Thanksgiving, Black Friday, Cyber Monday). The rest get CSS genera
 palette by holiday_theme_css().
 """
 
+import os
 from datetime import date, timedelta
+
+_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 
 def _nth_weekday(y, m, weekday, n):
@@ -237,8 +240,21 @@ def _rgba(hex_color, a):
     return f"rgba({r}, {g}, {b}, {a})"
 
 
+def banner_url(h):
+    if h.get("banner"):
+        return h["banner"]
+    key = h["key"]
+    jpg_rel = f"static/holidays/{key}.jpg"
+    if os.path.exists(os.path.join(_ROOT, jpg_rel)):
+        return jpg_rel
+    svg_rel = f"static/holidays/{key}.svg"
+    if os.path.exists(os.path.join(_ROOT, svg_rel)):
+        return svg_rel
+    return None
+
+
 def holiday_theme_css():
-    """CSS for every holiday: the skyline's colors and greeting for all, plus a full palette for
+    """CSS for every holiday: the banner art and greeting for all, plus a full palette for
     holidays without hand-written CSS. Inserted into the page as an f-string value, so braces are literal."""
     rules = [
         ".holiday-greeting { display: none; }",
@@ -250,11 +266,25 @@ def holiday_theme_css():
         k = h["key"]
         sel = f'[data-theme="{k}"]'
         rules.append(f'{sel} .holiday-greeting[data-for="{k}"] {{ display: inline-flex; }}')
-        p = h.get("palette")
-        if p:
-            sky = p["sky"]
-            rules.append(f'{sel} .banner-svg-wrap {{ --sky1: {sky[0]}; --sky2: {sky[1]}; --sky3: {_mix(sky[1], sky[2])};'
-                         f' --sky4: {sky[2]}; --sky5: {_tint(sky[2], 0.3)}; --water1: {p["water"]}; --water2: {sky[0]}; }}')
+        b_url = banner_url(h)
+        if b_url:
+            full_b = os.path.join(_ROOT, b_url)
+            if os.path.exists(full_b):
+                b_url = f"{b_url}?v={int(os.path.getmtime(full_b))}"
+            rules.append(
+                f"{sel} .banner {{ min-height: 360px; background-image: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, "
+                f"rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.35) 62%, rgba(12,14,20,0.92) 100%), url('{b_url}'); "
+                f"background-position: center 40%; background-size: cover; }}"
+            )
+            rules.append(f"@media (max-width: 860px) {{ {sel} .banner {{ min-height: 300px; background-position: center 45%; }} }}")
+            rules.append(f"{sel} .banner-svg-wrap {{ display: none !important; }}")
+            rules.append(f"{sel} .banner-title {{ filter: drop-shadow(0 2px 4px rgba(0,0,0,0.95)) drop-shadow(0 0 12px rgba(0,0,0,0.6)); }}")
+        elif h.get("palette"):
+            p = h["palette"]
+            sky = p.get("sky")
+            if sky:
+                rules.append(f'{sel} .banner-svg-wrap {{ --sky1: {sky[0]}; --sky2: {sky[1]}; --sky3: {_mix(sky[1], sky[2])};'
+                             f' --sky4: {sky[2]}; --sky5: {_tint(sky[2], 0.3)}; --water1: {p.get("water", sky[0])}; --water2: {sky[0]}; }}')
         if h.get("css") == "custom":
             continue
         p = h["palette"]

@@ -48,6 +48,15 @@ class HolidayCss(unittest.TestCase):
         css = H.holiday_theme_css()
         self.assertEqual(css.count("{"), css.count("}"))
 
+    def test_holiday_banners_exist_and_linked(self):
+        next_8 = ["veterans", "thanksgiving", "blackfriday", "cybermonday", "hanukkah", "christmas", "newyearseve", "newyear"]
+        css = H.holiday_theme_css()
+        for key in next_8:
+            svg_path = os.path.join(ROOT, "static", "holidays", f"{key}.svg")
+            self.assertTrue(os.path.exists(svg_path), f"Missing banner SVG: {svg_path}")
+            self.assertGreater(os.path.getsize(svg_path), 5000, f"SVG banner too small: {svg_path}")
+            self.assertIn(f"static/holidays/{key}.svg", css)
+
 
 class HolidayPage(unittest.TestCase):
     @classmethod
@@ -63,6 +72,8 @@ class HolidayPage(unittest.TestCase):
 
     def test_calendar_and_theme_choice_reach_the_page(self):
         self.assertIn("var HOLIDAY_CALENDAR = ", self.html)
+        self.assertIn("var HOLIDAY_META = ", self.html)
+        self.assertIn("id=\"theme-pill-holiday\"", self.html)
         self.assertIn("if (holiday) return (pickedOn === today && stored) ? stored : holiday;", self.html)
         self.assertIn("const VALID_THEMES = BASE_THEMES.concat(HOLIDAY_KEYS);", self.html)
 

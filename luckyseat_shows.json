@@ -24,6 +24,12 @@
     "url": "https://www.luckyseat.com/shows/hadestown-newyork"
   },
   {
+    "name": "Now You See Me Live",
+    "venue": "Al Hirschfeld Theatre",
+    "price": 42.0,
+    "url": "https://www.luckyseat.com/shows/nowyouseemelive-newyork-2026Oct"
+  },
+  {
     "name": "Other Desert Cities",
     "venue": "Hudson Theatre",
     "price": 49.0,
@@ -70,5 +76,11 @@
     "venue": "Eugene O'Neill Theatre",
     "price": 49.0,
     "url": "https://www.luckyseat.com/shows/thebookofmormon-newyork"
+  },
+  {
+    "name": "Traitorz",
+    "venue": "St. Luke's Theatre",
+    "price": 39.0,
+    "url": "https://www.luckyseat.com/shows/traitorz-newyork-2026Oct"
   }
 ]

@@ -36,7 +36,7 @@ from scrapers import (
     sanitize_event_url,
     BROADWAY_THEATRES,
 )
-from holiday_themes import HOLIDAY_KEYS, greeting_html, holiday_calendar, holiday_on, holiday_theme_css
+from holiday_themes import HOLIDAYS, HOLIDAY_KEYS, greeting_html, holiday_calendar, holiday_on, holiday_theme_css
 from lgbtq import is_lgbtq_event
 from light_theme import LIGHT_THEME_CSS
 from scrapers import _MARKET_OVERRIDABLE, admission_price, is_market_or_festival, keep_music_venue_category, mentions_free
@@ -2108,9 +2108,9 @@ def render_page(results, split_deferred=False, context_out=None):
     seasonal_key, seasonal_icon, seasonal_label = get_seasonal_theme(datetime.now(EASTERN))
     default_theme = seasonal_key or "classic"
     seasonal_btn_html = (
-        f'<button type="button" class="theme-pill-btn active" data-theme="{seasonal_key}" role="radio" '
-        f'aria-checked="true" title="{escape(seasonal_label)} theme">{seasonal_icon}</button>'
-    ) if seasonal_key else ""
+        f'<button type="button" class="theme-pill-btn theme-pill-holiday{" active" if seasonal_key else ""}" id="theme-pill-holiday" data-theme="{seasonal_key or ""}" role="radio" '
+        f'aria-checked="{"true" if seasonal_key else "false"}" title="{escape(seasonal_label or "")} theme"{"" if seasonal_key else " hidden"}><span class="holiday-pill-emoji">{seasonal_icon or ""}</span><span class="holiday-pill-label">{escape(seasonal_label or "")}</span></button>'
+    )
     import seo  # local import: seo lazily imports template helpers
     site_url = seo.get_site_url()
     seo_head = seo.build_seo_meta_tags(description=seo.default_description(total), site_url=site_url)
@@ -2589,6 +2589,7 @@ def render_page(results, split_deferred=False, context_out=None):
   // Seasonal themes switch on automatically unless the visitor picked one today.
   var HOLIDAY_CALENDAR = {json.dumps(holiday_calendar(datetime.now(EASTERN).date() - timedelta(days=2), 400))};
   var HOLIDAY_KEYS = {json.dumps(HOLIDAY_KEYS)};
+  var HOLIDAY_META = {json.dumps({h["key"]: {"label": h["label"], "emoji": h["emoji"]} for h in HOLIDAYS}, ensure_ascii=False)};
   var BASE_THEMES = ['classic', 'light', 'indie', 'anime'];
   function localISODate(dt) {{
     return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
@@ -4496,6 +4497,12 @@ def render_page(results, split_deferred=False, context_out=None):
     color: #0c0e14;
     font-weight: 700;
     box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }}
+  .theme-pill-holiday {{ display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: #fff; }}
+  .theme-pill-holiday[hidden] {{ display: none !important; }}
+  .holiday-pill-label {{ font-size: 11px; letter-spacing: 0.01em; white-space: nowrap; }}
+  @media (max-width: 520px) {{
+    .holiday-pill-label {{ display: none; }}
   }}
 
   [data-theme="light"] {{
@@ -8472,6 +8479,20 @@ def render_page(results, split_deferred=False, context_out=None):
         try {{ localStorage.setItem(THEME_KEY, theme); localStorage.setItem(THEME_MANUAL_KEY, localISODate(new Date())); }} catch (_) {{}}
       }}
     }}
+    // The holiday pill: today's holiday (or a ?theme= holiday preview) gets a labeled button
+    // at the front of the picker; hidden on ordinary days.
+    (function () {{
+      const btn = document.getElementById('theme-pill-holiday');
+      if (!btn) return;
+      const preview = new URLSearchParams(location.search).get('theme');
+      const key = HOLIDAY_KEYS.includes(preview) ? preview : getClientSeasonalTheme(new Date());
+      const meta = key && HOLIDAY_META[key];
+      if (!meta) {{ btn.hidden = true; return; }}
+      btn.dataset.theme = key;
+      btn.title = meta.label + ' theme';
+      btn.innerHTML = '<span class="holiday-pill-emoji">' + meta.emoji + '</span><span class="holiday-pill-label">' + meta.label + '</span>';
+      btn.hidden = false;
+    }})();
     document.querySelectorAll('.theme-pill-btn').forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.theme, true)));
     setTheme(document.documentElement.getAttribute('data-theme') || '{default_theme}', false);
     // Until the visitor picks a theme, follow their device when it switches (e.g. at sunset).
