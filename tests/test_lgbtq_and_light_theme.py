@@ -136,3 +136,10 @@ class FreeTiersOnThePage(unittest.TestCase):
             self.assertNotIn(gone, deals)
         self.assertIn("Bossa Nova Civic Club", deals)
         self.assertNotIn("ferry.nyc", self.html)
+
+
+class MapPinNamesDefault(unittest.TestCase):
+    def test_map_starts_with_numbers_only(self):
+        html = _render()
+        self.assertIn('<div id="leaflet-map" class="leaflet-map hide-pin-names">', html)
+        self.assertIn(">🔢 Numbers Only</button>", html)
