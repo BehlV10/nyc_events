@@ -219,6 +219,7 @@ HOST_POLICY = {
     "allevents.in": (1, 1.5),     # answered 429 at two every half second
     "donyc.com": (2, 0.5),
     "nycgovparks.org": (1, 1.0),  # its WAF answers rapid crawls with an empty 202
+    "danceus.org": (1, 1.0),      # one page per event for start times (_enrich_event_times)
 }
 RETRY_STATUSES = {429, 502, 503, 504}
 MAX_RETRY_WAIT = 30
@@ -835,6 +836,9 @@ def is_placeholder_or_closed_event(title: str) -> bool:
         return True
     if re.search(r"\bclosed\s+for\s+(the\s+)?holiday\b", t, re.I):
         return True
+    # "Museum Closed", "Thanksgiving Day – Garden is CLOSED"
+    if re.search(r"^\s*(museum|garden|gallery|library|zoo|park)\s+closed\s*$|\b(museum|garden|gallery|library|zoo|park)\s+is\s+closed\b", t, re.I):
+        return True
 
     # 5. Standalone Private event / Private party
     if re.search(r"^\s*(\*{1,3}|\[|\()?\s*private\s+(event|party|rental|function)\s*(\*{1,3}|\]|\))?\s*$", t, re.I):
@@ -1420,6 +1424,94 @@ def _enrich_donyc_events(results, ua=None, limit=None, path=None):
         pass
     print(f"DoNYC details: {fetched} fetched, {applied} events improved, {max(len(wanted) - fetched, 0)} left for later runs")
     return fetched
+
+
+# Feeds whose listings give only a date while each event's own page has the start time in its
+# JSON-LD. DanceUS lists ~230 classes and socials a run, all at midnight ("Time TBA") otherwise.
+EVENT_TIME_HOSTS = ("danceus.org",)
+EVENT_TIMES_PATH = os.path.join(CACHE_DIR, "_event_times.json")
+EVENT_TIMES_PER_RUN = 300
+EVENT_TIME_TTL = 7 * 86400
+_JSONLD_START_RE = re.compile(r'"startDate"\s*:\s*"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(?::\d{2})?(?:Z|[+-]\d{2}:?\d{2})?)"')
+
+
+def _event_page_start(url, ua):
+    """The first timed JSON-LD startDate on an event's page, as an ISO string, or None."""
+    resp = _SESSION.get(url, headers={"User-Agent": ua}, timeout=15)
+    if resp.status_code in (403, 429):
+        raise SiteRefused(url)
+    resp.raise_for_status()
+    m = _JSONLD_START_RE.search(resp.text)
+    return m.group(1) if m else None
+
+
+def _local_midnight(date_str):
+    try:
+        t = datetime.fromisoformat(str(date_str).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=EASTERN)
+    t = t.astimezone(EASTERN)
+    return t if (t.hour, t.minute) == (0, 0) else None
+
+
+def _enrich_event_times(results, ua=None, limit=None, path=None, fetch=None):
+    """Give date-only events from EVENT_TIME_HOSTS the start time on their own page.
+    A page time is used when it falls on the listed day, or on the same weekday (a weekly
+    class whose page has rolled on to its next session). Runs once, after every source."""
+    ua = ua or UA_CHROME
+    limit = EVENT_TIMES_PER_RUN if limit is None else limit
+    path = path or EVENT_TIMES_PATH
+    fetch = fetch or _event_page_start
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            cache = json.load(f)
+    except (OSError, ValueError):
+        cache = {}
+    now = time.time()
+    today = datetime.now(EASTERN).date()
+    todo = []
+    for r in results:
+        for e in r.get("events") or []:
+            url = e.get("url") or ""
+            day = _local_midnight(e.get("date"))
+            if day and day.date() >= today and any(h in _host_of(url) for h in EVENT_TIME_HOSTS):
+                todo.append((day, url, e))
+    fetched = applied = 0
+    for day, url, _e in sorted(todo, key=lambda x: x[0]):
+        if fetched >= limit:
+            break
+        if url in cache and now - cache[url].get("ts", 0) < EVENT_TIME_TTL:
+            continue
+        try:
+            cache[url] = {"start": fetch(url, ua), "ts": now}
+            fetched += 1
+        except SiteRefused:
+            break
+        except Exception:
+            continue  # asked again next run
+    for day, url, e in todo:
+        start = (cache.get(url) or {}).get("start")
+        if not start:
+            continue
+        try:
+            t = datetime.fromisoformat(start.replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        t = (t if t.tzinfo else t.replace(tzinfo=EASTERN)).astimezone(EASTERN)
+        if t.weekday() == day.weekday() and (t.hour, t.minute) != (0, 0):
+            on_day = day.replace(hour=t.hour, minute=t.minute, second=0)
+            e["date"] = on_day.astimezone(timezone.utc).isoformat()
+            applied += 1
+    cache = {u: d for u, d in cache.items() if now - d.get("ts", 0) < 3 * EVENT_TIME_TTL}
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(cache, f)
+    except OSError:
+        pass
+    print(f"Event times: {fetched} pages fetched, {applied} of {len(todo)} date-only events timed")
+    return applied
 
 
 def scrape_donyc(url, ua):
@@ -8931,7 +9023,6 @@ STATIC_LINKS = [
     ("theater", "TKTS Discount Booths (Times Square & Lincoln Center)", "https://www.tdf.org/tkts"),
     ("art",     "NYC Culture Pass (Free Museums with Library Card)", "https://www.culturepass.nyc/"),
     ("outdoors","NYC Parks Free Events Directory", "https://www.nycgovparks.org/events"),
-    ("outdoors","NYC Ferry ($4.00 harbor routes)", "https://www.ferry.nyc/"),
     ("outdoors","Meetup NYC Hiking & Trail Groups", "https://www.meetup.com/find/?keywords=hiking&location=us--ny--New%20York&source=EVENTS"),
     ("gaming",  "Meetup NYC Board Games & Tabletop", "https://www.meetup.com/find/?keywords=board%20games&location=us--ny--New%20York&source=EVENTS"),
     ("dance",   "Meetup NYC Salsa & Social Dance Groups", "https://www.meetup.com/find/?keywords=salsa%20dancing&location=us--ny--New%20York&source=EVENTS"),
@@ -8992,15 +9083,19 @@ DEAL_LINKS = [
     ("Broadway Direct Lotteries (Hamilton, Wicked, Lion King)", "https://lottery.broadwaydirect.com/"),
     ("Lucky Seat Broadway Lotteries ($39–$49)", "https://www.luckyseat.com/"),
     ("NYC Culture Pass (Free museums for NY library cardholders)", "https://www.culturepass.nyc/"),
-    ("Somewhere Nowhere NYC (Free VIP Guestlist before 11:30 PM)", "https://somewherenowherenyc.com/"),
-    ("The DL Rooftop (Free Guestlist Entry before 11 PM)", "https://thedl-nyc.com/"),
-    ("Harbor NYC (Free RSVP & Sunset Rooftop Parties)", "https://harbornewyorkcity.com/"),
-    ("230 Fifth Rooftop (Free General Admission & Igloos)", "https://www.230-fifth.com/"),
-    ("Superior Ingredients (Free RSVP House & Techno before 11 PM)", "https://si-bk.com/"),
-    ("Bossa Nova Civic Club (Free Entry Before 11 PM Nightly)", "https://www.instagram.com/bossanovacivicclub/"),
-    ("Jupiter Disco (Always Free / No Cover Retro DJs)", "https://www.jupiterdisco.com/"),
-    ("NYC Club Guestlists (Live Eventbrite Free Guestlists)", "https://www.eventbrite.com/d/ny--new-york/free-guestlist/"),
-    ("NYC Ferry Tickets ($4.00 per ride)", "https://www.ferry.nyc/"),
+]
+
+# Clubs and bars that are actually free to get into on at least some nights, checked against their
+# own listings (2026-11-09 audit). (name, url, what's free, area). Keep the "what's free" honest:
+# ticketed clubs with no free nights (Nebula, Superior Ingredients) don't belong here.
+GUESTLIST_LINKS = [
+    ("Bossa Nova Civic Club", "https://www.instagram.com/bossanovacivicclub/", "Free before 11 PM most nights", "Bushwick"),
+    ("Jupiter Disco", "https://www.jupiterdisco.com/", "No cover most nights", "Bushwick"),
+    ("The DL NYC", "https://thedl-nyc.com/", "Free RSVP on weekend nights", "Lower East Side"),
+    ("230 Fifth Rooftop", "https://www.230-fifth.com/", "No cover (igloos and tables are paid)", "Flatiron"),
+    ("Somewhere Nowhere NYC", "https://somewherenowherenyc.com/", "Some free RSVP nights; most are ticketed", "Chelsea"),
+    ("Harbor NYC Rooftop", "https://harbornewyorkcity.com/", "Free early RSVP on some nights", "Hell's Kitchen"),
+    ("Eventbrite NYC Guestlists", "https://www.eventbrite.com/d/ny--new-york/free-guestlist/", "Search free guestlist events", "Citywide"),
 ]
 
 
@@ -9566,6 +9661,7 @@ def get_all_events(force=False):
     results.extend(_expand_manual_recurring(weeks=8))
     results.extend(_load_community_events())
     _enrich_donyc_events(results)
+    _enrich_event_times(results)
     _apply_geocodes(results)
 
     payload = {

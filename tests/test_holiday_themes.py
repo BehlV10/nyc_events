@@ -49,13 +49,15 @@ class HolidayCss(unittest.TestCase):
         self.assertEqual(css.count("{"), css.count("}"))
 
     def test_holiday_banners_exist_and_linked(self):
-        next_8 = ["veterans", "thanksgiving", "blackfriday", "cybermonday", "hanukkah", "christmas", "newyearseve", "newyear"]
+        holidays = ["diwali", "veterans", "thanksgiving", "blackfriday", "cybermonday", "hanukkah", "christmas", "newyearseve", "newyear"]
         css = H.holiday_theme_css()
-        for key in next_8:
-            svg_path = os.path.join(ROOT, "static", "holidays", f"{key}.svg")
-            self.assertTrue(os.path.exists(svg_path), f"Missing banner SVG: {svg_path}")
-            self.assertGreater(os.path.getsize(svg_path), 5000, f"SVG banner too small: {svg_path}")
-            self.assertIn(f"static/holidays/{key}.svg", css)
+        for key in holidays:
+            b_url = H.banner_url(H._BY_KEY[key])
+            self.assertIsNotNone(b_url, f"Missing banner URL for {key}")
+            full_path = os.path.join(ROOT, b_url)
+            self.assertTrue(os.path.exists(full_path), f"Missing banner file: {full_path}")
+            self.assertGreater(os.path.getsize(full_path), 5000, f"Banner file too small: {full_path}")
+            self.assertIn(f'[data-theme="{key}"] .banner', css)
 
 
 class HolidayPage(unittest.TestCase):

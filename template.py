@@ -17,6 +17,7 @@ from scrapers import (
     CATEGORY_BUCKETS,
     CATEGORY_STYLES,
     DEAL_LINKS,
+    GUESTLIST_LINKS,
     STATIC_LINKS,
     category_bucket,
     guess_category,
@@ -542,7 +543,8 @@ _FREE_DESC_PHRASES = [
 ]
 
 
-def _is_event_free(e):
+def _free_signal(e):
+    """True when the listing says getting in costs nothing (before any catch is weighed)."""
     price = (e.get("price") or "").strip().lower()
     if price:
         if any(k in price for k in ["free", "no cover", "complimentary", "pay what you can"]):
@@ -588,6 +590,63 @@ def _is_event_free(e):
     return False
 
 
+
+# "Free" that isn't: the event is included with a paid ticket, or only some people get in free.
+_NOT_FREE_RE = re.compile(
+    r"\b(?:included\s+with|free\s+with|with)\s+(?:paid\s+|museum\s+|general\s+|regular\s+)?admission\b|"
+    r"admission to the grounds|\bfree (?:for|to) (?:ages|kids|children|members|students|seniors|veterans|those|under)\b",
+    re.I,
+)
+# Free to get in, but you must buy something ("1-drink min", "FREE show (w/ one item minimum)").
+_MIN_SPEND_RE = re.compile(
+    r"\b(?:(?:\d|one|two)[- ]?(?:drink|item)|drink|food|item|bar)\s+min(?:imum|\.|\b)|"
+    r"\b(?:\d|one|two)[- ]?(?:drink|item)\s+min|minimum (?:purchase|spend)|purchase required",
+    re.I,
+)
+_NO_MIN_RE = re.compile(r"\bno\s+(?:\w+\s+){0,3}minimums?\b", re.I)
+# A free tier next to paid ones ("Free - $28.52", "No cover / $10"), or free only early in the night.
+_FREE_TIER_RE = re.compile(r"(?:free|no cover)\s*(?:[-–/]|or|to)\s*\$\s?[1-9]|free (?:entry )?(?:before|until|till) \d", re.I)
+
+
+def _free_kind(e):
+    """How free an event is:
+    "free"     costs nothing to attend;
+    "no_cover" no door charge at a bar or club (you get in for $0, but you're expected to order);
+    "catch"    free only with a drink/item minimum, before a set hour, or in the cheapest of several tiers;
+    None       paid, unknown, or free only with paid admission.
+    """
+    price = (e.get("price") or "").strip()
+    desc = e.get("description") or ""
+    name = e.get("name") or ""
+    if _NOT_FREE_RE.search(price) or (not price and _NOT_FREE_RE.search(f"{name} {desc}")):
+        return None
+    if not _free_signal(e):
+        return None
+    if _FREE_TIER_RE.search(price) or _FREE_TIER_RE.search(name) or (not price and _FREE_TIER_RE.search(desc)):
+        return "catch"
+    # "Tickets: $40 at the door ... no cover charge to enjoy cocktails at the bar" is a paid show.
+    if not price and not mentions_free(name) and admission_price(desc):
+        return None
+    if _MIN_SPEND_RE.search(_NO_MIN_RE.sub(" ", f"{price} {name} {desc}")):
+        return "catch"
+    pl = price.lower()
+    if pl.startswith("no cover") or (not pl and "no cover" in f"{name} {desc}".lower()
+                                     and not re.search(r"\bfree\b", f"{name} {desc}", re.I)):
+        return "no_cover"
+    return "free"
+
+
+_NO_COVER_TIP = "No cover: no charge at the door. It's a bar or club, so plan to buy a drink."
+_FREE_CATCH_TIP = "Free with a catch: a drink or item minimum, free only early, or a free tier among paid tickets."
+
+
+def _is_event_free(e):
+    """Free to get in with no strings: "free" or "no cover" (no door charge)."""
+    return _free_kind(e) in ("free", "no_cover")
+
+
+_LUCKYSEAT_NOT_LOTTERY_RE = re.compile(r"brunch|dueling pianos?", re.I)
+
 _GUESTLIST_RE = re.compile(
     r"\b(guestlist|guest-list|free rsvp|rsvp free|free with rsvp|free w/ rsvp|free before|free entry before|complimentary ticket|vip guestlist)\b",
     re.IGNORECASE,
@@ -597,13 +656,14 @@ _GUESTLIST_RE = re.compile(
 def _is_event_guestlist(e):
     source = (e.get("_source_venue") or "").lower()
     if any(k in source for k in [
-        "guestlist", "free rsvp", "somewhere nowhere", "the dl", "harbor nyc",
-        "230 fifth", "slate nyc", "nebula", "superior ingredients", "bossa nova", "jupiter disco"
+        "guestlist", "free rsvp",
     ]):
         return True
     name = (e.get("name") or "").lower()
     price = (e.get("price") or "").lower()
     desc = (e.get("description") or "").lower()
+    if re.search(r"\$\s?[1-9]", price) and not re.search(r"free|no cover", price):
+        return False  # a paid ticket, whatever the description says about guestlists
     if _GUESTLIST_RE.search(name) or _GUESTLIST_RE.search(price) or _GUESTLIST_RE.search(desc):
         return True
     return False
@@ -2139,15 +2199,17 @@ def render_page(results, split_deferred=False, context_out=None):
             f'<a href="{escape(e["url"])}" target="_blank" rel="noopener">{title}</a>'
             if e.get("url") else title
         )
-        is_free = _is_event_free(e)
+        free_kind = _free_kind(e)
+        is_free = free_kind in ("free", "no_cover")
         price_raw = escape(e["price"]) if e.get("price") else ""
-        if price_raw:
-            if "free" in price_raw.lower() or price_raw in ("$0", "0"):
-                price_tag = f'<span class="price free">{price_raw}</span>'
-            else:
-                price_tag = f'<span class="price">{price_raw}</span>'
-        elif is_free:
-            price_tag = '<span class="price free">Free</span>'
+        if free_kind == "free":
+            price_tag = f'<span class="price free">{price_raw or "Free"}</span>'
+        elif free_kind == "no_cover":
+            price_tag = f'<span class="price free" title="{_NO_COVER_TIP}">{price_raw or "No cover"}</span>'
+        elif free_kind == "catch":
+            price_tag = f'<span class="price free-catch" title="{_FREE_CATCH_TIP}">{price_raw or "Free*"}</span>'
+        elif price_raw:
+            price_tag = f'<span class="price">{price_raw}</span>'
         else:
             price_tag = ""
 
@@ -2248,7 +2310,7 @@ def render_page(results, split_deferred=False, context_out=None):
         is_guestlist = _is_event_guestlist(e)
         guestlist_flag = "true" if is_guestlist else "false"
         guestlist_badge = '<span class="badge-guestlist" title="Free club guestlist or RSVP entry">🎟️ Guestlist</span>' if is_guestlist else ""
-        free_flag = "true" if (is_free or is_guestlist) else "false"
+        free_flag = "true" if is_free else "false"
         # No epoch for an unknown time: it would read as "started at midnight" and hide the event.
         epoch_attr = f' data-epoch="{int(e["_time"].timestamp())}"' if e.get("_time") and not e.get("_time_unknown") else ''
         t_obj = e.get("_time")
@@ -2276,7 +2338,7 @@ def render_page(results, split_deferred=False, context_out=None):
                 note_html = f'<div class="curator-note"><span class="note-label">Why it\'s a pick:</span> {escape(note)}</div>'
         # Flags are emitted only when true (the page tests `=== 'true'`), and nothing that the
         # page can derive (subarea name, HH:MM) is repeated per event: deferred days are ~17k <li>s.
-        flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
+        flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-free-catch="true"' if free_kind == "catch" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
         return _compact_li(f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{hl_attr}{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}</div>
           <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{hl_badge}{recur_badge}
@@ -2385,10 +2447,11 @@ def render_page(results, split_deferred=False, context_out=None):
         deferred_tag = f'<template id="deferred-days">{deferred_html}</template>'
 
     useful_sidebar = ""
-    if STATIC_LINKS or DEAL_LINKS:
+    if STATIC_LINKS or DEAL_LINKS or GUESTLIST_LINKS:
         deals_block = ""
-        lucky_shows = fetch_luckyseat_nyc()
-        if DEAL_LINKS or lucky_shows:
+        # LuckySeat also sells dueling-piano brunches; only the theater lotteries belong here.
+        lucky_shows = [s for s in fetch_luckyseat_nyc() if not _LUCKYSEAT_NOT_LOTTERY_RE.search(s.get("name") or "")]
+        if DEAL_LINKS or lucky_shows or GUESTLIST_LINKS:
             lucky_html = ""
             if lucky_shows:
                 def _lucky_li(s):
@@ -2403,47 +2466,33 @@ def render_page(results, split_deferred=False, context_out=None):
                 lucky_items = "".join(_lucky_li(s) for s in lucky_shows)
                 lucky_html = f'''
           <div class="deals-sub">
-            <div class="deals-sub-head"><a href="https://www.luckyseat.com/" target="_blank" rel="noopener">LuckySeat — Broadway NYC</a></div>
+            <div class="deals-sub-head"><a href="https://www.luckyseat.com/" target="_blank" rel="noopener">Ticket lotteries — LuckySeat (not free)</a></div>
             <ul class="deals-list">{lucky_items}</ul>
           </div>'''
-            elif DEAL_LINKS:
-                lucky_html = '''
-          <div class="deals-sub">
-            <div class="deals-sub-head">LuckySeat — Broadway NYC</div>
-            <p class="hint">Check lotteries for daily $39–$49 rush tickets.</p>
-          </div>'''
-            guestlist_deals = [
-                ("Somewhere Nowhere NYC", "https://somewherenowherenyc.com/", "Free VIP Guestlist (before 11:30 PM)", "Chelsea Rooftop"),
-                ("The DL NYC", "https://thedl-nyc.com/", "Free Guestlist Entry (before 11:00 PM)", "Lower East Side"),
-                ("Harbor NYC Rooftop", "https://harbornewyorkcity.com/", "Free RSVP & Sunset Parties", "Hell's Kitchen"),
-                ("230 Fifth Rooftop", "https://www.230-fifth.com/", "Free Admission & Heated Igloos", "Flatiron Rooftop"),
-                ("Superior Ingredients", "https://si-bk.com/", "Free RSVP Dance Series (before 11 PM)", "Williamsburg"),
-                ("Bossa Nova Civic Club", "https://www.instagram.com/bossanovacivicclub/", "Free Entry Before 11:00 PM Nightly", "Bushwick Techno"),
-                ("Jupiter Disco", "https://www.jupiterdisco.com/", "No Cover / Always Free Retro DJs", "Bushwick Synth"),
-                ("Slate NYC", "https://slatenyc.com/", "Free RSVP Club & Games Lounge", "Chelsea"),
-                ("Nebula NYC", "https://nebulanewyork.com/", "Kinetic Mega-Club Guestlist Draws", "Midtown"),
-                ("Eventbrite NYC Guestlists", "https://www.eventbrite.com/d/ny--new-york/free-guestlist/", "Live Rotating Club Guestlists", "Citywide"),
-            ]
             gl_items = "".join(
                 f'<li><a href="{escape(u)}" target="_blank" rel="noopener">'
                 f'<span class="deal-name">{escape(n)}</span>'
                 f'<span class="deal-meta">{escape(m)} · {escape(loc)}</span>'
                 f'</a></li>'
-                for n, u, m, loc in guestlist_deals
+                for n, u, m, loc in GUESTLIST_LINKS
             )
             guestlist_deals_html = f'''
           <div class="deals-sub">
-            <div class="deals-sub-head"><a href="https://www.eventbrite.com/d/ny--new-york/free-guestlist/" target="_blank" rel="noopener">🎟️ Free Club Guestlists &amp; RSVPs</a></div>
+            <div class="deals-sub-head">🎟️ Free club entry &amp; guestlists</div>
             <ul class="deals-list">{gl_items}</ul>
-          </div>'''
+          </div>''' if GUESTLIST_LINKS else ""
+            others = [(n, u) for n, u in DEAL_LINKS if not (lucky_shows and "luckyseat" in u.lower())]
             other_deals_html = ""
-            others = [(n, u) for n, u in DEAL_LINKS if "luckyseat" not in u.lower() and "guestlist" not in u.lower() and "somewhere nowhere" not in u.lower() and "the dl" not in u.lower() and "harbor nyc" not in u.lower() and "230 fifth" not in u.lower() and "superior ingredients" not in u.lower() and "bossa nova" not in u.lower() and "jupiter disco" not in u.lower()]
             if others:
                 other_items = "".join(
                     f'<li><a href="{escape(u)}" target="_blank" rel="noopener">{escape(n)}</a></li>'
                     for n, u in others
                 )
-                other_deals_html = f'<ul class="deals-list">{other_items}</ul>'
+                other_deals_html = f'''
+          <div class="deals-sub">
+            <div class="deals-sub-head">Discounts &amp; free passes</div>
+            <ul class="deals-list">{other_items}</ul>
+          </div>'''
             deals_block = f'''
         <div class="useful-inner">
           <h3>Deals &amp; lotteries</h3>
@@ -3107,6 +3156,9 @@ def render_page(results, split_deferred=False, context_out=None):
   .cat-pill {{ display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 5px; font-size: 11px; font-weight: 600; line-height: 1.3; border: 1px solid; }}
   .price {{ display:inline-block; margin-left: 8px; background: rgba(255,255,255,0.06); color: var(--muted); font-size: 11px; padding: 2px 7px; border-radius: 5px; font-weight: 500; }}
   .price.free {{ background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); font-weight: 700; }}
+  .price.free-catch {{ background: transparent; color: var(--green); border: 1px dashed var(--green-border); font-weight: 600; }}
+  .price[title] {{ cursor: help; }}
+  .free-catch-toggle {{ margin-left: 22px; font-weight: 500; font-size: 11px; opacity: .9; }}
   .price.ticketed {{ background: rgba(139, 178, 255, 0.12); color: #8bb2ff; border: 1px solid rgba(139, 178, 255, 0.3); font-weight: 600; font-size: 10px; }}
   .compare-tickets {{ font-size: 11px; color: var(--muted); }}
   .compare-tickets a {{ color: var(--accent); text-decoration: none; }}
@@ -5475,6 +5527,10 @@ def render_page(results, split_deferred=False, context_out=None):
           <input type="checkbox" id="free-only-chk">
           <span><span class="chip-icon">✨ </span>Free events only</span>
         </label>
+        <label class="free-toggle free-catch-toggle" for="free-catch-chk" title="{_FREE_CATCH_TIP}">
+          <input type="checkbox" id="free-catch-chk">
+          <span>+ free with a catch (drink minimums, free before 11, free RSVP tiers)</span>
+        </label>
         <label class="free-toggle" for="guestlist-only-chk" style="margin-top:6px;">
           <input type="checkbox" id="guestlist-only-chk">
           <span><span class="chip-icon">🎟️ </span>Free club guestlists only</span>
@@ -5898,6 +5954,7 @@ def render_page(results, split_deferred=False, context_out=None):
     const searchStatus = document.getElementById('search-status');
     const searchCount = document.getElementById('search-count');
     const freeOnlyChk = document.getElementById('free-only-chk');
+    const freeCatchChk = document.getElementById('free-catch-chk');
     const guestlistOnlyChk = document.getElementById('guestlist-only-chk');
     const lgbtqOnlyChk = document.getElementById('lgbtq-only-chk');
 
@@ -6863,7 +6920,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const citiesDefault = isDefaultCities(Array.from(cityBoxes).filter(b => b.checked).map(b => b.value));
       const allRecurs = recurBoxes.length;
       const chkRecurs = Array.from(recurBoxes).filter(b => b.checked).length;
-      const isFree = freeOnlyChk && freeOnlyChk.checked;
+      const isFree = (freeOnlyChk && freeOnlyChk.checked) || (freeCatchChk && freeCatchChk.checked);
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
       const isLgbtq = lgbtqOnlyChk && lgbtqOnlyChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
@@ -6921,7 +6978,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const checkedVenues = Array.from(venueBoxes).filter(b => b.checked).map(b => b.value);
       if (checkedVenues.length > 0 && checkedVenues.length < allVenues.length) params.set('venues', checkedVenues.join(';'));
 
-      if (freeOnlyChk && freeOnlyChk.checked) params.set('free', '1');
+      if (freeOnlyChk && freeOnlyChk.checked) params.set('free', (freeCatchChk && freeCatchChk.checked) ? '2' : '1');
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
       if (lgbtqOnlyChk && lgbtqOnlyChk.checked) params.set('lgbtq', '1');
       if (picksOnly) params.set('picks', '1');
@@ -6951,7 +7008,8 @@ def render_page(results, split_deferred=False, context_out=None):
 
       if (params) {{
         if (params.has('q')) searchInput.value = params.get('q');
-        if (params.get('free') === '1' && freeOnlyChk) freeOnlyChk.checked = true;
+        if ((params.get('free') === '1' || params.get('free') === '2') && freeOnlyChk) freeOnlyChk.checked = true;
+        if (params.get('free') === '2' && freeCatchChk) freeCatchChk.checked = true;
         if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
         if (params.get('lgbtq') === '1' && lgbtqOnlyChk) lgbtqOnlyChk.checked = true;
         if (params.get('picks') === '1') picksOnly = true;
@@ -7080,6 +7138,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const starDates = starredOnly ? new Set(Array.from(starredEvents).map(k => k.split('|')[0])) : null;
       const searchText = searchInput.value.trim().toLowerCase();
       const freeOnly = freeOnlyChk ? freeOnlyChk.checked : false;
+      const freeCatch = freeOnly && freeCatchChk ? freeCatchChk.checked : false;
       const guestlistOnly = guestlistOnlyChk ? guestlistOnlyChk.checked : false;
       const lgbtqOnly = lgbtqOnlyChk ? lgbtqOnlyChk.checked : false;
       const week = new Set(weekDates());
@@ -7205,6 +7264,7 @@ def render_page(results, split_deferred=False, context_out=None):
                   city: li.dataset.city,
                   subarea: li.dataset.subarea,
                   free: li.dataset.free === 'true',
+                  freeCatch: li.dataset.freeCatch === 'true',
                   guestlist: li.dataset.guestlist === 'true',
                   lgbtq: li.dataset.lgbtq === 'true',
                   featured: li.dataset.highlight === 'true',
@@ -7219,7 +7279,7 @@ def render_page(results, split_deferred=False, context_out=None):
               const recurOk = recurs.has(m.recur);
               const cityOk = cities.has(m.city);
               const subareaOk = (activeSubarea === 'all') || (m.subarea === activeSubarea);
-              const freeOk = !freeOnly || m.free;
+              const freeOk = !freeOnly || m.free || (freeCatch && m.freeCatch);
               const guestlistOk = !guestlistOnly || m.guestlist;
               const lgbtqOk = !lgbtqOnly || m.lgbtq;
               const picksOk = !picksOnly || m.featured;
@@ -7410,7 +7470,7 @@ def render_page(results, split_deferred=False, context_out=None):
             const recurOk = recurs.has(li.dataset.recur);
             const cityOk = cities.has(li.dataset.city);
             const subareaOk = (activeSubarea === 'all') || (li.dataset.subarea === activeSubarea);
-            const freeOk = !freeOnly || li.dataset.free === 'true';
+            const freeOk = !freeOnly || li.dataset.free === 'true' || (freeCatch && li.dataset.freeCatch === 'true');
             const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
             const lgbtqOk = !lgbtqOnly || li.dataset.lgbtq === 'true';
             const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
@@ -7658,7 +7718,14 @@ def render_page(results, split_deferred=False, context_out=None):
       setAnchor(iso);
     }});
 
-    if (freeOnlyChk) freeOnlyChk.addEventListener('change', apply);
+    if (freeOnlyChk) freeOnlyChk.addEventListener('change', () => {{
+      if (!freeOnlyChk.checked && freeCatchChk) freeCatchChk.checked = false;
+      apply();
+    }});
+    if (freeCatchChk) freeCatchChk.addEventListener('change', () => {{
+      if (freeCatchChk.checked && freeOnlyChk) freeOnlyChk.checked = true;
+      apply();
+    }});
     catBoxes.forEach(b => b.addEventListener('change', () => {{
       if (b.value === MUSIC_BUCKET) genreBoxes.forEach(g => {{ g.checked = b.checked; }});
       syncSubgenreUI();
@@ -7713,6 +7780,7 @@ def render_page(results, split_deferred=False, context_out=None):
     function resetAllFilters() {{
       if (searchInput) searchInput.value = '';
       if (freeOnlyChk) freeOnlyChk.checked = false;
+      if (freeCatchChk) freeCatchChk.checked = false;
       if (guestlistOnlyChk) guestlistOnlyChk.checked = false;
       if (lgbtqOnlyChk) lgbtqOnlyChk.checked = false;
       picksOnly = false;
