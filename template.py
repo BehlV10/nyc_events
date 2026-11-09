@@ -1923,6 +1923,10 @@ def _merge_duplicates(events, word_freq=None):
                     match["venue_url"] = e.get("venue_url")
                 if e.get("_time") and (e["_time"].hour != 0 or e["_time"].minute != 0):
                     match["_time"] = e["_time"]
+                    # The label is printed from "date": keep it in step, or a card sorted by the
+                    # venue's 7:30 show reads "6:30 PM" (a ticket site's doors time).
+                    if e.get("date"):
+                        match["date"] = e["date"]
                 # Clean up _alt_sources so match["url"] is not duplicated in its own alt list
                 match["_alt_sources"] = [a for a in match["_alt_sources"] if a.get("url") != match.get("url")]
 
