@@ -32,6 +32,21 @@ def _merge(events):
 
 
 class SameEventMerges(unittest.TestCase):
+    def test_the_label_shows_the_time_the_card_is_sorted_by(self):
+        """Le Poisson Rouge says 7:30; SeatGeek and Songkick say 6:30 (doors). The card sorted at
+        7:30 used to read "6:30 PM" because only _time, not date, took the venue's time."""
+        out = _merge([
+            _ev("Daniel Lanois", "SeatGeek NYC", "Le Poisson Rouge", _day_at(3, 18, 30),
+                url="https://seatgeek.com/daniel-lanois-tickets/1"),
+            _ev("Daniel Lanois", "Songkick NYC Concerts", "Le Poisson Rouge", _day_at(3, 18, 30),
+                url="https://www.songkick.com/concerts/1-daniel-lanois"),
+            _ev("Daniel Lanois Trio In The Round", "Le Poisson Rouge", "Le Poisson Rouge", _day_at(3, 19, 30),
+                url="https://kyd.to/KjMophJk"),
+        ])
+        self.assertEqual(len(out), 1)
+        self.assertEqual(out[0]["_time"].strftime("%H:%M"), "19:30")
+        self.assertEqual(T.format_when(out[0]), "7:30 PM")
+
     def test_venue_and_bookstore_listings_merge_and_the_venues_title_leads(self):
         t = _day_at(8, 19, 30)
         out = _merge([
