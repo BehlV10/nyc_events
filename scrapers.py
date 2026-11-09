@@ -763,12 +763,12 @@ def infer_music_genre(name, venue=None, description=None, native_genre=None, cat
 MUSIC_CATEGORIES = ("music", "clubbing", "dance")
 
 
-def guess_category(text, default="community", venue=None):
+def guess_category(text, default="community", venue=None, source_url=None):
     if is_utility_event(text):
         return "services"
     if is_kid_family_event(text, venue):
         return "family"
-    if is_deal_event(text):
+    if is_deal_event(text, source_url):
         return "deals"
     if venue:
         v_low = venue.lower()
@@ -992,22 +992,59 @@ DEAL_EVENT_RE = re.compile(
     r"happy\s+hour\s+deals?|half[-\s]?price[ds]?\b|half\s+off|1/2\s+off|"
     r"\bbogo\s+(?!-)\w|\$\d+\s+(?:oysters|martinis|cocktails|margaritas|wings|tacos|burgers|pizza|apps|appetizers)\b|"
     r"\boysters\b.*\$\d|bottomless\s+(?:pasta|maki|steak|mimosas)|\bbottomless\s+brunch!|"
-    r"taco\s+tuesday|\bdiscount\b|free\s+biscuit|no\s+weigh\s+wednesday|\$\d+\s+girl\s+dinner",
+    r"taco\s+tuesday|free\s+biscuit|no\s+weigh\s+wednesday|\$\d+\s+girl\s+dinner|"
+    r"discount(?:ed)?\s+(?:drinks?|apps?|appetizers|food|cocktails|beers?|wine|shots|menu|bites)|"
+    r"(?:drink|food|bar|menu)\s+discounts?",
+    re.IGNORECASE,
+)
+# Pure ads posted as events ("Follow us and receive a $10 discount", "Gift Certificates",
+# "use code SAVE20"). They share the default-off Deals & Specials bucket, whoever posted them.
+PROMO_AD_RE = re.compile(
+    r"\bfollow\s+us\b|promo\s+code|coupon|\buse\s+code\b|^\W*(?:buy\s+)?(?:an?\s+)?gift\s+(?:cards?|certificates?)\b|"
+    r"\b\d{1,2}%\s+off\b|\$\d+\s+(?:off|discount)\b|\b(?:receive|get|enjoy|save)\b.{0,30}\bdiscount\b",
+    re.IGNORECASE,
+)
+# Something you attend that happens to be sold at a discount ("World Team Tennis - 20% Discount").
+_NOT_AN_AD_RE = re.compile(r"\btickets?\b|\bvs\.?\s|\bpass\b", re.IGNORECASE)
+# Places people post things to attend: a "Taco Tuesday" there is a meetup or a party, not a menu special.
+ATTEND_PLATFORM_RE = re.compile(
+    r"meetup\.com|lu\.ma|luma\.com|partiful\.com|eventbrite\.|ticketmaster\.|seatgeek\.|dice\.fm|posh\.vip",
     re.IGNORECASE,
 )
 # A price mention inside a real ticketed show or activity ("Standup Comedy Show and $4 Drinks").
 EXCLUDE_DEAL_RE = re.compile(
-    r"comedy|stand-?up|stroll|\btour\b|trivia|bingo|\bdj\b|live\s+music|\bshow\b|class|tasting|"
+    r"comedy|stand-?up|improv|ensembles?|stroll|\btour\b|trivia|bingo|karaoke|\bdj\b|live\s+music|\bshow\b|class|"
+    r"tasting|part(?:y|ies)|\bwalk\b|run\s+club|\bband\b|concert|tickets?|"
     r"commuter\s+rail|day\s+trip|developers|food\s+drive",
     re.IGNORECASE,
 )
 
 
-def is_deal_event(name):
-    """True for a recurring food/drink special rather than an event you attend."""
-    if not name or not DEAL_EVENT_RE.search(name):
+def is_deal_event(name, source_url=None):
+    """True for a recurring food/drink special or a pure ad, rather than an event you attend.
+    source_url (the feed's and/or event's URL) rules out specials posted on RSVP/ticket platforms."""
+    if not name:
         return False
-    return not EXCLUDE_DEAL_RE.search(name)
+    if PROMO_AD_RE.search(name) and not (_NOT_AN_AD_RE.search(name) or EXCLUDE_DEAL_RE.search(name)):
+        return True
+    if not DEAL_EVENT_RE.search(name) or EXCLUDE_DEAL_RE.search(name):
+        return False
+    return not (source_url and ATTEND_PLATFORM_RE.search(source_url))
+
+
+# A special mentioned by a real event ("Karaoke Night ... $8 shots, $8 margaritas"); shown as a note.
+SPECIAL_NOTE_RE = re.compile(
+    r"\$\d+\s+(?:shots|margaritas?|drinks|beers?|wells?|cocktails|wine|oysters|tacos|wings|mimosas|rum\s+punch|pints?)\b|"
+    r"happy\s+hour\s+(?:specials?|prices?|deals?)|drink\s+specials?|half[-\s]?price[ds]?\s+(?:drinks|apps|wings|oysters|cocktails)|"
+    r"bottomless\s+(?:mimosas|brunch|drinks)",
+    re.IGNORECASE,
+)
+
+
+def special_note(text):
+    """The first food/drink special a listing mentions, or None."""
+    m = SPECIAL_NOTE_RE.search(text or "")
+    return m.group(0) if m else None
 
 
 # Paid spa/massage services posted as events: promos from massage businesses, hotel spa
