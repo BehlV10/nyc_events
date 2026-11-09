@@ -289,6 +289,19 @@
     "id": "auto-2026-11-10-22",
     "auto": true,
     "match": {
+      "name_contains": "Open Decks",
+      "venue_contains": "Sleepwalk"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Free; listed on 4 calendars; prime-time start.",
+    "score": 19.0,
+    "start_date": "2026-11-10",
+    "expires": "2026-11-10"
+  },
+  {
+    "id": "auto-2026-11-10-23",
+    "auto": true,
+    "match": {
       "name_contains": "Christmas Spectacular Starring The Radio City Rockettes",
       "venue_contains": "Radio City Music Hall"
     },
@@ -299,7 +312,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-23",
+    "id": "auto-2026-11-10-24",
     "auto": true,
     "match": {
       "name_contains": "Farm Community Volunteer Days",
@@ -312,7 +325,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-24",
+    "id": "auto-2026-11-10-25",
     "auto": true,
     "match": {
       "name_contains": "Millennial Skip the Small Talk Night at Threes Brewing Gowanus",
@@ -325,7 +338,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-25",
+    "id": "auto-2026-11-10-26",
     "auto": true,
     "match": {
       "name_contains": "NYC Stand-Up | Tues, November 10th @7 PM",
@@ -338,7 +351,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-26",
+    "id": "auto-2026-11-10-27",
     "auto": true,
     "match": {
       "name_contains": "New York Comedy Festival Presents: Thunder Davis and Friends",
@@ -351,7 +364,7 @@
     "expires": "2026-11-10"
   },
   {
-    "id": "auto-2026-11-10-27",
+    "id": "auto-2026-11-10-28",
     "auto": true,
     "match": {
       "name_contains": "Tipsy Tuesday Showcase",
@@ -360,19 +373,6 @@
     "badge": "😂 Comedy Pick",
     "note": "Listed on 4 calendars; prime-time start.",
     "score": 17.5,
-    "start_date": "2026-11-10",
-    "expires": "2026-11-10"
-  },
-  {
-    "id": "auto-2026-11-10-28",
-    "auto": true,
-    "match": {
-      "name_contains": "DJ Awesome",
-      "venue_contains": "Shrine"
-    },
-    "badge": "🪩 Nightlife Pick",
-    "note": "Free; listed on 84 calendars.",
-    "score": 17.0,
     "start_date": "2026-11-10",
     "expires": "2026-11-10"
   },
