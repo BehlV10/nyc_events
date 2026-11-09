@@ -154,7 +154,7 @@ HOLIDAYS = [
      "palette": {"accent": "#e07a3f", "accent2": "#2bb3a3", "bg": "#120c08", "card": "#1f1610",
                  "sky": ["#2a1a3a", "#a0482a", "#f0a050"], "skyline": "#160d08", "water": "#3a2418"}},
     {"key": "diwali", "label": "Diwali", "emoji": "🪔",
-     "greeting": "Happy Diwali! Festival of lights", "dates": lambda y: [_DIWALI[y]] if y in _DIWALI else [],
+     "greeting": "Happy Diwali! Festival of lights", "dates": lambda y: [_DIWALI[y], _DIWALI[y] + timedelta(days=1)] if y in _DIWALI else [],
      "palette": {"accent": "#ffcf3f", "accent2": "#ff7ab8", "bg": "#0e0618", "card": "#1a0c26",
                  "sky": ["#0b0420", "#2a0f4a", "#7a2a5a"], "skyline": "#140a24", "water": "#3a1a4a"}},
     {"key": "marathon", "label": "NYC Marathon", "emoji": "🏃", "motif": "confetti",
@@ -278,13 +278,11 @@ def holiday_theme_css():
             )
             rules.append(f"@media (max-width: 860px) {{ {sel} .banner {{ min-height: 300px; background-position: center 45%; }} }}")
             rules.append(f"{sel} .banner-svg-wrap {{ display: none !important; }}")
-            rules.append(f"{sel} .banner-title {{ filter: drop-shadow(0 2px 4px rgba(0,0,0,0.95)) drop-shadow(0 0 12px rgba(0,0,0,0.6)); }}")
-        elif h.get("palette"):
-            p = h["palette"]
-            sky = p.get("sky")
-            if sky:
-                rules.append(f'{sel} .banner-svg-wrap {{ --sky1: {sky[0]}; --sky2: {sky[1]}; --sky3: {_mix(sky[1], sky[2])};'
-                             f' --sky4: {sky[2]}; --sky5: {_tint(sky[2], 0.3)}; --water1: {p.get("water", sky[0])}; --water2: {sky[0]}; }}')
+        p = h.get("palette")
+        if p and p.get("sky"):
+            sky = p["sky"]
+            rules.append(f'{sel} .banner-svg-wrap {{ --sky1: {sky[0]}; --sky2: {sky[1]}; --sky3: {_mix(sky[1], sky[2])};'
+                         f' --sky4: {sky[2]}; --sky5: {_tint(sky[2], 0.3)}; --water1: {p.get("water", sky[0])}; --water2: {sky[0]}; }}')
         if h.get("css") == "custom":
             continue
         p = h["palette"]
