@@ -8931,7 +8931,6 @@ STATIC_LINKS = [
     ("theater", "TKTS Discount Booths (Times Square & Lincoln Center)", "https://www.tdf.org/tkts"),
     ("art",     "NYC Culture Pass (Free Museums with Library Card)", "https://www.culturepass.nyc/"),
     ("outdoors","NYC Parks Free Events Directory", "https://www.nycgovparks.org/events"),
-    ("outdoors","NYC Ferry ($4.00 harbor routes)", "https://www.ferry.nyc/"),
     ("outdoors","Meetup NYC Hiking & Trail Groups", "https://www.meetup.com/find/?keywords=hiking&location=us--ny--New%20York&source=EVENTS"),
     ("gaming",  "Meetup NYC Board Games & Tabletop", "https://www.meetup.com/find/?keywords=board%20games&location=us--ny--New%20York&source=EVENTS"),
     ("dance",   "Meetup NYC Salsa & Social Dance Groups", "https://www.meetup.com/find/?keywords=salsa%20dancing&location=us--ny--New%20York&source=EVENTS"),
@@ -8992,15 +8991,19 @@ DEAL_LINKS = [
     ("Broadway Direct Lotteries (Hamilton, Wicked, Lion King)", "https://lottery.broadwaydirect.com/"),
     ("Lucky Seat Broadway Lotteries ($39–$49)", "https://www.luckyseat.com/"),
     ("NYC Culture Pass (Free museums for NY library cardholders)", "https://www.culturepass.nyc/"),
-    ("Somewhere Nowhere NYC (Free VIP Guestlist before 11:30 PM)", "https://somewherenowherenyc.com/"),
-    ("The DL Rooftop (Free Guestlist Entry before 11 PM)", "https://thedl-nyc.com/"),
-    ("Harbor NYC (Free RSVP & Sunset Rooftop Parties)", "https://harbornewyorkcity.com/"),
-    ("230 Fifth Rooftop (Free General Admission & Igloos)", "https://www.230-fifth.com/"),
-    ("Superior Ingredients (Free RSVP House & Techno before 11 PM)", "https://si-bk.com/"),
-    ("Bossa Nova Civic Club (Free Entry Before 11 PM Nightly)", "https://www.instagram.com/bossanovacivicclub/"),
-    ("Jupiter Disco (Always Free / No Cover Retro DJs)", "https://www.jupiterdisco.com/"),
-    ("NYC Club Guestlists (Live Eventbrite Free Guestlists)", "https://www.eventbrite.com/d/ny--new-york/free-guestlist/"),
-    ("NYC Ferry Tickets ($4.00 per ride)", "https://www.ferry.nyc/"),
+]
+
+# Clubs and bars that are actually free to get into on at least some nights, checked against their
+# own listings (2026-11-09 audit). (name, url, what's free, area). Keep the "what's free" honest:
+# ticketed clubs with no free nights (Nebula, Superior Ingredients) don't belong here.
+GUESTLIST_LINKS = [
+    ("Bossa Nova Civic Club", "https://www.instagram.com/bossanovacivicclub/", "Free before 11 PM most nights", "Bushwick"),
+    ("Jupiter Disco", "https://www.jupiterdisco.com/", "No cover most nights", "Bushwick"),
+    ("The DL NYC", "https://thedl-nyc.com/", "Free RSVP on weekend nights", "Lower East Side"),
+    ("230 Fifth Rooftop", "https://www.230-fifth.com/", "No cover (igloos and tables are paid)", "Flatiron"),
+    ("Somewhere Nowhere NYC", "https://somewherenowherenyc.com/", "Some free RSVP nights; most are ticketed", "Chelsea"),
+    ("Harbor NYC Rooftop", "https://harbornewyorkcity.com/", "Free early RSVP on some nights", "Hell's Kitchen"),
+    ("Eventbrite NYC Guestlists", "https://www.eventbrite.com/d/ny--new-york/free-guestlist/", "Search free guestlist events", "Citywide"),
 ]
 
 

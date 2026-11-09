@@ -108,3 +108,31 @@ class LightTheme(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FreeTiersOnThePage(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.html = _render([
+            {"name": "Swing Night", "venue": "The Back Room", "url": "https://x.example/a", "price": "No Cover", "category": "dance"},
+            {"name": "Friday Party", "venue": "The DL", "url": "https://x.example/b", "price": "Free - $28.52", "category": "nightlife"},
+            {"name": "Park Concert", "venue": "Bryant Park", "url": "https://x.example/c", "price": "Free", "category": "music"},
+        ])
+
+    def test_each_tier_is_flagged_and_labelled(self):
+        self.assertEqual(self.html.count('data-free="true"'), 2, "free + no cover")
+        self.assertEqual(self.html.count('data-free-catch="true"'), 1)
+        self.assertIn('class="price free-catch"', self.html)
+        self.assertIn("No cover: no charge at the door", self.html)
+
+    def test_catch_checkbox_is_wired(self):
+        self.assertIn('id="free-catch-chk"', self.html)
+        self.assertIn("params.set('free', (freeCatchChk && freeCatchChk.checked) ? '2' : '1')", self.html)
+        self.assertEqual(self.html.count("(freeCatch && "), 2, "both filter passes")
+
+    def test_deals_sidebar_has_only_vetted_clubs(self):
+        deals = self.html.split("<h3>Deals &amp; lotteries</h3>", 1)[1].split("</div>\n        </div>", 1)[0]
+        for gone in ("slatenyc.com", "nebulanewyork.com", "si-bk.com", "ferry.nyc", "Dueling Pianos"):
+            self.assertNotIn(gone, deals)
+        self.assertIn("Bossa Nova Civic Club", deals)
+        self.assertNotIn("ferry.nyc", self.html)
