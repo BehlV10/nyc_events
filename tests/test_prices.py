@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import scrapers  # noqa: E402
 from scrapers import EASTERN, _partiful_price, admission_price, mentions_free  # noqa: E402
-from template import _is_event_free, _merge_duplicates  # noqa: E402
+from template import _free_kind, _is_event_free, _is_event_guestlist, _merge_duplicates  # noqa: E402
 
 
 class PriceTextTest(unittest.TestCase):
@@ -111,3 +111,50 @@ class MergePriceTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FreeKindTest(unittest.TestCase):
+    """Free vs no cover vs free-with-a-catch vs not free at all."""
+
+    def ev(self, name, **kw):
+        e = {"name": name, "venue": kw.pop("venue", "Somewhere"), "_source_venue": kw.pop("source", "Somewhere"),
+             "url": kw.pop("url", "https://example.com/event")}
+        e.update(kw)
+        return e
+
+    def test_plain_free(self):
+        self.assertEqual(_free_kind(self.ev("Concert in the Park", price="Free")), "free")
+        self.assertEqual(_free_kind(self.ev("Party", price="Free RSVP")), "free")
+        self.assertEqual(_free_kind(self.ev("Comedy", price="Free",
+                                            description="No cover and no drink or food minimum!")), "free")
+
+    def test_no_cover_is_free_entry_but_labelled(self):
+        e = self.ev("Monday Night Live Jazz & Swing Dancing", venue="The Back Room", price="No Cover")
+        self.assertEqual(_free_kind(e), "no_cover")
+        self.assertTrue(_is_event_free(e))
+
+    def test_free_with_a_catch(self):
+        for e in (
+            self.ev("Open Mic", price="Free / 1-drink min"),
+            self.ev("Comedy Mob Open Mic", description="FREE show (w/ one item minimum)."),
+            self.ev("Friday Party", price="Free - $28.52"),
+            self.ev("Techno", price="Free before 11PM"),
+        ):
+            self.assertEqual(_free_kind(e), "catch", e)
+            self.assertFalse(_is_event_free(e), e)
+
+    def test_not_free(self):
+        for e in (
+            self.ev("Gallery Talk", price="Included with admission: $17-$30; free for ages 16 and younger"),
+            self.ev("Family Art Project", price="Free with admission to the grounds."),
+            self.ev("Elew Trio", description="Tickets: $40 at the door. Bar open 5 PM - no cover charge for cocktails."),
+        ):
+            self.assertIsNone(_free_kind(e), e)
+
+    def test_club_venue_alone_is_not_a_free_guestlist(self):
+        paid = self.ev("Dubdogz", venue="Nebula", source="Nebula NYC", price="$22.05")
+        self.assertFalse(_is_event_guestlist(paid))
+        self.assertFalse(_is_event_free(paid))
+        self.assertFalse(_is_event_guestlist(self.ev("Carlo Lio", venue="Superior Ingredients",
+                                                     source="Superior Ingredients")))
+        self.assertTrue(_is_event_guestlist(self.ev("Friday Nights", venue="The DL", price="Free RSVP")))
