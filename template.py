@@ -2719,10 +2719,15 @@ def render_page(results, split_deferred=False, context_out=None):
   /* Modern Hero Banner */
   .banner {{
     position: relative;
-    min-height: 270px;
+    min-height: 280px;
     display: flex;
     align-items: flex-end;
     background-color: #0c0926;
+    background-image:
+      linear-gradient(180deg, rgba(12, 14, 20, 0.18) 0%, rgba(12, 14, 20, 0.62) 58%, rgba(12, 14, 20, 0.98) 100%),
+      url('/banner.jpg');
+    background-size: cover;
+    background-position: center 55%;
     border-bottom: 1px solid var(--border);
     padding: 40px 24px 28px;
     overflow: hidden;
@@ -2734,6 +2739,7 @@ def render_page(results, split_deferred=False, context_out=None):
     height: 100%;
     pointer-events: none;
     z-index: 0;
+    display: none;
   }}
   .banner-svg-wrap svg {{
     width: 100%;
@@ -2746,6 +2752,7 @@ def render_page(results, split_deferred=False, context_out=None):
     background: linear-gradient(180deg, rgba(12, 14, 20, 0.15) 0%, rgba(12, 14, 20, 0.65) 60%, rgba(12, 14, 20, 0.98) 100%);
     pointer-events: none;
     z-index: 1;
+    display: none;
   }}
   .banner-inner {{
     position: relative;
@@ -4680,7 +4687,10 @@ def render_page(results, split_deferred=False, context_out=None):
   [data-theme="indie"] .banner {{
     background-color: #0b0d11;
     background-image:
-      linear-gradient(180deg, rgba(11, 13, 17, 0.35) 0%, rgba(11, 13, 17, 0.82) 60%, rgba(11, 13, 17, 0.98) 100%);
+      linear-gradient(180deg, rgba(11, 13, 17, 0.35) 0%, rgba(11, 13, 17, 0.82) 60%, rgba(11, 13, 17, 0.98) 100%),
+      url('/banner.jpg');
+    background-size: cover;
+    background-position: center 55%;
     min-height: 250px;
     padding: 34px 24px 26px;
   }}
@@ -4884,7 +4894,10 @@ def render_page(results, split_deferred=False, context_out=None):
   [data-theme="anime"] .banner {{
     background-color: #110d28;
     background-image:
-      linear-gradient(180deg, rgba(30, 15, 60, 0.45) 0%, rgba(18, 12, 40, 0.78) 58%, rgba(13, 10, 28, 0.98) 100%);
+      linear-gradient(180deg, rgba(30, 15, 60, 0.45) 0%, rgba(18, 12, 40, 0.78) 58%, rgba(13, 10, 28, 0.98) 100%),
+      url('/banner.jpg');
+    background-size: cover;
+    background-position: center 55%;
     border-bottom: 2px solid rgba(255, 75, 147, 0.3);
     box-shadow: 0 4px 30px rgba(168, 85, 247, 0.18);
   }}

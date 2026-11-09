@@ -11,11 +11,16 @@ LIGHT_THEME_CSS = """
   /* ---------- Light theme ---------- */
   [data-theme="light"] body { background: var(--bg); color: var(--fg); }
 
-  /* Banner: keep the skyline art, fade it into the page instead of into black */
-  [data-theme="light"] .banner { background-color: #e9ecf3; }
-  [data-theme="light"] .banner-gradient-overlay {
-    background: linear-gradient(180deg, rgba(245, 246, 250, 0.10) 0%, rgba(245, 246, 250, 0.72) 55%, rgba(245, 246, 250, 1) 100%);
+  /* Banner: keep the NYC art, fade it into the page instead of into black */
+  [data-theme="light"] .banner {
+    background-color: #e9ecf3;
+    background-image:
+      linear-gradient(180deg, rgba(245, 246, 250, 0.10) 0%, rgba(245, 246, 250, 0.72) 55%, rgba(245, 246, 250, 1) 100%),
+      url('/banner.jpg');
+    background-size: cover;
+    background-position: center 55%;
   }
+  [data-theme="light"] .banner-gradient-overlay { display: none; }
   [data-theme="light"] .banner-title { color: #10131c; text-shadow: 0 1px 12px rgba(255, 255, 255, 0.7); }
   [data-theme="light"] .banner-top-tag {
     color: #92400e;

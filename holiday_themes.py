@@ -278,6 +278,7 @@ def holiday_theme_css():
             )
             rules.append(f"@media (max-width: 860px) {{ {sel} .banner {{ min-height: 300px; background-position: center 45%; }} }}")
             rules.append(f"{sel} .banner-svg-wrap {{ display: none !important; }}")
+            rules.append(f"{sel} .banner-gradient-overlay {{ display: none !important; }}")
         p = h.get("palette")
         if p and p.get("sky"):
             sky = p["sky"]
