@@ -896,6 +896,9 @@ def format_time(s):
 def format_when(e):
     if e.get("_time_unknown"):
         return "Time TBA"
+    if isinstance(e.get("_time"), datetime):
+        # The same value the card is sorted by (data-epoch, data-time-mins), so they can't disagree.
+        return e["_time"].astimezone(EASTERN).strftime("%-I:%M %p")
     if not e.get("date") and e.get("ends"):
         try:
             end = datetime.strptime(e["ends"], "%Y-%m-%d")
@@ -903,6 +906,16 @@ def format_when(e):
             return format_time(e.get("date"))
         return f"thru {end.month}/{end.day}"
     return format_time(e.get("date"))
+
+
+def _other_times_html(e):
+    others = e.get("_other_times") or []
+    if not others or e.get("_time_unknown"):
+        return ""
+    all_times = ", ".join(t.strftime("%-I:%M %p") for t in others)
+    shown = ", ".join(t.strftime("%-I:%M %p") for t in others[:2]) + (f" +{len(others) - 2}" if len(others) > 2 else "")
+    tip = f"Other calendars list {all_times}: often doors, or another set. Check the venue's page."
+    return f'<span class="when-alt" title="{escape(tip)}">also {escape(shown)}</span>'
 
 
 def format_date_heading(date_obj):
@@ -1532,6 +1545,24 @@ def _pill_css():
     return "".join(rules)
 
 
+def _other_start_times(e):
+    """Start times other calendars give for this card, 15+ minutes from its own: doors, or an
+    early/late set the card's source doesn't list. Placeholders (midnight, noon) aren't times."""
+    own = e["_time"].astimezone(EASTERN)
+    if _is_attraction_tour(e):
+        return []
+    out = []
+    for t in e.get("_times_seen") or []:
+        t = t.astimezone(EASTERN)
+        if t.date() != own.date() or (t.hour, t.minute) in ((0, 0), (12, 0)):
+            continue
+        if abs((t - own).total_seconds()) > 3 * 3600:
+            continue  # a different listing altogether (a daytime ride vs an evening event), not a set
+        if abs((t - own).total_seconds()) >= 15 * 60 and all(abs((t - o).total_seconds()) >= 60 for o in out):
+            out.append(t)
+    return sorted(out)
+
+
 def _merge_duplicates(events, word_freq=None):
     """Collapse events sharing a normalized name or head title within the same day bucket.
 
@@ -1847,6 +1878,11 @@ def _merge_duplicates(events, word_freq=None):
                     break
 
         if match:
+            # Every start time the merged listings give; the card shows the others next to its own.
+            seen = match.setdefault("_times_seen", [])
+            for t in (_event_local_time(match), _event_local_time(e)):
+                if t and not match.get("_time_unknown") and t not in seen:
+                    seen.append(t)
             # Consolidate hourly tour departures into a single daily listing
             if _is_attraction_tour(match) or _is_attraction_tour(e):
                 t_m, t_new = _event_local_time(match), _event_local_time(e)
@@ -2003,6 +2039,12 @@ def _merge_duplicates(events, word_freq=None):
             urls = [ev.get("url") or ""] + [a.get("url") or "" for a in ev.get("_alt_sources") or []]
             if any(_RSVP_HOST_RE.search(u) for u in urls) and any(_TICKET_SELLER_RE.search(u) for u in urls):
                 ev["price"] = None
+    # One start time per card: "date" (labels, calendar links, .ics, schedule keys, guide pages)
+    # always follows _time (sort order, data-epoch), whichever listing's time won above.
+    for e in out:
+        if isinstance(e.get("_time"), datetime) and not e.get("_time_unknown"):
+            e["date"] = e["_time"].astimezone(timezone.utc).isoformat()
+            e["_other_times"] = _other_start_times(e)
     return out
 
 
@@ -2352,7 +2394,7 @@ def render_page(results, split_deferred=False, context_out=None):
         # page can derive (subarea name, HH:MM) is repeated per event: deferred days are ~17k <li>s.
         flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-free-catch="true"' if free_kind == "catch" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
         return _compact_li(f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{hl_attr}{epoch_attr}{time_attr}{geo_attrs}>
-          <div class="when">{escape(format_when(e))}</div>
+          <div class="when">{escape(format_when(e))}{_other_times_html(e)}</div>
           <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{hl_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
             {note_html}{desc_html}
@@ -3071,6 +3113,7 @@ def render_page(results, split_deferred=False, context_out=None):
   }}
   .curator-note .note-label {{ font-weight: 700; color: #ffd866; }}
   .week-nav button.chip-picks.active {{ background: rgba(255, 184, 0, 0.2); border-color: #ffd866; color: #ffd866; }}
+  .when-alt {{ display: block; font-size: 10px; line-height: 1.25; font-weight: 500; color: var(--muted); cursor: help; overflow-wrap: anywhere; }}
   .badge-special {{ display:inline-block; margin-left: 6px; font-size: 10px; padding: 1px 6px; border-radius: 5px; color: #c678dd; border: 1px solid rgba(198,120,221,.35); white-space: nowrap; }}
   .badge-guestlist {{
     display: inline-flex;

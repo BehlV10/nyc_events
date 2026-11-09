@@ -214,3 +214,44 @@ class AlsoListedOnCards(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class OneTimePerCard(unittest.TestCase):
+    """A card's label, sort time, epoch, calendar date and "also" note never disagree."""
+
+    def setUp(self):
+        self.out = _merge([
+            _ev("Daniel Lanois", "SeatGeek NYC", "Le Poisson Rouge", _day_at(3, 18, 30),
+                url="https://seatgeek.com/daniel-lanois-tickets/1"),
+            _ev("Daniel Lanois Trio In The Round", "Le Poisson Rouge", "Le Poisson Rouge", _day_at(3, 19, 30),
+                url="https://kyd.to/KjMophJk"),
+        ])
+
+    def test_date_follows_the_winning_time(self):
+        e = self.out[0]
+        self.assertEqual(datetime.fromisoformat(e["date"]), e["_time"])
+        self.assertEqual(T.format_when(e), "7:30 PM")
+
+    def test_other_calendars_time_is_shown_not_hidden(self):
+        e = self.out[0]
+        self.assertEqual([t.strftime("%H:%M") for t in e["_other_times"]], ["18:30"])
+        self.assertIn("also 6:30 PM", T._other_times_html(e))
+
+    def test_label_is_the_sort_time_even_if_date_is_stale(self):
+        e = dict(self.out[0], date=_day_at(3, 18, 30).isoformat())
+        self.assertEqual(T.format_when(e), "7:30 PM")
+
+    def test_rendered_cards_match_their_sort_time(self):
+        import re
+        html = T.render_page({"generated_at": datetime.now(EASTERN).isoformat(), "venues": [
+            {"venue": "SeatGeek NYC", "url": "https://seatgeek.com/", "events": [
+                {"name": "Daniel Lanois", "date": _day_at(1, 18, 30).isoformat(), "venue": "Le Poisson Rouge",
+                 "url": "https://seatgeek.com/daniel-lanois-tickets/1", "category": "music"}]},
+            {"venue": "Le Poisson Rouge", "url": "https://lpr.com/", "events": [
+                {"name": "Daniel Lanois Trio In The Round", "date": _day_at(1, 19, 30).isoformat(),
+                 "venue": "Le Poisson Rouge", "url": "https://kyd.to/KjMophJk", "category": "music"}]},
+        ]})
+        cards = re.findall(r'data-time-mins="(\d+)"[^>]*><div class="when">(\d+):(\d\d) ([AP]M)', html)
+        self.assertTrue(cards)
+        for mins, h, m, ap in cards:
+            self.assertEqual(int(mins), (int(h) % 12 + (12 if ap == "PM" else 0)) * 60 + int(m))
