@@ -3265,6 +3265,64 @@ def scrape_tablelist(url, ua):
     return events
 
 
+def scrape_viewcy(url, ua, venue=None, address=None):
+    """Viewcy API scraper used by venues like The Red Pavilion."""
+    events = []
+    now = datetime.now(timezone.utc)
+    base_url = url.split("?")[0]
+    for page in range(1, 5):
+        try:
+            resp = _SESSION.get(f"{base_url}?page={page}", headers={"User-Agent": ua}, timeout=12)
+            if not resp.ok:
+                break
+            data = resp.json()
+            courses = data.get("data") or []
+            if not courses:
+                break
+            for c in courses:
+                c_name = c.get("name") or ""
+                c_url = c.get("url") or ""
+                tickets = c.get("tickets") or []
+                min_price = None
+                for t in tickets:
+                    p_str = t.get("price")
+                    if p_str:
+                        try:
+                            val = float(p_str)
+                            if min_price is None or val < min_price:
+                                min_price = val
+                        except ValueError:
+                            pass
+                price_display = f"${min_price:.2f}" if min_price else None
+
+                for ev in c.get("events") or []:
+                    starts_at = ev.get("starts_at")
+                    if not starts_at:
+                        continue
+                    try:
+                        dt = datetime.fromisoformat(starts_at.replace("Z", "+00:00"))
+                    except Exception:
+                        continue
+                    if dt < now:
+                        continue
+                    t_url = ev.get("book_url") or c_url
+                    events.append({
+                        "name": c_name,
+                        "date": dt.isoformat(),
+                        "url": t_url,
+                        "venue": venue or "The Red Pavilion",
+                        "address": address or "1241 Flushing Ave, Brooklyn, NY 11237",
+                        "price": price_display,
+                        "category": "theater",
+                    })
+            if not data.get("has_more") and len(courses) < 30:
+                break
+        except Exception:
+            break
+    return events
+
+
+
 def _parse_eventbrite_server_data(page_html):
     """Exact start times from Eventbrite's embedded window.__SERVER_DATA__, keyed by event id.
 
@@ -8282,7 +8340,6 @@ _ALL_VENUES = [
     {"name": "National Sawdust", "url": "https://donyc.com/venues/national-sawdust", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Bar LunÀtico", "url": "https://donyc.com/venues/lunatico", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Broadway (Bushwick)", "url": "https://www.thebroadway.nyc/showcalendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
-    {"name": "The Red Pavilion", "url": "https://donyc.com/venues/the-red-pavilion", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Starr Bar", "url": "https://donyc.com/venues/starr-bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Eris Deep Space", "url": "https://donyc.com/venues/eris-deep-space", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "St. Mazie", "url": "https://donyc.com/venues/st-mazie", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
@@ -8711,7 +8768,6 @@ _ALL_VENUES = [
     {"name": "Meetup: NYC Live Jazz & Acoustic Sessions", "url": "https://www.meetup.com/find/?keywords=jazz&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "music"},
 
     # Queer Nightlife, Drag Shows & Cabaret
-    {"name": "3 Dollar Bill (Queer & Drag Venue)", "url": "https://donyc.com/venues/3-dollar-bill", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "NYC Drag Shows & Brunches", "url": "https://www.eventbrite.com/d/ny--new-york/drag-show/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
     {"name": "The Stonewall Inn (Events)", "url": "https://www.eventbrite.com/d/ny--new-york/the-stonewall-inn/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
     {"name": "Pieces Bar (West Village Drag)", "url": "https://www.eventbrite.com/d/ny--new-york/pieces-bar/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
@@ -9066,6 +9122,10 @@ DIRECT_CALENDARS = [
      "default_category": "clubbing", "kwargs": {"venue": "Mood Ring", "address": "1194 Myrtle Ave, Brooklyn, NY 11221"}},
     {"name": "Friends and Lovers (own calendar)", "url": "https://www.fnlbk.com/upcoming", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar,
      "default_category": "music", "kwargs": {"venue": "Friends and Lovers", "address": "641 Classon Ave, Brooklyn, NY 11238"}},
+    {"name": "3 Dollar Bill (own calendar)", "url": "https://www.3dollarbillbk.com/rsvp", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar,
+     "default_category": "theater", "kwargs": {"venue": "3 Dollar Bill", "address": "260 Meserole St, Brooklyn, NY 11206"}},
+    {"name": "The Red Pavilion (own calendar)", "url": "https://www.viewcy.com/api/v1/schools/theredpavilion/courses", "ua": UA_CHROME, "scraper": scrape_viewcy,
+     "default_category": "theater", "kwargs": {"venue": "The Red Pavilion", "address": "1241 Flushing Ave, Brooklyn, NY 11237"}},
 ]
 _ALL_VENUES += DIRECT_CALENDARS
 _existing_source_names = {v["name"].lower() for v in _ALL_VENUES}
