@@ -93,7 +93,22 @@ class SquarespaceCalendars(unittest.TestCase):
 class RetiredDonycFeeds(unittest.TestCase):
     def test_venues_with_a_better_direct_feed_dont_use_donyc(self):
         urls = {v["url"] for v in scrapers.VENUES}
-        for slug in ("saint-vitus", "public-records", "terra-blues", "nebula", "wonderville", "mood-ring", "the-red-pavilion", "3-dollar-bill"):
+        retired_slugs = (
+            "saint-vitus", "public-records", "terra-blues", "nebula", "wonderville", "mood-ring",
+            "the-red-pavilion", "3-dollar-bill", "brooklyn-bowl", "good-room", "music-hall-of-williamsburg",
+            "brooklyn-steel", "kings-theatre", "the-sultan-room", "pioneer-works", "the-brooklyn-monarch",
+            "the-meadows", "under-the-k-bridge-park", "lunatico", "starr-bar", "st-mazie",
+            "brooklyn-comedy-collective-pig-pen", "brooklyn-art-haus", "alamo-drafthouse",
+            "forest-hills-stadium", "noguchi-museum", "flushing-town-hall",
+            "lehman-center-for-the-performing-arts", "webster-hall", "terminal-5", "racket-nyc",
+            "blue-note-jazz-club", "caveat", "the-town-hall", "cafe-wha", "sid-gold-s-request-room",
+            "groove", "new-york-comedy-club-east-village", "the-cooper-union", "somewhere-nowhere",
+            "new-york-comedy-club-midtown", "the-broadway-comedy-club", "the-paley-center-for-media",
+            "chamber-music-society-of-lincoln-center", "new-york-comedy-club-upper-west-side",
+            "comic-strip-live-nyc", "shrine", "silvana-nyc", "ifc-center", "nublu-151",
+            "eastville-comedy-club", "house-of-yes", "national-sawdust", "pianos", "berlin",
+        )
+        for slug in retired_slugs:
             self.assertFalse([u for u in urls if u.startswith(f"https://donyc.com/venues/{slug}")], slug)
 
     def test_venues_that_sell_beyond_dice_keep_it(self):
@@ -201,5 +216,106 @@ class DonycDetails(unittest.TestCase):
         self.assertEqual(ev[0]["_donyc_path"], "/events/2030/1/1/show-tickets")
 
 
+class BoweryPresentsTests(unittest.TestCase):
+    def test_parses_shows(self):
+        sample = {
+            "events": [
+                {
+                    "title": {"eventTitleText": "The National"},
+                    "eventDateTimeISO": "2027-02-18T20:00:00-05:00",
+                    "ticketing": {"eventUrl": "https://www.axs.com/events/123/tickets"},
+                    "ticketPriceLow": "$45",
+                    "venue": {
+                        "title": "Brooklyn Steel",
+                        "address_line": "319 Frost Street, Brooklyn, NY 11222",
+                        "city": "Brooklyn",
+                        "state": "NY",
+                    },
+                }
+            ]
+        }
+        resp = mock.Mock(status_code=200, json=mock.Mock(return_value=sample))
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_bowery_presents(None, "ua")
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "The National")
+        self.assertEqual(events[0]["venue"], "Brooklyn Steel")
+        self.assertEqual(events[0]["price"], "$45")
+        self.assertEqual(events[0]["url"], "https://www.axs.com/events/123/tickets")
+
+
+class AlamoDrafthouseTests(unittest.TestCase):
+    def test_parses_sessions(self):
+        sample = {
+            "data": {
+                "presentations": [{"slug": "parasite-2019", "show": {"title": "Parasite"}}],
+                "market": [{
+                    "cinemas": [{
+                        "id": "2101", "name": "Downtown Brooklyn",
+                        "street1": "445 Albee Square West", "city": "Brooklyn", "state": "NY", "postalCode": "11201"
+                    }]
+                }],
+                "sessions": [{
+                    "presentationSlug": "parasite-2019",
+                    "cinemaId": "2101",
+                    "showTimeClt": "2027-02-18T19:30:00"
+                }]
+            }
+        }
+        resp = mock.Mock(status_code=200, json=mock.Mock(return_value=sample))
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_alamo_drafthouse(None, "ua")
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "Parasite")
+        self.assertEqual(events[0]["venue"], "Alamo Drafthouse (Downtown Brooklyn)")
+        self.assertIn("Albee Square", events[0]["address"])
+        self.assertIn("drafthouse.com/nyc/show/parasite-2019", events[0]["url"])
+
+
+class BlueNoteTests(unittest.TestCase):
+    def test_parses_show_groups(self):
+        html = """
+        <li class="show-group">
+            <h2>Vic Mensa Live</h2>
+            <ul class="group-events">
+                <li class="event">
+                    <time>
+                        <span class="day">Tue, Dec 15</span>
+                        <span class="time">8:00 PM</span>
+                    </time>
+                    <a class="buy-tickets" href="https://ticketweb.com/event/123">Buy Tickets</a>
+                </li>
+            </ul>
+        </li>
+        """
+        resp = mock.Mock(status_code=200, text=html)
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_bluenote(None, "ua")
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "Vic Mensa Live")
+        self.assertEqual(events[0]["venue"], "Blue Note Jazz Club")
+        self.assertEqual(events[0]["url"], "https://ticketweb.com/event/123")
+
+
+class BrooklynBowlTests(unittest.TestCase):
+    def test_parses_event_items(self):
+        html = """
+        <div class="eventItem entry clearfix">
+            <h3>The Roots Live</h3>
+            <div class="date">Dec 20</div>
+            <div class="time">Show: 8:00 PM</div>
+            <a class="tickets" href="https://ticketmaster.com/event/456">Tickets</a>
+        </div>
+        """
+        resp = mock.Mock(status_code=200, text=html)
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_brooklyn_bowl(None, "ua")
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "The Roots Live")
+        self.assertEqual(events[0]["venue"], "Brooklyn Bowl")
+        self.assertEqual(events[0]["url"], "https://ticketmaster.com/event/456")
+
+
 if __name__ == "__main__":
     unittest.main()
+

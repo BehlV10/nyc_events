@@ -3223,6 +3223,8 @@ DICE_VENUE_PAGES = (
     ('LISTEN', 'listen-e8aw'),
     ("Harriet's Lounge - 1 Hotel", 'harriets-lounge---1-hotel-dda6'),
     ('Paramount Times Square in Generator Hotel', 'paramount-times-square-in-generator-hotel-g5eq6'),
+    ('Berlin Under A', 'berlin-nyc-e27w'),
+    ('Pianos NYC', 'pianos-new-york-e27w'),
 )
 
 
@@ -3320,6 +3322,434 @@ def scrape_viewcy(url, ua, venue=None, address=None):
         except Exception:
             break
     return events
+
+
+def scrape_nublu(url, ua, venue=None, address=None):
+    """Nublu 151 — live jazz, avant-garde, electronic, and global sets on Ave C."""
+    resp = _SESSION.get(url or "https://nublu.net/", headers={"User-Agent": ua}, timeout=12)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
+    events = []
+    now = datetime.now(timezone.utc)
+    for box in soup.select(".scheduler151"):
+        box_id = box.get("id", "")
+        digits = re.sub(r"\D", "", box_id)
+        if not digits:
+            continue
+        try:
+            ts = int(digits[-10:])
+            day_dt = datetime.fromtimestamp(ts, EASTERN).date()
+        except Exception:
+            continue
+        for p in box.select(".sch-body151 p"):
+            p_soup = BeautifulSoup(str(p), "html.parser")
+            for a in p_soup.find_all("a", href=True):
+                t_link = a["href"]
+                prev = a.previous_sibling
+                prev_text = ""
+                while prev:
+                    if isinstance(prev, str):
+                        prev_text = prev.strip() + " " + prev_text
+                    elif prev.name != "a":
+                        prev_text = prev.get_text(" ", strip=True) + " " + prev_text
+                    else:
+                        break
+                    prev = prev.previous_sibling
+                m_t = re.search(r"(\d{1,2}(?::\d{2})?\s*(?:am|pm)|midnight)", prev_text, re.I)
+                clean_name = re.sub(r"^\s*(\d{1,2}(?::\d{2})?\s*(?:am|pm)|midnight)[\s-]*", "", prev_text, flags=re.I).strip()
+                clean_name = re.sub(r"\s{2,}", " ", clean_name).strip()
+                if not clean_name:
+                    clean_name = "Live at Nublu"
+                hr, mn = 20, 0
+                if m_t:
+                    t_str = m_t.group(1).lower()
+                    if "midnight" in t_str:
+                        hr, mn = 23, 59
+                    else:
+                        m_hm = re.match(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", t_str)
+                        if m_hm:
+                            hr = int(m_hm.group(1))
+                            mn = int(m_hm.group(2) or 0)
+                            if m_hm.group(3) == "pm" and hr != 12:
+                                hr += 12
+                            elif m_hm.group(3) == "am" and hr == 12:
+                                hr = 0
+                try:
+                    dt = datetime(day_dt.year, day_dt.month, day_dt.day, hr, mn, tzinfo=EASTERN).astimezone(timezone.utc)
+                except Exception:
+                    continue
+                if dt < now:
+                    continue
+                events.append({
+                    "name": clean_name[:90],
+                    "date": dt.isoformat(),
+                    "url": t_link,
+                    "venue": venue or "Nublu 151",
+                    "address": address or "151 Avenue C, New York, NY 10009",
+                    "price": None,
+                    "category": "music",
+                })
+    return events
+
+
+def scrape_silvana(url, ua, venue=None, address=None):
+    """Silvana Harlem — subterranean music venue, cafe & cultural hub."""
+    resp = _SESSION.get(url or "https://www.silvana-nyc.com/", headers={"User-Agent": ua}, timeout=12)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
+    events = []
+    now = datetime.now(timezone.utc)
+    cur_year = datetime.now(EASTERN).year
+    items = soup.select(".wixui-repeater__item")
+    for item in items:
+        text = item.get_text(" | ", strip=True)
+        a = item.find("a", href=True)
+        if not a or "/event/" not in a["href"]:
+            continue
+        parts = [p.strip() for p in text.split(" | ") if p.strip()]
+        m_date = re.search(r"([A-Za-z]+)\s+(\d{1,2}),?\s*(\d{4})?", text)
+        m_time = re.search(r"(\d{1,2}(?::\d{2})?\s*(?:am|pm))\s*-\s*(\d{1,2}(?::\d{2})?\s*(?:am|pm))?", text, re.I)
+        if m_date and parts:
+            title = parts[0]
+            month_str, day_str, yr_str = m_date.groups()
+            year = int(yr_str) if yr_str else cur_year
+            try:
+                mo = datetime.strptime(month_str[:3], "%b").month
+                day = int(day_str)
+                hr, mn = 20, 0
+                if m_time:
+                    t1 = m_time.group(1).lower()
+                    m_hm = re.match(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)", t1)
+                    if m_hm:
+                        hr = int(m_hm.group(1))
+                        mn = int(m_hm.group(2) or 0)
+                        if m_hm.group(3) == "pm" and hr != 12:
+                            hr += 12
+                        elif m_hm.group(3) == "am" and hr == 12:
+                            hr = 0
+                dt = datetime(year, mo, day, hr, mn, tzinfo=EASTERN).astimezone(timezone.utc)
+                if dt < now:
+                    continue
+                events.append({
+                    "name": title,
+                    "date": dt.isoformat(),
+                    "url": a["href"],
+                    "venue": venue or "Silvana NYC",
+                    "address": address or "300 W 116th St, New York, NY 10026",
+                    "price": "Free",
+                    "category": "music",
+                })
+            except Exception:
+                pass
+    seen, out = set(), []
+    for e in events:
+        k = (e["name"].lower(), e["date"][:10])
+        if k not in seen:
+            seen.add(k)
+            out.append(e)
+    return out
+
+
+def scrape_shrine_harlem(url, ua, venue=None, address=None):
+    """Shrine Harlem — iconic live music venue, afrobeats, funk, jazz & reggae."""
+    resp = _SESSION.get(url or "https://www.shrinenyc.com/calendar_main.php", headers={"User-Agent": ua}, timeout=12)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "html.parser")
+    events = []
+    now = datetime.now(timezone.utc)
+    cur_year = datetime.now(EASTERN).year
+    for tr in soup.find_all("tr"):
+        txt = tr.get_text(" ", strip=True)
+        m_day = re.search(r"\b(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2})\b", txt)
+        if m_day:
+            month_name = m_day.group(1)
+            day_num = int(m_day.group(2))
+            try:
+                mo = datetime.strptime(month_name[:3], "%b").month
+                sets = re.findall(r"(\d{1,2}(?::\d{2})?\s*(?:am|pm)?\s*(?:-\s*\d{1,2}(?::\d{2})?\s*(?:am|pm))?)\s*:\s*([^:\n\r]+)", txt)
+                for t_range, artist in sets:
+                    artist_clean = re.sub(r"images/\S+|\S+\.(?:jpg|png|gif)|\b(?:https?://|www\.)\S+|\S+\.(?:com|org|net|bandcamp)\S*", "", artist).strip()
+                    artist_clean = re.sub(r"\s{2,}", " ", artist_clean).strip(" -|:")
+                    if not artist_clean or len(artist_clean) < 3 or "happy hour" in artist_clean.lower():
+                        continue
+                    m_start = re.search(r"(\d{1,2})(?::(\d{2}))?\s*(am|pm)?", t_range, re.I)
+                    if m_start:
+                        hr = int(m_start.group(1))
+                        mn = int(m_start.group(2) or 0)
+                        ampm = (m_start.group(3) or "").lower()
+                        if not ampm:
+                            ampm = "am" if hr in (12, 1, 2, 3, 4) else "pm"
+                        if ampm == "pm" and hr != 12:
+                            hr += 12
+                        elif ampm == "am" and hr == 12:
+                            hr = 0
+                        dt = datetime(cur_year, mo, day_num, hr, mn, tzinfo=EASTERN).astimezone(timezone.utc)
+                        if dt < now:
+                            continue
+                        events.append({
+                            "name": artist_clean[:90],
+                            "date": dt.isoformat(),
+                            "url": "https://www.shrinenyc.com/calendar_main.php",
+                            "venue": venue or "Shrine Harlem",
+                            "address": address or "2271 Adam Clayton Powell Jr Blvd, New York, NY 10030",
+                            "price": "Free",
+                            "category": "music",
+                        })
+            except Exception:
+                pass
+    seen, out = set(), []
+    for e in events:
+        k = (e["name"].lower(), e["date"])
+        if k not in seen:
+            seen.add(k)
+            out.append(e)
+    return out
+
+
+def scrape_bowery_presents(url, ua):
+    """The Bowery Presents — direct AEG feeds for Webster Hall, Brooklyn Steel, Terminal 5, MHOW, Racket, etc."""
+    urls = [
+        "https://aegwebprod.blob.core.windows.net/json/resources/8/events/208lbnmkq5/events.json",
+        "https://aegwebprod.blob.core.windows.net/json/resources/8/events/7301mbln09/events.json",
+    ]
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    nyc_venues = {
+        "brooklyn steel", "terminal 5", "webster hall", "music hall of williamsburg",
+        "racket", "bowery ballroom", "mercury lounge", "kings theatre", "the meadows",
+        "brooklyn monarch", "under the k bridge park", "forest hills stadium", "the town hall",
+    }
+    for u in urls:
+        try:
+            resp = _SESSION.get(u, headers={"User-Agent": ua}, timeout=15)
+            if resp.status_code != 200:
+                continue
+            data = resp.json()
+            for ev in data.get("events", []):
+                v = ev.get("venue") or {}
+                v_title = (v.get("title") or "").strip()
+                v_addr = (v.get("address_line") or "").strip()
+                city = (v.get("city") or "").strip().lower()
+                state = (v.get("state") or "").strip().upper()
+                if state != "NY" and not any(nv in v_title.lower() for nv in nyc_venues):
+                    continue
+                if any(up in v_addr.lower() or up in city for up in ["hudson", "orchard park", "buffalo", "canandaigua", "patchogue"]):
+                    continue
+                iso = ev.get("eventDateTimeISO")
+                if not iso or iso == "TBD":
+                    continue
+                try:
+                    dt = datetime.fromisoformat(iso).astimezone(timezone.utc)
+                except ValueError:
+                    continue
+                if dt < now:
+                    continue
+                title_obj = ev.get("title") or {}
+                name = title_obj.get("eventTitleText") or title_obj.get("headlinersText") or "Live in Concert"
+                ticketing = ev.get("ticketing") or {}
+                t_url = ticketing.get("eventUrl") or ticketing.get("url") or ticketing.get("ticketURL") or "https://www.bowerypresents.com/"
+                price = None
+                p_low = ev.get("ticketPriceLow")
+                if p_low and p_low != "$0":
+                    price = p_low
+                k = (name.lower(), dt.isoformat(), v_title.lower())
+                if k not in seen:
+                    seen.add(k)
+                    events.append({
+                        "name": name[:90],
+                        "date": dt.isoformat(),
+                        "url": t_url,
+                        "venue": v_title,
+                        "address": v_addr,
+                        "price": price,
+                        "category": "music",
+                    })
+        except Exception:
+            pass
+    return events
+
+
+def scrape_alamo_drafthouse(url, ua):
+    """Alamo Drafthouse NYC — official schedule API for Brooklyn, Manhattan & Staten Island."""
+    u = url or "https://drafthouse.com/s/mother/v2/schedule/market/nyc"
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    try:
+        resp = _SESSION.get(u, headers={"User-Agent": ua}, timeout=15)
+        if resp.status_code != 200:
+            return []
+        data = resp.json().get("data") or {}
+        p_map = {}
+        for p in data.get("presentations", []):
+            slug = p.get("slug")
+            title = p.get("show", {}).get("title") if isinstance(p.get("show"), dict) else p.get("title")
+            if slug and title:
+                p_map[slug] = title
+        c_map = {}
+        for m in (data.get("market") or []):
+            for c in m.get("cinemas", []):
+                c_id = c.get("id")
+                c_name = f"Alamo Drafthouse ({c.get('name')})"
+                c_addr = f"{c.get('street1', '')}, {c.get('city', '')}, {c.get('state', '')} {c.get('postalCode', '')}".strip(", ")
+                c_map[c_id] = (c_name, c_addr)
+        for s in data.get("sessions", []):
+            p_slug = s.get("presentationSlug")
+            c_id = s.get("cinemaId")
+            show_time = s.get("showTimeClt")
+            if not p_slug or not c_id or not show_time:
+                continue
+            title = p_map.get(p_slug) or p_slug.replace("-", " ").title()
+            c_info = c_map.get(c_id) or ("Alamo Drafthouse NYC", "New York, NY")
+            try:
+                dt = datetime.fromisoformat(show_time).replace(tzinfo=EASTERN).astimezone(timezone.utc)
+            except ValueError:
+                continue
+            if dt < now:
+                continue
+            t_url = f"https://drafthouse.com/nyc/show/{p_slug}?cinemaId={c_id}"
+            k = (title.lower(), dt.isoformat(), c_id)
+            if k not in seen:
+                seen.add(k)
+                events.append({
+                    "name": title[:90],
+                    "date": dt.isoformat(),
+                    "url": t_url,
+                    "venue": c_info[0],
+                    "address": c_info[1],
+                    "price": None,
+                    "category": "film",
+                })
+    except Exception:
+        pass
+    return events
+
+
+def scrape_bluenote(url, ua, venue=None, address=None):
+    """Blue Note Jazz Club NYC — official show list with TicketWeb direct ticketing."""
+    u = url or "https://www.bluenotejazz.com/nyc/shows?list_view"
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    cur_year = datetime.now(EASTERN).year
+    try:
+        resp = _SESSION.get(u, headers={"User-Agent": ua}, timeout=15)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for sg in soup.select("li.show-group"):
+            h2 = sg.find("h2")
+            if not h2:
+                continue
+            title = h2.get_text(" ", strip=True)
+            for ev in sg.select("li.event"):
+                t_tag = ev.find("time")
+                if not t_tag:
+                    continue
+                day_el = t_tag.find(class_="day")
+                time_el = t_tag.find(class_="time")
+                if not day_el or not time_el:
+                    continue
+                day_text = day_el.get_text(" ", strip=True)
+                time_text = time_el.get_text(" ", strip=True)
+                buy_a = ev.find("a", href=True)
+                t_url = buy_a["href"] if buy_a else "https://www.bluenotejazz.com/nyc/shows/"
+                m_dt = re.search(r"([A-Za-z]+)\s+(\d{1,2})", day_text)
+                m_tm = re.search(r"(\d{1,2}):(\d{2})\s*(am|pm)", time_text, re.I)
+                if m_dt and m_tm:
+                    mo_str, d_str = m_dt.groups()
+                    hr, mn, ampm = int(m_tm.group(1)), int(m_tm.group(2)), m_tm.group(3).lower()
+                    if ampm == "pm" and hr != 12:
+                        hr += 12
+                    elif ampm == "am" and hr == 12:
+                        hr = 0
+                    try:
+                        mo = datetime.strptime(mo_str[:3], "%b").month
+                        year = cur_year if mo >= datetime.now(EASTERN).month - 1 else cur_year + 1
+                        dt = datetime(year, mo, int(d_str), hr, mn, tzinfo=EASTERN).astimezone(timezone.utc)
+                    except Exception:
+                        continue
+                    if dt < now:
+                        continue
+                    k = (title.lower(), dt.isoformat())
+                    if k not in seen:
+                        seen.add(k)
+                        events.append({
+                            "name": title[:90],
+                            "date": dt.isoformat(),
+                            "url": t_url,
+                            "venue": venue or "Blue Note Jazz Club",
+                            "address": address or "131 W 3rd St, New York, NY 10012",
+                            "price": None,
+                            "category": "music",
+                        })
+    except Exception:
+        pass
+    return events
+
+
+def scrape_brooklyn_bowl(url, ua, venue=None, address=None):
+    """Brooklyn Bowl — direct calendar with official Ticketmaster ticket links."""
+    u = url or "https://brooklyn.brooklynbowl.com/shows/all"
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    cur_year = datetime.now(EASTERN).year
+    try:
+        resp = _SESSION.get(u, headers={"User-Agent": ua}, timeout=15)
+        if resp.status_code != 200:
+            return []
+        soup = BeautifulSoup(resp.text, "html.parser")
+        for item in soup.select("div.eventItem"):
+            text = item.get_text(" ", strip=True)
+            if "closed today" in text.lower():
+                continue
+            title_el = item.find("h3") or item.find("h2") or item.find(class_="title")
+            title = title_el.get_text(" ", strip=True) if title_el else ""
+            if not title or "vip bowling" in title.lower():
+                continue
+            t_link = item.find("a", class_="tickets")
+            if not t_link:
+                t_link = item.find("a", href=re.compile(r"/events/detail/"))
+            t_url = t_link["href"] if t_link else "https://brooklyn.brooklynbowl.com/shows"
+            m_date = re.search(r"\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2})\b", text)
+            m_time = re.search(r"Show:\s*(\d{1,2}):(\d{2})\s*(AM|PM)", text, re.I)
+            if not m_time:
+                m_time = re.search(r"Doors:\s*(\d{1,2}):(\d{2})\s*(AM|PM)", text, re.I)
+            if m_date:
+                try:
+                    mo = datetime.strptime(m_date.group(1), "%b").month
+                    d = int(m_date.group(2))
+                    hr, mn = 20, 0
+                    if m_time:
+                        hr, mn, ampm = int(m_time.group(1)), int(m_time.group(2)), m_time.group(3).upper()
+                        if ampm == "PM" and hr != 12:
+                            hr += 12
+                        elif ampm == "AM" and hr == 12:
+                            hr = 0
+                    year = cur_year if mo >= datetime.now(EASTERN).month - 1 else cur_year + 1
+                    dt = datetime(year, mo, d, hr, mn, tzinfo=EASTERN).astimezone(timezone.utc)
+                except Exception:
+                    continue
+                if dt < now:
+                    continue
+                k = (title.lower(), dt.isoformat())
+                if k not in seen:
+                    seen.add(k)
+                    events.append({
+                        "name": title[:90],
+                        "date": dt.isoformat(),
+                        "url": t_url,
+                        "venue": venue or "Brooklyn Bowl",
+                        "address": address or "61 Wythe Ave, Brooklyn, NY 11249",
+                        "price": None,
+                        "category": "music",
+                    })
+    except Exception:
+        pass
+    return events
+
 
 
 
@@ -8314,48 +8744,28 @@ _ALL_VENUES = [
     {"name": "Brooklyn Paramount (Official Calendar)", "url": "https://www.brooklynparamount.com/shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
 
     # Brooklyn Music & Nightlife
-    {"name": "Brooklyn Bowl", "url": "https://donyc.com/venues/brooklyn-bowl", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Elsewhere Brooklyn", "url": "https://www.elsewherebrooklyn.com/calendar", "ua": UA_CHROME, "scraper": scrape_elsewhere_brooklyn, "default_category": "clubbing"},
-    {"name": "Good Room Greenpoint", "url": "https://donyc.com/venues/good-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "TV Eye Ridgewood", "url": "https://donyc.com/venues/tv-eye", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Bell House", "url": "https://www.thebellhouseny.com/shows", "ua": UA_CHROME, "scraper": scrape_bell_house, "default_category": "comedy"},
     {"name": "Littlefield Brooklyn", "url": "https://www.eventbrite.com/api/v3/organizers/18046024060/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
-    {"name": "Music Hall of Williamsburg", "url": "https://donyc.com/venues/music-hall-of-williamsburg", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Brooklyn Steel", "url": "https://donyc.com/venues/brooklyn-steel", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Warsaw Brooklyn", "url": "https://www.warsawconcerts.com/", "ua": UA_CHROME, "scraper": scrape_warsaw, "default_category": "music"},
     {"name": "Barclays Center", "url": "https://donyc.com/venues/barclays-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "sports"},
-    {"name": "Kings Theatre Flatbush", "url": "https://donyc.com/venues/kings-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Baby's All Right Williamsburg", "url": "https://donyc.com/venues/baby-s-all-right", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "The Sultan Room Bushwick", "url": "https://donyc.com/venues/the-sultan-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Pioneer Works Red Hook", "url": "https://donyc.com/venues/pioneer-works", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
     {"name": "Market Hotel", "url": "https://donyc.com/venues/market-hotel", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Avant Gardner", "url": "https://donyc.com/venues/avant-gardner", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Brooklyn Mirage", "url": "https://donyc.com/venues/the-brooklyn-mirage", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Basement NY", "url": "https://donyc.com/venues/basement-ny", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
-    {"name": "The Brooklyn Monarch", "url": "https://donyc.com/venues/the-brooklyn-monarch", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "The Meadows Brooklyn", "url": "https://donyc.com/venues/the-meadows", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Brooklyn Paramount", "url": "https://www.bklynparamount.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
-    {"name": "Under the K Bridge Park", "url": "https://donyc.com/venues/under-the-k-bridge-park", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Roulette Intermedium", "url": "https://donyc.com/venues/roulette", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "National Sawdust", "url": "https://donyc.com/venues/national-sawdust", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Bar LunÀtico", "url": "https://donyc.com/venues/lunatico", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Broadway (Bushwick)", "url": "https://www.thebroadway.nyc/showcalendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
-    {"name": "Starr Bar", "url": "https://donyc.com/venues/starr-bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "Eris Deep Space", "url": "https://donyc.com/venues/eris-deep-space", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
-    {"name": "St. Mazie", "url": "https://donyc.com/venues/st-mazie", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Old Man Hustle BKLYN Comedy Club", "url": "https://donyc.com/venues/old-man-hustle-bklyn-comedy-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "Brooklyn Comedy Collective Pig Pen", "url": "https://donyc.com/venues/brooklyn-comedy-collective-pig-pen", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "Brooklyn Art Haus", "url": "https://donyc.com/venues/brooklyn-art-haus", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Crown Hill Theater", "url": "https://donyc.com/venues/crown-hill-theater", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Mama Tried", "url": "https://mamatriedbk.com/upcoming-events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
     {"name": "Brooklyn Storehouse", "url": "https://donyc.com/venues/brooklyn-storehouse", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Liz's Book_Bar", "url": "https://donyc.com/venues/liz-s-book_bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "books"},
-    {"name": "Alamo Drafthouse Cinema (Brooklyn)", "url": "https://donyc.com/venues/alamo-drafthouse", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
-
 
     # Queens
-    {"name": "Forest Hills Stadium", "url": "https://donyc.com/venues/forest-hills-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Noguchi Museum", "url": "https://donyc.com/venues/noguchi-museum", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
     {"name": "Museum of the Moving Image", "url": "https://movingimage.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "film"},
     {"name": "Queens Botanical Garden", "url": "https://queensbotanical.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
     {"name": "Queens County Farm Museum", "url": "https://www.queensfarm.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "outdoors"},
@@ -8396,7 +8806,6 @@ _ALL_VENUES = [
     {"name": "Zinc Bar (Jazz)", "url": "https://www.zincbar.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Trans-Pecos", "url": "https://www.thetranspecos.com/", "ua": UA_CHROME, "scraper": scrape_venuepilot, "default_category": "music"},
     {"name": "Starr Bar (own calendar)", "url": "https://www.starrbar.com/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
-    {"name": "Bar Lun\u00e0tico", "url": "https://www.barlunatico.com/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
     {"name": "Birdland Jazz Club", "url": "https://www.birdlandjazz.com/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/tm-event/", "venue": "Birdland", "address": "315 W 44th St, New York, NY 10036"}},
     {"name": "Roulette (own calendar)", "url": "https://roulette.org/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/event/", "venue": "Roulette", "address": "509 Atlantic Ave, Brooklyn, NY 11217"}},
     {"name": "Issue Project Room", "url": "https://issueprojectroom.org/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/event/", "venue": "ISSUE Project Room", "address": "22 Boerum Pl, Brooklyn, NY 11201"}},
@@ -8551,7 +8960,6 @@ _ALL_VENUES = [
     {"name": "NYC Parades, Races & Street Festivals", "url": "https://data.cityofnewyork.us/resource/tvpp-9vvx.json", "ua": UA_CHROME, "scraper": scrape_nyc_permitted_events, "default_category": "community"},
     {"name": "Louis Armstrong House Museum", "url": "https://www.louisarmstronghouse.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Queens Theatre", "url": "https://queenstheatre.org/events/", "ua": UA_CHROME, "scraper": scrape_queens_theatre, "default_category": "theater"},
-    {"name": "Flushing Town Hall", "url": "https://donyc.com/venues/flushing-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "MoMA PS1", "url": "https://donyc.com/venues/moma-ps1", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
     {"name": "Grove 34 Astoria", "url": "https://www.eventbrite.com/api/v3/organizers/34913454313/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "Culture Lab LIC", "url": "https://www.eventbrite.com/d/ny--new-york/culture-lab-lic/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "music"},
@@ -8565,7 +8973,6 @@ _ALL_VENUES = [
 
     # The Bronx
     {"name": "Yankee Stadium", "url": "https://donyc.com/venues/yankee-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "sports"},
-    {"name": "Lehman Center for the Performing Arts", "url": "https://donyc.com/venues/lehman-center-for-the-performing-arts", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
 
     # Staten Island
     {"name": "St. George Theatre Staten Island", "url": "https://donyc.com/venues/st-george-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
@@ -8573,13 +8980,8 @@ _ALL_VENUES = [
     # Manhattan Music, Clubs & Comedy
     {"name": "Bowery Ballroom", "url": "https://donyc.com/venues/bowery-ballroom", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Mercury Lounge", "url": "https://donyc.com/venues/mercury-lounge", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Webster Hall", "url": "https://donyc.com/venues/webster-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Terminal 5", "url": "https://donyc.com/venues/terminal-5", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Irving Plaza", "url": "https://www.irvingplaza.com/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
-    {"name": "Racket NYC", "url": "https://donyc.com/venues/racket-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Le Poisson Rouge", "url": "https://donyc.com/venues/le-poisson-rouge", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Blue Note Jazz Club", "url": "https://donyc.com/venues/blue-note-jazz-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Caveat NYC", "url": "https://donyc.com/venues/caveat", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "David Rubenstein Atrium (Lincoln Center)", "url": "https://donyc.com/venues/david-rubenstein-atrium-at-lincoln-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Brooklyn Music Kitchen", "url": "https://brooklynmusickitchen.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Sugar Mouse NYC", "url": "https://www.eventbrite.com/api/v3/organizers/121119407255/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "gaming"},
@@ -8590,41 +8992,24 @@ _ALL_VENUES = [
     {"name": "Radio City Music Hall", "url": "https://donyc.com/venues/radio-city-music-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Beacon Theatre", "url": "https://donyc.com/venues/beacon-theatre", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Carnegie Hall", "url": "https://www.carnegiehall.org/Events", "ua": UA_CHROME, "scraper": scrape_carnegie_hall_tm, "default_category": "music"},
-    {"name": "The Town Hall", "url": "https://donyc.com/venues/the-town-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Sony Hall", "url": "https://donyc.com/venues/sony-hall", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Gramercy Theatre", "url": "http://thegramercytheatre.com/shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "music"},
-    {"name": "Cafe Wha? (Greenwich Village)", "url": "https://donyc.com/venues/cafe-wha", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Bryant Park NYC", "url": "https://bryantpark.org/calendar", "ua": UA_CHROME, "scraper": scrape_bryant_park, "default_category": "outdoors"},
     {"name": "Bowery Palace", "url": "https://donyc.com/venues/bowery-palace", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Pianos NYC (Lower East Side)", "url": "https://donyc.com/venues/pianos", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Rooftop at Pier 17", "url": "https://donyc.com/venues/the-rooftop-at-pier-17", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Palladium Times Square", "url": "https://donyc.com/venues/palladium-times-square", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Sid Gold's Request Room", "url": "https://donyc.com/venues/sid-gold-s-request-room", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Marquee New York", "url": "https://donyc.com/venues/marquee-new-york", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "The Stone", "url": "http://thestonenyc.com/calendar.php", "ua": UA_CHROME, "scraper": scrape_the_stone, "default_category": "music"},
     {"name": "The Center (LGBTQ+ Community Center)", "url": "https://donyc.com/venues/the-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "community"},
-    {"name": "Groove", "url": "https://donyc.com/venues/groove", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "SoHo Playhouse", "url": "https://donyc.com/venues/soho-playhouse-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Duane Park", "url": "https://donyc.com/venues/duane-park", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
-    {"name": "Berlin Under A", "url": "https://donyc.com/venues/berlin", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "New York Comedy Club East Village", "url": "https://donyc.com/venues/new-york-comedy-club-east-village", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "The Cooper Union", "url": "https://donyc.com/venues/the-cooper-union", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "community"},
-    {"name": "Somewhere Nowhere", "url": "https://donyc.com/venues/somewhere-nowhere", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
     {"name": "City Winery NYC", "url": "https://donyc.com/venues/city-winery", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "New York Comedy Club Midtown", "url": "https://donyc.com/venues/new-york-comedy-club-midtown", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "The Broadway Comedy Club", "url": "https://donyc.com/venues/the-broadway-comedy-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Don't Tell Mama", "url": "https://donyc.com/venues/donttellmama", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "The Paley Center for Media", "url": "https://donyc.com/venues/the-paley-center-for-media", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
     {"name": "Kaufman Music Center", "url": "https://donyc.com/venues/kaufman-music-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Chamber Music Society of Lincoln Center", "url": "https://donyc.com/venues/chamber-music-society-of-lincoln-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "New York City Ballet", "url": "https://donyc.com/venues/new-york-city-ballet", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "dance"},
     {"name": "Lincoln Center Theater", "url": "https://donyc.com/venues/lincoln-center-theater", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
     {"name": "Grand Bazaar NYC", "url": "https://grandbazaarnyc.org/", "ua": UA_CHROME, "scraper": scrape_grand_bazaar_nyc, "default_category": "community"},
-    {"name": "New York Comedy Club Upper West Side", "url": "https://donyc.com/venues/new-york-comedy-club-upper-west-side", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
-    {"name": "Comic Strip Live NYC", "url": "https://donyc.com/venues/comic-strip-live-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Miller Theatre at Columbia University", "url": "https://www.millertheatre.com/events", "ua": UA_CHROME, "scraper": scrape_miller_theatre, "default_category": "music"},
-    {"name": "Shrine Harlem", "url": "https://donyc.com/venues/shrine", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Silvana NYC", "url": "https://donyc.com/venues/silvana-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "United Palace", "url": "https://donyc.com/venues/united-palace", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "theater"},
 
     # Independent Bookstores & Literary Spaces
@@ -8650,7 +9035,6 @@ _ALL_VENUES = [
     # Indie Cinemas, Micro-Theaters & Film Programs
     {"name": "Film Forum", "url": "https://filmforum.org/films/now_playing", "ua": UA_CHROME, "scraper": scrape_film_forum, "default_category": "film"},
     {"name": "Nitehawk Cinema", "url": "https://donyc.com/venues/nitehawk-cinema", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
-    {"name": "IFC Center", "url": "https://donyc.com/venues/ifc-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
     {"name": "Film at Lincoln Center", "url": "https://donyc.com/venues/film-at-lincoln-center", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
     {"name": "NYC Indie Film & Screenings", "url": "https://www.eventbrite.com/d/ny--new-york/indie-film/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
     {"name": "Rooftop Films & Outdoor Cinema", "url": "https://www.eventbrite.com/d/ny--new-york/rooftop-films/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "film"},
@@ -8661,7 +9045,6 @@ _ALL_VENUES = [
     {"name": "Joe's Pub (The Public Theater)", "url": "https://donyc.com/venues/joes-pub", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "The Bitter End (Greenwich Village)", "url": "http://www.bitterend.com/", "ua": UA_CHROME, "scraper": scrape_venuepilot, "default_category": "music"},
     {"name": "Arlene's Grocery (LES Rock & Karaoke)", "url": "https://donyc.com/venues/arlenes-grocery", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
-    {"name": "Nublu 151 (Alphabet City)", "url": "https://donyc.com/venues/nublu-151", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Drom NYC (East Village Global Music)", "url": "https://donyc.com/venues/drom", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Symphony Space (Upper West Side)", "url": "https://www.symphonyspace.org/events", "ua": UA_CHROME, "scraper": scrape_symphony_space, "default_category": "theater"},
 
@@ -8669,7 +9052,6 @@ _ALL_VENUES = [
     {"name": "The Stand NYC", "url": "https://thestandnyc.com/shows", "ua": UA_CHROME, "scraper": scrape_the_stand_nyc, "default_category": "comedy"},
     {"name": "Tight Pants Comedy", "url": "https://www.eventbrite.com/api/v3/organizers/58671695943/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "Broadway Comedy Club", "url": "https://www.eventbrite.com/api/v3/organizers/20163541646/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
-    {"name": "EastVille Comedy Club", "url": "https://donyc.com/venues/eastville-comedy-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "comedy"},
     {"name": "Greenwich Village Comedy Club", "url": "https://www.eventbrite.com/api/v3/organizers/30712345978/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "The Grisly Pear Comedy Club", "url": "https://www.eventbrite.com/api/v3/organizers/67868093233/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
     {"name": "St. Marks Comedy Club", "url": "https://www.eventbrite.com/api/v3/organizers/34303274747/events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
@@ -8726,7 +9108,6 @@ _ALL_VENUES = [
     {"name": "Meetup: NYC Language Exchange & Polyglot Socials", "url": "https://www.meetup.com/find/?keywords=language%20exchange&location=us--ny--New%20York&source=EVENTS", "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": "community"},
 
     # Nightlife, Immersive Spectacle & Theatrical Circus
-    {"name": "House of Yes (Circus & Dance)", "url": "https://donyc.com/venues/house-of-yes", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "party"},
     {"name": "House of Yes (Brooklyn Spectacle)", "url": "https://www.eventbrite.com/d/ny--brooklyn/house-of-yes/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
     {"name": "The Slipper Room (NYC Burlesque)", "url": "http://www.slipperroom.com/", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "theater"},
     {"name": "NYC Burlesque Shows & Cabaret", "url": "https://www.eventbrite.com/d/ny--new-york/burlesque/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "theater"},
@@ -9126,8 +9507,26 @@ DIRECT_CALENDARS = [
      "default_category": "theater", "kwargs": {"venue": "3 Dollar Bill", "address": "260 Meserole St, Brooklyn, NY 11206"}},
     {"name": "The Red Pavilion (own calendar)", "url": "https://www.viewcy.com/api/v1/schools/theredpavilion/courses", "ua": UA_CHROME, "scraper": scrape_viewcy,
      "default_category": "theater", "kwargs": {"venue": "The Red Pavilion", "address": "1241 Flushing Ave, Brooklyn, NY 11237"}},
+    {"name": "Bar LunÀtico (own calendar)", "url": "https://www.barlunatico.com/calendar", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar,
+     "default_category": "music", "kwargs": {"venue": "Bar LunÀtico", "address": "486 Halsey St, Brooklyn, NY 11233"}},
+    {"name": "Nublu 151 (own calendar)", "url": "https://nublu.net/", "ua": UA_CHROME, "scraper": scrape_nublu,
+     "default_category": "music", "kwargs": {"venue": "Nublu 151", "address": "151 Avenue C, New York, NY 10009"}},
+    {"name": "Silvana NYC (own calendar)", "url": "https://www.silvana-nyc.com/", "ua": UA_CHROME, "scraper": scrape_silvana,
+     "default_category": "music", "kwargs": {"venue": "Silvana NYC", "address": "300 W 116th St, New York, NY 10026"}},
+    {"name": "Shrine Harlem (own calendar)", "url": "https://www.shrinenyc.com/calendar_main.php", "ua": UA_CHROME, "scraper": scrape_shrine_harlem,
+     "default_category": "music", "kwargs": {"venue": "Shrine Harlem", "address": "2271 Adam Clayton Powell Jr Blvd, New York, NY 10030"}},
+    {"name": "Blue Note Jazz Club (own calendar)", "url": "https://www.bluenotejazz.com/nyc/shows?list_view", "ua": UA_CHROME, "scraper": scrape_bluenote,
+     "default_category": "music", "kwargs": {"venue": "Blue Note Jazz Club", "address": "131 W 3rd St, New York, NY 10012"}},
+    {"name": "Brooklyn Bowl (own calendar)", "url": "https://brooklyn.brooklynbowl.com/shows/all", "ua": UA_CHROME, "scraper": scrape_brooklyn_bowl,
+     "default_category": "music", "kwargs": {"venue": "Brooklyn Bowl", "address": "61 Wythe Ave, Brooklyn, NY 11249"}},
+    {"name": "National Sawdust (own calendar)", "url": "https://www.nationalsawdust.org/performances", "ua": UA_CHROME, "scraper": scrape_html_cards,
+     "default_category": "music", "kwargs": {"link_re": "^/event/[^/]+$", "venue": "National Sawdust", "address": "80 N 6th St, Brooklyn, NY 11249"}},
 ]
 _ALL_VENUES += DIRECT_CALENDARS
+_ALL_VENUES += [
+    {"name": "The Bowery Presents (Direct AEG Feed)", "url": "https://www.bowerypresents.com/", "ua": UA_CHROME, "scraper": scrape_bowery_presents, "default_category": "music"},
+    {"name": "Alamo Drafthouse NYC (Direct API)", "url": "https://drafthouse.com/s/mother/v2/schedule/market/nyc", "ua": UA_CHROME, "scraper": scrape_alamo_drafthouse, "default_category": "film"},
+]
 _existing_source_names = {v["name"].lower() for v in _ALL_VENUES}
 _ALL_VENUES += [
     {"name": name if name.lower() not in _existing_source_names else f"{name} (DICE)",
