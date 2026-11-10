@@ -93,7 +93,7 @@ class SquarespaceCalendars(unittest.TestCase):
 class RetiredDonycFeeds(unittest.TestCase):
     def test_venues_with_a_better_direct_feed_dont_use_donyc(self):
         urls = {v["url"] for v in scrapers.VENUES}
-        for slug in ("saint-vitus", "public-records", "terra-blues", "nebula", "wonderville", "mood-ring"):
+        for slug in ("saint-vitus", "public-records", "terra-blues", "nebula", "wonderville", "mood-ring", "the-red-pavilion", "3-dollar-bill"):
             self.assertFalse([u for u in urls if u.startswith(f"https://donyc.com/venues/{slug}")], slug)
 
     def test_venues_that_sell_beyond_dice_keep_it(self):
