@@ -107,14 +107,27 @@ class RetiredDonycFeeds(unittest.TestCase):
             "chamber-music-society-of-lincoln-center", "new-york-comedy-club-upper-west-side",
             "comic-strip-live-nyc", "shrine", "silvana-nyc", "ifc-center", "nublu-151",
             "eastville-comedy-club", "house-of-yes", "national-sawdust", "pianos", "berlin",
+            "barclays-center", "baby-s-all-right", "basement-ny", "roulette", "liz-s-book_bar",
+            "moma-ps1", "yankee-stadium", "st-george-theatre", "bowery-ballroom", "mercury-lounge",
+            "david-rubenstein-atrium-at-lincoln-center", "the-new-school", "mannes-school-of-music",
+            "apollo-theater", "madison-square-garden", "radio-city-music-hall", "beacon-theatre",
+            "sony-hall", "palladium-times-square", "soho-playhouse-nyc", "city-winery",
+            "donttellmama", "kaufman-music-center", "united-palace", "kgb-bar", "nitehawk-cinema",
+            "drom", "tv-eye", "market-hotel", "avant-gardner", "the-brooklyn-mirage", "eris-deep-space",
+            "old-man-hustle-bklyn-comedy-club", "crown-hill-theater", "brooklyn-storehouse",
+            "le-poisson-rouge", "bowery-palace", "the-rooftop-at-pier-17", "marquee-new-york",
+            "the-center", "duane-park", "new-york-city-ballet", "lincoln-center-theater",
+            "film-at-lincoln-center", "joes-pub", "arlenes-grocery",
         )
         for slug in retired_slugs:
             self.assertFalse([u for u in urls if u.startswith(f"https://donyc.com/venues/{slug}")], slug)
 
-    def test_venues_that_sell_beyond_dice_keep_it(self):
-        urls = " ".join(v["url"] for v in scrapers.VENUES)
-        self.assertIn("donyc.com/venues/baby-s-all-right", urls)
-        self.assertIn("donyc.com/venues/drom", urls)
+    def test_baby_s_all_right_and_drom_sell_via_dice(self):
+        paths = {path for _name, path in scrapers.DICE_VENUE_PAGES}
+        self.assertIn("babys-all-right-g7qb", paths)
+        self.assertIn("drom-megw", paths)
+        self.assertIn("basement-e776", paths)
+        self.assertIn("marquee-new-york-qqwy", paths)
 
     def test_citywide_feed_stays_as_a_safety_net(self):
         self.assertTrue([v for v in scrapers.VENUES if v["scraper"] is scrapers.scrape_donyc_calendar])
@@ -314,6 +327,166 @@ class BrooklynBowlTests(unittest.TestCase):
         self.assertEqual(events[0]["name"], "The Roots Live")
         self.assertEqual(events[0]["venue"], "Brooklyn Bowl")
         self.assertEqual(events[0]["url"], "https://ticketmaster.com/event/456")
+
+
+class NewSchoolTests(unittest.TestCase):
+    def test_parses_algolia_hits(self):
+        payload = {
+            "hits": [
+                {
+                    "title": "Mannes Orchestra at Alice Tully Hall",
+                    "first_date": "2026-12-05T19:30:00-05:00",
+                    "location_name": "Ernst C. Stiefel Concert Hall",
+                    "localist_url": "https://event.newschool.edu/mannesorchestra",
+                    "free": True,
+                    "address": "55 W 13th St, New York, NY 10011",
+                }
+            ]
+        }
+        resp = mock.Mock(status_code=200, json=mock.Mock(return_value=payload))
+        resp.raise_for_status = mock.Mock()
+        with mock.patch.object(scrapers._SESSION, "post", return_value=resp):
+            events = scrapers.scrape_new_school(None, "ua")
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "Mannes Orchestra at Alice Tully Hall")
+        self.assertEqual(events[0]["price"], "Free")
+        self.assertEqual(events[0]["category"], "music")
+        self.assertIn("Stiefel Concert Hall", events[0]["venue"])
+        self.assertEqual(events[0]["date"], "2026-12-06T00:30:00+00:00")
+
+
+class NitehawkTests(unittest.TestCase):
+    def test_parses_showtimes(self):
+        index_html = """
+        <html><body>
+        <div class="show-container">
+            <a href="/movies/paprika/">Paprika</a>
+            <ul class="showtime-button-row">
+                <li><a href="/purchase/111/">7:30 pm</a></li>
+            </ul>
+        </div>
+        </body></html>
+        """
+        resp = mock.Mock(status_code=200, text=index_html)
+        resp.raise_for_status = mock.Mock()
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_nitehawk_cinema("https://nitehawkcinema.com/williamsburg/", "ua")
+        self.assertEqual(len(events), 1)
+        self.assertIn("Paprika (7:30 pm)", events[0]["name"])
+        self.assertEqual(events[0]["venue"], "Nitehawk Cinema Williamsburg")
+        self.assertEqual(events[0]["url"], "https://nitehawkcinema.com/purchase/111/")
+        self.assertEqual(events[0]["category"], "film")
+
+
+class ApolloTheaterTests(unittest.TestCase):
+    def test_parses_webflow_items(self):
+        html = """
+        <div class="w-dyn-item">
+            <div class="header-slider_title">Jane Handcock</div>
+            <div>2026-11-13 | 10 PM</div>
+            <a href="/event/apollo-music-cafe-jane-handcock">Find Out More</a>
+        </div>
+        """
+        resp = mock.Mock(status_code=200, text=html)
+        resp.raise_for_status = mock.Mock()
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_apollo_theater("https://www.apollotheater.org/calendar/", "ua")
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "Jane Handcock")
+        self.assertEqual(events[0]["venue"], "Apollo Theater")
+        self.assertEqual(events[0]["url"], "https://www.apollotheater.org/event/apollo-music-cafe-jane-handcock")
+        self.assertEqual(events[0]["date"], "2026-11-14T03:00:00+00:00")
+
+
+class TvEyeTests(unittest.TestCase):
+    def test_parses_seetickets_events(self):
+        html = """
+        <div class="search-event">
+            <div class="hover-name"><a href="https://www.seetickets.us/event/indie-rock-show/12345">Indie Rock Show</a></div>
+            <div class="hover-date">Tuesday, November 17</div>
+            <div class="hover-time">8:00 PM</div>
+        </div>
+        """
+        resp = mock.Mock(status_code=200, text=html)
+        resp.raise_for_status = mock.Mock()
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_tv_eye("https://wl.seetickets.us/TVEye", "ua")
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "Indie Rock Show")
+        self.assertEqual(events[0]["venue"], "TV Eye")
+        self.assertEqual(events[0]["url"], "https://www.seetickets.us/event/indie-rock-show/12345")
+        self.assertEqual(events[0]["category"], "music")
+
+
+class LePoissonRougeTests(unittest.TestCase):
+    def test_parses_lpr_events(self):
+        html = """
+        <div class="event">
+            <span class="black_visible">LPR Live Concert</span>
+            <div class="date">Nov 20, 2026</div>
+            <div class="time">7:00 pm</div>
+            <a href="https://kyd.to/event/123">Tickets</a>
+        </div>
+        """
+        resp = mock.Mock(status_code=200, text=html)
+        resp.raise_for_status = mock.Mock()
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_le_poisson_rouge("https://lpr.com/", "ua")
+        self.assertTrue(len(events) >= 1)
+        self.assertEqual(events[0]["name"], "LPR Live Concert")
+        self.assertEqual(events[0]["venue"], "Le Poisson Rouge")
+        self.assertEqual(events[0]["url"], "https://kyd.to/event/123")
+
+
+class NycBalletTests(unittest.TestCase):
+    def test_parses_ballet_events(self):
+        data = [
+            {
+                "id": 999,
+                "title": "The Nutcracker",
+                "perf_date": "2026-12-15T19:00:00-05:00",
+                "booking_link": "https://tickets.nycballet.com/booking/production/999",
+                "short_description": "George Balanchine's The Nutcracker"
+            }
+        ]
+        resp = mock.Mock(status_code=200)
+        resp.raise_for_status = mock.Mock()
+        resp.json = mock.Mock(return_value=data)
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_nyc_ballet("https://www.nycballet.com/season-and-tickets/events/", "ua")
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "The Nutcracker")
+        self.assertEqual(events[0]["venue"], "David H. Koch Theater (Lincoln Center)")
+        self.assertEqual(events[0]["category"], "dance")
+        self.assertEqual(events[0]["url"], "https://tickets.nycballet.com/booking/production/999")
+        self.assertEqual(events[0]["date"], "2026-12-16T00:00:00+00:00")
+
+
+class ArlenesGroceryTests(unittest.TestCase):
+    def test_parses_afton_events(self):
+        data = {
+            "status": "success",
+            "data": [
+                {
+                    "event_id": "555",
+                    "event_name": "Rock Showcase",
+                    "start_time": "2026-11-25 20:00:00",
+                    "min_price": 10,
+                    "buy_ticket_url": "https://aftontickets.com/event/buyticket/555"
+                }
+            ]
+        }
+        resp = mock.Mock(status_code=200)
+        resp.raise_for_status = mock.Mock()
+        resp.json = mock.Mock(return_value=data)
+        with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
+            events = scrapers.scrape_arlenes_grocery("https://aftontickets.com/api/get-events", "ua")
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["name"], "Rock Showcase")
+        self.assertEqual(events[0]["venue"], "Arlene's Grocery")
+        self.assertEqual(events[0]["category"], "music")
+        self.assertEqual(events[0]["price"], "$10")
+        self.assertEqual(events[0]["url"], "https://aftontickets.com/event/buyticket/555")
 
 
 if __name__ == "__main__":
