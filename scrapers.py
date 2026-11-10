@@ -2940,7 +2940,17 @@ def scrape_resident_advisor(url, ua):
             startTime
             cost
             contentUrl
-            venue { name address }
+            venue {
+              id
+              name
+              address
+              website
+              contentUrl
+              location {
+                latitude
+                longitude
+              }
+            }
           }
         }
       }
@@ -2953,8 +2963,8 @@ def scrape_resident_advisor(url, ua):
     }
     events = []
     seen = set()
-    # RA caps pageSize at 100; NYC typically has 500-700 listings over the horizon.
-    for page in range(1, 9):
+    # RA caps pageSize at 100; NYC typically has 500-750 listings over the horizon.
+    for page in range(1, 10):
         try:
             r = _SESSION.post(
                 "https://ra.co/graphql",
@@ -2970,7 +2980,7 @@ def scrape_resident_advisor(url, ua):
                     }
                 },
                 headers=headers,
-                timeout=12
+                timeout=15
             )
             r.raise_for_status()
             data = r.json().get("data", {}).get("eventListings", {})
@@ -2986,10 +2996,13 @@ def scrape_resident_advisor(url, ua):
                 v_obj = ev.get("venue") or {}
                 vname = (v_obj.get("name") or "").strip() or "NYC Nightclub"
                 vaddr = (v_obj.get("address") or "").strip()
-                if vaddr and vname not in vaddr:
-                    venue = f"{vname} ({vaddr.split(';')[0]})"
-                else:
-                    venue = vname
+                loc = v_obj.get("location") or {}
+                vlat = loc.get("latitude")
+                vlng = loc.get("longitude")
+                vwebsite = (v_obj.get("website") or "").strip()
+                vcurl = (v_obj.get("contentUrl") or "").strip()
+
+                venue = vname
 
                 cost = (ev.get("cost") or "").strip()
                 if cost in ["0", "0.00", "0.0", "Free", "free", "Free RSVP"]:
@@ -3027,6 +3040,13 @@ def scrape_resident_advisor(url, ua):
                 }
                 if vaddr:
                     entry["address"] = vaddr.replace(";", ",")
+                if vlat and vlng and abs(vlat) > 1:
+                    entry["lat"] = vlat
+                    entry["lng"] = vlng
+                if vwebsite:
+                    entry["venue_url"] = vwebsite
+                elif vcurl:
+                    entry["venue_url"] = f"https://ra.co{vcurl}" if vcurl.startswith("/") else vcurl
                 events.append(entry)
             if page * 100 >= (data.get("totalResults") or 0):
                 break
@@ -8275,6 +8295,36 @@ _ALL_VENUES = [
     {"name": "Brooklyn Storehouse", "url": "https://donyc.com/venues/brooklyn-storehouse", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
     {"name": "Liz's Book_Bar", "url": "https://donyc.com/venues/liz-s-book_bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "books"},
     {"name": "Alamo Drafthouse Cinema (Brooklyn)", "url": "https://donyc.com/venues/alamo-drafthouse", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "film"},
+
+    # Underground, Clubbing & RA Venues
+    {"name": "Nowadays", "url": "https://donyc.com/venues/nowadays", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Jupiter Disco", "url": "https://donyc.com/venues/jupiter-disco", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Refuge (Bushwick)", "url": "https://donyc.com/venues/refuge", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Superior Ingredients", "url": "https://donyc.com/venues/superior-ingredients", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "H0L0 Ridgewood", "url": "https://donyc.com/venues/h0l0", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Wonderville (Arcade & Music)", "url": "https://donyc.com/venues/wonderville", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "gaming"},
+    {"name": "Madame X", "url": "https://donyc.com/venues/madame-x", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Night Club 101", "url": "https://donyc.com/venues/night-club-101", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Red Eye NY", "url": "https://donyc.com/venues/red-eye-ny", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Unveiled Brooklyn", "url": "https://donyc.com/venues/unveiled", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Talon Bar Bushwick", "url": "https://donyc.com/venues/talon-bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Duggal Greenhouse", "url": "https://donyc.com/venues/duggal-greenhouse", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "telos.haus", "url": "https://donyc.com/venues/telos-haus", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "community"},
+    {"name": "The Ornate Studio", "url": "https://donyc.com/venues/the-ornate-studio", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
+    {"name": "Eden NYC", "url": "https://donyc.com/venues/eden", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "SILO Brooklyn (DoNYC)", "url": "https://donyc.com/venues/silo", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Bossa Nova Civic Club (DoNYC)", "url": "https://donyc.com/venues/bossa-nova-civic-club", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Gabriela Williamsburg", "url": "https://donyc.com/venues/gabriela", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "99 Scott Ave", "url": "https://donyc.com/venues/99-scott-ave", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Moondog Hifi Bushwick", "url": "https://donyc.com/venues/moondog-hifi", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Bar 13 Union Square", "url": "https://donyc.com/venues/bar-13", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Public Arts (DoNYC)", "url": "https://donyc.com/venues/public-arts", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Le Bain (DoNYC)", "url": "https://donyc.com/venues/le-bain-the-standard-hotel", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Nexo NYC", "url": "https://donyc.com/venues/nexo-nyc", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Mehanata Bar (DoNYC)", "url": "https://donyc.com/venues/mehanata-bar", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "The Woodshop Brooklyn", "url": "https://donyc.com/venues/the-woodshop", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "clubbing"},
+    {"name": "Melrose Ballroom Queens", "url": "https://donyc.com/venues/melrose-ballroom", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},
+    {"name": "Bar Laika Clinton Hill", "url": "https://donyc.com/venues/bar-laika", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "art"},
 
     # Queens
     {"name": "Forest Hills Stadium", "url": "https://donyc.com/venues/forest-hills-stadium", "ua": UA_CHROME, "scraper": scrape_donyc, "default_category": "music"},

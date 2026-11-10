@@ -19,6 +19,7 @@ if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
 import scrapers  # noqa: E402
+import venues_geo  # noqa: E402
 from scrapers import (  # noqa: E402
     EASTERN,
     UA_CHROME,
@@ -127,6 +128,27 @@ class TestFeedScrapers(unittest.TestCase):
         self.assertEqual(_local(events[0]["date"]).hour, 22)  # was shifted to 5pm when treated as UTC
         self.assertEqual(events[0]["price"], "$15")
         self.assertIn("Ridgewood", events[0]["address"])
+
+    def test_resident_advisor_venue_metadata_and_coordinates(self):
+        start = _future_local(2, 22).strftime("%Y-%m-%dT22:00:00.000")
+        page1 = {"data": {"eventListings": {"totalResults": 1, "data": [
+            {"event": {"title": "Bossa Tech", "startTime": start, "cost": "Free",
+                       "contentUrl": "/events/123",
+                       "venue": {"name": "Bossa Nova Civic Club", "address": "1271 Myrtle Ave, Brooklyn, NY",
+                                 "website": "http://bossanovacivicclub.com", "contentUrl": "/clubs/71292",
+                                 "location": {"latitude": 40.6980, "longitude": -73.9280}}}}]}}}
+        with patch("scrapers._SESSION.post", return_value=_resp(payload=page1)):
+            events = scrapers.scrape_resident_advisor("https://ra.co/events/us/newyorkcity", UA_CHROME)
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]["venue"], "Bossa Nova Civic Club")
+        self.assertEqual(events[0]["lat"], 40.6980)
+        self.assertEqual(events[0]["lng"], -73.9280)
+        self.assertEqual(events[0]["venue_url"], "http://bossanovacivicclub.com")
+        self.assertEqual(events[0]["price"], "Free")
+        # Ensure venues_geo recognizes it
+        geo = venues_geo.resolve_event_geo({"venue": "Bossa Nova Civic Club"})
+        self.assertIsNotNone(geo)
+        self.assertIn("Bushwick", geo["neighborhood"])
 
     def test_eventbrite_exact_time_from_server_data(self):
         day = _future_local(5, 0).date()
