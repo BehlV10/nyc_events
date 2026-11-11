@@ -8737,9 +8737,102 @@ def scrape_grand_bazaar_holiday(url, ua):
     )
 
 
+def scrape_japan_fes(url, ua):
+    """JAPAN Fes NYC — Scrapes the official season schedule from japanfes.com."""
+    year = datetime.now(EASTERN).year
+    target_url = f"https://www.japanfes.com/{year}"
+    try:
+        soup = fetch_soup(target_url, ua)
+    except Exception:
+        try:
+            soup = fetch_soup("https://www.japanfes.com/events", ua)
+        except Exception:
+            return []
+
+    events = []
+    seen = set()
+    mon_map = {
+        "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+        "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12,
+    }
+
+    for a in soup.find_all("a"):
+        txt = a.get_text(" ", strip=True)
+        m = re.match(
+            r"(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?\s*\|\s*JAPAN Fes New York\s*@\s*([^→\n]+)",
+            txt,
+        )
+        if not m:
+            continue
+        mon_str, day_str, neighborhood = m.groups()
+        neighborhood = re.sub(r"(?i)\s*read\s*more.*", "", neighborhood).strip()
+        mon = mon_map.get(mon_str[:3].lower())
+        if not mon:
+            continue
+        day = int(day_str)
+        event_key = (year, mon, day, neighborhood.lower())
+        if event_key in seen:
+            continue
+        seen.add(event_key)
+
+        link = a.get("href", "")
+        if link and not link.startswith("http"):
+            link = "https://www.japanfes.com" + link
+
+        try:
+            dt = datetime(year, mon, day, 10, 0, tzinfo=EASTERN)
+            end_dt = datetime(year, mon, day, 18, 0, tzinfo=EASTERN)
+        except ValueError:
+            continue
+
+        venue_name = f"JAPAN Fes NYC ({neighborhood})"
+        events.append({
+            "name": venue_name,
+            "date": dt.astimezone(timezone.utc).isoformat(),
+            "end": end_dt.astimezone(timezone.utc).isoformat(),
+            "venue": "W 40th St (5th to 6th Ave)" if "midtwon" in neighborhood.lower() or "midtown" in neighborhood.lower() else venue_name,
+            "url": link or target_url,
+            "price": "Free",
+            "category": "food",
+            "description": "NYC's premier outdoor Japanese street food festival featuring 800+ vendors throughout the season with authentic ramen, wagyu, takoyaki, matcha treats, and street specialties.",
+        })
+    return events
+
+
 def scrape_renegade_craft_fair_nyc(url, ua):
     """Renegade Craft Fair NYC Winter & Holiday Editions at Metropolitan Pavilion."""
-    days = [(2026, 11, 14), (2026, 11, 15), (2026, 12, 5), (2026, 12, 6)]
+    year = datetime.now(EASTERN).year
+    try:
+        soup = fetch_soup(url, ua)
+        text = soup.get_text(" ", strip=True)
+        mon_map = {"november": 11, "nov": 11, "december": 12, "dec": 12, "spring": 5, "fall": 9}
+        pairs = re.findall(r"(?i)(November|December|Nov|Dec)\s+(\d{1,2})\s*[\+\-–&]\s*(\d{1,2})", text)
+        schedule = []
+        for mon_name, d1, d2 in pairs:
+            m = mon_map.get(mon_name.lower())
+            if m:
+                for d in (int(d1), int(d2)):
+                    try:
+                        schedule.append((
+                            datetime(year, m, d, 11, 0, tzinfo=EASTERN),
+                            datetime(year, m, d, 17, 0, tzinfo=EASTERN)
+                        ))
+                    except ValueError:
+                        pass
+        if schedule:
+            return _scrape_holiday_market(
+                url, ua,
+                name="Renegade Craft Fair NYC Holiday Market",
+                default_venue="Metropolitan Pavilion",
+                default_addr="125 W 18th St, New York, NY 10011",
+                schedule=schedule,
+                desc="Curated indie craft and design fair at Chelsea's Metropolitan Pavilion with 170+ contemporary makers, ceramics, prints, jewelry, and apothecary goods.",
+                price="Free",
+            )
+    except Exception:
+        pass
+    # Fallback to standard annual weekend dates if remote page markup shifts
+    days = [(year, 11, 14), (year, 11, 15), (year, 12, 5), (year, 12, 6)]
     schedule = [
         (datetime(y, m, d, 11, 0, tzinfo=EASTERN), datetime(y, m, d, 17, 0, tzinfo=EASTERN))
         for y, m, d in days
@@ -9807,18 +9900,6 @@ ANNUAL_LANDMARK_EVENTS = [
         "price": "Free",
         "category": "party",
         "description": "NYC's iconic world-famous Halloween parade along 6th Avenue from Spring St to 16th St. Costumed participants join open marching.",
-    },
-    {
-        "name": "JAPAN Fes NYC (Midtown West)",
-        "date": "2026-11-14T10:00:00-05:00",
-        "venue": "W 40th St (5th to 6th Ave)",
-        "address": "W 40th St, New York, NY 10018",
-        "lat": 40.7527,
-        "lng": -73.9835,
-        "url": "https://www.japanfes.com/",
-        "price": "Free",
-        "category": "food",
-        "description": "NYC's premier Japanese street food festival featuring 800+ vendors throughout the season with authentic ramen, wagyu, matcha sweets, takoyaki, and street specialties.",
     },
     {
         "name": "IAAC Literary Festival 2026 (Day 1)",
@@ -10990,6 +11071,7 @@ _ALL_VENUES += [
     {"name": "Snug Harbor Holiday Hop & Artisans Market", "url": "https://snug-harbor.org/event/holiday-hop/", "ua": UA_CHROME, "scraper": scrape_snug_harbor_holiday_hop, "default_category": "markets"},
     {"name": "Bartow-Pell Mansion Holiday Bazaar", "url": "https://www.bartowpellmansionmuseum.org/events/holiday-family-day/", "ua": UA_CHROME, "scraper": scrape_bartow_pell_holiday_bazaar, "default_category": "markets"},
     {"name": "Wave Hill Holiday Artisans Market", "url": "https://www.wavehill.org/calendar/holiday-workshop-weekend", "ua": UA_CHROME, "scraper": scrape_wave_hill_holiday_market, "default_category": "markets"},
+    {"name": "JAPAN Fes NYC", "url": "https://www.japanfes.com/events", "ua": UA_CHROME, "scraper": scrape_japan_fes, "default_category": "food"},
 ]
 _existing_source_names = {v["name"].lower() for v in _ALL_VENUES}
 _ALL_VENUES += [
