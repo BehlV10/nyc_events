@@ -63,15 +63,19 @@ class MarketClassification(unittest.TestCase):
 
 
 class MarketsHub(unittest.TestCase):
-    def test_a_repeating_market_is_one_card_with_its_other_dates(self):
-        rows = [("Union Square Greenmarket", _day_at(d, 8), {"category": "food", "venue": "Union Square"}) for d in (1, 3, 5, 8, 10, 12)]
-        dated = _dated({"GrowNYC": rows})
+    def test_daily_market_is_one_card_up_top_and_weekly_shows_on_each_day(self):
+        daily_rows = [("Union Square Holiday Market", _day_at(d, 11), {"category": "markets", "venue": "Union Square Park"}) for d in range(1, 10)]
+        weekly_rows = [("Union Square Greenmarket", _day_at(d, 8), {"category": "food", "venue": "Union Square"}) for d in (2, 9)]
+        dated = _dated({"GrowNYC": daily_rows + weekly_rows})
         html = seo.render_hub_page("markets-festivals-nyc", dated)
-        self.assertEqual(html.count('class="card'), 1)
-        self.assertRegex(html, r"Also \w+, \w+ \d+ · \w+, \w+ \d+ · \w+, \w+ \d+ and 2 more dates\.")
+        self.assertIn('<body class="markets-hub">', html)
+        self.assertIn('class="mk-daily"', html)
+        self.assertEqual(html.count(">Union Square Holiday Market<"), 1)
+        self.assertEqual(html.count(">Union Square Greenmarket<"), 2)
 
     def test_is_listed_with_the_other_hubs(self):
         self.assertIn("markets-festivals-nyc", seo.HUBS)
+        self.assertIn("christmas-markets-nyc", seo.HUBS)
         self.assertIn("kids-family-events-nyc", seo.HUBS)
 
 

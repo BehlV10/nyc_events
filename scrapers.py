@@ -8095,6 +8095,656 @@ def scrape_eventbrite_pages(url, ua, pages=3):
     return events
 
 
+def _scrape_holiday_market(url, ua, name, default_venue, default_addr, schedule, desc, price="Free"):
+    """Fetch detail page for an NYC holiday or Christmas market and emit scheduled dates
+    with accurate start/end times, venue, address, description, and price."""
+    ext_url = url
+    p_desc = desc
+    p_price = price
+    venue = default_venue
+    addr = default_addr
+    try:
+        soup = fetch_soup(url, ua or UA_CHROME, timeout=10)
+        meta_desc = soup.find("meta", attrs={"property": "og:description"}) or soup.find("meta", attrs={"name": "description"})
+        if meta_desc and meta_desc.get("content"):
+            txt = re.sub(r"\s+", " ", meta_desc["content"]).strip()
+            if len(txt) >= 40 and not p_desc:
+                p_desc = txt[:300]
+        loc = soup.find(attrs={"itemprop": "location"})
+        if loc:
+            v_el = loc.find(attrs={"itemprop": "name"})
+            if v_el and v_el.get_text(strip=True):
+                venue = v_el.get_text(strip=True)
+            st_el = loc.find(attrs={"itemprop": "streetAddress"})
+            ct_el = loc.find(attrs={"itemprop": "addressLocality"})
+            if st_el or ct_el:
+                parts = [p.get_text(strip=True) for p in (st_el, ct_el) if p and p.get_text(strip=True)]
+                if parts:
+                    addr = ", ".join(parts)
+    except Exception:
+        pass
+
+    events = []
+    for start_dt, end_dt in schedule:
+        events.append({
+            "name": name,
+            "date": start_dt.astimezone(timezone.utc).isoformat(),
+            "end": end_dt.astimezone(timezone.utc).isoformat(),
+            "url": ext_url or url,
+            "venue": venue,
+            "address": addr,
+            "price": p_price,
+            "category": "markets",
+            "description": p_desc,
+        })
+    return events
+
+
+def scrape_bryant_park_winter_village(url, ua):
+    """Bank of America Winter Village at Bryant Park (Holiday Shops) — Oct 28, 2026 to Jan 3, 2027."""
+    schedule = []
+    cur = datetime(2026, 10, 28, tzinfo=EASTERN)
+    end_d = datetime(2027, 1, 3, tzinfo=EASTERN)
+    while cur <= end_d:
+        open_h = 10 if cur.weekday() in (5, 6) else 11
+        close_h = 16 if (cur.month == 12 and cur.day == 24) else 20
+        schedule.append((cur.replace(hour=open_h, minute=0), cur.replace(hour=close_h, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Bank of America Winter Village at Bryant Park (Holiday Shops)",
+        default_venue="Bryant Park",
+        default_addr="42nd St & 6th Ave, New York, NY 10018",
+        schedule=schedule,
+        desc="Over 180 custom-designed jewel box kiosks around Bryant Park's ice rink featuring local artisans, gifts, ornaments, and winter treats.",
+        price="Free",
+    )
+
+
+def scrape_union_square_holiday_market(url, ua):
+    """Union Square Holiday Market (Urbanspace) — Nov 12 to Dec 24, 2026 (closed Thanksgiving Nov 26)."""
+    schedule = []
+    cur = datetime(2026, 11, 12, tzinfo=EASTERN)
+    end_d = datetime(2026, 12, 24, tzinfo=EASTERN)
+    while cur <= end_d:
+        if (cur.month, cur.day) != (11, 26):
+            wd = cur.weekday()
+            open_h = 10 if wd == 5 else 11
+            close_h = 16 if (cur.month, cur.day) == (12, 24) else (19 if wd == 6 else 20)
+            schedule.append((cur.replace(hour=open_h, minute=0), cur.replace(hour=close_h, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Union Square Holiday Market",
+        default_venue="Union Square Park",
+        default_addr="E 14th St & Broadway, New York, NY 10003",
+        schedule=schedule,
+        desc="Urbanspace's flagship open-air European-style Christmas market at Union Square South with 185+ local makers, artists, and food stalls.",
+        price="Free",
+    )
+
+
+def scrape_columbus_circle_holiday_market(url, ua):
+    """Columbus Circle Holiday Market (Urbanspace) — Dec 1 to Dec 31, 2026 (closed Dec 25)."""
+    schedule = []
+    cur = datetime(2026, 12, 1, tzinfo=EASTERN)
+    end_d = datetime(2026, 12, 31, tzinfo=EASTERN)
+    while cur <= end_d:
+        if (cur.month, cur.day) != (12, 25):
+            wd = cur.weekday()
+            open_h = 10 if wd in (4, 5, 6) else 11
+            close_h = 16 if (cur.month, cur.day) == (12, 24) else (20 if wd in (4, 5, 6) else 19)
+            schedule.append((cur.replace(hour=open_h, minute=0), cur.replace(hour=close_h, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Columbus Circle Holiday Market",
+        default_venue="Columbus Circle",
+        default_addr="59th St & Central Park West, New York, NY 10019",
+        schedule=schedule,
+        desc="Open-air holiday market at the southwest entrance to Central Park with 100+ artisan booths, handcrafted gifts, glühwein, and hot chocolate.",
+        price="Free",
+    )
+
+
+def scrape_grand_central_holiday_fair(url, ua):
+    """Grand Central Holiday Fair in Vanderbilt Hall — Nov 9 to Dec 24, 2026 (closed Nov 26)."""
+    schedule = []
+    cur = datetime(2026, 11, 9, tzinfo=EASTERN)
+    end_d = datetime(2026, 12, 24, tzinfo=EASTERN)
+    while cur <= end_d:
+        if (cur.month, cur.day) != (11, 26):
+            wd = cur.weekday()
+            open_h = 11 if wd == 6 else 10
+            close_h = 18 if (wd == 6 or (cur.month, cur.day) == (12, 24)) else 19
+            schedule.append((cur.replace(hour=open_h, minute=0), cur.replace(hour=close_h, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Grand Central Holiday Fair",
+        default_venue="Grand Central Terminal (Vanderbilt Hall)",
+        default_addr="89 E 42nd St, New York, NY 10017",
+        schedule=schedule,
+        desc="NYC's longest-running indoor holiday fair inside historic Vanderbilt Hall at Grand Central Terminal, featuring 36+ curated local artisans.",
+        price="Free",
+    )
+
+
+def scrape_macys_holiday_square(url, ua):
+    """Macy's Holiday Square Market (Urbanspace Herald Square) — Nov 12, 2026 to Jan 2, 2027."""
+    schedule = []
+    cur = datetime(2026, 11, 12, tzinfo=EASTERN)
+    end_d = datetime(2027, 1, 2, tzinfo=EASTERN)
+    while cur <= end_d:
+        if (cur.month, cur.day) not in ((11, 26), (12, 25)):
+            close_h = 16 if (cur.month, cur.day) == (12, 24) else 20
+            schedule.append((cur.replace(hour=11, minute=0), cur.replace(hour=close_h, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Macy's Holiday Square Market (Herald Square)",
+        default_venue="Herald Square",
+        default_addr="Broadway between 32nd & 36th St, New York, NY 10001",
+        schedule=schedule,
+        desc="Open-air Urbanspace holiday market along Broadway in Herald Square outside Macy's flagship store with festive food stalls and gift vendors.",
+        price="Free",
+    )
+
+
+def scrape_oculus_holiday_market(url, ua):
+    """Holiday Market at The Oculus (Westfield World Trade Center) — Nov 20, 2026 to Jan 2, 2027."""
+    schedule = []
+    cur = datetime(2026, 11, 20, tzinfo=EASTERN)
+    end_d = datetime(2027, 1, 2, tzinfo=EASTERN)
+    while cur <= end_d:
+        if (cur.month, cur.day) != (12, 25):
+            open_h = 11 if cur.weekday() == 6 else 10
+            close_h = 19 if cur.weekday() == 6 else 20
+            schedule.append((cur.replace(hour=open_h, minute=0), cur.replace(hour=close_h, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Holiday Market at The Oculus",
+        default_venue="The Oculus at World Trade Center",
+        default_addr="185 Greenwich St, New York, NY 10007",
+        schedule=schedule,
+        desc="Indoor winter village and holiday shopping market on the main floor of The Oculus in Lower Manhattan with 20+ curated gift shops and photo ops.",
+        price="Free",
+    )
+
+
+def scrape_fad_market_empire_stores(url, ua):
+    """FAD Market Holiday Pop-Up at Empire Stores in DUMBO — Daily Nov 30 to Dec 20, 2026."""
+    schedule = []
+    cur = datetime(2026, 11, 30, tzinfo=EASTERN)
+    end_d = datetime(2026, 12, 20, tzinfo=EASTERN)
+    while cur <= end_d:
+        schedule.append((cur.replace(hour=11, minute=0), cur.replace(hour=18, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="FAD Market Holiday Pop-Up at Empire Stores",
+        default_venue="Empire Stores",
+        default_addr="55 Water St, Brooklyn, NY 11201",
+        schedule=schedule,
+        desc="FAD Market's DUMBO waterfront holiday market inside historic Empire Stores, showcasing rotating independent makers, jewelry, apparel, and home goods.",
+        price="Free",
+    )
+
+
+def scrape_fad_market_cobble_hill(url, ua):
+    """FAD Market Holiday Pop-Up at St. Paul's Church in Cobble Hill — Dec weekends."""
+    days = [(2026, 12, 5), (2026, 12, 6), (2026, 12, 12), (2026, 12, 13), (2026, 12, 19), (2026, 12, 20)]
+    schedule = [
+        (datetime(y, m, d, 11, 0, tzinfo=EASTERN), datetime(y, m, d, 18, 0, tzinfo=EASTERN))
+        for y, m, d in days
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="FAD Market Holiday Pop-Up at St. Paul's (Cobble Hill)",
+        default_venue="St. Paul's Church Cobble Hill",
+        default_addr="190 Court St, Brooklyn, NY 11201",
+        schedule=schedule,
+        desc="Weekend holiday makers market in Cobble Hill featuring 50+ independent designers, small-batch foods, ceramics, and handcrafted gifts.",
+        price="Free",
+    )
+
+
+def scrape_fad_market_invisible_dog(url, ua):
+    """FAD Market Holiday Pop-Up at The Invisible Dog Art Center in Boerum Hill — Dec weekends."""
+    days = [(2026, 12, 5), (2026, 12, 6), (2026, 12, 12), (2026, 12, 13), (2026, 12, 19), (2026, 12, 20)]
+    schedule = [
+        (datetime(y, m, d, 11, 0, tzinfo=EASTERN), datetime(y, m, d, 18, 0, tzinfo=EASTERN))
+        for y, m, d in days
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="FAD Market Holiday Pop-Up at The Invisible Dog",
+        default_venue="The Invisible Dog Art Center",
+        default_addr="51 Bergen St, Brooklyn, NY 11201",
+        schedule=schedule,
+        desc="Curated fashion, art, and design holiday market inside Boerum Hill's historic factory-turned-art-center with 50+ local makers.",
+        price="Free",
+    )
+
+
+def scrape_wallabout_wonderland(url, ua):
+    """Wallabout Wonderland Holiday Market at Brooklyn Navy Yard (Duggal Greenhouse)."""
+    schedule = [
+        (datetime(2026, 12, 5, 12, 0, tzinfo=EASTERN), datetime(2026, 12, 5, 17, 0, tzinfo=EASTERN)),
+        (datetime(2026, 12, 6, 12, 0, tzinfo=EASTERN), datetime(2026, 12, 6, 17, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Wallabout Wonderland Holiday Market at Brooklyn Navy Yard",
+        default_venue="Brooklyn Navy Yard (Duggal Greenhouse)",
+        default_addr="63 Flushing Ave, Brooklyn, NY 11205",
+        schedule=schedule,
+        desc="Annual Brooklyn Navy Yard holiday bazaar with 150+ local Brooklyn vendors, food trucks, family workshops, and DJ sets inside the Duggal Greenhouse.",
+        price="Free",
+    )
+
+
+def scrape_brooklyn_flea_holiday_dumbo(url, ua):
+    """Brooklyn Flea Holiday Market under the DUMBO Archway — Sat & Sun Nov 14 to Dec 20, 2026."""
+    schedule = []
+    cur = datetime(2026, 11, 14, tzinfo=EASTERN)
+    end_d = datetime(2026, 12, 20, tzinfo=EASTERN)
+    while cur <= end_d:
+        if cur.weekday() in (5, 6):
+            schedule.append((cur.replace(hour=10, minute=0), cur.replace(hour=17, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Brooklyn Flea Holiday Market at DUMBO Archway",
+        default_venue="Brooklyn Flea",
+        default_addr="80 Pearl St, Brooklyn, NY 11201",
+        schedule=schedule,
+        desc="Weekend vintage, antique, and artisan holiday market under the Manhattan Bridge Archway in DUMBO with 50+ collectors and makers.",
+        price="Free",
+    )
+
+
+def scrape_chelsea_flea_holiday(url, ua):
+    """Chelsea Flea Holiday Market — Sat & Sun Nov 14 to Dec 20, 2026."""
+    schedule = []
+    cur = datetime(2026, 11, 14, tzinfo=EASTERN)
+    end_d = datetime(2026, 12, 20, tzinfo=EASTERN)
+    while cur <= end_d:
+        if cur.weekday() in (5, 6):
+            schedule.append((cur.replace(hour=8, minute=0), cur.replace(hour=16, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Chelsea Flea Holiday Market",
+        default_venue="Chelsea Flea",
+        default_addr="29 W 25th St, New York, NY 10001",
+        schedule=schedule,
+        desc="Open-air weekend holiday flea market in Chelsea with 50+ antique dealers, vintage fashion vendors, and local makers.",
+        price="Free",
+    )
+
+
+def scrape_grand_bazaar_holiday(url, ua):
+    """Grand Bazaar NYC Holiday Market on the Upper West Side — Sundays Nov 29 to Dec 20, 2026."""
+    days = [(2026, 11, 29), (2026, 12, 6), (2026, 12, 13), (2026, 12, 20)]
+    schedule = [
+        (datetime(y, m, d, 10, 0, tzinfo=EASTERN), datetime(y, m, d, 17, 0, tzinfo=EASTERN))
+        for y, m, d in days
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Grand Bazaar NYC Holiday Market",
+        default_venue="Grand Bazaar NYC",
+        default_addr="100 W 77th St, New York, NY 10024",
+        schedule=schedule,
+        desc="Indoor and outdoor Sunday holiday bazaar on the Upper West Side featuring 150+ hand-picked artisans, vintage dealers, and artisanal food stalls.",
+        price="Free",
+    )
+
+
+def scrape_renegade_craft_fair_nyc(url, ua):
+    """Renegade Craft Fair NYC Winter & Holiday Editions at Metropolitan Pavilion."""
+    days = [(2026, 11, 14), (2026, 11, 15), (2026, 12, 5), (2026, 12, 6)]
+    schedule = [
+        (datetime(y, m, d, 11, 0, tzinfo=EASTERN), datetime(y, m, d, 17, 0, tzinfo=EASTERN))
+        for y, m, d in days
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Renegade Craft Fair NYC Holiday Market",
+        default_venue="Metropolitan Pavilion",
+        default_addr="125 W 18th St, New York, NY 10011",
+        schedule=schedule,
+        desc="Curated indie craft and design fair at Chelsea's Metropolitan Pavilion with 170+ contemporary makers, ceramics, prints, jewelry, and apothecary goods.",
+        price="Free",
+    )
+
+
+def scrape_crafts_at_the_cathedral(url, ua):
+    """Crafts at the Cathedral Holiday Fair at Cathedral of St. John the Divine."""
+    schedule = [
+        (datetime(2026, 12, 4, 12, 0, tzinfo=EASTERN), datetime(2026, 12, 4, 19, 0, tzinfo=EASTERN)),
+        (datetime(2026, 12, 5, 10, 0, tzinfo=EASTERN), datetime(2026, 12, 5, 18, 0, tzinfo=EASTERN)),
+        (datetime(2026, 12, 6, 12, 0, tzinfo=EASTERN), datetime(2026, 12, 6, 17, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Crafts at the Cathedral Holiday Fair",
+        default_venue="Cathedral of St. John the Divine",
+        default_addr="1047 Amsterdam Ave, New York, NY 10025",
+        schedule=schedule,
+        desc="Fine craft and holiday artisan fair inside the nave of the Cathedral of St. John the Divine in Morningside Heights with 70+ juried makers.",
+        price="$10",
+    )
+
+
+def scrape_oddities_flea_holiday(url, ua):
+    """The Oddities Flea Market: Holiday Edition at Metropolitan Pavilion."""
+    schedule = [
+        (datetime(2026, 12, 12, 11, 0, tzinfo=EASTERN), datetime(2026, 12, 12, 18, 0, tzinfo=EASTERN)),
+        (datetime(2026, 12, 13, 11, 0, tzinfo=EASTERN), datetime(2026, 12, 13, 18, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="The Oddities Flea Market: Holiday Edition",
+        default_venue="Metropolitan Pavilion",
+        default_addr="125 W 18th St, New York, NY 10011",
+        schedule=schedule,
+        desc="Three floors of curiosities, macabre art, dark jewelry, natural history specimens, and unusual holiday gifts at the Metropolitan Pavilion.",
+        price="$25",
+    )
+
+
+def scrape_church_of_sweden_julbutik(url, ua):
+    """Church of Sweden Christmas Market (Julbutik) in Midtown — Wed–Sun Nov 20 to Dec 20, 2026."""
+    schedule = []
+    cur = datetime(2026, 11, 20, tzinfo=EASTERN)
+    end_d = datetime(2026, 12, 20, tzinfo=EASTERN)
+    while cur <= end_d:
+        if cur.weekday() in (2, 3, 4, 5, 6) and (cur.month, cur.day) != (11, 26):
+            schedule.append((cur.replace(hour=12, minute=0), cur.replace(hour=18, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Church of Sweden Christmas Market (Julbutik)",
+        default_venue="Church of Sweden New York",
+        default_addr="5 E 48th St, New York, NY 10017",
+        schedule=schedule,
+        desc="Traditional Swedish Julbutik Christmas bazaar in Midtown with Scandinavian crafts, Dala horses, ornaments, lingonberry treats, glögg, and cardamom buns.",
+        price="Free",
+    )
+
+
+def scrape_norwegian_seamens_julemarked(url, ua):
+    """Norwegian Seamen's Church Annual Christmas Market (Julemarked) in Turtle Bay."""
+    days = [(2026, 11, 19), (2026, 11, 20), (2026, 11, 21), (2026, 11, 22)]
+    schedule = [
+        (datetime(y, m, d, 12, 0, tzinfo=EASTERN), datetime(y, m, d, 19, 0, tzinfo=EASTERN))
+        for y, m, d in days
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Norwegian Seamen's Church Christmas Market (Julemarked)",
+        default_venue="Norwegian Seamen's Church",
+        default_addr="317 E 52nd St, New York, NY 10022",
+        schedule=schedule,
+        desc="Annual Norwegian Julemarked Christmas fair in Midtown East with Nordic knitwear, trolls, chocolates, open-faced sandwiches, and fresh heart waffles.",
+        price="Free",
+    )
+
+
+def scrape_harlem_night_market(url, ua):
+    """Harlem Night Market Holiday Edition at La Marqueta — Saturdays Dec 5, 12, 19, 2026."""
+    days = [(2026, 12, 5), (2026, 12, 12), (2026, 12, 19)]
+    schedule = [
+        (datetime(y, m, d, 15, 0, tzinfo=EASTERN), datetime(y, m, d, 19, 0, tzinfo=EASTERN))
+        for y, m, d in days
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Harlem Night Market Holiday Edition at La Marqueta",
+        default_venue="La Marqueta",
+        default_addr="1590 Park Ave, New York, NY 10029",
+        schedule=schedule,
+        desc="East Harlem's festive holiday night market under the Park Avenue viaduct at La Marqueta with 50+ Uptown makers, food vendors, DJs, and trolley rides.",
+        price="Free",
+    )
+
+
+def scrape_mcny_holiday_market(url, ua):
+    """Museum of the City of New York x Brooklyn Pop-Up Holiday Market."""
+    schedule = [
+        (datetime(2026, 12, 5, 10, 0, tzinfo=EASTERN), datetime(2026, 12, 5, 17, 30, tzinfo=EASTERN)),
+        (datetime(2026, 12, 6, 10, 0, tzinfo=EASTERN), datetime(2026, 12, 6, 17, 30, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Museum of the City of New York Holiday Artisans Market",
+        default_venue="Museum of the City of New York",
+        default_addr="1220 5th Ave, New York, NY 10029",
+        schedule=schedule,
+        desc="Brooklyn Pop-Up's holiday artisan fair inside the Museum of the City of New York on Fifth Avenue with 30+ local designers, artists, and makers.",
+        price="Free",
+    )
+
+
+def scrape_williamsburg_winter_village(url, ua):
+    """Williamsburg Winter Village Holiday Market at Bk Backyard Bar — Dec weekends."""
+    days = [(2026, 12, 5), (2026, 12, 6), (2026, 12, 12), (2026, 12, 13), (2026, 12, 19), (2026, 12, 20)]
+    schedule = [
+        (datetime(y, m, d, 12, 0, tzinfo=EASTERN), datetime(y, m, d, 18, 0, tzinfo=EASTERN))
+        for y, m, d in days
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Williamsburg Winter Village Holiday Market at Bk Backyard",
+        default_venue="Bk Backyard Bar",
+        default_addr="151 Banker St, Brooklyn, NY 11222",
+        schedule=schedule,
+        desc="Festive Williamsburg winter village with 25+ local vendor booths, holiday trees, spiked hot cocoa, mulled wine, and curling lanes.",
+        price="Free",
+    )
+
+
+def scrape_city_point_holiday_market(url, ua):
+    """City Point Holiday Market & BKLYN Holiday-Topia in Downtown Brooklyn."""
+    days = [
+        (2026, 11, 28), (2026, 11, 29),
+        (2026, 12, 5), (2026, 12, 6),
+        (2026, 12, 12), (2026, 12, 13),
+        (2026, 12, 19), (2026, 12, 20),
+    ]
+    schedule = [
+        (datetime(y, m, d, 11, 0, tzinfo=EASTERN), datetime(y, m, d, 18, 0, tzinfo=EASTERN))
+        for y, m, d in days
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="City Point Holiday Market & BKLYN Holiday-Topia",
+        default_venue="City Point",
+        default_addr="445 Albee Square W, Brooklyn, NY 11201",
+        schedule=schedule,
+        desc="Downtown Brooklyn weekend holiday craft market and family celebration at City Point and DeKalb Market Hall with Brooklyn makers and holiday activities.",
+        price="Free",
+    )
+
+
+def scrape_arts_gowanus_holiday_bazaar(url, ua):
+    """Arts Gowanus Holiday Art Bazaar — Dec 9 to Dec 13, 2026."""
+    days = [(2026, 12, 9), (2026, 12, 10), (2026, 12, 11), (2026, 12, 12), (2026, 12, 13)]
+    schedule = [
+        (datetime(y, m, d, 12, 0, tzinfo=EASTERN), datetime(y, m, d, 18, 0, tzinfo=EASTERN))
+        for y, m, d in days
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Arts Gowanus Holiday Art Bazaar",
+        default_venue="Arts Gowanus",
+        default_addr="540 President St, Brooklyn, NY 11215",
+        schedule=schedule,
+        desc="Five-day Gowanus holiday art market produced with Brooklyn Pop-Up, featuring original affordable artwork, prints, ceramics, and gifts by local artists.",
+        price="Free",
+    )
+
+
+def scrape_red_hook_holiday_market(url, ua):
+    """Red Hook Holiday Market at Hook Studio — Dec 12 & 13, 2026."""
+    schedule = [
+        (datetime(2026, 12, 12, 11, 0, tzinfo=EASTERN), datetime(2026, 12, 12, 18, 0, tzinfo=EASTERN)),
+        (datetime(2026, 12, 13, 11, 0, tzinfo=EASTERN), datetime(2026, 12, 13, 18, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Red Hook Holiday Market at Hook Studio",
+        default_venue="Hook Studio",
+        default_addr="161 Dikeman St, Brooklyn, NY 11231",
+        schedule=schedule,
+        desc="Waterfront neighborhood holiday market at Hook Studio in Red Hook featuring 50+ Brooklyn artisans, woodworkers, ceramicists, and local food purveyors.",
+        price="Free",
+    )
+
+
+def scrape_made_bush_terminal_holiday(url, ua):
+    """MADE Bush Terminal Holiday Market in Sunset Park — Dec 19 & 20, 2026."""
+    schedule = [
+        (datetime(2026, 12, 19, 11, 0, tzinfo=EASTERN), datetime(2026, 12, 19, 18, 0, tzinfo=EASTERN)),
+        (datetime(2026, 12, 20, 11, 0, tzinfo=EASTERN), datetime(2026, 12, 20, 18, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="MADE Bush Terminal Holiday Market",
+        default_venue="MADE Bush Terminal",
+        default_addr="43 51st St, Brooklyn, NY 11232",
+        schedule=schedule,
+        desc="Sunset Park waterfront holiday makers market at MADE Bush Terminal with 60+ local vendors, live music, and family craft stations.",
+        price="Free",
+    )
+
+
+def scrape_artists_and_fleas_holiday(url, ua):
+    """Artists & Fleas Williamsburg Holiday Market — Sat & Sun Nov 14 to Dec 20, 2026."""
+    schedule = []
+    cur = datetime(2026, 11, 14, tzinfo=EASTERN)
+    end_d = datetime(2026, 12, 20, tzinfo=EASTERN)
+    while cur <= end_d:
+        if cur.weekday() in (5, 6):
+            schedule.append((cur.replace(hour=11, minute=0), cur.replace(hour=18, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Artists & Fleas Williamsburg Holiday Market",
+        default_venue="Artists & Fleas Williamsburg",
+        default_addr="70 N 7th St, Brooklyn, NY 11249",
+        schedule=schedule,
+        desc="Weekend indoor holiday edition of Williamsburg's iconic maker and vintage market with 50+ independent designers, collectors, and gift booths.",
+        price="Free",
+    )
+
+
+def scrape_astoria_holiday_market(url, ua):
+    """Astoria Market Holiday Artisan Fair at Bohemian Hall & Beer Garden — Sundays Dec 6 & 13, 2026."""
+    schedule = [
+        (datetime(2026, 12, 6, 12, 0, tzinfo=EASTERN), datetime(2026, 12, 6, 18, 0, tzinfo=EASTERN)),
+        (datetime(2026, 12, 13, 12, 0, tzinfo=EASTERN), datetime(2026, 12, 13, 18, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Astoria Market Holiday Artisan Fair at Bohemian Hall",
+        default_venue="Bohemian Hall & Beer Garden",
+        default_addr="29-19 24th Ave, Astoria, NY 11102",
+        schedule=schedule,
+        desc="Queens' beloved holiday artisan market inside the main hall of Bohemian Hall & Beer Garden with handmade gifts, baked goods, vintage finds, and mulled wine.",
+        price="Free",
+    )
+
+
+def scrape_queens_craft_brigade_holiday(url, ua):
+    """Queens Craft Brigade Holiday Market in Astoria — Sun Dec 6, 2026."""
+    schedule = [
+        (datetime(2026, 12, 6, 12, 0, tzinfo=EASTERN), datetime(2026, 12, 6, 17, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Queens Craft Brigade Holiday Market",
+        default_venue="Katch Astoria",
+        default_addr="31-19 Newtown Ave, Astoria, NY 11102",
+        schedule=schedule,
+        desc="Monthly Queens makers market's annual holiday edition in Astoria featuring 30+ Queens-based artists, illustrators, jewelers, and crafters.",
+        price="Free",
+    )
+
+
+def scrape_culture_lab_lic_holiday_market(url, ua):
+    """Culture Lab LIC Holiday Art & Makers Market — Thu–Sun Nov 19 to Dec 13, 2026."""
+    schedule = []
+    cur = datetime(2026, 11, 19, tzinfo=EASTERN)
+    end_d = datetime(2026, 12, 13, tzinfo=EASTERN)
+    while cur <= end_d:
+        if cur.weekday() in (3, 4, 5, 6) and (cur.month, cur.day) != (11, 26):
+            open_h = 14 if cur.weekday() in (5, 6) else 17
+            schedule.append((cur.replace(hour=open_h, minute=0), cur.replace(hour=21, minute=0)))
+        cur += timedelta(days=1)
+    return _scrape_holiday_market(
+        url, ua,
+        name="Culture Lab LIC Holiday Art & Makers Market",
+        default_venue="Culture Lab LIC",
+        default_addr="5-25 46th Ave, Long Island City, NY 11101",
+        schedule=schedule,
+        desc="Long Island City gallery and holiday makers market featuring affordable fine art, ceramics, prints, and handmade gifts by Queens artists.",
+        price="Free",
+    )
+
+
+def scrape_snug_harbor_holiday_hop(url, ua):
+    """Snug Harbor Holiday Hop & Artisans Market on Staten Island — Sat Dec 5, 2026."""
+    schedule = [
+        (datetime(2026, 12, 5, 11, 0, tzinfo=EASTERN), datetime(2026, 12, 5, 16, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Snug Harbor Holiday Hop & Artisans Market",
+        default_venue="Snug Harbor Cultural Center",
+        default_addr="1000 Richmond Terrace, Staten Island, NY 10301",
+        schedule=schedule,
+        desc="Campus-wide Staten Island holiday market across Snug Harbor Cultural Center & Botanical Garden with 50+ local artisans, Staten Island Museum's Edible Island Market, and festive music.",
+        price="Free",
+    )
+
+
+def scrape_bartow_pell_holiday_bazaar(url, ua):
+    """Bartow-Pell Mansion Holiday Family Day & Bazaar in the Bronx — Sat Dec 5, 2026."""
+    schedule = [
+        (datetime(2026, 12, 5, 10, 0, tzinfo=EASTERN), datetime(2026, 12, 5, 15, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Bartow-Pell Mansion Holiday Bazaar",
+        default_venue="Bartow-Pell Mansion Museum",
+        default_addr="895 Shore Rd, Bronx, NY 10464",
+        schedule=schedule,
+        desc="Historic Pelham Bay Park mansion decorated for the holidays with local artisan gift vendors, seasonal treats, and family activities.",
+        price="Free",
+    )
+
+
+def scrape_wave_hill_holiday_market(url, ua):
+    """Wave Hill Holiday Workshop & Artisans Market in Riverdale (Bronx) — Dec 5 & 6, 2026."""
+    schedule = [
+        (datetime(2026, 12, 5, 10, 0, tzinfo=EASTERN), datetime(2026, 12, 5, 16, 0, tzinfo=EASTERN)),
+        (datetime(2026, 12, 6, 10, 0, tzinfo=EASTERN), datetime(2026, 12, 6, 16, 0, tzinfo=EASTERN)),
+    ]
+    return _scrape_holiday_market(
+        url, ua,
+        name="Wave Hill Holiday Artisans Market",
+        default_venue="Wave Hill",
+        default_addr="4900 Independence Ave, Bronx, NY 10471",
+        schedule=schedule,
+        desc="Holiday shopping market and wreath-making weekend overlooking the Hudson River and Palisades at Wave Hill in Riverdale.",
+        price="Free",
+    )
+
+
 PARTIFUL_SOURCES_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "partiful_sources.json")
 
 
@@ -9898,6 +10548,39 @@ _ALL_VENUES += DIRECT_CALENDARS
 _ALL_VENUES += [
     {"name": "The Bowery Presents (Direct AEG Feed)", "url": "https://www.bowerypresents.com/", "ua": UA_CHROME, "scraper": scrape_bowery_presents, "default_category": "music"},
     {"name": "Alamo Drafthouse NYC (Direct API)", "url": "https://drafthouse.com/s/mother/v2/schedule/market/nyc", "ua": UA_CHROME, "scraper": scrape_alamo_drafthouse, "default_category": "film"},
+    # NYC Christmas & Holiday Markets (all 5 boroughs)
+    {"name": "Bank of America Winter Village at Bryant Park", "url": "https://bryantpark.org/activities/holiday-shops", "ua": UA_CHROME, "scraper": scrape_bryant_park_winter_village, "default_category": "markets"},
+    {"name": "Union Square Holiday Market (Urbanspace)", "url": "https://www.urbanspacemarkets.com/union-square-holiday-market", "ua": UA_CHROME, "scraper": scrape_union_square_holiday_market, "default_category": "markets"},
+    {"name": "Columbus Circle Holiday Market (Urbanspace)", "url": "https://www.urbanspacemarkets.com/columbus-circle-holiday-market", "ua": UA_CHROME, "scraper": scrape_columbus_circle_holiday_market, "default_category": "markets"},
+    {"name": "Grand Central Holiday Fair", "url": "https://www.grandcentralterminal.com/event/grand-central-holiday-fair/", "ua": UA_CHROME, "scraper": scrape_grand_central_holiday_fair, "default_category": "markets"},
+    {"name": "Macy's Holiday Square Market (Herald Square)", "url": "https://www.urbanspacemarkets.com/", "ua": UA_CHROME, "scraper": scrape_macys_holiday_square, "default_category": "markets"},
+    {"name": "Holiday Market at The Oculus", "url": "https://www.officialworldtradecenter.com/", "ua": UA_CHROME, "scraper": scrape_oculus_holiday_market, "default_category": "markets"},
+    {"name": "FAD Market Holiday Pop-Up at Empire Stores", "url": "https://fadmarket.co/empirestores-holiday-market", "ua": UA_CHROME, "scraper": scrape_fad_market_empire_stores, "default_category": "markets"},
+    {"name": "FAD Market Holiday Pop-Up at St. Paul's (Cobble Hill)", "url": "https://fadmarket.co/cobble-hill-holiday-market", "ua": UA_CHROME, "scraper": scrape_fad_market_cobble_hill, "default_category": "markets"},
+    {"name": "FAD Market Holiday Pop-Up at The Invisible Dog", "url": "https://fadmarket.co/", "ua": UA_CHROME, "scraper": scrape_fad_market_invisible_dog, "default_category": "markets"},
+    {"name": "Wallabout Wonderland Holiday Market (Brooklyn Navy Yard)", "url": "https://www.brooklynnavyyard.org/", "ua": UA_CHROME, "scraper": scrape_wallabout_wonderland, "default_category": "markets"},
+    {"name": "Brooklyn Flea Holiday Market at DUMBO Archway", "url": "https://brooklynflea.com/", "ua": UA_CHROME, "scraper": scrape_brooklyn_flea_holiday_dumbo, "default_category": "markets"},
+    {"name": "Chelsea Flea Holiday Market", "url": "https://www.chelseaflea.com/", "ua": UA_CHROME, "scraper": scrape_chelsea_flea_holiday, "default_category": "markets"},
+    {"name": "Grand Bazaar NYC Holiday Market", "url": "https://grandbazaarnyc.org/events/holiday-bazaar/", "ua": UA_CHROME, "scraper": scrape_grand_bazaar_holiday, "default_category": "markets"},
+    {"name": "Renegade Craft Fair NYC Holiday Market", "url": "https://www.renegadecraft.com/city/new-york/", "ua": UA_CHROME, "scraper": scrape_renegade_craft_fair_nyc, "default_category": "markets"},
+    {"name": "Crafts at the Cathedral Holiday Fair", "url": "https://www.stjohnthedivine.org/", "ua": UA_CHROME, "scraper": scrape_crafts_at_the_cathedral, "default_category": "markets"},
+    {"name": "The Oddities Flea Market: Holiday Edition", "url": "https://www.theodditiesfleamarket.com/", "ua": UA_CHROME, "scraper": scrape_oddities_flea_holiday, "default_category": "markets"},
+    {"name": "Church of Sweden Christmas Market (Julbutik)", "url": "https://www.svenskakyrkan.se/newyork", "ua": UA_CHROME, "scraper": scrape_church_of_sweden_julbutik, "default_category": "markets"},
+    {"name": "Norwegian Seamen's Church Christmas Market (Julemarked)", "url": "https://www.sjomannskirken.no/new-york/", "ua": UA_CHROME, "scraper": scrape_norwegian_seamens_julemarked, "default_category": "markets"},
+    {"name": "Harlem Night Market Holiday Edition at La Marqueta", "url": "https://www.eastharlemalliance.org/", "ua": UA_CHROME, "scraper": scrape_harlem_night_market, "default_category": "markets"},
+    {"name": "Museum of the City of New York Holiday Artisans Market", "url": "https://www.brooklynpop-up.com/mcny-holiday-market", "ua": UA_CHROME, "scraper": scrape_mcny_holiday_market, "default_category": "markets"},
+    {"name": "Williamsburg Winter Village Holiday Market at Bk Backyard", "url": "https://www.bkbackyardbar.com/", "ua": UA_CHROME, "scraper": scrape_williamsburg_winter_village, "default_category": "markets"},
+    {"name": "City Point Holiday Market & BKLYN Holiday-Topia", "url": "https://www.citypointbrooklyn.com/", "ua": UA_CHROME, "scraper": scrape_city_point_holiday_market, "default_category": "markets"},
+    {"name": "Arts Gowanus Holiday Art Bazaar", "url": "https://www.artsgowanus.org/", "ua": UA_CHROME, "scraper": scrape_arts_gowanus_holiday_bazaar, "default_category": "markets"},
+    {"name": "Red Hook Holiday Market at Hook Studio", "url": "https://www.brooklynpop-up.com/red-hook-holiday-market", "ua": UA_CHROME, "scraper": scrape_red_hook_holiday_market, "default_category": "markets"},
+    {"name": "MADE Bush Terminal Holiday Market", "url": "https://www.brooklynpop-up.com/made-bush-terminal-holiday-market", "ua": UA_CHROME, "scraper": scrape_made_bush_terminal_holiday, "default_category": "markets"},
+    {"name": "Artists & Fleas Williamsburg Holiday Market", "url": "https://www.artistsandfleas.com/williamsburg/", "ua": UA_CHROME, "scraper": scrape_artists_and_fleas_holiday, "default_category": "markets"},
+    {"name": "Astoria Market Holiday Artisan Fair at Bohemian Hall", "url": "https://www.astoriamarket.com/", "ua": UA_CHROME, "scraper": scrape_astoria_holiday_market, "default_category": "markets"},
+    {"name": "Queens Craft Brigade Holiday Market", "url": "https://queenscraftbrigade.com/", "ua": UA_CHROME, "scraper": scrape_queens_craft_brigade_holiday, "default_category": "markets"},
+    {"name": "Culture Lab LIC Holiday Art & Makers Market", "url": "https://www.culturelablic.org/", "ua": UA_CHROME, "scraper": scrape_culture_lab_lic_holiday_market, "default_category": "markets"},
+    {"name": "Snug Harbor Holiday Hop & Artisans Market", "url": "https://snug-harbor.org/event/holiday-hop/", "ua": UA_CHROME, "scraper": scrape_snug_harbor_holiday_hop, "default_category": "markets"},
+    {"name": "Bartow-Pell Mansion Holiday Bazaar", "url": "https://www.bartowpellmansionmuseum.org/events/holiday-family-day/", "ua": UA_CHROME, "scraper": scrape_bartow_pell_holiday_bazaar, "default_category": "markets"},
+    {"name": "Wave Hill Holiday Artisans Market", "url": "https://www.wavehill.org/calendar/holiday-workshop-weekend", "ua": UA_CHROME, "scraper": scrape_wave_hill_holiday_market, "default_category": "markets"},
 ]
 _existing_source_names = {v["name"].lower() for v in _ALL_VENUES}
 _ALL_VENUES += [

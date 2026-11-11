@@ -43,6 +43,19 @@ from lgbtq import is_lgbtq_event
 from light_theme import LIGHT_THEME_CSS
 from scrapers import _MARKET_OVERRIDABLE, admission_price, is_market_or_festival, keep_music_venue_category, mentions_free
 from venues_geo import resolve_event_geo
+from markets_hub import (
+    is_market,
+    is_vendor_festival,
+    market_type,
+    _markets_split,
+    _market_hours,
+    _render_market_card,
+)
+
+
+def render_hub_page(slug, dated, site_url=None, max_events=120):
+    import seo
+    return seo.render_hub_page(slug, dated, site_url=site_url, max_events=max_events)
 from nyc_geo import TRISTATE_NEEDLES, borough_at, outside_area
 
 # Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes).

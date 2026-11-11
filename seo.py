@@ -20,6 +20,7 @@ from html import escape
 
 import edm_hub
 import kids_hub
+import markets_hub
 from scrapers import EASTERN, category_bucket
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -149,18 +150,20 @@ def event_schema(e, site_url=None):
     return item
 
 
-def _upcoming(dated, days=None, start=None):
+def _upcoming(dated, days=None, start=None, include_tba=False):
     now = datetime.now(EASTERN)
     start = start or now - timedelta(hours=2)
     end = now + timedelta(days=days) if days else None
-    out = []
-    for _day, events in dated:
-        for e in events:
-            t = e.get("_time")
-            if t and t >= start and (end is None or t <= end):
-                out.append(e)
+    out, tba = [], []
+    rows = dated if (dated and isinstance(dated[0], dict)) else [e for _day, evs in (dated or []) for e in evs]
+    for e in rows:
+        t = e.get("_time")
+        if t and t >= start and (end is None or t <= end):
+            out.append(e)
+        elif include_tba and t is None:
+            tba.append(e)
     out.sort(key=lambda e: e["_time"])
-    return out
+    return out + tba
 
 
 def build_json_ld(dated, total_events, site_url=None, limit=60):
@@ -245,9 +248,14 @@ HUBS = {
         "badge": "KIDS & FAMILY", "query": "#cat=Kids+%26+Family",
     },
     "markets-festivals-nyc": {
-        "title": "Markets, Fairs & Festivals in NYC", "bucket": "Markets & Festivals", "collapse_series": True, "limit": 250,
+        "title": "Markets, Fairs & Festivals in NYC", "bucket": "Markets & Festivals", "style": "markets", "limit": markets_hub.CARD_LIMIT,
         "subtitle": "Flea markets, night markets, greenmarkets, holiday markets and bazaars, craft and vintage fairs, food fests and street fairs.",
         "badge": "MARKETS & FESTIVALS", "query": "#cat=Markets+%26+Festivals",
+    },
+    "christmas-markets-nyc": {
+        "title": "Christmas & Holiday Markets in NYC", "bucket": "Markets & Festivals", "style": "markets", "holiday_only": True, "limit": markets_hub.CARD_LIMIT,
+        "subtitle": "Winter villages, open-air European Christmas markets, holiday craft fairs, museum bazaars, and indie pop-ups across Manhattan, Brooklyn, Queens, the Bronx, and Staten Island.",
+        "badge": "CHRISTMAS & HOLIDAY MARKETS", "query": "#cat=Markets+%26+Festivals&q=holiday",
     },
     # Activity guides
     "live-music-nyc": {
@@ -310,29 +318,41 @@ def hub_events(hub, dated, limit=None):
     today = datetime.now(EASTERN).date()
     time_rule = hub.get("time")
     keywords = tuple(k.lower() for k in hub.get("keywords") or ())
+    is_markets = hub.get("style") == "markets"
     out = []
-    for e in _upcoming(dated):
-        d = e["_time"].date()
+    for e in _upcoming(dated, include_tba=is_markets):
+        t = e.get("_time")
+        d = t.date() if isinstance(t, datetime) else None
         if time_rule == "today" and d != today:
             continue
         if time_rule == "weekend" and d not in _weekend_dates(today):
             continue
         cat = e.get("category") or "other"
-        if cat in ("services", "family") and hub.get("bucket") != "Kids & Family":
+        if cat == "services":
             continue
-        if hub.get("style") == "edm" and not edm_hub.is_edm_event(e):
+        if cat == "family" and hub.get("bucket") != "Kids & Family" and not is_markets:
             continue
-        cat_ok = True
-        if hub.get("cats") or hub.get("bucket"):
-            cat_ok = cat in (hub.get("cats") or set()) or (hub.get("bucket") and category_bucket(cat) == hub["bucket"])
-        kw_ok = bool(keywords) and any(k in (e.get("name") or "").lower() for k in keywords)
-        if (hub.get("cats") or hub.get("bucket")) and keywords:
-            if not (cat_ok or kw_ok):
+        if is_markets:
+            if not (markets_hub.is_market(e) or markets_hub.is_vendor_festival(e)):
                 continue
-        elif keywords and not kw_ok:
-            continue
-        elif not cat_ok:
-            continue
+            if hub.get("holiday_only") and markets_hub.market_type(e) != "holiday":
+                blob = f"{e.get('name') or ''} {e.get('description') or ''}"
+                if not markets_hub._MARKET_TYPES[1][2].search(blob):
+                    continue
+        else:
+            if hub.get("style") == "edm" and not edm_hub.is_edm_event(e):
+                continue
+            cat_ok = True
+            if hub.get("cats") or hub.get("bucket"):
+                cat_ok = cat in (hub.get("cats") or set()) or (hub.get("bucket") and category_bucket(cat) == hub["bucket"])
+            kw_ok = bool(keywords) and any(k in (e.get("name") or "").lower() for k in keywords)
+            if (hub.get("cats") or hub.get("bucket")) and keywords:
+                if not (cat_ok or kw_ok):
+                    continue
+            elif keywords and not kw_ok:
+                continue
+            elif not cat_ok:
+                continue
         if hub.get("free") and not _is_event_free(e):
             continue
         if hub.get("city"):
@@ -476,7 +496,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
     site_url = site_url or get_site_url()
     events = hub_events(hub, dated)
     city_of = lambda e: _event_city(e.get("venue"), e.get("_source_venue"), geo=resolve_event_geo(e), event=e)
-    if hub.get("style") in ("kids", "edm"):
+    if hub.get("style") in ("kids", "edm", "markets"):
         events = [e for e in events if city_of(e) != "other"]  # the page is laid out by borough
     if hub.get("collapse_series"):
         events = _collapse_series(events)
@@ -507,37 +527,38 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
     sections = []
     cur_day = None
     cards = []
-    for e in shown:
-        d = e["_time"].date()
-        if d != cur_day:
-            if cards:
-                sections.append(f'<div class="grid">{"".join(cards)}</div>')
-                cards = []
-            sections.append(f'<h2 class="day" data-day="{d.isoformat()}">{e["_time"].strftime("%A, %B")} {d.day}</h2>')
-            cur_day = d
-        geo = resolve_event_geo(e)
-        city = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo, event=e)
-        where = e.get("venue") or e.get("_source_venue") or ""
-        if city not in ("other", "citywide"):
-            where = f"{where} · {CITY_LABELS.get(city, '')}"
-        if _is_event_free(e):
-            badge = '<span class="badge free">Free</span>'
-        elif e.get("price"):
-            badge = f'<span class="badge price">{escape(str(e["price"]))[:24]}</span>'
-        else:
-            badge = ""
-        hl = _get_event_highlight(e, highlights)
-        if hl:
-            badge = f'<span class="badge pickb">{escape(hl.get("badge") or "Pick")}</span>' + badge
-        when = e["_time"].strftime("%-I:%M %p") if (e["_time"].hour or e["_time"].minute) else "All day"
-        cards.append(
-            f'<article class="card{" pick" if hl else ""}" data-city="{city}" data-day="{d.isoformat()}"><div class="meta"><time datetime="{e["_time"].isoformat()}">{when}</time>'
-            f'<span>{badge}</span></div><h3><a href="{escape(e.get("url") or "../")}" target="_blank" rel="noopener">'
-            f'{escape(e.get("name") or "Event")}</a></h3><div class="venue">{escape(where)}</div>'
-            + (f'<div class="also">{escape(e["_also"])}</div>' if e.get("_also") else "") + "</article>"
-        )
-    if cards:
-        sections.append(f'<div class="grid">{"".join(cards)}</div>')
+    if not hub.get("style"):
+        for e in shown:
+            d = e["_time"].date()
+            if d != cur_day:
+                if cards:
+                    sections.append(f'<div class="grid">{"".join(cards)}</div>')
+                    cards = []
+                sections.append(f'<h2 class="day" data-day="{d.isoformat()}">{e["_time"].strftime("%A, %B")} {d.day}</h2>')
+                cur_day = d
+            geo = resolve_event_geo(e)
+            city = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo, event=e)
+            where = e.get("venue") or e.get("_source_venue") or ""
+            if city not in ("other", "citywide"):
+                where = f"{where} · {CITY_LABELS.get(city, '')}"
+            if _is_event_free(e):
+                badge = '<span class="badge free">Free</span>'
+            elif e.get("price"):
+                badge = f'<span class="badge price">{escape(str(e["price"]))[:24]}</span>'
+            else:
+                badge = ""
+            hl = _get_event_highlight(e, highlights)
+            if hl:
+                badge = f'<span class="badge pickb">{escape(hl.get("badge") or "Pick")}</span>' + badge
+            when = e["_time"].strftime("%-I:%M %p") if (e["_time"].hour or e["_time"].minute) else "All day"
+            cards.append(
+                f'<article class="card{" pick" if hl else ""}" data-city="{city}" data-day="{d.isoformat()}"><div class="meta"><time datetime="{e["_time"].isoformat()}">{when}</time>'
+                f'<span>{badge}</span></div><h3><a href="{escape(e.get("url") or "../")}" target="_blank" rel="noopener">'
+                f'{escape(e.get("name") or "Event")}</a></h3><div class="venue">{escape(where)}</div>'
+                + (f'<div class="also">{escape(e["_also"])}</div>' if e.get("_also") else "") + "</article>"
+            )
+        if cards:
+            sections.append(f'<div class="grid">{"".join(cards)}</div>')
     body = "\n".join(sections) or "<p>No upcoming listings match right now — the full calendar has everything.</p>"
     more = f"Showing {len(shown):,} of {len(events):,} upcoming listings." if len(events) > len(shown) else f"{len(events):,} upcoming listings."
 
@@ -560,6 +581,10 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
         hero, filters, body = edm_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
         extra_head, extra_css, foot_js = edm_hub._EDM_FONTS, edm_hub._EDM_CSS, edm_hub._EDM_FILTER_JS
         body_tag = '<body class="edm-hub">'
+    elif hub.get("style") == "markets":
+        hero, filters, body = markets_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
+        extra_css, foot_js = markets_hub._MARKETS_CSS, markets_hub._HUB_MARKET_JS
+        body_tag = '<body class="markets-hub">'
 
     return f"""<!doctype html>
 <html lang="en">
