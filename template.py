@@ -2585,7 +2585,11 @@ def render_page(results, split_deferred=False, context_out=None):
                 )
             useful_block = f'''
         <div class="useful-inner">
-          <h3>Useful links</h3>
+          <h3>Featured Guides</h3>
+          <div class="useful-cat useful-markets" style="margin-bottom:12px"><div class="useful-cat-head" style="color:#b23a26"><span class="chip-icon">🛍️ </span>Markets &amp; Festivals</div><ul><li><a href="markets-festivals-nyc/">Farmers markets, fleas &amp; craft fairs</a></li><li><a href="christmas-markets-nyc/">Christmas &amp; holiday markets in NYC</a></li></ul></div>
+          <div class="useful-cat useful-edm" style="margin-bottom:12px"><div class="useful-cat-head" style="color:#00f0ff"><span class="chip-icon">⚡ </span>DJ &amp; Electronic</div><ul><li><a href="dj-techno-nights-nyc/">Techno, house &amp; dance parties</a></li></ul></div>
+          <div class="useful-cat useful-parents" style="margin-bottom:12px"><div class="useful-cat-head" style="color:#f27e9a"><span class="chip-icon">👪 </span>For parents</div><ul><li><a href="kids-family-events-nyc/">Kids &amp; family events</a></li><li><a href="summer-camps/">Summer camps in NYC</a></li></ul></div>
+          <h3 style="margin-top:16px;">Useful links</h3>
           <p class="hint">Venues without a scrapable calendar.</p>
           {"".join(parts)}
         </div>'''

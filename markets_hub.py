@@ -11,6 +11,7 @@ Includes:
 import re
 from datetime import datetime, timedelta
 from html import escape
+from urllib.parse import quote_plus
 
 from scrapers import EASTERN, NOT_MARKET_FESTIVAL_RE
 
@@ -44,8 +45,8 @@ _NOT_MARKET_RE = re.compile(
     r"(?i)\b(?:market\s+(?:st|street|square|basket|research|analysis|update|outlook|hotel)|stock\s+markets?|"
     r"job\s+markets?|housing\s+markets?|super\s*markets?|marketing|marketplace\s+of\s+ideas|"
     r"market\s+(?:days?\s+)?(?:volunteer|vendor\s+(?:application|sign))|"
-    r"\btours?\b|tastings?|language\s+exchange|market\s+visit|tree\s+(?:arrives|lighting)|"
-    r"flea\s+(?:and\s+tick|treatment)|bazaar\s+magazine|haymarket\s+(?:station|square))\b"
+    r"\btours?\b|tastings?|language\s+exchange|market\s+visit|a\s+visit\s+to|tree\s+(?:arrives|lighting)|"
+    r"montreal|quebec|flea\s+(?:and\s+tick|treatment)|bazaar\s+magazine|haymarket\s+(?:station|square))\b"
 )
 
 # First match wins: "Winter Farmers Market" is a farmers market, "Holiday Craft Fair" a holiday one.
@@ -54,7 +55,8 @@ _MARKET_TYPES = (
         r"(?i)\b(?:farmers'?|farm\s+stand|farm\s+market|farmstand|produce|fruit|apples?|orchard|berr(?:y|ies)|"
         r"harvest|greenmarket|youthmarket|down\s+to\s+earth|haymarket|csa)\b")),
     ("holiday", "🎄 Holiday & Winter", re.compile(
-        r"(?i)\b(?:holiday|christmas|xmas|winter|snow|yule|julbutik|julemarked|christkindlmarkt|"
+        r"(?i)\b(?:holiday|christmas|xmas|winter|snow|yule|julbutik|julemarked|julmarknad|julebazar|christkindlmarkt|"
+        r"norwegian\s+seamen|church\s+of\s+sweden|danish\s+seamen|"
         r"hanukkah|chanukah|kwanzaa|diwali|lunar\s+new\s+year|"
         r"santa|jingle|festive|gift|merry|noel|advent|solstice|mistletoe|thanksgiving|stocking|wonderland|holiday-topia)\b")),
     ("flea", "🧺 Flea, Vintage & Thrift", re.compile(
@@ -86,14 +88,14 @@ _FESTIVAL_RE = re.compile(
 )
 # Festivals that are a show, a tasting or a ceremony rather than stalls to wander
 _NOT_VENDOR_FESTIVAL_RE = re.compile(
-    r"(?i)\b(?:music|jazz|blues|folk|fiddle|bluegrass|rock|punk|metal|hip[- ]?hop|edm|dj|techno|house\s+music|"
+    r"(?i)(?:\b(?:music|jazz|blues|folk|fiddle|bluegrass|rock|punk|metal|hip[- ]?hop|edm|dj|techno|trance|house\s+music|"
     r"orchestra|symphony|choir|chamber|piano|guitar|song|songwriters?|opera|concerts?|film|films|movie|cinema|"
     r"shorts|documentary|comedy|improv|dance|ballet|theat(?:er|re)|play|plays|fringe|poetry|storytelling|"
     r"beer|beers|lagers?|ales?|brew(?:s|fest)?|wine|cider|spirits|whiske?y|cocktails?|tequila|bourbon|"
     r"tree\s+lighting|tree\s+arrives|pass|passes|ticket\s+package|lineup|presents|tour|science|stem|"
     r"fair\s+(?:trade|housing|share|game)|state\s+fair|social|meet(?:up)?|let'?s\s+meet|speed\s+dating|"
     r"5k|10k|run|race|walk|marathon|tournament|hackathon|conference|summit|book|books|authors?|lecture|"
-    r"potluck|ages\s+\d+)\b"
+    r"potluck|ages\s+\d+)\b|\b21\+)"
 )
 _VENDOR_FESTIVAL_CATEGORIES = {"markets", "community", "other", "food", "art", "arts", ""}
 
@@ -207,6 +209,183 @@ def _market_kind_label(kind):
     return dict([_FESTIVAL_TYPE, _MARKET_OTHER]).get(kind, "")
 
 
+_GENERIC_VENUE_RE = re.compile(
+    r"(?i)^(?:the\s+skint(?:\s+nyc)?|nyc\s*/\s*the\s+skint|secret\s+nyc|nyc\s*/\s*secret\s+nyc|"
+    r"partiful(?:\s+nyc)?|allevents(?:\s+nyc)?|luma(?:\s+nyc)?|eventbrite(?:\s+nyc)?|"
+    r"new\s+york(?:,\s*ny)?|nyc|manhattan|brooklyn|queens|the\s+bronx|bronx|staten\s+island|"
+    r"greenmarket(?:\s*\(new\s+york,\s*ny\))?|venue|tba|multiple\s+locations|various\s+locations)$"
+)
+
+# Specific spot mapping: (regex matching title/desc/venue, spot_name, gmaps_query, city, lat, lng, neighborhood)
+_KNOWN_MARKET_SPOTS = (
+    (re.compile(r"(?i)\b(?:bryant\s+park|winter\s+village\s+at\s+bryant\s+park)"),
+     "Bryant Park", "Bryant Park, New York, NY 10018", "manhattan", 40.7536, -73.9832, "Midtown"),
+    (re.compile(r"(?i)\bunion\s+square\s+holiday\s+market\b"),
+     "Union Square Park (South Plaza)", "Union Square Park, New York, NY 10003", "manhattan", 40.7359, -73.9911, "Union Square"),
+    (re.compile(r"(?i)\bunion\s+square\s+greenmarket\b"),
+     "Union Square Park (North & West Plazas)", "Union Square W & E 17th St, New York, NY 10003", "manhattan", 40.7359, -73.9911, "Union Square"),
+    (re.compile(r"(?i)\bcolumbus\s+circle\s+holiday\s+market\b"),
+     "Columbus Circle (Central Park SW & 59th St)", "Columbus Circle, New York, NY 10019", "manhattan", 40.7681, -73.9819, "Midtown West"),
+    (re.compile(r"(?i)\bgrand\s+central\s+holiday\s+fair\b"),
+     "Vanderbilt Hall at Grand Central Terminal", "89 E 42nd St, New York, NY 10017", "manhattan", 40.7527, -73.9772, "Midtown East"),
+    (re.compile(r"(?i)\bgrand\s+central\s+holiday\s+train\s+show\b"),
+     "NY Transit Museum Gallery at Grand Central Terminal", "89 E 42nd St, New York, NY 10017", "manhattan", 40.7527, -73.9772, "Midtown East"),
+    (re.compile(r"(?i)\bmacy'?s\s+holiday\s+square\b"),
+     "Macy's Herald Square (151 W 34th St)", "151 W 34th St, New York, NY 10001", "manhattan", 40.7505, -73.9878, "Herald Square"),
+    (re.compile(r"(?i)\b(?:34th\s+street|herald\s+square)\s+holiday\s+market\b"),
+     "Herald Square Plaza (Broadway & W 34th St)", "Herald Square, New York, NY 10001", "manhattan", 40.7505, -73.9878, "Herald Square"),
+    (re.compile(r"(?i)\boculus\s+holiday\s+market|shops\s+at\s+the\s+oculus\b"),
+     "Westfield World Trade Center Oculus", "185 Greenwich St, New York, NY 10007", "manhattan", 40.7115, -74.0115, "Financial District"),
+    (re.compile(r"(?i)\bchinatown\s+holiday\s+market\b"),
+     "Kam Man Market (200 Canal St, 2nd Fl)", "200 Canal St, New York, NY 10013", "manhattan", 40.7169, -73.9973, "Chinatown"),
+    (re.compile(r"(?i)\brenegade\s+craft\b"),
+     "Metropolitan Pavilion (125 W 18th St)", "125 W 18th St, New York, NY 10011", "manhattan", 40.7408, -73.9949, "Chelsea"),
+    (re.compile(r"(?i)\b175th\s+street\s+greenmarket\b"),
+     "175th St & Broadway Plaza", "W 175th St & Broadway, New York, NY 10033", "manhattan", 40.8460, -73.9383, "Washington Heights"),
+    (re.compile(r"(?i)\b79th\s+street\s+greenmarket\b"),
+     "Columbus Ave & W 79th St", "Columbus Ave & W 79th St, New York, NY 10024", "manhattan", 40.7818, -73.9756, "Upper West Side"),
+    (re.compile(r"(?i)\btompkins\s+square\s+greenmarket\b"),
+     "Tompkins Square Park (Ave A & E 7th St)", "Tompkins Square Park, New York, NY 10009", "manhattan", 40.7265, -73.9815, "East Village"),
+    (re.compile(r"(?i)\bgrand\s+army\s+plaza\s+greenmarket\b"),
+     "Prospect Park West & Grand Army Plaza", "Grand Army Plaza, Brooklyn, NY 11238", "brooklyn", 40.6725, -73.9698, "Park Slope"),
+    (re.compile(r"(?i)\bfort\s+greene\s+park\s+greenmarket\b"),
+     "Fort Greene Park (Washington Park & DeKalb Ave)", "Fort Greene Park, Brooklyn, NY 11205", "brooklyn", 40.6894, -73.9739, "Fort Greene"),
+    (re.compile(r"(?i)\bmccarren\s+park\s+greenmarket\b"),
+     "McCarren Park (Union Ave & Driggs Ave)", "McCarren Park, Brooklyn, NY 11211", "brooklyn", 40.7196, -73.9517, "Williamsburg"),
+    (re.compile(r"(?i)\bjackson\s+heights\s+greenmarket\b"),
+     "Travers Park (34th Ave & 79th St)", "78-02 34th Ave, Jackson Heights, NY 11372", "queens", 40.7538, -73.8881, "Jackson Heights"),
+    (re.compile(r"(?i)\bforest\s+hills\s+greenmarket\b"),
+     "Queens Blvd & 70th Ave", "107-29 70th Rd, Forest Hills, NY 11375", "queens", 40.7209, -73.8448, "Forest Hills"),
+    (re.compile(r"(?i)\bchurch\s+of\s+sweden|swedish\s+christmas|julmarknad|julbutik\b"),
+     "Church of Sweden (5 E 48th St)", "5 E 48th St, New York, NY 10017", "manhattan", 40.7573, -73.9776, "Midtown"),
+    (re.compile(r"(?i)\bnorwegian\s+seamen|julemarked\b"),
+     "Norwegian Seamen's Church (317 E 52nd St)", "317 E 52nd St, New York, NY 10022", "manhattan", 40.7556, -73.9660, "Midtown East"),
+    (re.compile(r"(?i)\bdanish\s+seamen|denmark.*christmas|julebazar\b"),
+     "Danish Seamen's Church (102 Willow St)", "102 Willow St, Brooklyn, NY 11201", "brooklyn", 40.6989, -73.9961, "Brooklyn Heights"),
+    (re.compile(r"(?i)\bcrafts\s+at\s+(?:the\s+cathedral|st\.?\s*john\s+the\s+divine)\b"),
+     "Cathedral of St. John the Divine (1047 Amsterdam Ave)", "1047 Amsterdam Ave, New York, NY 10025", "manhattan", 40.8038, -73.9619, "Morningside Heights"),
+    (re.compile(r"(?i)\bwallabout\s+wonderland\b"),
+     "Brooklyn Navy Yard (Building 77, 141 Flushing Ave)", "141 Flushing Ave, Brooklyn, NY 11205", "brooklyn", 40.6991, -73.9720, "Brooklyn Navy Yard"),
+    (re.compile(r"(?i)\bbrooklyn\s+borough\s+hall\s+holiday\b"),
+     "Brooklyn Borough Hall Plaza (209 Joralemon St)", "209 Joralemon St, Brooklyn, NY 11201", "brooklyn", 40.6928, -73.9903, "Downtown Brooklyn"),
+    (re.compile(r"(?i)\bfad\s+market.*cobble\s+hill|st\.?\s*paul'?s\s+church\b"),
+     "St. Paul's Church (199 Carroll St)", "199 Carroll St, Brooklyn, NY 11231", "brooklyn", 40.6808, -73.9958, "Cobble Hill"),
+    (re.compile(r"(?i)\bfad\s+market.*invisible\s+dog|invisible\s+dog\b"),
+     "The Invisible Dog Art Center (51 Bergen St)", "51 Bergen St, Brooklyn, NY 11201", "brooklyn", 40.6865, -73.9911, "Boerum Hill"),
+    (re.compile(r"(?i)\bfad\s+market|empire\s+stores\b"),
+     "Empire Stores (55 Water St)", "55 Water St, Brooklyn, NY 11201", "brooklyn", 40.7035, -73.9912, "DUMBO"),
+    (re.compile(r"(?i)\b(?:brooklyn|dumbo)\s+flea\b"),
+     "DUMBO Archway (80 Pearl St)", "80 Pearl St, Brooklyn, NY 11201", "brooklyn", 40.7026, -73.9882, "DUMBO"),
+    (re.compile(r"(?i)\bchelsea\s+flea\b"),
+     "Chelsea Flea (29 W 25th St)", "29 W 25th St, New York, NY 10010", "manhattan", 40.7438, -73.9907, "Chelsea"),
+    (re.compile(r"(?i)\bgrand\s+bazaar\s+nyc\b"),
+     "Grand Bazaar NYC (100 W 77th St)", "100 W 77th St, New York, NY 10024", "manhattan", 40.7808, -73.9765, "Upper West Side"),
+    (re.compile(r"(?i)\bastoria\s+(?:holiday\s+)?market\b"),
+     "Bohemian Hall & Beer Garden (29-19 24th Ave)", "29-19 24th Ave, Astoria, NY 11102", "queens", 40.7728, -73.9158, "Astoria"),
+    (re.compile(r"(?i)\bqueens\s+craft\s+brigade\b"),
+     "Katch Astoria (31-14 Newtown Ave)", "31-14 Newtown Ave, Astoria, NY 11102", "queens", 40.7669, -73.9212, "Astoria"),
+    (re.compile(r"(?i)\bqueens\s+night\s+market\b"),
+     "New York Hall of Science (Flushing Meadows Corona Park)", "47-01 111th St, Corona, NY 11368", "queens", 40.7471, -73.8515, "Corona"),
+    (re.compile(r"(?i)\bqueens\s+county\s+farm\b"),
+     "Queens County Farm Museum (73-50 Little Neck Pkwy)", "73-50 Little Neck Pkwy, Floral Park, NY 11004", "queens", 40.7478, -73.7235, "Floral Park"),
+    (re.compile(r"(?i)\bflushing\s+town\s+hall\b"),
+     "Flushing Town Hall (137-35 Northern Blvd)", "137-35 Northern Blvd, Flushing, NY 11354", "queens", 40.7634, -73.8295, "Flushing"),
+    (re.compile(r"(?i)\bculture\s+lab\s+lic\b"),
+     "Culture Lab LIC (5-25 46th Ave)", "5-25 46th Ave, Long Island City, NY 11101", "queens", 40.7469, -73.9547, "Long Island City"),
+    (re.compile(r"(?i)\bbronx\s+night\s+market|holiday[- ]?topia\b"),
+     "1 Fordham Plaza", "1 Fordham Plaza, Bronx, NY 10458", "bronx", 40.8615, -73.8906, "Fordham"),
+    (re.compile(r"(?i)\bbartow[- ]?pell\b"),
+     "Bartow-Pell Mansion Museum (895 Shore Rd)", "895 Shore Rd, Bronx, NY 10464", "bronx", 40.8717, -73.8056, "Pelham Bay Park"),
+    (re.compile(r"(?i)\bpoe\s+park\b"),
+     "Poe Park Visitor Center (2640 Grand Concourse)", "2640 Grand Concourse, Bronx, NY 10458", "bronx", 40.8647, -73.8950, "Fordham"),
+    (re.compile(r"(?i)\bwave\s+hill\b"),
+     "Wave Hill (4900 Independence Ave)", "4900 Independence Ave, Bronx, NY 10471", "bronx", 40.8979, -73.9114, "Riverdale"),
+    (re.compile(r"(?i)\bnew\s+york\s+botanical\s+garden|nybg\b"),
+     "New York Botanical Garden (2900 Southern Blvd)", "2900 Southern Blvd, Bronx, NY 10458", "bronx", 40.8624, -73.8772, "Bedford Park"),
+    (re.compile(r"(?i)\bsnug\s+harbor\b"),
+     "Snug Harbor Cultural Center (1000 Richmond Ter)", "1000 Richmond Ter, Staten Island, NY 10301", "staten_island", 40.6433, -74.1025, "Randall Manor"),
+    (re.compile(r"(?i)\bempire\s+outlets\b"),
+     "Empire Outlets (55 Richmond Ter)", "55 Richmond Ter, Staten Island, NY 10301", "staten_island", 40.6438, -74.0764, "St. George"),
+    (re.compile(r"(?i)\bhistoric\s+richmond\s+town\b"),
+     "Historic Richmond Town (441 Clarke Ave)", "441 Clarke Ave, Staten Island, NY 10306", "staten_island", 40.5707, -74.1456, "Richmond Town"),
+    (re.compile(r"(?i)\bmoravian\s+(?:church|christmas)\b"),
+     "Vanderbilt Moravian Church (2205 Richmond Rd)", "2205 Richmond Rd, Staten Island, NY 10306", "staten_island", 40.5812, -74.1132, "Grant City"),
+    (re.compile(r"(?i)\bharlem\s+night\s+market|la\s+marqueta\b"),
+     "La Marqueta (1590 Park Ave)", "1590 Park Ave, New York, NY 10029", "manhattan", 40.7982, -73.9442, "East Harlem"),
+    (re.compile(r"(?i)\bmuseum\s+of\s+the\s+city\s+of\s+new\s+york|mcny\b"),
+     "Museum of the City of New York (1220 Fifth Ave)", "1220 Fifth Ave, New York, NY 10029", "manhattan", 40.7925, -73.9519, "East Harlem"),
+    (re.compile(r"(?i)\bcity\s+point\b"),
+     "City Point BKLYN (445 Albee Square W)", "445 Albee Square W, Brooklyn, NY 11201", "brooklyn", 40.6911, -73.9829, "Downtown Brooklyn"),
+    (re.compile(r"(?i)\barts\s+gowanus\b"),
+     "Gowanus Dredgers Boathouse (165 2nd St)", "165 2nd St, Brooklyn, NY 11231", "brooklyn", 40.6766, -73.9912, "Gowanus"),
+    (re.compile(r"(?i)\bred\s+hook\s+holiday\b"),
+     " Brooklyn Waterfront Artists Coalition (481 Van Brunt St)", "481 Van Brunt St, Brooklyn, NY 11231", "brooklyn", 40.6744, -74.0177, "Red Hook"),
+    (re.compile(r"(?i)\bmade\s+at\s+bush\s+terminal|bush\s+terminal\b"),
+     "MADE Bush Terminal (10 43rd St)", "10 43rd St, Brooklyn, NY 11232", "brooklyn", 40.6548, -74.0149, "Sunset Park"),
+    (re.compile(r"(?i)\bjapan\s+village|industry\s+city\b"),
+     "Industry City / Japan Village (934 3rd Ave)", "934 3rd Ave, Brooklyn, NY 11232", "brooklyn", 40.6562, -74.0076, "Sunset Park"),
+    (re.compile(r"(?i)\bwilliamsburg\s+winter\s+village|westlight|the\s+william\s+vale\b"),
+     "The William Vale (111 N 12th St)", "111 N 12th St, Brooklyn, NY 11249", "brooklyn", 40.7222, -73.9569, "Williamsburg"),
+    (re.compile(r"(?i)\bartists\s*(?:&|and)\s*fleas.*williamsburg\b"),
+     "Artists & Fleas Williamsburg (70 N 7th St)", "70 N 7th St, Brooklyn, NY 11249", "brooklyn", 40.7196, -73.9602, "Williamsburg"),
+    (re.compile(r"(?i)\bartists\s*(?:&|and)\s*fleas\b"),
+     "Artists & Fleas Chelsea Market (88 10th Ave)", "88 10th Ave, New York, NY 10011", "manhattan", 40.7424, -74.0061, "Chelsea"),
+    (re.compile(r"(?i)\beast\s+village\s+vintage|japanese\s+holiday\s+art\b"),
+     "St. Marks Place & Astor Place Plaza", "Astor Place, New York, NY 10003", "manhattan", 40.7300, -73.9910, "East Village"),
+    (re.compile(r"(?i)\broebling\s+rink|brooklyn\s+bridge\s+park\b"),
+     "Emily Warren Roebling Plaza at Brooklyn Bridge Park", "27A Furman St, Brooklyn, NY 11201", "brooklyn", 40.7031, -73.9936, "DUMBO"),
+    (re.compile(r"(?i)\bwollman\s+rink\b"),
+     "Wollman Rink in Central Park", "830 5th Ave, New York, NY 10065", "manhattan", 40.7677, -73.9744, "Central Park"),
+    (re.compile(r"(?i)\bluminiscence|st\.?\s*patrick'?s\s+cathedral\b"),
+     "St. Patrick's Cathedral (5th Ave & 50th St)", "5th Ave & E 50th St, New York, NY 10022", "manhattan", 40.7585, -73.9760, "Midtown"),
+    (re.compile(r"(?i)\bchristmas\s+cocktail\s+carol|the\s+arches\b"),
+     "The Arches (2266 Atlantic Ave)", "2266 Atlantic Ave, Brooklyn, NY 11233", "brooklyn", 40.6758, -73.9086, "Crown Heights"),
+)
+
+_AT_SPOT_RE = re.compile(
+    r"(?i)\b(?:at|@)\s+([A-Z0-9][\w'’&\-. ]{2,48}?)(?=\s*(?:\(|—|–|-|,|\.|;|\bfrom\b|\bon\b|\bin\b|\bwith\b|$))"
+)
+
+
+def _enrich_market_event(e):
+    """Resolve generic/aggregator venue names ('NYC / The Skint', 'New York', etc.) to their
+    specific physical spot and attach a Google Maps search URL."""
+    raw_venue = (e.get("venue") or e.get("_source_venue") or "").strip()
+    title = (e.get("title") or e.get("name") or "").strip()
+    desc = (e.get("description") or "").strip()
+    combined = f"{title} {raw_venue} {desc}"
+
+    is_generic = not raw_venue or bool(_GENERIC_VENUE_RE.match(raw_venue))
+    for rx, spot_name, gmaps_q, city, lat, lng, neigh in _KNOWN_MARKET_SPOTS:
+        if rx.search(combined):
+            ev = dict(e)
+            if is_generic or raw_venue.lower() in ("greenmarket (new york, ny)", "fad market", "brooklyn flea"):
+                ev["venue"] = spot_name
+            ev.setdefault("lat", lat)
+            ev.setdefault("lng", lng)
+            ev.setdefault("neighborhood", neigh)
+            ev["_resolved_city"] = city
+            ev["_gmaps_query"] = gmaps_q
+            return ev
+
+    if is_generic:
+        ev = dict(e)
+        m = _AT_SPOT_RE.search(title) or _AT_SPOT_RE.search(desc)
+        if m:
+            cand = m.group(1).strip(" -–—,.")
+            if cand and not _GENERIC_VENUE_RE.match(cand):
+                ev["venue"] = cand
+                ev["_gmaps_query"] = f"{cand}, New York, NY"
+                return ev
+        # Fall back to specific market title + NYC so Google Maps still pinpoints the market
+        clean_title = re.sub(r"\s*\([^)]*\)\s*", " ", title).strip() or "New York Market"
+        ev["venue"] = clean_title
+        ev["_gmaps_query"] = f"{clean_title}, New York, NY"
+        return ev
+
+    return e
+
+
 def _place_label(city, e, city_labels, geo=None):
     city_label = city_labels.get(city, city.replace("_", " ").title())
     neigh = (geo or {}).get("neighborhood") or e.get("neighborhood") or ""
@@ -225,19 +404,25 @@ def _place_label(city, e, city_labels, geo=None):
 def _render_market_card(e, day_attr, city_of=None, is_free=None, city_labels=None, today=None):
     from venues_geo import resolve_event_geo
 
+    e = _enrich_market_event(e)
     if city_of is None or is_free is None or city_labels is None:
         from template import CITY_LABELS, _event_city, _is_event_free
         city_labels = city_labels or CITY_LABELS
         is_free = is_free or _is_event_free
         if city_of is None:
-            city_of = lambda ev: _event_city(ev.get("venue"), ev.get("_source_venue"), geo=resolve_event_geo(ev), event=ev)
+            city_of = lambda ev: ev.get("_resolved_city") or _event_city(ev.get("venue"), ev.get("_source_venue"), geo=resolve_event_geo(ev), event=ev)
 
-    title = escape(e.get("title") or e.get("name") or "Event")
-    venue = escape(e.get("venue") or e.get("_source_venue") or "Venue")
+    raw_title = e.get("title") or e.get("name") or "Event"
+    raw_venue = (e.get("venue") or e.get("_source_venue") or "Venue").strip()
+    title = escape(raw_title)
+    venue = escape(raw_venue)
     url = escape(e.get("url") or e.get("link") or "#")
     geo = resolve_event_geo(e)
-    city = city_of(e)
-    place = escape(_place_label(city, e, city_labels, geo=geo))
+    city = e.get("_resolved_city") or city_of(e)
+    raw_place = _place_label(city, e, city_labels, geo=geo)
+    place = escape(raw_place)
+    gmaps_query = e.get("_gmaps_query") or f"{raw_venue}, {raw_place}, NY"
+    gmaps_url = escape(f"https://www.google.com/maps/search/?api=1&query={quote_plus(gmaps_query)}")
     kind = market_type(e)
     price_txt = str(e.get("price") or "").strip()
     if re.fullmatch(r"\d+(?:\.\d+)?", price_txt):
@@ -276,7 +461,7 @@ def _render_market_card(e, day_attr, city_of=None, is_free=None, city_labels=Non
     if e.get("description"):
         d_txt = re.sub(r"\s+", " ", str(e["description"])).strip()
         desc_html = f'<p class="hub-desc">{escape(d_txt[:160] + ("…" if len(d_txt) > 160 else ""))}</p>'
-    return f"""<article class="hub-card mk-card mk-k-{kind}" data-city="{escape(city)}" data-day="{day_attr}" data-mtype="{kind}" data-lat="{lat}" data-lng="{lng}" data-title="{title}" data-venue="{venue}" data-url="{url}" data-when="{escape(raw_when)}">
+    return f"""<article class="hub-card mk-card mk-k-{kind}" data-city="{escape(city)}" data-day="{day_attr}" data-mtype="{kind}" data-lat="{lat}" data-lng="{lng}" data-title="{title}" data-venue="{venue}" data-gmaps="{gmaps_url}" data-url="{url}" data-when="{escape(raw_when)}">
   <div class="mk-time-col">
     <div class="mk-when">{time_html}</div>
   </div>
@@ -289,7 +474,7 @@ def _render_market_card(e, day_attr, city_of=None, is_free=None, city_labels=Non
         <span class="mk-dist-badge" hidden></span>
       </div>
     </div>
-    <div class="hub-meta"><span class="hub-venue">📍 {venue}</span> <span class="hub-city">({place})</span></div>
+    <div class="hub-meta"><a class="hub-venue hub-venue-link" href="{gmaps_url}" target="_blank" rel="noopener" title="Open {venue} in Google Maps">📍 {venue}</a> <span class="hub-city">({place})</span></div>
     {desc_html}
   </div>
 </article>"""
@@ -325,15 +510,32 @@ def _render_market_sections(daily, dated, card_limit, city_of=None, is_free=None
         city_labels = city_labels or CITY_LABELS
         is_free = is_free or _is_event_free
         if city_of is None:
-            city_of = lambda ev: _event_city(ev.get("venue"), ev.get("_source_venue"), geo=resolve_event_geo(ev), event=ev)
+            city_of = lambda ev: ev.get("_resolved_city") or _event_city(ev.get("venue"), ev.get("_source_venue"), geo=resolve_event_geo(ev), event=ev)
+
+    def _ev_city(ev):
+        enriched = _enrich_market_event(ev)
+        return enriched.get("_resolved_city") or city_of(enriched)
 
     out = []
     if daily:
         out.append('<section class="mk-daily" data-day="daily">')
-        out.append('<h2 class="hub-day mk-daily-head" id="daily" data-day="daily">✨ Open every day</h2>')
-        out.append('<div class="mk-grid">' + "".join(
-            _render_market_card(e, "daily", city_of, is_free, city_labels, today) for e in daily
-        ) + "</div>")
+        out.append(f'<h2 class="hub-day mk-daily-head" id="daily" data-day="daily">✨ Open every day <span class="mk-count">{len(daily)}</span></h2>')
+        by_daily_city = {}
+        for e in daily:
+            by_daily_city.setdefault(_ev_city(e), []).append(e)
+        for city in _MARKET_CITY_ORDER:
+            cevs = by_daily_city.get(city)
+            if not cevs:
+                continue
+            pill_label = _MARKET_CITY_LABELS.get(city, city.title())
+            out.append(
+                f'<div class="mk-city" data-city="{city}" data-day="daily">'
+                f'<h3 class="mk-city-head"><span class="mk-city-pill mk-c-{city}">{escape(pill_label)}</span></h3>'
+                '<div class="mk-grid">' + "".join(
+                    _render_market_card(e, "daily", city_of, is_free, city_labels, today) for e in cevs
+                ) + "</div></div>"
+            )
+        out.append('<div class="mk-day-dist-grid mk-grid" hidden></div>')
         out.append("</section>")
     by_day = {}
     for e in dated[:card_limit]:
@@ -347,7 +549,7 @@ def _render_market_sections(daily, dated, card_limit, city_of=None, is_free=None
         out.append(f'<h2 class="hub-day" id="{day_iso}" data-day="{day_iso}">{label} <span class="mk-count">{len(evs)}</span></h2>')
         by_city = {}
         for e in evs:
-            by_city.setdefault(city_of(e), []).append(e)
+            by_city.setdefault(_ev_city(e), []).append(e)
         for city in _MARKET_CITY_ORDER:
             cevs = by_city.get(city)
             if not cevs:
@@ -536,6 +738,8 @@ _MARKETS_CSS = """
   .markets-hub .hub-grid { display: flex; flex-direction: column; gap: 12px; }
   .mk-daily { background: linear-gradient(135deg, #2a3560, #7a3f5e); border-radius: 14px; padding: 4px 14px 14px; margin: 4px 0 10px; }
   .markets-hub .mk-daily .hub-day { color: #ffe7a3; border-bottom-color: rgba(255, 231, 163, 0.25); margin-top: 10px; }
+  .markets-hub .mk-daily .mk-count { background: rgba(255, 231, 163, 0.2); color: #ffe7a3; }
+  .markets-hub .mk-daily .mk-city-pill { border: 1px solid rgba(255, 255, 255, 0.28); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); }
   .mk-city { margin: 2px 0 10px; }
   .mk-city-head { margin: 10px 0 6px; font-size: 13px; }
   .mk-city-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-weight: 800; color: #fff;
@@ -570,19 +774,51 @@ _MARKETS_CSS = """
   .mk-hours { font-weight: 800; color: #b23a26; font-variant-numeric: tabular-nums; font-size: 13px; line-height: 1.25; }
   .mk-span { font-weight: 700; color: #2f6f4f; font-size: 11.5px; line-height: 1.25; }
   .mk-content-col { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
-  .mk-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-  .markets-hub .mk-card .hub-title { margin: 0; font-size: 15.5px; font-weight: 700; line-height: 1.3; }
+  .mk-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: nowrap; }
+  .markets-hub .mk-card .hub-title { margin: 0; font-size: 15.5px; font-weight: 700; line-height: 1.3; min-width: 0; }
   .markets-hub .mk-card .hub-title a { color: #2a1f1a; text-decoration: none; }
   .markets-hub .mk-card .hub-title a:hover { color: var(--accent); text-decoration: underline; }
-  .mk-badges { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .mk-badges { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; white-space: nowrap; }
   .mk-kind { font-size: 11.5px; font-weight: 700; color: #7a3a1c; background: #fdf0e3; border-radius: 999px; padding: 2px 8px; }
   .mk-k-farmers { background: #e8f3e6; color: #2f6f4f; } .mk-k-holiday { background: #fbe6e2; color: #a8321f; }
   .mk-k-flea { background: #efe7f6; color: #5d3f8a; } .mk-k-craft { background: #fdf0d8; color: #8a5a10; }
   .mk-k-festival { background: #e3eef8; color: #2d5d8a; }
   .mk-dist-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: #e8f3e6; color: #2f6f4f; border: 1px solid #c2e2be; }
-  .markets-hub . badge-free, .markets-hub .badge-free { background: #e8f3e6; color: #2f6f4f; }
-  .markets-hub .badge-price { background: #f3e8da; color: #6b5a4e; }
+  .markets-hub .badge-free {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f5e9;
+    color: #1b5e20;
+    border: 1.5px solid #66bb6a;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-weight: 800;
+    font-size: 11.5px;
+    line-height: 1.2;
+  }
+  .markets-hub .badge-price {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3e8da;
+    color: #6b5a4e;
+    border: 1px solid #dfd1be;
+    border-radius: 999px;
+    padding: 2px 9px;
+    font-weight: 700;
+    font-size: 11.5px;
+    line-height: 1.2;
+  }
   .markets-hub .mk-card .hub-meta { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+  .markets-hub .hub-venue-link {
+    color: #554438;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px dotted #b8a390;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .markets-hub .hub-venue-link:hover { color: var(--accent); border-bottom-color: var(--accent); }
   .markets-hub .hub-desc { font-size: 13px; color: var(--muted); margin: 2px 0 0; line-height: 1.4; }
   .markets-hub .no-hub-events { text-align: center; color: var(--muted); font-size: 16px; padding: 30px 0; }
 
@@ -591,6 +827,7 @@ _MARKETS_CSS = """
     .mk-hero-copy { padding: 16px 16px 20px; }
     .mk-view-toggle { margin-left: 0; }
     .markets-hub .mk-card { grid-template-columns: 1fr; gap: 6px; padding: 10px 12px; }
+    .mk-card-top { flex-wrap: wrap; }
     .mk-time-col { border-bottom: 1px dashed #eddac8; padding-bottom: 5px; margin-bottom: 2px; }
     .mk-daily { padding: 2px 12px 12px; }
   }
@@ -603,7 +840,7 @@ _HUB_MARKET_JS = """<script>
   if (!chips.length && !document.querySelector('.mk-select')) return;
   var cards = document.querySelectorAll('.hub-card');
   var heads = document.querySelectorAll('.hub-day');
-  var groups = document.querySelectorAll('.mk-city, .mk-daily');
+  var groups = document.querySelectorAll('.mk-city');
   var state = {city: 'all', type: 'all'};
   var sorting_dist = false;
   var lastCoords = null;
@@ -683,13 +920,14 @@ _HUB_MARKET_JS = """<script>
       if (isNaN(lat) || isNaN(lng)) return;
       var title = c.dataset.title || (c.querySelector('.hub-title a') ? c.querySelector('.hub-title a').textContent : 'Market');
       var venue = c.dataset.venue || '';
+      var gmaps = c.dataset.gmaps || '#';
       var url = c.dataset.url || '#';
       var timeText = c.querySelector('.mk-when') ? c.querySelector('.mk-when').textContent.trim() : '';
 
       var marker = L.marker([lat, lng]);
       var popupHtml = '<div style="font-family:sans-serif;font-size:13px;line-height:1.4;">' +
                       '<strong style="font-size:14px;"><a href="' + url + '" target="_blank" rel="noopener" style="color:#b23a26;text-decoration:none;">' + title + '</a></strong><br>' +
-                      (venue ? '<span style="color:#6b5a4e;">📍 ' + venue + '</span><br>' : '') +
+                      (venue ? '<a href="' + gmaps + '" target="_blank" rel="noopener" style="color:#6b5a4e;text-decoration:underline;">📍 ' + venue + '</a><br>' : '') +
                       (timeText ? '<span style="color:#2f6f4f;font-weight:700;">' + timeText + '</span><br>' : '') +
                       '<a href="' + url + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:4px;color:#b23a26;font-size:12px;font-weight:600;">Event Info →</a>' +
                       '</div>';
@@ -741,12 +979,14 @@ _HUB_MARKET_JS = """<script>
 
     var dailySec = document.querySelector('.mk-daily');
     if (dailySec) {
-      var dailyGrid = dailySec.querySelector('.mk-grid');
-      if (dailyGrid) {
-        var dCards = Array.prototype.slice.call(dailySec.querySelectorAll('.hub-card'));
-        dCards.sort(function (a, b) { return (a._dist || 0) - (b._dist || 0); });
-        dCards.forEach(function (c) { dailyGrid.appendChild(c); });
+      var dailyDistGrid = dailySec.querySelector('.mk-day-dist-grid');
+      var dCards = Array.prototype.slice.call(dailySec.querySelectorAll('.hub-card'));
+      dCards.sort(function (a, b) { return (a._dist || 0) - (b._dist || 0); });
+      if (dailyDistGrid) {
+        dCards.forEach(function (c) { dailyDistGrid.appendChild(c); });
+        dailyDistGrid.hidden = false;
       }
+      dailySec.querySelectorAll('.mk-city').forEach(function (g) { g.hidden = true; });
     }
 
     document.querySelectorAll('.mk-day-section').forEach(function (sec) {

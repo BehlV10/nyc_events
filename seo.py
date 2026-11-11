@@ -18,6 +18,8 @@ import re
 from datetime import datetime, timedelta, timezone
 from html import escape
 
+import camps
+import camps_hub
 import edm_hub
 import kids_hub
 import markets_hub
@@ -247,6 +249,11 @@ HUBS = {
         "subtitle": "Storytimes, puppet shows, museum days, nature walks, music classes and free family programs. Filter by age and activity.",
         "badge": "KIDS & FAMILY", "query": "#cat=Kids+%26+Family",
     },
+    "summer-camps": {
+        "title": "Summer Camps in NYC", "style": "camps", "limit": 200,
+        "subtitle": "NYC day and sleepaway camps across Manhattan, Brooklyn, Queens, the Bronx, Staten Island, and the Hudson Valley — with ages, prices, financial aid, and 2027 sign-up dates.",
+        "badge": "SUMMER CAMPS", "query": "#cat=Kids+%26+Family",
+    },
     "markets-festivals-nyc": {
         "title": "Markets, Fairs & Festivals in NYC", "bucket": "Markets & Festivals", "style": "markets", "limit": markets_hub.CARD_LIMIT,
         "subtitle": "Flea markets, night markets, greenmarkets, holiday markets and bazaars, craft and vintage fairs, food fests and street fairs.",
@@ -312,6 +319,8 @@ HUBS = {
 
 def hub_events(hub, dated, limit=None):
     """Deduplicated upcoming events matching a hub's filters, in start order."""
+    if hub.get("style") == "camps":
+        return camps.load_camps()
     from template import _event_city, _is_event_free
     from venues_geo import resolve_event_geo
 
@@ -339,6 +348,7 @@ def hub_events(hub, dated, limit=None):
                 blob = f"{e.get('name') or ''} {e.get('description') or ''}"
                 if not markets_hub._MARKET_TYPES[1][2].search(blob):
                     continue
+            e = markets_hub._enrich_market_event(e)
         else:
             if hub.get("style") == "edm" and not edm_hub.is_edm_event(e):
                 continue
@@ -371,13 +381,14 @@ _HUB_CSS = """
   * { box-sizing: border-box; }
   body { margin:0; background:var(--bg); color:var(--fg); line-height:1.5;
          font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
-  header { background:var(--card); border-bottom:1px solid var(--border); padding:12px 16px; }
-  .logo { font-weight:800; color:var(--fg); text-decoration:none; font-size:16px; }
+  header { background:var(--card); border-bottom:1px solid var(--border); padding:14px 20px;
+           display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px 16px; }
+  .logo { font-weight:800; color:var(--fg); text-decoration:none; font-size:17px; white-space:nowrap; }
   .logo span { color:var(--accent); }
-  .hub-nav { display:flex; gap:6px 12px; flex-wrap:wrap; font-size:13px; margin-top:8px; }
-  .hub-nav a { color:var(--muted); text-decoration:none; }
-  .hub-nav a:hover, .hub-nav a.active { color:var(--accent); font-weight:600; }
-  main { max-width:900px; margin:0 auto; padding:28px 16px 56px; }
+  .hub-nav { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:13.5px; margin:0; }
+  .hub-nav a { color:var(--muted); text-decoration:none; padding:5px 12px; border-radius:999px; font-weight:600; transition:all 0.15s ease; }
+  .hub-nav a:hover, .hub-nav a.active { color:var(--accent); font-weight:700; }
+  main { max-width:980px; margin:0 auto; padding:28px 16px 56px; }
   .hero { text-align:center; padding-bottom:22px; margin-bottom:22px; border-bottom:1px solid var(--border); }
   .hero h1 { font-size:clamp(24px,5vw,32px); margin:0 0 8px; }
   .hero p { color:var(--muted); margin:0 auto 16px; max-width:640px; }
@@ -392,7 +403,7 @@ _HUB_CSS = """
   .card.pick { border-color:rgba(255,184,0,.45); }
   .meta { display:flex; justify-content:space-between; gap:8px; font-size:12px; color:var(--muted); }
   .badge { font-size:11px; padding:1px 8px; border-radius:999px; font-weight:600; white-space:nowrap; }
-  .free { background:rgba(74,222,128,.16); color:var(--green); }
+  .free { background:rgba(74,222,128,.16); color:var(--green); border:1.5px solid var(--green); }
   .price { background:rgba(255,255,255,.08); }
   .pickb { background:rgba(255,184,0,.16); color:var(--gold); }
   .card h3 { font-size:15px; margin:6px 0 4px; line-height:1.35; overflow-wrap:anywhere; }
@@ -406,17 +417,39 @@ _HUB_CSS = """
                    font:inherit; font-size:13px; cursor:pointer; }
   .hub-city-chip:hover { border-color:var(--accent); }
   .hub-city-chip.active { background:var(--accent); border-color:var(--accent); color:#0c0e14; font-weight:700; }
+  .hub-more-guides { margin-top:40px; padding-top:24px; border-top:1px solid var(--border); }
+  .hub-more-guides h2 { font-size:18px; margin:0 0 14px; }
+  .hub-more-guides-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; }
+  .hub-guide-card { display:flex; align-items:flex-start; gap:10px; padding:12px 14px; border-radius:12px;
+                    border:1px solid var(--border); background:var(--card); color:var(--fg); text-decoration:none; transition:all 0.15s ease; }
+  .hub-guide-card:hover { transform:translateY(-1px); border-color:var(--accent); }
+  .hub-guide-card.active { border-color:var(--accent); }
+  .hub-guide-card-icon { font-size:22px; line-height:1; }
+  .hub-guide-card-info strong { display:block; font-size:14px; margin-bottom:2px; }
+  .hub-guide-card-info p { margin:0; font-size:12px; color:var(--muted); line-height:1.35; }
   footer { border-top:1px solid var(--border); padding:22px 16px; text-align:center; font-size:12px; color:var(--muted); }
   footer a { color:var(--accent); text-decoration:none; }
 """
 
+_CORE_NAV_SLUGS = (
+    ("markets-festivals-nyc", "Markets & Festivals"),
+    ("christmas-markets-nyc", "Christmas Markets"),
+    ("kids-family-events-nyc", "Kids & Family"),
+    ("summer-camps", "Summer Camps"),
+    ("dj-techno-nights-nyc", "DJ & EDM"),
+)
+
 
 def _hub_nav(active_slug):
-    links = ['<a href="../">All events</a>']
-    for slug, hub in HUBS.items():
+    links = ['<a href="../">All Events</a>']
+    seen = set()
+    for slug, label in _CORE_NAV_SLUGS:
+        seen.add(slug)
         cls = ' class="active"' if slug == active_slug else ""
-        label = hub["title"].replace(" in NYC", "").replace(" Calendar", "")
         links.append(f'<a href="../{slug}/"{cls}>{escape(label)}</a>')
+    if active_slug and active_slug not in seen and active_slug in HUBS:
+        label = HUBS[active_slug]["title"].replace(" in NYC", "").replace(" Calendar", "")
+        links.append(f'<a href="../{active_slug}/" class="active">{escape(label)}</a>')
     return "\n    ".join(links)
 
 
@@ -494,6 +527,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
 
     hub = HUBS[slug]
     site_url = site_url or get_site_url()
+    is_camps = hub.get("style") == "camps"
     events = hub_events(hub, dated)
     city_of = lambda e: _event_city(e.get("venue"), e.get("_source_venue"), geo=resolve_event_geo(e), event=e)
     if hub.get("style") in ("kids", "edm", "markets"):
@@ -501,16 +535,33 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
     if hub.get("collapse_series"):
         events = _collapse_series(events)
     max_events = hub.get("limit", 300 if hub.get("time") == "weekend" else max_events)
-    shown = _share_across_days(events, max_events) if hub.get("time") == "weekend" else events[:max_events]
+    if is_camps:
+        shown = events["camps"][:max_events]
+        total_count = len(events["camps"])
+    else:
+        shown = _share_across_days(events, max_events) if hub.get("time") == "weekend" else events[:max_events]
+        total_count = len(events)
     highlights = _load_highlights()
     meta = build_seo_meta_tags(
         title=f"{hub['title']} · {SITE_NAME}",
-        description=f"{hub['subtitle']} {len(events):,} upcoming listings, updated twice a day.",
+        description=f"{hub['subtitle']} {total_count:,} upcoming listings, updated twice a day.",
         path=f"{slug}/",
         image_path=f"og-{slug}.jpg",
         site_url=site_url,
     )
-    items = [s for s in (event_schema(e, site_url) for e in shown[:50]) if s]
+    if is_camps:
+        items = [
+            {
+                "@type": "EducationalOrganization",
+                "name": c["name"],
+                "url": c["url"],
+                "description": f"{c['name']} in {c['town']}",
+                "address": {"@type": "PostalAddress", "addressLocality": c["town"], "addressRegion": "NY", "addressCountry": "US"},
+            }
+            for c in shown[:50]
+        ]
+    else:
+        items = [s for s in (event_schema(e, site_url) for e in shown[:50]) if s]
     ld = {
         "@context": "https://schema.org", "@type": "ItemList", "name": hub["title"],
         "url": page_url(f"{slug}/", site_url),
@@ -560,7 +611,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
         if cards:
             sections.append(f'<div class="grid">{"".join(cards)}</div>')
     body = "\n".join(sections) or "<p>No upcoming listings match right now — the full calendar has everything.</p>"
-    more = f"Showing {len(shown):,} of {len(events):,} upcoming listings." if len(events) > len(shown) else f"{len(events):,} upcoming listings."
+    more = f"Showing {len(shown):,} of {total_count:,} upcoming listings." if total_count > len(shown) else f"{total_count:,} upcoming listings."
 
     hero = f"""<div class="hero">
     <h1>{escape(hub['title'])}</h1>
@@ -577,6 +628,10 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
         hero, filters, body = kids_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
         extra_head, extra_css, foot_js = kids_hub._KIDS_FONTS, kids_hub._KIDS_CSS, kids_hub._KIDS_FILTER_JS
         body_tag = '<body class="kids-hub">'
+    elif hub.get("style") == "camps":
+        hero, filters, body = camps_hub.render_body()
+        extra_head, extra_css, foot_js = kids_hub._KIDS_FONTS, camps_hub._CAMPS_CSS, camps_hub._CAMPS_FILTER_JS
+        body_tag = '<body class="camps-hub">'
     elif hub.get("style") == "edm":
         hero, filters, body = edm_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
         extra_head, extra_css, foot_js = edm_hub._EDM_FONTS, edm_hub._EDM_CSS, edm_hub._EDM_FILTER_JS
@@ -585,6 +640,49 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
         hero, filters, body = markets_hub.render_body(events, city_of, _is_event_free, hub["query"], hub["title"], hub["subtitle"], CITY_LABELS)
         extra_css, foot_js = markets_hub._MARKETS_CSS, markets_hub._HUB_MARKET_JS
         body_tag = '<body class="markets-hub">'
+
+    more_guides_html = ""
+    if hub.get("style") in ("markets", "kids", "camps", "edm"):
+        more_guides_html = f"""<nav class="hub-more-guides" aria-label="Explore more NYC guides">
+  <h2>Explore More NYC Guides</h2>
+  <div class="hub-more-guides-grid">
+    <a href="../markets-festivals-nyc/" class="hub-guide-card{' active' if slug == 'markets-festivals-nyc' else ''}">
+      <span class="hub-guide-card-icon">🛍️</span>
+      <div class="hub-guide-card-info">
+        <strong>Markets &amp; Festivals</strong>
+        <p>Greenmarkets, craft fairs, vintage fleas &amp; street fairs</p>
+      </div>
+    </a>
+    <a href="../christmas-markets-nyc/" class="hub-guide-card{' active' if slug == 'christmas-markets-nyc' else ''}">
+      <span class="hub-guide-card-icon">🎄</span>
+      <div class="hub-guide-card-info">
+        <strong>Christmas Markets</strong>
+        <p>Bryant Park, Union Square, Grand Central &amp; borough holiday bazaars</p>
+      </div>
+    </a>
+    <a href="../kids-family-events-nyc/" class="hub-guide-card{' active' if slug == 'kids-family-events-nyc' else ''}">
+      <span class="hub-guide-card-icon">🎨</span>
+      <div class="hub-guide-card-info">
+        <strong>Kids &amp; Family</strong>
+        <p>Storytimes, puppet shows, museum days &amp; nature walks</p>
+      </div>
+    </a>
+    <a href="../summer-camps/" class="hub-guide-card{' active' if slug == 'summer-camps' else ''}">
+      <span class="hub-guide-card-icon">⛺</span>
+      <div class="hub-guide-card-info">
+        <strong>Summer Camps</strong>
+        <p>Day &amp; sleepaway camps with prices, ages &amp; sign-up dates</p>
+      </div>
+    </a>
+    <a href="../dj-techno-nights-nyc/" class="hub-guide-card{' active' if slug == 'dj-techno-nights-nyc' else ''}">
+      <span class="hub-guide-card-icon">⚡</span>
+      <div class="hub-guide-card-info">
+        <strong>DJ &amp; EDM Nights</strong>
+        <p>Techno, house &amp; warehouse parties across the five boroughs</p>
+      </div>
+    </a>
+  </div>
+</nav>"""
 
     return f"""<!doctype html>
 <html lang="en">
@@ -609,6 +707,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
   {filters}
   <div class="count">{more} Updated {datetime.now(EASTERN).strftime('%b %-d, %-I:%M %p')} ET.</div>
   {body}
+  {more_guides_html}
 </main>
 <footer><a href="../">{SITE_NAME}</a> · independent, ad-free calendar of New York City events ·
   <a href="../feed.xml">RSS</a> · <a href="../events.ics">Subscribe (iCal)</a></footer>

@@ -191,7 +191,7 @@ class ChristmasMarketsPage(unittest.TestCase):
     def test_christmas_markets_subpage_filters_to_holiday_markets(self):
         events = [
             _ev("Union Square Holiday Market", 2, venue="Union Square Park"),
-            _ev("Bank of America Winter Village at Bryant Park (Holiday Shops)", 2, venue="Bryant Park"),
+            _ev("Bank of America Winter Village at Bryant Park", 2, venue="Bryant Park"),
             _ev("Union Square Greenmarket", 2, venue="Union Square Park"),
             _ev("Smorgasburg Williamsburg", 3, venue="Smorgasburg Williamsburg"),
         ]
@@ -202,24 +202,46 @@ class ChristmasMarketsPage(unittest.TestCase):
         self.assertNotIn("Union Square Greenmarket", html)
         self.assertNotIn("Smorgasburg Williamsburg", html)
 
+    def test_skint_venue_is_mapped_to_specific_spot_with_google_maps_link(self):
+        events = [
+            _ev("17th Annual Makers Market at The Norwegian Seamen's Church", 2, venue="NYC / The Skint"),
+            _ev("Swedish Christmas Fair (Julmarknad)", 3, venue="The Skint"),
+            _ev("Trance, Bro! Winter Festival (21+)", 2, venue="NYC / The Skint", category="community"),
+        ]
+        html = seo.render_hub_page("christmas-markets-nyc", events, site_url="https://example.com")
+        self.assertNotIn("The Skint", html)
+        self.assertNotIn("Trance, Bro!", html)
+        self.assertIn("Norwegian Seamen&#x27;s Church", html)
+        self.assertIn("Church of Sweden", html)
+        self.assertIn("https://www.google.com/maps/search/?api=1&amp;query=", html)
+
+    def test_bryant_park_scraper_uses_short_title_without_holiday_shops_suffix(self):
+        with patch.object(scrapers, "fetch_soup", side_effect=RuntimeError("offline")):
+            evs = scrapers.scrape_bryant_park_winter_village("https://example.com", scrapers.UA_CHROME)
+        self.assertEqual(evs[0]["name"], "Bank of America Winter Village at Bryant Park")
+
 
 class DailyAndHours(unittest.TestCase):
-    def _day(self, d, h=11, end_h=20):
+    def _day(self, d, h=11, end_h=20, name="Union Square Holiday Market", venue="Union Square Park"):
         t = (datetime.now(EASTERN) + timedelta(days=d)).replace(hour=h, minute=0, second=0, microsecond=0)
-        e = _ev("Union Square Holiday Market", d, venue="Union Square Park", category="markets")
+        e = _ev(name, d, venue=venue, category="markets")
         e.update(_time=t, date=t.isoformat(), end=t.replace(hour=end_h).isoformat())
         return e
 
-    def test_a_market_open_every_day_is_one_card_up_top(self):
-        holiday = [self._day(d) for d in range(1, 15) if d != 6]  # closed one day
+    def test_a_market_open_every_day_is_one_card_up_top_grouped_by_borough(self):
+        holiday_m = [self._day(d) for d in range(1, 15) if d != 6]  # closed one day
+        holiday_bk = [self._day(d, name="FAD Market Holiday Pop-Up at Empire Stores", venue="Empire Stores (DUMBO)") for d in range(1, 15)]
         weekly = [_ev("Union Square Greenmarket", d) for d in (2, 9)]
-        events = sorted(holiday + weekly, key=lambda e: e["_time"])
+        events = sorted(holiday_m + holiday_bk + weekly, key=lambda e: e["_time"])
         daily, dated = template._markets_split(events)
-        self.assertEqual([e["name"] for e in daily], ["Union Square Holiday Market"])
+        self.assertEqual(len(daily), 2)
         self.assertEqual([e["name"] for e in dated], ["Union Square Greenmarket"] * 2)
         html = template.render_hub_page("markets-festivals-nyc", events, site_url="https://example.com")
         self.assertEqual(html.count(">Union Square Holiday Market<"), 1)
         self.assertLess(html.index('class="mk-daily"'), html.index(">Union Square Greenmarket<"))
+        daily_slice = html[html.index('class="mk-daily"'):html.index(">Union Square Greenmarket<")]
+        self.assertIn('data-city="manhattan"', daily_slice)
+        self.assertIn('data-city="brooklyn"', daily_slice)
         closed = (datetime.now(EASTERN) + timedelta(days=6)).strftime("%b %-d")
         self.assertIn("Most days through", html)
         self.assertIn(f"closed {closed}", html)

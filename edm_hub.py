@@ -1,11 +1,12 @@
 """DJ Nights, Techno & Dance Parties hub: a dark, neon page with vibe, borough, date and cost filters.
 
 Ported from boston_events, with Latin and hip-hop filters since those make up much of NYC's club
-listings, and the boroughs as areas.
+listings, the five boroughs as areas, left-sidebar dropdown filters, and Google Maps venue links.
 """
 import re
 from datetime import datetime
 from html import escape
+from urllib.parse import quote_plus
 
 from scrapers import EASTERN
 
@@ -26,30 +27,57 @@ _EDM_SUBGENRE_PATTERNS = [
     ('club', '🪩 DJ Sets & Dance', '🪩', re.compile(r'(?i)\b(dj\s+(set|night|party|session|lineup|residency)|dance\s+party|club\s+night|all-night\s+dance|rave\b|boiler\s+room|turntablism|guest\s+dj|resident\s+dj)\b')),
 ]
 
-
-_EDM_FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
-              '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-              '<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Syne:wght@700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">')
+_EDM_FONTS = (
+    '<link rel="preconnect" href="https://fonts.googleapis.com">'
+    '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+    '<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Syne:wght@700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">'
+)
 
 _EDM_HERO_ART = """<svg class="edm-hero-art" viewBox="0 0 900 200" aria-hidden="true" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="edm-sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#04050a"/>
-      <stop offset="60%" stop-color="#0a0d1c"/>
-      <stop offset="100%" stop-color="#12182e"/>
+      <stop offset="0%" stop-color="#02040a"/>
+      <stop offset="40%" stop-color="#070b1f"/>
+      <stop offset="80%" stop-color="#111638"/>
+      <stop offset="100%" stop-color="#1b1033"/>
     </linearGradient>
-    <linearGradient id="edm-neon" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#00f0ff"/>
-      <stop offset="50%" stop-color="#a855f7"/>
-      <stop offset="100%" stop-color="#ff007f"/>
+    <linearGradient id="beam-cyan" x1="0" y1="1" x2="0.5" y2="0">
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.75"/>
+      <stop offset="60%" stop-color="#00f0ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#00f0ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beam-pink" x1="1" y1="1" x2="0.3" y2="0">
+      <stop offset="0%" stop-color="#ff007f" stop-opacity="0.7"/>
+      <stop offset="60%" stop-color="#ff007f" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ff007f" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beam-lime" x1="0" y1="1" x2="0.7" y2="0">
+      <stop offset="0%" stop-color="#00ff88" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#00ff88" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#00ff88" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beam-purple" x1="0.5" y1="1" x2="0.5" y2="0">
+      <stop offset="0%" stop-color="#b026ff" stop-opacity="0.65"/>
+      <stop offset="60%" stop-color="#b026ff" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#b026ff" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="bar-grad" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.2"/>
-      <stop offset="60%" stop-color="#00f0ff" stop-opacity="0.8"/>
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.25"/>
+      <stop offset="40%" stop-color="#00f0ff" stop-opacity="0.8"/>
+      <stop offset="75%" stop-color="#b026ff"/>
       <stop offset="100%" stop-color="#ff007f"/>
     </linearGradient>
-    <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="5" result="blur"/>
+    <radialGradient id="nebula-center" cx="50%" cy="60%" r="45%">
+      <stop offset="0%" stop-color="#b026ff" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#00f0ff" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#02040a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="water-grad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#060815" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#030409"/>
+    </linearGradient>
+    <filter id="glow-neon" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
@@ -57,68 +85,48 @@ _EDM_HERO_ART = """<svg class="edm-hero-art" viewBox="0 0 900 200" aria-hidden="
     </filter>
   </defs>
   <rect width="900" height="200" fill="url(#edm-sky)"/>
-  <g opacity="0.35" stroke="#00f0ff" stroke-width="1">
-    <line x1="450" y1="40" x2="0" y2="200"/>
-    <line x1="450" y1="40" x2="120" y2="200"/>
-    <line x1="450" y1="40" x2="240" y2="200"/>
-    <line x1="450" y1="40" x2="350" y2="200"/>
-    <line x1="450" y1="40" x2="450" y2="200"/>
-    <line x1="450" y1="40" x2="550" y2="200"/>
-    <line x1="450" y1="40" x2="660" y2="200"/>
-    <line x1="450" y1="40" x2="780" y2="200"/>
-    <line x1="450" y1="40" x2="900" y2="200"/>
-    <line x1="200" y1="130" x2="700" y2="130" opacity="0.5"/>
-    <line x1="120" y1="160" x2="780" y2="160" opacity="0.7"/>
-    <line x1="0" y1="200" x2="900" y2="200" stroke-width="2" opacity="0.9"/>
+  <rect width="900" height="200" fill="url(#nebula-center)"/>
+  <g opacity="0.85">
+    <polygon points="450,165 40,0 85,0" fill="url(#beam-cyan)"/>
+    <polygon points="450,165 815,0 860,0" fill="url(#beam-pink)"/>
+    <polygon points="450,165 240,0 275,0" fill="url(#beam-lime)"/>
+    <polygon points="450,165 625,0 660,0" fill="url(#beam-purple)"/>
+    <polygon points="450,165 435,0 465,0" fill="url(#beam-cyan)" opacity="0.6"/>
+  </g>
+  <g stroke-linecap="round" opacity="0.75" filter="url(#glow-neon)">
+    <line x1="450" y1="165" x2="60" y2="0" stroke="#00f0ff" stroke-width="1.5"/>
+    <line x1="450" y1="165" x2="840" y2="0" stroke="#ff007f" stroke-width="1.5"/>
+    <line x1="450" y1="165" x2="255" y2="0" stroke="#00ff88" stroke-width="1"/>
+    <line x1="450" y1="165" x2="645" y2="0" stroke="#b026ff" stroke-width="1"/>
   </g>
   <g fill="url(#bar-grad)">
-    <rect x="40" y="110" width="8" height="70" rx="3"/>
-    <rect x="54" y="90" width="8" height="90" rx="3"/>
-    <rect x="68" y="130" width="8" height="50" rx="3"/>
-    <rect x="82" y="75" width="8" height="105" rx="3"/>
-    <rect x="96" y="105" width="8" height="75" rx="3"/>
-    <rect x="110" y="60" width="8" height="120" rx="3"/>
-    <rect x="124" y="95" width="8" height="85" rx="3"/>
-    <rect x="138" y="125" width="8" height="55" rx="3"/>
-    <rect x="152" y="80" width="8" height="100" rx="3"/>
-    <rect x="166" y="115" width="8" height="65" rx="3"/>
-    <rect x="180" y="70" width="8" height="110" rx="3"/>
-    <rect x="194" y="135" width="8" height="45" rx="3"/>
+    <rect x="30" y="118" width="6" height="36" rx="2"/><rect x="40" y="98" width="6" height="56" rx="2"/>
+    <rect x="50" y="128" width="6" height="26" rx="2"/><rect x="60" y="78" width="6" height="76" rx="2"/>
+    <rect x="70" y="106" width="6" height="48" rx="2"/><rect x="80" y="62" width="6" height="92" rx="2"/>
+    <rect x="90" y="88" width="6" height="66" rx="2"/><rect x="100" y="116" width="6" height="38" rx="2"/>
+    <rect x="110" y="74" width="6" height="80" rx="2"/><rect x="120" y="102" width="6" height="52" rx="2"/>
+    <rect x="130" y="58" width="6" height="96" rx="2"/><rect x="140" y="92" width="6" height="62" rx="2"/>
+    <rect x="734" y="82" width="6" height="72" rx="2"/><rect x="744" y="124" width="6" height="30" rx="2"/>
+    <rect x="754" y="92" width="6" height="62" rx="2"/><rect x="764" y="58" width="6" height="96" rx="2"/>
+    <rect x="774" y="102" width="6" height="52" rx="2"/><rect x="784" y="74" width="6" height="80" rx="2"/>
+    <rect x="794" y="116" width="6" height="38" rx="2"/><rect x="804" y="88" width="6" height="66" rx="2"/>
+    <rect x="814" y="62" width="6" height="92" rx="2"/><rect x="824" y="106" width="6" height="48" rx="2"/>
+    <rect x="834" y="78" width="6" height="76" rx="2"/><rect x="844" y="128" width="6" height="26" rx="2"/>
   </g>
-  <g fill="url(#bar-grad)">
-    <rect x="698" y="135" width="8" height="45" rx="3"/>
-    <rect x="712" y="70" width="8" height="110" rx="3"/>
-    <rect x="726" y="115" width="8" height="65" rx="3"/>
-    <rect x="740" y="80" width="8" height="100" rx="3"/>
-    <rect x="754" y="125" width="8" height="55" rx="3"/>
-    <rect x="768" y="95" width="8" height="85" rx="3"/>
-    <rect x="782" y="60" width="8" height="120" rx="3"/>
-    <rect x="796" y="105" width="8" height="75" rx="3"/>
-    <rect x="810" y="75" width="8" height="105" rx="3"/>
-    <rect x="824" y="130" width="8" height="50" rx="3"/>
-    <rect x="838" y="90" width="8" height="90" rx="3"/>
-    <rect x="852" y="110" width="8" height="70" rx="3"/>
-  </g>
-  <g transform="translate(450, 95)" filter="url(#neon-glow)">
-    <ellipse rx="130" ry="42" fill="none" stroke="#00f0ff" stroke-width="2.5" opacity="0.8"/>
-    <ellipse rx="100" ry="32" fill="none" stroke="#a855f7" stroke-width="2" opacity="0.9"/>
-    <ellipse rx="70" ry="22" fill="none" stroke="#ff007f" stroke-width="2" opacity="0.85"/>
-    <ellipse rx="35" ry="11" fill="none" stroke="#00f0ff" stroke-width="3" opacity="0.95"/>
-    <circle r="6" fill="#00f0ff"/>
-    <line x1="-120" y1="0" x2="-260" y2="-60" stroke="#ff007f" stroke-width="2" opacity="0.6"/>
-    <line x1="120" y1="0" x2="260" y2="-60" stroke="#00f0ff" stroke-width="2" opacity="0.6"/>
-  </g>
-  <g transform="translate(450, 26)">
-    <rect x="-95" y="-12" width="190" height="24" rx="12" fill="#000" stroke="#00f0ff" stroke-width="1.5" opacity="0.85"/>
-    <text x="0" y="4" text-anchor="middle" font-family="'Orbitron', monospace" font-size="10.5" font-weight="800" fill="#00f0ff" letter-spacing="3">NYC RAVE FREQ</text>
+  <rect x="0" y="154" width="900" height="46" fill="url(#water-grad)"/>
+  <g transform="translate(450, 24)">
+    <rect x="-135" y="-12" width="270" height="24" rx="12" fill="#04060e" stroke="#00f0ff" stroke-width="1.4" opacity="0.95"/>
+    <circle cx="-118" cy="0" r="4" fill="#00f0ff" filter="url(#glow-neon)"/>
+    <circle cx="118" cy="0" r="4" fill="#ff007f" filter="url(#glow-neon)"/>
+    <text x="0" y="4" text-anchor="middle" font-family="'Orbitron', -apple-system, sans-serif" font-size="10" font-weight="800" fill="#00f0ff" letter-spacing="1.4">⚡ NYC UNDERGROUND &amp; CLUBS</text>
   </g>
 </svg>"""
 
 _EDM_CSS = """
-  .hub-card[hidden], .hub-day[hidden], .edm-city-section[hidden] { display: none; }
+  .hub-card[hidden], .hub-day[hidden], .edm-city-section[hidden] { display: none !important; }
   .edm-hub .cta-btn { display: inline-block; text-decoration: none; }
-  .edm-hub .badge { padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
-  .edm-hub .badge-free { background: rgba(0, 255, 136, 0.15); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.4); }
+  .edm-hub .badge { padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; white-space: nowrap; }
+  .edm-hub .badge-free { background: rgba(0, 255, 136, 0.15); color: #00ff88; border: 1.5px solid #00ff88; border-radius: 999px; }
   .edm-hub .badge-price { background: rgba(255, 255, 255, 0.08); color: var(--fg); }
   .edm-hub {
     --bg: #07080f;
@@ -135,22 +143,48 @@ _EDM_CSS = """
     background: var(--bg) !important;
     color: var(--fg) !important;
   }
-  .edm-hub h1, .edm-hub h2, .edm-hub h3, .edm-hub .logo, .edm-hub .edm-chip, .edm-hub .cta-btn, .edm-hub .edm-card-subgenre {
-    font-family: "Syne", "Orbitron", -apple-system, sans-serif;
+  .edm-hub h1, .edm-hub h2, .edm-hub h3, .edm-hub .logo, .edm-hub .edm-chip, .edm-hub .cta-btn, .edm-hub .edm-card-subgenre, .edm-filter-label {
+    font-family: "Syne", "Orbitron", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   .edm-hub header {
-    background: rgba(7, 8, 15, 0.9) !important;
+    background: rgba(7, 8, 15, 0.92) !important;
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    padding: 12px 20px;
   }
-  .edm-hub .logo { color: #fff !important; font-weight: 800; }
+  .edm-hub .logo { color: #fff !important; font-weight: 800; font-size: 18px; text-decoration: none; }
   .edm-hub .logo span {
     color: var(--cyan) !important;
     text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
   }
-  .edm-hub .hub-nav a { color: var(--muted); }
-  .edm-hub .hub-nav a.active, .edm-hub .hub-nav a:hover { color: var(--cyan); text-shadow: 0 0 8px rgba(0,240,255,0.4); }
-  .edm-hub main { max-width: 980px; padding-top: 22px; }
+  .edm-hub .hub-nav a {
+    color: var(--muted);
+    padding: 5px 12px;
+    border-radius: 999px;
+    transition: all 0.15s ease;
+    text-decoration: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .edm-hub .hub-nav a:hover {
+    color: var(--cyan);
+    background: rgba(0, 240, 255, 0.08);
+    border-color: rgba(0, 240, 255, 0.25);
+  }
+  .edm-hub .hub-nav a.active {
+    color: #04060f;
+    background: var(--cyan);
+    border-color: var(--cyan);
+    box-shadow: 0 0 14px rgba(0, 240, 255, 0.5);
+    font-weight: 800;
+  }
+  .edm-hub main { max-width: 1120px; padding-top: 22px; }
   .edm-hub .hero {
     border: 1px solid var(--border);
     background: #090b16;
@@ -160,7 +194,7 @@ _EDM_CSS = """
     margin-bottom: 22px;
   }
   .edm-hero-art { display: block; width: 100%; height: 190px; }
-  .edm-hero-copy { padding: 20px 24px 26px; text-align: center; }
+  .edm-hero-copy { padding: 20px 24px 26px; text-align: left; }
   .edm-hub .hero h1 {
     font-size: clamp(28px, 5.5vw, 44px);
     font-weight: 900;
@@ -175,7 +209,7 @@ _EDM_CSS = """
     font-size: 0.42em;
     color: var(--cyan);
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-top: 6px;
     -webkit-text-fill-color: var(--cyan);
@@ -184,11 +218,12 @@ _EDM_CSS = """
   .edm-hub .hero p {
     color: var(--muted);
     font-size: 15px;
-    max-width: 680px;
-    margin: 0 auto 18px;
+    max-width: 720px;
+    margin: 0 0 16px;
     line-height: 1.5;
   }
-  .edm-stats { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 0 0 18px; }
+  .edm-hero-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 0; }
+  .edm-stats { display: flex; gap: 10px; flex-wrap: wrap; margin: 0; }
   .edm-stat {
     background: rgba(0, 240, 255, 0.08);
     border: 1px solid rgba(0, 240, 255, 0.25);
@@ -209,50 +244,96 @@ _EDM_CSS = """
     box-shadow: 0 0 16px rgba(0, 240, 255, 0.4);
     text-decoration: none;
     display: inline-block;
+    margin-left: auto;
+    white-space: nowrap;
   }
   .edm-hub .cta-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
-  .edm-filters {
+  .edm-layout {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+    margin-bottom: 24px;
+  }
+  .edm-sidebar {
+    position: sticky;
+    top: 80px;
     background: #090c18;
     border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 16px 18px 8px;
-    margin-bottom: 22px;
-    box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
+    border-radius: 14px;
+    padding: 18px 16px;
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.06);
   }
-  .edm-filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-  .edm-filter-label {
-    font-family: "Orbitron", monospace;
+  .edm-filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .edm-sidebar-title {
+    font-size: 14px;
     font-weight: 800;
-    color: var(--cyan);
-    font-size: 11px;
+    color: #fff;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    min-width: 65px;
+    letter-spacing: 0.05em;
+    margin: 0;
   }
-  .edm-chip {
-    font-size: 13.5px;
+  .edm-reset-btn {
+    background: none;
+    border: none;
+    color: var(--cyan);
+    font-size: 12px;
     font-weight: 700;
-    padding: 5px 14px 4px;
-    border-radius: 999px;
     cursor: pointer;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: #0d1122;
-    color: var(--fg);
-    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    padding: 2px 6px;
   }
-  .edm-chip:hover {
-    transform: translateY(-1px);
+  .edm-reset-btn:hover {
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.6);
+    text-decoration: underline;
+  }
+  .edm-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .edm-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .edm-filter-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .edm-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: #0d1122 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%2300f0ff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 10px center;
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 28px 7px 12px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
+  }
+  .edm-select:hover, .edm-select:focus {
     border-color: var(--cyan);
     box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+    outline: none;
   }
-  .edm-chip.active {
-    background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(168, 85, 247, 0.25));
-    border-color: var(--cyan);
-    color: #fff;
-    box-shadow: 0 0 14px rgba(0, 240, 255, 0.45);
-  }
+  .edm-chip { font-size: 13px; font-weight: 600; }
+  .edm-main-col { min-width: 0; }
   .edm-hub .hub-day {
-    margin: 32px 0 14px;
+    margin: 28px 0 14px;
     font-size: 20px;
     font-weight: 800;
     letter-spacing: -0.01em;
@@ -263,6 +344,7 @@ _EDM_CSS = """
     border: 0;
     padding: 0;
   }
+  .edm-hub .hub-day:first-child { margin-top: 4px; }
   .edm-hub .hub-day::before {
     content: "⚡";
     font-size: 16px;
@@ -295,6 +377,7 @@ _EDM_CSS = """
     text-transform: uppercase;
     padding: 3px 10px;
     border-radius: 999px;
+    border: 1px solid transparent;
   }
   .edm-city-pill.city-manhattan { color: #00f0ff; border-color: rgba(0, 240, 255, 0.4); background: rgba(0, 240, 255, 0.1); }
   .edm-city-pill.city-brooklyn { color: #ff007f; border-color: rgba(255, 0, 127, 0.4); background: rgba(255, 0, 127, 0.1); }
@@ -344,6 +427,8 @@ _EDM_CSS = """
   .edm-k-house { --edm-band: var(--pink); }
   .edm-k-bass { --edm-band: var(--lime); }
   .edm-k-synth { --edm-band: var(--purple); }
+  .edm-k-latin { --edm-band: #ff8c00; }
+  .edm-k-hiphop { --edm-band: #a855f7; }
   .edm-k-club { --edm-band: var(--yellow); }
   .edm-card-body {
     padding: 14px 16px;
@@ -390,12 +475,15 @@ _EDM_CSS = """
     gap: 6px;
     flex-wrap: wrap;
   }
-  .edm-card-neigh {
-    font-size: 11px;
-    color: var(--muted);
-    background: rgba(255,255,255,0.06);
-    padding: 1px 6px;
-    border-radius: 4px;
+  .edm-venue-link {
+    color: #b8c7dd;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(0, 240, 255, 0.35);
+    font-weight: 600;
+  }
+  .edm-venue-link:hover {
+    color: var(--cyan);
+    border-bottom-color: var(--cyan);
   }
   .edm-card-desc {
     font-size: 12.5px;
@@ -429,20 +517,26 @@ _EDM_CSS = """
     box-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
     text-decoration: none;
   }
+  @media (max-width: 860px) {
+    .edm-layout { grid-template-columns: 1fr; gap: 16px; }
+    .edm-sidebar { position: static; padding: 12px 14px; margin-bottom: 12px; }
+    .edm-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 8px; }
+  }
   @media (max-width: 640px) {
     .edm-hero-art { height: 130px; }
-    .edm-filter-label { min-width: 100%; }
-    .edm-hub .hub-nav { font-size: 12px; gap: 8px 10px; }
+    .edm-hub .hub-nav { font-size: 12px; gap: 6px 8px; }
   }
 """
 
 _EDM_FILTER_JS = """<script>
 (function () {
+  var selects = document.querySelectorAll('.edm-select');
   var chips = document.querySelectorAll('.edm-chip');
-  if (!chips.length) return;
+  if (!selects.length && !chips.length) return;
   var cards = document.querySelectorAll('.hub-card.edm-card');
   var heads = document.querySelectorAll('.hub-day');
   var citySecs = document.querySelectorAll('.edm-city-section');
+  var resetBtn = document.getElementById('edm-reset-btn');
   var state = { genre: 'all', area: 'all', when: 'all', cost: 'all' };
 
   function matches(c) {
@@ -468,29 +562,54 @@ _EDM_FILTER_JS = """<script>
       var cCount = sec.querySelector('.edm-city-head .count');
       if (cCount) cCount.textContent = visible;
     });
+    selects.forEach(function (sel) {
+      if (state[sel.dataset.group] !== undefined) {
+        sel.value = state[sel.dataset.group];
+      }
+    });
     chips.forEach(function (b) {
       var g = b.dataset.group, v = b.dataset.val;
       b.classList.toggle('active', state[g] === v);
     });
     var none = document.getElementById('hub-none');
     if (none) none.hidden = n > 0;
+    if (resetBtn) {
+      var hasFilters = Object.keys(state).some(function (k) { return state[k] !== 'all'; });
+      resetBtn.hidden = !hasFilters;
+    }
     if (save) {
       var parts = Object.keys(state).filter(function (k) { return state[k] !== 'all'; }).map(function (k) { return k + '=' + state[k]; });
       history.replaceState(null, '', parts.length ? '#' + parts.join('&') : location.pathname);
     }
   }
 
-  chips.forEach(function (b) {
-    b.addEventListener('click', function () {
-      var g = b.dataset.group, v = b.dataset.val;
-      if (g === 'cost' && state[g] === v && v !== 'all') {
-        state[g] = 'all';
-      } else {
-        state[g] = v;
-      }
+  selects.forEach(function (sel) {
+    sel.addEventListener('change', function () {
+      state[sel.dataset.group] = sel.value;
       render(true);
     });
   });
+
+  chips.forEach(function (b) {
+    if (b.tagName !== 'OPTION') {
+      b.addEventListener('click', function () {
+        var g = b.dataset.group, v = b.dataset.val;
+        if (g === 'cost' && state[g] === v && v !== 'all') {
+          state[g] = 'all';
+        } else {
+          state[g] = v;
+        }
+        render(true);
+      });
+    }
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function () {
+      Object.keys(state).forEach(function (k) { state[k] = 'all'; });
+      render(true);
+    });
+  }
 
   location.hash.replace(/^#/, '').split('&').forEach(function (p) {
     var kv = p.split('=');
@@ -505,14 +624,25 @@ _EDM_FILTER_JS = """<script>
 
 
 # Rooms that only book this kind of night
-_EDM_VENUES = ("nowadays", "elsewhere", "knockdown center", "bossa nova civic club", "good room", "h0l0", "public records",
-               "basement", "mirage", "signal", "paragon", "le bain", "marquee")
+_EDM_VENUES = (
+    "nowadays", "elsewhere", "knockdown center", "bossa nova civic club", "good room",
+    "h0l0", "public records", "basement", "mirage", "avant gardner", "brooklyn storehouse",
+    "signal", "paragon", "le bain", "marquee", "superior ingredients", "silo brooklyn",
+    "gabriela", "musica", "market hotel", "trans-pecos", "jupiter disco", "c'mon everybody",
+    "the sultan room", "mood ring",
+)
 _NOT_EDM_CATEGORIES = ("comedy", "family", "theater", "sports", "books", "art", "markets", "services", "tech", "deals")
 _NOT_EDM_GENRES = ("jazz_blues", "folk_trad", "classical")
 CARD_LIMIT = 1500  # about three weeks of the 35-day calendar
 _CITY_ORDER = ("manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide")
-_AREA_CHIPS = (("manhattan", "Manhattan"), ("brooklyn", "Brooklyn"), ("queens", "Queens"), ("bronx", "The Bronx"),
-               ("staten_island", "Staten Island"), ("citywide", "Citywide"))
+_AREA_CHIPS = (
+    ("manhattan", "Manhattan"),
+    ("brooklyn", "Brooklyn"),
+    ("queens", "Queens"),
+    ("bronx", "The Bronx"),
+    ("staten_island", "Staten Island"),
+    ("citywide", "Citywide"),
+)
 
 
 def is_edm_event(e):
@@ -546,9 +676,9 @@ def _when_tag(t):
     return "upcoming"
 
 
-def _chips(group, rows):
-    return "".join(f'<button type="button" class="edm-chip{" active" if v == "all" else ""}" data-group="{group}" data-val="{v}">{lbl}</button>'
-                   for v, lbl in rows)
+def _opt(group, val, label, is_active=False):
+    cls = "edm-chip active" if is_active else "edm-chip"
+    return f'<option class="{cls}" data-group="{group}" data-val="{val}" value="{val}">{label}</option>'
 
 
 def render_body(events, city_of, is_free, query, title, subtitle, city_labels):
@@ -559,7 +689,11 @@ def render_body(events, city_of, is_free, query, title, subtitle, city_labels):
         nonlocal free
         key, label, emoji = _vibe(e)
         vibes[key] = vibes.get(key, 0) + 1
-        places.add(e.get("venue") or "")
+        raw_venue = (e.get("venue") or e.get("_source_venue") or "NYC Club").strip()
+        if raw_venue.lower() in ("nyc / the skint", "the skint", "nyc / secret nyc", "secret nyc"):
+            raw_venue = city_labels.get(city, "New York City")
+        places.add(raw_venue)
+        gmaps_url = escape(f"https://www.google.com/maps/search/?api=1&query={quote_plus(raw_venue + ', ' + city_labels.get(city, 'New York') + ', NY')}")
         t = e["_time"]
         paid = not is_free(e)
         free += 0 if paid else 1
@@ -581,7 +715,7 @@ def render_body(events, city_of, is_free, query, title, subtitle, city_labels):
       <div class="hub-badges">{badge}</div>
     </div>
     <h3 class="edm-card-title"><a href="{url}" target="_blank" rel="noopener">{escape(e.get('name') or 'Event')}</a></h3>
-    <div class="edm-card-venue"><span>📍 {escape(e.get('venue') or e.get('_source_venue') or '')}</span></div>
+    <div class="edm-card-venue"><a class="edm-venue-link" href="{gmaps_url}" target="_blank" rel="noopener" title="Open {escape(raw_venue)} in Google Maps">📍 {escape(raw_venue)}</a></div>
     {desc_html}
     <div class="edm-card-footer">
       <time class="hub-date">{when}</time>
@@ -614,26 +748,66 @@ def render_body(events, city_of, is_free, query, title, subtitle, city_labels):
   <div class="edm-city-cards">{cards}</div>
 </div>""")
 
-    vibe_chips = _chips("genre", [("all", "All Vibes")] + [(k, lbl) for k, lbl, _e, _r in _EDM_SUBGENRE_PATTERNS if vibes.get(k)])
-    area_chips = _chips("area", [("all", "All Boroughs")] + [(k, lbl) for k, lbl in _AREA_CHIPS if k in present])
-    when_chips = _chips("when", [("all", "All Dates"), ("tonight", "🔥 Tonight"), ("weekend", "🎉 This Weekend")])
-    cost_chips = _chips("cost", [("all", "All Prices"), ("free", "💛 Free / No Cover")])
-    filters = f"""<div class="edm-filters" role="group" aria-label="Filter DJ nights and dance parties">
-    <div class="edm-filter-row"><span class="edm-filter-label">Vibes</span>{vibe_chips}</div>
-    <div class="edm-filter-row"><span class="edm-filter-label">Area</span>{area_chips}</div>
-    <div class="edm-filter-row"><span class="edm-filter-label">When</span>{when_chips}</div>
-    <div class="edm-filter-row"><span class="edm-filter-label">Cost</span>{cost_chips}</div>
-  </div>"""
+    vibe_opts = _opt("genre", "all", "⚡ All Vibes", is_active=True) + "".join(
+        _opt("genre", k, lbl) for k, lbl, _e, _r in _EDM_SUBGENRE_PATTERNS if vibes.get(k)
+    )
+    area_opts = _opt("area", "all", "📍 All Boroughs", is_active=True) + "".join(
+        _opt("area", k, lbl) for k, lbl in _AREA_CHIPS if k in present
+    )
+    when_opts = (
+        _opt("when", "all", "📅 All Dates", is_active=True)
+        + _opt("when", "tonight", "🔥 Tonight")
+        + _opt("when", "weekend", "🎉 This Weekend")
+    )
+    cost_opts = (
+        _opt("cost", "all", "💵 All Prices", is_active=True)
+        + _opt("cost", "free", "💛 Free / No Cover")
+    )
+
+    edm_sidebar = f"""<aside class="edm-sidebar" aria-label="Electronic &amp; EDM filters">
+    <div class="edm-filter-header">
+      <h2 class="edm-sidebar-title">Filters</h2>
+      <button type="button" id="edm-reset-btn" class="edm-reset-btn" hidden>Reset</button>
+    </div>
+    <div class="edm-filters" role="group" aria-label="Filter DJ nights and dance parties">
+      <div class="edm-filter-group">
+        <label class="edm-filter-label" for="edm-genre">Music Style</label>
+        <select id="edm-genre" class="edm-select" data-group="genre" aria-label="Vibes">{vibe_opts}</select>
+      </div>
+      <div class="edm-filter-group">
+        <label class="edm-filter-label" for="edm-area">Borough</label>
+        <select id="edm-area" class="edm-select" data-group="area" aria-label="Area">{area_opts}</select>
+      </div>
+      <div class="edm-filter-group">
+        <label class="edm-filter-label" for="edm-when">When</label>
+        <select id="edm-when" class="edm-select" data-group="when" aria-label="When">{when_opts}</select>
+      </div>
+      <div class="edm-filter-group">
+        <label class="edm-filter-label" for="edm-cost">Cover / Price</label>
+        <select id="edm-cost" class="edm-select" data-group="cost" aria-label="Cost">{cost_opts}</select>
+      </div>
+    </div>
+  </aside>"""
+
     n_cards = sum(vibes.values())
     hero = f"""<div class="hero">
     {_EDM_HERO_ART}
     <div class="edm-hero-copy">
       <h1>{escape(title)}<small>Warehouses, rooftops &amp; basements across the five boroughs</small></h1>
       <p>{escape(subtitle)}</p>
-      <div class="edm-stats"><span class="edm-stat">⚡ {n_cards} shows &amp; club nights</span><span class="edm-stat">💛 {free} free / no cover</span><span class="edm-stat">📍 {len(places)} venues</span></div>
-      <a href="../{query}" class="cta-btn">View on interactive calendar →</a>
+      <div class="edm-hero-bar">
+        <div class="edm-stats"><span class="edm-stat">⚡ {n_cards} shows &amp; club nights</span><span class="edm-stat">💛 {free} free / no cover</span><span class="edm-stat">📍 {len(places)} venues</span></div>
+        <a href="../{query}" class="cta-btn">Full calendar →</a>
+      </div>
     </div>
   </div>"""
-    body = "\n".join(sections) or '<p class="no-hub-events">No club nights are listed right now.</p>'
+    body_list = "\n".join(sections) or '<p class="no-hub-events">No club nights are listed right now.</p>'
     none = '<p id="hub-none" class="no-hub-events" hidden>Nothing matches those filters.</p>'
-    return hero, filters, f"{body}\n{none}"
+    full_body = f"""<div class="edm-layout">
+  {edm_sidebar}
+  <div class="edm-main-col">
+    {body_list}
+    {none}
+  </div>
+</div>"""
+    return hero, "", full_body

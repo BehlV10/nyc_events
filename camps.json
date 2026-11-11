@@ -1,0 +1,913 @@
+{
+  "camps": [
+    {
+      "id": "nyc-parks-summer-day-camp",
+      "name": "NYC Parks Summer Day Camp",
+      "town": "Manhattan, Brooklyn, Queens, Bronx & Staten Island",
+      "area": "manhattan",
+      "kind": "city",
+      "focus": "General day camp, sports, arts, nature & swimming",
+      "type": "Day",
+      "ages": "6–13",
+      "age_min": 6,
+      "age_max": 13,
+      "price": "$500 for 7-week regular day; $575 with extended day (8 AM–6 PM)",
+      "week_low": 71,
+      "week_high": 82,
+      "sliding": false,
+      "aid": "Lottery admission through NYC Parks Recreation Centers",
+      "dates": "July 6 – August 21 (7 weeks)",
+      "hours": "9:00 AM–5:00 PM (extended day 8:00 AM–6:00 PM)",
+      "residents": "NYC residents (registration by lottery)",
+      "signup": "Online lottery via NYC Parks in March",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-03-10",
+          "time": "10:00",
+          "label": "NYC Parks Summer Day Camp lottery opens",
+          "group": "NYC Parks Summer Day Camp"
+        }
+      ],
+      "note": "Runs at recreation centers and parks across all five boroughs with outdoor games, STEAM workshops, field trips, and swim time.",
+      "season": 2027,
+      "url": "https://www.nycgovparks.org/reg/summercamp",
+      "sources": [
+        "https://www.nycgovparks.org/reg/summercamp"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7681,
+      "lng": -73.9718
+    },
+    {
+      "id": "nyc-doe-summer-rising",
+      "name": "NYC Summer Rising (DOE & DYCD)",
+      "town": "Citywide Public Schools (All 5 Boroughs)",
+      "area": "manhattan",
+      "kind": "city",
+      "focus": "Academic enrichment, arts, field trips & recreation",
+      "type": "Day",
+      "ages": "5–14 (Grades K–8)",
+      "age_min": 5,
+      "age_max": 14,
+      "price": "Free ($0)",
+      "week_low": 0,
+      "week_high": 0,
+      "sliding": false,
+      "aid": "Free for all NYC students in grades K–8",
+      "dates": "July 2 – August 14 (6–7 weeks)",
+      "hours": "8:00 AM–6:00 PM",
+      "residents": "Students living in NYC entering grades K–8",
+      "signup": "MySchools application portal opens in March",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-03-04",
+          "time": "09:00",
+          "label": "Summer Rising application portal opens on MySchools",
+          "group": "NYC Summer Rising"
+        }
+      ],
+      "note": "Free full-day program combining morning NYC Public Schools learning with afternoon DYCD community-based camp activities, breakfast, and lunch.",
+      "season": 2027,
+      "url": "https://www.schools.nyc.gov/enrollment/summer/grades-k-8",
+      "sources": [
+        "https://www.schools.nyc.gov/enrollment/summer/grades-k-8"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7135,
+      "lng": -74.0071
+    },
+    {
+      "id": "ymca-greater-ny-day-camp",
+      "name": "YMCA of Greater New York Summer Day Camp",
+      "town": "Upper West Side, Chinatown, Harlem, Park Slope, Long Island City, Bronx & SI",
+      "area": "manhattan",
+      "kind": "ymca",
+      "focus": "Swimming, sports, STEM, arts & traditional day camp",
+      "type": "Day",
+      "ages": "4–16",
+      "age_min": 4,
+      "age_max": 16,
+      "price": "$690–$1,050 per 2-week session ($345–$525/week)",
+      "week_low": 345,
+      "week_high": 525,
+      "sliding": true,
+      "aid": "Financial assistance available at all 20+ NYC YMCA branches",
+      "dates": "June 29 – August 21 (four 2-week sessions)",
+      "hours": "8:30 AM–4:30 PM (extended care 8:00 AM–6:00 PM)",
+      "signup": "Early bird registration opens January",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-01-16",
+          "time": "09:00",
+          "label": "YMCA early-bird registration & Open House kickoff",
+          "group": "YMCA of Greater NY"
+        }
+      ],
+      "note": "Includes instructional swim at YMCA indoor pools, daily outdoor play, and specialty tracks in sports, dance, and science across all five boroughs.",
+      "season": 2027,
+      "url": "https://ymcanyc.org/programs/camp",
+      "sources": [
+        "https://ymcanyc.org/programs/camp"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7716,
+      "lng": -73.9803
+    },
+    {
+      "id": "asphalt-green-summer-day-camp",
+      "name": "Asphalt Green Summer Day Camp (UES & Battery Park City)",
+      "town": "Upper East Side & Battery Park City, Manhattan",
+      "area": "manhattan",
+      "kind": "nonprofit",
+      "focus": "Swimming, sports, theater, circus arts & general day camp",
+      "type": "Day",
+      "ages": "4–15",
+      "age_min": 4,
+      "age_max": 15,
+      "price": "$1,075–$1,250/week (multi-week discounts)",
+      "week_low": 1075,
+      "week_high": 1250,
+      "sliding": false,
+      "aid": "Need-based camp scholarships available",
+      "dates": "June 29 – August 21 (4 to 8 weeks)",
+      "hours": "8:45 AM–4:00 PM (door-to-door bus service available)",
+      "signup": "Open enrollment online",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-01-24",
+          "time": "11:00",
+          "label": "Asphalt Green Summer Day Camp Open House",
+          "group": "Asphalt Green Summer Day Camp"
+        }
+      ],
+      "note": "Olympic-size pool swim instruction every day, turf field sports, gaga, air-conditioned gyms, and lunch included at 90th St & East River or Battery Park City.",
+      "season": 2027,
+      "url": "https://www.asphaltgreen.org/camps/",
+      "sources": [
+        "https://www.asphaltgreen.org/camps/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7782,
+      "lng": -73.9442
+    },
+    {
+      "id": "92ny-camp-yomi",
+      "name": "92NY Camp Yomi & Specialty Day Camps",
+      "town": "Upper East Side, Manhattan (with Rockland County campgrounds)",
+      "area": "manhattan",
+      "kind": "ymca",
+      "focus": "Outdoor day camp, swimming, gymnastics, arts & sports",
+      "type": "Day",
+      "ages": "3–14",
+      "age_min": 3,
+      "age_max": 14,
+      "price": "$1,150–$1,375/week",
+      "week_low": 1150,
+      "week_high": 1375,
+      "sliding": false,
+      "aid": "Financial aid available upon application",
+      "dates": "June 29 – August 14 (2 to 7 weeks)",
+      "hours": "8:00 AM–5:00 PM (includes bus from Manhattan pickups)",
+      "signup": "Open enrollment via 92NY",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-02-07",
+          "time": "10:30",
+          "label": "92NY Camp Yomi Family Info Session",
+          "group": "92NY Camp Yomi"
+        }
+      ],
+      "note": "Manhattan pickup locations travel daily to 92NY's wooded Henry Kaufmann Campgrounds, plus in-building preschool and arts camps at 1395 Lexington Ave.",
+      "season": 2027,
+      "url": "https://www.92ny.org/camps",
+      "sources": [
+        "https://www.92ny.org/camps"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7830,
+      "lng": -73.9526
+    },
+    {
+      "id": "jcc-manhattan-camp-settoga",
+      "name": "Marlene Meyerson JCC Manhattan — Camp Settoga & Day Camps @ the JCC",
+      "town": "Upper West Side, Manhattan",
+      "area": "manhattan",
+      "kind": "ymca",
+      "focus": "Outdoor adventure, swimming, rooftop play, culinary & arts",
+      "type": "Day",
+      "ages": "3–12",
+      "age_min": 3,
+      "age_max": 12,
+      "price": "$980–$1,390/week",
+      "week_low": 980,
+      "week_high": 1390,
+      "sliding": false,
+      "aid": "Financial assistance available through JCC Manhattan",
+      "dates": "June 29 – August 21 (2 to 8 weeks)",
+      "hours": "8:30 AM–4:30 PM",
+      "signup": "Open registration online",
+      "events": [
+        {
+          "season": 2027,
+          "web": true,
+          "when": "January 2027",
+          "label": "JCC Manhattan Virtual & In-Person Camp Tour"
+        }
+      ],
+      "note": "Offers both in-city Day Camps @ the JCC (334 Amsterdam Ave with indoor pools and rooftop playground) and country-style Camp Settoga with Manhattan busing.",
+      "season": 2027,
+      "url": "https://mmjccm.org/camps",
+      "sources": [
+        "https://mmjccm.org/camps"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7812,
+      "lng": -73.9799
+    },
+    {
+      "id": "amnh-adventures-in-science",
+      "name": "American Museum of Natural History — Adventures in Science",
+      "town": "Upper West Side, Manhattan",
+      "area": "manhattan",
+      "kind": "museum",
+      "focus": "Paleontology, astrophysics, marine biology & hands-on science",
+      "type": "Day",
+      "ages": "6–11 (Grades 1–5)",
+      "age_min": 6,
+      "age_max": 11,
+      "price": "$695/week ($650 for museum members)",
+      "week_low": 650,
+      "week_high": 695,
+      "sliding": false,
+      "aid": "Tuition assistance scholarships offered",
+      "dates": "July 6 – August 14 (1-week themed camps)",
+      "hours": "9:00 AM–4:00 PM",
+      "signup": "Member presale in February; public registration in February",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-02-18",
+          "time": "10:00",
+          "label": "AMNH Adventures in Science summer registration opens",
+          "group": "AMNH Adventures in Science"
+        }
+      ],
+      "note": "Campers explore AMNH halls, laboratories, and the Gilder Center with museum educators and scientists.",
+      "season": 2027,
+      "url": "https://www.amnh.org/learn-teach/children-and-families/adventures-in-science",
+      "sources": [
+        "https://www.amnh.org/learn-teach/children-and-families/adventures-in-science"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7813,
+      "lng": -73.9740
+    },
+    {
+      "id": "cmom-summer-camp",
+      "name": "Children's Museum of Manhattan (CMOM) Early Childhood Summer Camp",
+      "town": "Upper West Side, Manhattan",
+      "area": "manhattan",
+      "kind": "museum",
+      "focus": "Early childhood arts, sensory play, storytelling & museum exploration",
+      "type": "Day",
+      "ages": "3–6",
+      "age_min": 3,
+      "age_max": 6,
+      "price": "$750–$950/week",
+      "week_low": 750,
+      "week_high": 950,
+      "sliding": false,
+      "dates": "June 22 – August 28 (weekly registration)",
+      "hours": "9:00 AM–1:00 PM or 9:00 AM–3:00 PM",
+      "signup": "Online registration open",
+      "events": [
+        {
+          "season": 2027,
+          "when": "February 2027",
+          "label": "CMOM Summer Camp registration opens"
+        }
+      ],
+      "note": "Gentle museum-based camp for preschoolers and rising kindergartners inside CMOM at 212 W 83rd St.",
+      "season": 2026,
+      "url": "https://cmom.org/",
+      "sources": [
+        "https://cmom.org/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7860,
+      "lng": -73.9773
+    },
+    {
+      "id": "chelsea-piers-summer-sports-camp",
+      "name": "Chelsea Piers Summer Sports Camp (Manhattan & Brooklyn)",
+      "town": "Chelsea (Pier 62) & Prospect Heights / Downtown Brooklyn",
+      "area": "manhattan",
+      "kind": "private",
+      "focus": "Gymnastics, soccer, ice skating, ninja warrior, golf & multi-sport",
+      "type": "Day",
+      "ages": "4–16",
+      "age_min": 4,
+      "age_max": 16,
+      "price": "$825–$1,095/week",
+      "week_low": 825,
+      "week_high": 1095,
+      "sliding": false,
+      "dates": "June 15 – September 4 (weekly enrollment)",
+      "hours": "8:45 AM–3:45 PM (aftercare until 5:30 PM)",
+      "signup": "Week-by-week online registration",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-02-01",
+          "time": "09:00",
+          "label": "Chelsea Piers early-bird camp discount deadline",
+          "group": "Chelsea Piers Summer Camp"
+        }
+      ],
+      "note": "Full-day specialized sports and gymnastics camps at the Hudson River Fieldhouse (Pier 62) and Chelsea Piers Brooklyn.",
+      "season": 2027,
+      "url": "https://sports.chelseapiers.com/new-york/chelsea/camps/summer",
+      "sources": [
+        "https://sports.chelseapiers.com/new-york/chelsea/camps/summer"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7469,
+      "lng": -74.0085
+    },
+    {
+      "id": "steve-and-kates-camp-nyc",
+      "name": "Steve & Kate's Camp NYC (Manhattan & Brooklyn)",
+      "town": "Upper West Side, East Village, Tribeca, Cobble Hill & Park Slope",
+      "area": "manhattan",
+      "kind": "private",
+      "focus": "Self-directed coding, stop-motion animation, sewing, baking & sports",
+      "type": "Day",
+      "ages": "4–12",
+      "age_min": 4,
+      "age_max": 12,
+      "price": "$134/day or $3,780 full-summer pass (unused days automatically refunded)",
+      "week_low": 630,
+      "week_high": 670,
+      "sliding": false,
+      "dates": "June 22 – August 21 (choose any days)",
+      "hours": "8:00 AM–6:00 PM (drop-off and pick-up anytime)",
+      "signup": "Open online registration; automatic refunds for unused days",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-01-20",
+          "time": "09:00",
+          "label": "Steve & Kate's Camp 2027 day-pass & summer-pass sales open",
+          "group": "Steve & Kate's Camp NYC"
+        }
+      ],
+      "note": "Flexible drop-in model across Manhattan and Brooklyn where kids choose their own activities each hour, with lunch, snacks, and 8 AM–6 PM hours included.",
+      "season": 2027,
+      "url": "https://steveandkatescamp.com/nyc/",
+      "sources": [
+        "https://steveandkatescamp.com/nyc/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7289,
+      "lng": -73.9866
+    },
+    {
+      "id": "brooklyn-botanic-garden-discovery-camp",
+      "name": "Brooklyn Botanic Garden Summer Adventure & Garden Apprentice Camp",
+      "town": "Crown Heights / Prospect Heights, Brooklyn",
+      "area": "brooklyn",
+      "kind": "nature",
+      "focus": "Botany, urban gardening, ecology, nature art & outdoor discovery",
+      "type": "Day",
+      "ages": "6–13 (Grades 1–8)",
+      "age_min": 6,
+      "age_max": 13,
+      "price": "$650/week ($595 for BBG members)",
+      "week_low": 595,
+      "week_high": 650,
+      "sliding": true,
+      "aid": "Need-based scholarships available",
+      "dates": "July 6 – August 21 (1- and 2-week sessions)",
+      "hours": "9:00 AM–3:30 PM",
+      "signup": "Member registration opens late January; general public in February",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-02-03",
+          "time": "10:00",
+          "label": "Brooklyn Botanic Garden Summer Camp registration opens",
+          "group": "Brooklyn Botanic Garden"
+        }
+      ],
+      "note": "Campers plant, harvest, and explore 52 acres of gardens and the Children's Garden at Brooklyn Botanic Garden.",
+      "season": 2027,
+      "url": "https://www.bbg.org/learn/kids_and_families",
+      "sources": [
+        "https://www.bbg.org/learn/kids_and_families"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.6694,
+      "lng": -73.9624
+    },
+    {
+      "id": "trail-blazers-brooklyn-manhattan",
+      "name": "Trail Blazers Brooklyn & Manhattan Nature Day Camp",
+      "town": "Prospect Park (Brooklyn), Brooklyn Bridge Park & Riverside Park (Manhattan)",
+      "area": "brooklyn",
+      "kind": "nature",
+      "focus": "100% outdoor nature exploration, hiking, ecology & team building",
+      "type": "Day",
+      "ages": "4–11 (Pre-K–Grade 5)",
+      "age_min": 4,
+      "age_max": 11,
+      "price": "$675–$750/week",
+      "week_low": 675,
+      "week_high": 750,
+      "sliding": true,
+      "aid": "Tiered pricing and generous financial aid scholarships",
+      "dates": "June 29 – August 21 (weekly sessions)",
+      "hours": "8:30 AM–4:00 PM (extended care until 5:30 PM)",
+      "signup": "Online registration open",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-01-28",
+          "time": "18:30",
+          "label": "Trail Blazers Day & Overnight Camp Virtual Info Night",
+          "group": "Trail Blazers Camps"
+        }
+      ],
+      "note": "Screen-free outdoor day camp based in Prospect Park, Brooklyn Bridge Park, and Riverside Park, operated by a 135+ year-old NYC youth outdoor nonprofit.",
+      "season": 2027,
+      "url": "https://trailblazers.org/programs/summer-day-camp/",
+      "sources": [
+        "https://trailblazers.org/programs/summer-day-camp/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.6602,
+      "lng": -73.9690
+    },
+    {
+      "id": "carmelo-the-science-fellow",
+      "name": "Carmelo the Science Fellow — Brooklyn Preschool of Science Summer Camp",
+      "town": "Cobble Hill & Park Slope, Brooklyn",
+      "area": "brooklyn",
+      "kind": "private",
+      "focus": "Hands-on science experiments, live animals, robotics & engineering",
+      "type": "Day",
+      "ages": "2–10",
+      "age_min": 2,
+      "age_max": 10,
+      "price": "$650–$750/week",
+      "week_low": 650,
+      "week_high": 750,
+      "sliding": false,
+      "dates": "June 22 – August 28 (weekly themed camps)",
+      "hours": "8:30 AM–3:30 PM (extended day until 5:30 PM)",
+      "signup": "Online registration by week",
+      "events": [
+        {
+          "season": 2027,
+          "when": "January 2027",
+          "label": "Carmelo the Science Fellow summer themes posted"
+        }
+      ],
+      "note": "Four experiments a day with live reptiles, insects, chemistry, and STEM projects in Cobble Hill (300 Atlantic Ave) and Park Slope.",
+      "season": 2027,
+      "url": "https://carmelothesciencefellow.com/summer-camps/",
+      "sources": [
+        "https://carmelothesciencefellow.com/summer-camps/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.6881,
+      "lng": -73.9896
+    },
+    {
+      "id": "new-york-aquarium-camp",
+      "name": "New York Aquarium Summer Camp (WCS)",
+      "town": "Coney Island, Brooklyn",
+      "area": "brooklyn",
+      "kind": "museum",
+      "focus": "Marine biology, sharks, sea otters, beach ecology & ocean conservation",
+      "type": "Day",
+      "ages": "5–13 (Grades K–8)",
+      "age_min": 5,
+      "age_max": 13,
+      "price": "$600–$650/week",
+      "week_low": 600,
+      "week_high": 650,
+      "sliding": false,
+      "dates": "July 6 – August 21 (weekly sessions)",
+      "hours": "9:00 AM–3:30 PM",
+      "signup": "Registration opens in February via Wildlife Conservation Society",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-02-10",
+          "time": "10:00",
+          "label": "New York Aquarium Summer Camp registration opens",
+          "group": "New York Aquarium Camp"
+        }
+      ],
+      "note": "Behind-the-scenes animal encounters, touch tanks, and Coney Island beachfront marine science led by WCS educators.",
+      "season": 2027,
+      "url": "https://nyaquarium.com/learn/camps",
+      "sources": [
+        "https://nyaquarium.com/learn/camps"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.5743,
+      "lng": -73.9752
+    },
+    {
+      "id": "brooklyn-musicians-bms-camp",
+      "name": "Brooklyn Music School Summer Institute & Arts Camp",
+      "town": "Fort Greene, Brooklyn",
+      "area": "brooklyn",
+      "kind": "nonprofit",
+      "focus": "Instrumental music, vocal performance, musical theater & dance",
+      "type": "Day",
+      "ages": "5–14",
+      "age_min": 5,
+      "age_max": 14,
+      "price": "$575–$650/week",
+      "week_low": 575,
+      "week_high": 650,
+      "sliding": true,
+      "aid": "Need-based scholarships available",
+      "dates": "July 6 – August 14 (2-week and weekly sessions)",
+      "hours": "9:00 AM–4:00 PM (extended care until 5:30 PM)",
+      "signup": "Online registration via Brooklyn Music School",
+      "events": [
+        {
+          "season": 2027,
+          "when": "February 2027",
+          "label": "Early bird registration opens"
+        }
+      ],
+      "note": "Historic community music school at 126 Saint Felix St right next to BAM in Fort Greene, culminating in live Friday stage performances.",
+      "season": 2026,
+      "url": "https://www.brooklynmusicschool.org/summer-institute",
+      "sources": [
+        "https://www.brooklynmusicschool.org/summer-institute"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.6866,
+      "lng": -73.9772
+    },
+    {
+      "id": "queens-botanical-garden-camp",
+      "name": "Queens Botanical Garden Kids Summer Camp",
+      "town": "Flushing, Queens",
+      "area": "queens",
+      "kind": "nature",
+      "focus": "Gardening, composting, nature crafts, insects & outdoor STEM",
+      "type": "Day",
+      "ages": "5–12",
+      "age_min": 5,
+      "age_max": 12,
+      "price": "$450–$500/week",
+      "week_low": 450,
+      "week_high": 500,
+      "sliding": false,
+      "dates": "July 6 – August 21 (weekly sessions)",
+      "hours": "9:00 AM–4:00 PM",
+      "signup": "Online registration opens February",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-02-15",
+          "time": "09:00",
+          "label": "Queens Botanical Garden Summer Camp early bird opens",
+          "group": "Queens Botanical Garden"
+        }
+      ],
+      "note": "39 acres of gardens and children's farm plots in Flushing where campers harvest vegetables, study pollinators, and create botanical art.",
+      "season": 2027,
+      "url": "https://queensbotanical.org/kidsprograms/",
+      "sources": [
+        "https://queensbotanical.org/kidsprograms/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7510,
+      "lng": -73.8294
+    },
+    {
+      "id": "ny-hall-of-science-camp",
+      "name": "New York Hall of Science (NYSCI) Summer Science Innovation Camp",
+      "town": "Corona (Flushing Meadows Corona Park), Queens",
+      "area": "queens",
+      "kind": "museum",
+      "focus": "Engineering, 3D design, space exploration, robotics & Maker Lab",
+      "type": "Day",
+      "ages": "6–12 (Grades 1–6)",
+      "age_min": 6,
+      "age_max": 12,
+      "price": "$500–$550/week",
+      "week_low": 500,
+      "week_high": 550,
+      "sliding": false,
+      "dates": "July 6 – August 14 (weekly themes)",
+      "hours": "9:00 AM–3:00 PM (aftercare until 5:00 PM)",
+      "signup": "Online registration via NYSCI",
+      "events": [
+        {
+          "season": 2027,
+          "when": "February 2027",
+          "label": "NYSCI Summer Camp registration opens"
+        }
+      ],
+      "note": "Hands-on STEM camp inside New York City's interactive science center in Flushing Meadows Corona Park.",
+      "season": 2026,
+      "url": "https://nysci.org/",
+      "sources": [
+        "https://nysci.org/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7471,
+      "lng": -73.8515
+    },
+    {
+      "id": "alley-pond-environmental-center-camp",
+      "name": "Alley Pond Environmental Center Nature Conservation Camp",
+      "town": "Douglaston / Bayside, Queens",
+      "area": "queens",
+      "kind": "nature",
+      "focus": "Salt marsh trails, live animal care, birding & environmental science",
+      "type": "Day",
+      "ages": "5–12",
+      "age_min": 5,
+      "age_max": 12,
+      "price": "$425–$485/week",
+      "week_low": 425,
+      "week_high": 485,
+      "sliding": false,
+      "dates": "July 6 – August 21 (weekly sessions)",
+      "hours": "9:00 AM–3:00 PM",
+      "signup": "Online registration opens February",
+      "events": [
+        {
+          "season": 2027,
+          "when": "February 2027",
+          "label": "APEC Summer Nature Camp registration opens"
+        }
+      ],
+      "note": "Explores 635 acres of forests, meadows, and salt marshes in Alley Pond Park with daily live animal ambassador encounters.",
+      "season": 2026,
+      "url": "https://www.alleypond.org/",
+      "sources": [
+        "https://www.alleypond.org/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.7582,
+      "lng": -73.7458
+    },
+    {
+      "id": "bronx-zoo-summer-camp",
+      "name": "Bronx Zoo Summer Camp (Wildlife Conservation Society)",
+      "town": "Fordham / Belmont, The Bronx",
+      "area": "bronx",
+      "kind": "museum",
+      "focus": "Zoology, wildlife conservation, animal habitats & behind-the-scenes tours",
+      "type": "Day",
+      "ages": "4–14 (Pre-K–Grade 8)",
+      "age_min": 4,
+      "age_max": 14,
+      "price": "$675–$750/week ($610 for WCS members)",
+      "week_low": 610,
+      "week_high": 750,
+      "sliding": false,
+      "aid": "Limited camp scholarships available",
+      "dates": "June 29 – August 21 (1-week sessions)",
+      "hours": "9:00 AM–3:30 PM (extended care until 5:00 PM)",
+      "signup": "WCS member presale early February; general public mid-February",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-02-09",
+          "time": "10:00",
+          "label": "Bronx Zoo Summer Camp registration opens",
+          "group": "Bronx Zoo Summer Camp"
+        }
+      ],
+      "note": "Up-close animal visits, zookeeper chats, and exploration across 265 acres at the Bronx Zoo.",
+      "season": 2027,
+      "url": "https://bronxzoo.com/learn/camps",
+      "sources": [
+        "https://bronxzoo.com/learn/camps"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.8506,
+      "lng": -73.8770
+    },
+    {
+      "id": "wave-hill-forest-summer-camp",
+      "name": "Wave Hill Woodland & Nature Summer Camp",
+      "town": "Riverdale, The Bronx",
+      "area": "bronx",
+      "kind": "nature",
+      "focus": "Woodland exploration, Hudson River ecology, botanical art & gardening",
+      "type": "Day",
+      "ages": "5–10",
+      "age_min": 5,
+      "age_max": 10,
+      "price": "$575–$625/week",
+      "week_low": 575,
+      "week_high": 625,
+      "sliding": true,
+      "aid": "Scholarships available for Bronx families",
+      "dates": "July 6 – August 14 (weekly sessions)",
+      "hours": "9:00 AM–3:30 PM",
+      "signup": "Online registration via Wave Hill",
+      "events": [
+        {
+          "season": 2027,
+          "when": "February 2027",
+          "label": "Wave Hill Summer Camp registration opens"
+        }
+      ],
+      "note": "Outdoor nature and art camp overlooking the Hudson River and Palisades at Wave Hill's 28-acre public garden in Riverdale.",
+      "season": 2026,
+      "url": "https://www.wavehill.org/",
+      "sources": [
+        "https://www.wavehill.org/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.8979,
+      "lng": -73.9114
+    },
+    {
+      "id": "staten-island-museum-snug-harbor-camp",
+      "name": "Snug Harbor & Staten Island Museum Summer Art & Nature Camp",
+      "town": "Randall Manor (Snug Harbor), Staten Island",
+      "area": "staten_island",
+      "kind": "museum",
+      "focus": "Natural science, heritage farm, visual arts & botanical gardens",
+      "type": "Day",
+      "ages": "6–12",
+      "age_min": 6,
+      "age_max": 12,
+      "price": "$375–$450/week",
+      "week_low": 375,
+      "week_high": 450,
+      "sliding": false,
+      "dates": "July 6 – August 21 (weekly sessions)",
+      "hours": "9:00 AM–4:00 PM",
+      "signup": "Online registration opens February",
+      "events": [
+        {
+          "season": 2027,
+          "when": "February 2027",
+          "label": "Snug Harbor & SI Museum camp registration opens"
+        }
+      ],
+      "note": "Set across Snug Harbor's 83-acre cultural campus, wetlands, Heritage Farm, and the Staten Island Museum.",
+      "season": 2026,
+      "url": "https://snug-harbor.org/",
+      "sources": [
+        "https://snug-harbor.org/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 40.6433,
+      "lng": -74.1025
+    },
+    {
+      "id": "fresh-air-fund-sleepaway-camps",
+      "name": "The Fresh Air Fund — Sharpe Reservation Sleepaway Camps",
+      "town": "Fishkill, NY (Free Charter Bus from Manhattan, Brooklyn, Queens & Bronx)",
+      "area": "away",
+      "kind": "nonprofit",
+      "focus": "Free sleepaway camp: lake swimming, hiking, ropes course, stargazing & arts",
+      "type": "Overnight",
+      "ages": "8–17",
+      "age_min": 8,
+      "age_max": 17,
+      "price": "Free ($0 for eligible NYC children)",
+      "week_low": 0,
+      "week_high": 0,
+      "sliding": true,
+      "aid": "100% free for income-eligible NYC families, including round-trip bus from NYC",
+      "dates": "June 29 – August 21 (1.5- to 2-week sleepaway sessions)",
+      "hours": "Overnight sleepaway (10–14 day sessions)",
+      "residents": "New York City children ages 8–17 meeting income guidelines",
+      "signup": "Online application opens February",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-02-04",
+          "time": "09:00",
+          "label": "Fresh Air Fund free sleepaway camp applications open",
+          "group": "The Fresh Air Fund"
+        }
+      ],
+      "note": "Six sleepaway camps on 2,000 acres in the Hudson Highlands (Fishkill, NY) with free transportation from pickup sites in Manhattan, Brooklyn, Queens, and the Bronx.",
+      "season": 2027,
+      "url": "https://freshair.org/our-programs/summer-camps/",
+      "sources": [
+        "https://freshair.org/our-programs/summer-camps/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 41.5034,
+      "lng": -73.8546
+    },
+    {
+      "id": "ymca-camp-mcguire-frost-valley",
+      "name": "Frost Valley YMCA Sleepaway Camp (Catskills)",
+      "town": "Claryville, NY (Bus pickup in Manhattan & Brooklyn)",
+      "area": "away",
+      "kind": "ymca",
+      "focus": "Catskills wilderness, horseback riding, canoeing, climbing & campfires",
+      "type": "Overnight",
+      "ages": "7–16",
+      "age_min": 7,
+      "age_max": 16,
+      "price": "$2,550–$2,950 per 2-week overnight session ($1,275–$1,475/week)",
+      "week_low": 1275,
+      "week_high": 1475,
+      "sliding": true,
+      "aid": "Tiered pricing and campership financial aid available",
+      "dates": "June 28 – August 21 (2-week sessions)",
+      "hours": "Overnight sleepaway (charter bus from NYC)",
+      "signup": "Open registration online",
+      "events": [
+        {
+          "season": 2027,
+          "date": "2027-01-30",
+          "time": "13:00",
+          "label": "Frost Valley YMCA Virtual NYC Family Info Session",
+          "group": "Frost Valley YMCA"
+        }
+      ],
+      "note": "5,500 acres in the Catskill Mountains with direct charter bus transportation from Manhattan and Brooklyn.",
+      "season": 2027,
+      "url": "https://frostvalley.org/camps/overnight-camp/",
+      "sources": [
+        "https://frostvalley.org/camps/overnight-camp/"
+      ],
+      "checked": "2026-11-10",
+      "lat": 41.9881,
+      "lng": -74.5254
+    }
+  ],
+  "leads": [
+    {
+      "name": "Central Park Zoo Summer Camp (WCS)",
+      "town": "Manhattan",
+      "url": "https://centralparkzoo.com/learn/camps"
+    },
+    {
+      "name": "Queens Zoo Summer Camp (WCS)",
+      "town": "Flushing Meadows, Queens",
+      "url": "https://queenszoo.com/learn/camps"
+    },
+    {
+      "name": "Prospect Park Zoo Summer Camp (WCS)",
+      "town": "Prospect Park, Brooklyn",
+      "url": "https://prospectparkzoo.com/learn/camps"
+    },
+    {
+      "name": "Intrepid Museum Camp Intrepid",
+      "town": "Hell's Kitchen (Pier 86), Manhattan",
+      "url": "https://intrepidmuseum.org/education/camp-intrepid"
+    },
+    {
+      "name": "Brooklyn Children's Museum Summer Camp",
+      "town": "Crown Heights, Brooklyn",
+      "url": "https://www.brooklynkids.org/"
+    },
+    {
+      "name": "Museum of the Moving Image Media Camp",
+      "town": "Astoria, Queens",
+      "url": "https://movingimage.org/"
+    }
+  ],
+  "towns": [
+    {
+      "town": "NYC Department of Youth & Community Development (DYCD) Cornerstone & COMPASS",
+      "url": "https://www.nyc.gov/site/dycd/services/after-school/summer-rising.page",
+      "note": "Free summer programs at community centers and NYCHA hubs across all 5 boroughs."
+    },
+    {
+      "town": "NYC Parks Kids in Motion",
+      "url": "https://www.nycgovparks.org/programs/recreation/kids-in-motion",
+      "note": "Free drop-in playground sports, arts, and games at 100+ NYC playgrounds all summer (no registration required)."
+    },
+    {
+      "town": "NYC Parks Learn to Swim",
+      "url": "https://www.nycgovparks.org/reg/learn-to-swim",
+      "note": "Free outdoor pool swim lessons for ages 1.5–17 by lottery across all five boroughs."
+    }
+  ],
+  "not_camps": [
+    {
+      "name": "NYPL, BPL & QPL Summer Reading & Drop-In Crafts",
+      "url": "https://www.nypl.org/events/summer",
+      "note": "Free drop-in storytimes, STEM workshops, and reading challenges, but not full-day childcare."
+    }
+  ]
+}

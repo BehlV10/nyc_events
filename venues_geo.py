@@ -1283,6 +1283,12 @@ VENUE_RULES = [
     ("bethel woods", (41.7001, -74.8812, "Bethel", "200 Hurd Rd, Bethel, NY", "Bethel Woods Center for the Arts")),
     ("pacha nyc", (40.7631, -73.9967, "Hell's Kitchen", "618 W 46th St, New York, NY", "Pacha NYC")),
     ("pacha", (40.7631, -73.9967, "Hell's Kitchen", "618 W 46th St, New York, NY", "Pacha NYC")),
+    ("the arches", (40.7121, -74.0028, "Civic Center", "1 Centre St, New York, NY", "The Arches")),
+    ("st. patrick's cathedral", (40.7585, -73.9760, "Midtown", "5th Ave & E 50th St, New York, NY", "St. Patrick's Cathedral")),
+    ("loreley beer garden", (40.7191, -73.9918, "Lower East Side", "7 Rivington St, New York, NY", "Loreley Beer Garden")),
+    ("rolf's german restaurant", (40.7376, -73.9837, "Gramercy", "281 3rd Ave, New York, NY", "Rolf's German Restaurant")),
+    ("brooklyn storehouse", (40.6995, -73.9735, "Brooklyn Navy Yard", "141 Flushing Ave, Brooklyn, NY", "Brooklyn Storehouse")),
+    ("avant gardner", (40.7104, -73.9262, "East Williamsburg", "140 Stewart Ave, Brooklyn, NY", "Avant Gardner")),
 ]
 
 # Coordinate bounding box for valid NYC Metro area & Tri-State events

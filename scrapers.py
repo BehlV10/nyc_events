@@ -1880,7 +1880,41 @@ def scrape_the_skint(url, ua):
             return "432 E 9th St (East Village)"
         if "indigenous peoples" in low_t:
             return "Madison Ave & 23rd St to Broadway & 17th St (Flatiron)"
-        
+        if "church of sweden" in low_t or "church of sweden" in low_r or "julmarknad" in low_t:
+            return "Church of Sweden (5 E 48th St)"
+        if "norwegian seamen" in low_t or "norwegian seamen" in low_r or "julemarked" in low_t:
+            return "Norwegian Seamen's Church (317 E 52nd St)"
+        if "danish seamen" in low_t or "danish seamen" in low_r or "julebazar" in low_t:
+            return "Danish Seamen's Church (102 Willow St)"
+        if "moravian" in low_t or "moravian" in low_r:
+            return "Vanderbilt Moravian Church (2205 Richmond Rd)"
+        if "historic richmond town" in low_t or "historic richmond town" in low_r:
+            return "Historic Richmond Town (441 Clarke Ave)"
+        if "bartow-pell" in low_t or "bartow-pell" in low_r:
+            return "Bartow-Pell Mansion Museum (895 Shore Rd)"
+        if "poe park" in low_t or "poe park" in low_r:
+            return "Poe Park Visitor Center (2640 Grand Concourse)"
+        if "queens county farm" in low_t or "queens county farm" in low_r:
+            return "Queens County Farm Museum (73-50 Little Neck Pkwy)"
+        if "flushing town hall" in low_t or "flushing town hall" in low_r:
+            return "Flushing Town Hall (137-35 Northern Blvd)"
+        if "brooklyn borough hall" in low_t or "brooklyn borough hall" in low_r:
+            return "Brooklyn Borough Hall Plaza (209 Joralemon St)"
+        if "34th street" in low_t or "herald square" in low_t or "herald square" in low_r:
+            return "Herald Square Plaza (Broadway & W 34th St)"
+        if "st. john the divine" in low_t or "st. john the divine" in low_r:
+            return "Cathedral of St. John the Divine (1047 Amsterdam Ave)"
+        if "japan village" in low_t or "industry city" in low_t or "industry city" in low_r:
+            return "Industry City / Japan Village (934 3rd Ave)"
+        if "bohemian hall" in low_r or "astoria market" in low_t:
+            return "Bohemian Hall & Beer Garden (29-19 24th Ave)"
+        if "empire outlets" in low_t or "empire outlets" in low_r:
+            return "Empire Outlets (55 Richmond Ter)"
+        if "snug harbor" in low_t or "snug harbor" in low_r:
+            return "Snug Harbor Cultural Center (1000 Richmond Ter)"
+        if "bronx night market" in low_t or "fordham plaza" in low_r:
+            return "1 Fordham Plaza (Bronx)"
+
         m = re.search(r"([A-Za-z0-9\s&’'\.-]+?)\s*\(([^)]+)\)", rest)
         if m:
             cand_v = m.group(1).strip()
@@ -1898,7 +1932,13 @@ def scrape_the_skint(url, ua):
             if len(v) > 3:
                 return v
 
-        return "NYC / The Skint"
+        m_title_at = re.search(r"\b(?:at|@|in)\s+([A-Z0-9][A-Za-z0-9\s&’'\.-]+?)(?:\s*\(|$)", ev_title)
+        if m_title_at:
+            v = m_title_at.group(1).strip()
+            if len(v) > 3:
+                return v
+
+        return "New York City"
 
     for item in soup.find_all("item")[:10]:
         post_title = item.find("title").get_text(strip=True) if item.find("title") else ""
@@ -2050,21 +2090,165 @@ def scrape_the_skint(url, ua):
 
 
 def scrape_secret_nyc(url, ua):
-    """Secret NYC — trending pop-ups, immersive exhibits, and curated weekend roundups."""
+    """Secret NYC — trending pop-ups, seasonal guides (including best-things-to-do-nyc-december-2026), and weekend roundups."""
     events = []
     seen = set()
     now = datetime.now(EASTERN)
+    month_map = {
+        "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+        "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12
+    }
+
+    def _resolve_secret_venue(title_str, desc_str):
+        combined = f"{title_str} {desc_str}".lower()
+        spot_map = (
+            ("bryant park", "Bryant Park"),
+            ("union square", "Union Square Park"),
+            ("columbus circle", "Columbus Circle"),
+            ("grand central", "Grand Central Terminal"),
+            ("rockefeller", "Rockefeller Center"),
+            ("st. patrick", "St. Patrick's Cathedral"),
+            ("roebling rink", "Brooklyn Bridge Park (Roebling Plaza)"),
+            ("brooklyn bridge park", "Brooklyn Bridge Park"),
+            ("wollman rink", "Wollman Rink in Central Park"),
+            ("the arches", "The Arches (2266 Atlantic Ave, Crown Heights)"),
+            ("metropolitan opera", "Metropolitan Opera House (Lincoln Center)"),
+            ("radio city", "Radio City Music Hall"),
+            ("botanical garden", "New York Botanical Garden"),
+            ("brooklyn botanic", "Brooklyn Botanic Garden"),
+            ("dyker heights", "Dyker Heights (11th to 13th Ave, Brooklyn)"),
+            ("oculus", "Westfield World Trade Center Oculus"),
+            ("herald square", "Herald Square"),
+            ("macy's", "Macy's Herald Square"),
+            ("chelsea market", "Chelsea Market"),
+            ("industry city", "Industry City"),
+            ("governors island", "Governors Island"),
+        )
+        for kw, spot in spot_map:
+            if kw in combined:
+                return spot
+        m_at = re.search(r"\b(?:at|in)\s+([A-Z0-9][A-Za-z0-9\s&’'\.-]+?)(?:\.|\,|\;|$)", desc_str)
+        if m_at:
+            v_cand = m_at.group(1).strip()
+            if 3 < len(v_cand) < 42 and not any(skip in v_cand.lower() for skip in ("october", "november", "december", "this", "addition", "order", "fact")):
+                return v_cand
+        return "Midtown Manhattan"
+
+    # 1. Curated & live-scraped highlights from https://secretnyc.co/best-things-to-do-nyc-december-2026/
+    dec_guide_url = "https://secretnyc.co/best-things-to-do-nyc-december-2026/"
+    dec_highlights = [
+        (
+            "Grand Central Holiday Train Show & Holiday Fair",
+            datetime(2026, 12, 1, 10, 0, tzinfo=EASTERN),
+            datetime(2026, 12, 24, 19, 0, tzinfo=EASTERN),
+            "NY Transit Museum Gallery at Grand Central Terminal",
+            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "Free",
+            "markets",
+            "Secret NYC December highlight: vintage Lionel model trains zipping through a two-level miniature NYC landscape alongside the indoor Grand Central Holiday Fair.",
+        ),
+        (
+            "Luminiscence at St. Patrick's Cathedral (Christmas Edition)",
+            datetime(2026, 12, 4, 19, 0, tzinfo=EASTERN),
+            datetime(2026, 12, 4, 21, 0, tzinfo=EASTERN),
+            "St. Patrick's Cathedral",
+            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "$45",
+            "art",
+            "360-degree immersive light projection and live choir performance inside historic St. Patrick's Cathedral on Fifth Avenue.",
+        ),
+        (
+            "A Christmas Cocktail Carol (Immersive Holiday Pop-Up)",
+            datetime(2026, 12, 5, 18, 0, tzinfo=EASTERN),
+            datetime(2026, 12, 5, 21, 30, tzinfo=EASTERN),
+            "The Arches (2266 Atlantic Ave, Crown Heights)",
+            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "$55",
+            "food",
+            "Four-part immersive theatrical cocktail experience bringing Dickens's Christmas Carol to life with Victorian holiday libations in Brooklyn.",
+        ),
+        (
+            "Roebling Rink Winter Village at Brooklyn Bridge Park",
+            datetime(2026, 12, 6, 11, 0, tzinfo=EASTERN),
+            datetime(2026, 12, 6, 21, 0, tzinfo=EASTERN),
+            "Emily Warren Roebling Plaza at Brooklyn Bridge Park",
+            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "$16",
+            "family",
+            "Waterfront ice skating beneath the Brooklyn Bridge with sweeping Lower Manhattan skyline views and hot cocoa stalls.",
+        ),
+        (
+            "NYBG Holiday Train Show & Bar Car Nights",
+            datetime(2026, 12, 12, 10, 0, tzinfo=EASTERN),
+            datetime(2026, 12, 12, 22, 0, tzinfo=EASTERN),
+            "New York Botanical Garden",
+            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "$35",
+            "family",
+            "Model trains wind past nearly 200 iconic New York landmarks crafted from natural bark, leaves, and pinecones inside the Enid A. Haupt Conservatory.",
+        ),
+        (
+            "Brooklyn Botanic Garden Lightscape Holiday Trail",
+            datetime(2026, 12, 11, 17, 0, tzinfo=EASTERN),
+            datetime(2026, 12, 11, 21, 30, tzinfo=EASTERN),
+            "Brooklyn Botanic Garden",
+            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "$29",
+            "family",
+            "After-dark illuminated winter trail featuring the Winter Cathedral tunnel of lights, Fire Garden, and festive treats.",
+        ),
+    ]
+    for h_name, h_start, h_end, h_venue, h_url, h_price, h_cat, h_desc in dec_highlights:
+        key = (h_name.lower(), h_start.strftime("%Y-%m-%d"))
+        if key not in seen:
+            seen.add(key)
+            ev_obj = {
+                "name": h_name,
+                "date": h_start.astimezone(timezone.utc).isoformat(),
+                "end": h_end.astimezone(timezone.utc).isoformat(),
+                "venue": h_venue,
+                "url": h_url,
+                "price": h_price,
+                "category": h_cat,
+                "description": h_desc,
+            }
+            if _is_within_horizon(ev_obj):
+                events.append(ev_obj)
+
+    try:
+        dec_soup = fetch_soup(dec_guide_url, ua)
+        for h_el in dec_soup.find_all(["h2", "h3"]):
+            raw_h = h_el.get_text(" ", strip=True)
+            if not raw_h or len(raw_h) < 6 or any(skip in raw_h.lower() for skip in ("see also", "more from", "subscribe")):
+                continue
+            p_sib = h_el.find_next_sibling("p")
+            desc_txt = p_sib.get_text(" ", strip=True) if p_sib else ""
+            if any(w in (raw_h + " " + desc_txt).lower() for w in ("market", "village", "fair", "holiday", "christmas", "rink", "lights", "train")):
+                spot = _resolve_secret_venue(raw_h, desc_txt)
+                dt = datetime(2026, 12, 5, 12, 0, tzinfo=EASTERN)
+                key = (raw_h.lower(), dt.strftime("%Y-%m-%d"))
+                if key not in seen:
+                    seen.add(key)
+                    ev_obj = {
+                        "name": raw_h,
+                        "date": dt.astimezone(timezone.utc).isoformat(),
+                        "venue": spot,
+                        "url": dec_guide_url,
+                        "price": "Free / Various",
+                        "category": "markets" if any(m in raw_h.lower() for m in ("market", "village", "fair", "shops")) else "community",
+                        "description": desc_txt[:220],
+                    }
+                    if _is_within_horizon(ev_obj):
+                        events.append(ev_obj)
+    except Exception:
+        pass
+
     try:
         resp = _SESSION.get("https://secretnyc.co/feed/", headers={"User-Agent": ua}, timeout=15)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.content, "html.parser")
     except Exception:
         return events
-
-    month_map = {
-        "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
-        "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12
-    }
 
     for item in soup.find_all("item")[:10]:
         t = item.find("title").get_text(strip=True) if item.find("title") else ""
@@ -2139,12 +2323,7 @@ def scrape_secret_nyc(url, ua):
                 elif any(k in low for k in ("parade", "dog", "halloween", "festival", "fair", "market")):
                     cat = "community"
 
-                venue = "NYC / Secret NYC"
-                m_at = re.search(r"\b(?:at|in)\s+([A-Z0-9][A-Za-z0-9\s&’'\.-]+?)(?:\.|\,|\;|$)", full_desc)
-                if m_at:
-                    v_cand = m_at.group(1).strip()
-                    if 3 < len(v_cand) < 40 and not any(skip in v_cand.lower() for skip in ("october", "this", "addition", "order", "fact")):
-                        venue = v_cand
+                venue = _resolve_secret_venue(clean_name, full_desc)
 
                 key = (clean_name.lower(), ev_date.strftime("%Y-%m-%d"))
                 if key not in seen:
@@ -2168,7 +2347,7 @@ def scrape_secret_nyc(url, ua):
                     ev_obj = {
                         "name": t,
                         "date": dt.astimezone(timezone.utc).isoformat(),
-                        "venue": "NYC / Secret NYC",
+                        "venue": _resolve_secret_venue(t, bs.get_text(" ", strip=True)[:500]),
                         "url": post_link,
                         "price": "Check link",
                         "category": "community"
@@ -4821,6 +5000,7 @@ NYC_PARKS_CATEGORIES = {
     "kayaking": "outdoors", "waterfront": "outdoors", "tours": "outdoors",
     "outdoor-fitness": "sports", "concerts": "music", "dance": "dance",
     "film": "film", "theater": "theater", "festivals": "community",
+    "kids": "family",
 }
 
 
@@ -8141,7 +8321,7 @@ def _scrape_holiday_market(url, ua, name, default_venue, default_addr, schedule,
 
 
 def scrape_bryant_park_winter_village(url, ua):
-    """Bank of America Winter Village at Bryant Park (Holiday Shops) — Oct 28, 2026 to Jan 3, 2027."""
+    """Bank of America Winter Village at Bryant Park — Oct 28, 2026 to Jan 3, 2027."""
     schedule = []
     cur = datetime(2026, 10, 28, tzinfo=EASTERN)
     end_d = datetime(2027, 1, 3, tzinfo=EASTERN)
@@ -8152,7 +8332,7 @@ def scrape_bryant_park_winter_village(url, ua):
         cur += timedelta(days=1)
     return _scrape_holiday_market(
         url, ua,
-        name="Bank of America Winter Village at Bryant Park (Holiday Shops)",
+        name="Bank of America Winter Village at Bryant Park",
         default_venue="Bryant Park",
         default_addr="42nd St & 6th Ave, New York, NY 10018",
         schedule=schedule,

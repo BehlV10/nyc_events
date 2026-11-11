@@ -104,6 +104,8 @@ class KidsHub(unittest.TestCase):
     def test_uses_the_kids_design_with_filters(self):
         self.assertIn('<body class="kids-hub">', self.html)
         self.assertIn('class="kids-filters"', self.html)
+        self.assertIn('https://www.google.com/maps/search/?api=1&amp;query=', self.html)
+        self.assertIn('../summer-camps/', self.html)
 
     def test_cards_carry_what_the_filters_need(self):
         self.assertRegex(self.html, r'data-age="toddler" data-kind="story" data-price="paid"')
@@ -123,6 +125,20 @@ class KidsHub(unittest.TestCase):
         self.assertLess(self.html.rindex('class="hub-card'), self.html.index("var chips = document.querySelectorAll('.kid-chip')"))
 
 
+class SummerCampsHub(unittest.TestCase):
+    def test_camps_validate_and_render_hub_page(self):
+        import camps
+        camp_data = camps.load_camps()
+        self.assertGreaterEqual(len(camp_data["camps"]), 15)
+        self.assertEqual(camps.validate(camp_data), [])
+        html = seo.render_hub_page("summer-camps", [])
+        self.assertIn('<body class="camps-hub">', html)
+        self.assertIn('class="camps-filters"', html)
+        self.assertIn("NYC Parks Summer Day Camp", html)
+        self.assertIn("https://www.google.com/maps/search/?api=1&amp;query=", html)
+        self.assertIn("Next sign-up &amp; lottery dates", html)
+
+
 class DjHub(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -136,6 +152,7 @@ class DjHub(unittest.TestCase):
     def test_uses_the_neon_design_with_filters(self):
         self.assertIn('<body class="edm-hub">', self.html)
         self.assertIn('class="edm-filters"', self.html)
+        self.assertIn('https://www.google.com/maps/search/?api=1&amp;query=', self.html)
         self.assertNotIn("BOSTON", self.html.upper().replace("BOSTON_EVENTS", ""))
 
     def test_vibes_include_nyc_club_styles(self):
