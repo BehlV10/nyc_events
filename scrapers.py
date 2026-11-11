@@ -6535,6 +6535,160 @@ def scrape_grand_bazaar_nyc(url, ua):
     return events
 
 
+_WEEKDAYS = {"monday": 0, "tuesday": 1, "wednesday": 2, "thursday": 3, "friday": 4, "saturday": 5, "sunday": 6}
+_BOROUGH_KEYS = {"Manhattan": "manhattan", "Brooklyn": "brooklyn", "Queens": "queens", "The Bronx": "bronx", "Staten Island": "staten_island"}
+
+
+def _parse_clock(s):
+    m = re.match(r"\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)", s or "", re.I)
+    if not m:
+        return None
+    h, mi, ap = int(m.group(1)), int(m.group(2) or 0), m.group(3).lower()
+    h = h % 12 + (12 if ap == "pm" else 0)
+    return h, mi
+
+
+def _recurring_market_events(name, venue, address, lat, lng, url, schedules, desc, borough_key=None, weeks=None):
+    """schedules: [(weekday, 'h:mm am - h:mm pm', (start_date, end_date) or None)] -> dated events."""
+    today = datetime.now(EASTERN).date()
+    horizon = today + timedelta(days=HORIZON_DAYS if weeks is None else weeks * 7)
+    events = []
+    for weekday, hours, span in schedules:
+        parts = [p.strip() for p in re.split(r"\s*[-–]\s*", hours or "")]
+        start_c = _parse_clock(parts[0]) if parts else None
+        end_c = _parse_clock(parts[1]) if len(parts) > 1 else None
+        if not start_c:
+            continue
+        d = today + timedelta(days=(weekday - today.weekday()) % 7)
+        while d <= horizon:
+            if not span or (span[0] <= d <= span[1]):
+                st = datetime(d.year, d.month, d.day, start_c[0], start_c[1], tzinfo=EASTERN)
+                ev = {
+                    "name": name, "date": st.astimezone(timezone.utc).isoformat(), "url": url, "venue": venue,
+                    "address": address, "price": "Free entry", "category": "markets", "lat": lat, "lng": lng,
+                    "description": desc,
+                }
+                if end_c:
+                    ev["end"] = datetime(d.year, d.month, d.day, end_c[0], end_c[1], tzinfo=EASTERN).astimezone(timezone.utc).isoformat()
+                if borough_key:
+                    ev["city"] = borough_key
+                events.append(ev)
+            d += timedelta(days=7)
+    return events
+
+
+# Snapshot of grownyc.org/locations (checked 2026-11-11): the site refuses our scraper, so the
+# directory is kept here. Format: (lat, lng, page, "Borough|Name|Active|Year Round/Seasonal|(dates)|Day|hours...")
+_GROWNYC_GREENMARKETS = (
+    [40.8460446, -73.9382003, "https://grownyc.org/locations/175th-street-greenmarket/", "Manhattan|175th Street Greenmarket|Active|Seasonal|(June 25 to November 19)|Thursday|8:00 am - 4:00 pm|View Location"],
+    [40.6413808, -74.018832, "https://grownyc.org/locations/4th-ave-sunset-park-greenmarket/", "Brooklyn|4th Ave Sunset Park Greenmarket|Active|Seasonal|(July 11 to November 21)|Saturday|8:00 am - 3:00 pm|View Location"],
+    [40.7691895, -73.988401, "https://grownyc.org/locations/57th-street-greenmarket/", "Manhattan|57th Street Greenmarket|Active|Seasonal|(June 6 to November 21)|Saturday|8:00 am - 4:00 pm|View Location"],
+    [40.78073, -73.976196, "https://grownyc.org/locations/79th-street-greenmarket/", "Manhattan|79th Street Greenmarket|Active|Year Round|Sunday|9:00 am - 4:00 pm|Clothing Collection|Sunday|9:00 am - 12:00 pm|View Location"],
+    [40.6460793, -74.0022318, "https://grownyc.org/locations/7th-ave-sunset-park-greenmarket/", "Brooklyn|7th Ave Sunset Park Greenmarket|Active|Year Round|Saturday|8:00 am - 3:00 pm|View Location"],
+    [40.774165, -73.9505242, "https://grownyc.org/locations/82nd-street-greenmarket/", "Manhattan|82nd Street Greenmarket|Active|Year Round|Saturday|9:00 am - 2:30 pm|View Location"],
+    [40.7940732, -73.9682346, "https://grownyc.org/locations/97th-street-greenmarket/", "Manhattan|97th Street Greenmarket|Active|Year Round|Friday|8:00 am - 2:00 pm|View Location"],
+    [40.737174, -74.005665, "https://grownyc.org/locations/abingdon-square-greenmarket/", "Manhattan|Abingdon Square Greenmarket|Active|Year Round|Saturday|8:00 am - 2:00 pm|View Location"],
+    [40.661087, -73.9794466, "https://grownyc.org/locations/bartel-pritchard-square-greenmarket/", "Brooklyn|Bartel-Pritchard Square Greenmarket|Active|Year Round|Wednesday|8:00 am - 2:00 pm|Seasonal|(May 10 to December 20)|Sunday|9:00 am - 2:00 pm|Clothing Collection|Sunday|9:00 am - 2:00 pm|View Location"],
+    [40.6175637, -74.0345495, "https://grownyc.org/locations/bay-ridge-greenmarket/", "Brooklyn|Bay Ridge Greenmarket|Active|Seasonal|(May 2 to December 19)|Saturday|8:00 am - 2:00 pm|View Location"],
+    [40.6096105, -73.9996635, "https://grownyc.org/locations/bensonhurst-greenmarket/", "Brooklyn|Bensonhurst Greenmarket|Active|Seasonal|(June 7 to November 29)|Sunday|9:00 am - 3:00 pm|View Location"],
+    [40.6331388, -73.9926851, "https://grownyc.org/locations/boro-park-greenmarket/", "Brooklyn|Boro Park Greenmarket|Active|Seasonal|(July 9 to November 19)|Thursday|8:00 am - 2:00 pm|View Location"],
+    [40.704738, -74.013422, "https://grownyc.org/locations/bowling-green-greenmarket/", "Manhattan|Bowling Green Greenmarket|Active|Seasonal|(May 5 to November 24)|Tuesday|8:00 am - 3:00 pm|View Location"],
+    [40.827536, -73.922859, "https://grownyc.org/locations/bronx-borough-hall-greenmarket/", "The Bronx|Bronx Borough Hall Greenmarket|Active|Seasonal|(June 2 to November 24)|Tuesday|8:00 am - 4:00 pm|View Location"],
+    [40.6936479, -73.9903083, "https://grownyc.org/locations/brooklyn-borough-hall-greenmarket-2/", "Brooklyn|Brooklyn Borough Hall Greenmarket|Active|Year Round|Tuesday|8:00 am - 3:00 pm|Saturday|8:00 am - 3:00 pm|View Location"],
+    [40.680761, -73.99552, "https://grownyc.org/locations/carroll-gardens-greenmarket/", "Brooklyn|Carroll Gardens Greenmarket|Active|Year Round|Sunday|8:00 am - 2:00 pm|Clothing Collection|Sunday|8:00 am - 1:30 pm|View Location"],
+    [40.71389, -74.006446, "https://grownyc.org/locations/city-hall-greenmarket/", "Manhattan|City Hall Greenmarket|Active|Seasonal|(May 5 to November 24)|Tuesday|8:00 am - 4:00 pm|View Location"],
+    [40.807125, -73.9643892, "https://grownyc.org/locations/columbia-greenmarket-2/", "Manhattan|Columbia Greenmarket|Active|Year Round|Thursday|8:00 am - 4:00 pm|Sunday|8:00 am - 4:00 pm|View Location"],
+    [40.7498199, -73.8622093, "https://grownyc.org/locations/corona-greenmarket/", "Queens|Corona Greenmarket|Active|Seasonal|(June 12 to November 20)|Friday|8:00 am - 3:00 pm|View Location"],
+    [40.6407362, -73.9657967, "https://grownyc.org/locations/cortelyou-greenmarket/", "Brooklyn|Cortelyou Greenmarket|Active|Year Round|Sunday|8:00 am - 2:00 pm|Clothing Collection|Sunday|8:00 am - 2:00 pm|View Location"],
+    [40.752817, -73.969781, "https://grownyc.org/locations/dag-hammarskjold-plaza-greenmarket/", "Manhattan|Dag Hammarskjold Plaza Greenmarket|Active|Year Round|Wednesday|8:00 am - 3:00 pm|View Location"],
+    [40.7145, -73.9677778, "https://grownyc.org/locations/domino-park-greenmarket/", "Brooklyn|Domino Park Greenmarket|Active|Seasonal|(June 14 to November 22)|Sunday|8:00 am - 3:00 pm|View Location"],
+    [40.745817, -73.8856207, "https://grownyc.org/locations/elmhurst-hospital-greenmarket/", "Queens|Elmhurst Greenmarket|Active|Seasonal|(June 9 to November 24)|Tuesday|8:00 am - 3:00 pm|View Location"],
+    [40.7580094, -73.825188, "https://grownyc.org/locations/flushing-greenmarket/", "Queens|Flushing Greenmarket|Active|Seasonal|(July 8 to November 25)|Wednesday|8:00 am - 3:00 pm|View Location"],
+    [40.72192, -73.84678, "https://grownyc.org/locations/forest-hills-greenmarket/", "Queens|Forest Hills Greenmarket|Active|Year Round|Sunday|8:00 am - 2:00 pm|Compost|Sunday|8:00 am - 2:00 pm|View Location"],
+    [40.6898023, -73.9734314, "https://grownyc.org/locations/fort-greene-greenmarket/", "Brooklyn|Fort Greene Greenmarket|Active|Year Round|Saturday|8:00 am - 3:00 pm|Compost|Saturday|8:00 am - 1:30 pm|Clothing Collection|Saturday|8:00 am - 1:30 pm|View Location"],
+    [40.842314, -73.942341, "https://grownyc.org/locations/fort-washington-greenmarket/", "Manhattan|Fort Washington Greenmarket|Active|Seasonal|(June 2 to December 15)|Tuesday|8:00 am - 4:00 pm|View Location"],
+    [40.6726, -73.9699, "https://grownyc.org/locations/grand-army-plaza-greenmarket/", "Brooklyn|Grand Army Plaza Greenmarket|Active|Year Round|Saturday|8:00 am - 4:00 pm|Clothing Collection|Saturday|8:00 am - 2:00 pm|View Location"],
+    [40.7456014, -73.947097, "https://grownyc.org/locations/greenmarket-at-moma-ps1/", "Queens|Greenmarket at MoMA PS1|Active|Seasonal|(September 12 to November 21)|Saturday|8:00 am - 3:00 pm|View Location"],
+    [40.8692114, -73.9204072, "https://grownyc.org/locations/inwood-greenmarket/", "Manhattan|Inwood Greenmarket|Active|Year Round|Saturday|8:00 am - 3:00 pm|View Location"],
+    [40.753607, -73.887668, "https://grownyc.org/locations/jackson-heights-greenmarket/", "Queens|Jackson Heights Greenmarket|Active|Year Round|Sunday|8:00 am - 3:00 pm|View Location"],
+    [40.8178607, -73.9247682, "https://grownyc.org/locations/lincoln-hospital-greenmarket/", "The Bronx|Lincoln Hospital Greenmarket|Active|Seasonal|(June 23 to November 24)|Tuesday|8:00 am - 3:00 pm|Friday|8:00 am - 3:00 pm|View Location"],
+    [40.7198753, -73.9525719, "https://grownyc.org/locations/mccarren-park-greenmarket/", "Brooklyn|McCarren Park Greenmarket|Active|Year Round|Saturday|8:00 am - 3:00 pm|Compost|Saturday|8:00 am - 1:30 pm|Clothing Collection|Saturday|8:30 am - 1:00 pm|View Location"],
+    [40.789044, -73.952689, "https://grownyc.org/locations/mount-sinai-greenmarket/", "Manhattan|Mount Sinai Greenmarket|Active|Seasonal|(June 17 to November 25)|Wednesday|8:00 am - 3:00 pm|View Location"],
+    [40.8327609, -73.8644037, "https://grownyc.org/locations/parkchester-greenmarket/", "The Bronx|Parkchester Greenmarket|Active|Seasonal|(June 12 to November 20)|Friday|8:00 am - 3:00 pm|View Location"],
+    [40.864376, -73.8954979, "https://grownyc.org/locations/poe-park-greenmarket/", "The Bronx|Poe Park Greenmarket|Active|Seasonal|(June 23 to November 24)|Tuesday|8:00 am - 3:00 pm|View Location"],
+    [40.7806111, -73.9512042, "https://grownyc.org/locations/ruppert-park-greenmarket/", "Manhattan|Ruppert Park Greenmarket|Active|Seasonal|(June 7 to December 13)|Sunday|9:00 am - 3:00 pm|View Location"],
+    [40.6417524, -74.0778464, "https://grownyc.org/locations/st-george-greenmarket/", "Staten Island|St. George Greenmarket|Active|Year Round|Saturday|8:00 am - 1:00 pm|View Location"],
+    [40.5837228, -74.1619524, "https://grownyc.org/locations/staten-island-mall-greenmarket/", "Staten Island|Staten Island Mall Greenmarket|Active|Seasonal|(June 6 to November 21)|Saturday|8:00 am - 2:00 pm|View Location"],
+    [40.7315, -73.9808749, "https://grownyc.org/locations/stuyvesant-town-greenmarket/", "Manhattan|Stuyvesant Town Greenmarket|Active|Seasonal|(May 10 to December 13)|Sunday|9:30 am - 4:00 pm|View Location"],
+    [40.747069, -73.921303, "https://grownyc.org/locations/sunnyside-greenmarket/", "Queens|Sunnyside Greenmarket|Active|Year Round|Saturday|8:00 am - 3:00 pm|Clothing Collection|Saturday|9:30 am - 12:30 pm|View Location"],
+    [40.7260529, -73.9833121, "https://grownyc.org/locations/tompkins-square-greenmarket/", "Manhattan|Tompkins Square Greenmarket|Active|Year Round|Sunday|9:00 am - 4:00 pm|Compost|Sunday|9:00 am - 5:00 pm|Clothing Collection|Sunday|9:00 am - 1:00 pm|View Location"],
+    [40.716953, -74.010875, "https://grownyc.org/locations/tribeca-greenmarket/", "Manhattan|Tribeca Greenmarket|Active|Year Round|Saturday|8:00 am - 2:00 pm|Clothing Collection|Saturday|8:30 am - 1:30 pm|View Location"],
+    [40.773667, -73.982056, "https://grownyc.org/locations/tucker-square-greenmarket/", "Manhattan|Tucker Square Greenmarket|Active|Year Round|Thursday|8:00 am - 4:00 pm|Saturday|8:00 am - 4:00 pm|View Location"],
+    [40.736855, -73.990343, "https://grownyc.org/locations/union-square-greenmarket/", "Manhattan|Union Square Greenmarket|Active|Year Round|Monday|8:00 am - 6:00 pm|Wednesday|8:00 am - 6:00 pm|Friday|8:00 am - 6:00 pm|Saturday|8:00 am - 6:00 pm|Compost|Monday|8:00 am - 5:00 pm|Wednesday|8:00 am - 5:00 pm|Friday|8:00 am - 5:00 pm|Saturday|8:00 am - 5:00 pm|View Location"],
+)
+
+
+def scrape_grownyc_greenmarkets(url, ua):
+    """Every active GrowNYC Greenmarket in the five boroughs with its weekdays, hours and season
+    (from the snapshot above; grownyc.org blocks automated requests)."""
+    today = datetime.now(EASTERN).date()
+    months = {m: i + 1 for i, m in enumerate(("january", "february", "march", "april", "may", "june", "july",
+                                              "august", "september", "october", "november", "december"))}
+
+    def span_of(text):
+        m = re.match(r"\(\s*([A-Za-z]+)\s+(\d{1,2})\s+to\s+([A-Za-z]+)\s+(\d{1,2})\s*\)", text)
+        if not m or m.group(1).lower() not in months or m.group(3).lower() not in months:
+            return None
+        return (date(today.year, months[m.group(1).lower()], int(m.group(2))),
+                date(today.year, months[m.group(3).lower()], int(m.group(4))))
+
+    events = []
+    for lat, lng, page, row in _GROWNYC_GREENMARKETS:
+        toks = row.split("|")
+        link = {"href": page}
+        name = toks[1]
+        span, schedules, i = None, [], 2
+        while i < len(toks):
+            t = toks[i]
+            if t in ("Compost", "Clothing Collection", "View Location"):
+                break
+            if t == "Year Round":
+                span = None
+            elif t == "Seasonal" and i + 1 < len(toks):
+                span = span_of(toks[i + 1])
+                i += 1
+            elif t.lower() in _WEEKDAYS and i + 1 < len(toks) and _parse_clock(toks[i + 1]):
+                schedules.append((_WEEKDAYS[t.lower()], toks[i + 1], span))
+                i += 1
+            i += 1
+        events += _recurring_market_events(
+            name, name, f"{name}, {toks[0]}, NY", lat, lng, link["href"] if link else "https://www.grownyc.org/greenmarket",
+            schedules, f"GrowNYC farmers market in {toks[0]}: fresh produce, baked goods, dairy and more from regional farms.",
+            borough_key=_BOROUGH_KEYS[toks[0]])
+    return events
+
+
+# Down to Earth Markets' New York City farmers markets (downtoearthmarkets.com/farmers-markets)
+_DOWN_TO_EARTH_MARKETS = (
+    ("McGolrick Park Farmers Market", "Greenpoint", "brooklyn", "McGolrick Park, Driggs Ave & Nassau Ave, Brooklyn, NY 11222", 40.7354, -73.9515, 6, "9:00 am - 2:00 pm"),
+    ("Park Slope Farmers Market", "Park Slope", "brooklyn", "4th St off 5th Ave (Washington Park), Brooklyn, NY 11215", 40.6727, -73.9855, 6, "9:00 am - 2:00 pm"),
+    ("Battery Park City Farmers Market", "Battery Park City", "manhattan", "River Terrace between Murray St & North End Ave, New York, NY 10282", 40.7149, -74.0165, 6, "9:00 am - 2:00 pm"),
+    ("Chelsea Farmers Market", "Chelsea", "manhattan", "W 23rd St off 9th Ave, New York, NY 10011", 40.7466, -73.9988, 5, "9:00 am - 2:00 pm"),
+    ("Morningside Park Farmers Market", "Morningside Heights", "manhattan", "W 110th St & Manhattan Ave, New York, NY 10025", 40.8008, -73.9598, 5, "9:00 am - 2:00 pm"),
+    ("Cunningham Park Farmers Market", "Fresh Meadows", "queens", "Union Turnpike near the tennis courts, Fresh Meadows, NY 11366", 40.7260, -73.7704, 6, "9:00 am - 2:00 pm"),
+)
+
+
+def scrape_down_to_earth_markets(url, ua):
+    """Down to Earth Markets' weekly NYC farmers markets (hours as published on their site)."""
+    events = []
+    for name, hood, city, addr, lat, lng, weekday, hours in _DOWN_TO_EARTH_MARKETS:
+        events += _recurring_market_events(
+            name, name, addr, lat, lng, "https://downtoearthmarkets.com/farmers-markets/", [(weekday, hours, None)],
+            f"Down to Earth Markets weekly farmers market in {hood}: local farmers, bakers and food vendors.", borough_key=city)
+    return events
+
+
 def scrape_queens_night_market(url, ua):
     """Queens Night Market — Official open-air Saturday food and cultural market at Flushing Meadows Corona Park."""
     events = []
@@ -9135,12 +9289,6 @@ def scrape_ical(url, ua):
 
 
 MANUAL_RECURRING_EVENTS = [
-    ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", "food", [
-        ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-m", 0, 8, 0, "Free"),
-        ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-w", 2, 8, 0, "Free"),
-        ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-f", 4, 8, 0, "Free"),
-        ("Union Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan-union-square-s", 5, 8, 0, "Free"),
-    ]),
     ("Grand Bazaar NYC", "https://grandbazaarnyc.org/", "community", [
         ("Grand Bazaar NYC (Upper West Side)", "https://grandbazaarnyc.org/", 6, 10, 0, "Free"),
     ]),
@@ -9424,35 +9572,6 @@ MANUAL_RECURRING_EVENTS = [
     ]),
 
     # === GROWNYC NEIGHBORHOOD GREENMARKETS ===
-    ("Grand Army Plaza Greenmarket", "https://www.grownyc.org/greenmarket/brooklyn-grand-army-plaza", "food", [
-        ("Grand Army Plaza Greenmarket (Prospect Park)", "https://www.grownyc.org/greenmarket/brooklyn-grand-army-plaza", 5, 8, 0, "Free"),
-    ]),
-    ("Fort Greene Park Greenmarket", "https://www.grownyc.org/greenmarket/brooklyn/fort-greene", "food", [
-        ("Fort Greene Park Greenmarket", "https://www.grownyc.org/greenmarket/brooklyn/fort-greene", 5, 8, 0, "Free"),
-    ]),
-    ("Tompkins Square Greenmarket", "https://www.grownyc.org/greenmarket/manhattan/tompkins-square", "food", [
-        ("Tompkins Square Greenmarket (East Village)", "https://www.grownyc.org/greenmarket/manhattan/tompkins-square", 6, 9, 0, "Free"),
-    ]),
-    ("Columbia University Greenmarket", "https://www.grownyc.org/greenmarket/manhattan/columbia-thurs", "food", [
-        ("Columbia University Greenmarket (Broadway & 114th St)", "https://www.grownyc.org/greenmarket/manhattan/columbia-thurs", 3, 8, 0, "Free"),
-        ("Columbia University Greenmarket (Broadway & 114th St)", "https://www.grownyc.org/greenmarket/manhattan/columbia-sun", 6, 8, 0, "Free"),
-    ]),
-    ("Jackson Heights Greenmarket", "https://www.grownyc.org/greenmarket/queens/jackson-heights", "food", [
-        ("Jackson Heights Greenmarket (Travers Park)", "https://www.grownyc.org/greenmarket/queens/jackson-heights", 6, 8, 0, "Free"),
-    ]),
-    ("Sunnyside Greenmarket", "https://www.grownyc.org/greenmarket/queens/sunnyside", "food", [
-        ("Sunnyside Greenmarket (Skillman Ave)", "https://www.grownyc.org/greenmarket/queens/sunnyside", 5, 8, 0, "Free"),
-    ]),
-    ("Forest Hills Greenmarket", "https://www.grownyc.org/greenmarket/queens/forest-hills", "food", [
-        ("Forest Hills Greenmarket (71st Ave)", "https://www.grownyc.org/greenmarket/queens/forest-hills", 6, 8, 0, "Free"),
-    ]),
-    ("Brooklyn Borough Hall Greenmarket", "https://www.grownyc.org/greenmarket/brooklyn/borough-hall-sat", "food", [
-        ("Brooklyn Borough Hall Greenmarket (Downtown Brooklyn)", "https://www.grownyc.org/greenmarket/brooklyn/borough-hall-sat", 5, 8, 0, "Free"),
-        ("Brooklyn Borough Hall Greenmarket (Downtown Brooklyn)", "https://www.grownyc.org/greenmarket/brooklyn/borough-hall-tue", 1, 8, 0, "Free"),
-    ]),
-    ("79th Street Greenmarket", "https://www.grownyc.org/greenmarket/manhattan/79th-street", "food", [
-        ("79th Street Greenmarket (Upper West Side @ AMNH)", "https://www.grownyc.org/greenmarket/manhattan/79th-street", 6, 9, 0, "Free"),
-    ]),
 
     # === QUEENS NEIGHBORHOOD SPOTS: LIVE MUSIC, BREWERIES, COMEDY, BOOKSHOPS & OPEN STREETS ===
     ("Terraza 7", "https://terraza7.com/", "music", [
@@ -10366,6 +10485,8 @@ _ALL_VENUES = [
     {"name": "Bronx Cultural & Community Events", "url": "https://www.eventbrite.com/d/ny--bronx/bronx-free-events/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Night Markets & Bazaars", "url": "https://www.eventbrite.com/d/ny--new-york/night-market/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "food"},
     {"name": "Queens Night Market", "url": "https://queensnightmarket.com/", "ua": UA_CHROME, "scraper": scrape_queens_night_market, "default_category": "food"},
+    {"name": "GrowNYC Greenmarkets (all boroughs)", "url": "https://www.grownyc.org/greenmarket/ourmarkets", "ua": UA_CHROME, "scraper": scrape_grownyc_greenmarkets, "default_category": "markets"},
+    {"name": "Down to Earth Farmers Markets (NYC)", "url": "https://downtoearthmarkets.com/farmers-markets/", "ua": UA_CHROME, "scraper": scrape_down_to_earth_markets, "default_category": "markets"},
     {"name": "NYC Street Fairs & Avenue Festivals", "url": "https://www.eventbrite.com/d/ny--new-york/street-fair/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Neighborhood Block Parties", "url": "https://www.eventbrite.com/d/ny--new-york/block-party/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "community"},
     {"name": "NYC Public Parties & Nightlife", "url": "https://www.eventbrite.com/d/ny--new-york/parties/", "ua": UA_CHROME, "scraper": scrape_eventbrite_jsonld, "default_category": "party"},
