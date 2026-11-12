@@ -900,6 +900,19 @@
     "id": "auto-2026-11-15-69",
     "auto": true,
     "match": {
+      "name_contains": "Karachi Community Radio Presents YOUNG STUNNERS w/ Jokhay",
+      "venue_contains": "SILO Brooklyn"
+    },
+    "badge": "🎸 Music Pick",
+    "note": "Listed on 4 calendars; prime-time start.",
+    "score": 17.0,
+    "start_date": "2026-11-15",
+    "expires": "2026-11-15"
+  },
+  {
+    "id": "auto-2026-11-15-68",
+    "auto": true,
+    "match": {
       "name_contains": "Mojo Brookzz, New York Comedy Festival",
       "venue_contains": "Beacon Theatre"
     },
