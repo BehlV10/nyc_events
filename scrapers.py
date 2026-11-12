@@ -9549,7 +9549,9 @@ MANUAL_RECURRING_EVENTS = [
         ("City Girls Who Walk Sunday Central Park Social Walk", "https://www.instagram.com/citygirlswhowalk/", 6, 12, 0, "Free"),
     ]),
     ("Queens Distance Runners", "https://qdrunners.org/", "sports", [
+        ("Queens Distance Runners Monday 5K (Travers Park)", "https://qdrunners.org/", 0, 18, 0, "Free"),
         ("QDR Track Tuesday @ Astoria Park Track", "https://qdrunners.org/", 1, 19, 0, "Free"),
+        ("Jackson Heights Community Run", "https://qdrunners.org/", 2, 18, 30, "Free"),
         ("QDR Saturday Morning Queens Social Run", "https://qdrunners.org/", 5, 8, 0, "Free"),
     ]),
     ("Crown Heights Run Club", "https://www.instagram.com/crownheightsrunclub/", "sports", [
@@ -9835,6 +9837,12 @@ MANUAL_RECURRING_EVENTS = [
     ]),
     ("Museum of the City of New York", "https://www.mcny.org/", "art", [
         ("Free Late-Night Wednesday at MCNY (Pop-Up Bar & Galleries)", "https://www.mcny.org/", 2, 17, 0, "Free"),
+    ]),
+    ("Whitney Museum of American Art", "https://whitney.org/visit/free-days-and-nights", "art", [
+        ("Whitney Free Friday Nights (5–10 PM)", "https://whitney.org/visit/free-days-and-nights", 4, 17, 0, "Free"),
+    ]),
+    ("Snug Harbor Cultural Center", "https://snug-harbor.org/support/volunteer/", "outdoors", [
+        ("Heritage Farm Stewardship Volunteer Morning", "https://snug-harbor.org/support/volunteer/", 5, 9, 0, "Free"),
     ]),
     ("Tomi Jazz", "https://www.tomijazz.com/", "music", [
         ("Live Jazz at Tomi Jazz Speakeasy", "https://www.tomijazz.com/", 2, 18, 0, "$10–$15"),
