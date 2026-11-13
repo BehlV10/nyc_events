@@ -119,3 +119,43 @@ class ResolveTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DiscoverOrganizersTests(unittest.TestCase):
+    def _run(self, eb, scrape, **kw):
+        results = [{"venue": "AllEvents: Brooklyn (all)", "events": []}]
+        with tempfile.TemporaryDirectory() as t:
+            dp, op = os.path.join(t, "d.json"), os.path.join(t, "o.json")
+            json.dump(eb, open(dp, "w"))
+            n = scrapers._discover_eventbrite_organizers(results, details_path=dp, path=op, scrape=scrape, tracked={"111"},
+                                                         sleep=lambda s: None, **kw)
+            n2 = scrapers._discover_eventbrite_organizers(results, details_path=dp, path=op, scrape=scrape, tracked={"111"},
+                                                          sleep=lambda s: None, **kw)
+            state = json.load(open(op))
+        return n, n2, results, state
+
+    def test_follows_new_organizers_with_two_events_and_rejects_the_rest(self):
+        eb = {"1": {"organizer_id": "111", "organizer_name": "Tracked"},
+              "2": {"organizer_id": "222", "organizer_name": "Good Org"},
+              "3": {"organizer_id": "333", "organizer_name": "Thin Org"}}
+        calls = []
+
+        def scrape(v):
+            calls.append(v["name"])
+            n = 3 if "Good" in v["name"] else 1
+            return {"venue": v["name"], "events": [{"name": f"e{i}"} for i in range(n)], "error": None}
+        n, n2, results, state = self._run(eb, scrape)
+        self.assertEqual((n, n2), (1, 0))
+        self.assertEqual(state["222"]["status"], "ok")
+        self.assertEqual(state["333"]["status"], "rejected")
+        self.assertNotIn("Tracked", calls)
+        self.assertEqual(calls.count("Thin Org"), 1)  # not retried on the second run
+        self.assertEqual([r["venue"] for r in results if r["venue"] == "Good Org"], ["Good Org", "Good Org"])
+
+    def test_transient_errors_are_retried_and_new_per_run_is_capped(self):
+        eb = {str(i): {"organizer_id": str(200 + i)} for i in range(5)}
+        n, _n2, _r, state = self._run(eb, lambda v: {"venue": v["name"], "events": [], "error": "boom"}, max_new=2)
+        self.assertEqual((n, state), (0, {}))
+        seen = []
+        self._run(eb, lambda v: seen.append(v["name"]) or {"venue": v["name"], "events": [{}, {}], "error": None}, max_new=2)
+        self.assertTrue(len(set(seen)) <= 5)
