@@ -1417,6 +1417,25 @@ class TestDoNYCSvelte(unittest.TestCase):
         self.assertEqual(ev["neighborhood"], "Williamsburg / Greenpoint")
 
 
+class TestDoNYCMarkupDrift(unittest.TestCase):
+    """DoNYC added fields (giveaway, clipboard_type, ...) between type and title on 2026-11-13 and the
+    parser matched nothing; extra scalar/string fields before the title must not matter."""
+
+    def _page(self, lead):
+        when = (datetime.now(EASTERN) + timedelta(days=2)).replace(hour=20, minute=30, second=0, microsecond=0)
+        return ('events:[{id:7,type:"event",' + lead + 'title:"Late Show",permalink:"/events/x/late-show-tickets",image_url:"",'
+                f'begin_date:null,begin_time:"x",date_label:"x",tz_adjusted_begin_time:"{when.isoformat()}",category:"Music",genres:[],'
+                'venue:{id:9,title:"LPR",district_id:1,district_name:"Village",area_id:2,area_name:"Manhattan"}}]')
+
+    def test_extra_fields_before_the_title(self):
+        import scrapers
+        now = datetime.now(timezone.utc)
+        for lead in ("", 'giveaway:false,clipboard_type:null,', 'giveaway:false,clipboard_type:null,badge:"New",rank:3,flag:true,'):
+            events = scrapers._parse_donyc_svelte(self._page(lead), now)
+            self.assertEqual([e["name"] for e in events], ["Late Show"], lead)
+            self.assertEqual(events[0]["venue"], "LPR")
+
+
 class TestMeetupWindows(unittest.TestCase):
     def test_searches_four_windows_and_dedupes(self):
         from unittest.mock import patch
