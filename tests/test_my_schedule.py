@@ -71,7 +71,7 @@ class ScheduleOnHomePage(unittest.TestCase):
         self.assertEqual(self.html.count('<button type="button" class="star-btn"'), cards)
 
     def test_bar_elements_are_declared_before_first_use(self):
-        self.assertLess(self.html.index("const scheduleBar = "), self.html.index("function updateQuickChipsUI"))
+        self.assertLess(self.html.index("const scheduleBar = "), self.html.index("function apply("))
 
     def test_untimed_events_are_flagged_rather_than_given_an_hour(self):
         self.assertIn("li.dataset.epoch ? 0 : 1", self.html)

@@ -1,6 +1,6 @@
 """NYC Events — OpenGraph (social preview) images, 1200x630 JPEG, rendered with Pillow.
 
-og-image.jpg      main card: brand, live listing count, and the next few real editor's picks
+og-image.jpg      main card: brand, live listing count, and the next few upcoming events
 og-<hub>.jpg      one card per landing page in seo.HUBS (badge, title, subtitle, listing count)
 
 Rendered during `python server.py export html` and deployed with the Pages artifact rather

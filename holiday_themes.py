@@ -313,7 +313,6 @@ def holiday_theme_css():
                      f" border-color: {a}; color: #fff; box-shadow: 0 0 12px {_rgba(a, 0.35)}; }}")
         rules.append(f"{sel} .theme-pill-btn.active {{ background: linear-gradient(135deg, {a} 0%, {a2} 100%);"
                      f" color: #fff; box-shadow: 0 0 10px {_rgba(a, 0.5)}; }}")
-        rules.append(f"{sel} .badge-highlight {{ border-color: {a}; color: {a}; }}")
     return "\n  ".join(rules)
 
 

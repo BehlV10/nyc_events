@@ -1322,9 +1322,30 @@ def _named_borough(text):
     return None
 
 
+def _load_venue_pins():
+    """Name-only venues pinned by scripts/geocode_venues.py (NYC GeoSearch / OpenStreetMap, name-checked)."""
+    import json
+    import os
+    try:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "venue_pins.json"), encoding="utf-8") as f:
+            pins = json.load(f).get("pins") or {}
+    except (OSError, ValueError):
+        return {}
+    out = {}
+    for key, p in pins.items():
+        try:
+            out[key] = (float(p["lat"]), float(p["lng"]), p.get("neighborhood") or "", p.get("address") or "", p.get("name") or key)
+        except (KeyError, TypeError, ValueError):
+            continue
+    return out
+
+
+VENUE_PINS = _load_venue_pins()
+
+
 def _curated(v_lower):
     norm_v = re.sub(r"[^\w\s]", "", v_lower).strip()
-    hit = VENUE_COORDINATES.get(v_lower) or VENUE_COORDINATES.get(norm_v)
+    hit = VENUE_COORDINATES.get(v_lower) or VENUE_COORDINATES.get(norm_v) or VENUE_PINS.get(v_lower)
     if hit or "(" not in v_lower:
         return hit
     name = v_lower.split("(")[0].strip()  # "DROM (New York)", "The Keep (Bushwick)"

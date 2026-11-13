@@ -1,7 +1,7 @@
 """NYC Events — RSS 2.0 and iCalendar (.ics) feeds.
 
-feed.xml   upcoming editor's picks (falls back to the next notable events) for feed readers
-events.ics subscribable calendar of the next week's picks for Apple / Google / Outlook
+feed.xml   the next upcoming events for feed readers
+events.ics subscribable calendar of the next week's events for Apple / Google / Outlook
 
 Both are built from group_by_date()'s deduplicated events, so every entry has a real local
 start time. iCal UIDs are derived from the event itself (not Python's per-process hash()),
@@ -24,17 +24,10 @@ def _event_uid(e):
 
 
 def feed_events(dated, days=7, limit=150):
-    """Editor's picks first (in start order); top up with other upcoming events if there are few."""
-    from template import _get_event_highlight, _load_highlights
-
-    highlights = _load_highlights()
+    """The next upcoming events in start order (services and family listings left out)."""
     upcoming = [e for e in _upcoming(dated, days=days, start=datetime.now(EASTERN))
                 if (e.get("category") or "") not in ("services", "family")]
-    picks = [e for e in upcoming if _get_event_highlight(e, highlights)]
-    if len(picks) < 30:
-        picks += [e for e in upcoming if e not in picks][: 30 - len(picks)]
-        picks.sort(key=lambda e: e["_time"])
-    return picks[:limit]
+    return upcoming[:limit]
 
 
 def build_rss(events, site_url=None):
@@ -60,7 +53,7 @@ def build_rss(events, site_url=None):
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{SITE_NAME} · upcoming picks</title>
+    <title>{SITE_NAME} · upcoming events</title>
     <link>{page_url('', site_url)}</link>
     <description>Notable concerts, DJ nights, comedy, theater, run clubs, and free events coming up in New York City.</description>
     <language>en-us</language>
@@ -100,7 +93,7 @@ def build_ics(events, site_url=None):
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     lines = [
         "BEGIN:VCALENDAR", "VERSION:2.0", f"PRODID:-//{SITE_NAME}//Live Calendar//EN",
-        "CALSCALE:GREGORIAN", "METHOD:PUBLISH", f"X-WR-CALNAME:{SITE_NAME} picks",
+        "CALSCALE:GREGORIAN", "METHOD:PUBLISH", f"X-WR-CALNAME:{SITE_NAME} events",
         "X-WR-TIMEZONE:America/New_York", "REFRESH-INTERVAL;VALUE=DURATION:PT6H",
         "X-WR-CALDESC:Notable upcoming concerts\\, comedy\\, nightlife\\, and free events in NYC.",
     ]

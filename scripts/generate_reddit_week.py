@@ -11,7 +11,7 @@ Built from the site's merged, deduplicated events, so times and prices match the
     python3 scripts/generate_reddit_week.py 2026-11-09   # the week starting that Monday
 
 Writes reddit/week-of-YYYY-MM-DD.md (title in the first line) and lists the headliners that
-have no blurb yet; add those to highlights.json, rerun, then read the post through and check
+have no blurb yet; write a blurb for each by hand, then read the post through and check
 the subreddit's self-promotion rules before posting. Picks are automatic.
 """
 import copy

@@ -78,7 +78,7 @@ def build_seo_meta_tags(title=None, description=None, path="", image_path="og-im
 <meta name="description" content="{d}">
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
 <link rel="canonical" href="{escape(canonical)}">
-<link rel="alternate" type="application/rss+xml" title="{SITE_NAME} — upcoming picks" href="{escape(page_url('feed.xml', site_url))}">
+<link rel="alternate" type="application/rss+xml" title="{SITE_NAME} — upcoming events" href="{escape(page_url('feed.xml', site_url))}">
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{SITE_NAME}">
@@ -170,8 +170,6 @@ def _upcoming(dated, days=None, start=None, include_tba=False):
 
 def build_json_ld(dated, total_events, site_url=None, limit=60):
     """WebSite (+ sitelinks search box) and an ItemList of the next notable events."""
-    from template import _get_event_highlight, _load_highlights
-
     site_url = site_url or get_site_url()
     website = {
         "@context": "https://schema.org",
@@ -186,12 +184,8 @@ def build_json_ld(dated, total_events, site_url=None, limit=60):
             "query-input": "required name=search_term_string",
         },
     }
-    highlights = _load_highlights()
-    upcoming = _upcoming(dated, days=7)
-    picks = [e for e in upcoming if _get_event_highlight(e, highlights)]
-    rest = [e for e in upcoming if e not in picks]
     items = []
-    for e in picks + rest:
+    for e in _upcoming(dated, days=7):
         sch = event_schema(e, site_url)
         if sch:
             items.append(sch)
@@ -400,12 +394,10 @@ _HUB_CSS = """
   @media (min-width:640px) { .grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
   .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; min-width:0; }
   .card:hover { background:var(--card-hover); }
-  .card.pick { border-color:rgba(255,184,0,.45); }
   .meta { display:flex; justify-content:space-between; gap:8px; font-size:12px; color:var(--muted); }
   .badge { font-size:11px; padding:1px 8px; border-radius:999px; font-weight:600; white-space:nowrap; }
   .free { background:rgba(74,222,128,.16); color:var(--green); border:1.5px solid var(--green); }
   .price { background:rgba(255,255,255,.08); }
-  .pickb { background:rgba(255,184,0,.16); color:var(--gold); }
   .card h3 { font-size:15px; margin:6px 0 4px; line-height:1.35; overflow-wrap:anywhere; }
   .card h3 a { color:var(--fg); text-decoration:none; }
   .card h3 a:hover { color:var(--accent); text-decoration:underline; }
@@ -522,7 +514,7 @@ _HUB_CITY_JS = """<script>
 
 
 def render_hub_page(slug, dated, site_url=None, max_events=120):
-    from template import CITY_LABELS, _event_city, _get_event_highlight, _is_event_free, _load_highlights
+    from template import CITY_LABELS, _event_city, _is_event_free
     from venues_geo import resolve_event_geo
 
     hub = HUBS[slug]
@@ -541,7 +533,6 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
     else:
         shown = _share_across_days(events, max_events) if hub.get("time") == "weekend" else events[:max_events]
         total_count = len(events)
-    highlights = _load_highlights()
     meta = build_seo_meta_tags(
         title=f"{hub['title']} · {SITE_NAME}",
         description=f"{hub['subtitle']} {total_count:,} upcoming listings, updated twice a day.",
@@ -598,12 +589,9 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
                 badge = f'<span class="badge price">{escape(str(e["price"]))[:24]}</span>'
             else:
                 badge = ""
-            hl = _get_event_highlight(e, highlights)
-            if hl:
-                badge = f'<span class="badge pickb">{escape(hl.get("badge") or "Pick")}</span>' + badge
             when = e["_time"].strftime("%-I:%M %p") if (e["_time"].hour or e["_time"].minute) else "All day"
             cards.append(
-                f'<article class="card{" pick" if hl else ""}" data-city="{city}" data-day="{d.isoformat()}"><div class="meta"><time datetime="{e["_time"].isoformat()}">{when}</time>'
+                f'<article class="card" data-city="{city}" data-day="{d.isoformat()}"><div class="meta"><time datetime="{e["_time"].isoformat()}">{when}</time>'
                 f'<span>{badge}</span></div><h3><a href="{escape(e.get("url") or "../")}" target="_blank" rel="noopener">'
                 f'{escape(e.get("name") or "Event")}</a></h3><div class="venue">{escape(where)}</div>'
                 + (f'<div class="also">{escape(e["_also"])}</div>' if e.get("_also") else "") + "</article>"
@@ -762,7 +750,7 @@ def build_llms_txt(total_events, n_sources, site_url=None):
 ## Data
 - [Interactive calendar]({page_url('', site_url)}): filter by borough, neighborhood, category, price, and time; map and "near me" views.
 - [events.json]({page_url('events.json', site_url)}): machine-readable export of every listing with venue, time, price, and coordinates.
-- [RSS feed]({page_url('feed.xml', site_url)}): upcoming editor's picks and notable events.
+- [RSS feed]({page_url('feed.xml', site_url)}): the next week of upcoming events.
 - [iCalendar feed]({page_url('events.ics', site_url)}): subscribe in Apple, Google, or Outlook calendar.
 
 ## Guides
