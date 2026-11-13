@@ -53,7 +53,7 @@ class SkintOngoingTests(unittest.TestCase):
     def test_schedule_parenthetical_venue_price_and_museum_category(self):
         show = self._run()[0]["The Big Show"]
         self.assertEqual(show["name"], "The Big Show")
-        self.assertEqual(show["venue"], "Whitney Museum of American Art (Meatpacking District)")
+        self.assertEqual(show["venue"], "The Whitney Museum of American Art (Meatpacking District)")
         self.assertEqual((show["price"], show["category"]), ("$30", "art"))
 
     def test_ended_and_sponsored_items_are_dropped(self):

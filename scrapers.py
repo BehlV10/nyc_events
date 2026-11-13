@@ -2307,7 +2307,7 @@ def scrape_skint_ongoing(url, ua):
             if museumish and cat != "film":
                 cat = "art"
             event = {"name": _skint_title(name), "date": None, "ends": end.isoformat(), "url": link or url, "venue": venue,
-                     "price": price, "category": section or cat, "_exhibition": True,
+                     "price": price, "category": cat if museumish else (section or cat), "_exhibition": True,
                      "description": clean_description(re.sub(r"\s*>>\s*$", "", desc)[:300]) if desc else f"On through {end.strftime('%B')} {end.day}."}
             events.append({k: v for k, v in event.items() if v not in (None, "") or k == "date"})
     return events
