@@ -45,14 +45,29 @@ jobs:
         run: python -m unittest discover tests
 
       # Run-to-run state lives on the `data` branch (one commit, replaced every run), not main.
-      - name: Restore geocode cache from the data branch
+      # Pushes to main (merged PRs) only need the site rebuilt from the latest snapshot, not a
+      # 15-20 min re-scrape: reuse events.json from `data`. Scheduled/manual runs scrape in full,
+      # as does a push when no snapshot is available.
+      - name: Restore geocode cache (and, on pushes, the last events.json) from the data branch
+        id: restore
         run: |
+          echo "scrape=true" >> "$GITHUB_OUTPUT"
           if git fetch -q --depth=1 origin data; then
             git show FETCH_HEAD:geocode_cache.json > geocode_cache.json || true
+            if [ "${{ github.event_name }}" = "push" ] && git show FETCH_HEAD:events.json > events.json.snapshot \
+               && [ "$(wc -c < events.json.snapshot)" -gt 100000 ]; then
+              mv events.json.snapshot events.json
+              echo "scrape=false" >> "$GITHUB_OUTPUT"
+              echo "Push to main: rebuilding the site from the last data snapshot (no scrape)."
+            fi
           fi
+          rm -f events.json.snapshot
 
-      - run: python server.py export events.json
+      - name: Scrape events
+        if: steps.restore.outputs.scrape == 'true'
+        run: python server.py export events.json
       - name: Curate daily editor's picks
+        if: steps.restore.outputs.scrape == 'true'
         run: python scripts/curate_highlights.py
       # Also writes landing pages, sitemap/robots/llms.txt, RSS/iCal feeds, and OG images,
       # which ship in the Pages artifact below without being committed.
@@ -72,6 +87,7 @@ jobs:
           fi
 
       - name: Publish latest data snapshot to the data branch
+        if: steps.restore.outputs.scrape == 'true'
         run: |
           # The generated site ships in the Pages artifact below. The latest events.json (and the
           # geocode cache the next run needs) go to `data` as a single parentless commit that
@@ -88,6 +104,7 @@ jobs:
           git push -f origin "$commit:refs/heads/data"
 
       - name: Commit small state files to main if changed
+        if: steps.restore.outputs.scrape == 'true'
         run: |
           git add highlights.json luckyseat_shows.json
           if git diff --staged --quiet; then
