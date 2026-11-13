@@ -2224,9 +2224,6 @@ def render_page(results, split_deferred=False, context_out=None):
     else:
         venue_list = results or []
     dated, tba, ongoing = group_by_date(venue_list)
-    highlights = _load_highlights()
-    picks_chip_html = ('<button type="button" class="chip-picks" id="quick-picks-chip" aria-pressed="false" title="Editor\'s picks for each day">'
-                       '<span class="chip-icon">⭐ </span>Picks</button>') if highlights else ""
     recurring_keys = compute_recurring(dated)
     total = sum(len(v) for _, v in dated) + len(tba)
     seasonal_key, seasonal_icon, seasonal_label = get_seasonal_theme(datetime.now(EASTERN))
@@ -2391,26 +2388,14 @@ def render_page(results, split_deferred=False, context_out=None):
         extra_html = f' · {compare_html}' if compare_html else ''
         pres_attr = f' data-presenter="{escape(presenter)}"' if presenter else ''
         ev_id = _event_stable_id(e)
-        hl = _get_event_highlight(e, highlights)
-        hl_class = " highlighted" if hl else ""
-        hl_attr = ' data-highlight="true"' if hl else ""
-        hl_badge = ""
-        note_html = ""
-        if hl:
-            b_text = hl.get("badge") or "Editor's Pick"
-            note = hl.get("note")
-            tooltip = f"{b_text} — {note}" if note else b_text
-            hl_badge = f' <span class="badge-highlight" title="{escape(tooltip)}">{escape(b_text)}</span>'
-            if note:
-                note_html = f'<div class="curator-note"><span class="note-label">Why it\'s a pick:</span> {escape(note)}</div>'
         # Flags are emitted only when true (the page tests `=== 'true'`), and nothing that the
         # page can derive (subarea name, HH:MM) is repeated per event: deferred days are ~17k <li>s.
         flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-free-catch="true"' if free_kind == "catch" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
-        return _compact_li(f'''<li class="event{hl_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{hl_attr}{epoch_attr}{time_attr}{geo_attrs}>
+        return _compact_li(f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}{_other_times_html(e)}</div>
-          <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{hl_badge}{recur_badge}
+          <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
-            {note_html}{desc_html}
+            {desc_html}
           </div>
         </li>''')
 
@@ -3118,18 +3103,6 @@ def render_page(results, split_deferred=False, context_out=None):
     font-weight: 700;
     box-shadow: 0 2px 10px var(--accent-glow);
   }}
-  .badge-highlight {{
-    display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px;
-    font-size: 11px; font-weight: 700; letter-spacing: 0.02em; vertical-align: middle; margin-left: 6px;
-    background: rgba(255, 184, 0, 0.16); border: 1px solid rgba(255, 184, 0, 0.45); color: #ffd866;
-  }}
-  .event.highlighted {{ box-shadow: inset 3px 0 0 #ffd866; }}
-  .curator-note {{
-    font-size: 12.5px; color: #ffebb8; background: rgba(255, 184, 0, 0.08);
-    border: 1px solid rgba(255, 184, 0, 0.2); border-radius: 8px; padding: 6px 10px; margin-top: 6px;
-  }}
-  .curator-note .note-label {{ font-weight: 700; color: #ffd866; }}
-  .week-nav button.chip-picks.active {{ background: rgba(255, 184, 0, 0.2); border-color: #ffd866; color: #ffd866; }}
   .when-alt {{ display: block; font-size: 10px; line-height: 1.25; font-weight: 500; color: var(--muted); cursor: help; overflow-wrap: anywhere; }}
   .badge-special {{ display:inline-block; margin-left: 6px; font-size: 10px; padding: 1px 6px; border-radius: 5px; color: #c678dd; border: 1px solid rgba(198,120,221,.35); white-space: nowrap; }}
   .badge-guestlist {{
@@ -5237,12 +5210,6 @@ def render_page(results, split_deferred=False, context_out=None):
     background: rgba(19, 10, 31, 0.85);
     border: 1px solid rgba(255, 121, 63, 0.25);
   }}
-  [data-theme="halloween"] .badge-highlight {{
-    background: linear-gradient(135deg, rgba(255, 121, 63, 0.25) 0%, rgba(243, 156, 18, 0.35) 100%);
-    border: 1px solid #ff793f;
-    color: #ffeaa7;
-    box-shadow: 0 0 10px rgba(255, 121, 63, 0.25);
-  }}
   [data-theme="election"] {{
     --bg: #090d16;
     --card: #121826;
@@ -5701,7 +5668,6 @@ def render_page(results, split_deferred=False, context_out=None):
         <button type="button" id="week-next" aria-label="Next">next →</button>
         <button type="button" id="week-today">today</button>
         <button type="button" id="cal-toggle" aria-expanded="false">📅 pick date</button>
-        {picks_chip_html}
         <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
       </div>
       <div class="mini-cal" id="mini-cal" hidden>
@@ -6054,8 +6020,6 @@ def render_page(results, split_deferred=False, context_out=None):
     const CITY_LABELS_MAP = {json.dumps(CITY_LABELS)};
     let activeSubarea = 'all';
     let renderedSubareaCity = null;
-    const quickPicksChip = document.getElementById('quick-picks-chip');
-    let picksOnly = false;
     // My Schedule: starred cards, kept in this browser. Keys are built from the card itself
     // (day|start|title), so the page doesn't carry an id on every event.
     let starredOnly = false;
@@ -6913,13 +6877,6 @@ def render_page(results, split_deferred=False, context_out=None):
       panel.style.display = 'block';
     }}
 
-    function updateQuickChipsUI() {{
-      if (quickPicksChip) {{
-        quickPicksChip.classList.toggle('active', picksOnly);
-        quickPicksChip.setAttribute('aria-pressed', picksOnly ? 'true' : 'false');
-      }}
-    }}
-
     function renderSubareaChips(city) {{
       if (!subareaBar) return;
       if (!city || city === 'all' || !SUBAREAS_DATA[city]) {{
@@ -7011,7 +6968,7 @@ def render_page(results, split_deferred=False, context_out=None):
       const isLgbtq = lgbtqOnlyChk && lgbtqOnlyChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
       const isGenreFiltered = Array.from(genreBoxes).some(b => !b.checked);
-      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || isLgbtq || starredOnly || picksOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || isLgbtq || starredOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -7067,7 +7024,6 @@ def render_page(results, split_deferred=False, context_out=None):
       if (freeOnlyChk && freeOnlyChk.checked) params.set('free', (freeCatchChk && freeCatchChk.checked) ? '2' : '1');
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
       if (lgbtqOnlyChk && lgbtqOnlyChk.checked) params.set('lgbtq', '1');
-      if (picksOnly) params.set('picks', '1');
       if (starredOnly) params.set('saved', '1');
       if (timeFrom !== null || timeTo !== null) {{
         if (timeFrom !== null) params.set('from', formatMinutesToHHMM(timeFrom));
@@ -7098,7 +7054,6 @@ def render_page(results, split_deferred=False, context_out=None):
         if (params.get('free') === '2' && freeCatchChk) freeCatchChk.checked = true;
         if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
         if (params.get('lgbtq') === '1' && lgbtqOnlyChk) lgbtqOnlyChk.checked = true;
-        if (params.get('picks') === '1') picksOnly = true;
         if (params.get('saved') === '1') starredOnly = true;
         if (params.get('past') === '1') showPastToday = true;
         if (params.get('v') === 'map') {{
@@ -7353,7 +7308,6 @@ def render_page(results, split_deferred=False, context_out=None):
                   freeCatch: li.dataset.freeCatch === 'true',
                   guestlist: li.dataset.guestlist === 'true',
                   lgbtq: li.dataset.lgbtq === 'true',
-                  featured: li.dataset.highlight === 'true',
                   timeMins: tm ? parseInt(tm, 10) : -1,
                   epoch: li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0,
                   text: null,
@@ -7368,7 +7322,6 @@ def render_page(results, split_deferred=False, context_out=None):
               const freeOk = !freeOnly || m.free || (freeCatch && m.freeCatch);
               const guestlistOk = !guestlistOnly || m.guestlist;
               const lgbtqOk = !lgbtqOnly || m.lgbtq;
-              const picksOk = !picksOnly || m.featured;
               const starOk = !starredOnly || starredEvents.has(eventKey(li));
               const searchOk = !searchText || (m.text || (m.text = li.textContent.toLowerCase())).includes(searchText);
 
@@ -7394,7 +7347,7 @@ def render_page(results, split_deferred=False, context_out=None):
               }}
 
               const genreOk = genreOkFor(m.bucket, m.genre);
-              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && picksOk && starOk && todOk && timePastOk;
+              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && starOk && todOk && timePastOk;
               if (m.hidden === isVisible) {{ m.hidden = !isVisible; li.classList.toggle('hidden', !isVisible); }}
               if (isVisible) {{
                 bucketVisible++;
@@ -7575,7 +7528,6 @@ def render_page(results, split_deferred=False, context_out=None):
 
       renderCal();
       updateWeekLabel();
-      updateQuickChipsUI();
       updateScheduleBar();
       updateLocChipsUI();
       updateSearchUI();
@@ -7685,7 +7637,6 @@ def render_page(results, split_deferred=False, context_out=None):
       apply();
     }}
 
-    if (quickPicksChip) quickPicksChip.addEventListener('click', () => {{ picksOnly = !picksOnly; apply(); stateToHash(); }});
     if (guestlistOnlyChk) guestlistOnlyChk.addEventListener('change', apply);
     if (lgbtqOnlyChk) lgbtqOnlyChk.addEventListener('change', apply);
 
@@ -7869,7 +7820,6 @@ def render_page(results, split_deferred=False, context_out=None):
       if (freeCatchChk) freeCatchChk.checked = false;
       if (guestlistOnlyChk) guestlistOnlyChk.checked = false;
       if (lgbtqOnlyChk) lgbtqOnlyChk.checked = false;
-      picksOnly = false;
       starredOnly = false;
       clearRange();
       timeFrom = null;

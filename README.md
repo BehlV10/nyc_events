@@ -125,14 +125,12 @@ python3 -m unittest discover tests
 
 ### Content & maintenance scripts
 ```bash
-python3 scripts/curate_highlights.py          # pick each day's editor's picks -> highlights.json (CI runs this)
 python3 scripts/generate_this_week_flyer.py   # weekly Instagram carousel -> instagram/this_week_slide{1,2}.png
 python3 scripts/generate_reddit_roundup.py    # weekend roundup in Reddit Markdown -> reddit_roundup.md
 python3 scripts/check_links.py --date 2026-11-06   # find dead event links
 python3 scripts/audit_coverage.py newsletter.txt   # what share of an outside list do we have? which venues to add?
 python3 scripts/ping_indexnow.py --force       # notify Bing/IndexNow engines now (CI does this every 6h)
 ```
-Hand-written picks can be added to `highlights.json` (entries without `"auto": true` are kept by the curator).
 
 ---
 
@@ -140,8 +138,8 @@ Hand-written picks can be added to `highlights.json` (entries without `"auto": t
 
 [`.github/workflows/scrape.yml`](.github/workflows/scrape.yml) runs **twice a day** (and on push to `main`):
 - Runs the unit tests, then re-scrapes every source (per-host rate limits keep Eventbrite/Meetup from throttling).
-- Curates the daily picks and renders the site, landing pages, feeds, and social cards.
-- Commits `events.json`, `index.html`, `events.html`, `deferred_days.html`, and `highlights.json`. Landing pages,
+- Renders the site, landing pages, feeds, and social cards.
+- Commits `events.json`, `index.html`, `events.html`, and `deferred_days.html`. Landing pages,
   feeds, sitemap, and OG images are deployed with the Pages artifact but not committed (see `.gitignore`).
 - Deploys to GitHub Pages, then pings IndexNow every 6 hours.
 

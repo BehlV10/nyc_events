@@ -48,7 +48,6 @@ LIGHT_THEME_CSS = """
   [data-theme="light"] .pill-refresh { color: #92400e; }
   [data-theme="light"] .past-banner-text strong { color: var(--fg); }
   [data-theme="light"] .presenter-tag { color: #c2410c; }
-  [data-theme="light"] .week-nav button.chip-picks.active { color: #92400e; border-color: #b45309; }
   [data-theme="light"] .subarea-tag,
   [data-theme="light"] .bucket-name { color: #1d4ed8; }
   [data-theme="light"] .badge-guestlist { color: #be185d; }
@@ -135,7 +134,6 @@ LIGHT_THEME_CSS = """
   [data-theme="light"] .btn-upvote.voted,
   [data-theme="light"] .btn-upvote.voted .upvote-arrow,
   [data-theme="light"] .event.glowing .btn-upvote,
-  [data-theme="light"] .badge-highlight,
   [data-theme="light"] .chip-popular:hover { color: #b45309; }
   [data-theme="light"] .chip-popular,
   [data-theme="light"] .event.popular .btn-upvote,
@@ -148,8 +146,6 @@ LIGHT_THEME_CSS = """
   [data-theme="light"] .form-status.success { color: #047857; }
   [data-theme="light"] .btn-copy-plan-sidebar:hover,
   [data-theme="light"] .week-nav button.chip-copy-plan:hover { color: #065f46; }
-  [data-theme="light"] .curator-note { color: #78350f; background: rgba(245, 158, 11, 0.10); }
-  [data-theme="light"] .curator-note .note-label { color: #92400e; }
 
   /* Category and genre pills get their color inline (pastels picked for a dark page). Darken the
      text so it reads on white; the tinted background and border stay. */
