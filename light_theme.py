@@ -16,7 +16,7 @@ LIGHT_THEME_CSS = """
     background-color: #e9ecf3;
     background-image:
       linear-gradient(180deg, rgba(245, 246, 250, 0.10) 0%, rgba(245, 246, 250, 0.72) 55%, rgba(245, 246, 250, 1) 100%),
-      url('/banner.jpg');
+      url('banner.jpg');
     background-size: cover;
     background-position: center 55%;
   }
