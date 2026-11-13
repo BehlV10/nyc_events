@@ -1731,14 +1731,16 @@ def _allevents_ticket_link(page):
 
 def _eventbrite_event_details(event_id, ua):
     """Price text and sold-out flag for one Eventbrite event from the public v3 API."""
-    resp = _SESSION.get(f"https://www.eventbrite.com/api/v3/events/{event_id}/?expand=ticket_availability",
+    resp = _SESSION.get(f"https://www.eventbrite.com/api/v3/events/{event_id}/?expand=ticket_availability,organizer",
                         headers={"User-Agent": ua, "Accept": "application/json"}, timeout=12)
     resp.raise_for_status()
     ev = resp.json()
     sold_out = bool((ev.get("ticket_availability") or {}).get("is_sold_out"))
     if sold_out:  # _eb_price says "Sold Out"; the price tier is more useful, so ask without the flag
         ev = {**ev, "ticket_availability": {**ev["ticket_availability"], "is_sold_out": False}}
-    return {"price": _eb_price(ev), "sold_out": sold_out, "status": ev.get("status"), "organizer_id": ev.get("organizer_id")}
+    return {"price": _eb_price(ev), "sold_out": sold_out, "status": ev.get("status"), "organizer_id": ev.get("organizer_id"),
+            "organizer_name": ((ev.get("organizer") or {}).get("name") or "").strip() or None,
+            "category_id": ev.get("category_id")}
 
 
 def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=None, links_path=None, details_path=None,
@@ -1836,6 +1838,98 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
     print(f"AllEvents links: {pages} pages read, {fetched} Eventbrite events checked; "
           f"{relinked} of {len(todo)} listings relinked, {priced} priced, {soldout} sold out")
     return relinked
+
+
+DISCOVERED_ORGANIZERS_PATH = os.path.join(CACHE_DIR, "_eventbrite_discovered_organizers.json")
+DISCOVER_NEW_PER_RUN = 15
+DISCOVER_MAX_TRACKED = 250
+DISCOVER_REJECT_TTL = 30 * 86400
+
+
+def _discover_eventbrite_organizers(results, details_path=None, path=None, scrape=None, max_new=None, max_total=None,
+                                    tracked=None, sleep=time.sleep):
+    """Follow the organizers behind Eventbrite events we saw through other sources (AllEvents): once an
+    organizer has 2+ upcoming NYC events it is read directly from then on, in this and later runs
+    (the file lives in the cached venue folder), without anyone editing eventbrite_organizers.json.
+    `scrape(v)` runs one source (default _scrape_one) and returns its result dict; results gain one
+    entry per tracked discovered organizer. Rejected organizers are not retried for 30 days."""
+    details_path = details_path or EVENTBRITE_EVENTS_PATH
+    path = path or DISCOVERED_ORGANIZERS_PATH
+    scrape = scrape or _scrape_one
+    max_new = DISCOVER_NEW_PER_RUN if max_new is None else max_new
+    max_total = DISCOVER_MAX_TRACKED if max_total is None else max_total
+    now = time.time()
+
+    def _load(p):
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (OSError, ValueError):
+            return {}
+
+    eb, found = _load(details_path), _load(path)
+    if tracked is None:
+        tracked = {oid for _k, oid, _n, _c in _load_eventbrite_organizers()}
+        try:
+            with open(EVENTBRITE_ORGANIZERS_FILE, "r", encoding="utf-8") as f:
+                tracked |= {str(x.get("id")) for x in json.load(f).get("excluded") or []}
+        except (OSError, ValueError):
+            pass
+    cats = {}
+    for r in results:
+        for e in r.get("events") or []:
+            m = _EB_EVENT_ID_RE.search(e.get("url") or "")
+            if m:
+                cats.setdefault(m.group(1), e.get("category"))
+
+    # organizer id -> (name, a category from one of its events)
+    candidates = {}
+    for event_id, info in eb.items():
+        oid = str(info.get("organizer_id") or "")
+        if oid.isdigit() and oid not in tracked and oid not in candidates:
+            candidates[oid] = (info.get("organizer_name"), cats.get(event_id))
+
+    def _source(oid, name, cat):
+        return {"name": name or f"Eventbrite organizer {oid}", "url": f"https://www.eventbrite.com/api/v3/organizers/{oid}/events/",
+                "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": cat or "community"}
+
+    added = tried = 0
+    kept = [oid for oid, rec in found.items() if rec.get("status") == "ok"]
+    for oid, (name, cat) in sorted(candidates.items()):
+        rec = found.get(oid)
+        if rec and (rec.get("status") == "ok" or now - rec.get("ts", 0) < DISCOVER_REJECT_TTL):
+            continue
+        if tried >= max_new or len(kept) >= max_total:
+            break
+        if tried:
+            sleep(EVENTBRITE_API_GAP)
+        tried += 1
+        res = scrape(_source(oid, name, cat))
+        if res.get("error") and not res.get("events"):
+            continue  # transient: try again next run
+        if len(res.get("events") or []) >= 2:
+            found[oid] = {"status": "ok", "name": res["venue"], "category": cat or "community", "ts": now}
+            kept.append(oid)
+            added += 1
+        else:
+            found[oid] = {"status": "rejected", "ts": now}
+
+    live = 0
+    for oid in kept:
+        rec = found[oid]
+        res = scrape(_source(oid, rec.get("name"), rec.get("category")))
+        if not res.get("cached"):
+            sleep(EVENTBRITE_API_GAP)  # a live fetch: keep to the Eventbrite lane's pace
+        if res.get("events"):
+            results.append(res)
+            live += len(res["events"])
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump({k: v for k, v in found.items() if v.get("status") == "ok" or now - v.get("ts", 0) < DISCOVER_REJECT_TTL}, f)
+    except OSError:
+        pass
+    print(f"Eventbrite organizers followed from AllEvents: {added} new of {tried} tried; {len(kept)} tracked, {live} events")
+    return added
 
 
 def scrape_donyc(url, ua):
@@ -12134,6 +12228,7 @@ def get_all_events(force=False):
     _enrich_event_times(results)
     _enrich_from_primary_pages(results)
     _resolve_allevents_links(results)
+    _discover_eventbrite_organizers(results)
     _apply_geocodes(results)
 
     payload = {
