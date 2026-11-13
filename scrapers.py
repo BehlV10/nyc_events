@@ -1281,7 +1281,7 @@ def fetch_luckyseat_nyc():
 
 _JS_STR = r'"((?:[^"\\]|\\.)*)"'
 _DONYC_EVENT_RE = re.compile(
-    r'\{id:(\d+),type:"event",title:' + _JS_STR + r',permalink:' + _JS_STR + r'(.*?)venue:\{id:\d+,title:' + _JS_STR
+    r'\{id:(\d+),type:"event",(?:[a-z_]+:(?:null|true|false|\d+|"(?:[^"\\]|\\.)*"),){0,6}?title:' + _JS_STR + r',permalink:' + _JS_STR + r'(.*?)venue:\{id:\d+,title:' + _JS_STR
     + r'(?:,district_id:[^,]*,district_name:(?:' + _JS_STR + r'|null))?(?:,area_id:[^,]*,area_name:(?:' + _JS_STR + r'|null))?',
     re.S,
 )
@@ -1780,15 +1780,15 @@ def scrape_donyc(url, ua):
 
 
 def scrape_donyc_calendar(url, ua):
-    """DoNYC citywide day listings (~20 events/page, up to ~16 pages on a weekend): up to 18 pages
-    a day for the next two weeks and 12 after (stops at the first empty page). Three pages in
+    """DoNYC citywide day listings (~20 events/page, up to ~16 pages on a weekend): up to 24 pages
+    a day for the next two weeks and 16 after (stops at the first empty page). Three pages in
     flight with light pacing."""
     from concurrent.futures import ThreadPoolExecutor
     now = datetime.now(EASTERN)
     jobs = []
     for i in range(HORIZON_DAYS):
         d = now.date() + timedelta(days=i)
-        jobs.append((f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}", 18 if i < 14 else 12))
+        jobs.append((f"https://donyc.com/events/{d.year}/{d.month:02d}/{d.day:02d}", 24 if i < 14 else 16))
 
     def day(job):
         base, max_pages = job
@@ -2213,6 +2213,103 @@ def scrape_the_skint(url, ua):
                         **({"_time_guess": True} if time_guessed else {}),
                     })
 
+    return events
+
+
+_SKINT_THRU_RE = re.compile(r"(?:(?:sun|mon|tue|wed|thu|fri|sat)[a-z]*\s+)?(?:thru|through|until)\s+(\d{1,2})/(\d{1,2})(?:/(\d{2,4}))?", re.I)
+_SKINT_AREAS = (r"les|ues|uws|lic|midtown(?: east| west)?|chelsea|soho|noho|nolita|tribeca|fidi|financial district|east village|west village|"
+                r"greenwich village|meatpacking district|gramercy|flatiron|murray hill|kips bay|hell.s kitchen|harlem|east harlem|"
+                r"washington heights|inwood|upper east side|upper west side|lincoln center|astoria|long island city|flushing|"
+                r"jackson heights|forest hills|williamsburg|greenpoint|bushwick|bed-stuy|crown heights|prospect heights|park slope|"
+                r"gowanus|red hook|carroll gardens|cobble hill|dumbo|brooklyn heights|fort greene|clinton hill|sunset park|bay ridge|"
+                r"coney island|brooklyn|queens|bronx|staten island|manhattan|battery park|chinatown|little italy|union square|"
+                r"columbus circle|times square|central park|riverside|morningside heights|sugar hill|ridgewood|sunnyside")
+_SMALL_WORDS = {"a", "an", "the", "and", "or", "of", "at", "in", "on", "for", "to", "with", "de", "la", "vs"}
+
+
+def _skint_title(text):
+    """The Skint writes in lowercase; give names and venues capitals (small words stay lower, "les" -> "LES")."""
+    words = re.split(r"(\s+)", text.strip())
+    out, first = [], True
+    for w in words:
+        core = re.sub(r"^\W+", "", w)
+        if not core or w.isspace():
+            out.append(w)
+            continue
+        if re.fullmatch(r"\(?[a-z]{2,4}\)?", w) and w.strip("()") in {"les", "uws", "ues", "lic", "bam", "nyc", "dumbo"}:
+            out.append(w.upper())
+        elif core.lower() in _SMALL_WORDS and not first:
+            out.append(w)
+        else:
+            i = len(w) - len(core)
+            out.append(w[:i] + core[:1].upper() + core[1:])
+        first = False
+    return "".join(out)
+
+
+def scrape_skint_ongoing(url, ua):
+    """The Skint's "ongoing events" roundup: holiday markets, rinks, film series and exhibitions that run
+    "thru 12/24". They have no day of their own, so they go in "On view now" until their last day. Each
+    item's >> link is the organiser's own page. Sponsored rows and items with no end date are skipped."""
+    soup = fetch_soup(url, ua)
+    body = soup.find(class_=re.compile("entry-content|post-content")) or soup.find("article") or soup
+    today = datetime.now(EASTERN).date()
+    events, seen, section = [], set(), None
+    for p in body.find_all(["h1", "h2", "h3", "h4", "p"]):
+        text = re.sub(r"\s+", " ", p.get_text(" ", strip=True)).strip()
+        if not text or text.lower().startswith("sponsored"):
+            continue
+        if not _SKINT_THRU_RE.search(text):
+            if len(text) < 110:  # a section heading ("holiday markets :", "ice skating! ...")
+                low = text.lower()
+                section = "markets" if re.search(r"market|fair", low) else "outdoors" if re.search(r"skating|rink", low) else None
+            continue
+        chunks = [c.strip() for c in text.split("\u25ba") if c.strip()] if text.count("\u25ba") > 1 else [text]
+        arrows = [a["href"] for a in p.find_all("a", href=True) if a.get_text(strip=True) == ">>"]
+        anchors = [a["href"] for a in p.find_all("a", href=True)]
+        for i, chunk in enumerate(chunks):
+            m = _SKINT_THRU_RE.search(chunk)
+            if not m:
+                continue
+            try:
+                year = int(m.group(3)) if m.group(3) else today.year
+                year += 2000 if year < 100 else 0
+                end = datetime(year, int(m.group(1)), int(m.group(2))).date()
+                if not m.group(3) and end < today - timedelta(days=30):
+                    end = end.replace(year=year + 1)
+            except ValueError:
+                continue
+            if end < today:
+                continue
+            after = chunk[m.end():]
+            lead = re.match(r"^\s*\)?\s*(?:\([^)]*\))?\s*:\s*(.+)$", after, re.S)
+            if lead:  # "thru 12/24 (sundays 4-7pm): name : description"
+                parts = lead.group(1).split(" : ", 1)
+                name, desc = parts[0], (parts[1] if len(parts) > 1 else "")
+            else:  # "domino park in williamsburg (thru 2/21/2027) >>"
+                name, desc = re.sub(r"\(\s*$", "", chunk[:m.start()]).strip(" :(>"), ""
+            name = re.sub(r"\s*>>\s*$", "", name).strip(" :>")
+            if len(name) < 4 or (name.lower(), end) in seen:
+                continue
+            seen.add((name.lower(), end))
+            link = arrows[i] if len(chunks) > 1 and len(arrows) == len(chunks) else (anchors[0] if len(chunks) == 1 and anchors else None)
+            venue = None
+            areas = list(re.finditer(r"\((" + _SKINT_AREAS + r")\)", desc, re.I))
+            if areas:  # "..., and more. metrograph (les), $18." -> the words just before the (area)
+                before = re.split(r"(?<!\bst)[.;:!?]\s+|,\s+", desc[:areas[-1].start()].strip(), flags=re.I)[-1].strip(" ,.")
+                before = re.split(r"\s+at\s+", before, flags=re.I)[-1].strip() if " at " in before.lower() else before
+                if 2 < len(before) < 55:
+                    venue = _skint_title(f"{before} ({areas[-1].group(1).strip()})")
+            price_m = re.search(r"\$\d+(?:\.\d+)?", desc)
+            price = price_m.group(0) if price_m else ("Free" if re.search(r"\bfree\b", desc, re.I) else None)
+            museumish = bool(re.search(r"museum|gallery|exhibit|whitney|moma|met\b", f"{desc} {name}", re.I))
+            cat = guess_category(name, "art" if museumish else "community", venue=venue)
+            if museumish and cat != "film":
+                cat = "art"
+            event = {"name": _skint_title(name), "date": None, "ends": end.isoformat(), "url": link or url, "venue": venue,
+                     "price": price, "category": section or cat, "_exhibition": True,
+                     "description": clean_description(re.sub(r"\s*>>\s*$", "", desc)[:300]) if desc else f"On through {end.strftime('%B')} {end.day}."}
+            events.append({k: v for k, v in event.items() if v not in (None, "") or k == "date"})
     return events
 
 
@@ -10377,6 +10474,7 @@ _ALL_VENUES = [
     # Megasites & Aggregators
     {"name": "DoNYC Citywide", "url": "https://donyc.com/events", "ua": UA_CHROME, "scraper": scrape_donyc_calendar, "default_category": None},
     {"name": "The Skint NYC", "url": "https://theskint.com/", "ua": UA_CHROME, "scraper": scrape_the_skint, "default_category": "community"},
+    {"name": "The Skint NYC (Ongoing)", "url": "https://www.theskint.com/ongoing-events/", "ua": UA_CHROME, "scraper": scrape_skint_ongoing, "default_category": "community"},
     {"name": "Secret NYC", "url": "https://secretnyc.co/", "ua": UA_CHROME, "scraper": scrape_secret_nyc, "default_category": "community"},
     {"name": "Greenpointers Brooklyn", "url": "https://greenpointers.com/", "ua": UA_CHROME, "scraper": scrape_greenpointers, "default_category": "community"},
     {"name": "Ticketmaster NYC", "url": "https://www.ticketmaster.com/", "ua": UA_CHROME, "scraper": scrape_ticketmaster_nyc, "default_category": "music"},
