@@ -152,7 +152,7 @@ Hand-written picks can be added to `highlights.json` (entries without `"auto": t
 ## 🌐 GitHub Pages & Custom Domain Setup
 
 The site deploys through **GitHub Actions** (Settings → Pages → Source: *GitHub Actions*) and is live at
-`https://behlv10.github.io/nyc_events/`.
+`https://nycfunevents.com/` (the old `behlv10.github.io/nyc_events/` URL redirects there).
 
 Every absolute URL the site emits (canonical tags, OpenGraph images, JSON-LD, sitemap, robots.txt, llms.txt,
 feeds, IndexNow) comes from `seo.get_site_url()`: the `CNAME` file if present, else a `SITE_URL` env var, else the
