@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from functools import lru_cache
-from urllib.parse import parse_qs, parse_qsl, quote, quote_plus, urlencode, urljoin, urlparse, urlunparse
+from urllib.parse import parse_qs, parse_qsl, quote, quote_plus, unquote, urlencode, urljoin, urlparse, urlunparse
 from zoneinfo import ZoneInfo
 import warnings
 
@@ -1674,6 +1674,168 @@ def _enrich_from_primary_pages(results, ua=None, limit=None, path=None, fetch=No
         pass
     print(f"Primary pages: {fetched} fetched, {applied} of {len(todo)} lead listings enriched")
     return applied
+
+
+# --- AllEvents -> the seller's own page -------------------------------------------------------
+# AllEvents is mostly a middleman: its event pages carry the real ticket link (wrapped in an affiliate
+# redirect) and say where the event came from ('event_origin': 'eventbrite'). Linking to the seller gives
+# us the real price and sold-out state (Eventbrite's event API) and lets duplicates merge on one URL.
+ALLEVENTS_LINKS_PATH = os.path.join(CACHE_DIR, "_allevents_links.json")
+EVENTBRITE_EVENTS_PATH = os.path.join(CACHE_DIR, "_eventbrite_events.json")
+ALLEVENTS_PAGES_PER_RUN = 150
+EVENTBRITE_DETAILS_PER_RUN = 100
+ALLEVENTS_LINK_TTL = 14 * 86400
+EVENTBRITE_DETAIL_TTL = 2 * 86400
+# Never a destination: AllEvents/Facebook themselves.
+_NOT_A_SELLER_HOSTS = ("allevents.in", "facebook.com", "fb.me")
+# Resale marketplaces AllEvents' affiliate links often wrap. Used directly (unwrapped, no tracking) when there
+# is nothing better, but any primary seller ranks above them.
+_RESALE_HOSTS = ("vividseats.com", "ticketnetwork.com", "stubhub.com", "tickpick.com", "gametime.co", "viagogo.com",
+                 "ticketsmarter.com", "razorgator.com", "ticketliquidator.com", "seatgeek.com", "ticketsatwork.com", "ticketcity.com")
+_EB_EVENT_ID_RE = re.compile(r"eventbrite\.[a-z.]+/e/(?:[^/?#]*-)?(\d{9,})")
+_TICKET_TRACKING_RE = re.compile(r"^(utm_|fbclid|gclid|mc_|aff|affiliate|ref$|ref_|source$|_ga|igshid|aff$)", re.I)
+
+
+def _clean_ticket_url(url):
+    """The seller's URL without tracking. Eventbrite event URLs lose their query entirely."""
+    parsed = urlparse(url)
+    host = (parsed.hostname or "").lower().removeprefix("www.")
+    if host.startswith("eventbrite.") and "/e/" in parsed.path:
+        return urlunparse(("https", "www.eventbrite.com", parsed.path.rstrip("/"), "", "", ""))
+    query = [(k, v) for k, v in parse_qsl(parsed.query) if not _TICKET_TRACKING_RE.match(k)]
+    return urlunparse(parsed._replace(query=urlencode(query), fragment=""))
+
+
+def _allevents_ticket_link(page):
+    """(origin, seller's URL or None) from an AllEvents event page. The ticket URL sits in an affiliate
+    wrapper (...&u=https%3A%2F%2Fwww.eventbrite.com%2Fe%2F...); Facebook and AllEvents' own pages don't count."""
+    origin = re.search(r"'event_origin':\s*'([^']*)'", page)
+    candidates = []
+    ext = re.search(r"external_ticket_url'\]\s*=\s*\"([^\"]+)\"", page)
+    if ext:
+        candidates.append(ext.group(1).replace("\\/", "/"))
+    candidates.extend(unquote(m) for m in re.findall(r"[?&]u=(https?%3A%2F%2F[^\"'&\s<>]+)", page))
+    seen, real = set(), []
+    for raw in candidates:
+        wrapped = parse_qs(urlparse(raw).query).get("u")
+        url = unquote(wrapped[0]) if wrapped and wrapped[0].startswith("http") else raw
+        host = (urlparse(url).hostname or "").lower().removeprefix("www.")
+        if not url.startswith("http") or not host or url in seen or _host_matches(host, _NOT_A_SELLER_HOSTS):
+            continue
+        seen.add(url)
+        real.append(_clean_ticket_url(url))
+    # Eventbrite first (price and sold-out come from its API), other primary sellers next, resale marketplaces last.
+    real.sort(key=lambda u: (0 if "eventbrite." in u else 2 if _host_matches((urlparse(u).hostname or "").removeprefix("www."), _RESALE_HOSTS) else 1))
+    return (origin.group(1) if origin else None), (real[0] if real else None)
+
+
+def _eventbrite_event_details(event_id, ua):
+    """Price text and sold-out flag for one Eventbrite event from the public v3 API."""
+    resp = _SESSION.get(f"https://www.eventbrite.com/api/v3/events/{event_id}/?expand=ticket_availability",
+                        headers={"User-Agent": ua, "Accept": "application/json"}, timeout=12)
+    resp.raise_for_status()
+    ev = resp.json()
+    sold_out = bool((ev.get("ticket_availability") or {}).get("is_sold_out"))
+    if sold_out:  # _eb_price says "Sold Out"; the price tier is more useful, so ask without the flag
+        ev = {**ev, "ticket_availability": {**ev["ticket_availability"], "is_sold_out": False}}
+    return {"price": _eb_price(ev), "sold_out": sold_out, "status": ev.get("status"), "organizer_id": ev.get("organizer_id")}
+
+
+def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=None, links_path=None, details_path=None,
+                             fetch=None, details=None):
+    """Point AllEvents listings at the seller's own page when AllEvents says where the event came from, and
+    take price and sold-out from Eventbrite when that's the seller. Soonest events first, within a per-run
+    budget; answers are cached (links two weeks, Eventbrite details two days). Runs after every source."""
+    ua = ua or UA_CHROME
+    page_limit = ALLEVENTS_PAGES_PER_RUN if page_limit is None else page_limit
+    detail_limit = EVENTBRITE_DETAILS_PER_RUN if detail_limit is None else detail_limit
+    links_path, details_path = links_path or ALLEVENTS_LINKS_PATH, details_path or EVENTBRITE_EVENTS_PATH
+    fetch = fetch or (lambda url: fetch_text(url, headers={"User-Agent": ua})[1])
+    details = details or _eventbrite_event_details
+
+    def _load(path):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (OSError, ValueError):
+            return {}
+
+    links, eb = _load(links_path), _load(details_path)
+    now, today = time.time(), datetime.now(EASTERN).date()
+    todo = []
+    for r in results:
+        if not str(r.get("venue") or "").startswith("AllEvents"):
+            continue
+        for e in r.get("events") or []:
+            url = e.get("url") or ""
+            try:
+                when = datetime.fromisoformat(e["date"]).astimezone(EASTERN) if e.get("date") else None
+            except (TypeError, ValueError):
+                when = None
+            if when and when.date() >= today and _host_of(url).removeprefix("www.") == "allevents.in":
+                todo.append((when, url, e))
+    todo.sort(key=lambda x: x[0])
+
+    pages = 0
+    for _when, url, _e in todo:
+        if pages >= page_limit:
+            break
+        if url in links and now - links[url].get("ts", 0) < ALLEVENTS_LINK_TTL:
+            continue
+        try:
+            origin, ticket = _allevents_ticket_link(fetch(url))
+            links[url] = {"ts": now, "origin": origin, "ticket": ticket}
+            pages += 1
+        except SiteRefused:
+            break
+        except Exception:
+            continue
+
+    fetched = 0
+    for _when, url, _e in todo:
+        match = _EB_EVENT_ID_RE.search((links.get(url) or {}).get("ticket") or "")
+        if not match or fetched >= detail_limit:
+            continue
+        event_id = match.group(1)
+        if event_id in eb and now - eb[event_id].get("ts", 0) < EVENTBRITE_DETAIL_TTL:
+            continue
+        try:
+            if fetched:
+                time.sleep(EVENTBRITE_API_GAP)
+            eb[event_id] = {**details(event_id, ua), "ts": now}
+            fetched += 1
+        except SiteRefused:
+            break
+        except Exception:
+            continue
+
+    relinked = priced = soldout = 0
+    for _when, url, e in todo:
+        ticket = (links.get(url) or {}).get("ticket")
+        if not ticket:
+            continue
+        e["_allevents_url"] = url
+        e["url"] = ticket
+        relinked += 1
+        match = _EB_EVENT_ID_RE.search(ticket)
+        info = eb.get(match.group(1)) if match else None
+        if not info or info.get("status") in ("canceled", "cancelled"):
+            continue
+        if info.get("price") and info["price"] != e.get("price"):
+            e["price"] = info["price"]
+            priced += 1
+        if info.get("sold_out"):
+            e["sold_out"] = True
+            soldout += 1
+    for path, data, ttl in ((links_path, links, ALLEVENTS_LINK_TTL), (details_path, eb, EVENTBRITE_DETAIL_TTL)):
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump({k: v for k, v in data.items() if now - v.get("ts", 0) < 3 * ttl}, f)
+        except OSError:
+            pass
+    print(f"AllEvents links: {pages} pages read, {fetched} Eventbrite events checked; "
+          f"{relinked} of {len(todo)} listings relinked, {priced} priced, {soldout} sold out")
+    return relinked
 
 
 def scrape_donyc(url, ua):
@@ -11950,6 +12112,7 @@ def get_all_events(force=False):
     _enrich_donyc_events(results)
     _enrich_event_times(results)
     _enrich_from_primary_pages(results)
+    _resolve_allevents_links(results)
     _apply_geocodes(results)
 
     payload = {
