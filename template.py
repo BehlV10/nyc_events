@@ -6,7 +6,7 @@ import os
 import re
 import unicodedata
 from collections import Counter, defaultdict
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from functools import lru_cache
 import html
 from html import escape, unescape
@@ -907,6 +907,20 @@ def format_time(s):
 
 
 def format_when(e):
+    """The card's time, with "thru Sun Nov 23" / "Final day" when it is one day of a multi-day event."""
+    base = _format_when_base(e)
+    span = e.get("_multiday_span")
+    t = e.get("_time")
+    if not span or not isinstance(t, datetime):
+        return base
+    start_d, end_d = span
+    cur = t.astimezone(EASTERN).date()
+    if cur < end_d:
+        return f"{base} · thru {end_d.strftime('%a %b %-d')}"
+    return f"{base} · Final day" if cur == end_d else base
+
+
+def _format_when_base(e):
     if e.get("_time_unknown"):
         return "Time TBA"
     if isinstance(e.get("_time"), datetime):
@@ -2085,6 +2099,93 @@ def _day_order(e):
     return (bool(e.get("_time_unknown")), t or datetime.max.replace(tzinfo=EASTERN), (e.get("name") or "").lower())
 
 
+_SPAN_MONTH_DAYS_RE = re.compile(
+    r"\b(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})\s*(?:[-–]|&|and)\s*(\d{1,2})\b", re.I)
+_SPAN_FRI_SUN_RE = re.compile(
+    r"\bfri(?:day)?[,\s]+sat(?:urday)?[,\s]+(?:&|and)\s+sun(?:day)?\b|\bfri(?:day)?\s*(?:[-–]|through|thru|to)\s*sun(?:day)?\b", re.I)
+_SPAN_SAT_SUN_RE = re.compile(r"\bsat(?:urday)?\s*(?:[-–]|&|and|through|thru|to)\s*sun(?:day)?\b", re.I)
+_SPAN_THU_SUN_RE = re.compile(r"\bthu(?:rs(?:day)?)?\s*(?:[-–]|through|thru|to)\s*sun(?:day)?\b", re.I)
+_SPAN_DAYS_RE = re.compile(r"\b([2-9]|10)\s*days?\s*only\b|\b([2-9]|10)[- ]day\b", re.I)
+_SPAN_UNTIL_RE = re.compile(r"(?:goes until|through|thru)\s+(\d{1,2})/(\d{1,2})", re.I)
+MULTIDAY_MAX_DAYS = 10  # longer runs are "on view" listings, not a festival to repeat on every day
+
+
+def _detect_event_date_span(entry, start_date):
+    """Last day of a multi-day event or festival (2 to 10 days), or None.
+
+    Looks at the listing's own end ("end" timestamp or "ends"/"end_date" day) and at span words in the
+    title or time text ("Nov 20-23", "Fri-Sun", "3-day", "thru 11/23")."""
+    if isinstance(start_date, datetime):
+        start_date = start_date.date()
+    if not isinstance(start_date, date):
+        return None
+    end_date = None
+    raw_end = entry.get("end")
+    if raw_end and isinstance(raw_end, str):
+        try:
+            clean = raw_end.replace("Z", "+00:00")
+            if "T" in clean or " " in clean:
+                dt_end = datetime.fromisoformat(clean)
+                dt_end = (dt_end if dt_end.tzinfo else dt_end.replace(tzinfo=EASTERN)).astimezone(EASTERN)
+                # A night that runs past midnight (a party ending at 6 AM, a late show) is one night,
+                # not two days: anything under 16 hours long stays on its start day.
+                t0 = entry.get("_time")
+                if isinstance(t0, datetime) and dt_end - t0 < timedelta(hours=16):
+                    pass
+                elif dt_end.date() > start_date:
+                    end_date = dt_end.date()
+            else:
+                d = datetime.strptime(clean[:10], "%Y-%m-%d").date()
+                if d > start_date:
+                    end_date = d
+        except (TypeError, ValueError):
+            pass
+    for k in ("ends", "end_date"):
+        v = entry.get(k)
+        if v and isinstance(v, str):
+            try:
+                d = datetime.strptime(v[:10], "%Y-%m-%d").date()
+                if d > start_date:
+                    end_date = max(end_date or d, d)
+            except (TypeError, ValueError):
+                pass
+    text = f"{entry.get('name') or ''} {entry.get('time') or ''}"
+
+    def _push(cand):
+        nonlocal end_date
+        end_date = max(end_date or cand, cand)
+
+    m = _SPAN_MONTH_DAYS_RE.search(text)
+    if m:
+        d1, d2 = int(m.group(1)), int(m.group(2))
+        if d1 == start_date.day and d1 < d2 and d2 - d1 <= 10:
+            try:
+                _push(date(start_date.year, start_date.month, d2))
+            except ValueError:
+                pass
+    if _SPAN_FRI_SUN_RE.search(text) and start_date.weekday() == 4:
+        _push(start_date + timedelta(days=2))
+    if _SPAN_SAT_SUN_RE.search(text) and start_date.weekday() == 5:
+        _push(start_date + timedelta(days=1))
+    if _SPAN_THU_SUN_RE.search(text) and start_date.weekday() == 3:
+        _push(start_date + timedelta(days=3))
+    m = _SPAN_DAYS_RE.search(text)
+    if m:
+        _push(start_date + timedelta(days=int(m.group(1) or m.group(2)) - 1))
+    m = _SPAN_UNTIL_RE.search(text)
+    if m:
+        mm, dd = int(m.group(1)), int(m.group(2))
+        try:
+            cand = date(start_date.year + (1 if mm < start_date.month else 0), mm, dd)
+            if start_date < cand <= start_date + timedelta(days=10):
+                _push(cand)
+        except ValueError:
+            pass
+    if end_date and 2 <= (end_date - start_date).days + 1 <= MULTIDAY_MAX_DAYS:
+        return end_date
+    return None
+
+
 def group_by_date(results):
     today = datetime.now(EASTERN).date()
     buckets = {}
@@ -2142,7 +2243,21 @@ def group_by_date(results):
             elif key < today:
                 ongoing.append(entry)
             else:
-                buckets.setdefault(key, []).append(entry)
+                span_end = _detect_event_date_span(entry, key) if not e.get("_time_guess") else None
+                if span_end:
+                    span_days = (span_end - key).days + 1
+                    for i in range(span_days):
+                        cur_day = key + timedelta(days=i)
+                        if cur_day < today:
+                            continue
+                        day_entry = dict(entry)
+                        day_time = entry["_time"] + timedelta(days=i)
+                        day_entry["_time"] = day_time
+                        day_entry["date"] = day_time.astimezone(timezone.utc).isoformat()
+                        day_entry["_multiday_span"] = (key, span_end)
+                        buckets.setdefault(cur_day, []).append(day_entry)
+                else:
+                    buckets.setdefault(key, []).append(entry)
     word_freq = title_word_freq([e for evs in buckets.values() for e in evs])
     for date_key, events in list(buckets.items()):
         events.sort(key=lambda e: e.get("_time", datetime.min.replace(tzinfo=EASTERN)))

@@ -4953,6 +4953,15 @@ def _eb_venue_in_nyc(vobj):
     return (addr.get("region") or "NY").upper() == "NY" and city in _NYC_CITIES
 
 
+def _eb_end_utc(ev, start):
+    """ISO end time (UTC) when Eventbrite lists one after the start, else None."""
+    try:
+        end = datetime.fromisoformat(((ev.get("end") or {}).get("utc") or "").replace("Z", "+00:00")).astimezone(timezone.utc)
+    except ValueError:
+        return None
+    return end.isoformat() if end > start else None
+
+
 def _eb_price(ev):
     if ev.get("is_free"):
         return "Free"
@@ -5042,6 +5051,7 @@ def scrape_eventbrite_organizer(url, ua, max_pages=4):
             e = {
                 "name": name,
                 "date": dt.isoformat(),
+                "end": _eb_end_utc(ev, dt),
                 "url": ev.get("url") or f"https://www.eventbrite.com/o/{obj_id}",
                 "venue": vname,
                 "lat": lat,
@@ -7601,6 +7611,12 @@ def scrape_tribe_events_api(url, ua, only_nyc=False, max_pages=4):
             }
             if only_nyc and not re.search(r"\b(New York|Brooklyn|Queens|Bronx|Staten Island|NY 1[01]\d{3})\b", f"{ev_addr or ''} {v_name or ''}"):
                 continue
+            try:
+                end_dt = datetime.strptime((item.get("end_date") or "")[:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=EASTERN)
+                if end_dt > dt:
+                    ev_dict["end"] = end_dt.astimezone(timezone.utc).isoformat()
+            except ValueError:
+                pass
             if ev_addr:
                 ev_dict["address"] = ev_addr
             if default_hood:
@@ -7898,6 +7914,9 @@ def _jsonld_event_to_entry(ev, base_url=None):
             entry["lat"], entry["lng"] = float(geo["latitude"]), float(geo["longitude"])
         except (KeyError, TypeError, ValueError):
             pass
+    end = _local_iso_to_utc(ev.get("endDate"))
+    if end is not None and end > dt:
+        entry["end"] = end.isoformat()  # lets a multi-day festival show on each day it runs
     desc = ev.get("description")
     if isinstance(desc, str) and desc.strip():
         entry["description"] = clean_description(html.unescape(desc[:600]))
