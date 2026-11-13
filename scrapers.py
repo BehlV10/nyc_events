@@ -11282,6 +11282,19 @@ def _load_eventbrite_organizers(path=EVENTBRITE_ORGANIZERS_FILE):
     return out
 
 
+MEETUP_GROUPS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "meetup_groups.json")
+
+
+def _load_meetup_groups(path=MEETUP_GROUPS_FILE):
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        return []
+    return [(g["slug"], g.get("category") or "community") for g in data.get("groups") or []
+            if re.fullmatch(r"[A-Za-z0-9_.\-]+", str(g.get("slug") or ""))]
+
+
 def _topic_terms(query):
     """Words that make a title 'on topic' for a keyword search: the phrase itself plus its
     distinctive words with a light stem ("rock climbing" -> "rock climbing", "climb")."""
@@ -11316,6 +11329,14 @@ _ALL_VENUES += [
         "ua": UA_CHROME, "scraper": scrape_meetup_windows, "default_category": cat, "topic_terms": _topic_terms(query),
     }
     for label, query, cat in _MEETUP_TOPICS
+] + [
+    {
+        "name": f"Meetup group: {slug}",
+        "url": f"https://www.meetup.com/{slug}/events/",
+        "ua": UA_CHROME, "scraper": scrape_meetup, "default_category": cat,
+    }
+    for slug, cat in _load_meetup_groups()
+    if f"meetup.com/{slug.lower()}/" not in " ".join((x.get("url") or "").lower() for x in _ALL_VENUES)
 ] + [
     {
         "name": f"Eventbrite: {label}",

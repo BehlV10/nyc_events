@@ -1,0 +1,2053 @@
+{
+ "_doc": "Meetup groups read from their own event pages (scrape_meetup) in addition to the keyword searches, so each group's full upcoming list is included. Built from groups seen with 5+ upcoming NYC events; edit freely.",
+ "groups": [
+  {
+   "slug": "ccccc-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "cuban-salsa-nyc-dance-classes",
+   "category": "dance"
+  },
+  {
+   "slug": "digthisvb",
+   "category": "community"
+  },
+  {
+   "slug": "hip-hop-and-afrodance-nyc",
+   "category": "theater"
+  },
+  {
+   "slug": "new-york-open-mic-meetup-group-at-the-producer-s-club",
+   "category": "comedy"
+  },
+  {
+   "slug": "nyc-outdoor-badminton",
+   "category": "outdoors"
+  },
+  {
+   "slug": "group-carpe-diem",
+   "category": "community"
+  },
+  {
+   "slug": "newyorkadventureclub",
+   "category": "community"
+  },
+  {
+   "slug": "lyndhurst-nj-salsa-dance-lessons-meetup",
+   "category": "dance"
+  },
+  {
+   "slug": "dinner-dancing-northjersey",
+   "category": "dance"
+  },
+  {
+   "slug": "meetup-group-frxorxyv",
+   "category": "community"
+  },
+  {
+   "slug": "amcnynj",
+   "category": "community"
+  },
+  {
+   "slug": "nybackpackers",
+   "category": "film"
+  },
+  {
+   "slug": "drawingnewyork",
+   "category": "art"
+  },
+  {
+   "slug": "steppers-16",
+   "category": "community"
+  },
+  {
+   "slug": "social-striders-running-club",
+   "category": "community"
+  },
+  {
+   "slug": "foodgasm",
+   "category": "community"
+  },
+  {
+   "slug": "borough-hoppers",
+   "category": "community"
+  },
+  {
+   "slug": "awesome-things-to-do",
+   "category": "community"
+  },
+  {
+   "slug": "new-friends-williamsburg",
+   "category": "comedy"
+  },
+  {
+   "slug": "socialnewyork",
+   "category": "community"
+  },
+  {
+   "slug": "astoriarunners",
+   "category": "sports"
+  },
+  {
+   "slug": "socially-awkward-but-im-trying",
+   "category": "community"
+  },
+  {
+   "slug": "shutupandwritenyc",
+   "category": "books"
+  },
+  {
+   "slug": "tivity",
+   "category": "community"
+  },
+  {
+   "slug": "omgnyc",
+   "category": "community"
+  },
+  {
+   "slug": "lgbt-network-queens-lgbt-center-events",
+   "category": "community"
+  },
+  {
+   "slug": "queer-partner-dance-nyc",
+   "category": "dance"
+  },
+  {
+   "slug": "desi-outdoors-enrichment-and-recreational-activities",
+   "category": "community"
+  },
+  {
+   "slug": "manhattan-saturday-80s-dance-party",
+   "category": "clubbing"
+  },
+  {
+   "slug": "salsa-merengue-bachata-kizomba-dancers-meetup-group",
+   "category": "dance"
+  },
+  {
+   "slug": "mostlygo",
+   "category": "community"
+  },
+  {
+   "slug": "jcrunners",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-informal-running-club-home-of-tmirce-nyc",
+   "category": "sports"
+  },
+  {
+   "slug": "shorewalkers-members-only",
+   "category": "community"
+  },
+  {
+   "slug": "north-jersey-bowling-soccer-volleyball",
+   "category": "community"
+  },
+  {
+   "slug": "longislandcity-runners",
+   "category": "sports"
+  },
+  {
+   "slug": "girlsgoexplorenyc",
+   "category": "community"
+  },
+  {
+   "slug": "nykayakpolo",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-mlutqiwy",
+   "category": "community"
+  },
+  {
+   "slug": "nycbellydancers",
+   "category": "sports"
+  },
+  {
+   "slug": "exquisite-palates-wine-and-spirit-tasting-social-group",
+   "category": "community"
+  },
+  {
+   "slug": "quintessentialqueens",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-genx-womengroup",
+   "category": "community"
+  },
+  {
+   "slug": "brooklyn-dungeons-dragons-meetup",
+   "category": "gaming"
+  },
+  {
+   "slug": "art-music-social",
+   "category": "community"
+  },
+  {
+   "slug": "finding-female-friends-over-fifty",
+   "category": "clubbing"
+  },
+  {
+   "slug": "williamsburg-art-club",
+   "category": "art"
+  },
+  {
+   "slug": "improvnow",
+   "category": "comedy"
+  },
+  {
+   "slug": "nycconnects-social",
+   "category": "community"
+  },
+  {
+   "slug": "scifi-22",
+   "category": "community"
+  },
+  {
+   "slug": "uptown-nyc-board-gamers",
+   "category": "community"
+  },
+  {
+   "slug": "mens-naked-drawing-group-ny",
+   "category": "community"
+  },
+  {
+   "slug": "tenafly-sociale-meetup-group",
+   "category": "music"
+  },
+  {
+   "slug": "nyc-public-speaking-practice",
+   "category": "comedy"
+  },
+  {
+   "slug": "madnesskaraoke",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-social",
+   "category": "clubbing"
+  },
+  {
+   "slug": "nycdnb",
+   "category": "community"
+  },
+  {
+   "slug": "cucala-dance-company",
+   "category": "dance"
+  },
+  {
+   "slug": "gilligansadventures",
+   "category": "community"
+  },
+  {
+   "slug": "queens-board-gamers-group",
+   "category": "gaming"
+  },
+  {
+   "slug": "cuban-salsa-new-york",
+   "category": "dance"
+  },
+  {
+   "slug": "scottish-country-dancing-in-new-york",
+   "category": "dance"
+  },
+  {
+   "slug": "romantic-cooking-club",
+   "category": "community"
+  },
+  {
+   "slug": "bkwomenswritinggroup",
+   "category": "books"
+  },
+  {
+   "slug": "imeditateny",
+   "category": "community"
+  },
+  {
+   "slug": "the-rise-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "funeventsinny",
+   "category": "dance"
+  },
+  {
+   "slug": "bergencountywellness",
+   "category": "community"
+  },
+  {
+   "slug": "sundance-outdoor-adventure-society",
+   "category": "outdoors"
+  },
+  {
+   "slug": "silentbookclubnyc",
+   "category": "community"
+  },
+  {
+   "slug": "improvpublicspeaking",
+   "category": "comedy"
+  },
+  {
+   "slug": "nude-york-yoga",
+   "category": "sports"
+  },
+  {
+   "slug": "laughing-in-williamsburg",
+   "category": "comedy"
+  },
+  {
+   "slug": "free-tickets-meetup-comedy-club-show",
+   "category": "comedy"
+  },
+  {
+   "slug": "allan-houston-layups-meetup-grouppp",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-korean-english-language-exchange-at-li-l-jay-s-cafe",
+   "category": "community"
+  },
+  {
+   "slug": "photography-classes-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "staten-island-hiking-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "meditate",
+   "category": "community"
+  },
+  {
+   "slug": "the-most-awesome-things-to-do-in-new-york-city",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-classic-folk-dance",
+   "category": "community"
+  },
+  {
+   "slug": "free-cheap-nyc-nightlife",
+   "category": "comedy"
+  },
+  {
+   "slug": "manhattan_push_hands",
+   "category": "community"
+  },
+  {
+   "slug": "writing-under-influence",
+   "category": "community"
+  },
+  {
+   "slug": "nycrollerbladers",
+   "category": "community"
+  },
+  {
+   "slug": "amcyoungmembers",
+   "category": "outdoors"
+  },
+  {
+   "slug": "thewritinggroup",
+   "category": "books"
+  },
+  {
+   "slug": "free-affordable-yoga-qigong-meditation-wellness",
+   "category": "sports"
+  },
+  {
+   "slug": "new-york-sports-meetup-group",
+   "category": "sports"
+  },
+  {
+   "slug": "danceloversmeetupgroup",
+   "category": "clubbing"
+  },
+  {
+   "slug": "knittingaroundny",
+   "category": "community"
+  },
+  {
+   "slug": "spanishnyc",
+   "category": "community"
+  },
+  {
+   "slug": "hangout-in-queens",
+   "category": "community"
+  },
+  {
+   "slug": "tango-date-nyc",
+   "category": "dance"
+  },
+  {
+   "slug": "frenchies",
+   "category": "community"
+  },
+  {
+   "slug": "pokernightoutnyc",
+   "category": "community"
+  },
+  {
+   "slug": "somocon",
+   "category": "outdoors"
+  },
+  {
+   "slug": "meetup-group-szqyjzpl",
+   "category": "community"
+  },
+  {
+   "slug": "nycballroomdance",
+   "category": "dance"
+  },
+  {
+   "slug": "bushwick-writers-meetup",
+   "category": "books"
+  },
+  {
+   "slug": "fun-and-games-meetup-tenafly-northern-new-jersey-nj",
+   "category": "gaming"
+  },
+  {
+   "slug": "womenofculturenyc",
+   "category": "community"
+  },
+  {
+   "slug": "off-the-page-reading-eating-exploring-women-30",
+   "category": "community"
+  },
+  {
+   "slug": "woodside-sunnyside-runners",
+   "category": "sports"
+  },
+  {
+   "slug": "nyc-expats-international-friends-social-group",
+   "category": "community"
+  },
+  {
+   "slug": "daddyretreat",
+   "category": "sports"
+  },
+  {
+   "slug": "nycs-brightest",
+   "category": "community"
+  },
+  {
+   "slug": "the-jersey-city-writers-meetup-group",
+   "category": "books"
+  },
+  {
+   "slug": "williamsburg-french-conversation-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "comediaespanol",
+   "category": "comedy"
+  },
+  {
+   "slug": "topspin-the-new-york-ping-pong-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "playyourcourt-jersey-city-tennis",
+   "category": "community"
+  },
+  {
+   "slug": "eliane-delage-guitar-ensemble",
+   "category": "community"
+  },
+  {
+   "slug": "randomevents",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-hiking-tours",
+   "category": "community"
+  },
+  {
+   "slug": "bluegrassjams",
+   "category": "community"
+  },
+  {
+   "slug": "exploring-nyc-history-and-neighborhoods",
+   "category": "outdoors"
+  },
+  {
+   "slug": "prospect-park-soccer",
+   "category": "clubbing"
+  },
+  {
+   "slug": "brodyaga",
+   "category": "community"
+  },
+  {
+   "slug": "korean-language-and-social-events-ny",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-jazz-musicians-hang",
+   "category": "clubbing"
+  },
+  {
+   "slug": "nyc-tango-lover",
+   "category": "dance"
+  },
+  {
+   "slug": "outsiders-ny",
+   "category": "comedy"
+  },
+  {
+   "slug": "onyx-and-om-black-women-do-yoga",
+   "category": "sports"
+  },
+  {
+   "slug": "startup-pitch-networking-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "mindful-astoria",
+   "category": "community"
+  },
+  {
+   "slug": "lets-walkprogram",
+   "category": "community"
+  },
+  {
+   "slug": "weekly-bootcamps",
+   "category": "community"
+  },
+  {
+   "slug": "mastertrainernycthe-new-york-city-runners-group",
+   "category": "community"
+  },
+  {
+   "slug": "5d-raise-your-vibration-elevate-your-frequency-to-5d",
+   "category": "community"
+  },
+  {
+   "slug": "dining-for-xennials",
+   "category": "community"
+  },
+  {
+   "slug": "pickupsoccer",
+   "category": "community"
+  },
+  {
+   "slug": "tertulia-hub-spanish-learning-community-for-women",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-laid-back-writing-group",
+   "category": "community"
+  },
+  {
+   "slug": "brooklyn-strategist-evening-events-games-meetup",
+   "category": "gaming"
+  },
+  {
+   "slug": "linguallama",
+   "category": "community"
+  },
+  {
+   "slug": "queersocial",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-ssvjxnol",
+   "category": "community"
+  },
+  {
+   "slug": "singles-by-neighborhood",
+   "category": "community"
+  },
+  {
+   "slug": "hackmanhattan",
+   "category": "community"
+  },
+  {
+   "slug": "victorypints",
+   "category": "community"
+  },
+  {
+   "slug": "central-park-nyc-ever-walk",
+   "category": "outdoors"
+  },
+  {
+   "slug": "kealohaoutrigger",
+   "category": "outdoors"
+  },
+  {
+   "slug": "new-york-martial-fitness",
+   "category": "community"
+  },
+  {
+   "slug": "livereggaenyc",
+   "category": "community"
+  },
+  {
+   "slug": "line-legacy-figure-drawing-in-queens",
+   "category": "art"
+  },
+  {
+   "slug": "nyc-art-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "40sand50s",
+   "category": "clubbing"
+  },
+  {
+   "slug": "let-s-dine-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "manhattanmartialarts",
+   "category": "community"
+  },
+  {
+   "slug": "brooklyn-based-board-gaming",
+   "category": "gaming"
+  },
+  {
+   "slug": "casual-rock-climbing",
+   "category": "sports"
+  },
+  {
+   "slug": "psychedelic-yoga",
+   "category": "sports"
+  },
+  {
+   "slug": "newjerseysingles",
+   "category": "dance"
+  },
+  {
+   "slug": "sing-and-sign-with-baby",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-dogs-paint-your-pet-meetup",
+   "category": "clubbing"
+  },
+  {
+   "slug": "reading-philosophy",
+   "category": "community"
+  },
+  {
+   "slug": "rockland-social-sandbox",
+   "category": "gaming"
+  },
+  {
+   "slug": "brooklyn-society-for-ethical-culture",
+   "category": "community"
+  },
+  {
+   "slug": "wanderingsolesnyc",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-date-nights-out",
+   "category": "dance"
+  },
+  {
+   "slug": "inner-engineering-new-york-isha-yoga-meditation-classes",
+   "category": "sports"
+  },
+  {
+   "slug": "bronxtennis",
+   "category": "community"
+  },
+  {
+   "slug": "greenpointfiguredrawing",
+   "category": "art"
+  },
+  {
+   "slug": "single-events",
+   "category": "community"
+  },
+  {
+   "slug": "upper-west-side-moms",
+   "category": "family"
+  },
+  {
+   "slug": "newyorkfunevents",
+   "category": "community"
+  },
+  {
+   "slug": "i-love-museums-and-culture-event",
+   "category": "clubbing"
+  },
+  {
+   "slug": "brooklyn-capoeira-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "runningsouls-net",
+   "category": "sports"
+  },
+  {
+   "slug": "lic-board-games",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-photographers",
+   "category": "community"
+  },
+  {
+   "slug": "bluesdancenewyork",
+   "category": "community"
+  },
+  {
+   "slug": "queensfutsalclub",
+   "category": "sports"
+  },
+  {
+   "slug": "nytango",
+   "category": "clubbing"
+  },
+  {
+   "slug": "new-york-sivanada-yoga-center",
+   "category": "community"
+  },
+  {
+   "slug": "funnewyork",
+   "category": "community"
+  },
+  {
+   "slug": "random-strangers-jam",
+   "category": "community"
+  },
+  {
+   "slug": "agapenyc",
+   "category": "books"
+  },
+  {
+   "slug": "new-york-broadway-museum-and-culture-lovers",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-vrgvpdde",
+   "category": "community"
+  },
+  {
+   "slug": "radiantandraresocietynyc",
+   "category": "clubbing"
+  },
+  {
+   "slug": "drinkingnewyork",
+   "category": "community"
+  },
+  {
+   "slug": "playyourcourt-hoboken-tennis",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-over-40",
+   "category": "community"
+  },
+  {
+   "slug": "prospect-park-board-gaming-club",
+   "category": "gaming"
+  },
+  {
+   "slug": "cosmic-improv",
+   "category": "comedy"
+  },
+  {
+   "slug": "hvhikers",
+   "category": "community"
+  },
+  {
+   "slug": "ethicalfocus",
+   "category": "community"
+  },
+  {
+   "slug": "socceroof-new-rochelle-pickup-events-and-more",
+   "category": "sports"
+  },
+  {
+   "slug": "soccer-lower-manhatan",
+   "category": "sports"
+  },
+  {
+   "slug": "learn-and-practice-korean-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "dharmachakra-kbc",
+   "category": "community"
+  },
+  {
+   "slug": "bergen-county-self-defense-kickboxing",
+   "category": "community"
+  },
+  {
+   "slug": "brighton-beach-nyc-wing-chun-kung-fu-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-sexy-dance-fitness-meetup",
+   "category": "sports"
+  },
+  {
+   "slug": "gtbnyc",
+   "category": "sports"
+  },
+  {
+   "slug": "central-park-beginner-runners",
+   "category": "sports"
+  },
+  {
+   "slug": "jersey-city-board-games-meetup",
+   "category": "gaming"
+  },
+  {
+   "slug": "city-salsa-social-circle",
+   "category": "community"
+  },
+  {
+   "slug": "nj-code-coffee",
+   "category": "community"
+  },
+  {
+   "slug": "astoria-tech-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "weekend-urban-sketch",
+   "category": "art"
+  },
+  {
+   "slug": "outdoorsclubny",
+   "category": "community"
+  },
+  {
+   "slug": "gaybeachbums",
+   "category": "community"
+  },
+  {
+   "slug": "nysoccerproject",
+   "category": "community"
+  },
+  {
+   "slug": "sound-collective-workshops",
+   "category": "community"
+  },
+  {
+   "slug": "startup-valley",
+   "category": "community"
+  },
+  {
+   "slug": "newyorkssa",
+   "category": "community"
+  },
+  {
+   "slug": "catch-up-comedy",
+   "category": "comedy"
+  },
+  {
+   "slug": "wagmi-connect-networking-events",
+   "category": "community"
+  },
+  {
+   "slug": "long-island-nassau-suffolk-speed-dating-events",
+   "category": "community"
+  },
+  {
+   "slug": "njsinglesbergencounty",
+   "category": "community"
+  },
+  {
+   "slug": "clanfall",
+   "category": "gaming"
+  },
+  {
+   "slug": "habituallychic-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "masters-of-ancient-traditions",
+   "category": "community"
+  },
+  {
+   "slug": "the-new-york-chen-tai-chi-chuan-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "everwanderwhy2",
+   "category": "outdoors"
+  },
+  {
+   "slug": "nycwrites",
+   "category": "community"
+  },
+  {
+   "slug": "long-island-backgammon-meetup-group",
+   "category": "gaming"
+  },
+  {
+   "slug": "nyeekgames",
+   "category": "gaming"
+  },
+  {
+   "slug": "nyctrivia1",
+   "category": "community"
+  },
+  {
+   "slug": "out-about-in-the-city-and-having-fun",
+   "category": "community"
+  },
+  {
+   "slug": "flushingtech",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-langroops-language-exchange",
+   "category": "community"
+  },
+  {
+   "slug": "the-new-spanish-english-language-exchange",
+   "category": "community"
+  },
+  {
+   "slug": "sketching",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-tvdtbufu",
+   "category": "community"
+  },
+  {
+   "slug": "childfreenycwomen",
+   "category": "community"
+  },
+  {
+   "slug": "statenislandfriends",
+   "category": "gaming"
+  },
+  {
+   "slug": "passaic-indoor-pickleball-meetup-group",
+   "category": "sports"
+  },
+  {
+   "slug": "animesocialnexus",
+   "category": "community"
+  },
+  {
+   "slug": "the-best-nyc-events",
+   "category": "clubbing"
+  },
+  {
+   "slug": "fun-new-york-events",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-nqyhoipc",
+   "category": "comedy"
+  },
+  {
+   "slug": "new-york-singles-events-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-gdnpaskd",
+   "category": "community"
+  },
+  {
+   "slug": "brooklyn-bulldog-poker-club-near-barclays-center",
+   "category": "gaming"
+  },
+  {
+   "slug": "fat-cat-fab-lab",
+   "category": "community"
+  },
+  {
+   "slug": "kew-gardens-hiking",
+   "category": "outdoors"
+  },
+  {
+   "slug": "rockland-singles-60-plus-afternoon-walk-hiking-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "outyork",
+   "category": "outdoors"
+  },
+  {
+   "slug": "new-york-dungeons-dragons-meetup-group",
+   "category": "gaming"
+  },
+  {
+   "slug": "social-dancing-for-fun-in-englewood-nj",
+   "category": "dance"
+  },
+  {
+   "slug": "new-york-city-singles-over-50-movie-club",
+   "category": "film"
+  },
+  {
+   "slug": "gaycatholicschristians",
+   "category": "music"
+  },
+  {
+   "slug": "lic-hoops-mens-indoor-pickup-basketball-in-hunters-point",
+   "category": "sports"
+  },
+  {
+   "slug": "new-york-indoor-volleyball-meetup",
+   "category": "sports"
+  },
+  {
+   "slug": "manhattan-japanese-yosakoi-dance-meetup-group",
+   "category": "dance"
+  },
+  {
+   "slug": "tangonyc",
+   "category": "dance"
+  },
+  {
+   "slug": "salsareggaetonlatindancemeetup",
+   "category": "clubbing"
+  },
+  {
+   "slug": "paint-your-pet-and-mingle-with-pet-lovers",
+   "category": "community"
+  },
+  {
+   "slug": "gaybeerclub",
+   "category": "community"
+  },
+  {
+   "slug": "im-young-and-social-in-new-york-20s-30s-40s",
+   "category": "community"
+  },
+  {
+   "slug": "aces-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "meditation-379",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-foodies",
+   "category": "community"
+  },
+  {
+   "slug": "taichiqigong",
+   "category": "community"
+  },
+  {
+   "slug": "brooklyn-spanish-language-exchange",
+   "category": "community"
+  },
+  {
+   "slug": "fun-things-to-do-in-nyc-at-night",
+   "category": "art"
+  },
+  {
+   "slug": "nycprof",
+   "category": "community"
+  },
+  {
+   "slug": "neverwinter-free-hiking-and-cycling",
+   "category": "community"
+  },
+  {
+   "slug": "rock-on-run-club",
+   "category": "sports"
+  },
+  {
+   "slug": "forest-hills-book-group",
+   "category": "community"
+  },
+  {
+   "slug": "forest-hills-board-gamers",
+   "category": "gaming"
+  },
+  {
+   "slug": "new-york-brainiacs",
+   "category": "clubbing"
+  },
+  {
+   "slug": "language-collective",
+   "category": "community"
+  },
+  {
+   "slug": "birdingaroundnyc",
+   "category": "outdoors"
+  },
+  {
+   "slug": "sublime-time-culture-collective-nyc",
+   "category": "music"
+  },
+  {
+   "slug": "connected-drum-circle",
+   "category": "comedy"
+  },
+  {
+   "slug": "an-improv-comedy-show-about-ghosting",
+   "category": "comedy"
+  },
+  {
+   "slug": "circlesinging-nyc-vocal-improvisation-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "brooklyn-traditional-slow-jam",
+   "category": "community"
+  },
+  {
+   "slug": "backgammon-new-york-city-bgnyc",
+   "category": "gaming"
+  },
+  {
+   "slug": "the-most-fun-things-to-do-in-westchester",
+   "category": "community"
+  },
+  {
+   "slug": "nycmobsters",
+   "category": "film"
+  },
+  {
+   "slug": "walk-rahway-river-park",
+   "category": "outdoors"
+  },
+  {
+   "slug": "adventure-untamed",
+   "category": "community"
+  },
+  {
+   "slug": "new_york_city_running_and_fitness_group",
+   "category": "community"
+  },
+  {
+   "slug": "5boroexploration",
+   "category": "clubbing"
+  },
+  {
+   "slug": "climb-r-nj-climbing-partner-meetup-at-goat",
+   "category": "sports"
+  },
+  {
+   "slug": "women-about",
+   "category": "community"
+  },
+  {
+   "slug": "polarbearcoedpickupsoftball",
+   "category": "community"
+  },
+  {
+   "slug": "bk-musical-theater-workshop",
+   "category": "theater"
+  },
+  {
+   "slug": "dharmadrink",
+   "category": "art"
+  },
+  {
+   "slug": "elizabeth-grass-volleyball-meetup-group",
+   "category": "sports"
+  },
+  {
+   "slug": "sets-in-the-city-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "playyourcourt-nyc-metro-tennis",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-tanchaz-hungarian-folk-dance-music",
+   "category": "community"
+  },
+  {
+   "slug": "internationaldancemusic",
+   "category": "clubbing"
+  },
+  {
+   "slug": "big-apple-chorus",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-pets-fun-paint-party-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-nyc-weekend-eats",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-foodie-club",
+   "category": "community"
+  },
+  {
+   "slug": "bergen-county-upscale-singles",
+   "category": "community"
+  },
+  {
+   "slug": "astoria-professionals-group",
+   "category": "community"
+  },
+  {
+   "slug": "bellyclubnyc",
+   "category": "community"
+  },
+  {
+   "slug": "carljung-27",
+   "category": "community"
+  },
+  {
+   "slug": "past-lives-dreams-soul-travel",
+   "category": "community"
+  },
+  {
+   "slug": "plant-powered-metro-new-york",
+   "category": "community"
+  },
+  {
+   "slug": "boardgame-icebreakers",
+   "category": "community"
+  },
+  {
+   "slug": "williamsburg-poker-club-the-best-and-most-fun-poker-game",
+   "category": "community"
+  },
+  {
+   "slug": "campersgroup",
+   "category": "clubbing"
+  },
+  {
+   "slug": "jersey-city-running-club",
+   "category": "sports"
+  },
+  {
+   "slug": "tabletop-tuesday",
+   "category": "gaming"
+  },
+  {
+   "slug": "brooklyn-woc-bookclub-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "comedy-club-night-when-know-the-producer",
+   "category": "comedy"
+  },
+  {
+   "slug": "conversation-francaise-a-brooklyn",
+   "category": "community"
+  },
+  {
+   "slug": "gay-mens-hiking-group",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-city-hiking",
+   "category": "community"
+  },
+  {
+   "slug": "https-www-meetup-com-ct-outdoors",
+   "category": "outdoors"
+  },
+  {
+   "slug": "nyctourtripclub",
+   "category": "outdoors"
+  },
+  {
+   "slug": "nyc-speed-dating-events-singles-and-networking-events",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-tennis-league",
+   "category": "sports"
+  },
+  {
+   "slug": "tennis-on-the-town",
+   "category": "clubbing"
+  },
+  {
+   "slug": "dj-dance-social-nyc",
+   "category": "clubbing"
+  },
+  {
+   "slug": "events-nyc-group",
+   "category": "clubbing"
+  },
+  {
+   "slug": "mingle-around-singles-40s-50s-60s-events-adventures",
+   "category": "food"
+  },
+  {
+   "slug": "dating-improving-relationship-confidence-happiness",
+   "category": "comedy"
+  },
+  {
+   "slug": "nyc-speedfriending",
+   "category": "gaming"
+  },
+  {
+   "slug": "the-nyc-20s-30s-and-40s-group",
+   "category": "community"
+  },
+  {
+   "slug": "socialnyc1",
+   "category": "clubbing"
+  },
+  {
+   "slug": "nycnonprofit",
+   "category": "community"
+  },
+  {
+   "slug": "the-amazing-steppers-of-westchester",
+   "category": "community"
+  },
+  {
+   "slug": "i8and8",
+   "category": "community"
+  },
+  {
+   "slug": "bergen-nj-mahjong-group",
+   "category": "gaming"
+  },
+  {
+   "slug": "kaiwa-club-ny",
+   "category": "community"
+  },
+  {
+   "slug": "culinary-enthusiasts-of-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-pints-n-purls",
+   "category": "art"
+  },
+  {
+   "slug": "cavalier-king-charles-spaniel-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "taiji-form-qigong-manhattan",
+   "category": "community"
+  },
+  {
+   "slug": "qi-gong-tai-chi-westchester-meetup-group",
+   "category": "sports"
+  },
+  {
+   "slug": "freewalkers",
+   "category": "community"
+  },
+  {
+   "slug": "founders-running-club-new-york",
+   "category": "sports"
+  },
+  {
+   "slug": "new-york-story-night",
+   "category": "community"
+  },
+  {
+   "slug": "skillcampnyc",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-friendly-people-games",
+   "category": "community"
+  },
+  {
+   "slug": "montclair-gamenights-dnd-cyberpunk-red",
+   "category": "gaming"
+  },
+  {
+   "slug": "pathfinder-at-hex-co",
+   "category": "community"
+  },
+  {
+   "slug": "the-nycskeptics-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "hypnoticastudios",
+   "category": "community"
+  },
+  {
+   "slug": "west-side-talkers",
+   "category": "community"
+  },
+  {
+   "slug": "howdy-stranger-improv-comedy-nj",
+   "category": "comedy"
+  },
+  {
+   "slug": "north-jersey-salsa-bachata-classes-outings",
+   "category": "dance"
+  },
+  {
+   "slug": "nycfoodiesclub",
+   "category": "community"
+  },
+  {
+   "slug": "brooklyn-spanish-conversation",
+   "category": "community"
+  },
+  {
+   "slug": "brooklyn-rogues-running",
+   "category": "sports"
+  },
+  {
+   "slug": "new-york-nyc-soccer-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "nj-ny-pa-outdoor-and-nature-club",
+   "category": "community"
+  },
+  {
+   "slug": "nycfriends",
+   "category": "clubbing"
+  },
+  {
+   "slug": "nyasianoutdoors",
+   "category": "outdoors"
+  },
+  {
+   "slug": "centercity-events",
+   "category": "outdoors"
+  },
+  {
+   "slug": "nyc-coffee-hunters",
+   "category": "community"
+  },
+  {
+   "slug": "kirtan-and-discourses-on-bhagavad-gita",
+   "category": "community"
+  },
+  {
+   "slug": "breathe-write-with-kayla-schwab",
+   "category": "community"
+  },
+  {
+   "slug": "lic-soccer-meetup",
+   "category": "sports"
+  },
+  {
+   "slug": "5rhythmsnewjersey",
+   "category": "community"
+  },
+  {
+   "slug": "tgfk-too-good-for-karaoke",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-acting-training-meetup-group",
+   "category": "theater"
+  },
+  {
+   "slug": "nyc-korean-movie-meetup",
+   "category": "film"
+  },
+  {
+   "slug": "meetup-group-skipqmnf",
+   "category": "community"
+  },
+  {
+   "slug": "talk-to-strangers-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "mahjong-nyc",
+   "category": "gaming"
+  },
+  {
+   "slug": "manhattan-womens-social",
+   "category": "community"
+  },
+  {
+   "slug": "newyorkcityprofessionals",
+   "category": "clubbing"
+  },
+  {
+   "slug": "nyc-happy-hours",
+   "category": "community"
+  },
+  {
+   "slug": "bergen-county-pick-up-soccer",
+   "category": "outdoors"
+  },
+  {
+   "slug": "neverwinter-free-parties",
+   "category": "community"
+  },
+  {
+   "slug": "williams-center-boardgame-night",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-drinking-dinning-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-foodie-explorers",
+   "category": "community"
+  },
+  {
+   "slug": "e-w-n-y-c",
+   "category": "community"
+  },
+  {
+   "slug": "ny-urban-basketball",
+   "category": "sports"
+  },
+  {
+   "slug": "jerseycityfootballclub",
+   "category": "sports"
+  },
+  {
+   "slug": "uptown-soccer",
+   "category": "sports"
+  },
+  {
+   "slug": "ny-gwc",
+   "category": "community"
+  },
+  {
+   "slug": "fabulous-females-over-50-seekingfemalefriendsforevents",
+   "category": "music"
+  },
+  {
+   "slug": "ken-s-den",
+   "category": "community"
+  },
+  {
+   "slug": "queens-poker-meetup-group",
+   "category": "gaming"
+  },
+  {
+   "slug": "j-kuru",
+   "category": "community"
+  },
+  {
+   "slug": "spanish-classes-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "web-performance-ny",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-city-crochet-guild",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-city-fencing-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "nudeevents",
+   "category": "sports"
+  },
+  {
+   "slug": "central-new-jersey-singles-events",
+   "category": "community"
+  },
+  {
+   "slug": "nycico",
+   "category": "film"
+  },
+  {
+   "slug": "nyc-fantasy-bookclub",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-city-play-reading-group",
+   "category": "books"
+  },
+  {
+   "slug": "leftistprogressivenightout",
+   "category": "gaming"
+  },
+  {
+   "slug": "nycgamers",
+   "category": "gaming"
+  },
+  {
+   "slug": "brooklyn-chess-a-beer",
+   "category": "gaming"
+  },
+  {
+   "slug": "board-gamers-of-greater-nutley",
+   "category": "community"
+  },
+  {
+   "slug": "mamaroneck-nerds",
+   "category": "gaming"
+  },
+  {
+   "slug": "meetup-group-grbqwgeh",
+   "category": "community"
+  },
+  {
+   "slug": "ai-for-finance",
+   "category": "community"
+  },
+  {
+   "slug": "gay-french-language-practice",
+   "category": "community"
+  },
+  {
+   "slug": "union-square-portraiture-friends",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-improv-games-meetup-group",
+   "category": "comedy"
+  },
+  {
+   "slug": "901-innovation-improv-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "big-fat-real-book-jazz-jam-meetup-group",
+   "category": "music"
+  },
+  {
+   "slug": "knitandwinebklyn",
+   "category": "community"
+  },
+  {
+   "slug": "brooklynmovieclub",
+   "category": "community"
+  },
+  {
+   "slug": "columbia-dsl",
+   "category": "community"
+  },
+  {
+   "slug": "softville-social-club",
+   "category": "community"
+  },
+  {
+   "slug": "out-active-in-north-jersey",
+   "category": "sports"
+  },
+  {
+   "slug": "nyc-adventure-cycling-club",
+   "category": "clubbing"
+  },
+  {
+   "slug": "hoboken-cove-community-boathouse",
+   "category": "community"
+  },
+  {
+   "slug": "manual-dues-test-test-2",
+   "category": "community"
+  },
+  {
+   "slug": "jerseyrockclimbers",
+   "category": "sports"
+  },
+  {
+   "slug": "nyc-casual-baseball-club",
+   "category": "community"
+  },
+  {
+   "slug": "social-ladies-meeting-new-friends",
+   "category": "dance"
+  },
+  {
+   "slug": "nj-christian-singles",
+   "category": "dance"
+  },
+  {
+   "slug": "sizzling-salsa-dance-parties",
+   "category": "dance"
+  },
+  {
+   "slug": "bachata-heaven-social",
+   "category": "community"
+  },
+  {
+   "slug": "343-labs-electronic-music-producers-community",
+   "category": "clubbing"
+  },
+  {
+   "slug": "4050plus-professional",
+   "category": "community"
+  },
+  {
+   "slug": "bergen-county-acoustic-musicians",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-rave-clubbing-meetup-group",
+   "category": "clubbing"
+  },
+  {
+   "slug": "fab-beatles-music-jam",
+   "category": "community"
+  },
+  {
+   "slug": "freestyle-karaoke",
+   "category": "community"
+  },
+  {
+   "slug": "brooklyn-bible-studies",
+   "category": "community"
+  },
+  {
+   "slug": "make-new-friendsnyc",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-yyedoizw",
+   "category": "community"
+  },
+  {
+   "slug": "aussienyc",
+   "category": "community"
+  },
+  {
+   "slug": "newyorkexplorers",
+   "category": "community"
+  },
+  {
+   "slug": "advertising-marketing-analysts",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-active-singles",
+   "category": "community"
+  },
+  {
+   "slug": "cdi-crossgendercommunity",
+   "category": "clubbing"
+  },
+  {
+   "slug": "pagansparadise",
+   "category": "clubbing"
+  },
+  {
+   "slug": "playsoccer2give",
+   "category": "community"
+  },
+  {
+   "slug": "divine-light-world",
+   "category": "community"
+  },
+  {
+   "slug": "cfinyc",
+   "category": "community"
+  },
+  {
+   "slug": "manhattan-international-coed-soccer",
+   "category": "sports"
+  },
+  {
+   "slug": "club-hoopers",
+   "category": "sports"
+  },
+  {
+   "slug": "nycultimate",
+   "category": "community"
+  },
+  {
+   "slug": "ultimatefrisbee-153",
+   "category": "sports"
+  },
+  {
+   "slug": "new-york-city-adult-yugioh-dueling-club-21",
+   "category": "community"
+  },
+  {
+   "slug": "loungeasiaamericas",
+   "category": "community"
+  },
+  {
+   "slug": "power-of-the-inner-light-spiritual-services",
+   "category": "community"
+  },
+  {
+   "slug": "eastsidetoastmasters",
+   "category": "community"
+  },
+  {
+   "slug": "nycatheists",
+   "category": "community"
+  },
+  {
+   "slug": "hoboken-magic-the-gathering-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "hike-morristown",
+   "category": "outdoors"
+  },
+  {
+   "slug": "hangoutinqueensandnassau",
+   "category": "outdoors"
+  },
+  {
+   "slug": "nyc-chill-no-themed-book-club",
+   "category": "books"
+  },
+  {
+   "slug": "shelf-indulgence",
+   "category": "community"
+  },
+  {
+   "slug": "poets-out-loud",
+   "category": "community"
+  },
+  {
+   "slug": "njbgaymers",
+   "category": "community"
+  },
+  {
+   "slug": "hoboken-board-games-meetup",
+   "category": "gaming"
+  },
+  {
+   "slug": "social-chess-all-time-controls",
+   "category": "gaming"
+  },
+  {
+   "slug": "ttrpg-parties-of-north-jersey",
+   "category": "gaming"
+  },
+  {
+   "slug": "nyc-dnd",
+   "category": "gaming"
+  },
+  {
+   "slug": "postgres-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-apache-airflow-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "vibe-coding-collective",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-chinese-and-english-language-exchange-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "practice-english-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "nysp-plus",
+   "category": "community"
+  },
+  {
+   "slug": "newyorkphotoexplorers",
+   "category": "community"
+  },
+  {
+   "slug": "the-metropolitan-society-of-natural-historians",
+   "category": "community"
+  },
+  {
+   "slug": "salsa-social-group-class-meetup",
+   "category": "dance"
+  },
+  {
+   "slug": "lyndhurst-salsa-meetup",
+   "category": "dance"
+  },
+  {
+   "slug": "cozy-brooklyn-walks-good-company",
+   "category": "outdoors"
+  },
+  {
+   "slug": "nyc-gay-guys-book-club",
+   "category": "community"
+  },
+  {
+   "slug": "stammtisch-german-roundtable",
+   "category": "community"
+  },
+  {
+   "slug": "nycboardgames",
+   "category": "gaming"
+  },
+  {
+   "slug": "get-sh-t-done-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-ssbfojyr",
+   "category": "outdoors"
+  },
+  {
+   "slug": "upstate-manhattan-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "trailbound-project",
+   "category": "outdoors"
+  },
+  {
+   "slug": "desi_summit_seekers",
+   "category": "community"
+  },
+  {
+   "slug": "climb-on-long-island",
+   "category": "sports"
+  },
+  {
+   "slug": "new-york-muslims",
+   "category": "community"
+  },
+  {
+   "slug": "bigleaguesports-com",
+   "category": "sports"
+  },
+  {
+   "slug": "art-argentinetangoenelbarrio",
+   "category": "dance"
+  },
+  {
+   "slug": "brooklyn-beatmakers",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-dj-meetup-group",
+   "category": "clubbing"
+  },
+  {
+   "slug": "italian-language-exchange",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-homeschool-enrichment-club",
+   "category": "community"
+  },
+  {
+   "slug": "harmonycelebrationchorus",
+   "category": "community"
+  },
+  {
+   "slug": "silly-geese-comedy-collective",
+   "category": "comedy"
+  },
+  {
+   "slug": "central-jersey-county-comedy-connection-meetup-group",
+   "category": "comedy"
+  },
+  {
+   "slug": "singles-20s-30s-40s-50s-nyc-nj",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-philosophy-salon",
+   "category": "community"
+  },
+  {
+   "slug": "the-new-york-social-singles-network",
+   "category": "clubbing"
+  },
+  {
+   "slug": "african-american-professionals-nyc",
+   "category": "community"
+  },
+  {
+   "slug": "singlesny",
+   "category": "community"
+  },
+  {
+   "slug": "magnum-the-nyc-gay-mens-wine-group",
+   "category": "community"
+  },
+  {
+   "slug": "gayplaneswalkers",
+   "category": "gaming"
+  },
+  {
+   "slug": "meetup-group-biqedzyu",
+   "category": "community"
+  },
+  {
+   "slug": "meditation-in-community",
+   "category": "community"
+  },
+  {
+   "slug": "nychappyhourgroup",
+   "category": "community"
+  },
+  {
+   "slug": "subtle-asian-club",
+   "category": "community"
+  },
+  {
+   "slug": "brown-people-supper-club-nj",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-ethnyc-dining",
+   "category": "community"
+  },
+  {
+   "slug": "lovelyladieslunching",
+   "category": "community"
+  },
+  {
+   "slug": "nyc-ramen-enthusiasts-club",
+   "category": "community"
+  },
+  {
+   "slug": "new-york-pick-up-soccer-group",
+   "category": "community"
+  },
+  {
+   "slug": "determined-entrepreneurs",
+   "category": "community"
+  },
+  {
+   "slug": "japanese-culture",
+   "category": "community"
+  },
+  {
+   "slug": "young-womens-wine-and-book-club-bergen-county",
+   "category": "community"
+  },
+  {
+   "slug": "novels-at-night-paramus-book-discussion-meetup",
+   "category": "community"
+  },
+  {
+   "slug": "meetup-group-edkkrwhi",
+   "category": "outdoors"
+  },
+  {
+   "slug": "the-big-apple-astrology-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "toastmasters-district-83-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "alterknitive-fiber-arts-community",
+   "category": "community"
+  },
+  {
+   "slug": "socialsociety",
+   "category": "community"
+  },
+  {
+   "slug": "senior-lesbians-in-park-slope-women-meetup-group",
+   "category": "community"
+  },
+  {
+   "slug": "learn-investing-concepts-with-cashflow-101",
+   "category": "community"
+  },
+  {
+   "slug": "lovemaze",
+   "category": "community"
+  }
+ ]
+}
