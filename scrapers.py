@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from functools import lru_cache
-from urllib.parse import parse_qs, quote, quote_plus, urlencode, urljoin, urlparse, urlunparse
+from urllib.parse import parse_qs, parse_qsl, quote, quote_plus, urlencode, urljoin, urlparse, urlunparse
 from zoneinfo import ZoneInfo
 import warnings
 
@@ -2089,6 +2089,50 @@ def scrape_the_skint(url, ua):
     return events
 
 
+_SECRET_SKIP_HOSTS = ("secretnyc.co", "instagram.com", "facebook.com", "whatsapp.com", "twitter.com", "x.com",
+                      "tiktok.com", "youtube.com", "youtu.be", "pinterest.com", "linkedin.com", "threads.net",
+                      "goo.gl", "maps.app.goo.gl", "google.com", "apple.com", "spotify.com", "flodesk.com")
+_SECRET_TICKET_HOSTS = ("feverup.com", "eventbrite.com", "ticketmaster.com", "dice.fm", "seatgeek.com", "axs.com",
+                        "etix.com", "tixr.com", "universe.com", "ticketweb.com", "lunatickets.com")
+
+
+def _host_matches(host, names):
+    return any(host == n or host.endswith("." + n) for n in names)
+
+
+def _secret_direct_link(hrefs):
+    """The best outside link among a Secret NYC section's hrefs: ticket platforms (Fever above all) win over
+    other sites; social, maps, legal pages and Secret NYC itself never count. Tracking params are dropped.
+    Returns None when the section has no usable link, so callers keep the Secret NYC article URL."""
+    ticket, other = [], []
+    for href in hrefs:
+        if not href or not href.startswith("http"):
+            continue
+        parsed = urlparse(href)
+        host = (parsed.hostname or "").lower().removeprefix("www.")
+        if not host or _host_matches(host, _SECRET_SKIP_HOSTS) or "/legal/" in parsed.path:
+            continue
+        query = [(k, v) for k, v in parse_qsl(parsed.query) if not k.lower().startswith(("utm_", "fbclid", "gclid", "mc_"))]
+        clean = urlunparse(parsed._replace(query=urlencode(query), fragment=""))
+        (ticket if _host_matches(host, _SECRET_TICKET_HOSTS) else other).append(clean)
+    if ticket:
+        return ticket[0]
+    return other[0] if other else None
+
+
+def _secret_section_links(heading_row, stop_class="module-heading-row"):
+    """Every href in the elements following a Secret NYC heading row, up to the next heading row."""
+    hrefs = []
+    curr = heading_row.find_next_sibling() if heading_row is not None else None
+    while curr is not None and stop_class not in (curr.get("class") or []):
+        if getattr(curr, "find_all", None):
+            hrefs.extend(a["href"] for a in curr.find_all("a", href=True))
+            if curr.name == "a" and curr.get("href"):
+                hrefs.append(curr["href"])
+        curr = curr.find_next_sibling()
+    return hrefs
+
+
 def scrape_secret_nyc(url, ua):
     """Secret NYC — trending pop-ups, seasonal guides (including best-things-to-do-nyc-december-2026), and weekend roundups."""
     events = []
@@ -2142,7 +2186,7 @@ def scrape_secret_nyc(url, ua):
             datetime(2026, 12, 1, 10, 0, tzinfo=EASTERN),
             datetime(2026, 12, 24, 19, 0, tzinfo=EASTERN),
             "NY Transit Museum Gallery at Grand Central Terminal",
-            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "https://grandcentralterminal.com/event/new-york-transit-museums-holiday-train-show",
             "Free",
             "markets",
             "Secret NYC December highlight: vintage Lionel model trains zipping through a two-level miniature NYC landscape alongside the indoor Grand Central Holiday Fair.",
@@ -2152,7 +2196,7 @@ def scrape_secret_nyc(url, ua):
             datetime(2026, 12, 4, 19, 0, tzinfo=EASTERN),
             datetime(2026, 12, 4, 21, 0, tzinfo=EASTERN),
             "St. Patrick's Cathedral",
-            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "https://feverup.com/m/533758",
             "$45",
             "art",
             "360-degree immersive light projection and live choir performance inside historic St. Patrick's Cathedral on Fifth Avenue.",
@@ -2162,7 +2206,7 @@ def scrape_secret_nyc(url, ua):
             datetime(2026, 12, 5, 18, 0, tzinfo=EASTERN),
             datetime(2026, 12, 5, 21, 30, tzinfo=EASTERN),
             "The Arches (2266 Atlantic Ave, Crown Heights)",
-            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "https://feverup.com/m/784122",
             "$55",
             "food",
             "Four-part immersive theatrical cocktail experience bringing Dickens's Christmas Carol to life with Victorian holiday libations in Brooklyn.",
@@ -2172,7 +2216,7 @@ def scrape_secret_nyc(url, ua):
             datetime(2026, 12, 6, 11, 0, tzinfo=EASTERN),
             datetime(2026, 12, 6, 21, 0, tzinfo=EASTERN),
             "Emily Warren Roebling Plaza at Brooklyn Bridge Park",
-            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "https://brooklynbridgepark.org/things-to-do/ice-skating/",
             "$16",
             "family",
             "Waterfront ice skating beneath the Brooklyn Bridge with sweeping Lower Manhattan skyline views and hot cocoa stalls.",
@@ -2182,7 +2226,7 @@ def scrape_secret_nyc(url, ua):
             datetime(2026, 12, 12, 10, 0, tzinfo=EASTERN),
             datetime(2026, 12, 12, 22, 0, tzinfo=EASTERN),
             "New York Botanical Garden",
-            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "https://www.nybg.org/event/holiday-train-show-2026/",
             "$35",
             "family",
             "Model trains wind past nearly 200 iconic New York landmarks crafted from natural bark, leaves, and pinecones inside the Enid A. Haupt Conservatory.",
@@ -2192,7 +2236,7 @@ def scrape_secret_nyc(url, ua):
             datetime(2026, 12, 11, 17, 0, tzinfo=EASTERN),
             datetime(2026, 12, 11, 21, 30, tzinfo=EASTERN),
             "Brooklyn Botanic Garden",
-            "https://secretnyc.co/best-things-to-do-nyc-december-2026/",
+            "https://www.bbg.org/lightscape",
             "$29",
             "family",
             "After-dark illuminated winter trail featuring the Winter Cathedral tunnel of lights, Fire Garden, and festive treats.",
@@ -2218,6 +2262,8 @@ def scrape_secret_nyc(url, ua):
     try:
         dec_soup = fetch_soup(dec_guide_url, ua)
         for h_el in dec_soup.find_all(["h2", "h3"]):
+            row = h_el.find_parent("div", class_="module-heading-row")
+            direct = _secret_direct_link(_secret_section_links(row))
             raw_h = h_el.get_text(" ", strip=True)
             if not raw_h or len(raw_h) < 6 or any(skip in raw_h.lower() for skip in ("see also", "more from", "subscribe")):
                 continue
@@ -2233,7 +2279,7 @@ def scrape_secret_nyc(url, ua):
                         "name": raw_h,
                         "date": dt.astimezone(timezone.utc).isoformat(),
                         "venue": spot,
-                        "url": dec_guide_url,
+                        "url": direct or dec_guide_url,
                         "price": "Free / Various",
                         "category": "markets" if any(m in raw_h.lower() for m in ("market", "village", "fair", "shops")) else "community",
                         "description": desc_txt[:220],
@@ -2282,18 +2328,14 @@ def scrape_secret_nyc(url, ua):
                     continue
 
                 p_texts = []
-                links = []
                 curr = hr.find_next_sibling()
                 while curr and not ("module-heading-row" in (curr.get("class") or [])):
                     if curr.name == "p":
                         txt = curr.get_text(" ", strip=True)
                         if txt:
                             p_texts.append(txt)
-                        for a in curr.find_all("a"):
-                            href = a.get("href")
-                            if href and not href.startswith("mailto:") and "instagram" not in href:
-                                links.append(href)
                     curr = curr.find_next_sibling()
+                links = _secret_section_links(hr)
 
                 full_desc = " ".join(p_texts)
                 ev_date = weekend_start
@@ -2313,7 +2355,7 @@ def scrape_secret_nyc(url, ua):
                 ).strip(" !.")
                 clean_name = clean_name[:1].upper() + clean_name[1:]
 
-                ev_link = links[0] if links else post_link
+                ev_link = _secret_direct_link(links) or post_link
                 low = (clean_name + " " + full_desc).lower()
                 cat = "community"
                 if any(k in low for k in ("exhibit", "art", "museum", "gallery")):
@@ -2348,7 +2390,7 @@ def scrape_secret_nyc(url, ua):
                         "name": t,
                         "date": dt.astimezone(timezone.utc).isoformat(),
                         "venue": _resolve_secret_venue(t, bs.get_text(" ", strip=True)[:500]),
-                        "url": post_link,
+                        "url": _secret_direct_link(a["href"] for a in bs.find_all("a", href=True)) or post_link,
                         "price": "Check link",
                         "category": "community"
                     }
