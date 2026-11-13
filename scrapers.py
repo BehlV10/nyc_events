@@ -2133,271 +2133,180 @@ def _secret_section_links(heading_row, stop_class="module-heading-row"):
     return hrefs
 
 
-def scrape_secret_nyc(url, ua):
-    """Secret NYC — trending pop-ups, seasonal guides (including best-things-to-do-nyc-december-2026), and weekend roundups."""
-    events = []
-    seen = set()
-    now = datetime.now(EASTERN)
-    month_map = {
-        "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
-        "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12
-    }
+_FEVER_MID_RE = re.compile(r"^https?://(?:www\.)?feverup\.com/(?:[a-z]{2}(?:-[a-z]{2})?/(?:[a-z-]+/)?)?m/(\d+)", re.I)
+_FEVER_HEADERS = {"Accept-Language": "en-US,en;q=0.9"}
 
-    def _resolve_secret_venue(title_str, desc_str):
-        combined = f"{title_str} {desc_str}".lower()
-        spot_map = (
-            ("bryant park", "Bryant Park"),
-            ("union square", "Union Square Park"),
-            ("columbus circle", "Columbus Circle"),
-            ("grand central", "Grand Central Terminal"),
-            ("rockefeller", "Rockefeller Center"),
-            ("st. patrick", "St. Patrick's Cathedral"),
-            ("roebling rink", "Brooklyn Bridge Park (Roebling Plaza)"),
-            ("brooklyn bridge park", "Brooklyn Bridge Park"),
-            ("wollman rink", "Wollman Rink in Central Park"),
-            ("the arches", "The Arches (2266 Atlantic Ave, Crown Heights)"),
-            ("metropolitan opera", "Metropolitan Opera House (Lincoln Center)"),
-            ("radio city", "Radio City Music Hall"),
-            ("botanical garden", "New York Botanical Garden"),
-            ("brooklyn botanic", "Brooklyn Botanic Garden"),
-            ("dyker heights", "Dyker Heights (11th to 13th Ave, Brooklyn)"),
-            ("oculus", "Westfield World Trade Center Oculus"),
-            ("herald square", "Herald Square"),
-            ("macy's", "Macy's Herald Square"),
-            ("chelsea market", "Chelsea Market"),
-            ("industry city", "Industry City"),
-            ("governors island", "Governors Island"),
-        )
-        for kw, spot in spot_map:
-            if kw in combined:
-                return spot
-        m_at = re.search(r"\b(?:at|in)\s+([A-Z0-9][A-Za-z0-9\s&’'\.-]+?)(?:\.|\,|\;|$)", desc_str)
-        if m_at:
-            v_cand = m_at.group(1).strip()
-            if 3 < len(v_cand) < 42 and not any(skip in v_cand.lower() for skip in ("october", "november", "december", "this", "addition", "order", "fact")):
-                return v_cand
-        return "Midtown Manhattan"
 
-    # 1. Curated & live-scraped highlights from https://secretnyc.co/best-things-to-do-nyc-december-2026/
-    dec_guide_url = "https://secretnyc.co/best-things-to-do-nyc-december-2026/"
-    dec_highlights = [
-        (
-            "Grand Central Holiday Train Show & Holiday Fair",
-            datetime(2026, 12, 1, 10, 0, tzinfo=EASTERN),
-            datetime(2026, 12, 24, 19, 0, tzinfo=EASTERN),
-            "NY Transit Museum Gallery at Grand Central Terminal",
-            "https://grandcentralterminal.com/event/new-york-transit-museums-holiday-train-show",
-            "Free",
-            "markets",
-            "Secret NYC December highlight: vintage Lionel model trains zipping through a two-level miniature NYC landscape alongside the indoor Grand Central Holiday Fair.",
-        ),
-        (
-            "Luminiscence at St. Patrick's Cathedral (Christmas Edition)",
-            datetime(2026, 12, 4, 19, 0, tzinfo=EASTERN),
-            datetime(2026, 12, 4, 21, 0, tzinfo=EASTERN),
-            "St. Patrick's Cathedral",
-            "https://feverup.com/m/533758",
-            "$45",
-            "art",
-            "360-degree immersive light projection and live choir performance inside historic St. Patrick's Cathedral on Fifth Avenue.",
-        ),
-        (
-            "A Christmas Cocktail Carol (Immersive Holiday Pop-Up)",
-            datetime(2026, 12, 5, 18, 0, tzinfo=EASTERN),
-            datetime(2026, 12, 5, 21, 30, tzinfo=EASTERN),
-            "The Arches (2266 Atlantic Ave, Crown Heights)",
-            "https://feverup.com/m/784122",
-            "$55",
-            "food",
-            "Four-part immersive theatrical cocktail experience bringing Dickens's Christmas Carol to life with Victorian holiday libations in Brooklyn.",
-        ),
-        (
-            "Roebling Rink Winter Village at Brooklyn Bridge Park",
-            datetime(2026, 12, 6, 11, 0, tzinfo=EASTERN),
-            datetime(2026, 12, 6, 21, 0, tzinfo=EASTERN),
-            "Emily Warren Roebling Plaza at Brooklyn Bridge Park",
-            "https://brooklynbridgepark.org/things-to-do/ice-skating/",
-            "$16",
-            "family",
-            "Waterfront ice skating beneath the Brooklyn Bridge with sweeping Lower Manhattan skyline views and hot cocoa stalls.",
-        ),
-        (
-            "NYBG Holiday Train Show & Bar Car Nights",
-            datetime(2026, 12, 12, 10, 0, tzinfo=EASTERN),
-            datetime(2026, 12, 12, 22, 0, tzinfo=EASTERN),
-            "New York Botanical Garden",
-            "https://www.nybg.org/event/holiday-train-show-2026/",
-            "$35",
-            "family",
-            "Model trains wind past nearly 200 iconic New York landmarks crafted from natural bark, leaves, and pinecones inside the Enid A. Haupt Conservatory.",
-        ),
-        (
-            "Brooklyn Botanic Garden Lightscape Holiday Trail",
-            datetime(2026, 12, 11, 17, 0, tzinfo=EASTERN),
-            datetime(2026, 12, 11, 21, 30, tzinfo=EASTERN),
-            "Brooklyn Botanic Garden",
-            "https://www.bbg.org/lightscape",
-            "$29",
-            "family",
-            "After-dark illuminated winter trail featuring the Winter Cathedral tunnel of lights, Fire Garden, and festive treats.",
-        ),
-    ]
-    for h_name, h_start, h_end, h_venue, h_url, h_price, h_cat, h_desc in dec_highlights:
-        key = (h_name.lower(), h_start.strftime("%Y-%m-%d"))
-        if key not in seen:
-            seen.add(key)
-            ev_obj = {
-                "name": h_name,
-                "date": h_start.astimezone(timezone.utc).isoformat(),
-                "end": h_end.astimezone(timezone.utc).isoformat(),
-                "venue": h_venue,
-                "url": h_url,
-                "price": h_price,
-                "category": h_cat,
-                "description": h_desc,
-            }
-            if _is_within_horizon(ev_obj):
-                events.append(ev_obj)
-
+def _fever_plan_event(text, url):
+    """One listing from a Fever plan page (feverup.com/m/ID): the plan's real name, place, address and
+    coordinates, next session (exact start/end) and cheapest ticket, all read from the page's embedded app
+    state. Plans outside New York, or without an upcoming session, give None."""
+    m = re.search(r'<script id="serverapp-state"[^>]*>(.*?)</script>', text, re.S)
+    if not m:
+        return None
     try:
-        dec_soup = fetch_soup(dec_guide_url, ua)
-        for h_el in dec_soup.find_all(["h2", "h3"]):
-            row = h_el.find_parent("div", class_="module-heading-row")
-            direct = _secret_direct_link(_secret_section_links(row))
-            raw_h = h_el.get_text(" ", strip=True)
-            if not raw_h or len(raw_h) < 6 or any(skip in raw_h.lower() for skip in ("see also", "more from", "subscribe")):
-                continue
-            p_sib = h_el.find_next_sibling("p")
-            desc_txt = p_sib.get_text(" ", strip=True) if p_sib else ""
-            if any(w in (raw_h + " " + desc_txt).lower() for w in ("market", "village", "fair", "holiday", "christmas", "rink", "lights", "train")):
-                spot = _resolve_secret_venue(raw_h, desc_txt)
-                dt = datetime(2026, 12, 5, 12, 0, tzinfo=EASTERN)
-                key = (raw_h.lower(), dt.strftime("%Y-%m-%d"))
-                if key not in seen:
-                    seen.add(key)
-                    ev_obj = {
-                        "name": raw_h,
-                        "date": dt.astimezone(timezone.utc).isoformat(),
-                        "venue": spot,
-                        "url": direct or dec_guide_url,
-                        "price": "Free / Various",
-                        "category": "markets" if any(m in raw_h.lower() for m in ("market", "village", "fair", "shops")) else "community",
-                        "description": desc_txt[:220],
-                    }
-                    if _is_within_horizon(ev_obj):
-                        events.append(ev_obj)
-    except Exception:
-        pass
+        state = json.loads(m.group(1))
+    except ValueError:
+        return None
+    plan = next((v for k, v in state.items() if k.startswith("immersive-plan-detail:") and isinstance(v, dict) and v.get("name")), None)
+    if not plan:
+        return None
 
+    def _when(raw):
+        try:
+            return datetime.fromisoformat(str(raw)).astimezone(timezone.utc)
+        except (TypeError, ValueError):
+            return None
+
+    now = datetime.now(timezone.utc)
+    starts, ends = [], {}
+
+    def _sessions(node):
+        if isinstance(node, dict):
+            if node.get("starts_at_iso"):
+                yield node
+            for child in node.values():
+                yield from _sessions(child)
+        elif isinstance(node, list):
+            for child in node:
+                yield from _sessions(child)
+
+    for key, value in state.items():
+        if "Session" in key:
+            for sess in _sessions(value):
+                start = _when(sess.get("starts_at_iso"))
+                if start and start > now - timedelta(hours=1):
+                    starts.append(start)
+                    if _when(sess.get("ends_at_iso")):
+                        ends[start] = _when(sess.get("ends_at_iso"))
+    start = min(starts) if starts else None
+    if start is None:
+        first = _when(plan.get("firstActiveSessionDate"))
+        start = first if first and first > now else None
+    last = _when(plan.get("lastActiveSessionDate"))
+    if start is None:
+        return None
+
+    prices = [v.get("minTicketPrice") for key, val in state.items() if key.startswith("PlanService.getPlanAvailability")
+              for v in (val.get("dates") or {}).values() if isinstance(v, dict) and v.get("minTicketPrice") is not None]
+    for offer in re.findall(r'"price"\s*:\s*([\d.]+)', json.dumps(state.get("immersive-plan-ld") or {})):
+        prices.append(float(offer))
+    price = None
+    if prices:
+        low = min(float(x) for x in prices)
+        price = f"From ${low:.0f}" if low > 0 else "Free"
+
+    place = plan.get("defaultPlace") if isinstance(plan.get("defaultPlace"), dict) else {}
+    try:
+        if not nyc_geo.in_nyc(float(place["latitude"]), float(place["longitude"])):
+            return None  # Fever's "New York" market reaches Yorktown, Hoboken, Long Island
+    except (KeyError, TypeError, ValueError):
+        if not re.match(r"(new-york|brooklyn|queens|bronx|staten)", str(plan.get("citySlug") or "").lower()):
+            return None  # no coordinates to check: trust only the city slug (Brooklyn has its own market)
+    if _FEVER_ATTRACTION_RE.search(str(plan["name"])) or _OUT_OF_CITY_RE.search(str(plan["name"])):
+        return None  # open-all-day attractions (museums, observation decks, passes) aren't dated events
+    address = (place.get("address") or "").strip()
+    if address and not re.search(r"\bNY\b|New York", address):
+        address += ", NY"
+    desc = clean_description(BeautifulSoup(str(plan.get("description") or ""), "html.parser").get_text(" ", strip=True)[:600])
+    if last and (last - start).days >= 2:
+        local_last = last.astimezone(EASTERN)
+        desc = f"Runs through {local_last.strftime('%B')} {local_last.day}. {desc}".strip()
+    mid = _FEVER_MID_RE.match(url)
+    event = {
+        "name": html.unescape(str(plan["name"])).strip(), "date": start.isoformat(),
+        "venue": (place.get("name") or "").strip() or None, "address": address or None, "price": price,
+        "url": f"https://feverup.com/m/{mid.group(1)}" if mid else url, "description": desc,
+    }
+    end = ends.get(start)
+    if end:
+        event["end"] = end.isoformat()
+    try:
+        event["lat"], event["lng"] = float(place["latitude"]), float(place["longitude"])
+    except (KeyError, TypeError, ValueError):
+        pass
+    return {k: v for k, v in event.items() if v not in (None, "")}
+
+
+def scrape_fever_plan(url, ua):
+    """A single Fever plan page (feverup.com/m/ID) as one listing -- the source's own page, not an article about it."""
+    _status, text = fetch_text(url, headers={"User-Agent": ua, **_FEVER_HEADERS})
+    event = _fever_plan_event(text, url)
+    return [event] if event else []
+
+
+_SECRET_GUIDE_RE = re.compile(r"/(best-things-to-do|things-to-do)[a-z0-9-]*/?$", re.I)
+
+
+def scrape_secret_nyc(url, ua):
+    """Secret NYC as a lead source, never as an event: its roundups and guides are read only for the
+    outside links they carry. Fever plan links become listings from Fever's own page (real name, venue,
+    session time and price); other links count only when that page publishes schema.org Event data.
+    Headlines with no linked event page produce nothing."""
+    links, fever, articles = [], {}, []
+    feed_ok = False
     try:
         resp = _SESSION.get("https://secretnyc.co/feed/", headers={"User-Agent": ua}, timeout=15)
         resp.raise_for_status()
-        soup = BeautifulSoup(resp.content, "html.parser")
-    except Exception:
-        return events
-
-    for item in soup.find_all("item")[:10]:
-        t = item.find("title").get_text(strip=True) if item.find("title") else ""
-        post_link = item.find("link").get_text(strip=True) if item.find("link") else "https://secretnyc.co"
-        if not post_link:
+        for item in BeautifulSoup(resp.content, "html.parser").find_all("item")[:12]:
+            enc = item.find("content:encoded")
+            if enc:
+                links.extend(a["href"] for a in BeautifulSoup(enc.text, "html.parser").find_all("a", href=True))
+            post = item.find("link").get_text(strip=True) if item.find("link") else ""  # <link> parses as a void tag
             guid = item.find("guid")
-            post_link = guid.get_text(strip=True) if guid else "https://secretnyc.co"
-
-        enc = item.find("content:encoded")
-        if not enc:
+            post = post or (guid.get_text(strip=True) if guid else "")
+            if post.startswith("https://secretnyc.co/"):
+                articles.append(post)  # the feed drops embedded ticket buttons; the page keeps them
+        feed_ok = True
+    except Exception:
+        pass
+    try:  # evergreen seasonal guides ("Best things to do in NYC this December") fall out of the feed
+        home = fetch_soup(url, ua)
+        guides = []
+        for a in home.find_all("a", href=True):
+            href = urljoin(url, a["href"]).split("#")[0].split("?")[0]
+            if href.startswith("https://secretnyc.co/") and _SECRET_GUIDE_RE.search(href) and href not in guides:
+                guides.append(href)
+        today = datetime.now(EASTERN)
+        for ahead in (0, 1):  # the monthly guide, which is only on the homepage some weeks
+            month = (today.month - 1 + ahead) % 12 + 1
+            year = today.year + (today.month - 1 + ahead) // 12
+            guides.append(f"https://secretnyc.co/best-things-to-do-nyc-{datetime(year, month, 1).strftime('%B').lower()}-{year}/")
+        articles.extend(sorted(dict.fromkeys(guides), key=lambda g: "/best-things-to-do" not in g)[:8])
+    except Exception:
+        pass
+    for article in dict.fromkeys(articles):
+        try:
+            links.extend(a["href"] for a in fetch_soup(article, ua).find_all("a", href=True))
+            feed_ok = True
+        except Exception:
             continue
 
-        bs = BeautifulSoup(enc.text, "html.parser")
+    others = []
+    for href in links:
+        href = (href or "").split("#")[0]
+        hit = _FEVER_MID_RE.match(href)
+        if hit:
+            fever.setdefault(hit.group(1), f"https://feverup.com/m/{hit.group(1)}")
+        elif "feverup.com" not in href:
+            direct = _secret_direct_link([href])
+            if direct and direct not in others:
+                others.append(direct)
 
-        if "things to do in nyc this weekend" in t.lower() or "things to do this weekend" in t.lower():
-            m_month = re.search(r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+(\d{1,2})", t, re.I)
-            weekend_start = now.date()
-            if m_month:
-                mo_num = month_map.get(m_month.group(1).lower()[:3], now.month)
-                day_num = int(m_month.group(2))
-                try:
-                    weekend_start = datetime(now.year, mo_num, day_num).date()
-                except ValueError:
-                    pass
-
-            heading_rows = bs.find_all("div", class_="module-heading-row")
-            for hr in heading_rows:
-                h_el = hr.find(["h2", "h3"])
-                raw_title = h_el.get_text(strip=True) if h_el else hr.get_text(strip=True)
-                if not raw_title or len(raw_title) < 5:
-                    continue
-
-                p_texts = []
-                curr = hr.find_next_sibling()
-                while curr and not ("module-heading-row" in (curr.get("class") or [])):
-                    if curr.name == "p":
-                        txt = curr.get_text(" ", strip=True)
-                        if txt:
-                            p_texts.append(txt)
-                    curr = curr.find_next_sibling()
-                links = _secret_section_links(hr)
-
-                full_desc = " ".join(p_texts)
-                ev_date = weekend_start
-                if "saturday" in full_desc.lower() or "saturday" in raw_title.lower():
-                    ev_date = weekend_start + timedelta(days=(5 - weekend_start.weekday()) % 7)
-                elif "sunday" in full_desc.lower() or "sunday" in raw_title.lower():
-                    ev_date = weekend_start + timedelta(days=(6 - weekend_start.weekday()) % 7)
-                elif "friday" in full_desc.lower() or "friday" in raw_title.lower():
-                    ev_date = weekend_start + timedelta(days=(4 - weekend_start.weekday()) % 7)
-
-                dt = datetime(ev_date.year, ev_date.month, ev_date.day, 12, 0, tzinfo=EASTERN)
-
-                clean_name = raw_title
-                clean_name = re.sub(
-                    r"^(?:celebrate|check out|enjoy|go behind the scenes of|explore|grab a free|see|dive into|dive 12,000 feet underwater in|stroll through|glide into|join us in making|create your own|track|plan a day trip for the)\s+",
-                    "", clean_name, flags=re.I
-                ).strip(" !.")
-                clean_name = clean_name[:1].upper() + clean_name[1:]
-
-                ev_link = _secret_direct_link(links) or post_link
-                low = (clean_name + " " + full_desc).lower()
-                cat = "community"
-                if any(k in low for k in ("exhibit", "art", "museum", "gallery")):
-                    cat = "art"
-                elif any(k in low for k in ("concert", "music", "live set", "orchestra", "dj")):
-                    cat = "music"
-                elif any(k in low for k in ("parade", "dog", "halloween", "festival", "fair", "market")):
-                    cat = "community"
-
-                venue = _resolve_secret_venue(clean_name, full_desc)
-
-                key = (clean_name.lower(), ev_date.strftime("%Y-%m-%d"))
-                if key not in seen:
-                    seen.add(key)
-                    ev_obj = {
-                        "name": clean_name,
-                        "date": dt.astimezone(timezone.utc).isoformat(),
-                        "venue": venue,
-                        "url": ev_link,
-                        "price": "Free / Various",
-                        "category": cat
-                    }
-                    if _is_within_horizon(ev_obj):
-                        events.append(ev_obj)
-        else:
-            if any(k in t.lower() for k in ("live set", "exhibition", "opens", "market", "festival", "parade", "fair", "concert", "tour")):
-                dt = datetime(now.year, now.month, now.day, 19, 0, tzinfo=EASTERN)
-                key = (t.lower(), dt.strftime("%Y-%m-%d"))
-                if key not in seen:
-                    seen.add(key)
-                    ev_obj = {
-                        "name": t,
-                        "date": dt.astimezone(timezone.utc).isoformat(),
-                        "venue": _resolve_secret_venue(t, bs.get_text(" ", strip=True)[:500]),
-                        "url": _secret_direct_link(a["href"] for a in bs.find_all("a", href=True)) or post_link,
-                        "price": "Check link",
-                        "category": "community"
-                    }
-                    if _is_within_horizon(ev_obj):
-                        events.append(ev_obj)
-
-    return events
+    events = []
+    for plan_url in list(fever.values())[:40]:
+        try:
+            events.extend(scrape_fever_plan(plan_url, ua))
+        except Exception:
+            continue
+    for page in others[:25]:
+        try:
+            events.extend([e for e in scrape_jsonld(page, ua)[:5] if not _OUT_OF_CITY_RE.search(f"{e.get('venue') or ''} {e.get('address') or ''}")])
+        except Exception:
+            continue
+    if not events and not feed_ok:
+        raise RuntimeError("Secret NYC feed and guides unreachable")
+    return _dedupe_future(events)
 
 
 def scrape_greenpointers(url, ua):
@@ -10304,6 +10213,39 @@ def scrape_museum_exhibitions(url, ua):
     return events
 
 
+def scrape_bbg_lightscape(url, ua):
+    """Lightscape at Brooklyn Botanic Garden, from BBG's own page. The page gives the run ("November 20,
+    2026-January 3, 2027") and the ticket prices; entry is timed through the ticketing widget, so the
+    listing carries no clock time. Before opening it sits on opening day; while it runs it goes in "On
+    view now" until the last night."""
+    soup = fetch_soup(url, ua)
+    text = re.sub(r"\s+", " ", soup.get_text(" ", strip=True).replace("\u2013", "-").replace("\u2014", "-"))
+    m = re.search(r"([A-Z][a-z]+) (\d{1,2}), (\d{4})\s*-\s*([A-Z][a-z]+) (\d{1,2}), (\d{4})", text)
+    if not m:
+        raise RuntimeError("Lightscape dates not found on the page")
+    try:
+        start = datetime.strptime(" ".join(m.group(1, 2, 3)), "%B %d %Y").date()
+        end = datetime.strptime(" ".join(m.group(4, 5, 6)), "%B %d %Y").date()
+    except ValueError:
+        raise RuntimeError("Lightscape dates not readable")
+    today = datetime.now(EASTERN).date()
+    if end < today:
+        return []
+    prices = [int(x) for x in re.findall(r"\bAdult \$(\d{2,3})\b", text)]
+    event = {
+        "name": "Lightscape at Brooklyn Botanic Garden", "url": url, "venue": "Brooklyn Botanic Garden",
+        "address": "990 Washington Ave, Brooklyn, NY 11225", "category": "outdoors",
+        "price": f"From ${min(prices)}" if prices else None,
+        "description": f"After-dark illuminated trail through the Garden, {start.strftime('%B')} {start.day} - "
+                       f"{end.strftime('%B')} {end.day}. Timed tickets.",
+    }
+    if start > today:
+        event["date"] = datetime(start.year, start.month, start.day, tzinfo=EASTERN).astimezone(timezone.utc).isoformat()
+    else:
+        event.update({"date": None, "ends": end.isoformat(), "_exhibition": True})
+    return [event]
+
+
 _ALL_VENUES = [
     # Megasites & Aggregators
     {"name": "DoNYC Citywide", "url": "https://donyc.com/events", "ua": UA_CHROME, "scraper": scrape_donyc_calendar, "default_category": None},
@@ -10357,6 +10299,8 @@ _ALL_VENUES = [
     {"name": "Museum of Chinese in America", "url": "https://www.mocanyc.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
     {"name": "Whitney Museum of American Art", "url": "https://whitney.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/events/[^/]+$", "venue": "Whitney Museum", "address": "99 Gansevoort St, New York, NY 10014"}},
     {"name": "Brooklyn Botanic Garden", "url": "https://www.bbg.org/visit/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "/(event|classes)/", "venue": "Brooklyn Botanic Garden", "address": "990 Washington Ave, Brooklyn, NY 11225"}},
+    {"name": "BBG Lightscape", "url": "https://www.bbg.org/lightscape", "ua": UA_CHROME, "scraper": scrape_bbg_lightscape, "default_category": "outdoors"},
+    {"name": "Brooklyn Bridge Park (Official Calendar)", "url": "https://brooklynbridgepark.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "/event/", "venue": "Brooklyn Bridge Park", "address": "334 Furman St, Brooklyn, NY 11201"}},
     {"name": "Hudson Yards Events", "url": "https://www.hudsonyardsnewyork.com/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "community", "kwargs": {"link_re": "^/events/[^/]+$", "venue": "Hudson Yards", "address": "20 Hudson Yards, New York, NY 10001"}},
     {"name": "Wave Hill", "url": "https://www.wavehill.org/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "outdoors", "kwargs": {"link_re": "^/calendar/[^/?]+$", "venue": "Wave Hill", "address": "4900 Independence Ave, Bronx, NY 10471"}},
     {"name": "Museum of the City of New York", "url": "https://www.mcny.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/event/", "venue": "Museum of the City of New York", "address": "1220 Fifth Ave, New York, NY 10029"}},
