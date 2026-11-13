@@ -1551,6 +1551,131 @@ def _enrich_event_times(results, ua=None, limit=None, path=None, fetch=None):
     return applied
 
 
+# --- Lead sources -> primary pages ------------------------------------------------------------
+# Aggregators (DoNYC, The Skint, Greenpointers, NYC for FREE) mostly point at the organiser's own page.
+# Those pages publish what the lead often lacks: the start time, ticket price, street address and
+# coordinates. This pass reads them (schema.org Event data, or a Fever plan page) and fills the gaps.
+# Ticketing and social hosts we already cover directly, or that refuse scripts, are skipped.
+PRIMARY_LEAD_SOURCES = ("DoNYC", "The Skint", "Greenpointers", "NYC for FREE")
+PRIMARY_SKIP_HOSTS = (
+    "instagram.com", "facebook.com", "fb.me", "twitter.com", "x.com", "tiktok.com", "youtube.com", "youtu.be", "linktr.ee",
+    "bit.ly", "forms.gle", "google.com", "eventbrite.com", "meetup.com", "dice.fm", "ra.co", "ticketmaster.com",
+    "seatgeek.com", "partiful.com", "lu.ma", "allevents.in", "songkick.com", "kyd.to", "tixr.com", "axs.com",
+    "etix.com", "ticketweb.com", "donyc.com", "theskint.com", "secretnyc.co", "nycforfree.co", "venmo.com", "paypal.com",
+)
+PRIMARY_PAGES_PATH = os.path.join(CACHE_DIR, "_primary_pages.json")
+PRIMARY_PAGES_PER_RUN = 150
+PRIMARY_PAGES_TTL = 5 * 86400
+_VAGUE_PRICES = {"", "check link", "special offer", "free / various", "various", "varies", "see link", "tbd"}
+
+
+def _primary_candidate(url):
+    host = _host_of(url or "").removeprefix("www.")
+    return bool(host) and (url or "").startswith("http") and not _host_matches(host, PRIMARY_SKIP_HOSTS)
+
+
+def _primary_page_entries(url, ua):
+    """What an event's own page publishes, as compact entries: the Fever plan's next session, or every
+    schema.org Event on the page (a venue calendar lists several, so callers match on the day)."""
+    status, text = fetch_text(url, headers={"User-Agent": ua, "Accept-Language": "en-US,en;q=0.9"})
+    if _FEVER_MID_RE.match(url):
+        fever = _fever_plan_event(text, url)
+        return [fever] if fever else []
+    entries = []
+    for ev in _extract_jsonld_events(BeautifulSoup(text, "html.parser"), url):
+        entry = _jsonld_event_to_entry(ev, url)
+        if not entry or not entry.get("name"):
+            continue
+        end = _local_iso_to_utc(ev.get("endDate"))
+        if end:
+            entry["end"] = end.isoformat()
+        entries.append(entry)
+        if len(entries) >= 12:
+            break
+    return entries
+
+
+def _enrich_from_primary_pages(results, ua=None, limit=None, path=None, fetch=None):
+    """Fill gaps in lead-source listings from the primary page their link points at. A page entry is used
+    only when it is on the listing's day; it supplies a start time when the lead gave none (midnight, or a
+    time it guessed), a price when the lead's is vague or missing, and the address, coordinates, end time and
+    description when missing. Names, venues and links stay as the lead gave them."""
+    ua = ua or UA_CHROME
+    limit = PRIMARY_PAGES_PER_RUN if limit is None else limit
+    path = path or PRIMARY_PAGES_PATH
+    fetch = fetch or _primary_page_entries
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            cache = json.load(f)
+    except (OSError, ValueError):
+        cache = {}
+    now, today = time.time(), datetime.now(EASTERN).date()
+    todo = []
+    for r in results:
+        if not str(r.get("venue") or "").startswith(PRIMARY_LEAD_SOURCES):
+            continue
+        for e in r.get("events") or []:
+            url = (e.get("url") or "").split("#")[0]
+            try:
+                when = datetime.fromisoformat(e["date"]).astimezone(EASTERN) if e.get("date") else None
+            except (TypeError, ValueError):
+                when = None
+            if when and when.date() >= today and _primary_candidate(url):
+                todo.append((when, url, e))
+    todo.sort(key=lambda x: x[0])
+    fetched = applied = 0
+    for _when, url, _e in todo:
+        if fetched >= limit:
+            break
+        if url in cache and now - cache[url].get("ts", 0) < PRIMARY_PAGES_TTL:
+            continue
+        try:
+            cache[url] = {"ts": now, "entries": fetch(url, ua)}
+            fetched += 1
+        except SiteRefused:
+            cache[url] = {"ts": now, "entries": []}
+        except Exception:
+            continue  # asked again next run
+    for when, url, e in todo:
+        entries = [x for x in (cache.get(url) or {}).get("entries") or [] if x.get("date")]
+        same_day = []
+        for x in entries:
+            try:
+                t = datetime.fromisoformat(x["date"]).astimezone(EASTERN)
+            except ValueError:
+                continue
+            if t.date() == when.date():
+                same_day.append((abs((t - when).total_seconds()), t, x))
+        if not same_day:
+            continue
+        _gap, t, x = min(same_day, key=lambda y: y[0])
+        changed = False
+        if (when.hour, when.minute) == (0, 0) or e.get("_time_guess"):
+            if (t.hour, t.minute) != (0, 0) and (t != when):
+                e["date"] = t.astimezone(timezone.utc).isoformat()
+                changed = True
+            e.pop("_time_guess", None)
+        if x.get("price") and str(e.get("price") or "").strip().lower() in _VAGUE_PRICES:
+            e["price"] = x["price"]
+            changed = True
+        for key in ("address", "lat", "lng", "end", "description"):
+            if x.get(key) and not e.get(key):
+                e[key] = x[key]
+                changed = True
+        if not e.get("venue") and x.get("venue"):
+            e["venue"] = x["venue"]
+            changed = True
+        applied += changed
+    cache = {u: d for u, d in cache.items() if now - d.get("ts", 0) < 3 * PRIMARY_PAGES_TTL}
+    try:
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(cache, f)
+    except OSError:
+        pass
+    print(f"Primary pages: {fetched} fetched, {applied} of {len(todo)} lead listings enriched")
+    return applied
+
+
 def scrape_donyc(url, ua):
     """DoNYC venue & category scraper. Reads the event list embedded in the SvelteKit page;
     falls back to the older Schema.org microdata markup. Links the venue's own website (or a
@@ -2028,6 +2153,7 @@ def scrape_the_skint(url, ua):
 
             hour, minute = _parse_time(time_part)
             dt = datetime(event_date.year, event_date.month, event_date.day, hour, minute, tzinfo=EASTERN)
+            time_guessed = not re.search(r"\d{1,2}(?::\d{2})?\s*(?:am|pm)|\d{1,2}\s*-\s*\d{1,2}\s*(?:am|pm)", time_part, re.I)
 
             b_tags = [b.get_text(strip=True) for b in el.find_all("b") if b.get_text(strip=True).lower() not in (">>", "here", "saturday", "sunday", "monday", "friday", "ongoing", "sponsored")]
             if b_tags:
@@ -2083,7 +2209,8 @@ def scrape_the_skint(url, ua):
                         "venue": venue,
                         "url": ev_link,
                         "price": price,
-                        "category": cat
+                        "category": cat,
+                        **({"_time_guess": True} if time_guessed else {}),
                     })
 
     return events
@@ -11724,6 +11851,7 @@ def get_all_events(force=False):
     results.extend(_load_community_events())
     _enrich_donyc_events(results)
     _enrich_event_times(results)
+    _enrich_from_primary_pages(results)
     _apply_geocodes(results)
 
     payload = {
