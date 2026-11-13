@@ -2784,7 +2784,7 @@ def render_page(results, split_deferred=False, context_out=None):
     background-color: #0c0926;
     background-image:
       linear-gradient(180deg, rgba(12, 14, 20, 0.18) 0%, rgba(12, 14, 20, 0.62) 58%, rgba(12, 14, 20, 0.98) 100%),
-      url('/banner.jpg');
+      url('banner.jpg');
     background-size: cover;
     background-position: center 55%;
     border-bottom: 1px solid var(--border);
@@ -4748,7 +4748,7 @@ def render_page(results, split_deferred=False, context_out=None):
     background-color: #0b0d11;
     background-image:
       linear-gradient(180deg, rgba(11, 13, 17, 0.35) 0%, rgba(11, 13, 17, 0.82) 60%, rgba(11, 13, 17, 0.98) 100%),
-      url('/banner.jpg');
+      url('banner.jpg');
     background-size: cover;
     background-position: center 55%;
     min-height: 250px;
@@ -4955,7 +4955,7 @@ def render_page(results, split_deferred=False, context_out=None):
     background-color: #110d28;
     background-image:
       linear-gradient(180deg, rgba(30, 15, 60, 0.45) 0%, rgba(18, 12, 40, 0.78) 58%, rgba(13, 10, 28, 0.98) 100%),
-      url('/banner.jpg');
+      url('banner.jpg');
     background-size: cover;
     background-position: center 55%;
     border-bottom: 2px solid rgba(255, 75, 147, 0.3);
