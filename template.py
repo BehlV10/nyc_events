@@ -29,6 +29,9 @@ from scrapers import (
     is_closed_show,
     is_placeholder_or_closed_event,
     is_standing_exhibit,
+    is_early_nye_promo,
+    is_dropin_dance_class,
+    _FEVER_ATTRACTION_RE,
     _BOAT_CRUISE_RE,
     is_utility_event,
     is_kid_family_event,
@@ -2225,6 +2228,10 @@ def group_by_date(results):
         for e in r.get("events", []):
             if is_placeholder_or_closed_event(e.get("name")) or is_closed_show(e.get("venue")) or is_standing_exhibit(e):
                 continue
+            if is_early_nye_promo(e.get("name"), e.get("date")):
+                continue
+            if "fever" in (r.get("venue") or "").lower() and (_FEVER_ATTRACTION_RE.search(e.get("name") or "") or ("T05:00:00" in (e.get("date") or "") and "candlelight" not in (e.get("name") or "").lower())):
+                continue
             if is_service_ad(e.get("name"), e.get("venue")):
                 continue
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
@@ -2256,6 +2263,8 @@ def group_by_date(results):
                 entry["category"] = "markets"
             elif _BOAT_CRUISE_RE.search(f"{e.get('name') or ''} {entry['venue']} {r.get('venue') or ''}"):
                 entry["category"] = "cruises"
+            elif is_dropin_dance_class(e.get("name"), entry["category"], r.get("venue") or ""):
+                entry["category"] = "services"
             raw = e.get("date")
             key = None
             if raw:

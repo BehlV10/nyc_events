@@ -1686,7 +1686,7 @@ def _enrich_from_primary_pages(results, ua=None, limit=None, path=None, fetch=No
 # us the real price and sold-out state (Eventbrite's event API) and lets duplicates merge on one URL.
 ALLEVENTS_LINKS_PATH = os.path.join(CACHE_DIR, "_allevents_links.json")
 EVENTBRITE_EVENTS_PATH = os.path.join(CACHE_DIR, "_eventbrite_events.json")
-ALLEVENTS_PAGES_PER_RUN = 150
+ALLEVENTS_PAGES_PER_RUN = 350
 EVENTBRITE_DETAILS_PER_RUN = 100
 ALLEVENTS_LINK_TTL = 14 * 86400
 EVENTBRITE_DETAIL_TTL = 2 * 86400
@@ -8545,7 +8545,13 @@ _OUT_OF_CITY_RE = re.compile(r"\b(westchester|new jersey|nj\b|american dream|lon
 
 
 # Day-ticket attractions rather than dated events.
-_FEVER_ATTRACTION_RE = re.compile(r"citypass|\bpass\b|entry ticket|admission|observ|summit one|edge nyc|top of the rock|empire state|one world|skip[- ]the[- ]line|museum|exhibition|gallery|sightseeing|hop-on|gift card|membership", re.I)
+_FEVER_ATTRACTION_RE = re.compile(
+    r"citypass|\bpass\b|entry ticket|admission|observ|summit one|edge nyc|top of the rock|empire state|"
+    r"one world|skip[- ]the[- ]line|museum|exhibition|gallery|sightseeing|hop-on|gift card|membership|"
+    r"walking tour|guided .*?walk|food walk|crime .*?walk|mafia walk|ghosts?:|escape game|"
+    r"day tour|bus tour|shopping day|off[- ]?broadway show ticket|broadway show ticket|\bshow ticket\b",
+    re.I,
+)
 
 
 def scrape_fever(url, ua):
@@ -8563,6 +8569,8 @@ def scrape_fever(url, ua):
         name, when = attr("data-plan-name"), attr("data-plan-date")
         if not name or not when or m.group(1) in plans or _OUT_OF_CITY_RE.search(name) or _FEVER_ATTRACTION_RE.search(name):
             continue
+        if "T00:00:00" in when and "candlelight" not in name.lower():
+            continue  # date-only Fever tours/experiences with no real start time
         dt = _local_iso_to_utc(when[:19])
         if dt is None:
             continue
@@ -11870,6 +11878,33 @@ _BOAT_CRUISE_RE = re.compile(
     r"iboatnyc|iclubnyc)\b"
 )
 _SPECIAL_MOVIE_RE = re.compile(r"(?i)\b(q&a|premiere|festival|35mm|70mm|director|discussion|talkback|sneak|preview|party)\b")
+_DANCE_CLASS_ONLY_RE = re.compile(
+    r"(?i)\b(level\s*\d|fundamentals|beginner|intermediate|int/adv|advanced|technique|pointe|"
+    r"ballet|choreo|choreography|course|workshop|intensive|open\s+class|drop[- ]in\s+class)\b"
+)
+_DANCE_SOCIAL_RE = re.compile(
+    r"(?i)\b(social|party|parties|milonga|practica|práctica|dance\s+night|festival|showcase|"
+    r"performance|jam|battle)\b"
+)
+_EARLY_NYE_PROMO_RE = re.compile(r"(?i)\b(?:nye|new year'?s eve)\b.*\b(?:open bar|ball drop|countdown|\$\d+)\b")
+
+
+def is_early_nye_promo(name, raw_date):
+    if not name or not raw_date or not _EARLY_NYE_PROMO_RE.search(name):
+        return False
+    m = re.match(r"(\d{4})-(\d{2})-(\d{2})", str(raw_date))
+    if not m:
+        return False
+    mon, day = int(m.group(2)), int(m.group(3))
+    return mon < 12 or (mon == 12 and day < 20)
+
+
+def is_dropin_dance_class(name, cat=None, source=""):
+    if not name:
+        return False
+    if cat != "dance" and "danceus" not in (source or "").lower():
+        return False
+    return bool(_DANCE_CLASS_ONLY_RE.search(name) and not _DANCE_SOCIAL_RE.search(name))
 
 
 def _clean_scraped_events(events):
@@ -11881,6 +11916,8 @@ def _clean_scraped_events(events):
     for e in events or []:
         name = html.unescape(e.get("name") or "").strip()
         if not name or is_placeholder_or_closed_event(name):
+            continue
+        if is_early_nye_promo(name, e.get("date")):
             continue
         name = _tidy_sold_out(e, name)
         e["name"] = name
@@ -11897,6 +11934,8 @@ def _clean_scraped_events(events):
             continue
         if _BOAT_CRUISE_RE.search(f"{n_low} {v_low} {(e.get('_source_venue') or '').lower()}"):
             e["category"] = "cruises"
+        elif is_dropin_dance_class(name, e.get("category"), e.get("_source_venue") or ""):
+            e["category"] = "services"
         if e.get("url"):
             e["url"] = fix_doubled_url(e["url"])
         key = (n_low, e.get("date") or "")
