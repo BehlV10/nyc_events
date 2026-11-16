@@ -3030,26 +3030,35 @@ def scrape_ticketmaster_nyc(_url, _ua):
     failures = 0
     for win_start, win_end in windows:
         try:
-            resp = _SESSION.get(
-                "https://app.ticketmaster.com/discovery/v2/events.json",
-                params={
-                    "apikey": api_key,
-                    "latlong": "40.7128,-74.0060",
-                    "radius": 12,
-                    "unit": "miles",
-                    "size": 200,
-                    "sort": "date,asc",
-                    "startDateTime": win_start,
-                    "endDateTime": win_end,
-                },
-                timeout=15,
-            )
-            if resp.status_code == 429:
-                time.sleep(1.5)
-                resp = _SESSION.get(resp.url, timeout=15)
-            resp.raise_for_status()
-            batch = resp.json().get("_embedded", {}).get("events", [])
-            time.sleep(0.25)  # Discovery API allows 5 requests/second
+            # Busy days (Saturdays in December) pass 200 events, so read every page of the day.
+            batch, page = [], 0
+            while True:
+                resp = _SESSION.get(
+                    "https://app.ticketmaster.com/discovery/v2/events.json",
+                    params={
+                        "apikey": api_key,
+                        "latlong": "40.7128,-74.0060",
+                        "radius": 12,
+                        "unit": "miles",
+                        "size": 200,
+                        "page": page,
+                        "sort": "date,asc",
+                        "startDateTime": win_start,
+                        "endDateTime": win_end,
+                    },
+                    timeout=15,
+                )
+                if resp.status_code == 429:
+                    time.sleep(1.5)
+                    resp = _SESSION.get(resp.url, timeout=15)
+                resp.raise_for_status()
+                body = resp.json()
+                batch += body.get("_embedded", {}).get("events", [])
+                time.sleep(0.25)  # Discovery API allows 5 requests/second
+                total = (body.get("page") or {}).get("totalElements") or 0
+                page += 1
+                if page * 200 >= min(total, 1000):  # the API won't page past 1,000 results
+                    break
             for ev in batch:
                 name = ev.get("name")
                 if is_closed_show(name) or _TM_NON_EVENT_RE.search(name or ""):

@@ -630,6 +630,21 @@ class TestTicketmasterWindows(unittest.TestCase):
         self.assertTrue(all(c.get("endDateTime") for c in calls))
         self.assertEqual([e["name"] for e in events], ["Hamilton"])
 
+    def test_busy_days_read_every_page(self):
+        start = _future_local(1, 20).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        calls = []
+        def fake_get(url, params=None, **kw):
+            calls.append(dict(params or {}))
+            n = len(calls)
+            ev = {"name": f"Show {n}", "url": f"https://tm/e{n}", "dates": {"start": {"dateTime": start}, "status": {"code": "onsale"}},
+                  "_embedded": {"venues": [{"name": f"Venue {n}", "city": {"name": "New York"}, "state": {"stateCode": "NY"}}]}}
+            return _resp(payload={"_embedded": {"events": [ev]}, "page": {"totalElements": 341 if n <= 2 else 5}})
+        with patch("scrapers._SESSION.get", side_effect=fake_get), patch("scrapers.time.sleep"):
+            events = scrapers.scrape_ticketmaster_nyc("", "")
+        self.assertEqual([c.get("page") for c in calls[:3]], [0, 1, 0])  # 341 events on day one: two pages
+        self.assertEqual(len(calls), scrapers.HORIZON_DAYS + 1)
+        self.assertIn("Show 2", [e["name"] for e in events])
+
 
 class TestFamilyClassifier(unittest.TestCase):
     def test_family_phrases_and_adult_exclusions(self):

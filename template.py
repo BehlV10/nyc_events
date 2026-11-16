@@ -1942,7 +1942,7 @@ def _merge_duplicates(events, word_freq=None):
         # 8b. Collapse AllEvents duplicate onto an existing direct/primary listing at the same
         #     physical venue when distinctive title words overlap (even if AllEvents's start time
         #     is off by a few hours or midnight-placeholder).
-        if not match and venue and len(w_e) >= 2:
+        if not match and venue and w_e:
             is_ae_e = "allevents" in (e.get("_source_venue") or "").lower()
             t_e = e.get("_time")
             for cand in out:
@@ -1957,7 +1957,9 @@ def _merge_duplicates(events, word_freq=None):
                 if not _same_physical_venue(e, cand) or _numbers_conflict(raw_name, cand.get("name")):
                     continue
                 w_c = _title_words(cand.get("name"))
-                if len(w_c) >= 2 and len(w_e & w_c) >= max(2, 0.5 * min(len(w_e), len(w_c))):
+                # One title's words all inside the other's ("MJ" / "MJ The Musical Tickets")
+                nested = w_c and (w_c <= w_e or w_e <= w_c)
+                if nested or (len(w_c) >= 2 and len(w_e) >= 2 and len(w_e & w_c) >= max(2, 0.5 * min(len(w_e), len(w_c)))):
                     match = cand
                     break
 
@@ -2136,6 +2138,40 @@ def _merge_duplicates(events, word_freq=None):
 _REAL_MIDNIGHT_CATEGORIES = {"clubbing", "party", "music", "comedy", "film"}
 
 
+# AllEvents' evergreen ticket listings give only the city as the venue ("New York, N.Y."). Only
+# AllEvents: other feeds (City Parks Foundation's "Manhattan") name the place in the title.
+_CITY_ONLY_VENUE_RE = re.compile(
+    r"^\s*(new york( city)?|nyc|manhattan|brooklyn|queens|(the )?bronx|staten island)\s*(,\s*(n\.?\s?y\.?|new york)\s*)?(,?\s*(usa?|united states))?\s*$", re.I)
+
+
+def _is_allevents_only(e):
+    return "allevents." in (e.get("url") or "").lower()
+
+
+def _drop_allevents_off_nights(buckets, min_nights=3):
+    """AllEvents files long-running shows under placeholder dates (Wicked on a Monday, when the
+    Gershwin is dark). When a direct source lists the same show at the same theater on several
+    other nights but not this one, there is no performance that night: drop the AllEvents card."""
+    runs = {}  # title word -> direct theater cards
+    for day, evs in buckets.items():
+        for e in evs:
+            if e.get("category") == "theater" and not _is_allevents_only(e):
+                for w in _title_words(e.get("name")):
+                    runs.setdefault(w, []).append((day, e))
+    for day, evs in buckets.items():
+        keep = []
+        for e in evs:
+            words = _title_words(e.get("name")) if _is_allevents_only(e) else None
+            if words:
+                nights = {d for w in words for d, c in runs.get(w, ())
+                          if (lambda wc: wc and (wc <= words or words <= wc))(_title_words(c.get("name")))
+                          and _same_physical_venue(e, c)}
+                if len(nights) >= min_nights and day not in nights:
+                    continue
+            keep.append(e)
+        buckets[day] = keep
+
+
 def _is_date_only_feed(events):
     """True when nearly all of a feed's events sit at local midnight, i.e. it publishes dates
     without times (AllEvents, DanceUS) and its midnights mean nothing."""
@@ -2265,7 +2301,8 @@ def group_by_date(results):
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["url"] = sanitize_event_url(fix_doubled_url(entry.get("url")), fallback=r.get("url") or None)
             entry["venue"] = e.get("venue") or r.get("venue", "")
-            if e.get("venue_unknown") or not (e.get("venue") or "").strip():
+            if e.get("venue_unknown") or not (e.get("venue") or "").strip() \
+                    or (str(r.get("venue") or "").lower().startswith("allevents") and _CITY_ONLY_VENUE_RE.match(e.get("venue") or "")):
                 # The source hid the venue (Meetup does for non-members), so "venue" is only the
                 # group name. Dedup may adopt the real venue from another listing.
                 entry["_venue_unknown"] = True
@@ -2331,6 +2368,7 @@ def group_by_date(results):
         events.sort(key=lambda e: e.get("_time", datetime.min.replace(tzinfo=EASTERN)))
         # Merging can give a listing a real time, so the day's final order is set afterwards.
         buckets[date_key] = sorted(_merge_duplicates(events, word_freq), key=_day_order)
+    _drop_allevents_off_nights(buckets)
     # Closing soonest first, so a show about to end is near the top
     ongoing.sort(key=lambda e: (e.get("ends") or "9999", e.get("venue") or "", e.get("name") or ""))
     return sorted(buckets.items()), tba, ongoing
