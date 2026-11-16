@@ -43,6 +43,8 @@ from scrapers import (
     fix_doubled_url,
     sanitize_event_url,
     BROADWAY_THEATRES,
+    CINEMA_VENUES,
+    known_venue_calendar,
 )
 from holiday_themes import HOLIDAYS, HOLIDAY_KEYS, greeting_html, holiday_calendar, holiday_on, holiday_theme_css
 from lgbtq import is_lgbtq_event
@@ -1157,6 +1159,12 @@ def _clean_ticket_query(title):
     return q
 
 
+_MAJOR_SELLER_URL_RE = re.compile(
+    r"(?:ticketmaster|livenation|ticketweb|seatgeek|axs|telecharge)\.com",
+    re.I,
+)
+
+
 def _is_commercial_ticketed(e):
     p = (e.get("price") or "").lower()
     if "free" in p or p in ("$0", "0"):
@@ -1164,18 +1172,20 @@ def _is_commercial_ticketed(e):
     source = (e.get("_source_venue") or "").lower()
     venue = (e.get("venue") or "").lower()
     name = (e.get("name") or "").lower()
-    cat = (e.get("category") or "").lower()
     if any(ex in source or ex in venue for ex in EXCLUDE_VENUES_OR_SOURCES):
         return False
     if "fever" in source or "feverup.com" in (e.get("url") or "").lower():
         return False
     if "museum tour" in name or "walking tour" in name or "historical tour" in name:
         return False
-    if any(s in source for s in ["ticketmaster", "seatgeek", "donyc"]):
+    urls = [e.get("url") or "", e.get("ticket_url") or ""]
+    sources = [source]
+    for a in e.get("_alt_sources") or []:
+        urls.append(a.get("url") or "")
+        sources.append((a.get("source") or a.get("venue") or "").lower())
+    if any(_MAJOR_SELLER_URL_RE.search(u) for u in urls if u):
         return True
-    if any(cv in venue or cv in source for cv in COMMERCIAL_VENUES):
-        return True
-    if cat in ("music", "sports", "comedy", "theater") and e.get("price"):
+    if any(any(k in s for k in ("ticketmaster", "seatgeek", "axs", "telecharge")) for s in sources if s):
         return True
     return False
 
@@ -1463,14 +1473,21 @@ def _titles_equivalent(a, b):
 
 
 _ATTRACTION_TOUR_RE = re.compile(
-    r"\b(museum|stadium|brewery|distillery|historic(?:al)?|walking|architecture|neighborhood|food|ghost|harbor|backstage)\s+tours?\b", re.I)
+    r"\b(museum|stadium|brewery|distillery|historic(?:al)?|walking|architecture|neighborhood|"
+    r"food|ghost|harbor|backstage|exhibition|gallery|campus|park|guided)\s+tours?\b|"
+    r"\blincoln\s+center\s+tours?\b",
+    re.I,
+)
 
 
 def _is_attraction_tour(e):
-    """Hourly-departure tours (museum, walking, brewery...) that should collapse to one daily listing."""
+    """Hourly/daily-departure tours (museum, walking, Lincoln Center...) that collapse and sink below timed shows."""
+    name = e.get("name") or ""
+    if re.search(r"(?i)\blincoln\s+center\s+tours?\b|\b(exhibition|gallery|museum|architecture|backstage)\s+tours?\b", name):
+        return True
     if (e.get("category") or "").lower() in ("music", "comedy", "clubbing"):
         return False
-    return bool(_ATTRACTION_TOUR_RE.search(e.get("name") or ""))
+    return bool(_ATTRACTION_TOUR_RE.search(name))
 
 
 def _event_local_time(e):
@@ -1818,7 +1835,8 @@ def _merge_duplicates(events, word_freq=None):
         curl = _clean_event_url(e.get("url"))
         # A link that is just the source's listing page (calendar fallback) identifies the
         # source, not the event: many distinct events share it, so it can't anchor a match.
-        if curl and curl == _clean_event_url(e.get("venue_url")):
+        v_cal = known_venue_calendar(venue_str)
+        if curl and (curl == _clean_event_url(e.get("venue_url")) or (v_cal and curl == _clean_event_url(v_cal))):
             curl = ""
 
         match = None
@@ -2265,10 +2283,61 @@ def _drop_allevents_off_nights(buckets, window_days=7):
         del buckets[day]
 
 
+def _cinema_key(e):
+    blob = f"{e.get('venue') or ''} {e.get('_source_venue') or ''}".lower()
+    if "house of wax" in blob:
+        return None
+    for fv in CINEMA_VENUES:
+        if fv in blob:
+            return fv
+    return None
+
+
+def _cinema_title_key(name):
+    t = re.sub(r"\s*\(\d{1,2}:\d{2}\s*[ap]m\)\s*$", "", (name or "").strip(), flags=re.I)
+    t = re.sub(r"^film\s+forum:\s*", "", t, flags=re.I)
+    return re.sub(r"[^a-z0-9]+", " ", t.lower()).strip()
+
+
+def _drop_regular_cinema_runs(buckets):
+    """At a cinema, drop a title that plays on 3+ days within a week or has multiple showtimes
+    in one day, keeping one-off screenings."""
+    days_by_film = {}
+    day_showtimes = {}
+    for day, evs in buckets.items():
+        for e in evs:
+            ck = _cinema_key(e)
+            if not ck:
+                continue
+            tk = _cinema_title_key(e.get("name"))
+            if not tk:
+                continue
+            days_by_film.setdefault((ck, tk), set()).add(day)
+            n_times = max(1, len(e.get("_times_seen") or []))
+            day_showtimes[(ck, tk, day)] = day_showtimes.get((ck, tk, day), 0) + n_times
+
+    drop_films = {
+        key for key, days in days_by_film.items()
+        if any(sum(1 for d2 in days if 0 <= (d2 - d1).days < 7) >= 3 for d1 in days)
+    }
+    for day, evs in list(buckets.items()):
+        keep = []
+        for e in evs:
+            ck = _cinema_key(e)
+            if ck:
+                tk = _cinema_title_key(e.get("name"))
+                if (ck, tk) in drop_films or day_showtimes.get((ck, tk, day), 0) >= 2:
+                    continue
+            keep.append(e)
+        buckets[day] = keep
+    for day in [d for d, evs in buckets.items() if not evs]:
+        del buckets[day]
+
+
 def _is_date_only_feed(events):
-    """True when nearly all of a feed's events sit at local midnight, i.e. it publishes dates
-    without times (AllEvents, DanceUS) and its midnights mean nothing."""
-    total = midnight = 0
+    """True when nearly all of a feed's events sit at local midnight (or legacy noon placeholder),
+    i.e. it publishes dates without times (AllEvents, DanceUS) and its placeholder times mean nothing."""
+    total = midnight = noon = 0
     for e in events:
         try:
             t = datetime.fromisoformat(str(e.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
@@ -2276,13 +2345,15 @@ def _is_date_only_feed(events):
             continue
         total += 1
         midnight += t.hour == 0 and t.minute == 0
-    return total >= 3 and midnight >= 0.8 * total
+        noon += t.hour == 12 and t.minute == 0
+    return total >= 3 and (midnight >= 0.8 * total or noon >= 0.8 * total)
 
 
 def _day_order(e):
-    """Timed events by start time, then events with no known time."""
+    """Timed events by start time, then daily/attraction tours, then events with no known time."""
     t = e.get("_time")
-    return (bool(e.get("_time_unknown")), t or datetime.max.replace(tzinfo=EASTERN), (e.get("name") or "").lower())
+    is_tour = _is_attraction_tour(e) or bool(e.get("_tour_times"))
+    return (bool(e.get("_time_unknown")), is_tour, t or datetime.max.replace(tzinfo=EASTERN), (e.get("name") or "").lower())
 
 
 _SPAN_MONTH_DAYS_RE = re.compile(
@@ -2397,7 +2468,13 @@ def group_by_date(results):
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["url"] = sanitize_event_url(fix_doubled_url(entry.get("url")), fallback=r.get("url") or None)
             entry["venue"] = e.get("venue") or r.get("venue", "")
-            if e.get("venue_unknown") or not (e.get("venue") or "").strip() \
+            if (entry.get("venue") or "").strip().lower() == "dance/nyc community calendar":
+                entry["venue"] = ""
+            if "google.com/search" in (entry.get("url") or "") or not entry.get("url"):
+                v_cal = known_venue_calendar(entry.get("venue"))
+                if v_cal:
+                    entry["url"] = v_cal
+            if e.get("venue_unknown") or not (entry.get("venue") or "").strip() \
                     or (str(r.get("venue") or "").lower().startswith("allevents") and _CITY_ONLY_VENUE_RE.match(e.get("venue") or "")):
                 # The source hid the venue (Meetup does for non-members), so "venue" is only the
                 # group name. Dedup may adopt the real venue from another listing.
@@ -2444,6 +2521,8 @@ def group_by_date(results):
                         entry["_time_unknown"] = True  # the scraper's time is a placeholder
                     if dt.hour == 0 and dt.minute == 0 and (date_only_feed or entry["category"] not in _REAL_MIDNIGHT_CATEGORIES):
                         entry["_time_unknown"] = True
+                    if date_only_feed and dt.hour == 12 and dt.minute == 0:
+                        entry["_time_unknown"] = True
                 except (TypeError, ValueError):
                     pass
             if e.get("_exhibition"):
@@ -2474,6 +2553,7 @@ def group_by_date(results):
         # Merging can give a listing a real time, so the day's final order is set afterwards.
         buckets[date_key] = sorted(_merge_duplicates(events, word_freq), key=_day_order)
     _drop_allevents_off_nights(buckets)
+    _drop_regular_cinema_runs(buckets)
     # Closing soonest first, so a show about to end is near the top
     ongoing.sort(key=lambda e: (e.get("ends") or "9999", e.get("venue") or "", e.get("name") or ""))
     return sorted(buckets.items()), tba, ongoing

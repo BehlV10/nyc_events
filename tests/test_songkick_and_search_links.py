@@ -108,5 +108,102 @@ class WarsawTimes(unittest.TestCase):
         self.assertEqual(ev[0]["date"], "2099-12-10T00:00:00+00:00")  # 7pm Eastern
 
 
+class TomorrowAuditFixes(unittest.TestCase):
+    def test_search_fallback_uses_scraped_venue_calendar(self):
+        t = "2030-01-08T19:00:00-05:00"
+        results = [{"venue": "DoNYC Citywide", "url": "https://donyc.com/events", "events": [
+            {"name": "DJ Awesome", "date": t, "url": "https://www.google.com/search?q=DJ+Awesome+Shrine+NYC",
+             "venue": "Shrine", "category": "clubbing"},
+            {"name": "Afrobeat Late Set", "date": "2030-01-08T22:00:00-05:00",
+             "url": "https://www.google.com/search?q=Afrobeat+Shrine+NYC", "venue": "Shrine", "category": "clubbing"},
+        ]}]
+        cards = _cards(results)
+        self.assertEqual(len(cards), 2)
+        self.assertEqual(cards[0]["url"], "https://www.shrinenyc.com/calendar_main.php")
+
+    def test_compare_links_only_when_major_seller_lists_event(self):
+        donyc_only = {
+            "name": "Indie Band Night", "venue": "Bowery Ballroom", "_source_venue": "DoNYC Citywide",
+            "url": "https://www.boweryballroom.com/e/1", "price": "$25", "category": "music",
+        }
+        self.assertEqual(T._build_compare_links(donyc_only, donyc_only["name"]), "")
+        tm_ev = {
+            "name": "Indie Band Night", "venue": "Bowery Ballroom", "_source_venue": "Ticketmaster NYC",
+            "url": "https://www.ticketmaster.com/event/123", "price": "$25", "category": "music",
+        }
+        self.assertIn("StubHub", T._build_compare_links(tm_ev, tm_ev["name"]))
+
+    def test_daily_tours_sink_below_timed_events(self):
+        results = [{"venue": "DoNYC Citywide", "url": "https://donyc.com/events", "events": [
+            {"name": "Lincoln Center Tours", "date": "2030-01-08T10:15:00-05:00",
+             "url": "https://lincolncenter.org/tours", "venue": "Lincoln Center", "category": "music"},
+            {"name": "Evening Jazz Concert", "date": "2030-01-08T20:00:00-05:00",
+             "url": "https://lincolncenter.org/jazz", "venue": "Lincoln Center", "category": "music"},
+        ]}]
+        cards = _cards(results)
+        self.assertEqual([c["name"] for c in cards], ["Evening Jazz Concert", "Lincoln Center Tours"])
+
+    def test_shop_and_support_cashmere_sale_filtered(self):
+        self.assertTrue(scrapers.is_service_ad("Shop + Support: JCC Party at The Cashmere Sale", "JCC Manhattan"))
+
+    def test_legacy_noon_placeholder_feed_treated_as_time_unknown(self):
+        evs = [{"name": f"Show {i}", "date": f"2030-01-0{i}T12:00:00-05:00"} for i in range(1, 5)]
+        self.assertTrue(T._is_date_only_feed(evs))
+
+    def test_cinema_regular_runs_dropped_and_film_society_categorized_as_film(self):
+        results = [{"venue": "DoNYC Citywide", "url": "https://donyc.com/events", "events": [
+            {"name": "Fatherland", "date": "2030-01-08T17:30:00-05:00", "url": "https://filmlinc.org/f",
+             "venue": "Film Society of Lincoln Center", "category": "music"},
+            {"name": "Fatherland", "date": "2030-01-09T17:30:00-05:00", "url": "https://filmlinc.org/f",
+             "venue": "Film Society of Lincoln Center", "category": "music"},
+            {"name": "Fatherland", "date": "2030-01-10T17:30:00-05:00", "url": "https://filmlinc.org/f",
+             "venue": "Film Society of Lincoln Center", "category": "music"},
+            {"name": "Rare 35mm Restoration", "date": "2030-01-08T19:00:00-05:00", "url": "https://filmlinc.org/r",
+             "venue": "Film Society of Lincoln Center", "category": "music"},
+        ]}]
+        days, _, _ = T.group_by_date(results)
+        all_cards = [e for _, evs in days for e in evs]
+        self.assertEqual([c["name"] for c in all_cards], ["Rare 35mm Restoration"])
+        self.assertEqual(all_cards[0]["category"], "film")
+
+    def test_dance_nyc_extracts_venue_and_address_and_drops_zoom(self):
+        from unittest import mock
+        listing_html = """
+        <div class="event">
+          <div class="event_time">6:30pm</div>
+          <div class="event_details">
+            <a href="/for-audiences/community-calendar/view/Modern-Showcase/2099-11-18/"><h3>Modern Showcase</h3></a>
+            <p>Taylor Center for Dance Education<br/>An evening of movement.</p>
+          </div>
+        </div>
+        <div class="event">
+          <div class="event_time">10:00am</div>
+          <div class="event_details">
+            <a href="/for-audiences/community-calendar/view/Zoom-Class/2099-11-18/"><h3>Morning Movement</h3></a>
+            <p>Online Dance Co<br/>Join from home.</p>
+          </div>
+        </div>
+        """
+        detail_pages = {
+            "https://www.dance.nyc/for-audiences/community-calendar/view/Modern-Showcase/2099-11-18/": """
+                <div class="event_details">
+                  <p><b>Company:</b> Taylor Center for Dance Education<br/><b>Venue:</b> Taylor Dance East<br/><b>Location:</b> New York City, NY</p>
+                  <p>Taylor Center for Dance Education<br/>551 Grand Street<br/>New York City, NY, 10002</p>
+                </div>
+            """,
+            "https://www.dance.nyc/for-audiences/community-calendar/view/Zoom-Class/2099-11-18/": """
+                <div class="event_details">
+                  <p><b>Company:</b> Online Dance Co<br/><b>Venue:</b> Zoom<br/><b>Location:</b> New York, NY</p>
+                </div>
+            """,
+        }
+        with mock.patch.object(scrapers, "fetch_soup", return_value=scrapers.BeautifulSoup(listing_html, "html.parser")):
+            evs = scrapers.scrape_dance_nyc("https://www.dance.nyc/for-audiences/community-calendar/", "ua",
+                                            fetch_detail=lambda u: detail_pages[u])
+        self.assertEqual(len(evs), 1)
+        self.assertEqual(evs[0]["venue"], "Taylor Dance East")
+        self.assertEqual(evs[0]["address"], "551 Grand Street, New York City, NY, 10002")
+
+
 if __name__ == "__main__":
     unittest.main()

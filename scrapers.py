@@ -144,8 +144,9 @@ def _load_venue_cache(vname, max_age=None, src=None, code=None):
                     ev["url"] = t
                 else:
                     v_str = ev.get("venue") or vname or ""
+                    cal_u = known_venue_calendar(v_str)
                     q_str = f"{ev.get('name', '')} {v_str} NYC".strip()
-                    ev["url"] = f"https://www.google.com/search?q={quote_plus(q_str)}"
+                    ev["url"] = cal_u or f"https://www.google.com/search?q={quote_plus(q_str)}"
         return cached
     except Exception:
         return None
@@ -453,6 +454,13 @@ COMEDY_VENUES = {
     "new york comedy club", "magnet theater", "the pit", "peoples improv theater",
     "caveat", "flop house comedy", "brooklyn comedy collective", "tiny cupboard"
 }
+
+CINEMA_VENUES = (
+    "film society of lincoln center", "film at lincoln center", "walter reade theater",
+    "film forum", "ifc center", "metrograph", "nitehawk cinema", "alamo drafthouse",
+    "angelika film center", "paris theater", "quad cinema", "cinema village",
+    "roxy cinema", "anthology film archives", "bam rose cinemas",
+)
 
 CATEGORY_KEYWORDS = [
     ("theater",   [r"\b(theater|theatre|musical|the musical|broadway|off-broadway|playwright|stage play|cabaret|drama|drag show|drag queen|drag cabaret|drag brunch|burlesque|curtain call|cats: the jellicle ball|hamilton|hadestown|moulin rouge|aladdin|lion king|the outsiders|great gatsby|buena vista social club|stereophonic|sunset boulevard|book of mormon|little shop of horrors|maybe happy ending|operation mincemeat|swept away|death becomes her|sweeney todd|into the woods|west side story|mamma mia|les miserables|phantom of the opera|rent|funny girl|waitress|kinky boots|dear evan hansen|in the heights|spring awakening|titanique|play that goes wrong|cursed child|water for elephants|illinoise|suffs|our town|romeo and juliet|mcneal|yellow face|left on tenth|hills of california|cult of love|gypsy|amaze)\b"]),
@@ -783,6 +791,8 @@ def guess_category(text, default="community", venue=None, source_url=None):
         v_low = venue.lower()
         if any(cv in v_low for cv in COMEDY_VENUES):
             return "comedy"
+        if any(fv in v_low for fv in CINEMA_VENUES) and "house of wax" not in v_low:
+            return "film"
         if any(bt in v_low for bt in BROADWAY_THEATRES) and not any(k in v_low for k in ["comedy", "film", "cinema"]):
             return "theater"
     if default == "theater":
@@ -1120,6 +1130,7 @@ _SERVICE_AD_TITLE_RE = re.compile(
     r"\bspa (?:night|after dark|day|package|weekend)\b|\breflexology experience\b|\bstress[- ]free week\b|"
     r"\b(?:botox|filler|iv (?:drip|therapy))\b|"
     r"^discover\s+(?:dance|fitness|professional[- ]level)\b|"
+    r"\bshop\s*[+&]\s*support\b|\bcashmere\s+sale\b|"
     r"\b(?:(?:madison\s+square\s+garden|radio\s+city\s+music\s+hall)\s+tour\s+experience|"
     r"nyc\s+free\s+tour\s+for\s+midtown|"
     r"catacombs\s+by\s+candlelight\s+tour|all[- ]day\s+happy\s+hour|riseny:\s*a\s+soaring\s+journey)\b",
@@ -1392,7 +1403,7 @@ def _parse_donyc_svelte(page, now):
         if key in seen:
             continue
         seen.add(key)
-        url = venue_site or f"https://www.google.com/search?q={quote_plus(f'{name} {venue_name} NYC')}"
+        url = venue_site or known_venue_calendar(venue_name) or f"https://www.google.com/search?q={quote_plus(f'{name} {venue_name} NYC')}"
         ev = {"name": name, "date": dt.isoformat(), "url": url, "venue": venue_name, "price": None,
               "_donyc_path": _js_unquote(permalink)}
         cat = re.search(r'category:"([^"]*)"', body)
@@ -9355,6 +9366,118 @@ def scrape_union_square_holiday_market(url, ua):
     )
 
 
+def _parse_dance_nyc_detail(page_html):
+    """Extract venue, company, and street address from a Dance/NYC event detail page."""
+    soup = BeautifulSoup(page_html or "", "html.parser")
+    box = soup.select_one(".event_details") or soup
+    venue = company = location = address = None
+    for p in box.find_all("p"):
+        txt = p.get_text("\n", strip=True)
+        if "Venue:" in txt or "Company:" in txt:
+            m_v = re.search(r"Venue:\s*([^\n]+)", txt)
+            m_c = re.search(r"Company:\s*([^\n]+)", txt)
+            m_l = re.search(r"Location:\s*([^\n]+)", txt)
+            if m_v:
+                venue = m_v.group(1).strip()
+            if m_c:
+                company = m_c.group(1).strip()
+            if m_l:
+                location = m_l.group(1).strip()
+        lines = [ln.strip() for ln in txt.splitlines() if ln.strip()]
+        for i, ln in enumerate(lines):
+            if re.search(r",\s*NY\s*,?\s*\d{5}\b", ln) and "85 Delancey" not in txt:
+                street = lines[i - 1] if i >= 1 and not lines[i - 1].startswith(("http", "Company:")) else ""
+                if street and company and street.lower() == company.lower():
+                    street = ""
+                address = f"{street}, {ln}".strip(", ")
+    return {"venue": venue or company, "company": company, "address": address or location}
+
+
+def scrape_dance_nyc(url, ua, fetch_detail=None):
+    """Dance/NYC Community Calendar — parses listing cards for organization/time and fetches
+    one detail page per unique event slug for the venue name and street address."""
+    u = url or "https://www.dance.nyc/for-audiences/community-calendar/"
+    soup = fetch_soup(u, ua)
+    fetch_detail = fetch_detail or (lambda du: fetch_text(du, headers={"User-Agent": ua or UA_CHROME})[1])
+    raw_items = []
+    slug_urls = {}
+    for card in soup.select("div.event"):
+        a = next((x for x in card.select("a[href*='/community-calendar/view/']") if x.get_text(strip=True)), None)
+        if not a:
+            continue
+        title = a.get_text(" ", strip=True)
+        href = a.get("href") or ""
+        ev_url = urljoin("https://www.dance.nyc", href)
+        m_url = re.search(r"/community-calendar/view/([^/]+)/(\d{4}-\d{2}-\d{2})/?", ev_url)
+        if not m_url:
+            continue
+        slug, day_str = m_url.group(1), m_url.group(2)
+        slug_urls.setdefault(slug, ev_url)
+        time_el = card.select_one(".event_time")
+        time_txt = time_el.get_text(" ", strip=True) if time_el else ""
+        org = None
+        p = card.select_one(".event_details p") or card.find("p")
+        if p:
+            lines = [ln.strip() for ln in p.get_text("\n", strip=True).splitlines() if ln.strip()]
+            if lines:
+                org = lines[0]
+        raw_items.append((slug, day_str, time_txt, title, ev_url, org))
+
+    details = {}
+    for slug, du in list(slug_urls.items())[:40]:
+        try:
+            details[slug] = _parse_dance_nyc_detail(fetch_detail(du))
+        except SiteRefused:
+            break
+        except Exception:
+            details[slug] = {}
+
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    for slug, day_str, time_txt, title, ev_url, org in raw_items:
+        det = details.get(slug) or {}
+        venue = det.get("venue") or org
+        addr = det.get("address")
+        if venue and re.match(r"^(?:zoom|online)\b", venue.strip(), re.I):
+            continue
+        if addr and re.match(r"^(?:zoom|online)\b", addr.strip(), re.I):
+            continue
+        m_t = re.search(r"(\d{1,2}):(\d{2})\s*([ap]m)", time_txt, re.I)
+        try:
+            y, m, d = (int(x) for x in day_str.split("-"))
+            if m_t:
+                hh = int(m_t.group(1)) % 12 + (12 if m_t.group(3).lower() == "pm" else 0)
+                mm = int(m_t.group(2))
+                dt = datetime(y, m, d, hh, mm, tzinfo=EASTERN).astimezone(timezone.utc)
+                time_unk = False
+            else:
+                dt = datetime(y, m, d, 0, 0, tzinfo=EASTERN).astimezone(timezone.utc)
+                time_unk = True
+        except ValueError:
+            continue
+        if dt < now and not time_unk:
+            continue
+        iso = dt.isoformat()
+        key = (title.lower(), iso)
+        if key in seen:
+            continue
+        seen.add(key)
+        ev = {
+            "name": title,
+            "date": iso,
+            "url": ev_url,
+            "venue": venue,
+            "address": addr,
+            "price": None,
+            "category": "dance",
+        }
+        if time_unk:
+            ev["time_unknown"] = True
+        events.append(ev)
+    return events
+
+
 def scrape_columbus_circle_holiday_market(url, ua):
     """Columbus Circle Holiday Market (Urbanspace) — Dec 1 to Dec 31, 2026 (closed Dec 25)."""
     schedule = []
@@ -11399,7 +11522,7 @@ _ALL_VENUES = [
     {"name": "DanceUS: NYC Belly Dance", "url": "https://www.danceus.org/events/belly-dance/new-york-ny-belly-dance-classes/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "dance"},
     {"name": "SalsaVida NYC Socials", "url": "https://www.salsavida.com/guides/new-york/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "dance"},
     {"name": "SalsaVida NYC Socials (list)", "url": "https://www.salsavida.com/guides/new-york/new-york-city/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "dance", "kwargs": {"link_re": "^/event/"}},
-    {"name": "Dance/NYC Community Calendar", "url": "https://www.dance.nyc/for-audiences/community-calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "dance", "kwargs": {"link_re": "/community-calendar/view/"}},
+    {"name": "Dance/NYC Community Calendar", "url": "https://www.dance.nyc/for-audiences/community-calendar/", "ua": UA_CHROME, "scraper": scrape_dance_nyc, "default_category": "dance"},
     {"name": "New York Transit Museum", "url": "https://www.nytransitmuseum.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "family"},
     {"name": "Scandinavia House", "url": "https://www.scandinaviahouse.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
     {"name": "Ukrainian Institute of America", "url": "https://ukrainianinstitute.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
@@ -12127,6 +12250,62 @@ _ALL_VENUES += [
 
 VENUES = [v for v in _ALL_VENUES if not _is_eventbrite_search(v)]
 
+_NON_VENUE_CALENDAR_HOSTS = (
+    "donyc.com", "allevents.in", "eventbrite.", "ticketmaster.com", "seatgeek.com",
+    "meetup.com", "ra.co", "dice.fm", "songkick.com", "feverup.com", "lu.ma", "luma.com",
+    "partiful.com", "nycgovparks.org", "data.cityofnewyork.us", "google.com", "danceus.org",
+    "salsavida.com", "newyorktheatreguide.com", "broadway.com", "playbill.com",
+)
+_VENUE_SUFFIX_RE = re.compile(
+    r"\s+(?:nyc|new york|new york city|manhattan|brooklyn|queens|bronx|staten island|"
+    r"harlem|bushwick|williamsburg|greenpoint|astoria|gowanus|park slope|east village|"
+    r"west village|greenwich village|lower east side|les|midtown|downtown|uptown)\s*$",
+    re.I,
+)
+_KNOWN_VENUE_CALENDARS = {}
+
+
+def _norm_venue_calendar_key(name):
+    s = re.sub(r"\([^)]*\)", " ", (name or "").lower())
+    s = re.sub(r"[^a-z0-9]+", " ", s).strip()
+    s = re.sub(r"^the\s+", "", s)
+    return s
+
+
+def _build_known_venue_calendars():
+    if _KNOWN_VENUE_CALENDARS:
+        return _KNOWN_VENUE_CALENDARS
+    for v in VENUES:
+        url = (v.get("url") or "").strip()
+        if not url.startswith("http") or any(h in url.lower() for h in _NON_VENUE_CALENDAR_HOSTS):
+            continue
+        if "/wp-json/" in url:
+            url = url.split("/wp-json/")[0] + "/events/"
+        candidates = [v.get("name") or "", (v.get("kwargs") or {}).get("venue") or ""]
+        for raw in candidates:
+            base = _norm_venue_calendar_key(raw)
+            if not base or len(base) < 3:
+                continue
+            _KNOWN_VENUE_CALENDARS.setdefault(base, url)
+            stripped = _VENUE_SUFFIX_RE.sub("", base).strip()
+            if stripped and len(stripped) >= 4:
+                _KNOWN_VENUE_CALENDARS.setdefault(stripped, url)
+    return _KNOWN_VENUE_CALENDARS
+
+
+def known_venue_calendar(venue_name):
+    """Return the official calendar URL of a venue we already scrape directly, or None."""
+    if not venue_name:
+        return None
+    table = _build_known_venue_calendars()
+    base = _norm_venue_calendar_key(venue_name)
+    if not base:
+        return None
+    if base in table:
+        return table[base]
+    stripped = _VENUE_SUFFIX_RE.sub("", base).strip()
+    return table.get(stripped) if stripped else None
+
 
 # Static "useful links" — venues & discount programs worth linking
 STATIC_LINKS = [
@@ -12797,12 +12976,24 @@ def _fill_missing_times(results, ua=None, limit=None, path=None, fetch=None):
         if source.startswith(_NO_DETAIL_TIME_SOURCES):
             continue
         listing = (r.get("url") or "").rstrip("/")
-        for e in r.get("events") or []:
+        evs = r.get("events") or []
+        noon_count = 0
+        valid_count = 0
+        for e0 in evs:
+            try:
+                w0 = datetime.fromisoformat(str(e0.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
+                valid_count += 1
+                if (w0.hour, w0.minute) == (12, 0):
+                    noon_count += 1
+            except (TypeError, ValueError):
+                pass
+        noon_feed = valid_count >= 3 and noon_count >= 0.8 * valid_count
+        for e in evs:
             try:
                 when = datetime.fromisoformat(str(e.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
             except (TypeError, ValueError):
                 continue
-            midnight = (when.hour, when.minute) == (0, 0) and e.get("category") not in ("clubbing", "party")
+            midnight = ((when.hour, when.minute) == (0, 0) and e.get("category") not in ("clubbing", "party")) or (noon_feed and (when.hour, when.minute) == (12, 0))
             url = e.get("url") or ""
             if not (e.get("time_unknown") or midnight) or when.date() < today:
                 continue
