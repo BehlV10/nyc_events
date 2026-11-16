@@ -1998,6 +1998,25 @@ def _merge_duplicates(events, word_freq=None):
                     match = cand
                     break
 
+        # 8c. A directory's artist-only title against the venue's tour title: "Syd" (Songkick,
+        #     SeatGeek) and "Syd: Beard Tour" (the venue, Ticketmaster), same room, same start.
+        #     One side must be a citywide directory, and one title must sit inside the other
+        #     once words that only name the place are set aside.
+        if not match and venue and w_e and e.get("_time") and not e.get("_time_unknown"):
+            gen_e = _is_generic_feed(e)
+            for cand in out:
+                if cand.get("_time") != e["_time"] or cand.get("_time_unknown") or not (gen_e or _is_generic_feed(cand)):
+                    continue
+                if e.get("_venue_unknown") or cand.get("_venue_unknown"):
+                    continue  # a hidden venue matches anything: not enough to go on
+                if not _same_physical_venue(e, cand) or _numbers_conflict(raw_name, cand.get("name")):
+                    continue
+                place = _venue_words(e) | _venue_words(cand)
+                a_w, c_w = w_e - place, _title_words(cand.get("name")) - place
+                if a_w and c_w and (a_w <= c_w or c_w <= a_w):
+                    match = cand
+                    break
+
         if match:
             # Every start time the merged listings give; the card shows the others next to its own.
             seen = match.setdefault("_times_seen", [])
@@ -2421,6 +2440,8 @@ def group_by_date(results):
                     dt = datetime.fromisoformat(raw.replace("Z", "+00:00")).astimezone(EASTERN)
                     key = dt.date()
                     entry["_time"] = dt
+                    if e.get("time_unknown"):
+                        entry["_time_unknown"] = True  # the scraper's time is a placeholder
                     if dt.hour == 0 and dt.minute == 0 and (date_only_feed or entry["category"] not in _REAL_MIDNIGHT_CATEGORIES):
                         entry["_time_unknown"] = True
                 except (TypeError, ValueError):

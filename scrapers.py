@@ -6792,7 +6792,12 @@ def scrape_warsaw(url, ua):
                         event_url = it.get("url") or target_url
                         if not name or not start:
                             continue
-                        dt = datetime.fromisoformat(start.replace("Z", "+00:00")).astimezone(timezone.utc)
+                        dt = datetime.fromisoformat(start.replace("Z", "+00:00"))
+                        if dt.tzinfo is None:
+                            # "2026-12-17T19:00:00" is New York time. Left naive, astimezone() used the
+                            # server's zone, so on CI (UTC) every Warsaw show was listed 5 hours early.
+                            dt = dt.replace(tzinfo=EASTERN)
+                        dt = dt.astimezone(timezone.utc)
                         if dt < now:
                             continue
                         key = (name.lower(), dt.date().isoformat())
@@ -8389,6 +8394,49 @@ def scrape_jsonld_paged(url, ua, pages=4, param="page"):
     return events
 
 
+# AllEvents' topic pages, read as ONE source. They used to be 33 separate feeds, each stamping
+# its topic on every listing; now the topic is only a fallback for titles that say nothing.
+ALLEVENTS_CATEGORY_PAGES = (
+    ("new%20york/music", "music"), ("new%20york/comedy", "comedy"), ("new%20york/parties", "clubbing"),
+    ("new%20york/kids", "family"), ("new%20york/family", "family"), ("new%20york/sports", "sports"),
+    ("new%20york/fitness", "sports"), ("new%20york/workshops", "community"), ("new%20york/dance", "dance"),
+    ("new%20york/art", "art"), ("new%20york/theatre", "theater"), ("new%20york/food-drinks", "food"),
+    ("new%20york/festivals", "community"), ("new%20york/health-wellness", "community"), ("new%20york/yoga", "sports"),
+    ("new%20york/dating", "community"), ("new%20york/lgbt", "community"), ("new%20york/free", "community"),
+    ("new%20york/performances", "theater"), ("new%20york/exhibitions", "art"), ("new%20york/meetups", "community"),
+    ("new%20york/community", "community"), ("new%20york/spirituality", "community"), ("new%20york/books", "books"),
+    ("new%20york/film", "film"), ("new%20york/gaming", "gaming"), ("new%20york/classes", "community"),
+    ("brooklyn/kids", "community"), ("brooklyn/family", "community"), ("queens/kids", "community"),
+    ("queens/family", "community"), ("staten%20island/family", "community"), ("bronx/family", "community"),
+)
+
+
+def scrape_allevents_categories(url, ua, pages=4, category_pages=ALLEVENTS_CATEGORY_PAGES):
+    """Every AllEvents topic page for NYC as one feed, each listing once. A page that fails or
+    times out is skipped; if AllEvents refuses us the pages read so far are kept."""
+    base = (url or "https://allevents.in").rstrip("/")
+    events, seen, failed = [], set(), 0
+    for path, topic in category_pages:
+        try:
+            batch = scrape_jsonld_paged(f"{base}/{path}", ua, pages=pages)
+        except SiteRefused:
+            break
+        except Exception:
+            failed += 1
+            continue
+        for e in batch:
+            key = e.get("url") or (e["name"].lower(), e["date"])
+            if key in seen:
+                continue
+            seen.add(key)
+            by_title = guess_category(e.get("name"), "community", venue=e.get("venue"))
+            e["category"] = by_title if by_title != "community" else topic
+            events.append(e)
+    if not events and failed:
+        raise RuntimeError(f"all {failed} AllEvents topic pages failed")
+    return events
+
+
 def scrape_jsonld_months(url, ua, months=2):
     """JSON-LD calendar paged by month at `<url>/YYYY-MM` (New York Comedy Club's /calendar).
 
@@ -8745,6 +8793,8 @@ def scrape_html_cards(url, ua, link_re=None, max_up=5, require_time=False, venue
         hh, mm = (int(tm.group(1)) % 12 + (12 if tm.group(3).lower() == "p" else 0), int(tm.group(2) or 0)) if tm else (12, 0)
         local = datetime(d.year, d.month, d.day, hh, mm, tzinfo=EASTERN)
         e = {"name": title[:200], "date": local.astimezone(timezone.utc).isoformat(), "url": href, "venue": venue, "price": None}
+        if not tm:
+            e["time_unknown"] = True  # noon is a placeholder; _fill_missing_times reads the event's page
         if address:
             e["address"] = address
         if re.search(r"\bfree\b", text, re.I) and not re.search(r"\$\s?\d", text):
@@ -11293,9 +11343,9 @@ _ALL_VENUES = [
     {"name": "QNS Queens Community Calendar", "url": "https://events.qns.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "community"},
     {"name": "Fever NYC (Candlelight, Immersive & Experiences)", "url": "https://feverup.com/en/new-york", "ua": UA_CHROME, "scraper": scrape_fever, "default_category": "music"},
     {"name": "New York Theatre Guide", "url": "https://www.newyorktheatreguide.com/whats-on/all-shows", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "theater"},
-    # AllEvents is read by place only (the citywide pages and each borough's "all" page). Its 33
-    # category pages (music, theatre, kids, ...) were removed: slow, often timing out, mostly
-    # repeating the place pages, and the source of resale and wrong-date listings.
+    # AllEvents by place (the citywide pages and each borough's "all" page), plus its 33 topic
+    # pages (music, theatre, kids, ...) read as a single source: see scrape_allevents_categories.
+    {"name": "AllEvents NYC (by topic)", "url": "https://allevents.in", "ua": UA_CHROME, "scraper": scrape_allevents_categories, "default_category": "community"},
     {"name": "AllEvents NYC", "url": "https://allevents.in/new%20york", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community", "kwargs": {"pages": 6}},
     {"name": "AllEvents NYC (All)", "url": "https://allevents.in/new%20york/all", "ua": UA_CHROME, "scraper": scrape_jsonld_paged, "default_category": "community", "kwargs": {"pages": 12}},
     {"name": "Jacques Marchais Museum of Tibetan Art", "url": "https://www.tibetanmuseum.org/calendar", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "art"},
@@ -12667,6 +12717,132 @@ def _run_with_lanes(venues, worker, live, workers=24):
 GEOCODE_PER_RUN = 400   # new addresses looked up per run (each one is cached for good)
 GEOCODE_GAP = 0.25      # seconds between GeoSearch requests
 
+# --- Start times from the event's own page -------------------------------------------------
+# Many venue listing pages give the date and no time (National Sawdust, 54 Below, BAM, the
+# Joyce); the time is on each event's page. Without it a concert was shown at a placeholder noon.
+DETAIL_TIMES_PATH = os.path.join(CACHE_DIR, "_detail_times.json")
+DETAIL_TIMES_PER_RUN = 150
+DETAIL_TIMES_TTL = 10 * 86400
+DETAIL_TIMES_MISS_TTL = 2 * 86400
+_DETAIL_CLOCK_RE = re.compile(r"\b(\d{1,2})(?::(\d{2}))?\s*([ap])\.?\s?m\b\.?", re.I)
+_NO_DETAIL_TIME_SOURCES = ("allevents", "meetup", "eventbrite: ", "donyc", "songkick", "seatgeek", "ticketmaster", "danceus")
+
+
+def _clock_to_hm(m):
+    hh = int(m.group(1)) % 12 + (12 if m.group(3).lower() == "p" else 0)
+    return (hh, int(m.group(2) or 0)) if int(m.group(1)) <= 12 and int(m.group(2) or 0) < 60 else None
+
+
+def start_time_from_page(page, day):
+    """(hour, minute) an event starts on `day`, read from its own page, or None when the page
+    doesn't say unambiguously. Structured data first (JSON-LD startDate, <time datetime>), for
+    that day and with a clock time; then a clock time written right after the date ("Nov 18 at
+    7:30 PM"). A day with several different times (film showtimes) is left unknown rather than
+    guessed, and a lone clock time elsewhere on the page (opening hours) is not trusted."""
+    page = page or ""
+    stamps = re.findall(r'"startDate"\s*:\s*"([^"]+)"', page) + re.findall(r'<time[^>]*\bdatetime="([^"]+)"', page)
+    found = set()
+    for raw in stamps:
+        m = re.match(r"(\d{4}-\d{2}-\d{2})[T ](\d{2}):(\d{2})(?::\d{2}(?:\.\d+)?)?\s*(Z|[+-]\d{2}:?\d{2})?", raw.strip())
+        if not m:
+            continue
+        try:
+            dt = datetime.fromisoformat(f"{m.group(1)}T{m.group(2)}:{m.group(3)}:00")
+            zone = m.group(4)
+            if zone:
+                zone = "+00:00" if zone == "Z" else (zone if ":" in zone else zone[:3] + ":" + zone[3:])
+                dt = datetime.fromisoformat(f"{m.group(1)}T{m.group(2)}:{m.group(3)}:00{zone}").astimezone(EASTERN)
+        except ValueError:
+            continue
+        if dt.date() == day and (dt.hour, dt.minute) != (0, 0):
+            found.add((dt.hour, dt.minute))
+    if len(found) == 1:
+        return found.pop()
+    if found:
+        return None  # several performances that day
+    text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", page, flags=re.S | re.I)
+    text = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", text)))
+    month, short = day.strftime("%B"), day.strftime("%b")
+    date_res = [rf"\b{month}\s+{day.day}(?:st|nd|rd|th)?\b", rf"\b{short}\.?\s+{day.day}(?:st|nd|rd|th)?\b",
+                rf"\b{day.day}\s+{month}\b", rf"\b0?{day.month}/0?{day.day}(?:/\d{{2,4}})?\b"]
+    near = set()
+    for dr in date_res:
+        for m in re.finditer(dr, text, re.I):
+            c = _DETAIL_CLOCK_RE.search(text, m.end(), m.end() + 60)
+            hm = _clock_to_hm(c) if c else None
+            if hm:
+                near.add(hm)
+    near.discard((0, 0))
+    return near.pop() if len(near) == 1 else None
+
+
+def _fill_missing_times(results, ua=None, limit=None, path=None, fetch=None):
+    """Give listings without a start time the one on their own page (see start_time_from_page).
+    Soonest first within a per-run budget; answers, including "the page doesn't say", are cached.
+    A listing whose time is still unknown keeps time_unknown, so the page shows no time for it
+    instead of a made-up one."""
+    ua = ua or UA_CHROME
+    limit = DETAIL_TIMES_PER_RUN if limit is None else limit
+    path = path or DETAIL_TIMES_PATH
+    fetch = fetch or (lambda url: fetch_text(url, headers={"User-Agent": ua})[1])
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            cache = json.load(f)
+    except (OSError, ValueError):
+        cache = {}
+    now, today = time.time(), datetime.now(EASTERN).date()
+    todo = []
+    for r in results:
+        source = str(r.get("venue") or "").lower()
+        if source.startswith(_NO_DETAIL_TIME_SOURCES):
+            continue
+        listing = (r.get("url") or "").rstrip("/")
+        for e in r.get("events") or []:
+            try:
+                when = datetime.fromisoformat(str(e.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
+            except (TypeError, ValueError):
+                continue
+            midnight = (when.hour, when.minute) == (0, 0) and e.get("category") not in ("clubbing", "party")
+            url = e.get("url") or ""
+            if not (e.get("time_unknown") or midnight) or when.date() < today:
+                continue
+            if midnight:
+                e["time_unknown"] = True
+            if url.startswith("http") and url.rstrip("/") != listing:
+                todo.append((when, url, e))
+    todo.sort(key=lambda x: x[0])
+    fetched = filled = 0
+    refused = set()
+    for when, url, e in todo:
+        key = f"{url}|{when.date().isoformat()}"
+        hit = cache.get(key)
+        if not hit or now - hit.get("ts", 0) > (DETAIL_TIMES_TTL if hit.get("hm") else DETAIL_TIMES_MISS_TTL):
+            host = _host_of(url)
+            if fetched >= limit or host in refused:
+                continue
+            try:
+                hm = start_time_from_page(fetch(url), when.date())
+                hit = cache[key] = {"ts": now, "hm": list(hm) if hm else None}
+                fetched += 1
+            except SiteRefused:
+                refused.add(host)
+                continue
+            except Exception:
+                continue
+        if hit.get("hm"):
+            hh, mm = hit["hm"]
+            e["date"] = when.replace(hour=hh, minute=mm).astimezone(timezone.utc).isoformat()
+            e.pop("time_unknown", None)
+            filled += 1
+    try:
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump({k: v for k, v in cache.items() if now - v.get("ts", 0) < 3 * DETAIL_TIMES_TTL}, f)
+    except OSError:
+        pass
+    print(f"Start times: {len(todo)} listings without one, {fetched} pages read, {filled} filled")
+    return filled
+
 
 def _apply_geocodes(results, limit=None, gap=None, cache_path=None):
     """Pin events that carry an NYC street address but no usable coordinates.
@@ -12786,6 +12962,10 @@ def get_all_events(force=False):
     _enrich_event_times(results)
     _enrich_from_primary_pages(results)
     _resolve_allevents_links(results)
+    try:
+        _fill_missing_times(results)
+    except Exception as exc:
+        print(f"start-time lookup failed: {exc}")
     _discover_eventbrite_organizers(results)
     _apply_geocodes(results)
 
