@@ -4,6 +4,7 @@ import os
 import sys
 import tempfile
 import unittest
+from unittest import mock
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote
 
@@ -160,3 +161,30 @@ class DiscoverOrganizersTests(unittest.TestCase):
         seen = []
         self._run(eb, lambda v: seen.append(v["name"]) or {"venue": v["name"], "events": [{}, {}], "error": None}, max_new=2)
         self.assertTrue(len(set(seen)) <= 5)
+
+
+class RefusalsAndResale(unittest.TestCase):
+    def test_backs_off_after_a_refusal_and_keeps_going(self):
+        evs = [_ev(f"https://allevents.in/brooklyn/p/{i}", days=i + 1) for i in range(3)]
+        results = [{"venue": "AllEvents: Brooklyn (all)", "events": evs}]
+        calls = []
+
+        def fetch(url):
+            calls.append(url)
+            if len(calls) == 2:
+                raise scrapers.SiteRefused("429")
+            return _page(EB)
+        with tempfile.TemporaryDirectory() as tmp, mock.patch.object(scrapers.time, "sleep"):
+            scrapers._resolve_allevents_links(results, links_path=os.path.join(tmp, "l.json"), details_path=os.path.join(tmp, "d.json"),
+                                              fetch=fetch, details=lambda i, ua: {"status": "live"})
+        self.assertEqual(len(calls), 3)  # the refused page is skipped, the rest still resolve
+        self.assertEqual(sum(e["url"] == EB for e in evs), 2)
+
+    def test_listings_imported_from_resale_sites_are_dropped(self):
+        resale, ok = _ev("https://allevents.in/new-york/john-scofield/1"), _ev("https://allevents.in/new-york/party/2")
+        results = [{"venue": "AllEvents: Art", "events": [resale, ok]}]
+        pages = {resale["url"]: _page("https://www.ticketnetwork.com/tickets/7881594", origin="ticket-network"), ok["url"]: _page(EB)}
+        with tempfile.TemporaryDirectory() as tmp:
+            scrapers._resolve_allevents_links(results, links_path=os.path.join(tmp, "l.json"), details_path=os.path.join(tmp, "d.json"),
+                                              fetch=lambda u: pages[u], details=lambda i, ua: {"status": "live"})
+        self.assertEqual([e["url"] for e in results[0]["events"]], [EB])
