@@ -1053,10 +1053,17 @@ def special_note(text):
 
 # Paid spa/massage services posted as events: promos from massage businesses, hotel spa
 # packages ("Spa After Dark", $145), members-club spa nights. Massage *classes* and free wellness walks are real events and stay.
-_SERVICE_AD_VENUE_RE = re.compile(r"\bmassage\b(?!.*\bschool\b)|\bmed\s*spa\b|\bremedy place\b", re.I)
+_SERVICE_AD_VENUE_RE = re.compile(
+    r"\bmassage\b(?!.*\bschool\b)|\bmed\s*spa\b|\bremedy place\b|"
+    r"police\s*guided\s*tours|awesome\s+nyc\s+tours|walksnyc\s+tours|the\s+speakers\s+storytelling\s+club",
+    re.I,
+)
 _SERVICE_AD_TITLE_RE = re.compile(
     r"\bspa (?:night|after dark|day|package|weekend)\b|\breflexology experience\b|\bstress[- ]free week\b|"
-    r"\b(?:botox|filler|iv (?:drip|therapy))\b",
+    r"\b(?:botox|filler|iv (?:drip|therapy))\b|"
+    r"^discover\s+(?:dance|fitness|professional[- ]level)\b|"
+    r"\b(?:private\s+nyc\s+mafia\s+tour|true\s+crime\s+nyc:\s*mafia\s+walk|nyc\s+free\s+(?:walking\s+)?tour|"
+    r"catacombs\s+by\s+candlelight\s+tour|all[- ]day\s+happy\s+hour|riseny:\s*a\s+soaring\s+journey)\b",
     re.I,
 )
 
@@ -11902,7 +11909,7 @@ _init_warm_cache()
 
 
 _ONLINE_TITLE_RE = re.compile(
-    r"\bonline\b|\bvirtual\b(?!\s+reality)|\b(?:on|via|over)\s+zoom\b|\bzoom\s+(?:meeting|call|session|meetup)\b", re.I)
+    r"^\s*zoom\b|\bonline\b|\bvirtual\b(?!\s+reality)|\b(?:on|via|over)\s+zoom\b|\bzoom\s+(?:meeting|call|session|meetup|class(?:es)?|workshop|dance)\b", re.I)
 _VIRTUAL_VENUES = {"online", "online event", "virtual", "zoom", "virtual event", "livestream", "online only"}
 
 

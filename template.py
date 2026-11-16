@@ -33,6 +33,7 @@ from scrapers import (
     is_dropin_dance_class,
     _FEVER_ATTRACTION_RE,
     _BOAT_CRUISE_RE,
+    _ONLINE_TITLE_RE,
     is_utility_event,
     is_kid_family_event,
     is_deal_event,
@@ -2256,7 +2257,10 @@ def group_by_date(results):
                 continue
             if "fever" in (r.get("venue") or "").lower() and (_FEVER_ATTRACTION_RE.search(e.get("name") or "") or ("T05:00:00" in (e.get("date") or "") and "candlelight" not in (e.get("name") or "").lower())):
                 continue
-            if is_service_ad(e.get("name"), e.get("venue")):
+            if is_service_ad(e.get("name"), e.get("venue") or r.get("venue")):
+                continue
+            n_low = (e.get("name") or "").lower()
+            if _ONLINE_TITLE_RE.search(n_low) and not re.search(r"in[- ]person|hybrid|\birl\b", n_low):
                 continue
             entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
             entry["url"] = sanitize_event_url(fix_doubled_url(entry.get("url")), fallback=r.get("url") or None)
