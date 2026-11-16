@@ -946,7 +946,8 @@ UTILITY_EVENT_RE = re.compile(
     r"machine maintenance|machine clinic|"
     r"\d+[- ]sessions|\d+-(?:week|month)|"
     r"social work|city council meeting|community board meeting|school committee|zoning board|"
-    r"council on aging|tax prep|tax assistance|medicare|snap enrollment|health insurance enrollment"
+    r"council on aging|tax prep|tax assistance|medicare|snap enrollment|health insurance enrollment|"
+    r"cooking class(?:es)?|cozymeal"
     r")\b|"
     r"english for speakers of[\s\xa0]+other[\s\xa0]+languages|english for u\.s\. citizenship|"
     r"english conversation|conversation practice|conversation group|conversational group|english grammar|accent improvement",
@@ -1055,7 +1056,8 @@ def special_note(text):
 # packages ("Spa After Dark", $145), members-club spa nights. Massage *classes* and free wellness walks are real events and stay.
 _SERVICE_AD_VENUE_RE = re.compile(
     r"\bmassage\b(?!.*\bschool\b)|\bmed\s*spa\b|\bremedy place\b|"
-    r"police\s*guided\s*tours|awesome\s+nyc\s+tours|walksnyc\s+tours|the\s+speakers\s+storytelling\s+club",
+    r"police\s*guided\s*tours|awesome\s+nyc\s+tours|walksnyc\s+tours|the\s+speakers\s+storytelling\s+club|"
+    r"attractions4us|ny\s+iconic\s+tours|touring\s+treasures|nitetables\s+experiences",
     re.I,
 )
 _SERVICE_AD_TITLE_RE = re.compile(
@@ -1063,6 +1065,8 @@ _SERVICE_AD_TITLE_RE = re.compile(
     r"\b(?:botox|filler|iv (?:drip|therapy))\b|"
     r"^discover\s+(?:dance|fitness|professional[- ]level)\b|"
     r"\b(?:private\s+nyc\s+mafia\s+tour|true\s+crime\s+nyc:\s*mafia\s+walk|"
+    r"(?:madison\s+square\s+garden|radio\s+city\s+music\s+hall)\s+tour\s+experience|"
+    r"nyc\s+free\s+tour\s+for\s+midtown|"
     r"catacombs\s+by\s+candlelight\s+tour|all[- ]day\s+happy\s+hour|riseny:\s*a\s+soaring\s+journey)\b",
     re.I,
 )
@@ -11937,6 +11941,8 @@ def _tidy_sold_out(e, name):
 _BOAT_CRUISE_RE = re.compile(
     r"(?i)\b(?:booze\s+cruise|boat\s+party|party\s+cruise|yacht\s+party|sunset\s+party\s+cruise|"
     r"midnight\s+(?:yacht|boat)\s+party|latin\s+boat\s+party|hip[- ]hop\s+(?:boat|yacht)\s+party|"
+    r"(?:prosecco|aperol\s+spritz|sightseeing|dinner|brunch|holiday\s+cocoa|cocoa|sunset|statue\s+&\s+skyline)\s+(?:and\s+\w+\s+)?cruise|"
+    r"sunset\s+cruise\s+on\s+yacht|"
     r"iboatnyc|iclubnyc)\b"
 )
 _SPECIAL_MOVIE_RE = re.compile(r"(?i)\b(q&a|premiere|festival|35mm|70mm|director|discussion|talkback|sneak|preview|party)\b")

@@ -2273,7 +2273,7 @@ def group_by_date(results):
             deal_src = f'{r.get("url") or ""} {e.get("url") or ""}'
             if existing_cat == "deals" and not is_deal_event(e.get("name"), deal_src):
                 existing_cat = None  # the feed filed a karaoke night under its drink specials
-            if is_utility_event(e.get("name")):
+            if is_utility_event(e.get("name")) or "cozymeal" in (r.get("venue") or "").lower():
                 entry["category"] = "services"
             elif is_kid_family_event(e.get("name"), entry["venue"]):
                 entry["category"] = "family"
