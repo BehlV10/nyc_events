@@ -1,5 +1,5 @@
 {
- "_doc": "Eventbrite organizers/venues read via their public JSON feed (scrape_eventbrite_organizer). Maintained by scripts/discover_eventbrite.py, run occasionally from a home connection; edit freely. 'excluded' entries are never re-added by discovery.",
+ "_doc": "Eventbrite organizers/venues read via their public JSON feed (scrape_eventbrite_organizer). Maintained by scripts/discover_eventbrite.py, run occasionally from a home connection; edit freely. 'excluded' entries are never re-added by discovery. 'pending' holds finds that look like vendors (tour operators, cruises, daily promos; see scrapers.vendor_signals): they are not scraped until moved to 'sources', or to 'excluded' with a reason.",
  "sources": [
   {
    "id": "113265046921",
@@ -268,13 +268,6 @@
    "added": "2026-11-05"
   },
   {
-   "id": "74577442203",
-   "kind": "organizer",
-   "name": "Touring Treasures",
-   "category": "food",
-   "added": "2026-11-05"
-  },
-  {
    "id": "67306368493",
    "kind": "organizer",
    "name": "The People's Forum",
@@ -321,13 +314,6 @@
    "kind": "organizer",
    "name": "Mike Geffner Presents (Brooklyn Music Kitchen)",
    "category": "music",
-   "added": "2026-11-05"
-  },
-  {
-   "id": "36746617253",
-   "kind": "organizer",
-   "name": "WalksNYC Tours & Cruises",
-   "category": "outdoors",
    "added": "2026-11-05"
   },
   {
@@ -426,13 +412,6 @@
    "kind": "organizer",
    "name": "The Ornate Project",
    "category": "clubbing",
-   "added": "2026-11-05"
-  },
-  {
-   "id": "11795946643",
-   "kind": "organizer",
-   "name": "Attractions4us NYC Tours & Cruises",
-   "category": "outdoors",
    "added": "2026-11-05"
   },
   {
@@ -915,14 +894,6 @@
    "upcoming_when_added": 9
   },
   {
-   "id": "11881315068",
-   "kind": "organizer",
-   "name": "Awesome NYC Tours",
-   "category": "outdoors",
-   "added": "2026-11-05",
-   "upcoming_when_added": 50
-  },
-  {
    "id": "121730041985",
    "kind": "organizer",
    "name": "Strive Wisdom",
@@ -1099,14 +1070,6 @@
    "upcoming_when_added": 3
   },
   {
-   "id": "121196592798",
-   "kind": "organizer",
-   "name": "Prime Time Events",
-   "category": "party",
-   "added": "2026-11-05",
-   "upcoming_when_added": 50
-  },
-  {
    "id": "30724917366",
    "kind": "organizer",
    "name": "The Noble Maritime Collection",
@@ -1241,14 +1204,6 @@
    "category": "outdoors",
    "added": "2026-11-05",
    "upcoming_when_added": 15
-  },
-  {
-   "id": "105361849101",
-   "kind": "organizer",
-   "name": "Police GuidedTours",
-   "category": "outdoors",
-   "added": "2026-11-05",
-   "upcoming_when_added": 50
   },
   {
    "id": "47320983273",
@@ -1483,14 +1438,6 @@
    "upcoming_when_added": 7
   },
   {
-   "id": "53643553613",
-   "kind": "organizer",
-   "name": "NY Iconic Tours",
-   "category": "outdoors",
-   "added": "2026-11-05",
-   "upcoming_when_added": 50
-  },
-  {
    "id": "63217767233",
    "kind": "organizer",
    "name": "The Brooklyn Loft",
@@ -1555,14 +1502,6 @@
    "upcoming_when_added": 2
   },
   {
-   "id": "33224552179",
-   "kind": "organizer",
-   "name": "The Speakers Storytelling Club",
-   "category": "community",
-   "added": "2026-11-05",
-   "upcoming_when_added": 15
-  },
-  {
    "id": "78233667873",
    "kind": "organizer",
    "name": "La Maison du Chocolat USA",
@@ -1577,14 +1516,6 @@
    "category": "film",
    "added": "2026-11-05",
    "upcoming_when_added": 12
-  },
-  {
-   "id": "18308327420",
-   "kind": "organizer",
-   "name": "NiteTables Experiences",
-   "category": "food",
-   "added": "2026-11-05",
-   "upcoming_when_added": 50
   },
   {
    "id": "17391741922",
@@ -1673,14 +1604,6 @@
    "category": "art",
    "added": "2026-11-05",
    "upcoming_when_added": 3
-  },
-  {
-   "id": "81108562243",
-   "kind": "organizer",
-   "name": "Nyc elite group",
-   "category": "party",
-   "added": "2026-11-05",
-   "upcoming_when_added": 41
   },
   {
    "id": "80794569573",
@@ -2336,6 +2259,67 @@
    "kind": "organizer",
    "name": "TSQHunks",
    "reason": "adults-only male revue"
+  },
+  {
+   "id": "36746617253",
+   "kind": "organizer",
+   "name": "WalksNYC Tours & Cruises",
+   "reason": "tour operator: daily sightseeing cruises"
+  },
+  {
+   "id": "11795946643",
+   "kind": "organizer",
+   "name": "Attractions4us NYC Tours & Cruises",
+   "reason": "tour operator: daily prosecco cruises and lights tours"
+  },
+  {
+   "id": "11881315068",
+   "kind": "organizer",
+   "name": "Awesome NYC Tours",
+   "reason": "tour operator: same rock/walking tours daily"
+  },
+  {
+   "id": "121196592798",
+   "kind": "organizer",
+   "name": "Prime Time Events",
+   "reason": "bar promo: daily happy hour and weekly specials"
+  },
+  {
+   "id": "105361849101",
+   "kind": "organizer",
+   "name": "Police GuidedTours",
+   "reason": "tour operator: paid mafia/true-crime walks daily"
+  },
+  {
+   "id": "53643553613",
+   "kind": "organizer",
+   "name": "NY Iconic Tours",
+   "reason": "tour operator: daily sunset cruises"
+  },
+  {
+   "id": "33224552179",
+   "kind": "organizer",
+   "name": "The Speakers Storytelling Club",
+   "reason": "tour operator: daily free/tip walking tours"
+  },
+  {
+   "id": "18308327420",
+   "kind": "organizer",
+   "name": "NiteTables Experiences",
+   "reason": "tour operator: daily bar/speakeasy tours"
+  },
+  {
+   "id": "81108562243",
+   "kind": "organizer",
+   "name": "Nyc elite group",
+   "reason": "promoter: one 'party at the hottest venues' listing repeated"
+  },
+  {
+   "id": "74577442203",
+   "kind": "organizer",
+   "name": "Touring Treasures",
+   "reason": "tour operator: daily food/sightseeing tours"
   }
- ]
+ ],
+ "pending": []
 }

@@ -9,7 +9,9 @@ occasionally (say monthly) from a home connection, slowly:
   3. Verify each new candidate once through its JSON feed (one request, 3s apart) and keep it
      if it has 2+ upcoming in-window NYC events.
   4. Append the keepers to eventbrite_organizers.json (review the printed list; move anything
-     unwanted to "excluded" so it is never re-added).
+     unwanted to "excluded" so it is never re-added). Keepers that look like vendors (tour
+     operators, cruises, daily promos: scrapers.vendor_signals) go to "pending" instead, which
+     the scrape does not read; move each to "sources" or "excluded" after a look.
 
 The scheduled scrape then reads those organizer feeds, which CI can reach.
 
@@ -17,6 +19,7 @@ usage:
   python3 scripts/discover_eventbrite.py               # crawl + verify + write
   python3 scripts/discover_eventbrite.py --dry-run     # crawl + verify, print only
   python3 scripts/discover_eventbrite.py --rows rows.jsonl   # reuse rows from an earlier crawl
+  python3 scripts/discover_eventbrite.py --audit events.json  # flag listed sources that look like vendors (offline)
 """
 import argparse
 import collections
@@ -146,7 +149,7 @@ def tally(rows):
 
 
 def known_ids(data):
-    ids = {str(s["id"]) for s in data.get("sources", [])} | {str(s["id"]) for s in data.get("excluded", [])}
+    ids = {str(s["id"]) for key in ("sources", "excluded", "pending") for s in data.get(key, [])}
     for v in scrapers.VENUES:
         m = scrapers._EB_API_RE.search(v.get("url") or "") if "/api/v3/" in (v.get("url") or "") else None
         if m:
@@ -155,7 +158,7 @@ def known_ids(data):
 
 
 def verify(kind, obj_id):
-    """(upcoming in-window NYC events, display name) from one feed request, or None if refused."""
+    """(upcoming in-window NYC events, display name, their titles) from one feed request, or None if refused."""
     today = date.today()
     end = today + timedelta(days=scrapers.HORIZON_DAYS + 1)
     url = (f"https://www.eventbrite.com/api/v3/{kind}s/{obj_id}/events/?status=live&expand=venue,organizer"
@@ -164,13 +167,30 @@ def verify(kind, obj_id):
     if r.status_code in (403, 405, 429):
         return None
     if r.status_code != 200:
-        return 0, ""
+        return 0, "", []
     events = r.json().get("events") or []
     keep = [e for e in events if not e.get("online_event")
             and (not isinstance(e.get("venue"), dict) or scrapers._eb_venue_in_nyc(e["venue"]))]
     sample = (keep or events or [{}])[0]
     name = ((sample.get("organizer") or {}).get("name") if kind == "organizer" else (sample.get("venue") or {}).get("name")) or ""
-    return len(keep), name.strip()
+    titles = [(e.get("name") or {}).get("text") or "" for e in keep]
+    return len(keep), name.strip(), titles
+
+
+def audit(events_path, data):
+    """Print listed sources whose events in a scrape's events.json look like a vendor's."""
+    with open(events_path, encoding="utf-8") as f:
+        venues = json.load(f).get("venues") or []
+    by_url = {v.get("url"): v for v in venues}
+    flagged = 0
+    for src in data.get("sources", []):
+        v = by_url.get(f"https://www.eventbrite.com/api/v3/{src['kind']}s/{src['id']}/events/") or {}
+        reasons = scrapers.vendor_signals(src["name"], [e.get("name") for e in v.get("events") or []])
+        if reasons:
+            flagged += 1
+            print(f"  {src['id']:>14}  {src['name']}: {'; '.join(reasons)}")
+    print(f"{flagged} of {len(data.get('sources', []))} listed sources look like vendors. Move unwanted ones to "
+          f"\"excluded\" with a reason; the rest are fine to keep.")
 
 
 def main():
@@ -181,11 +201,16 @@ def main():
     ap.add_argument("--min-seen", type=int, default=2, help="organizer must appear on 2+ listed events")
     ap.add_argument("--venue-min-orgs", type=int, default=3, help="venue feed needs events from 3+ organizers")
     ap.add_argument("--dry-run", action="store_true", help="print what would be added; don't write")
+    ap.add_argument("--audit", metavar="EVENTS_JSON", help="flag listed sources that look like vendors, using a "
+                    "scrape's events.json (no network), and exit")
     args = ap.parse_args()
 
     path = scrapers.EVENTBRITE_ORGANIZERS_FILE
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
+    if args.audit:
+        audit(args.audit, data)
+        return
 
     if args.rows:
         rows = [json.loads(line) for line in open(args.rows, encoding="utf-8") if line.strip()]
@@ -207,7 +232,7 @@ def main():
     cands.sort(key=lambda c: -c[2])
     print(f"{len(rows)} listed events -> {len(orgs)} NYC organizers, {len(venues)} venues; {len(cands)} new candidates to verify")
 
-    added = []
+    added, pending = [], []
     net_errors = 0
     try:
         for kind, obj_id, seen, tags in cands:
@@ -225,20 +250,27 @@ def main():
             if res is None:
                 print("Eventbrite refused the feed request; stopping verification.")
                 break
-            upcoming, name = res
+            upcoming, name, titles = res
             if upcoming >= 2 and name:
                 entry = {"id": obj_id, "kind": kind, "name": name, "category": category_for(list(tags.elements())),
                          "added": date.today().isoformat(), "upcoming_when_added": upcoming}
-                added.append(entry)
-                print(f"  + {kind:9} {obj_id:>14}  {upcoming:3} upcoming  {entry['category']:9} {name}", flush=True)
+                reasons = scrapers.vendor_signals(name, titles)
+                if reasons:
+                    entry["reasons"] = reasons
+                    entry["sample_titles"] = list(dict.fromkeys(titles))[:5]
+                    pending.append(entry)
+                    print(f"  ? {kind:9} {obj_id:>14}  {upcoming:3} upcoming  held: {name} ({'; '.join(reasons)})", flush=True)
+                else:
+                    added.append(entry)
+                    print(f"  + {kind:9} {obj_id:>14}  {upcoming:3} upcoming  {entry['category']:9} {name}", flush=True)
             time.sleep(API_GAP)
     except KeyboardInterrupt:
         print("Interrupted; saving what was verified so far.")
     finally:
-        save(data, added, path, args.dry_run)
+        save(data, added, pending, path, args.dry_run)
 
 
-def save(data, added, path, dry_run):
+def save(data, added, pending, path, dry_run):
     """Write verified finds even when verification stops early (rerunning skips them)."""
     taken = {s["name"] for s in data["sources"]} | {v["name"] for v in scrapers.VENUES}
     for entry in added:
@@ -246,14 +278,18 @@ def save(data, added, path, dry_run):
             entry["name"] += " (Eventbrite)"
         taken.add(entry["name"])
     if dry_run:
-        print(f"dry run: {len(added)} would be added")
+        print(f"dry run: {len(added)} would be added, {len(pending)} held for review")
         return
     data["sources"].extend(added)
+    data.setdefault("pending", []).extend(pending)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=1, ensure_ascii=False)
         f.write("\n")
     print(f"Added {len(added)} to {os.path.relpath(path, ROOT)}. Review the names and categories, move anything "
           f"unwanted to \"excluded\" with a reason, then commit.")
+    if pending:
+        print(f"Held {len(pending)} that look like vendors in \"pending\" (not scraped). Move each to \"sources\" "
+              f"(drop its reasons/sample_titles) or to \"excluded\" with a reason.")
 
 
 if __name__ == "__main__":
