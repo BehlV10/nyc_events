@@ -1707,7 +1707,8 @@ _NOT_A_SELLER_HOSTS = ("allevents.in", "facebook.com", "fb.me")
 # Resale marketplaces AllEvents' affiliate links often wrap. Used directly (unwrapped, no tracking) when there
 # is nothing better, but any primary seller ranks above them.
 _RESALE_HOSTS = ("vividseats.com", "ticketnetwork.com", "stubhub.com", "tickpick.com", "gametime.co", "viagogo.com",
-                 "ticketsmarter.com", "razorgator.com", "ticketliquidator.com", "seatgeek.com", "ticketsatwork.com", "ticketcity.com")
+                 "ticketsmarter.com", "razorgator.com", "ticketliquidator.com", "seatgeek.com", "ticketsatwork.com", "ticketcity.com",
+                 "edgetix.us", "boxofficeticketsales.com", "onlineseats.com", "ticketsonsale.com", "ticketclub.com")
 _EB_EVENT_ID_RE = re.compile(r"eventbrite\.[a-z.]+/e/(?:[^/?#]*-)?(\d{9,})")
 _TICKET_TRACKING_RE = re.compile(r"^(utm_|fbclid|gclid|mc_|aff|affiliate|ref$|ref_|source$|_ga|igshid|aff$)", re.I)
 
@@ -1738,10 +1739,12 @@ def _allevents_ticket_link(page):
         host = (urlparse(url).hostname or "").lower().removeprefix("www.")
         if not url.startswith("http") or not host or url in seen or _host_matches(host, _NOT_A_SELLER_HOSTS):
             continue
+        if _host_matches(host, _RESALE_HOSTS):
+            continue  # resale marketplaces relist with their own (often wrong) dates and markups
         seen.add(url)
         real.append(_clean_ticket_url(url))
-    # Eventbrite first (price and sold-out come from its API), other primary sellers next, resale marketplaces last.
-    real.sort(key=lambda u: (0 if "eventbrite." in u else 2 if _host_matches((urlparse(u).hostname or "").removeprefix("www."), _RESALE_HOSTS) else 1))
+    # Eventbrite first (price and sold-out come from its API), other primary sellers next.
+    real.sort(key=lambda u: 0 if "eventbrite." in u else 1)
     return (origin.group(1) if origin else None), (real[0] if real else None)
 
 
@@ -1830,8 +1833,8 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
     relinked = priced = soldout = 0
     for _when, url, e in todo:
         ticket = (links.get(url) or {}).get("ticket")
-        if not ticket:
-            continue
+        if not ticket or _host_matches((urlparse(ticket).hostname or "").lower().removeprefix("www."), _RESALE_HOSTS):
+            continue  # links cached before resale sellers were refused
         e["_allevents_url"] = url
         e["url"] = ticket
         relinked += 1
@@ -3037,8 +3040,11 @@ def scrape_ticketmaster_nyc(_url, _ua):
                     "https://app.ticketmaster.com/discovery/v2/events.json",
                     params={
                         "apikey": api_key,
-                        "latlong": "40.7128,-74.0060",
-                        "radius": 12,
+                        # Centered on the city, not City Hall: 12 miles from City Hall left out
+                        # Staten Island Mall, Tottenville and the north Bronx. Borough polygons
+                        # below drop what the wider circle takes in from NJ, Westchester and LI.
+                        "latlong": "40.68,-73.97",
+                        "radius": 20,
                         "unit": "miles",
                         "size": 200,
                         "page": page,
@@ -3082,6 +3088,12 @@ def scrape_ticketmaster_nyc(_url, _ua):
                 state_code = (vobj.get("state") or {}).get("stateCode") or ""
                 if state_code and state_code != "NY":
                     continue  # the radius reaches New Jersey; also drops stray out-of-market listings
+                loc = vobj.get("location") or {}
+                try:
+                    if loc.get("latitude") and not nyc_geo.in_nyc(float(loc["latitude"]), float(loc["longitude"])):
+                        continue  # Westchester, Long Island
+                except (TypeError, ValueError):
+                    pass
                 if "museum" in vname.lower() and "museum" in (name or "").lower() \
                         and not re.search(r"workshop|tour|talk|class|concert|party|night|lecture|screening", name, re.I):
                     continue  # the museum's own timed-entry ticket, not an event
@@ -8571,13 +8583,35 @@ def _title_from_slug(path):
     return " ".join(w.capitalize() for w in slug.split("-") if w)
 
 
-def scrape_html_cards(url, ua, link_re=None, max_up=5, require_time=False, venue=None, address=None):
+def scrape_html_cards(url, ua, link_re=None, max_up=5, require_time=False, venue=None, address=None,
+                      pages=1, page_path="page/{n}/"):
     """Heuristic listing parser for server-rendered calendars with no structured data.
 
     For each in-site link, climb to the nearest ancestor block (<= max_up levels) whose text
     holds a date; take the title from the block's heading (or the link text) and the first
     clock time in the block (noon placeholder when there is none). Ranges like 'Oct 26 -
-    Nov 9' keep their first date, so ongoing exhibitions are filtered by the date check."""
+    Nov 9' keep their first date, so ongoing exhibitions are filtered by the date check.
+
+    pages > 1 follows paginated listings (WordPress /page/2/, Birdland shows ~15 sets a page)
+    until a page adds nothing new or passes the horizon."""
+    if pages > 1:
+        events, seen = [], set()
+        horizon = (datetime.now(EASTERN) + timedelta(days=HORIZON_DAYS)).date().isoformat()
+        for n in range(1, pages + 1):
+            page_url = url if n == 1 else urljoin(url if url.endswith("/") else url + "/", page_path.format(n=n))
+            try:
+                batch = scrape_html_cards(page_url, ua, link_re, max_up, require_time, venue, address)
+            except Exception:
+                if n == 1:
+                    raise
+                break
+            new = [e for e in batch if (e["name"], e["date"]) not in seen]
+            seen.update((e["name"], e["date"]) for e in new)
+            events.extend(new)
+            if not new or min(str(e["date"]) for e in new) > horizon:
+                break
+            time.sleep(0.5)
+        return events
     soup = fetch_soup(url, ua)
     host = urlparse(url).netloc.replace("www.", "")
     pat = re.compile(link_re) if link_re else None
@@ -9440,10 +9474,15 @@ def scrape_the_town_hall(url, ua):
     seen = set()
     now = datetime.now(timezone.utc)
     pat = re.compile(
-        r'"title":\{"rendered":"([^"]+)"\},"slug":"([^"]+)","meta_box":\{"ticketmaster_id":[^}]*"dates":(\[[^\]]+\])'
+        # Titles may hold escaped quotes: JOHN SCOFIELD'S \"ELECTROSPECTIVE\"
+        r'"title":\{"rendered":"((?:[^"\\]|\\.)+)"\},"slug":"([^"]+)","meta_box":\{"ticketmaster_id":[^}]*"dates":(\[[^\]]+\])'
     )
     for m in pat.finditer(blob):
         raw_title, slug, dates_json = m.groups()
+        try:
+            raw_title = json.loads(f'"{raw_title}"')
+        except ValueError:
+            pass
         title = html.unescape(raw_title).strip()
         if not title or "town hall caf" in title.lower():
             continue
@@ -11068,7 +11107,7 @@ _ALL_VENUES = [
     {"name": "Zinc Bar (Jazz)", "url": "https://www.zincbar.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Trans-Pecos", "url": "https://www.thetranspecos.com/", "ua": UA_CHROME, "scraper": scrape_venuepilot, "default_category": "music"},
     {"name": "Starr Bar (own calendar)", "url": "https://www.starrbar.com/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
-    {"name": "Birdland Jazz Club", "url": "https://www.birdlandjazz.com/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/tm-event/", "venue": "Birdland", "address": "315 W 44th St, New York, NY 10036"}},
+    {"name": "Birdland Jazz Club", "url": "https://www.birdlandjazz.com/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/tm-event/", "venue": "Birdland", "address": "315 W 44th St, New York, NY 10036", "pages": 30}},
     {"name": "Roulette (own calendar)", "url": "https://roulette.org/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/event/", "venue": "Roulette", "address": "509 Atlantic Ave, Brooklyn, NY 11217"}},
     {"name": "Issue Project Room", "url": "https://issueprojectroom.org/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/event/", "venue": "ISSUE Project Room", "address": "22 Boerum Pl, Brooklyn, NY 11201"}},
     {"name": "amNY Community Calendar", "url": "https://events.amny.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "community"},

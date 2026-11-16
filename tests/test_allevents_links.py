@@ -33,11 +33,12 @@ class TicketLinkTests(unittest.TestCase):
         for seller in ("https://www.facebook.com/events/123", "https://allevents.in/x/1"):
             self.assertEqual(scrapers._allevents_ticket_link(_page(seller))[1], None, seller)
 
-    def test_resale_marketplaces_are_used_directly_without_tracking_when_nothing_better(self):
+    def test_resale_marketplaces_are_never_used(self):
+        # Resale relists carry their own dates (John Scofield on the wrong night at TicketNetwork)
         _o, url = scrapers._allevents_ticket_link(_page("https://www.vividseats.com/charles-lloyd-quartet-tickets/production/1?utm_campaign=x", origin="46"))
-        self.assertEqual(url, "https://www.vividseats.com/charles-lloyd-quartet-tickets/production/1")
+        self.assertIsNone(url)
         _o, url = scrapers._allevents_ticket_link(_page("https://www.ticketnetwork.com/tickets/8188984", origin="46"))
-        self.assertEqual(url, "https://www.ticketnetwork.com/tickets/8188984")
+        self.assertIsNone(url)
 
     def test_any_primary_seller_outranks_resale_and_eventbrite_outranks_both(self):
         resale = quote("https://www.vividseats.com/x-tickets/production/1", safe="")
