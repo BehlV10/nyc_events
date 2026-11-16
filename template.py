@@ -32,6 +32,7 @@ from scrapers import (
     is_early_nye_promo,
     is_dropin_dance_class,
     _FEVER_ATTRACTION_RE,
+    fever_category,
     _BOAT_CRUISE_RE,
     _ONLINE_TITLE_RE,
     is_utility_event,
@@ -63,8 +64,9 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
     return seo.render_hub_page(slug, dated, site_url=site_url, max_events=max_events)
 from nyc_geo import TRISTATE_NEEDLES, borough_at, outside_area
 
-# Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes).
-DEFAULT_UNCHECKED_BUCKETS = {"Dance Classes", "Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups", "Boat Parties & Cruises"}
+# Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes,
+# Fever's ad-like "experiences").
+DEFAULT_UNCHECKED_BUCKETS = {"Dance Classes", "Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups", "Boat Parties & Cruises", "Ticketed Experiences"}
 
 
 CITY_RULES = [
@@ -961,6 +963,23 @@ def _format_when_base(e):
             return format_time(e.get("date"))
         return f"thru {end.month}/{end.day}"
     return format_time(e.get("date"))
+
+
+def _more_dates_html(e):
+    """'more dates Fri 11/21, Sat 11/22 +5' for a run sold one session at a time (Fever plans),
+    listed once on its next date rather than on every day."""
+    days = []
+    for d in e.get("more_dates") or []:
+        try:
+            days.append(datetime.strptime(str(d)[:10], "%Y-%m-%d"))
+        except ValueError:
+            continue
+    if not days:
+        return ""
+    fmt = lambda d: f"{d.strftime('%a')} {d.month}/{d.day}"
+    shown = ", ".join(fmt(d) for d in days[:3]) + (f" +{len(days) - 3}" if len(days) > 3 else "")
+    tip = "Also on " + ", ".join(fmt(d) for d in days) + ". Pick a date on the ticket page."
+    return f'<span class="when-alt" title="{escape(tip)}">more dates {escape(shown)}</span>'
 
 
 def _other_times_html(e):
@@ -2316,6 +2335,9 @@ def group_by_date(results):
                 entry["category"] = "family"
             elif is_deal_event(e.get("name"), deal_src):
                 entry["category"] = "deals"
+            elif ("feverup.com" in (e.get("url") or "").lower() or str(r.get("venue") or "").startswith("Fever NYC")) \
+                    and fever_category(e.get("name")):
+                entry["category"] = fever_category(e.get("name"))
             elif existing_cat == "theater":
                 entry["category"] = "theater"
             else:
@@ -2615,7 +2637,7 @@ def render_page(results, split_deferred=False, context_out=None):
         # page can derive (subarea name, HH:MM) is repeated per event: deferred days are ~17k <li>s.
         flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-free-catch="true"' if free_kind == "catch" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
         return _compact_li(f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{epoch_attr}{time_attr}{geo_attrs}>
-          <div class="when">{escape(format_when(e))}{_other_times_html(e)}</div>
+          <div class="when">{escape(format_when(e))}{_other_times_html(e)}{_more_dates_html(e)}</div>
           <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
             {desc_html}

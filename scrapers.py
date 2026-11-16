@@ -221,6 +221,7 @@ HOST_POLICY = {
     "donyc.com": (2, 0.5),
     "nycgovparks.org": (1, 1.0),  # its WAF answers rapid crawls with an empty 202
     "danceus.org": (1, 1.0),      # one page per event for start times (_enrich_event_times)
+    "feverup.com": (1, 1.0),      # one plan page per listing for the real venue (scrape_fever)
 }
 RETRY_STATUSES = {429, 502, 503, 504}
 MAX_RETRY_WAIT = 30
@@ -485,6 +486,7 @@ CATEGORY_BUCKETS = [
     ("Deals & Specials",   ["deals"]),
     ("Tech & Startups",    ["tech"]),
     ("Boat Parties & Cruises", ["cruises"]),
+    ("Ticketed Experiences", ["experiences"]),
 ]
 
 CATEGORY_STYLES = {
@@ -508,6 +510,7 @@ CATEGORY_STYLES = {
     "markets":   ("#e0a458", "🎪"),
     "tech":      ("#73daca", "⌨"),
     "cruises":   ("#f7768e", "🚢"),
+    "experiences": ("#a78bfa", "🎟"),
     "other":     ("#6b7280", "·"),
 }
 
@@ -2719,6 +2722,8 @@ def _fever_plan_event(text, url):
             return None  # no coordinates to check: trust only the city slug (Brooklyn has its own market)
     if _FEVER_ATTRACTION_RE.search(str(plan["name"])) or _OUT_OF_CITY_RE.search(str(plan["name"])):
         return None  # open-all-day attractions (museums, observation decks, passes) aren't dated events
+    if _fever_stale_holiday(str(plan["name"]), start):
+        return None
     address = (place.get("address") or "").strip()
     if address and not re.search(r"\bNY\b|New York", address):
         address += ", NY"
@@ -2735,6 +2740,13 @@ def _fever_plan_event(text, url):
     end = ends.get(start)
     if end:
         event["end"] = end.isoformat()
+    # Other days with tickets on sale (the availability calendar), so one card can say "more dates"
+    # instead of the same plan filling every day of the listing.
+    first_day = start.astimezone(EASTERN).date().isoformat()
+    days = sorted({str(d)[:10] for key, val in state.items() if key.startswith("PlanService.getPlanAvailability")
+                   for d in (val.get("dates") or {}) if re.match(r"\d{4}-\d{2}-\d{2}$", str(d)[:10]) and str(d)[:10] > first_day})
+    if days:
+        event["more_dates"] = days[:30]
     try:
         event["lat"], event["lng"] = float(place["latitude"]), float(place["longitude"])
     except (KeyError, TypeError, ValueError):
@@ -8643,7 +8655,7 @@ _FEVER_ATTRACTION_RE = re.compile(
     r"citypass|\bpass\b|entry ticket|admission|observ|summit one|edge nyc|top of the rock|empire state|"
     r"one world|skip[- ]the[- ]line|museum|exhibition|gallery|sightseeing|hop-on|gift card|membership|"
     r"walking tour|guided .*?walk|food walk|crime .*?walk|mafia walk|ghosts?:|escape game|"
-    r"day tour|bus tour|shopping day|off[- ]?broadway show ticket|broadway show ticket|\bshow ticket\b|"
+    r"day tour|day trip|bus tour|shopping day|off[- ]?broadway show ticket|broadway show ticket|\bshow ticket\b|"
     r"bike (?:the|through|tour|rental)|ebike|e-?bike|scooter rental|"
     r"\b(?:food|night|comedy|photography|cocktail|bike|roll)\s+tour\b|pub crawl|rock junket|"
     r"\b(?:dinner|brunch|sunset|night|lady liberty)\s+cruise\b|"
@@ -8652,11 +8664,55 @@ _FEVER_ATTRACTION_RE = re.compile(
 )
 
 
-def scrape_fever(url, ua):
-    """Fever city page (feverup.com/en/new-york): plan cards carry data-plan-id/name/price/date
-    (the plan's next session). Dates are local wall-clock times despite the +00:00 suffix."""
+FEVER_PLANS_PATH = os.path.join(CACHE_DIR, "_fever_plans.json")
+_FEVER_NO_PLACE_RE = re.compile(r"secret location|location (?:tba|tbd|revealed)|to be announced|^(?:new york|nyc|manhattan|brooklyn)$", re.I)
+FEVER_PLANS_TTL = 2 * 86400
+FEVER_PLANS_PER_RUN = 40
+
+
+# Fever listings worth showing alongside everything else: concerts in real halls and churches.
+# The rest (immersive "experiences", brunch and class deals, mini golf, magic and murder-mystery
+# dinners) read like ads, so they go in the opt-in "experiences" category.
+_FEVER_KEEP_RE = re.compile(r"^candlelight\b|^luminiscence\b|^broadway sings\b|\bballet of lights\b", re.I)
+_CRUISE_RE = re.compile(r"\b(?:cruise|yacht|boat party|harbor sail|sail(?:ing)? (?:party|tour))\b", re.I)
+
+
+def fever_category(name):
+    """The category for a Fever listing, or None to keep the usual guess (concert series)."""
+    if _CRUISE_RE.search(name or ""):
+        return "cruises"
+    if _FEVER_KEEP_RE.search((name or "").strip()):
+        return None
+    return "experiences"
+
+
+def _fever_stale_holiday(name, when):
+    """Fever keeps selling "Halloween" yacht parties into November: a holiday-named plan whose
+    session is weeks past the holiday is a recycled listing, not a holiday event."""
+    local = when.astimezone(EASTERN)
+    if re.search(r"halloween", name, re.I):
+        return not (local.month == 10 or (local.month == 11 and local.day <= 2))
+    if re.search(r"christmas|xmas|navide[nñ]o|holiday", name, re.I):
+        return local.month not in (11, 12)
+    return False
+
+
+def scrape_fever(url, ua, plans_path=None, per_run=None):
+    """Fever city page (feverup.com/en/new-york). Its plan cards give only a name, price and next date
+    (local wall-clock time despite the +00:00 suffix) -- no venue, so a card alone maps to nowhere.
+    Each plan's own page (feverup.com/m/ID, cached for FEVER_PLANS_TTL, FEVER_PLANS_PER_RUN fetches a
+    run) supplies the real venue, address, coordinates and other dates; plans whose page gives no
+    place in the city are dropped, and plans not fetched yet wait for a later run."""
     _status, text = fetch_text(url, headers={"User-Agent": ua, "Accept-Language": "en-US,en;q=0.9"})
-    plans = {}
+    path = plans_path or FEVER_PLANS_PATH
+    per_run = FEVER_PLANS_PER_RUN if per_run is None else per_run
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            cache = json.load(f)
+    except (OSError, ValueError):
+        cache = {}
+    now = time.time()
+    cards = {}
     for m in re.finditer(r'<a [^>]*data-plan-id="(\d+)"[^>]*>', text):
         tag = m.group(0)
 
@@ -8665,23 +8721,69 @@ def scrape_fever(url, ua):
             return html.unescape(mm.group(1)) if mm else None
 
         name, when = attr("data-plan-name"), attr("data-plan-date")
-        if not name or not when or m.group(1) in plans or _OUT_OF_CITY_RE.search(name) or _FEVER_ATTRACTION_RE.search(name):
+        if not name or not when or m.group(1) in cards or _OUT_OF_CITY_RE.search(name) or _FEVER_ATTRACTION_RE.search(name):
             continue
         if "T00:00:00" in when and "candlelight" not in name.lower():
             continue  # date-only Fever tours/experiences with no real start time
         dt = _local_iso_to_utc(when[:19])
-        if dt is None:
+        if dt is None or _fever_stale_holiday(name, dt):
             continue
         price = attr("data-plan-price")
         try:
             price = f"From ${float(price):.0f}" if price and float(price) > 0 else ("Free" if price else None)
         except ValueError:
             price = None
-        plans[m.group(1)] = {
-            "name": name.strip(), "date": dt.isoformat(), "price": price, "venue": None,
-            "url": urljoin("https://feverup.com/", attr("href") or f"/m/{m.group(1)}"),
-        }
-    return _dedupe_future(list(plans.values()))
+        cards[m.group(1)] = {"name": name.strip(), "date": dt, "price": price}
+
+    fetched = 0
+    for mid in sorted(cards, key=lambda k: cards[k]["date"]):
+        if mid in cache and now - cache[mid].get("ts", 0) < FEVER_PLANS_TTL:
+            continue
+        if fetched >= per_run:
+            break
+        plan_url = f"https://feverup.com/m/{mid}"
+        try:
+            _s, page = fetch_text(plan_url, headers={"User-Agent": ua, **_FEVER_HEADERS})
+            cache[mid] = {"ts": now, "event": _fever_plan_event(page, plan_url)}
+            fetched += 1
+        except SiteRefused:
+            break
+        except Exception:
+            continue  # asked again next run
+
+    events = []
+    for mid, card in cards.items():
+        plan = (cache.get(mid) or {}).get("event")
+        if not plan or plan.get("lat") is None or not plan.get("venue") or _FEVER_NO_PLACE_RE.search(plan["venue"]):
+            continue  # no real place: don't pin it on Fever's office (or a "secret location")
+        e = dict(plan)
+        start = card["date"]  # the city page is fresher than a cached plan page
+        e["date"] = start.isoformat()
+        if e.get("end"):
+            try:
+                if datetime.fromisoformat(e["end"]) <= start:
+                    e.pop("end")
+            except ValueError:
+                e.pop("end")
+        day = start.astimezone(EASTERN).date().isoformat()
+        more = [d for d in plan.get("more_dates") or [] if d > day]
+        if more:
+            e["more_dates"] = more
+        else:
+            e.pop("more_dates", None)
+        if card["price"] and not e.get("price"):
+            e["price"] = card["price"]
+        e["url"] = f"https://feverup.com/m/{mid}"
+        events.append(e)
+    cache = {k: v for k, v in cache.items() if now - v.get("ts", 0) < 3 * FEVER_PLANS_TTL}
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(cache, f)
+    except OSError:
+        pass
+    print(f"Fever: {len(cards)} plans, {fetched} plan pages fetched, {len(events)} listed with a real venue")
+    return _dedupe_future(events)
 
 
 _VV_RANGE_RE = re.compile(

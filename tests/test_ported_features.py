@@ -597,18 +597,103 @@ class TestGenericVenueParsers(unittest.TestCase):
 
 
 class TestFever(unittest.TestCase):
-    def test_fever_cards_local_time_and_filters(self):
-        when = _future_local(3, 18, 30).strftime("%Y-%m-%dT%H:%M:%S") + "+00:00"
-        page = (f'<a data-plan-id="1" data-plan-name="Candlelight: Vivaldi" data-plan-date="{when}" data-plan-price="35.5" href="/m/1">x</a>'
-                f'<a data-plan-id="1" data-plan-name="Candlelight: Vivaldi" data-plan-date="{when}" href="/m/1">dup</a>'
-                f'<a data-plan-id="2" data-plan-name="SUMMIT One Vanderbilt: Entry Ticket" data-plan-date="{when}" href="/m/2">x</a>'
-                f'<a data-plan-id="3" data-plan-name="Westchester Winter Wonderland" data-plan-date="{when}" href="/m/3">x</a>')
-        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
-            events = scrapers.scrape_fever("https://feverup.com/en/new-york", UA_CHROME)
-        self.assertEqual([e["name"] for e in events], ["Candlelight: Vivaldi"])
-        self.assertEqual((_local(events[0]["date"]).hour, _local(events[0]["date"]).minute), (18, 30))
-        self.assertEqual(events[0]["url"], "https://feverup.com/m/1")
-        self.assertEqual(events[0]["price"], "From $36")
+    """Fever city-page cards carry no venue; each plan's own page supplies it (or the card is dropped)."""
+
+    def _plan_page(self, mid, name, lat="40.7836791", lng="-73.958182", venue="Church of the Heavenly Rest", days=()):
+        start = _future_local(3, 18, 30)
+        state = {
+            f"immersive-plan-detail:{mid}:x": {
+                "id": mid, "name": name, "citySlug": "new-york", "description": "<p>Strings by candlelight.</p>",
+                "defaultPlace": {"name": venue, "address": "1085 5th Avenue, New York, 10128", "latitude": lat, "longitude": lng}},
+            f"PlanService.getPlanSessionsForPlaceAndDate.{mid}.1.x..": {"level": {"items": [{"value": {"starts_at_iso": start.isoformat()}}]}},
+            f"PlanService.getPlanAvailabilityForPlace.{mid}.1.x": {"dates": {d: {"minTicketPrice": 35.5} for d in days}},
+        }
+        return f'<script id="serverapp-state" type="application/json">{json.dumps(state)}</script>'
+
+    def _run(self, city_page, plan_pages, per_run=None, cache=None):
+        import tempfile
+        path = os.path.join(tempfile.mkdtemp(), "fever.json")
+        if cache is not None:
+            with open(path, "w") as f:
+                json.dump(cache, f)
+        asked = []
+
+        def fake(url, headers=None, **kw):
+            asked.append(url)
+            if "/m/" in url:
+                return 200, plan_pages.get(url.rsplit("/", 1)[1], "<html></html>")
+            return 200, city_page
+
+        with patch.object(scrapers, "fetch_text", side_effect=fake):
+            events = scrapers.scrape_fever("https://feverup.com/en/new-york", UA_CHROME, plans_path=path, per_run=per_run)
+        return events, asked, path
+
+    def test_cards_take_the_plan_venue_and_the_card_time(self):
+        when = _future_local(3, 18, 30)
+        stamp = when.strftime("%Y-%m-%dT%H:%M:%S") + "+00:00"
+        later = [(when + timedelta(days=n)).strftime("%Y-%m-%d") for n in (0, 2, 5)]
+        page = (f'<a data-plan-id="1" data-plan-name="Candlelight: Vivaldi" data-plan-date="{stamp}" data-plan-price="35.5" href="/m/1">x</a>'
+                f'<a data-plan-id="1" data-plan-name="Candlelight: Vivaldi" data-plan-date="{stamp}" href="/m/1">dup</a>'
+                f'<a data-plan-id="2" data-plan-name="SUMMIT One Vanderbilt: Entry Ticket" data-plan-date="{stamp}" href="/m/2">x</a>'
+                f'<a data-plan-id="3" data-plan-name="Westchester Winter Wonderland" data-plan-date="{stamp}" href="/m/3">x</a>'
+                f'<a data-plan-id="4" data-plan-name="Immersive Mini Golf" data-plan-date="{stamp}" href="/m/4">x</a>')
+        page += f'<a data-plan-id="5" data-plan-name="Black Friday Party" data-plan-date="{stamp}" href="/m/5">x</a>'
+        page += f'<a data-plan-id="6" data-plan-name="From NYC: Ski Day Trip to Mountain Creek" data-plan-date="{stamp}" href="/m/6">x</a>'
+        plans = {"1": self._plan_page(1, "Candlelight: Vivaldi", days=later), "4": "<html>no app state</html>",
+                 "5": self._plan_page(5, "Black Friday Party", venue="Secret Location New York")}
+        events, asked, _ = self._run(page, plans)
+        self.assertEqual([e["name"] for e in events], ["Candlelight: Vivaldi"])  # 4 has no place: not pinned on Fever's office
+        e = events[0]
+        self.assertEqual((_local(e["date"]).hour, _local(e["date"]).minute), (18, 30))
+        self.assertEqual(e["url"], "https://feverup.com/m/1")
+        self.assertEqual(e["price"], "From $36")
+        self.assertEqual(e["venue"], "Church of the Heavenly Rest")
+        self.assertAlmostEqual(e["lat"], 40.7836791)
+        self.assertEqual(e["more_dates"], later[1:])
+        self.assertNotIn("https://feverup.com/m/2", asked)  # attractions are never fetched
+        self.assertNotIn("https://feverup.com/m/6", asked)
+
+    def test_plan_pages_are_cached_and_capped_per_run(self):
+        stamp = _future_local(3, 19).strftime("%Y-%m-%dT%H:%M:%S") + "+00:00"
+        page = "".join(f'<a data-plan-id="{i}" data-plan-name="Candlelight: Set {i}" data-plan-date="{stamp}" href="/m/{i}">x</a>' for i in range(1, 4))
+        plans = {str(i): self._plan_page(i, f"Candlelight: Set {i}") for i in range(1, 4)}
+        events, asked, path = self._run(page, plans, per_run=2)
+        self.assertEqual(len(events), 2)
+        self.assertEqual(sum("/m/" in u for u in asked), 2)
+        with open(path) as f:
+            cache = json.load(f)
+        events, asked, _ = self._run(page, plans, per_run=2, cache=cache)
+        self.assertEqual(len(events), 3)
+        self.assertEqual(sum("/m/" in u for u in asked), 1)  # only the one not fetched yet
+
+    def test_stale_holiday_plans_and_categories(self):
+        nov = datetime(2026, 11, 21, 23, tzinfo=timezone.utc)
+        self.assertTrue(scrapers._fever_stale_holiday("Halloween Hip Hop vs Reggae Yacht Party!", nov))
+        self.assertFalse(scrapers._fever_stale_holiday("Halloween Hip Hop Party", datetime(2026, 10, 31, 23, tzinfo=timezone.utc)))
+        self.assertFalse(scrapers._fever_stale_holiday("Candlelight: Christmas Carols on Strings", nov))
+        self.assertIsNone(scrapers.fever_category("Candlelight: Tribute to Adele"))
+        self.assertIsNone(scrapers.fever_category("Broadway Sings Taylor Swift"))
+        self.assertEqual(scrapers.fever_category("Dancing Under The Stars on The Hudson River! Yacht party"), "cruises")
+        self.assertEqual(scrapers.fever_category("Immersive Mini Golf at Puttery NYC!"), "experiences")
+        self.assertEqual(scrapers.fever_category("Brunch With Monet- An Immersive Art Experience"), "experiences")
+
+    def test_experiences_bucket_is_opt_in_and_more_dates_render(self):
+        import template
+        self.assertIn("Ticketed Experiences", template.DEFAULT_UNCHECKED_BUCKETS)
+        self.assertIn(("Ticketed Experiences", ["experiences"]), scrapers.CATEGORY_BUCKETS)
+        html_out = template._more_dates_html({"more_dates": ["2026-11-21", "2026-11-22", "2026-11-25", "2026-11-28"]})
+        self.assertIn("more dates Sat 11/21, Sun 11/22, Wed 11/25 +1", html_out)
+        self.assertEqual(template._more_dates_html({}), "")
+
+    def test_fever_listings_get_their_category_in_the_page(self):
+        when = _future_local(2, 20).astimezone(timezone.utc).isoformat()
+        results = [{"venue": "Fever NYC (Candlelight, Immersive & Experiences)", "url": "https://feverup.com/en/new-york", "events": [
+            {"name": "Sculpture Without Sight Experience", "date": when, "venue": "Studio X", "url": "https://feverup.com/m/9"},
+            {"name": "Candlelight: The Best of Hans Zimmer", "date": when, "venue": "Church of the Heavenly Rest", "url": "https://feverup.com/m/8"}]}]
+        dated, _tba, _ongoing = group_by_date(results)
+        cats = {e["name"]: e["category"] for _k, evs in dated for e in evs}
+        self.assertEqual(cats.get("Sculpture Without Sight Experience"), "experiences")
+        self.assertNotEqual(cats.get("Candlelight: The Best of Hans Zimmer"), "experiences")
 
 
 class TestTicketmasterWindows(unittest.TestCase):
