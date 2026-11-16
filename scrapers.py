@@ -6901,6 +6901,61 @@ def scrape_miller_theatre(url, ua):
     return events
 
 
+_BOLETOS_DATE_RE = re.compile(r"(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day,\s+([A-Z][a-z]+ \d{1,2}, \d{4})")
+_BOLETOS_TIME_RE = re.compile(r"Show:\s*(\d{1,2})(?::(\d{2}))?\s*(am|pm)", re.I)
+_BOLETOS_CITIES = ("new york", "bronx", "queens", "brooklyn", "staten island")
+_BOLETOS_NYC_RE = re.compile(r"(?i)\b(?:new york|bronx|queens|brooklyn|staten island|manhattan|flushing|jamaica|corona|astoria)\b[^,]*,?\s*(?:ny|nueva york)\b|\bny,?\s*1[01]\d{3}\b")
+
+
+def scrape_boletosexpress(url, ua):
+    """Boletos Express: Latin concerts, bachata/merengue/regional Mexican nights and church concerts at
+    Bronx, Queens and Upper Manhattan venues, sold nowhere else we read. The city page lists cards with
+    title, date, door/show times and 'Venue, City, ST'; only New York City venues are kept. Each
+    borough has its own (unlinked) city page, so all of them are read."""
+    now = datetime.now(EASTERN)
+    events, seen = [], set()
+    cards = []
+    for i, city in enumerate(_BOLETOS_CITIES):
+        if i:
+            time.sleep(1)
+        status, page = fetch_text(f"{url.split('?')[0]}?city={quote_plus(city)}", headers={"User-Agent": ua or UA_CHROME})
+        if status == 200 and page:
+            cards.extend(BeautifulSoup(page, "html.parser").select(".eventsCards .card"))
+    for card in cards:
+        a = card.select_one(".card-title a")
+        text = card.select_one(".card-text")
+        if not a or not text:
+            continue
+        paras = [p.get_text(" ", strip=True) for p in text.find_all("p")]
+        when = " ".join(paras[:1])
+        m = _BOLETOS_DATE_RE.search(when)
+        if not m:
+            continue
+        try:
+            day = datetime.strptime(m.group(1), "%B %d, %Y")
+        except ValueError:
+            continue
+        hour, minute = 20, 0
+        t = _BOLETOS_TIME_RE.search(when)
+        if t:
+            hour = int(t.group(1)) % 12 + (12 if t.group(3).lower() == "pm" else 0)
+            minute = int(t.group(2) or 0)
+        dt = datetime(day.year, day.month, day.day, hour, minute, tzinfo=EASTERN)
+        location = next((p for p in paras[1:] if p), "")
+        if dt < now or not _BOLETOS_NYC_RE.search(location):
+            continue
+        link = urljoin("https://www.boletosexpress.com/", a.get("href") or "")
+        name = a.get_text(" ", strip=True)
+        if (name, dt) in seen:
+            continue
+        seen.add((name, dt))
+        label = (card.select_one(".musicLabel").get_text(strip=True) if card.select_one(".musicLabel") else "").lower()
+        venue = location.split(",")[0].strip() or "Boletos Express"
+        events.append({"name": name, "date": dt.isoformat(), "url": link, "venue": venue, "address": location,
+                       "price": None, "category": "clubbing" if "party" in label or "fiesta" in name.lower() else "music"})
+    return events
+
+
 def scrape_the_stone(url, ua):
     """The Stone at The New School — Official experimental music calendar curated by John Zorn."""
     events = []
@@ -11807,6 +11862,7 @@ _ALL_VENUES += [
     {"name": "Snug Harbor Holiday Hop & Artisans Market", "url": "https://snug-harbor.org/event/holiday-hop/", "ua": UA_CHROME, "scraper": scrape_snug_harbor_holiday_hop, "default_category": "markets"},
     {"name": "Bartow-Pell Mansion Holiday Bazaar", "url": "https://www.bartowpellmansionmuseum.org/events/holiday-family-day/", "ua": UA_CHROME, "scraper": scrape_bartow_pell_holiday_bazaar, "default_category": "markets"},
     {"name": "Wave Hill Holiday Artisans Market", "url": "https://www.wavehill.org/calendar/holiday-workshop-weekend", "ua": UA_CHROME, "scraper": scrape_wave_hill_holiday_market, "default_category": "markets"},
+    {"name": "Boletos Express (Latin concerts, NYC)", "url": "https://www.boletosexpress.com/", "ua": UA_CHROME, "scraper": scrape_boletosexpress, "default_category": "music"},
     {"name": "Andrew Freedman Home", "url": "https://theafh.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/events/[^/]+$", "venue": "Andrew Freedman Home", "address": "1125 Grand Concourse, Bronx, NY 10452"}},
     {"name": "Barnes & Noble Fifth Avenue", "url": "https://www.eventbrite.com/api/v3/organizers/61336640883/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "books"},
     {"name": "Comic Strip Live", "url": "https://www.eventbrite.com/api/v3/organizers/8100188167/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
