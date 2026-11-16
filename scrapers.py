@@ -1,5 +1,6 @@
 """NYC Events — venue scrapers and data definitions."""
 
+import collections
 import html
 import json
 import os
@@ -1054,18 +1055,14 @@ def special_note(text):
 
 # Paid spa/massage services posted as events: promos from massage businesses, hotel spa
 # packages ("Spa After Dark", $145), members-club spa nights. Massage *classes* and free wellness walks are real events and stay.
-_SERVICE_AD_VENUE_RE = re.compile(
-    r"\bmassage\b(?!.*\bschool\b)|\bmed\s*spa\b|\bremedy place\b|"
-    r"police\s*guided\s*tours|awesome\s+nyc\s+tours|walksnyc\s+tours|the\s+speakers\s+storytelling\s+club|"
-    r"attractions4us|ny\s+iconic\s+tours|touring\s+treasures|nitetables\s+experiences",
-    re.I,
-)
+# Tour operators and other vendors are blocked by Eventbrite organizer id ("excluded" in
+# eventbrite_organizers.json) and held for review on discovery (vendor_signals), not by name here.
+_SERVICE_AD_VENUE_RE = re.compile(r"\bmassage\b(?!.*\bschool\b)|\bmed\s*spa\b|\bremedy place\b", re.I)
 _SERVICE_AD_TITLE_RE = re.compile(
     r"\bspa (?:night|after dark|day|package|weekend)\b|\breflexology experience\b|\bstress[- ]free week\b|"
     r"\b(?:botox|filler|iv (?:drip|therapy))\b|"
     r"^discover\s+(?:dance|fitness|professional[- ]level)\b|"
-    r"\b(?:private\s+nyc\s+mafia\s+tour|true\s+crime\s+nyc:\s*mafia\s+walk|"
-    r"(?:madison\s+square\s+garden|radio\s+city\s+music\s+hall)\s+tour\s+experience|"
+    r"\b(?:(?:madison\s+square\s+garden|radio\s+city\s+music\s+hall)\s+tour\s+experience|"
     r"nyc\s+free\s+tour\s+for\s+midtown|"
     r"catacombs\s+by\s+candlelight\s+tour|all[- ]day\s+happy\s+hour|riseny:\s*a\s+soaring\s+journey)\b",
     re.I,
@@ -1884,10 +1881,12 @@ def _discover_eventbrite_organizers(results, details_path=None, path=None, scrap
 
     eb, found = _load(details_path), _load(path)
     if tracked is None:
+        # Listed, excluded, or awaiting review in eventbrite_organizers.json: never auto-followed.
         tracked = {oid for _k, oid, _n, _c in _load_eventbrite_organizers()}
         try:
             with open(EVENTBRITE_ORGANIZERS_FILE, "r", encoding="utf-8") as f:
-                tracked |= {str(x.get("id")) for x in json.load(f).get("excluded") or []}
+                listed = json.load(f)
+            tracked |= {str(x.get("id")) for key in ("excluded", "pending") for x in listed.get(key) or []}
         except (OSError, ValueError):
             pass
     cats = {}
@@ -1908,8 +1907,19 @@ def _discover_eventbrite_organizers(results, details_path=None, path=None, scrap
         return {"name": name or f"Eventbrite organizer {oid}", "url": f"https://www.eventbrite.com/api/v3/organizers/{oid}/events/",
                 "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": cat or "community"}
 
+    def _hold(oid, name, events):
+        """Vendor-looking organizers (vendor_signals) are not published; they are rechecked after
+        DISCOVER_REJECT_TTL, or approved by adding them to eventbrite_organizers.json."""
+        reasons = vendor_signals(name, [e.get("name") for e in events])
+        if reasons:
+            found[oid] = {"status": "held", "name": name, "reasons": reasons, "ts": now}
+            held.append(f"{name} ({oid}): {'; '.join(reasons)}")
+        return bool(reasons)
+
     added = tried = 0
-    kept = [oid for oid, rec in found.items() if rec.get("status") == "ok"]
+    held = []
+    # An organizer later listed or excluded in the JSON file is no longer followed from here.
+    kept = [oid for oid, rec in found.items() if rec.get("status") == "ok" and oid not in tracked]
     for oid, (name, cat) in sorted(candidates.items()):
         rec = found.get(oid)
         if rec and (rec.get("status") == "ok" or now - rec.get("ts", 0) < DISCOVER_REJECT_TTL):
@@ -1923,6 +1933,8 @@ def _discover_eventbrite_organizers(results, details_path=None, path=None, scrap
         if res.get("error") and not res.get("events"):
             continue  # transient: try again next run
         if len(res.get("events") or []) >= 2:
+            if _hold(oid, res["venue"], res["events"]):
+                continue
             found[oid] = {"status": "ok", "name": res["venue"], "category": cat or "community", "ts": now}
             kept.append(oid)
             added += 1
@@ -1935,7 +1947,7 @@ def _discover_eventbrite_organizers(results, details_path=None, path=None, scrap
         res = scrape(_source(oid, rec.get("name"), rec.get("category")))
         if not res.get("cached"):
             sleep(EVENTBRITE_API_GAP)  # a live fetch: keep to the Eventbrite lane's pace
-        if res.get("events"):
+        if res.get("events") and not _hold(oid, rec.get("name") or res.get("venue"), res["events"]):
             results.append(res)
             live += len(res["events"])
     try:
@@ -1943,7 +1955,10 @@ def _discover_eventbrite_organizers(results, details_path=None, path=None, scrap
             json.dump({k: v for k, v in found.items() if v.get("status") == "ok" or now - v.get("ts", 0) < DISCOVER_REJECT_TTL}, f)
     except OSError:
         pass
-    print(f"Eventbrite organizers followed from AllEvents: {added} new of {tried} tried; {len(kept)} tracked, {live} events")
+    tracked_now = sum(1 for oid in kept if found[oid].get("status") == "ok")
+    print(f"Eventbrite organizers followed from AllEvents: {added} new of {tried} tried; {tracked_now} tracked, {live} events")
+    for line in held:
+        print(f"  held for review (looks like a vendor): {line}")
     return added
 
 
@@ -11552,6 +11567,38 @@ _TOPIC_GENERIC_WORDS = {
 EVENTBRITE_ORGANIZERS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "eventbrite_organizers.json")
 
 
+# Signs that an Eventbrite organizer sells a product (a tour, a cruise, a daily happy hour, a
+# class schedule) rather than putting on events: tour operators post the same 1-2 listings every
+# day, which is exactly what made them look busy enough to discover. Used to hold new organizers
+# for a human look instead of publishing them (both discovery paths); it also flags some real
+# venues (a comedy club's nightly show), which is why it holds rather than drops.
+_VENDOR_ORG_NAME_RE = re.compile(
+    r"(?i)\btours?\b|guided\s*tours|\bcruises?\b|\bexperiences\b|pub crawls?|sightseeing|\battractions?\b")
+_VENDOR_TITLE_RE = re.compile(
+    r"(?i)\btours?\b|\bcruise\b|pub crawl|sightseeing|skyline|statue of liberty|\bhappy hour\b|\(daily\)|"
+    r"\bclass(?:es)?\b|\blessons?\b")
+VENDOR_MIN_EVENTS = 15
+VENDOR_TOP2_SHARE = 0.6
+VENDOR_TITLE_SHARE = 0.5
+
+
+def vendor_signals(org_name, titles):
+    """Reasons an organizer looks like a vendor rather than an event organizer ([] if none).
+    `titles` are the names of its upcoming events."""
+    reasons = []
+    if _VENDOR_ORG_NAME_RE.search(org_name or ""):
+        reasons.append("name says tours/cruises/experiences")
+    titles = [t for t in titles or [] if t]
+    if len(titles) >= VENDOR_MIN_EVENTS:
+        norm = collections.Counter(re.sub(r"[^a-z ]", "", t.lower()).strip() for t in titles)
+        top2 = sum(n for _t, n in norm.most_common(2)) / len(titles)
+        vendorish = sum(1 for t in titles if _VENDOR_TITLE_RE.search(t)) / len(titles)
+        if top2 >= VENDOR_TOP2_SHARE and vendorish >= VENDOR_TITLE_SHARE:
+            reasons.append(f"same 1-2 listings repeated ({top2:.0%} of {len(titles)}), "
+                           f"{vendorish:.0%} tours/cruises/classes/happy hours")
+    return reasons
+
+
 def _load_eventbrite_organizers(path=EVENTBRITE_ORGANIZERS_FILE):
     try:
         with open(path, "r", encoding="utf-8") as f:
@@ -11947,13 +11994,18 @@ _BOAT_CRUISE_RE = re.compile(
 )
 _SPECIAL_MOVIE_RE = re.compile(r"(?i)\b(q&a|premiere|festival|35mm|70mm|director|discussion|talkback|sneak|preview|party)\b")
 _DANCE_CLASS_ONLY_RE = re.compile(
-    r"(?i)\b(level\s*\d|fundamentals|beginner|intermediate|int/adv|advanced|technique|pointe|"
-    r"ballet|choreo|choreography|course|workshop|intensive|open\s+class|drop[- ]in\s+class)\b"
+    r"(?i)\b(level\s*\d|fundamentals?|foundations?|beginners?|intermediate|int/adv|advanced|technique|pointe|"
+    r"ballet|choreo|choreography|course|workshop|intensive|(?<!world )class(?:es)?|lessons?|drop[- ]in|"
+    r"training|all levels|ages?\s*\d|fitness|cardio|aerobics|bootcamp|zumba)\b"
 )
 _DANCE_SOCIAL_RE = re.compile(
-    r"(?i)\b(social|party|parties|milonga|practica|práctica|dance\s+night|festival|showcase|"
-    r"performance|jam|battle)\b"
+    r"(?i)\b(social|socials|party|parties|parrty|milonga|practica|práctica|practice|salon|dance\s+night|festival|"
+    r"showcase|performance|jam|battle|sessions?|ball|gala|concert|live music|band|dj)\b"
 )
+# "Tango Tuesdays", "Bachata Fridays at Solas": a weekly night out, unless the title says class.
+_DANCE_WEEKLY_NIGHT_RE = re.compile(r"(?i)\b(?:mon|tues|wednes|thurs|fri|satur|sun)days\b")
+# Sources that are class directories: their listings are classes unless the title says social.
+_DANCE_CLASS_DIRECTORIES = ("danceus",)
 _EARLY_NYE_PROMO_RE = re.compile(r"(?i)\b(?:nye|new year'?s eve)\b.*\b(?:open bar|ball drop|countdown|\$\d+)\b")
 
 
@@ -11968,11 +12020,19 @@ def is_early_nye_promo(name, raw_date):
 
 
 def is_dropin_dance_class(name, cat=None, source=""):
+    """A dance class or dance-fitness session with no social dancing (filed under Classes &
+    Services, which is hidden by default). Class + social ("Lesson & Social", "Classes &
+    Practice") stays in Dance."""
     if not name:
         return False
-    if cat != "dance" and "danceus" not in (source or "").lower():
+    directory = any(d in (source or "").lower() for d in _DANCE_CLASS_DIRECTORIES)
+    if cat != "dance" and not directory:
         return False
-    return bool(_DANCE_CLASS_ONLY_RE.search(name) and not _DANCE_SOCIAL_RE.search(name))
+    if _DANCE_SOCIAL_RE.search(name):
+        return False
+    if _DANCE_CLASS_ONLY_RE.search(name):
+        return True
+    return directory and not _DANCE_WEEKLY_NIGHT_RE.search(name)
 
 
 def _clean_scraped_events(events):
