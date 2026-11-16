@@ -645,6 +645,17 @@ class TestTicketmasterWindows(unittest.TestCase):
         self.assertEqual(len(calls), scrapers.HORIZON_DAYS + 1)
         self.assertIn("Show 2", [e["name"] for e in events])
 
+    def test_events_outside_the_five_boroughs_are_dropped(self):
+        start = _future_local(1, 20).astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        def ev(name, lat, lng):
+            return {"name": name, "url": "https://tm/e", "dates": {"start": {"dateTime": start}, "status": {"code": "onsale"}},
+                    "_embedded": {"venues": [{"name": name + " Hall", "city": {"name": "X"}, "state": {"stateCode": "NY"},
+                                              "location": {"latitude": str(lat), "longitude": str(lng)}}]}}
+        payload = {"_embedded": {"events": [ev("Do Portugal Circus", 40.5823, -74.1680), ev("Yonkers Show", 40.9312, -73.8988)]}}
+        with patch("scrapers._SESSION.get", return_value=_resp(payload=payload)), patch("scrapers.time.sleep"):
+            events = scrapers.scrape_ticketmaster_nyc("", "")
+        self.assertEqual({e["name"] for e in events}, {"Do Portugal Circus"})
+
 
 class TestFamilyClassifier(unittest.TestCase):
     def test_family_phrases_and_adult_exclusions(self):
@@ -1172,3 +1183,31 @@ class TestEventTimes(unittest.TestCase):
         self.assertNotIn("data-epoch", li)
         self.assertIn('data-time-mins="-1"', li)
         self.assertIn("Time TBA", li)
+
+
+class TestVenueScraperFixes(unittest.TestCase):
+    def test_town_hall_titles_with_quotes(self):
+        when = _future_local(5, 20).strftime("%Y-%m-%dT%H:%M:%S")
+        rsc = ('{"title":{"rendered":"LPR Presents: JOHN SCOFIELD\'S \\"ELECTROSPECTIVE\\""},"slug":"scofield",'
+               '"meta_box":{"ticketmaster_id":"1","dates":[{"date":"' + when + '"}]}}')
+        page = '<script>self.__next_f.push([1,' + json.dumps(rsc) + '])</script>'
+        with patch("scrapers._SESSION.get", return_value=_resp(text=page)):
+            events = scrapers.scrape_the_town_hall(None, None)
+        self.assertEqual([e["name"] for e in events], ['LPR Presents: JOHN SCOFIELD\'S "ELECTROSPECTIVE"'])
+
+    def test_html_cards_follows_pages(self):
+        from bs4 import BeautifulSoup
+        def page(n):
+            if n > 3:
+                return BeautifulSoup("<html><body></body></html>", "html.parser")
+            d = _future_local(n, 20)
+            return BeautifulSoup(f'<div><a href="/tm-event/show-{n}/">Show {n}</a> {d:%B} {d.day}, {d.year} 8:00 PM</div>', "html.parser")
+        urls = []
+        def fake_soup(url, ua=None, timeout=15):
+            urls.append(url)
+            return page(1 if url.rstrip("/").endswith(".com") else int(url.rstrip("/").split("/")[-1]))
+        with patch("scrapers.fetch_soup", side_effect=fake_soup), patch("scrapers.time.sleep"):
+            events = scrapers.scrape_html_cards("https://club.example.com/", None, link_re="^/tm-event/", pages=10)
+        self.assertEqual(sorted(e["name"] for e in events), ["Show 1", "Show 2", "Show 3"])
+        self.assertEqual(urls[1], "https://club.example.com/page/2/")
+        self.assertEqual(len(urls), 4)  # stops at the first page with nothing new

@@ -62,5 +62,54 @@ class AllEventsBroadwayPlaceholders(unittest.TestCase):
         self.assertEqual(len(days["2030-01-08"]), 1)
 
 
+class AllEventsWrongDates(unittest.TestCase):
+    cards = staticmethod(AllEventsBroadwayPlaceholders._run)
+
+    def test_one_off_show_filed_a_day_early_is_dropped(self):
+        days = self.cards([
+            ("Ticketmaster NYC", [("LPR Presents: JOHN SCOFIELD'S \"ELECTROSPECTIVE\"", "2030-01-08T20:00:00-05:00",
+                                   "https://www.ticketmaster.com/scofield/1", "Town Hall (New York, NY)")]),
+            ("AllEvents: Art", [("John Scofield", "2030-01-07T19:00:00-05:00", "https://allevents.in/x/scofield/1", "Town Hall Theatre - NY")])])
+        self.assertNotIn("2030-01-07", days)
+        self.assertIn("ticketmaster.com", days["2030-01-08"][0][1])
+
+    def test_same_day_merge_ignores_allevents_time(self):
+        days = self.cards([
+            ("Ticketmaster NYC", [("New York Rangers vs. Carolina Hurricanes", "2030-01-08T19:00:00-05:00",
+                                   "https://www.ticketmaster.com/rangers/1", "Madison Square Garden")]),
+            ("AllEvents NYC (All)", [("Carolina Hurricanes at New York Rangers", "2030-01-08T12:30:00-05:00",
+                                      "https://allevents.in/x/rangers/1", "Madison Square Garden")])])
+        self.assertEqual(days["2030-01-08"], [("New York Rangers vs. Carolina Hurricanes", "https://www.ticketmaster.com/rangers/1")])
+
+    def test_place_words_and_loose_overlaps_still_need_close_times(self):
+        days = self.cards([
+            ("Q.E.D. Astoria (own calendar)", [("Q.E.D. Astoria", "2030-01-08T18:00:00-05:00", "https://qedastoria.com/e/1", "Q.E.D. Astoria")]),
+            ("Lincoln Center", [("Lincoln Center Tours", "2030-01-08T10:15:00-05:00", "https://lincolncenter.org/tours", "Lincoln Center")]),
+            ("AllEvents: Queens (all)", [("Free Hookah Mondays at Egypt Astoria", "2030-01-08T23:00:00-05:00", "https://allevents.in/x/h/1", "Egypt Astoria"),
+                                         ("FIRST MOVE Single Mingle & Dance @ Lincoln Center", "2030-01-08T18:30:00-05:00",
+                                          "https://allevents.in/x/fm/1", "Lincoln Center for the Performing Arts")])])
+        self.assertEqual(len(days["2030-01-08"]), 4)
+
+    def test_generic_or_broader_titles_do_not_stand_for_other_events(self):
+        days = self.cards([
+            ("Ticketmaster NYC", [("New York Philharmonic", "2030-01-08T19:30:00-05:00", "https://www.ticketmaster.com/nyp/1", "David Geffen Hall"),
+                                  ("Avengers: Doomsday", "2030-01-09T19:00:00-05:00", "https://www.ticketmaster.com/av/1", "Alamo Drafthouse Staten Island")]),
+            ("AllEvents NYC (All)", [("New York Philharmonic: Rouvali Conducts Schubert", "2030-01-10T19:30:00-05:00",
+                                      "https://allevents.in/x/nyp/1", "David Geffen Hall"),
+                                     ("Avengers Doomsday Opening Day Movie hangout", "2030-01-11T18:00:00-05:00",
+                                      "https://allevents.in/x/av/1", "Alamo Drafthouse Staten Island")])])
+        self.assertIn("2030-01-10", days)
+        self.assertIn("2030-01-11", days)
+
+    def test_resale_links_rank_with_aggregators(self):
+        self.assertEqual(T._url_priority("https://www.ticketnetwork.com/tickets/7881594?utm_source=ir"), 1)
+
+    def test_events_abroad_and_airport_tours_are_dropped(self):
+        days = self.cards([("AllEvents: Flushing (all)", [("ITMA Asia + CITME 2026", "2030-01-08T10:00:00-05:00", "https://allevents.in/x/itma/1", "Shanghai 上海, China"),
+                                                        ("Costa Rica Eco-Beach Adventure", "2030-01-08T10:00:00-05:00", "https://allevents.in/x/cr/1", "John F. Kennedy International Airport"),
+                                                        ("Curry Night", "2030-01-08T19:00:00-05:00", "https://allevents.in/x/c/1", "Taste of India")])])
+        self.assertEqual([n for n, _u in days["2030-01-08"]], ["Curry Night"])
+
+
 if __name__ == "__main__":
     unittest.main()

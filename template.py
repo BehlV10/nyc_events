@@ -1204,6 +1204,9 @@ def _url_priority(url, source=None):
         return 1
     if "seatgeek.com" in u or "seatgeek" in s:
         return 2
+    if any(h in u for h in ("ticketnetwork.com", "vividseats.com", "stubhub.com", "edgetix.us", "tickpick.com",
+                            "gametime.co", "viagogo.com", "ticketsmarter.com", "boxofficeticketsales.com")):
+        return 1  # resale marketplaces: never the main link when anyone else lists the event
     if "meetup.com" in u or "meetup" in s:
         return 3
     if "eventbrite.com" in u or "eventbrite" in s:
@@ -1952,13 +1955,19 @@ def _merge_duplicates(events, word_freq=None):
                 t_c = cand.get("_time")
                 if not t_e or not t_c:
                     continue
-                if not (e.get("_time_unknown") or cand.get("_time_unknown")) and abs((t_e - t_c).total_seconds()) > 4 * 3600:
-                    continue
                 if not _same_physical_venue(e, cand) or _numbers_conflict(raw_name, cand.get("name")):
                     continue
                 w_c = _title_words(cand.get("name"))
-                # One title's words all inside the other's ("MJ" / "MJ The Musical Tickets")
-                nested = w_c and (w_c <= w_e or w_e <= w_c)
+                # One title inside the other ("MJ" / "MJ The Musical Tickets"), not counting words
+                # that only name the place ("Q.E.D. Astoria" is not "Free Hookah Mondays at Egypt
+                # Astoria"). Then AllEvents' start time doesn't matter: it is often wrong (Rangers at
+                # 12:30 for a 7pm game). Looser overlaps still need the times within 4 hours.
+                place = _venue_words(e) | _venue_words(cand)
+                a_w, c_w = w_e - place, w_c - place
+                nested = bool(a_w and c_w) and (a_w <= c_w or c_w <= a_w)
+                if not nested and not (e.get("_time_unknown") or cand.get("_time_unknown")) \
+                        and abs((t_e - t_c).total_seconds()) > 4 * 3600:
+                    continue
                 if nested or (len(w_c) >= 2 and len(w_e) >= 2 and len(w_e & w_c) >= max(2, 0.5 * min(len(w_e), len(w_c)))):
                     match = cand
                     break
@@ -2138,6 +2147,14 @@ def _merge_duplicates(events, word_freq=None):
 _REAL_MIDNIGHT_CATEGORIES = {"clubbing", "party", "music", "comedy", "film"}
 
 
+# AllEvents' city feeds take in trade fairs abroad ("Shanghai 上海, China") and travel packages
+# that "depart" from JFK.
+_ALLEVENTS_ELSEWHERE_RE = re.compile(
+    r",\s*(china|india|japan|korea|vietnam|thailand|singapore|dubai|uae|united arab emirates|united kingdom|england|"
+    r"france|germany|italy|spain|portugal|netherlands|mexico|brazil|colombia|nigeria|ghana|costa rica|canada|australia)\s*$"
+    r"|international airport|\bjfk airport\b|laguardia airport", re.I)
+
+
 # AllEvents' evergreen ticket listings give only the city as the venue ("New York, N.Y."). Only
 # AllEvents: other feeds (City Parks Foundation's "Manhattan") name the place in the title.
 _CITY_ONLY_VENUE_RE = re.compile(
@@ -2148,28 +2165,46 @@ def _is_allevents_only(e):
     return "allevents." in (e.get("url") or "").lower()
 
 
-def _drop_allevents_off_nights(buckets, min_nights=3):
-    """AllEvents files long-running shows under placeholder dates (Wicked on a Monday, when the
-    Gershwin is dark). When a direct source lists the same show at the same theater on several
-    other nights but not this one, there is no performance that night: drop the AllEvents card."""
-    runs = {}  # title word -> direct theater cards
+def _drop_allevents_off_nights(buckets, window_days=7):
+    """AllEvents dates are often wrong: placeholder dates for long-running shows (Wicked on a
+    Monday, when the Gershwin is dark) and one-off shows filed a day early (John Scofield at the
+    Town Hall on Monday; Ticketmaster and the presenter say Tuesday). When a direct source lists
+    the same show at the same venue within a week of the AllEvents date but not on it, the
+    AllEvents card is wrong: drop it."""
+    runs = {}  # title word -> (day, direct card)
     for day, evs in buckets.items():
         for e in evs:
-            if e.get("category") == "theater" and not _is_allevents_only(e):
+            if not _is_allevents_only(e):
                 for w in _title_words(e.get("name")):
                     runs.setdefault(w, []).append((day, e))
     for day, evs in buckets.items():
         keep = []
         for e in evs:
-            words = _title_words(e.get("name")) if _is_allevents_only(e) else None
+            words = _title_words(e.get("name")) if _is_allevents_only(e) and not e.get("_venue_unknown") else None
             if words:
-                nights = {d for w in words for d, c in runs.get(w, ())
-                          if (lambda wc: wc and (wc <= words or words <= wc))(_title_words(c.get("name")))
-                          and _same_physical_venue(e, c)}
-                if len(nights) >= min_nights and day not in nights:
+                nights = set()
+                for w in words:
+                    for d, c in runs.get(w, ()):
+                        if d in nights or abs((d - day).days) > window_days:
+                            continue
+                        if c.get("_venue_unknown"):
+                            continue
+                        wc = _title_words(c.get("name"))
+                        # Same title; AllEvents' title a 2+ word short form of the direct one ("Michelle
+                        # Wolf" / "Michelle Wolf: Best Job in the World"); or the direct title inside
+                        # AllEvents' with 3+ words or half of it ("CBS Sports Classic"), so a bare "New
+                        # York Philharmonic" or "Avengers: Doomsday" doesn't stand for every concert or
+                        # movie-night hangout.
+                        same = (wc == words or (len(words) >= 2 and words <= wc)
+                                or (wc <= words and (len(wc) >= 3 or (len(wc) >= 2 and 2 * len(wc) >= len(words)))))
+                        if same and _same_physical_venue(e, c):
+                            nights.add(d)
+                if nights and day not in nights:
                     continue
             keep.append(e)
         buckets[day] = keep
+    for day in [d for d, evs in buckets.items() if not evs]:
+        del buckets[day]
 
 
 def _is_date_only_feed(events):
@@ -2294,6 +2329,9 @@ def group_by_date(results):
             if "fever" in (r.get("venue") or "").lower() and (_FEVER_ATTRACTION_RE.search(e.get("name") or "") or ("T05:00:00" in (e.get("date") or "") and "candlelight" not in (e.get("name") or "").lower())):
                 continue
             if is_service_ad(e.get("name"), f"{e.get('venue') or ''} {r.get('venue') or ''}"):
+                continue
+            if str(r.get("venue") or "").lower().startswith("allevents") and any(
+                    _ALLEVENTS_ELSEWHERE_RE.search(str(e.get(k) or "")) for k in ("venue", "address")):
                 continue
             n_low = (e.get("name") or "").lower()
             if _ONLINE_TITLE_RE.search(n_low) and not re.search(r"in[- ]person|hybrid|\birl\b", n_low):
