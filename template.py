@@ -312,107 +312,9 @@ SUBAREAS_BY_CITY = {
 # Shown by default; "other" (outside the five boroughs) is opt-in via its chip.
 # "citywide" = in NYC but no borough known (e.g. Meetups that show the venue to members only).
 DEFAULT_CITIES = ("manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide")
+DEFAULT_VIEW_CITIES = ("manhattan",)
 _NO_BOROUGH = ("citywide", "other")
 _OUTSIDE_LABELS = {slug: name for slug, name, _ in SUBAREAS_BY_CITY["other"]}
-
-# Base page splits Manhattan into 3 zones and Brooklyn into 2 zones so each section is browsable.
-ZONE_LABELS = {
-    "manhattan_downtown": "Downtown Manhattan",
-    "manhattan_midtown": "Midtown & Chelsea",
-    "manhattan_uptown": "Uptown Manhattan",
-    "brooklyn_north": "North Brooklyn",
-    "brooklyn_south": "Downtown & South BK",
-    "queens": "Queens",
-    "bronx": "The Bronx",
-    "staten_island": "Staten Island",
-    "citywide": "Citywide / Location TBA",
-    "other": "Outside NYC",
-}
-
-ZONE_COLORS = {
-    "manhattan_downtown": "#5d9bff",
-    "manhattan_midtown": "#4f83f0",
-    "manhattan_uptown": "#74b0ff",
-    "brooklyn_north": "#e05a6b",
-    "brooklyn_south": "#d9468f",
-    "queens": "#f29e4c",
-    "bronx": "#4ade80",
-    "staten_island": "#a78bfa",
-    "citywide": "#7dd3c0",
-    "other": "#9aa3b2",
-}
-
-ZONE_ORDER = [
-    "manhattan_downtown",
-    "manhattan_midtown",
-    "manhattan_uptown",
-    "brooklyn_north",
-    "brooklyn_south",
-    "queens",
-    "bronx",
-    "staten_island",
-    "citywide",
-    "other",
-]
-
-DEFAULT_ZONES = (
-    "manhattan_downtown",
-    "manhattan_midtown",
-    "manhattan_uptown",
-    "brooklyn_north",
-    "brooklyn_south",
-    "queens",
-    "bronx",
-    "staten_island",
-    "citywide",
-)
-
-SUBAREAS_BY_ZONE = {
-    "manhattan_downtown": [
-        ("les_ev", "East Village & LES", "🎸"),
-        ("village_soho", "Greenwich Village & SoHo", "🍸"),
-        ("fidi_tribeca", "FiDi & Tribeca", "⛵"),
-    ],
-    "manhattan_midtown": [
-        ("midtown_chelsea", "Midtown & Chelsea", "🎭"),
-        ("manhattan_other", "Other Midtown / Manhattan", "📍"),
-    ],
-    "manhattan_uptown": [
-        ("uws_lincoln", "Upper West & Lincoln Sq", "🌳"),
-        ("ues_museums", "Upper East & Museums", "🏛️"),
-        ("harlem_uptown", "Harlem & Uptown", "🎷"),
-    ],
-    "brooklyn_north": [
-        ("williamsburg_gp", "Williamsburg & Greenpoint", "🎸"),
-        ("bushwick_ew", "Bushwick & E. Williamsburg", "🎨"),
-    ],
-    "brooklyn_south": [
-        ("dumbo_downtown", "DUMBO & Downtown BK", "🌳"),
-        ("park_slope_gowanus", "Park Slope & Gowanus", "☕"),
-        ("bedstuy_crown", "Bed-Stuy & Crown Heights", "🎺"),
-        ("south_bk", "Coney Island & Bay Ridge", "🌊"),
-        ("brooklyn_other", "Other Brooklyn", "📍"),
-    ],
-    "queens": SUBAREAS_BY_CITY["queens"],
-    "bronx": SUBAREAS_BY_CITY["bronx"],
-    "staten_island": SUBAREAS_BY_CITY["staten_island"],
-    "citywide": SUBAREAS_BY_CITY["citywide"],
-    "other": SUBAREAS_BY_CITY["other"],
-}
-
-
-def _event_zone(city, sub_slug):
-    if city == "manhattan":
-        if sub_slug in ("les_ev", "village_soho", "fidi_tribeca"):
-            return "manhattan_downtown"
-        if sub_slug in ("uws_lincoln", "ues_museums", "harlem_uptown"):
-            return "manhattan_uptown"
-        return "manhattan_midtown"
-    if city == "brooklyn":
-        if sub_slug in ("williamsburg_gp", "bushwick_ew"):
-            return "brooklyn_north"
-        return "brooklyn_south"
-    return city
 
 
 def resolve_subarea(city, event, geo=None):
@@ -2540,7 +2442,6 @@ def render_page(results, split_deferred=False, context_out=None):
 
         city = _event_city(venue, source, geo=geo, event=e)
         sub_name, sub_slug = resolve_subarea(city, e, geo=geo)
-        zone = _event_zone(city, sub_slug)
         subarea_tag = f' <span class="subarea-tag">· {escape(sub_name)}</span>' if sub_name and not sub_name.startswith("Other ") else ""
         recurring = is_recurring(e)
         recur_flag = "weekly" if recurring else "once"
@@ -2636,7 +2537,7 @@ def render_page(results, split_deferred=False, context_out=None):
         # Flags are emitted only when true (the page tests `=== 'true'`), and nothing that the
         # page can derive (subarea name, HH:MM) is repeated per event: deferred days are ~17k <li>s.
         flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-free-catch="true"' if free_kind == "catch" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
-        return _compact_li(f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(zone)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{epoch_attr}{time_attr}{geo_attrs}>
+        return _compact_li(f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}{_other_times_html(e)}</div>
           <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
@@ -2645,7 +2546,7 @@ def render_page(results, split_deferred=False, context_out=None):
         </li>''')
 
     bucket_name_order = [b for b, _ in CATEGORY_BUCKETS]
-    city_day_order = ZONE_ORDER
+    city_day_order = ["manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide", "other"]
 
     def _render_buckets(events):
         by_bucket = {b: [] for b in bucket_name_order}
@@ -2677,8 +2578,7 @@ def render_page(results, split_deferred=False, context_out=None):
         for e in events:
             geo = resolve_event_geo(e)
             c = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo, event=e)
-            _, sub_slug = resolve_subarea(c, e, geo=geo)
-            by_city.setdefault(_event_zone(c, sub_slug), []).append(e)
+            by_city.setdefault(c, []).append(e)
         city_blocks = []
         for cname in city_day_order:
             city_events = by_city.get(cname) or []
@@ -2686,7 +2586,7 @@ def render_page(results, split_deferred=False, context_out=None):
                 continue
             city_blocks.append(f'''
           <div class="city-section" data-city="{escape(cname)}">
-            <h3 class="city-head"><span class="city-pill"><span class="city-dot"></span>{escape(ZONE_LABELS[cname])}</span><span class="count">{len(city_events)}</span></h3>
+            <h3 class="city-head"><span class="city-pill"><span class="city-dot"></span>{escape(CITY_LABELS[cname])}</span><span class="count">{len(city_events)}</span></h3>
             <div class="buckets">{_render_buckets(city_events)}</div>
           </div>''')
         is_today = (date_attr == today_iso)
@@ -2914,19 +2814,17 @@ def render_page(results, split_deferred=False, context_out=None):
         for v in all_venue_names
     )
 
-    city_order = ZONE_ORDER
+    city_order = ["manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide", "other"]
     city_counts = {c: 0 for c in city_order}
     for e in all_events_flat:
         geo = resolve_event_geo(e)
         c = _event_city(e.get("venue"), e.get("_source_venue"), geo=geo, event=e)
-        _, sub_slug = resolve_subarea(c, e, geo=geo)
-        z = _event_zone(c, sub_slug)
-        city_counts[z] = city_counts.get(z, 0) + 1
+        city_counts[c] = city_counts.get(c, 0) + 1
 
     city_boxes = "\n".join(
         f'''<label class="chk">
-            <input type="checkbox" class="city-chk" value="{escape(c)}"{" checked" if c in DEFAULT_ZONES else ""}>
-            <span><span class="city-swatch" style="background:{ZONE_COLORS[c]}"></span>{escape(ZONE_LABELS[c])} <span class="count">{city_counts.get(c, 0)}</span></span>
+            <input type="checkbox" class="city-chk" value="{escape(c)}"{" checked" if c in DEFAULT_VIEW_CITIES else ""}>
+            <span><span class="city-swatch" style="background:{CITY_COLORS[c]}"></span>{escape(CITY_LABELS[c])} <span class="count">{city_counts.get(c, 0)}</span></span>
           </label>'''
         for c in city_order
     )
@@ -3245,15 +3143,12 @@ def render_page(results, split_deferred=False, context_out=None):
     color: #fff;
     font-weight: 700;
   }}
-  .loc-chip.active[data-city="manhattan_downtown"],
-  .loc-chip.active[data-city="manhattan_midtown"],
-  .loc-chip.active[data-city="manhattan_uptown"] {{
+  .loc-chip.active[data-city="manhattan"] {{
     border-color: #5d9bff;
     background: rgba(93, 155, 255, 0.18);
     color: #79aeff;
   }}
-  .loc-chip.active[data-city="brooklyn_north"],
-  .loc-chip.active[data-city="brooklyn_south"] {{
+  .loc-chip.active[data-city="brooklyn"] {{
     border-color: #e05a6b;
     background: rgba(224, 90, 107, 0.18);
     color: #ff7a8a;
@@ -3380,11 +3275,8 @@ def render_page(results, split_deferred=False, context_out=None):
   .city-section {{ --city-color: var(--accent); border-top: 1px solid var(--border); padding-top: 12px; padding-left: 10px; border-left: 3px solid var(--city-color); }}
   .city-section:first-child {{ border-top: none; padding-top: 0; }}
   .city-section.empty {{ display: none; }}
-  .city-section[data-city="manhattan_downtown"] {{ --city-color: #5d9bff; }}
-  .city-section[data-city="manhattan_midtown"]  {{ --city-color: #4f83f0; }}
-  .city-section[data-city="manhattan_uptown"]   {{ --city-color: #74b0ff; }}
-  .city-section[data-city="brooklyn_north"]     {{ --city-color: #e05a6b; }}
-  .city-section[data-city="brooklyn_south"]     {{ --city-color: #d9468f; }}
+  .city-section[data-city="manhattan"]     {{ --city-color: #5d9bff; }}
+  .city-section[data-city="brooklyn"]      {{ --city-color: #e05a6b; }}
   .city-section[data-city="queens"]        {{ --city-color: #f29e4c; }}
   .city-section[data-city="bronx"]         {{ --city-color: #4ade80; }}
   .city-section[data-city="staten_island"] {{ --city-color: #a78bfa; }}
@@ -5907,12 +5799,9 @@ def render_page(results, split_deferred=False, context_out=None):
         </div>
       </div>
       <div class="location-chips-bar" id="location-chips">
-        <button type="button" class="loc-chip active" data-city="all">📍 All Areas</button>
-        <button type="button" class="loc-chip" data-city="manhattan_downtown"><span class="city-dot" style="background:#5d9bff"></span>Downtown Manhattan</button>
-        <button type="button" class="loc-chip" data-city="manhattan_midtown"><span class="city-dot" style="background:#4f83f0"></span>Midtown &amp; Chelsea</button>
-        <button type="button" class="loc-chip" data-city="manhattan_uptown"><span class="city-dot" style="background:#74b0ff"></span>Uptown Manhattan</button>
-        <button type="button" class="loc-chip" data-city="brooklyn_north"><span class="city-dot" style="background:#e05a6b"></span>North Brooklyn</button>
-        <button type="button" class="loc-chip" data-city="brooklyn_south"><span class="city-dot" style="background:#d9468f"></span>Downtown &amp; South BK</button>
+        <button type="button" class="loc-chip active" data-city="manhattan"><span class="city-dot" style="background:#5d9bff"></span>Manhattan</button>
+        <button type="button" class="loc-chip" data-city="all">📍 All Boroughs</button>
+        <button type="button" class="loc-chip" data-city="brooklyn"><span class="city-dot" style="background:#e05a6b"></span>Brooklyn</button>
         <button type="button" class="loc-chip" data-city="queens"><span class="city-dot" style="background:#f29e4c"></span>Queens</button>
         <button type="button" class="loc-chip" data-city="bronx"><span class="city-dot" style="background:#4ade80"></span>The Bronx</button>
         <button type="button" class="loc-chip" data-city="staten_island"><span class="city-dot" style="background:#a78bfa"></span>Staten Island</button>
@@ -6058,11 +5947,8 @@ def render_page(results, split_deferred=False, context_out=None):
                 Borough / Area <span class="req">*</span>
               </label>
               <select id="ev-city" name="city" class="form-select" required>
-                <option value="manhattan_downtown">Downtown Manhattan (FiDi, Tribeca, SoHo, Village, EV, LES)</option>
-                <option value="manhattan_midtown" selected>Midtown &amp; Chelsea (Chelsea, Midtown, Flatiron, Union Sq)</option>
-                <option value="manhattan_uptown">Uptown Manhattan (UWS, UES, Harlem, Washington Heights)</option>
-                <option value="brooklyn_north">North Brooklyn (Williamsburg, Greenpoint, Bushwick)</option>
-                <option value="brooklyn_south">Downtown &amp; South Brooklyn (DUMBO, Park Slope, Gowanus, Bed-Stuy)</option>
+                <option value="manhattan" selected>Manhattan (East Village, LES, SoHo, Midtown, UWS, UES, Harlem, FiDi)</option>
+                <option value="brooklyn">Brooklyn (Williamsburg, Bushwick, DUMBO, Park Slope, Gowanus, Bed-Stuy)</option>
                 <option value="queens">Queens (Astoria, Long Island City, Flushing, Ridgewood)</option>
                 <option value="bronx">The Bronx</option>
                 <option value="staten_island">Staten Island</option>
@@ -6179,11 +6065,8 @@ def render_page(results, split_deferred=False, context_out=None):
                 Borough / Area <span class="req">*</span>
               </label>
               <select id="vn-city" name="city" class="form-select" required>
-                <option value="manhattan_downtown">Downtown Manhattan (FiDi, Tribeca, SoHo, Village, EV, LES)</option>
-                <option value="manhattan_midtown" selected>Midtown &amp; Chelsea (Chelsea, Midtown, Flatiron, Union Sq)</option>
-                <option value="manhattan_uptown">Uptown Manhattan (UWS, UES, Harlem, Washington Heights)</option>
-                <option value="brooklyn_north">North Brooklyn (Williamsburg, Greenpoint, Bushwick)</option>
-                <option value="brooklyn_south">Downtown &amp; South Brooklyn (DUMBO, Park Slope, Gowanus, Bed-Stuy)</option>
+                <option value="manhattan" selected>Manhattan (East Village, LES, SoHo, Midtown, UWS, UES, Harlem, FiDi)</option>
+                <option value="brooklyn">Brooklyn (Williamsburg, Bushwick, DUMBO, Park Slope, Gowanus, Bed-Stuy)</option>
                 <option value="queens">Queens (Astoria, Long Island City, Flushing, Ridgewood)</option>
                 <option value="bronx">The Bronx</option>
                 <option value="staten_island">Staten Island</option>
@@ -6255,13 +6138,20 @@ def render_page(results, split_deferred=False, context_out=None):
     const venueBoxes = document.querySelectorAll('.venue-chk');
     const recurBoxes = document.querySelectorAll('.recur-chk');
     const cityBoxes = document.querySelectorAll('.city-chk');
-    // The five boroughs are the default view; events outside the city are opt-in.
-    const DEFAULT_CITIES = new Set({json.dumps(list(DEFAULT_ZONES))});
+    // Manhattan is the default initial view; "All Boroughs" selects all five boroughs + citywide.
+    const DEFAULT_CITIES = new Set({json.dumps(list(DEFAULT_VIEW_CITIES))});
+    const ALL_BOROUGH_CITIES = new Set({json.dumps(list(DEFAULT_CITIES))});
     function isDefaultCities(checked) {{
       return checked.length === DEFAULT_CITIES.size && checked.every(c => DEFAULT_CITIES.has(c));
     }}
+    function isAllBoroughs(checked) {{
+      return checked.length === ALL_BOROUGH_CITIES.size && checked.every(c => ALL_BOROUGH_CITIES.has(c));
+    }}
     function setDefaultCities() {{
       cityBoxes.forEach(b => {{ b.checked = DEFAULT_CITIES.has(b.value); }});
+    }}
+    function setAllBoroughs() {{
+      cityBoxes.forEach(b => {{ b.checked = ALL_BOROUGH_CITIES.has(b.value); }});
     }}
     const searchInput = document.getElementById('search-input');
     const searchKbd = document.getElementById('search-kbd');
@@ -6275,12 +6165,12 @@ def render_page(results, split_deferred=False, context_out=None):
 
     const locChips = document.querySelectorAll('#location-chips .loc-chip');
     const subareaBar = document.getElementById('subarea-chips-bar');
-    const SUBAREAS_DATA = {json.dumps(SUBAREAS_BY_ZONE)};
+    const SUBAREAS_DATA = {json.dumps(SUBAREAS_BY_CITY)};
     function subareaLabel(li) {{
       const hit = (SUBAREAS_DATA[li.dataset.city] || []).find(s => s[0] === li.dataset.subarea);
       return hit ? hit[1] : '';
     }}
-    const CITY_LABELS_MAP = {json.dumps(ZONE_LABELS)};
+    const CITY_LABELS_MAP = {json.dumps(CITY_LABELS)};
     let activeSubarea = 'all';
     let renderedSubareaCity = null;
     // My Schedule: starred cards, kept in this browser. Keys are built from the card itself
@@ -7192,7 +7082,7 @@ def render_page(results, split_deferred=False, context_out=None):
       locChips.forEach(chip => {{
         const city = chip.dataset.city;
         if (city === 'all') {{
-          chip.classList.toggle('active', isDefaultCities(checkedCities) || checkedCities.length === 0);
+          chip.classList.toggle('active', isAllBoroughs(checkedCities) || checkedCities.length === 0);
         }} else {{
           chip.classList.toggle('active', checkedCities.length === 1 && checkedCities[0] === city);
         }}
@@ -8135,11 +8025,11 @@ def render_page(results, split_deferred=False, context_out=None):
         const targetCity = chip.dataset.city;
         activeSubarea = 'all';
         if (targetCity === 'all') {{
-          setDefaultCities();
+          setAllBoroughs();
         }} else {{
           const checked = Array.from(cityBoxes).filter(b => b.checked).map(b => b.value);
           if (checked.length === 1 && checked[0] === targetCity) {{
-            setDefaultCities();
+            setAllBoroughs();
           }} else {{
             cityBoxes.forEach(b => {{
               b.checked = (b.value === targetCity);
@@ -8521,8 +8411,7 @@ def render_page(results, split_deferred=False, context_out=None):
       }}
       if (!daySection) return;
 
-      const rawCity = ev.city || 'manhattan_midtown';
-      const city = rawCity === 'manhattan' ? 'manhattan_midtown' : (rawCity === 'brooklyn' ? 'brooklyn_south' : rawCity);
+      const city = ev.city || 'manhattan';
       let citySection = daySection.querySelector(`.city-section[data-city="${{city}}"]`);
       if (!citySection) {{
         citySection = daySection.querySelector('.city-section') || daySection;
