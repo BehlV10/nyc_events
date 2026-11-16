@@ -14,6 +14,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  issues: write
 
 concurrency:
   group: pages
@@ -65,7 +66,22 @@ jobs:
 
       - name: Scrape events
         if: steps.restore.outputs.scrape == 'true'
+        env:
+          # Set this repository secret to a fresh key, then delete the fallback key in scrapers.py.
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
         run: python server.py export events.json
+
+      # A source that returns half or less of its usual events is probably a half-broken
+      # scraper (see source_health.track_history). One issue per newly shrunk batch.
+      - name: Open an issue for sources that shrank
+        if: steps.restore.outputs.scrape == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -f .cache/source_alerts.md ]; then
+            gh issue create --title "Sources returning far fewer events ($(date -u +%Y-%m-%d))" --body-file .cache/source_alerts.md
+          fi
       # Also writes landing pages, sitemap/robots/llms.txt, RSS/iCal feeds, and OG images,
       # which ship in the Pages artifact below without being committed.
       - run: python server.py export html index.html

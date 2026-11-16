@@ -24,7 +24,7 @@ MUTED = "#94a3b8"
 CAT_COLORS = {
     "music": "#7aa2f7", "clubbing": "#f7768e", "dance": "#ff7ab2", "comedy": "#bb9af7",
     "theater": "#e0af68", "film": "#7dcfff", "art": "#ffd866", "books": "#9ece6a", "food": "#ff9e64",
-    "outdoors": "#73daca", "sports": "#2ac3de", "gaming": "#b4f9f8", "community": "#c0caf5",
+    "outdoors": "#73daca", "sports": "#2ac3de", "gaming": "#b4f9f8", "community": "#c0caf5", "talks": "#a9b1d6",
 }
 
 _FONT_CANDIDATES = {

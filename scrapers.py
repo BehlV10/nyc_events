@@ -474,7 +474,7 @@ CATEGORY_KEYWORDS = [
 
 CATEGORY_BUCKETS = [
     ("Music & nightlife",  ["music", "clubbing", "dance"]),
-    ("Arts & culture",     ["film", "art", "books", "comedy"]),
+    ("Arts & culture",     ["film", "art", "books", "comedy", "talks"]),
     ("Outdoors & active",  ["outdoors", "sports"]),
     ("Social & community", ["community", "food", "gaming", "other"]),
     ("Theater",            ["theater"]),
@@ -502,6 +502,7 @@ CATEGORY_STYLES = {
     "sports":    ("#2ac3de", "⚽"),
     "gaming":    ("#b4f9f8", "🎲"),
     "community": ("#c0caf5", "👥"),
+    "talks":     ("#a9b1d6", "🎤"),
     "services":  ("#8fa1b3", "🛠"),
     "family":    ("#ffb8d1", "✦"),
     "deals":     ("#c678dd", "🏷"),
@@ -785,12 +786,62 @@ def guess_category(text, default="community", venue=None, source_url=None):
         return "theater"
     if not text:
         return default
-    t = text.lower()
+    t = _strip_theater_lookalikes(text.lower())
     for cat, patterns in CATEGORY_KEYWORDS:
         for p in patterns:
             if re.search(p, t):
-                return cat
-    return default
+                return refine_community(t) if cat == "community" else cat
+    return refine_community(t) if default == "community" else default
+
+
+# Place names and phrases that contain a show title or theater word: "Farmers Market at Fort
+# Hamilton" and "Hip Hop at Broadway Dance Center" were filed under theater, "Gypsy Jazz" too.
+_THEATER_LOOKALIKE_RE = re.compile(
+    r"\bfort hamilton\b|\bhamilton (heights|park|beach|grange|ave(nue)?|fish|house)\b|\balexander hamilton\b|"
+    r"\bbroadway dance center\b|\b(east|west|old) broadway\b|\b\d+ broadway\b|"
+    r"\bbroadway (junction|ave(nue)?|st(reet)?|blvd|triangle|malls?|bridge)\b|"
+    r"\bgypsy (jazz|swing|punk|brass)\b|\b(for|pay|paying|the|your|my) rent\b|\brent (party|control|strike|stabiliz\w+)\b|"
+    r"\bdrama (club|therapy|free)\b")
+
+def _strip_theater_lookalikes(text):
+    """Remove only the misleading word, so "gypsy jazz" still reads as jazz."""
+    return _THEATER_LOOKALIKE_RE.sub(lambda m: re.sub(r"\b(hamilton|broadway|gypsy|rent|drama)\b", " ", m.group(0)), text)
+
+
+def theater_only_by_lookalike(title):
+    """True when a title has a theater keyword only inside a place name or phrase ("Broadway
+    Dance Center", "Fort Hamilton", "Gypsy Jazz"): a "theater" label stored for it is wrong."""
+    t = (title or "").lower()
+    if not _THEATER_LOOKALIKE_RE.search(t):
+        return False
+    pattern = dict(CATEGORY_KEYWORDS)["theater"][0]
+    return bool(re.search(pattern, t)) and not re.search(pattern, _strip_theater_lookalikes(t))
+
+
+# "community" is where everything unrecognised lands (a quarter of all listings). These pick
+# out the clear cases; the tech/startup words stay community so tech talks aren't pulled out.
+_COMMUNITY_REFINE = [
+    ("gaming",   r"\bdungeons (&|and) dragons\b|\bgame night\b|\bgo (group|club)\b|\bpoker\b|\bpuzzle (hunt|night|swap)\b|\bjigsaw\b"),
+    ("books",    r"\bbook (club|swap|fair|talk|group|discussion|release)\b|\breading (group|circle)\b|\bwriters'? (group|circle|workshop|meetup)\b|"
+                 r"\bwriting (group|circle|workshop|session)\b|\bzine\b|\bspoken word\b"),
+    ("talks",    r"\b((?<!small )talks?|lectures?|panel|symposium|seminar|colloquium|keynote|fireside chat|in conversation|"
+                 r"a conversation with|speaker series|teach-?in|town hall|q&a)\b"),
+    ("music",    r"\b(music|singers?|songwriters?|recital|sing-?along|karaoke|drum circle|ensemble|jam session|open jam|chorus)\b"),
+    ("outdoors", r"\b(tree care|clean-?up|gardening|stewardship|planting day|mulch\w*|weeding|open street|community garden)\b"),
+    ("food",     r"\b(wine|supper club|potluck|brunch|dinner|cook-?off|bake sale|tea ceremony|chili)\b"),
+]
+_TECH_WORDS_RE = re.compile(r"\b(tech|ai|hackathon|startups?|pitch|coworking|founders?|networking|mixer|saas|crypto|web3|vc|developers?)\b")
+
+
+def refine_community(title):
+    """A more specific category for a listing that would otherwise be "community", or "community"."""
+    t = (title or "").lower()
+    if _TECH_WORDS_RE.search(t):
+        return "community"
+    for cat, pattern in _COMMUNITY_REFINE:
+        if re.search(pattern, t):
+            return cat
+    return "community"
 
 
 # Shows or productions that have closed or concluded their runs but whose

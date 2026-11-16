@@ -46,6 +46,7 @@ from scrapers import (
 from holiday_themes import HOLIDAYS, HOLIDAY_KEYS, greeting_html, holiday_calendar, holiday_on, holiday_theme_css
 from lgbtq import is_lgbtq_event
 from light_theme import LIGHT_THEME_CSS
+from scrapers import theater_only_by_lookalike  # noqa: E402
 from scrapers import _MARKET_OVERRIDABLE, admission_price, is_market_or_festival, keep_music_venue_category, mentions_free
 from venues_geo import resolve_event_geo
 from markets_hub import (
@@ -2147,6 +2148,19 @@ def _merge_duplicates(events, word_freq=None):
 _REAL_MIDNIGHT_CATEGORIES = {"clubbing", "party", "music", "comedy", "film"}
 
 
+def _is_keyword_feed(result):
+    """A search of someone else's site by keyword or topic ("Meetup: Drag Shows", "AllEvents:
+    Theatre"). What it returns only loosely fits the topic: the drag search finds Dungeons &
+    Dragons nights, the jazz search finds hip-hop classes at Broadway Dance Center."""
+    name = str(result.get("venue") or "").lower()
+    return name.startswith(("meetup: ", "allevents", "eventbrite: ")) or "/find/?keywords=" in str(result.get("url") or "").lower()
+
+
+def _title_says_otherwise(name, venue):
+    """True when the title itself places the event in a category other than theater."""
+    return guess_category(name, "community", venue=venue) not in ("community", "theater")
+
+
 # AllEvents' city feeds take in trade fairs abroad ("Shanghai 上海, China") and travel packages
 # that "depart" from JFK.
 _ALLEVENTS_ELSEWHERE_RE = re.compile(
@@ -2348,6 +2362,10 @@ def group_by_date(results):
             deal_src = f'{r.get("url") or ""} {e.get("url") or ""}'
             if existing_cat == "deals" and not is_deal_event(e.get("name"), deal_src):
                 existing_cat = None  # the feed filed a karaoke night under its drink specials
+            if existing_cat == "theater" and theater_only_by_lookalike(e.get("name")):
+                existing_cat = None  # stored when "Broadway Dance Center" or "Fort Hamilton" read as a show
+            if existing_cat == "theater" and _is_keyword_feed(r) and _title_says_otherwise(e.get("name"), entry["venue"]):
+                existing_cat = None  # the drag-show search also returns Dungeons & Dragons nights
             if is_utility_event(e.get("name")) or "cozymeal" in (r.get("venue") or "").lower():
                 entry["category"] = "services"
             elif is_kid_family_event(e.get("name"), entry["venue"]):
@@ -2470,6 +2488,8 @@ def event_genre(e):
 
 
 DEFERRED_CHUNK_DAYS = 7
+INLINE_DAYS = 1
+DEFERRED_SINGLE_DAYS = 6
 
 
 def render_page(results, split_deferred=False, context_out=None):
@@ -2727,15 +2747,18 @@ def render_page(results, split_deferred=False, context_out=None):
         </section>'''
 
     initial_sections = []
-    # Days after the first three load after first paint, in weekly files, so a visitor who
-    # looks at next Saturday fetches and parses one week rather than all five.
+    # Only the first day is in the page: the default view is "today", and a day is ~900 cards
+    # (1.2-1.5 MB of markup), so three inline days made a 5 MB page of which two-thirds was
+    # hidden. The next DEFERRED_SINGLE_DAYS days are one file each (tomorrow is prefetched on
+    # idle; "this weekend" fetches two days, not a 10 MB week); later days load in weekly files.
     deferred_chunks = []  # [{"dates": [...], "html": [...]}]
     for idx, (date_obj, events) in enumerate(dated):
         sec_html = _render_day_section(escape(format_date_heading(date_obj)), events, date_obj.isoformat())
-        if idx < 3:  # today + next two days inline
+        if idx < INLINE_DAYS:
             initial_sections.append(sec_html)
             continue
-        if not deferred_chunks or len(deferred_chunks[-1]["dates"]) >= DEFERRED_CHUNK_DAYS:
+        if (not deferred_chunks or idx < INLINE_DAYS + DEFERRED_SINGLE_DAYS + 1
+                or len(deferred_chunks[-1]["dates"]) >= DEFERRED_CHUNK_DAYS):
             deferred_chunks.append({"dates": [], "html": []})
         deferred_chunks[-1]["dates"].append(date_obj.isoformat())
         deferred_chunks[-1]["html"].append(sec_html)
@@ -6649,9 +6672,10 @@ def render_page(results, split_deferred=False, context_out=None):
     const ALL_EVENT_DATES = {json.dumps(all_event_dates)};
     const eventDates = new Set(ALL_EVENT_DATES);
 
-    // Days past the first three are inlined in <template> (live server) or split into weekly
-    // deferred_days_N.html files (static export). A view fetches only the weeks it shows; the
-    // next week is prefetched on idle; "all dates" and search load every week.
+    // Days past the first are inlined in <template> (live server) or split into
+    // deferred_days_N.html files (static export): one file per day for the next six days, then
+    // weekly. A view fetches only the files it shows; tomorrow is prefetched on idle; "all
+    // dates" and search load everything.
     let deferredHydrated = false;
     const deferredTmpl = document.getElementById('deferred-days');
     let deferredChunks = [];
@@ -7428,6 +7452,19 @@ def render_page(results, split_deferred=False, context_out=None):
         }}
       }}
 
+      // Category choices made on an earlier visit (someone who turned Dance Classes on shouldn't
+      // have to do it every time). A link that names its categories wins. Boxes the saved choice
+      // doesn't mention, such as a category added since, keep their default.
+      if (!params || !params.has('cat')) {{
+        try {{
+          const savedCats = JSON.parse(localStorage.getItem('nyc_saved_cats') || 'null');
+          if (savedCats && Array.isArray(savedCats.on) && Array.isArray(savedCats.off)) {{
+            const on = new Set(savedCats.on), off = new Set(savedCats.off);
+            catBoxes.forEach(b => {{ if (on.has(b.value)) b.checked = true; else if (off.has(b.value)) b.checked = false; }});
+          }}
+        }} catch (_) {{}}
+      }}
+
       if (!params || !params.has('venues')) {{
         try {{
           const saved = JSON.parse(localStorage.getItem('nyc_saved_venues') || 'null');
@@ -8072,6 +8109,25 @@ def render_page(results, split_deferred=False, context_out=None):
       syncSubgenreUI();
       apply();
     }});
+    // Remember category choices only when the visitor changes them, so opening a shared link
+    // that names its own categories doesn't overwrite their preference.
+    function saveCatChoice() {{
+      try {{
+        if (isCatFilteredFn()) {{
+          const boxes = Array.from(catBoxes);
+          localStorage.setItem('nyc_saved_cats', JSON.stringify({{
+            on: boxes.filter(b => b.checked).map(b => b.value), off: boxes.filter(b => !b.checked).map(b => b.value) }}));
+        }} else {{
+          localStorage.removeItem('nyc_saved_cats');
+        }}
+      }} catch (_) {{}}
+    }}
+    document.addEventListener('change', ev => {{
+      if (ev.target && ev.target.classList && ev.target.classList.contains('cat-chk')) saveCatChoice();
+    }});
+    document.addEventListener('click', ev => {{
+      if (ev.target && ev.target.closest && ev.target.closest('#cat-all, #cat-none')) setTimeout(saveCatChoice, 0);
+    }});
     venueBoxes.forEach(b => b.addEventListener('change', apply));
     recurBoxes.forEach(b => b.addEventListener('change', apply));
     cityBoxes.forEach(b => b.addEventListener('change', apply));
@@ -8107,7 +8163,7 @@ def render_page(results, split_deferred=False, context_out=None):
       setDefaultCities();
       recurBoxes.forEach(b => b.checked = true);
       venueBoxes.forEach(b => b.checked = true);
-      try {{ localStorage.removeItem('nyc_saved_venues'); }} catch (_) {{}}
+      try {{ localStorage.removeItem('nyc_saved_venues'); localStorage.removeItem('nyc_saved_cats'); }} catch (_) {{}}
       apply();
     }}
 
