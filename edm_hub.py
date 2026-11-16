@@ -631,7 +631,7 @@ _EDM_VENUES = (
     "gabriela", "musica", "market hotel", "trans-pecos", "jupiter disco", "c'mon everybody",
     "the sultan room", "mood ring",
 )
-_NOT_EDM_CATEGORIES = ("comedy", "family", "theater", "sports", "books", "art", "markets", "services", "tech", "deals")
+_NOT_EDM_CATEGORIES = ("comedy", "family", "theater", "sports", "books", "art", "markets", "services", "dance class", "tech", "deals")
 _NOT_EDM_GENRES = ("jazz_blues", "folk_trad", "classical")
 CARD_LIMIT = 1500  # about three weeks of the 35-day calendar
 _CITY_ORDER = ("manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide")

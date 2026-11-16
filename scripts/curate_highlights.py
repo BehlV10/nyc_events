@@ -51,7 +51,7 @@ BADGES = {
     "outdoors": "🌿 Outdoors Pick", "sports": "🏃 Active Pick", "gaming": "🎲 Game Night Pick",
     "community": "🤝 Community Pick",
 }
-EXCLUDED_CATEGORIES = {"services", "family", "kids"}
+EXCLUDED_CATEGORIES = {"services", "dance class", "family", "kids"}
 GENERIC_TITLE_RE = re.compile(
     r"\b(open play|drop[- ]in|practice|office hours|class(es)?|lesson|clinic|orientation|"
     r"meeting|registration|volunteer shift|tour departure)\b", re.I)
