@@ -367,7 +367,7 @@ def resolve_subarea(city, event, geo=None):
     elif city == "brooklyn":
         if any(k in blob for k in ["williamsburg", "greenpoint", "brooklyn steel", "brooklyn bowl", "music hall of williamsburg", "baby's all right", "warsaw", "pete's candy store", "skinny dennis", "union pool", "nitehawk", "flop house", "national sawdust", "barcade brooklyn", "jackbar", "sunshine laundromat"]):
             return ("Williamsburg & Greenpoint", "williamsburg_gp")
-        if any(k in blob for k in ["bushwick", "east williamsburg", "elsewhere", "avant gardner", "brooklyn mirage", "house of yes", "market hotel", "sultan room", "brooklyn monarch", "the meadows"]):
+        if any(k in blob for k in ["bushwick", "east williamsburg", "elsewhere", "avant gardner", "brooklyn mirage", "house of yes", "market hotel", "sultan room", "brooklyn monarch", "the meadows", "saint vitus"]):
             return ("Bushwick & E. Williamsburg", "bushwick_ew")
         if any(k in blob for k in ["dumbo", "downtown brooklyn", "fort greene", "brooklyn navy yard", "brooklyn academy of music", "bam", "st. ann's", "transit museum", "barclays center"]):
             return ("DUMBO & Downtown BK", "dumbo_downtown")
