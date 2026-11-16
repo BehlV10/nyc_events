@@ -361,8 +361,15 @@ class NitehawkTests(unittest.TestCase):
         <html><body>
         <div class="show-container">
             <a href="/movies/paprika/">Paprika</a>
+            <div class="pill-container"><a class="pill">35mm</a></div>
             <ul class="showtime-button-row">
                 <li><a href="/purchase/111/">7:30 pm</a></li>
+            </ul>
+        </div>
+        <div class="show-container">
+            <a href="/movies/club-kid/">Club Kid</a>
+            <ul class="showtime-button-row">
+                <li><a href="/purchase/222/">8:00 pm</a></li>
             </ul>
         </div>
         </body></html>
@@ -372,7 +379,7 @@ class NitehawkTests(unittest.TestCase):
         with mock.patch.object(scrapers._SESSION, "get", return_value=resp):
             events = scrapers.scrape_nitehawk_cinema("https://nitehawkcinema.com/williamsburg/", "ua")
         self.assertEqual(len(events), 1)
-        self.assertIn("Paprika (7:30 pm)", events[0]["name"])
+        self.assertIn("Paprika (35mm)", events[0]["name"])
         self.assertEqual(events[0]["venue"], "Nitehawk Cinema Williamsburg")
         self.assertEqual(events[0]["url"], "https://nitehawkcinema.com/purchase/111/")
         self.assertEqual(events[0]["category"], "film")
