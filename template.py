@@ -1936,6 +1936,28 @@ def _merge_duplicates(events, word_freq=None):
                     match = cand
                     break
 
+        # 8b. Collapse AllEvents duplicate onto an existing direct/primary listing at the same
+        #     physical venue when distinctive title words overlap (even if AllEvents's start time
+        #     is off by a few hours or midnight-placeholder).
+        if not match and venue and len(w_e) >= 2:
+            is_ae_e = "allevents" in (e.get("_source_venue") or "").lower()
+            t_e = e.get("_time")
+            for cand in out:
+                is_ae_c = "allevents" in (cand.get("_source_venue") or "").lower()
+                if is_ae_e == is_ae_c:
+                    continue
+                t_c = cand.get("_time")
+                if not t_e or not t_c:
+                    continue
+                if not (e.get("_time_unknown") or cand.get("_time_unknown")) and abs((t_e - t_c).total_seconds()) > 4 * 3600:
+                    continue
+                if not _same_physical_venue(e, cand) or _numbers_conflict(raw_name, cand.get("name")):
+                    continue
+                w_c = _title_words(cand.get("name"))
+                if len(w_c) >= 2 and len(w_e & w_c) >= max(2, 0.5 * min(len(w_e), len(w_c))):
+                    match = cand
+                    break
+
         if match:
             # Every start time the merged listings give; the card shows the others next to its own.
             seen = match.setdefault("_times_seen", [])
@@ -2464,6 +2486,8 @@ def render_page(results, split_deferred=False, context_out=None):
             a_url = a.get("url")
             a_key = _clean_event_url(a_url) or a_url
             if not a_url or a_key in seen_alt_urls:
+                continue
+            if "allevents." in a_url.lower() or str(a.get("venue") or "").lower().startswith("allevents"):
                 continue
             if _titles_unrelated(raw_title, a.get("name")):
                 # Merged as the same time and place but titled differently: maybe a different event

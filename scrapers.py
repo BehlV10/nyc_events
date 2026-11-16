@@ -11742,6 +11742,7 @@ _ALL_VENUES += [
     {"name": "Bartow-Pell Mansion Holiday Bazaar", "url": "https://www.bartowpellmansionmuseum.org/events/holiday-family-day/", "ua": UA_CHROME, "scraper": scrape_bartow_pell_holiday_bazaar, "default_category": "markets"},
     {"name": "Wave Hill Holiday Artisans Market", "url": "https://www.wavehill.org/calendar/holiday-workshop-weekend", "ua": UA_CHROME, "scraper": scrape_wave_hill_holiday_market, "default_category": "markets"},
     {"name": "Comic Strip Live", "url": "https://www.eventbrite.com/api/v3/organizers/8100188167/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
+    {"name": "Lewis Latimer House", "url": "https://www.lewislatimerhouse.org/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "art"},
     {"name": "Melrose Ballroom", "url": "https://melroseballroomnyc.com/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "/event/|/events/", "venue": "Melrose Ballroom", "address": "36-08 33rd St, Astoria, NY 11106"}},
     {"name": "NYU Events (Kimmel Center)", "url": "https://events.nyu.edu/live/json/events/paginate/50", "ua": UA_CHROME, "scraper": scrape_livewhale_json, "default_category": "community"},
     {"name": "The Town Hall", "url": "https://www.thetownhall.org/events", "ua": UA_CHROME, "scraper": scrape_the_town_hall, "default_category": "music"},
