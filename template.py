@@ -1213,7 +1213,7 @@ def _url_priority(url, source=None):
        5 = Eventbrite
        3 = Meetup
        2 = SeatGeek (resale / secondary aggregator)
-       1 = Aggregators / search fallbacks (doNYC, AllEvents, google search)
+       1 = Aggregators / search fallbacks (doNYC, AllEvents, Songkick, google search)
        0 = Blank / missing
     """
     if not url:
@@ -1222,6 +1222,8 @@ def _url_priority(url, source=None):
     s = (source or "").lower()
     if "donyc.com" in u or "google.com/search" in u or "allevents." in u or s.startswith("allevents"):
         return 1
+    if "songkick.com" in u or s.startswith("songkick"):
+        return 1  # a concert directory: the venue or ticket seller it points to is the source
     if "seatgeek.com" in u or "seatgeek" in s:
         return 2
     if any(h in u for h in ("ticketnetwork.com", "vividseats.com", "stubhub.com", "edgetix.us", "tickpick.com",
@@ -1275,6 +1277,10 @@ def _clean_event_url(u):
         q = urlparse(u.strip()).query
     except ValueError:
         q = ""
+    if re.match(r"https?://(www\.)?google\.[a-z.]+/search\b", u.strip(), re.I):
+        # A search link is a fallback for an event with no page of its own. Without its query
+        # every one is the same URL, and dozens of unrelated doNYC events merged into one card.
+        return ""
     keep = sorted(p for p in q.split("&") if p.split("=", 1)[0].lower() in _EVENT_ID_PARAMS)
     u = re.sub(r"[?#].*$", "", u).strip().rstrip("/")
     if keep and u:
@@ -1668,7 +1674,7 @@ def _merge_duplicates(events, word_freq=None):
         if "/find/?keywords=" in v_url or "/d/ny--" in v_url or "donyc.com/events" in v_url:
             return True
         src = (ev.get("_source_venue") or ev.get("source") or "").strip().lower()
-        if src in generic_sources or src.startswith("allevents"):
+        if src in generic_sources or src.startswith(("allevents", "songkick")):
             return True
         if any(src.startswith(p) for p in ("meetup: nyc", "meetup: brooklyn", "meetup: queens")) and ("/find" in v_url or not v_url):
             return True
