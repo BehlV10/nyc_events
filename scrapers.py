@@ -9280,6 +9280,51 @@ def scrape_japan_fes(url, ua):
     return events
 
 
+def scrape_livewhale_json(url, ua, default_venue="NYU", default_address="60 Washington Sq S, New York, NY 10012", default_category="community"):
+    """LiveWhale /live/json/events/paginate/50 feed (used by NYU Events & Kimmel Center)."""
+    resp = _SESSION.get(url, headers={"User-Agent": ua or UA_CHROME, "Accept": "application/json"}, timeout=15)
+    resp.raise_for_status()
+    payload = resp.json()
+    items = payload.get("data") if isinstance(payload, dict) else (payload if isinstance(payload, list) else [])
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    for item in items or []:
+        title = html.unescape((item.get("title") or "").strip())
+        raw_dt = (item.get("date_utc") or "").strip()
+        if not title or not raw_dt:
+            continue
+        if is_standing_exhibit({"name": title, "url": item.get("url") or ""}):
+            continue
+        try:
+            dt = datetime.fromisoformat(raw_dt.replace(" ", "T")).replace(tzinfo=timezone.utc)
+        except ValueError:
+            continue
+        if dt < now:
+            continue
+        ev_url = item.get("url") or url
+        loc = html.unescape((item.get("location") or "").strip()) or default_venue
+        if re.search(r"(?i)\b(online|virtual|zoom)\b", loc):
+            continue
+        cost = html.unescape(str(item.get("cost") or "")).strip()
+        price = "Free" if cost.lower() in ("free", "0", "$0") else (cost or None)
+        iso = dt.isoformat()
+        key = (title.lower(), iso)
+        if key in seen:
+            continue
+        seen.add(key)
+        events.append({
+            "name": title,
+            "date": iso,
+            "url": ev_url,
+            "venue": loc,
+            "address": default_address,
+            "price": price,
+            "category": guess_category(title, default_category, venue=loc),
+        })
+    return events
+
+
 def scrape_the_town_hall(url, ua):
     """The Town Hall (123 W 43rd St) — parses Next.js RSC event payload on /events."""
     u = url or "https://www.thetownhall.org/events"
@@ -11697,6 +11742,8 @@ _ALL_VENUES += [
     {"name": "Bartow-Pell Mansion Holiday Bazaar", "url": "https://www.bartowpellmansionmuseum.org/events/holiday-family-day/", "ua": UA_CHROME, "scraper": scrape_bartow_pell_holiday_bazaar, "default_category": "markets"},
     {"name": "Wave Hill Holiday Artisans Market", "url": "https://www.wavehill.org/calendar/holiday-workshop-weekend", "ua": UA_CHROME, "scraper": scrape_wave_hill_holiday_market, "default_category": "markets"},
     {"name": "Comic Strip Live", "url": "https://www.eventbrite.com/api/v3/organizers/8100188167/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
+    {"name": "Melrose Ballroom", "url": "https://melroseballroomnyc.com/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "/event/|/events/", "venue": "Melrose Ballroom", "address": "36-08 33rd St, Astoria, NY 11106"}},
+    {"name": "NYU Events (Kimmel Center)", "url": "https://events.nyu.edu/live/json/events/paginate/50", "ua": UA_CHROME, "scraper": scrape_livewhale_json, "default_category": "community"},
     {"name": "The Town Hall", "url": "https://www.thetownhall.org/events", "ua": UA_CHROME, "scraper": scrape_the_town_hall, "default_category": "music"},
     {"name": "The New York Tattoo Convention", "url": "https://thenewyorktattooconvention.com/", "ua": UA_CHROME, "scraper": scrape_ny_tattoo_convention, "default_category": "art"},
     {"name": "JAPAN Fes NYC", "url": "https://www.japanfes.com/events", "ua": UA_CHROME, "scraper": scrape_japan_fes, "default_category": "food"},
