@@ -155,3 +155,40 @@ class DanceClassCategory(unittest.TestCase):
         self.assertEqual(cats["Fierce Feminine Hip Hop with Emma Rosa"], "dance class")
         self.assertEqual(cats["Hip Hop 8-10 yrs @ Midtown Movement And Dance"], "family")
         self.assertEqual(cats["LVG Salsa Social"], "dance")
+
+
+class CategoryCleanup(unittest.TestCase):
+    def test_theater_lookalikes_and_keyword_feeds(self):
+        import template
+        day = "2030-01-08T19:00:00-05:00"
+        ev = lambda name, venue: {"name": name, "date": day, "category": "theater", "venue": venue}
+        results = [
+            {"venue": "Meetup: Jazz", "url": "https://www.meetup.com/find/?keywords=jazz",
+             "events": [ev("Beginners Hip Hop at Broadway Dance Center | NOT FREE", "Broadway Dance Center")]},
+            {"venue": "AllEvents: Brooklyn Kids", "url": "https://allevents.in/brooklyn/kids",
+             "events": [ev("Farmers Market at Fort Hamilton", "123 John Warren Ave")]},
+            {"venue": "Meetup: Drag Shows", "url": "https://www.meetup.com/find/?keywords=drag",
+             "events": [ev("Beginners Dungeons & Dragons", "Last Place On Earth"), ev("Queens of the Night", "Club X")]},
+            {"venue": "St Mazie", "url": "https://x", "events": [ev("Gypsy Jazz with Antoine Thouvenin", "St Mazie Bar")]},
+            {"venue": "Ticketmaster NYC", "url": "https://tm",
+             "events": [ev("Hamilton", "Richard Rodgers Theatre"), ev("Gypsy", "Majestic Theatre")]}]
+        dated, _t, _o = template.group_by_date(results)
+        cats = {e["name"]: e["category"] for _d, evs in dated for e in evs}
+        self.assertNotEqual(cats["Beginners Hip Hop at Broadway Dance Center | NOT FREE"], "theater")
+        self.assertEqual(cats["Farmers Market at Fort Hamilton"], "markets")
+        self.assertEqual(cats["Beginners Dungeons & Dragons"], "gaming")
+        self.assertEqual(cats["Gypsy Jazz with Antoine Thouvenin"], "music")
+        for show in ("Hamilton", "Gypsy", "Queens of the Night"):
+            self.assertEqual(cats[show], "theater", show)
+
+    def test_community_catch_all_is_sorted_where_the_title_is_clear(self):
+        g = lambda t: scrapers.guess_category(t)
+        self.assertEqual(g("Lectures on Tap: Why Outrage Goes Viral"), "talks")
+        self.assertEqual(g("Macedonian Izvoren music with Niva"), "music")
+        self.assertEqual(g("Yu & Me Community Book Club"), "books")
+        self.assertEqual(g("Street Tree Care in Ditmas Park"), "outdoors")
+        self.assertEqual(g("Gotham Go Group - Tuesdays at the Hungarian"), "gaming")
+        self.assertEqual(g("AI Founders Panel & Networking"), "community")  # tech talks stay put
+        self.assertEqual(g("2nd Annual Cousins Gathering"), "community")
+        self.assertEqual(scrapers.category_bucket("talks"), "Arts & culture")
+        self.assertIn("talks", scrapers.CATEGORY_STYLES)

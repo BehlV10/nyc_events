@@ -18,3 +18,40 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python -m unittest discover -v tests
+
+  # What the change does to the real page: cards added, removed, recategorized or relinked on
+  # the latest crawl. Posted on the PR; never blocks merging.
+  card-diff:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    continue-on-error: true
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+          path: .base
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Latest crawl from the data branch
+        run: |
+          git fetch --depth 1 origin data
+          git show FETCH_HEAD:events.json > "$RUNNER_TEMP/events.json"
+      - name: Compare cards
+        run: |
+          python scripts/card_diff.py --base .base --head . --events "$RUNNER_TEMP/events.json" --out "$RUNNER_TEMP/card_diff.md"
+          cat "$RUNNER_TEMP/card_diff.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Comment on the PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head -c 60000 "$RUNNER_TEMP/card_diff.md" > "$RUNNER_TEMP/comment.md"
+          gh pr comment ${{ github.event.pull_request.number }} --edit-last --body-file "$RUNNER_TEMP/comment.md" \
+            || gh pr comment ${{ github.event.pull_request.number }} --body-file "$RUNNER_TEMP/comment.md"

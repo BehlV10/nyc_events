@@ -222,11 +222,34 @@ class SourceHealthTests(unittest.TestCase):
             summary = os.path.join(d, "summary.md")
             with mock.patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": summary}), mock.patch("builtins.print"):
                 source_health.write_report([{"venue": "Quiet", "url": "https://q.example/", "events": []}],
-                                           path=os.path.join(d, "status.json"))
+                                           path=os.path.join(d, "status.json"), history_path=os.path.join(d, "h.json"),
+                                           alerts_path=os.path.join(d, "alerts.md"))
             md = open(summary, encoding="utf-8").read()
             self.assertIn("| [Quiet](https://q.example/) | empty |", md)
             self.assertIn("Venues we can't read", md)
             self.assertTrue(os.path.exists(os.path.join(d, "status.json")))
+
+    def test_source_that_shrinks_is_flagged_once_then_alert_clears(self):
+        import tempfile
+        soon = (datetime.now(timezone.utc) + timedelta(days=2)).isoformat()
+        crawl = lambda n, small=6, **extra: [
+            {"venue": "Town Hall", "url": "https://th.example/", "events": [{"date": soon}] * n, **extra},
+            {"venue": "Small Bar", "url": "https://sb.example/", "events": [{"date": soon}] * small}]
+        with tempfile.TemporaryDirectory() as d:
+            kw = dict(path=os.path.join(d, "s.json"), history_path=os.path.join(d, "h.json"), alerts_path=os.path.join(d, "a.md"))
+            with mock.patch("builtins.print"):
+                for _ in range(5):
+                    source_health.write_report(crawl(60), **kw)
+                self.assertFalse(os.path.exists(kw["alerts_path"]))
+                rows = source_health.write_report(crawl(22, small=1), **kw)  # Small Bar is too small to judge
+                self.assertEqual({r["source"]: r.get("shrunk_from") for r in rows}, {"Town Hall": 60, "Small Bar": None})
+                self.assertIn("| [Town Hall](https://th.example/) | 22 | 60 |", open(kw["alerts_path"]).read())
+                rows = source_health.write_report(crawl(22), **kw)  # still shrunk: reported, not re-alerted
+                self.assertEqual(rows[0]["shrunk_from"] if rows[0]["source"] == "Town Hall" else rows[1]["shrunk_from"], 60)
+                self.assertFalse(os.path.exists(kw["alerts_path"]))
+                # an errored crawl is not a shrink and doesn't enter the history
+                rows = source_health.write_report(crawl(0, error="HTTP 500"), **kw)
+                self.assertIsNone({r["source"]: r.get("shrunk_from") for r in rows}["Town Hall"])
 
 
 if __name__ == "__main__":

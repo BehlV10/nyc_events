@@ -337,13 +337,13 @@ class TestRenderSplit(unittest.TestCase):
         payload = {"venues": [{"venue": "Brooklyn Bowl", "url": "https://x.com", "events": events}]}
         page, files = render_page(payload, split_deferred=True)
         self.assertRegex(page, r"data-chunks='\[\{&quot;src&quot;: &quot;deferred_days_1\.html\?v=")
-        self.assertEqual([n for n, _ in files], ["deferred_days_1.html"])
-        deferred = files[0][1]
+        self.assertEqual([n for n, _ in files], [f"deferred_days_{n}.html" for n in range(1, 6)])  # a file per day
         # Visible markup only: JSON-LD for search engines intentionally lists the coming week.
         visible = re.sub(r'<script type="application/ld\+json">.*?</script>', "", page, flags=re.S)
         self.assertIn("Show 0", visible)
-        self.assertNotIn("Show 5", visible)
-        self.assertIn("Show 5", deferred)
+        self.assertNotIn("Show 1", visible)  # only today is in the page
+        self.assertIn("Show 1", files[0][1])
+        self.assertIn("Show 5", files[4][1])
         self.assertRegex(page, r'class="cat-chk" value="Kids &amp; Family">')
         self.assertRegex(page, r'class="cat-chk" value="Music &amp; nightlife" checked>')
         inline = render_page(payload)
@@ -1192,12 +1192,13 @@ class TestDeferredWeeks(unittest.TestCase):
                   for i in range(0, 20)]
         payload = {"venues": [{"venue": "Brooklyn Bowl", "url": "https://x.com", "events": events}]}
         page, files = render_page(payload, split_deferred=True)
-        self.assertEqual([n for n, _ in files], ["deferred_days_1.html", "deferred_days_2.html", "deferred_days_3.html"])
+        self.assertEqual(len(files), 8)
         m = re.search(r"data-chunks='([^']+)'", page)
         manifest = json.loads(html_unescape(m.group(1)))
-        self.assertEqual([len(c["dates"]) for c in manifest], [7, 7, 3])
-        self.assertIn("Show 3", files[0][1])
-        self.assertIn("Show 19", files[2][1])
+        # today inline; the next six days one file each; weekly after that
+        self.assertEqual([len(c["dates"]) for c in manifest], [1, 1, 1, 1, 1, 1, 7, 6])
+        self.assertIn("Show 3", files[2][1])
+        self.assertIn("Show 19", files[7][1])
         li = re.search(r'<li class="event.*?</li>', files[0][1], re.S).group(0)
         for gone in ("data-subarea-name", "data-event-id", "data-time-str", 'data-guestlist="false"', "style=", "\n  "):
             self.assertNotIn(gone, li)
