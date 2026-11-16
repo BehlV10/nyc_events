@@ -1699,6 +1699,12 @@ def _enrich_from_primary_pages(results, ua=None, limit=None, path=None, fetch=No
 ALLEVENTS_LINKS_PATH = os.path.join(CACHE_DIR, "_allevents_links.json")
 EVENTBRITE_EVENTS_PATH = os.path.join(CACHE_DIR, "_eventbrite_events.json")
 ALLEVENTS_PAGES_PER_RUN = 350
+ALLEVENTS_REFUSAL_RETRIES = 3
+ALLEVENTS_REFUSAL_BACKOFF = 60
+# AllEvents imports resale listings (event_origin "ticket-network", "vividseats"), whose dates and times
+# are often wrong (John Scofield a day early). The direct sources list the real show.
+_ALLEVENTS_RESALE_ORIGINS = ("ticket-network", "ticketnetwork", "vividseats", "vivid-seats", "stubhub", "tickpick",
+                             "seatgeek", "gametime", "viagogo")
 EVENTBRITE_DETAILS_PER_RUN = 100
 ALLEVENTS_LINK_TTL = 14 * 86400
 EVENTBRITE_DETAIL_TTL = 2 * 86400
@@ -1797,7 +1803,7 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
                 todo.append((when, url, e))
     todo.sort(key=lambda x: x[0])
 
-    pages = 0
+    pages = refusals = 0
     for _when, url, _e in todo:
         if pages >= page_limit:
             break
@@ -1808,7 +1814,14 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
             links[url] = {"ts": now, "origin": origin, "ticket": ticket}
             pages += 1
         except SiteRefused:
-            break
+            # AllEvents rate-limits after ~150 pages; one refusal used to end relinking for the
+            # run, so most listings never got a seller link. Back off and resume a few times.
+            refusals += 1
+            if refusals > ALLEVENTS_REFUSAL_RETRIES:
+                break
+            time.sleep(ALLEVENTS_REFUSAL_BACKOFF)
+            HOST_GATE.refused.pop(_host_of(url), None)
+            continue
         except Exception:
             continue
 
@@ -1830,6 +1843,12 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
         except Exception:
             continue
 
+    resale = {id(e) for _w, url, e in todo if (links.get(url) or {}).get("origin") in _ALLEVENTS_RESALE_ORIGINS}
+    if resale:
+        for r in results:
+            if str(r.get("venue") or "").startswith("AllEvents"):
+                r["events"] = [e for e in r.get("events") or [] if id(e) not in resale]
+        todo = [t for t in todo if id(t[2]) not in resale]
     relinked = priced = soldout = 0
     for _when, url, e in todo:
         ticket = (links.get(url) or {}).get("ticket")
@@ -1854,6 +1873,8 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
                 json.dump({k: v for k, v in data.items() if now - v.get("ts", 0) < 3 * ttl}, f)
         except OSError:
             pass
+    if resale:
+        print(f"AllEvents: dropped {len(resale)} listings imported from resale sites")
     print(f"AllEvents links: {pages} pages read, {fetched} Eventbrite events checked; "
           f"{relinked} of {len(todo)} listings relinked, {priced} priced, {soldout} sold out")
     return relinked
@@ -11107,6 +11128,7 @@ _ALL_VENUES = [
     {"name": "Zinc Bar (Jazz)", "url": "https://www.zincbar.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "music"},
     {"name": "Trans-Pecos", "url": "https://www.thetranspecos.com/", "ua": UA_CHROME, "scraper": scrape_venuepilot, "default_category": "music"},
     {"name": "Starr Bar (own calendar)", "url": "https://www.starrbar.com/events", "ua": UA_CHROME, "scraper": scrape_squarespace_calendar, "default_category": "music"},
+    {"name": "Bohemian Hall & Beer Garden (own calendar)", "url": "https://www.bohemianhall.com/events", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "community"},
     {"name": "Birdland Jazz Club", "url": "https://www.birdlandjazz.com/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/tm-event/", "venue": "Birdland", "address": "315 W 44th St, New York, NY 10036", "pages": 30}},
     {"name": "Roulette (own calendar)", "url": "https://roulette.org/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/event/", "venue": "Roulette", "address": "509 Atlantic Ave, Brooklyn, NY 11217"}},
     {"name": "Issue Project Room", "url": "https://issueprojectroom.org/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "^/event/", "venue": "ISSUE Project Room", "address": "22 Boerum Pl, Brooklyn, NY 11201"}},
