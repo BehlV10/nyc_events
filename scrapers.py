@@ -4459,10 +4459,18 @@ def scrape_nitehawk_cinema(url, ua):
             continue
 
         for sc in s_day.select(".show-container"):
+            pills = [
+                p.get_text(" ", strip=True)
+                for p in sc.select(".pill-container a.pill")
+                if p.get_text(" ", strip=True).lower() not in ("all ages", "open captions", "oc")
+            ]
+            if not pills:
+                continue  # skip normal first-run theatrical showings; keep Brunch, 35mm, Q&As, etc.
             m_a = sc.find("a", href=lambda h: h and "/movies/" in h)
             title = m_a.text.strip() if m_a else None
             if not title:
                 continue
+            tag_label = pills[0]
             for btn in sc.select(".showtime-button-row a"):
                 time_txt = btn.text.strip().split("\n")[0].strip()
                 tix_url = btn.get("href") or durl
@@ -4489,7 +4497,7 @@ def scrape_nitehawk_cinema(url, ua):
                     continue
                 seen.add(key)
                 events.append({
-                    "name": f"{title} ({time_txt})",
+                    "name": f"{title} ({tag_label})",
                     "date": iso,
                     "url": tix_url,
                     "venue": venue_name,
