@@ -11697,7 +11697,6 @@ _ALL_VENUES += [
     {"name": "Bartow-Pell Mansion Holiday Bazaar", "url": "https://www.bartowpellmansionmuseum.org/events/holiday-family-day/", "ua": UA_CHROME, "scraper": scrape_bartow_pell_holiday_bazaar, "default_category": "markets"},
     {"name": "Wave Hill Holiday Artisans Market", "url": "https://www.wavehill.org/calendar/holiday-workshop-weekend", "ua": UA_CHROME, "scraper": scrape_wave_hill_holiday_market, "default_category": "markets"},
     {"name": "Comic Strip Live", "url": "https://www.eventbrite.com/api/v3/organizers/8100188167/events/?order_by=start_asc", "ua": UA_CHROME, "scraper": scrape_eventbrite_organizer, "default_category": "comedy"},
-    {"name": "Lehman Center for the Performing Arts", "url": "https://www.lehmancenter.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "music", "kwargs": {"link_re": "/events/[^/]+/?$", "venue": "Lehman Center for the Performing Arts", "address": "250 Bedford Park Blvd W, Bronx, NY 10468"}},
     {"name": "The Town Hall", "url": "https://www.thetownhall.org/events", "ua": UA_CHROME, "scraper": scrape_the_town_hall, "default_category": "music"},
     {"name": "The New York Tattoo Convention", "url": "https://thenewyorktattooconvention.com/", "ua": UA_CHROME, "scraper": scrape_ny_tattoo_convention, "default_category": "art"},
     {"name": "JAPAN Fes NYC", "url": "https://www.japanfes.com/events", "ua": UA_CHROME, "scraper": scrape_japan_fes, "default_category": "food"},
