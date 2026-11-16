@@ -2562,9 +2562,10 @@ def render_page(results, split_deferred=False, context_out=None):
             items = "\n".join(render_event(e) for e in bucket_events)
             bucket_blocks.append(f'''
             <div class="bucket" data-bucket="{escape(bname)}" style="--accent:{accent};">
-              <div class="bucket-head">
+              <div class="bucket-head" role="button" tabindex="0" aria-expanded="true">
                 <span class="bucket-name">{escape(bname)}</span>
                 <span class="count">{len(bucket_events)}</span>
+                <span class="bucket-chev" aria-hidden="true">▾</span>
               </div>
               <ul>{items}</ul>
             </div>''')
@@ -3320,8 +3321,12 @@ def render_page(results, split_deferred=False, context_out=None):
   .city-head .count {{ background: rgba(127, 127, 127, 0.12); color: var(--muted); font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }}
   .buckets {{ display: flex; flex-direction: column; gap: 10px; }}
   .bucket {{ border-left: 3px solid var(--accent, #444); padding: 2px 0 2px 12px; border-left-color: var(--accent); }}
-  .bucket-head {{ display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }}
+  .bucket-head {{ display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; cursor: pointer; user-select: none; }}
+  .bucket-head:hover {{ opacity: 0.85; }}
   .bucket-head .count {{ background: transparent; color: var(--muted); }}
+  .bucket-chev {{ margin-left: auto; font-size: 11px; color: var(--muted); transition: transform 0.15s ease; }}
+  .bucket.collapsed .bucket-chev {{ transform: rotate(-90deg); }}
+  .bucket.collapsed > ul {{ display: none; }}
   .bucket ul {{ list-style: none; padding: 0; margin: 0; }}
 
   /* Event Cards */
@@ -8038,6 +8043,22 @@ def render_page(results, split_deferred=False, context_out=None):
         }}
         apply();
       }});
+    }});
+
+    document.addEventListener('click', (e) => {{
+      const head = e.target.closest('.bucket-head');
+      if (!head) return;
+      const bucket = head.closest('.bucket');
+      if (!bucket) return;
+      const collapsed = bucket.classList.toggle('collapsed');
+      head.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    }});
+    document.addEventListener('keydown', (e) => {{
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const head = e.target.closest('.bucket-head');
+      if (!head) return;
+      e.preventDefault();
+      head.click();
     }});
 
     if (quickCustomTimeChip) {{
