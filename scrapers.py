@@ -4183,7 +4183,8 @@ def scrape_bowery_presents(url, ua):
 
 
 def scrape_alamo_drafthouse(url, ua):
-    """Alamo Drafthouse NYC — official schedule API for Brooklyn, Manhattan & Staten Island."""
+    """Alamo Drafthouse NYC — special screenings, Movie Parties, Live Q&As, and repertory
+    showings only (skips normal first-run theatrical showtimes)."""
     u = url or "https://drafthouse.com/s/mother/v2/schedule/market/nyc"
     events = []
     seen = set()
@@ -4197,8 +4198,18 @@ def scrape_alamo_drafthouse(url, ua):
         for p in data.get("presentations", []):
             slug = p.get("slug")
             title = p.get("show", {}).get("title") if isinstance(p.get("show"), dict) else p.get("title")
-            if slug and title:
-                p_map[slug] = title
+            if not slug or not title:
+                continue
+            attrs = p.get("presentationAttributeSlugs") or []
+            et = p.get("eventType")
+            et_title = et.get("title") if isinstance(et, dict) else ""
+            # Skip regular theatrical releases; keep Movie Parties, Q&As, Special Events, and Alamo Exclusives.
+            is_special = bool(et or p.get("event") or ("alamo-exclusive" in attrs) or ("first-run" not in attrs))
+            if not is_special:
+                continue
+            if et_title and et_title.lower() not in title.lower() and et_title.lower() != "special event":
+                title = f"{title} ({et_title})"
+            p_map[slug] = title
         c_map = {}
         for m in (data.get("market") or []):
             for c in m.get("cinemas", []):
@@ -4210,9 +4221,9 @@ def scrape_alamo_drafthouse(url, ua):
             p_slug = s.get("presentationSlug")
             c_id = s.get("cinemaId")
             show_time = s.get("showTimeClt")
-            if not p_slug or not c_id or not show_time:
+            if not p_slug or not c_id or not show_time or p_slug not in p_map:
                 continue
-            title = p_map.get(p_slug) or p_slug.replace("-", " ").title()
+            title = p_map[p_slug]
             c_info = c_map.get(c_id) or ("Alamo Drafthouse NYC", "New York, NY")
             try:
                 dt = datetime.fromisoformat(show_time).replace(tzinfo=EASTERN).astimezone(timezone.utc)
