@@ -24,9 +24,9 @@ def _event_uid(e):
 
 
 def feed_events(dated, days=7, limit=150):
-    """The next upcoming events in start order (services and family listings left out)."""
+    """The next upcoming events in start order (services, dance class and family listings left out)."""
     upcoming = [e for e in _upcoming(dated, days=days, start=datetime.now(EASTERN))
-                if (e.get("category") or "") not in ("services", "family")]
+                if (e.get("category") or "") not in ("services", "dance class", "family")]
     return upcoming[:limit]
 
 

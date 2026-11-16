@@ -331,7 +331,7 @@ def hub_events(hub, dated, limit=None):
         if time_rule == "weekend" and d not in _weekend_dates(today):
             continue
         cat = e.get("category") or "other"
-        if cat == "services":
+        if cat in ("services", "dance class"):
             continue
         if cat == "family" and hub.get("bucket") != "Kids & Family" and not is_markets:
             continue

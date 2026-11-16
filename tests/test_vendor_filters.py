@@ -123,3 +123,35 @@ class DanceClasses(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DanceClassCategory(unittest.TestCase):
+    def test_kids_dance_classes_are_family(self):
+        for name in ["Hip Hop 8-10 yrs @ Midtown Movement And Dance", "Hip Hop 3-5 yrs @ Midtown Movement And Dance",
+                     "Acro/Hip Hop (Ages 8 & under) @ The Brooklyn Dance Centers", "Acro/Hip Hop (Ages 9 & Up) @ Studio",
+                     "KindiBreaking (Tuesday)", "Young Dancers Program – Hip Hop & Multi-Discipline"]:
+            self.assertTrue(scrapers.is_kid_family_event(name), name)
+
+    def test_adult_age_ranges_are_not_family(self):
+        for name in ["Singles Mixer Ages 25-40", "Salsa Night 21 & up", "Ages 18 & Up Dance Party", "Speed Dating 30-45 yrs"]:
+            self.assertFalse(scrapers.is_kid_family_event(name), name)
+
+    def test_dance_classes_have_their_own_hidden_bucket(self):
+        import template
+        self.assertEqual(scrapers.category_bucket("dance class"), "Dance Classes")
+        self.assertIn("Dance Classes", template.DEFAULT_UNCHECKED_BUCKETS)
+        self.assertIn("dance class", scrapers.CATEGORY_STYLES)
+
+    def test_grouping_files_classes_and_kids_classes(self):
+        import template
+        day = "2030-01-07T19:00:00-05:00"
+        results = [{"venue": "DanceUS: NYC Hip Hop", "url": "https://x", "events": [
+            {"name": "Fierce Feminine Hip Hop with Emma Rosa", "date": day},
+            {"name": "Hip Hop 8-10 yrs @ Midtown Movement And Dance", "date": day}]},
+            {"venue": "SalsaVida NYC Socials", "url": "https://y", "default_category": "dance", "events": [
+                {"name": "LVG Salsa Social", "date": day, "category": "dance"}]}]
+        dated, _tba, _ong = template.group_by_date(results)
+        cats = {e["name"]: e["category"] for _d, evs in dated for e in evs}
+        self.assertEqual(cats["Fierce Feminine Hip Hop with Emma Rosa"], "dance class")
+        self.assertEqual(cats["Hip Hop 8-10 yrs @ Midtown Movement And Dance"], "family")
+        self.assertEqual(cats["LVG Salsa Social"], "dance")

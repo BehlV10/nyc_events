@@ -64,7 +64,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
 from nyc_geo import TRISTATE_NEEDLES, borough_at, outside_area
 
 # Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes).
-DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups", "Boat Parties & Cruises"}
+DEFAULT_UNCHECKED_BUCKETS = {"Dance Classes", "Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups", "Boat Parties & Cruises"}
 
 
 CITY_RULES = [
@@ -2292,7 +2292,7 @@ def group_by_date(results):
             elif _BOAT_CRUISE_RE.search(f"{e.get('name') or ''} {entry['venue']} {r.get('venue') or ''}"):
                 entry["category"] = "cruises"
             elif is_dropin_dance_class(e.get("name"), entry["category"], r.get("venue") or ""):
-                entry["category"] = "services"
+                entry["category"] = "dance class"
             raw = e.get("date")
             key = None
             if raw:

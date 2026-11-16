@@ -478,6 +478,7 @@ CATEGORY_BUCKETS = [
     ("Outdoors & active",  ["outdoors", "sports"]),
     ("Social & community", ["community", "food", "gaming", "other"]),
     ("Theater",            ["theater"]),
+    ("Dance Classes",      ["dance class"]),
     ("Classes & Services", ["services"]),
     ("Markets & Festivals", ["markets"]),
     ("Kids & Family",      ["family", "kids"]),
@@ -491,6 +492,7 @@ CATEGORY_STYLES = {
     "comedy":    ("#bb9af7", "ツ"),
     "clubbing":  ("#f7768e", "⚡"),
     "dance":     ("#ff7ab2", "💃"),
+    "dance class": ("#d08fb0", "🩰"),
     "theater":   ("#e0af68", "🎭"),
     "film":      ("#7dcfff", "🎬"),
     "art":       ("#ffd866", "✦"),
@@ -985,6 +987,8 @@ KID_FAMILY_EVENT_RE = re.compile(
     r"activity|activities|story|stories|tour|tours|time|sunday|saturday|series|show|night|friendly|"
     r"fun|matinee|studio|celebration|open house|garden|hike|walk|yoga|dance|music)|"
     r"for families|families|stroller|tweens?|teens?|ages? (?:[0-9]|1[0-7])\s*(?:-|–|to|\+|and up)|grades? (?:k|pre-?k|\d)|"
+    r"ages? (?:[0-9]|1[0-7])\s*(?:&|and)\s*(?:under|up|older)|(?:[0-9]|1[0-7])\s*(?:-|–|to)\s*(?:[0-9]|1[0-7])\s*(?:yrs?|years?|y/?o)|"
+    r"kindi\w*|tiny tots|young dancers?|youth (?:class|classes|program|programs|dance|ballet)|"
     r"puppet|puppets|puppetry|marionettes?|parents?'? night out|"
     r"bluey|peppa pig|paw patrol|sesame street|cocomelon|disney junior|daniel tiger"
     r")\b",
@@ -12020,13 +12024,13 @@ def is_early_nye_promo(name, raw_date):
 
 
 def is_dropin_dance_class(name, cat=None, source=""):
-    """A dance class or dance-fitness session with no social dancing (filed under Classes &
-    Services, which is hidden by default). Class + social ("Lesson & Social", "Classes &
+    """A dance class or dance-fitness session with no social dancing (filed under Dance
+    Classes, which is hidden by default). Class + social ("Lesson & Social", "Classes &
     Practice") stays in Dance."""
     if not name:
         return False
     directory = any(d in (source or "").lower() for d in _DANCE_CLASS_DIRECTORIES)
-    if cat != "dance" and not directory:
+    if cat == "family" or (cat != "dance" and not directory):  # kids' classes stay in Kids & Family
         return False
     if _DANCE_SOCIAL_RE.search(name):
         return False
@@ -12063,7 +12067,7 @@ def _clean_scraped_events(events):
         if _BOAT_CRUISE_RE.search(f"{n_low} {v_low} {(e.get('_source_venue') or '').lower()}"):
             e["category"] = "cruises"
         elif is_dropin_dance_class(name, e.get("category"), e.get("_source_venue") or ""):
-            e["category"] = "services"
+            e["category"] = "dance class"
         if e.get("url"):
             e["url"] = fix_doubled_url(e["url"])
         key = (n_low, e.get("date") or "")
