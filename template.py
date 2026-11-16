@@ -5799,8 +5799,8 @@ def render_page(results, split_deferred=False, context_out=None):
         </div>
       </div>
       <div class="location-chips-bar" id="location-chips">
-        <button type="button" class="loc-chip active" data-city="manhattan"><span class="city-dot" style="background:#5d9bff"></span>Manhattan</button>
         <button type="button" class="loc-chip" data-city="all">📍 All Boroughs</button>
+        <button type="button" class="loc-chip active" data-city="manhattan"><span class="city-dot" style="background:#5d9bff"></span>Manhattan</button>
         <button type="button" class="loc-chip" data-city="brooklyn"><span class="city-dot" style="background:#e05a6b"></span>Brooklyn</button>
         <button type="button" class="loc-chip" data-city="queens"><span class="city-dot" style="background:#f29e4c"></span>Queens</button>
         <button type="button" class="loc-chip" data-city="bronx"><span class="city-dot" style="background:#4ade80"></span>The Bronx</button>
