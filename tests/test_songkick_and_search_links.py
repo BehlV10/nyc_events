@@ -146,9 +146,10 @@ class TomorrowAuditFixes(unittest.TestCase):
     def test_shop_and_support_cashmere_sale_filtered(self):
         self.assertTrue(scrapers.is_service_ad("Shop + Support: JCC Party at The Cashmere Sale", "JCC Manhattan"))
 
-    def test_legacy_noon_placeholder_feed_treated_as_time_unknown(self):
-        evs = [{"name": f"Show {i}", "date": f"2030-01-0{i}T12:00:00-05:00"} for i in range(1, 5)]
-        self.assertTrue(T._is_date_only_feed(evs))
+    def test_flozier_54_below_start_time_extracted(self):
+        from datetime import date
+        html = '<h4 class="dt-duration">November 17, 2026</h4><a href="https://54below.org/t">Tue, Nov 17 :9:30 pm / 9:00 pm</a>'
+        self.assertEqual(scrapers.start_time_from_page(html, date(2026, 11, 17)), (21, 30))
 
     def test_cinema_regular_runs_dropped_and_film_society_categorized_as_film(self):
         results = [{"venue": "DoNYC Citywide", "url": "https://donyc.com/events", "events": [

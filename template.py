@@ -2191,6 +2191,10 @@ def _merge_duplicates(events, word_freq=None):
     for ev in out:
         for k in _MEMO_KEYS:
             ev.pop(k, None)
+        if "google.com/search" in (ev.get("url") or "") or not ev.get("url"):
+            v_cal = known_venue_calendar(ev.get("venue"))
+            if v_cal:
+                ev["url"] = v_cal
         # An RSVP-platform group outing ("Free" on Meetup) merged with a ticketed show must not
         # advertise the show itself as free.
         if re.search(r"\bfree\b", str(ev.get("price") or ""), re.I):
@@ -2335,9 +2339,9 @@ def _drop_regular_cinema_runs(buckets):
 
 
 def _is_date_only_feed(events):
-    """True when nearly all of a feed's events sit at local midnight (or legacy noon placeholder),
-    i.e. it publishes dates without times (AllEvents, DanceUS) and its placeholder times mean nothing."""
-    total = midnight = noon = 0
+    """True when nearly all of a feed's events sit at local midnight, i.e. it publishes dates
+    without times (AllEvents, DanceUS) and its midnights mean nothing."""
+    total = midnight = 0
     for e in events:
         try:
             t = datetime.fromisoformat(str(e.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
@@ -2345,8 +2349,7 @@ def _is_date_only_feed(events):
             continue
         total += 1
         midnight += t.hour == 0 and t.minute == 0
-        noon += t.hour == 12 and t.minute == 0
-    return total >= 3 and (midnight >= 0.8 * total or noon >= 0.8 * total)
+    return total >= 3 and midnight >= 0.8 * total
 
 
 def _day_order(e):
@@ -2470,10 +2473,6 @@ def group_by_date(results):
             entry["venue"] = e.get("venue") or r.get("venue", "")
             if (entry.get("venue") or "").strip().lower() == "dance/nyc community calendar":
                 entry["venue"] = ""
-            if "google.com/search" in (entry.get("url") or "") or not entry.get("url"):
-                v_cal = known_venue_calendar(entry.get("venue"))
-                if v_cal:
-                    entry["url"] = v_cal
             if e.get("venue_unknown") or not (entry.get("venue") or "").strip() \
                     or (str(r.get("venue") or "").lower().startswith("allevents") and _CITY_ONLY_VENUE_RE.match(e.get("venue") or "")):
                 # The source hid the venue (Meetup does for non-members), so "venue" is only the
@@ -2520,8 +2519,6 @@ def group_by_date(results):
                     if e.get("time_unknown"):
                         entry["_time_unknown"] = True  # the scraper's time is a placeholder
                     if dt.hour == 0 and dt.minute == 0 and (date_only_feed or entry["category"] not in _REAL_MIDNIGHT_CATEGORIES):
-                        entry["_time_unknown"] = True
-                    if date_only_feed and dt.hour == 12 and dt.minute == 0:
                         entry["_time_unknown"] = True
                 except (TypeError, ValueError):
                     pass

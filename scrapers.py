@@ -144,9 +144,8 @@ def _load_venue_cache(vname, max_age=None, src=None, code=None):
                     ev["url"] = t
                 else:
                     v_str = ev.get("venue") or vname or ""
-                    cal_u = known_venue_calendar(v_str)
                     q_str = f"{ev.get('name', '')} {v_str} NYC".strip()
-                    ev["url"] = cal_u or f"https://www.google.com/search?q={quote_plus(q_str)}"
+                    ev["url"] = f"https://www.google.com/search?q={quote_plus(q_str)}"
         return cached
     except Exception:
         return None
@@ -1403,7 +1402,7 @@ def _parse_donyc_svelte(page, now):
         if key in seen:
             continue
         seen.add(key)
-        url = venue_site or known_venue_calendar(venue_name) or f"https://www.google.com/search?q={quote_plus(f'{name} {venue_name} NYC')}"
+        url = venue_site or f"https://www.google.com/search?q={quote_plus(f'{name} {venue_name} NYC')}"
         ev = {"name": name, "date": dt.isoformat(), "url": url, "venue": venue_name, "price": None,
               "_donyc_path": _js_unquote(permalink)}
         cat = re.search(r'category:"([^"]*)"', body)
@@ -12976,24 +12975,12 @@ def _fill_missing_times(results, ua=None, limit=None, path=None, fetch=None):
         if source.startswith(_NO_DETAIL_TIME_SOURCES):
             continue
         listing = (r.get("url") or "").rstrip("/")
-        evs = r.get("events") or []
-        noon_count = 0
-        valid_count = 0
-        for e0 in evs:
-            try:
-                w0 = datetime.fromisoformat(str(e0.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
-                valid_count += 1
-                if (w0.hour, w0.minute) == (12, 0):
-                    noon_count += 1
-            except (TypeError, ValueError):
-                pass
-        noon_feed = valid_count >= 3 and noon_count >= 0.8 * valid_count
-        for e in evs:
+        for e in r.get("events") or []:
             try:
                 when = datetime.fromisoformat(str(e.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
             except (TypeError, ValueError):
                 continue
-            midnight = ((when.hour, when.minute) == (0, 0) and e.get("category") not in ("clubbing", "party")) or (noon_feed and (when.hour, when.minute) == (12, 0))
+            midnight = (when.hour, when.minute) == (0, 0) and e.get("category") not in ("clubbing", "party")
             url = e.get("url") or ""
             if not (e.get("time_unknown") or midnight) or when.date() < today:
                 continue
