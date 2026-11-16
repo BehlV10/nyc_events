@@ -8549,7 +8549,11 @@ _FEVER_ATTRACTION_RE = re.compile(
     r"citypass|\bpass\b|entry ticket|admission|observ|summit one|edge nyc|top of the rock|empire state|"
     r"one world|skip[- ]the[- ]line|museum|exhibition|gallery|sightseeing|hop-on|gift card|membership|"
     r"walking tour|guided .*?walk|food walk|crime .*?walk|mafia walk|ghosts?:|escape game|"
-    r"day tour|bus tour|shopping day|off[- ]?broadway show ticket|broadway show ticket|\bshow ticket\b",
+    r"day tour|bus tour|shopping day|off[- ]?broadway show ticket|broadway show ticket|\bshow ticket\b|"
+    r"bike (?:the|through|tour|rental)|ebike|e-?bike|scooter rental|"
+    r"\b(?:food|night|comedy|photography|cocktail|bike|roll)\s+tour\b|pub crawl|rock junket|"
+    r"\b(?:dinner|brunch|sunset|night|lady liberty)\s+cruise\b|"
+    r"\baquarium\b|\bguggenheim\b|historical society|\briseny\b|\bon broadway\b",
     re.I,
 )
 

@@ -1146,6 +1146,8 @@ def _is_commercial_ticketed(e):
     cat = (e.get("category") or "").lower()
     if any(ex in source or ex in venue for ex in EXCLUDE_VENUES_OR_SOURCES):
         return False
+    if "fever" in source or "feverup.com" in (e.get("url") or "").lower():
+        return False
     if "museum tour" in name or "walking tour" in name or "historical tour" in name:
         return False
     if any(s in source for s in ["ticketmaster", "seatgeek", "donyc"]):
