@@ -2257,7 +2257,7 @@ def group_by_date(results):
                 continue
             if "fever" in (r.get("venue") or "").lower() and (_FEVER_ATTRACTION_RE.search(e.get("name") or "") or ("T05:00:00" in (e.get("date") or "") and "candlelight" not in (e.get("name") or "").lower())):
                 continue
-            if is_service_ad(e.get("name"), e.get("venue") or r.get("venue")):
+            if is_service_ad(e.get("name"), f"{e.get('venue') or ''} {r.get('venue') or ''}"):
                 continue
             n_low = (e.get("name") or "").lower()
             if _ONLINE_TITLE_RE.search(n_low) and not re.search(r"in[- ]person|hybrid|\birl\b", n_low):
