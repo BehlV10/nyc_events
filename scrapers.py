@@ -9272,6 +9272,62 @@ def scrape_japan_fes(url, ua):
     return events
 
 
+def scrape_the_town_hall(url, ua):
+    """The Town Hall (123 W 43rd St) — parses Next.js RSC event payload on /events."""
+    u = url or "https://www.thetownhall.org/events"
+    resp = _SESSION.get(u, headers={"User-Agent": ua or UA_CHROME}, timeout=15)
+    resp.raise_for_status()
+    chunks = re.findall(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', resp.text, re.S)
+    parts = []
+    for c in chunks:
+        try:
+            parts.append(json.loads(f'"{c}"'))
+        except ValueError:
+            continue
+    blob = "".join(parts)
+    events = []
+    seen = set()
+    now = datetime.now(timezone.utc)
+    pat = re.compile(
+        r'"title":\{"rendered":"([^"]+)"\},"slug":"([^"]+)","meta_box":\{"ticketmaster_id":[^}]*"dates":(\[[^\]]+\])'
+    )
+    for m in pat.finditer(blob):
+        raw_title, slug, dates_json = m.groups()
+        title = html.unescape(raw_title).strip()
+        if not title or "town hall caf" in title.lower():
+            continue
+        try:
+            dates = json.loads(dates_json)
+        except ValueError:
+            continue
+        ev_url = f"https://www.thetownhall.org/event/{slug}"
+        for d_obj in dates:
+            raw_dt = (d_obj.get("date") or "").strip()
+            if not raw_dt:
+                continue
+            try:
+                dt = datetime.fromisoformat(raw_dt).replace(tzinfo=EASTERN).astimezone(timezone.utc)
+            except ValueError:
+                continue
+            if dt < now:
+                continue
+            iso = dt.isoformat()
+            key = (title.lower(), iso)
+            if key in seen:
+                continue
+            seen.add(key)
+            events.append({
+                "name": title,
+                "date": iso,
+                "url": ev_url,
+                "venue": "The Town Hall",
+                "address": "123 W 43rd St, New York, NY 10036",
+                "price": None,
+                "category": guess_category(title, "music", venue="The Town Hall"),
+            })
+    return events
+
+
 def scrape_ny_tattoo_convention(url, ua):
     """The New York Tattoo Convention (Duggal Greenhouse): one event per day, using the per-day
     hours and the schema.org Festival block on the official site, so next year's dates are picked up."""
@@ -11632,6 +11688,7 @@ _ALL_VENUES += [
     {"name": "Snug Harbor Holiday Hop & Artisans Market", "url": "https://snug-harbor.org/event/holiday-hop/", "ua": UA_CHROME, "scraper": scrape_snug_harbor_holiday_hop, "default_category": "markets"},
     {"name": "Bartow-Pell Mansion Holiday Bazaar", "url": "https://www.bartowpellmansionmuseum.org/events/holiday-family-day/", "ua": UA_CHROME, "scraper": scrape_bartow_pell_holiday_bazaar, "default_category": "markets"},
     {"name": "Wave Hill Holiday Artisans Market", "url": "https://www.wavehill.org/calendar/holiday-workshop-weekend", "ua": UA_CHROME, "scraper": scrape_wave_hill_holiday_market, "default_category": "markets"},
+    {"name": "The Town Hall", "url": "https://www.thetownhall.org/events", "ua": UA_CHROME, "scraper": scrape_the_town_hall, "default_category": "music"},
     {"name": "The New York Tattoo Convention", "url": "https://thenewyorktattooconvention.com/", "ua": UA_CHROME, "scraper": scrape_ny_tattoo_convention, "default_category": "art"},
     {"name": "JAPAN Fes NYC", "url": "https://www.japanfes.com/events", "ua": UA_CHROME, "scraper": scrape_japan_fes, "default_category": "food"},
 ]
