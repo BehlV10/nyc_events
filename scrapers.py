@@ -9249,6 +9249,53 @@ def scrape_japan_fes(url, ua):
     return events
 
 
+def scrape_ny_tattoo_convention(url, ua):
+    """The New York Tattoo Convention (Duggal Greenhouse): one event per day, using the per-day
+    hours and the schema.org Festival block on the official site, so next year's dates are picked up."""
+    soup = fetch_soup(url, ua)
+    html = str(soup)
+    text = soup.get_text(" ", strip=True)
+    start = end = None
+    for blob in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, flags=re.S):
+        try:
+            data = json.loads(blob)
+        except ValueError:
+            continue
+        if isinstance(data, dict) and data.get("@type") in ("Festival", "Event") and data.get("startDate"):
+            start, end = data["startDate"][:10], (data.get("endDate") or data["startDate"])[:10]
+            break
+    if not start:
+        return []
+    tix = "https://www.thenewyorktattooconvention.com/"
+    hours = {}
+    for m in re.finditer(r"(?i)(Friday|Saturday|Sunday|Thursday)\s+[A-Za-z]+\s+(\d{1,2})\s+(\d{1,2}):(\d\d)\s*([ap])m?\s*(?:to|-|–)\s*(\d{1,2}):(\d\d)\s*([ap])m?", text):
+        _, d, h1, m1, a1, h2, m2, a2 = m.groups()
+        def _h(h, ap):
+            h = int(h) % 12
+            return h + (12 if ap.lower() == "p" else 0)
+        hours[int(d)] = (_h(h1, a1), int(m1), _h(h2, a2), int(m2))
+    events = []
+    day = datetime.strptime(start, "%Y-%m-%d").date()
+    last = datetime.strptime(end, "%Y-%m-%d").date()
+    while day <= last:
+        h1, m1, h2, m2 = hours.get(day.day, (11, 0, 20, 0))
+        dt = datetime(day.year, day.month, day.day, h1, m1, tzinfo=EASTERN)
+        en = datetime(day.year, day.month, day.day, h2, m2, tzinfo=EASTERN)
+        events.append({
+            "name": f"The New York Tattoo Convention {day.year} ({day.strftime('%A')})",
+            "date": dt.astimezone(timezone.utc).isoformat(),
+            "end": en.astimezone(timezone.utc).isoformat(),
+            "venue": "Duggal Greenhouse (Brooklyn Navy Yard)",
+            "address": "63 Flushing Ave, Brooklyn, NY 11205",
+            "url": tix,
+            "price": "",
+            "category": "art",
+            "description": "320+ tattoo artists, 20+ vendors, live music, burlesque, drag, food trucks and a full bar at the Brooklyn Navy Yard.",
+        })
+        day += timedelta(days=1)
+    return events
+
+
 def scrape_renegade_craft_fair_nyc(url, ua):
     """Renegade Craft Fair NYC Winter & Holiday Editions at Metropolitan Pavilion."""
     year = datetime.now(EASTERN).year
@@ -10432,30 +10479,6 @@ ANNUAL_LANDMARK_EVENTS = [
         "description": "Rock Without Borders and Gladiolus live indie rock and alternative band showcase across multiple floors at The Delancey in the Lower East Side.",
     },
     {
-        "name": "New York Tattoo Convention 2026 (Saturday Session)",
-        "date": "2026-11-14T11:00:00-05:00",
-        "venue": "The Duggal Greenhouse",
-        "address": "63 Flushing Ave, Building 268, Brooklyn, NY 11205",
-        "lat": 40.7029,
-        "lng": -73.9745,
-        "url": "https://newyorktattooconvention.com/",
-        "price": "$30",
-        "category": "art",
-        "description": "Over 300 world-class tattoo artists, live tattooing, art contests, vendor booths, food trucks, and live entertainment at the Brooklyn Navy Yard.",
-    },
-    {
-        "name": "New York Tattoo Convention 2026 (Sunday Session)",
-        "date": "2026-11-15T11:00:00-05:00",
-        "venue": "The Duggal Greenhouse",
-        "address": "63 Flushing Ave, Building 268, Brooklyn, NY 11205",
-        "lat": 40.7029,
-        "lng": -73.9745,
-        "url": "https://newyorktattooconvention.com/",
-        "price": "$30",
-        "category": "art",
-        "description": "Final day of the New York Tattoo Convention with awards, live tattooing showcases, and custom art exhibits at The Duggal Greenhouse.",
-    },
-    {
         "name": "Macy's Thanksgiving Day Balloon Inflation Event",
         "date": "2026-11-26T12:00:00-05:00",
         "venue": "American Museum of Natural History (Upper West Side)",
@@ -11586,6 +11609,7 @@ _ALL_VENUES += [
     {"name": "Snug Harbor Holiday Hop & Artisans Market", "url": "https://snug-harbor.org/event/holiday-hop/", "ua": UA_CHROME, "scraper": scrape_snug_harbor_holiday_hop, "default_category": "markets"},
     {"name": "Bartow-Pell Mansion Holiday Bazaar", "url": "https://www.bartowpellmansionmuseum.org/events/holiday-family-day/", "ua": UA_CHROME, "scraper": scrape_bartow_pell_holiday_bazaar, "default_category": "markets"},
     {"name": "Wave Hill Holiday Artisans Market", "url": "https://www.wavehill.org/calendar/holiday-workshop-weekend", "ua": UA_CHROME, "scraper": scrape_wave_hill_holiday_market, "default_category": "markets"},
+    {"name": "The New York Tattoo Convention", "url": "https://thenewyorktattooconvention.com/", "ua": UA_CHROME, "scraper": scrape_ny_tattoo_convention, "default_category": "art"},
     {"name": "JAPAN Fes NYC", "url": "https://www.japanfes.com/events", "ua": UA_CHROME, "scraper": scrape_japan_fes, "default_category": "food"},
 ]
 _existing_source_names = {v["name"].lower() for v in _ALL_VENUES}
