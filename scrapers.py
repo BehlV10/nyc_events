@@ -482,6 +482,7 @@ CATEGORY_BUCKETS = [
     ("Kids & Family",      ["family", "kids"]),
     ("Deals & Specials",   ["deals"]),
     ("Tech & Startups",    ["tech"]),
+    ("Boat Parties & Cruises", ["cruises"]),
 ]
 
 CATEGORY_STYLES = {
@@ -503,6 +504,7 @@ CATEGORY_STYLES = {
     "deals":     ("#c678dd", "🏷"),
     "markets":   ("#e0a458", "🎪"),
     "tech":      ("#73daca", "⌨"),
+    "cruises":   ("#f7768e", "🚢"),
     "other":     ("#6b7280", "·"),
 }
 
@@ -907,6 +909,8 @@ def is_standing_exhibit(e: dict) -> bool:
     url = e.get("url") or ""
     name = (e.get("name") or "").strip()
     if _GENERIC_CAMPAIGN_RE.match(name):
+        return True
+    if not MARKET_FESTIVAL_RE.search(name) and re.search(r"(?i)(?:^ongoing\b.*\bexhibit|\bongoing\s+(?:outdoor\s+)?(?:museum\s+)?exhibit\b)", name):
         return True
     m = re.search(r"donyc\.com/events/(\d{4})/(\d{1,2})/(\d{1,2})/", url)
     raw = e.get("date")
@@ -10848,7 +10852,7 @@ _ALL_VENUES = [
     {"name": "Museum of the City of New York", "url": "https://www.mcny.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/event/", "venue": "Museum of the City of New York", "address": "1220 Fifth Ave, New York, NY 10029"}},
     {"name": "Cooper Hewitt", "url": "https://www.cooperhewitt.org/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "/event/", "venue": "Cooper Hewitt, Smithsonian Design Museum", "address": "2 E 91st St, New York, NY 10128"}},
     {"name": "Bronx Museum of the Arts", "url": "https://www.bronxmuseum.org/events", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "art", "kwargs": {"link_re": "^/event/", "venue": "Bronx Museum of the Arts", "address": "1040 Grand Concourse, Bronx, NY 10456"}},
-    {"name": "BAM (Brooklyn Academy of Music)", "url": "https://www.bam.org/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"link_re": "^/[a-z-]+/20\\d\\d/[^/]+$", "venue": "BAM", "address": "30 Lafayette Ave, Brooklyn, NY 11217"}},
+    {"name": "BAM (Brooklyn Academy of Music)", "url": "https://www.bam.org/calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "theater", "kwargs": {"link_re": "^/(?!film/)[a-z-]+/20\\d\\d/[^/]+$", "venue": "BAM", "address": "30 Lafayette Ave, Brooklyn, NY 11217"}},
     {"name": "NYRR Races & Group Runs", "url": "https://www.nyrr.org/run/race-calendar", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "sports", "kwargs": {"link_re": "^/races-and-events/20\\d\\d/"}},
     {"name": "The Joyce Theater", "url": "https://www.joyce.org/performances", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "dance", "kwargs": {"link_re": "^/performances/[^/]+$", "venue": "The Joyce Theater", "address": "175 8th Ave, New York, NY 10011"}},
     {"name": "Seaport District Events", "url": "https://www.theseaport.nyc/events/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "community", "kwargs": {"link_re": "^/events/[^/]+/?$"}},
@@ -11803,6 +11807,14 @@ def _tidy_sold_out(e, name):
     return tidied
 
 
+_BOAT_CRUISE_RE = re.compile(
+    r"(?i)\b(?:booze\s+cruise|boat\s+party|party\s+cruise|yacht\s+party|sunset\s+party\s+cruise|"
+    r"midnight\s+(?:yacht|boat)\s+party|latin\s+boat\s+party|hip[- ]hop\s+(?:boat|yacht)\s+party|"
+    r"iboatnyc|iclubnyc)\b"
+)
+_SPECIAL_MOVIE_RE = re.compile(r"(?i)\b(q&a|premiere|festival|35mm|70mm|director|discussion|talkback|sneak|preview|party)\b")
+
+
 def _clean_scraped_events(events):
     """Normalize one source's events: unescape HTML entities in titles ("Rock &amp; Roll"),
     repair glued-together URLs, drop virtual/online events and placeholders, and collapse
@@ -11823,6 +11835,11 @@ def _clean_scraped_events(events):
         # listings like "Writing Workshop (In-Person & Online)".
         if _ONLINE_TITLE_RE.search(n_low) and not re.search(r"in[- ]person|hybrid|\birl\b", n_low):
             continue
+        # Drop normal multiplex / Meetup "Film - <Movie>" showings unless marked special.
+        if (n_low.startswith("film - ") or v_low.startswith(("amc ", "regal ", "cinemark "))) and not _SPECIAL_MOVIE_RE.search(n_low):
+            continue
+        if _BOAT_CRUISE_RE.search(f"{n_low} {v_low} {(e.get('_source_venue') or '').lower()}"):
+            e["category"] = "cruises"
         if e.get("url"):
             e["url"] = fix_doubled_url(e["url"])
         key = (n_low, e.get("date") or "")

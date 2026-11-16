@@ -29,6 +29,7 @@ from scrapers import (
     is_closed_show,
     is_placeholder_or_closed_event,
     is_standing_exhibit,
+    _BOAT_CRUISE_RE,
     is_utility_event,
     is_kid_family_event,
     is_deal_event,
@@ -59,7 +60,7 @@ def render_hub_page(slug, dated, site_url=None, max_events=120):
 from nyc_geo import TRISTATE_NEEDLES, borough_at, outside_area
 
 # Buckets hidden until the visitor opts in (library ESL classes, job fairs, toddler storytimes).
-DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups"}
+DEFAULT_UNCHECKED_BUCKETS = {"Classes & Services", "Kids & Family", "Deals & Specials", "Tech & Startups", "Boat Parties & Cruises"}
 
 
 CITY_RULES = [
@@ -1893,10 +1894,15 @@ def _merge_duplicates(events, word_freq=None):
                     match = cand
                     break
 
-        # 1. Exact match check
+        # 1. Exact match check (cross-posted Meetup/aggregator events with identical title+time
+        #    merge even if one organizer pinned a nearby meeting spot >0.5 mi away).
         if not match and full and len(full) >= 4 and full in seen_exact:
+            is_gen_e = _is_generic_feed(e) or _is_aggregator_source(e.get("_source_venue"))
             for cand in seen_exact[full]:
-                if not _is_different_show(e, cand) and not _far_apart(e, cand):
+                if _is_different_show(e, cand):
+                    continue
+                is_gen_c = _is_generic_feed(cand) or _is_aggregator_source(cand.get("_source_venue"))
+                if (is_gen_e and is_gen_c) or not _far_apart(e, cand):
                     match = cand
                     break
 
@@ -2346,6 +2352,8 @@ def group_by_date(results):
             # At render time, so listings cached before this category existed fill the Markets page
             if entry["category"] in _MARKET_OVERRIDABLE and is_market_or_festival(e.get("name"), r.get("venue")):
                 entry["category"] = "markets"
+            elif _BOAT_CRUISE_RE.search(f"{e.get('name') or ''} {entry['venue']} {r.get('venue') or ''}"):
+                entry["category"] = "cruises"
             raw = e.get("date")
             key = None
             if raw:
