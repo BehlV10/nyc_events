@@ -1769,7 +1769,7 @@ ALLEVENTS_REFUSAL_BACKOFF = 60
 # are often wrong (John Scofield a day early). The direct sources list the real show.
 _ALLEVENTS_RESALE_ORIGINS = ("ticket-network", "ticketnetwork", "vividseats", "vivid-seats", "stubhub", "tickpick",
                              "seatgeek", "gametime", "viagogo")
-EVENTBRITE_DETAILS_PER_RUN = 100
+EVENTBRITE_DETAILS_PER_RUN = 150
 ALLEVENTS_LINK_TTL = 14 * 86400
 EVENTBRITE_DETAIL_TTL = 2 * 86400
 # Never a destination: AllEvents/Facebook themselves.
@@ -1780,6 +1780,29 @@ _RESALE_HOSTS = ("vividseats.com", "ticketnetwork.com", "stubhub.com", "tickpick
                  "ticketsmarter.com", "razorgator.com", "ticketliquidator.com", "seatgeek.com", "ticketsatwork.com", "ticketcity.com",
                  "edgetix.us", "boxofficeticketsales.com", "onlineseats.com", "ticketsonsale.com", "ticketclub.com")
 _EB_EVENT_ID_RE = re.compile(r"eventbrite\.[a-z.]+/e/(?:[^/?#]*-)?(\d{9,})")
+# AllEvents files an Eventbrite import under the Eventbrite id with "10000" in front
+# (allevents.in/new-york/gratitude-through-music/100002000600156924 is eventbrite.com/e/2000600156924),
+# so most listings can be relinked without reading their page.
+_ALLEVENTS_EB_ID_RE = re.compile(r"allevents\.in/.+/10000([1-9]\d{10,13})/?(?:[?#].*)?$")
+# Member organizations' own chapter events (a sorority's bowling night): not public events.
+_MEMBER_ORG_RE = re.compile(r"\b(?:sorority|fraternity)\b|\balumn(?:ae|i)\s+chapter\b", re.I)
+
+
+def allevents_eventbrite_url(url):
+    """The Eventbrite page an AllEvents listing was imported from, when its id says so; else None."""
+    m = _ALLEVENTS_EB_ID_RE.search(url or "")
+    return f"https://www.eventbrite.com/e/{m.group(1)}" if m else None
+
+
+def _allevents_host(page):
+    """The organizer AllEvents names in the event page's JSON-LD, or None."""
+    m = re.search(r'"organizer":\s*\[?\s*\{[^{}]*?"name":\s*"((?:[^"\\]|\\.)*)"', page or "")
+    if not m:
+        return None
+    try:
+        return json.loads(f'"{m.group(1)}"').strip() or None
+    except ValueError:
+        return m.group(1).strip() or None
 _TICKET_TRACKING_RE = re.compile(r"^(utm_|fbclid|gclid|mc_|aff|affiliate|ref$|ref_|source$|_ga|igshid|aff$)", re.I)
 
 
@@ -1867,22 +1890,28 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
                 todo.append((when, url, e))
     todo.sort(key=lambda x: x[0])
 
-    pages = refusals = 0
+    pages = refusals = derived = 0
     for _when, url, _e in todo:
-        if pages >= page_limit:
-            break
         if url in links and now - links[url].get("ts", 0) < ALLEVENTS_LINK_TTL:
             continue
+        eb_url = allevents_eventbrite_url(url)
+        if eb_url:  # no page read needed; the Eventbrite API gives price, sold-out and organizer
+            links[url] = {"ts": now, "origin": "eventbrite", "ticket": eb_url}
+            derived += 1
+            continue
+        if pages >= page_limit or refusals > ALLEVENTS_REFUSAL_RETRIES:
+            continue
         try:
-            origin, ticket = _allevents_ticket_link(fetch(url))
-            links[url] = {"ts": now, "origin": origin, "ticket": ticket}
+            page = fetch(url)
+            origin, ticket = _allevents_ticket_link(page)
+            links[url] = {"ts": now, "origin": origin, "ticket": ticket, "host": _allevents_host(page)}
             pages += 1
         except SiteRefused:
             # AllEvents rate-limits after ~150 pages; one refusal used to end relinking for the
             # run, so most listings never got a seller link. Back off and resume a few times.
             refusals += 1
             if refusals > ALLEVENTS_REFUSAL_RETRIES:
-                break
+                continue  # stop reading pages; ids can still be relinked
             time.sleep(ALLEVENTS_REFUSAL_BACKOFF)
             HOST_GATE.refused.pop(_host_of(url), None)
             continue
@@ -1907,7 +1936,14 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
         except Exception:
             continue
 
+    def _host_name(url):
+        rec = links.get(url) or {}
+        match = _EB_EVENT_ID_RE.search(rec.get("ticket") or "")
+        return rec.get("host") or ((eb.get(match.group(1)) or {}).get("organizer_name") if match else None) or ""
+
     resale = {id(e) for _w, url, e in todo if (links.get(url) or {}).get("origin") in _ALLEVENTS_RESALE_ORIGINS}
+    members = {id(e) for _w, url, e in todo if _MEMBER_ORG_RE.search(_host_name(url))}
+    resale |= members
     if resale:
         for r in results:
             if str(r.get("venue") or "").startswith("AllEvents"):
@@ -1938,15 +1974,16 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
         except OSError:
             pass
     if resale:
-        print(f"AllEvents: dropped {len(resale)} listings imported from resale sites")
-    print(f"AllEvents links: {pages} pages read, {fetched} Eventbrite events checked; "
+        print(f"AllEvents: dropped {len(resale) - len(members)} listings imported from resale sites, "
+              f"{len(members)} member-organization events (sororities, fraternities)")
+    print(f"AllEvents links: {derived} relinked from Eventbrite ids, {pages} pages read, {fetched} Eventbrite events checked; "
           f"{relinked} of {len(todo)} listings relinked, {priced} priced, {soldout} sold out")
     return relinked
 
 
 DISCOVERED_ORGANIZERS_PATH = os.path.join(CACHE_DIR, "_eventbrite_discovered_organizers.json")
-DISCOVER_NEW_PER_RUN = 15
-DISCOVER_MAX_TRACKED = 250
+DISCOVER_NEW_PER_RUN = 25
+DISCOVER_MAX_TRACKED = 400
 DISCOVER_REJECT_TTL = 30 * 86400
 
 
@@ -2052,6 +2089,25 @@ def _discover_eventbrite_organizers(results, details_path=None, path=None, scrap
     for line in held:
         print(f"  held for review (looks like a vendor): {line}")
     return added
+
+
+def _report_allevents_overlap(results):
+    """How much of AllEvents the direct sources already cover, by Eventbrite event id, so AllEvents can
+    be dropped once its listings mostly come from elsewhere (followed organizers, venue feeds)."""
+    direct, ae = set(), []
+    for r in results:
+        is_ae = str(r.get("venue") or "").startswith("AllEvents")
+        for e in r.get("events") or []:
+            m = _EB_EVENT_ID_RE.search(e.get("url") or "")
+            if is_ae:
+                ae.append(m.group(1) if m else None)
+            elif m:
+                direct.add(m.group(1))
+    eb_ids = [i for i in ae if i]
+    covered = sum(1 for i in eb_ids if i in direct)
+    print(f"AllEvents overlap: {len(ae)} listings, {len(eb_ids)} on Eventbrite, "
+          f"{covered} of those also from a direct Eventbrite source; {len(ae) - len(eb_ids)} not on Eventbrite")
+    return covered, len(eb_ids), len(ae)
 
 
 def scrape_donyc(url, ua):
@@ -9477,6 +9533,174 @@ def scrape_dance_nyc(url, ua, fetch_detail=None):
     return events
 
 
+_NYC_PLACE_RE = re.compile(
+    r"\b(?:new york|manhattan|brooklyn|queens|bronx|staten island|harlem|astoria|long island city|flushing|"
+    r"ridgewood|jackson heights|forest hills|sunnyside|woodside|jamaica|bayside|greenpoint|williamsburg|bushwick)\b",
+    re.I,
+)
+
+
+def _parse_ifpa_tournament(page_html):
+    """Address, start time (h, m) or None, and website from an IFPA tournament page."""
+    soup = BeautifulSoup(page_html or "", "html.parser")
+    out = {"address": None, "hm": None, "website": None}
+    for label in soup.find_all(["span", "b"]):
+        key = label.get_text(strip=True).lower()
+        box = label.find_parent("div")
+        val = box.find("h6") if box else None
+        if not val:
+            continue
+        text = " ".join(val.get_text(" ", strip=True).split())
+        if key == "address":
+            out["address"] = text
+        elif key == "start time":
+            m = re.search(r"(\d{1,2})(?::(\d{2}))?\s*([ap])\.?m", text, re.I)
+            hm = (int(m.group(1)) % 12 + (12 if m.group(3).lower() == "p" else 0), int(m.group(2) or 0)) if m else None
+            out["hm"] = hm if hm != (0, 0) else None  # "12:00 am" is the form's empty value
+    site = soup.find("a", string=re.compile(r"^\s*Website\s*$", re.I))
+    if site and (site.get("href") or "").startswith("http"):
+        out["website"] = site["href"]
+    return out
+
+
+def scrape_ifpa_nearby(url, ua, fetch_detail=None, max_details=40):
+    """IFPA pinball tournaments near NYC (the calendar's "near location" search). The listing gives
+    name, city and date; each tournament's page gives the street address and, sometimes, a start time."""
+    fetch_detail = fetch_detail or (lambda u: fetch_text(u, headers={"User-Agent": ua or UA_CHROME})[1])
+    soup = fetch_soup(url, ua or UA_CHROME)
+    today = datetime.now(EASTERN).date()
+    rows = []
+    for item in soup.select("[id^=search_result_]"):
+        a = item.select_one("h5 a[href*='tournaments/view.php']")
+        line = item.select_one("p.mb-1 small")
+        if not a or not line:
+            continue
+        parts = [p.strip() for p in line.get_text(" ", strip=True).split("|")]
+        place = parts[0] if parts else ""
+        if not _NYC_PLACE_RE.search(place):
+            continue
+        m = re.search(r"([A-Z][a-z]{2}) (\d{1,2}), (\d{4})", " ".join(parts[1:]))
+        if not m:
+            continue
+        try:
+            day = datetime.strptime(" ".join(m.groups()), "%b %d %Y").date()
+        except ValueError:
+            continue
+        if day < today:
+            continue
+        rows.append((day, a.get_text(" ", strip=True), urljoin("https://www.ifpapinball.com/", a["href"]), place))
+    rows.sort()
+    events = []
+    for i, (day, name, t_url, place) in enumerate(rows):
+        info = {}
+        if i < max_details:
+            try:
+                info = _parse_ifpa_tournament(fetch_detail(t_url))
+            except SiteRefused:
+                max_details = i
+            except Exception:
+                info = {}
+        hh, mm = info.get("hm") or (0, 0)
+        dt = datetime(day.year, day.month, day.day, hh, mm, tzinfo=EASTERN)
+        addr = (info.get("address") or place).replace(", United States", "")
+        street = re.split(r",?\s+(?:New York|Brooklyn|Queens|Bronx|Staten Island)\b", addr)[0].strip(" ,")
+        if not re.search(r"\b\d+[A-Za-z-]*\s+[A-Za-z]", street):  # no street address given (a ZIP isn't one): "(@ Red Hook)" in the name, else the borough
+            at = re.search(r"@\s*([^)]+)", name)
+            street = at.group(1).strip() if at else place.split(",")[0].strip()
+        ev = {
+            "name": name if re.search(r"pinball", name, re.I) else f"{name} (pinball tournament)",
+            "date": dt.astimezone(timezone.utc).isoformat(),
+            "url": t_url,
+            "venue": street or place,
+            "address": addr,
+            "price": None,
+            "category": "gaming",
+        }
+        if not info.get("hm"):
+            ev["time_unknown"] = True
+        events.append(ev)
+    return events
+
+
+_HOTHOUSE_NYC_RE = re.compile(r"manhattan|brooklyn|queens|bronx|staten island|harlem|village|alphabet city|soho|tribeca|chelsea", re.I)
+
+
+def _hothouse_venue(name):
+    """Hot House files venues as "Django (The)"; show them as "The Django"."""
+    name = " ".join((name or "").split())
+    m = re.match(r"^(.*?)\s*\((The)\)(.*)$", name)
+    return f"The {m.group(1)}{m.group(3)}".strip() if m else name
+
+
+def _parse_hothouse_day(html_text, day):
+    """Events from one day of Hot House's calendar (the HTML its calendar-filter-artist call returns)."""
+    soup = BeautifulSoup(html_text or "", "html.parser")
+    events, seen = [], set()
+    for box in soup.select(".hhj-sbox"):
+        title = box.select_one(".hhj-sinfo h3")
+        paras = box.select(".hhj-sinfo p")
+        if not title or not paras:
+            continue
+        hood = paras[0].get_text(" ", strip=True)
+        if not _HOTHOUSE_NYC_RE.search(hood):
+            continue
+        venue_a = box.select_one(".hhj-sinfo a.loca-map:not(.web-link)")
+        venue = _hothouse_venue(venue_a.get_text(" ", strip=True) if venue_a else "")
+        times = box.select(".hhj-sdate h6")
+        m = re.search(r"(\d{1,2}):(\d{2})\s*([AP])M", times[-1].get_text(" ", strip=True) if times else "", re.I)
+        if m:
+            hh, mm = int(m.group(1)) % 12 + (12 if m.group(3).upper() == "P" else 0), int(m.group(2))
+        else:
+            hh = mm = 0
+        link = box.find_parent().select_one("a.online-btn[href*='event_detail']") if box.find_parent() else None
+        name = " ".join(title.get_text(" ", strip=True).split())
+        key = (name.lower(), venue.lower(), hh, mm)
+        if key in seen:
+            continue
+        seen.add(key)
+        price_el = box.select_one(".event-cost p")
+        price = price_el.get_text(" ", strip=True) if price_el else ""
+        if re.match(r"(?i)free", price):
+            price = "Free"
+        dt = datetime(day.year, day.month, day.day, hh, mm, tzinfo=EASTERN)
+        ev = {
+            "name": name,
+            "date": dt.astimezone(timezone.utc).isoformat(),
+            "url": link["href"] if link else "https://www.hothousejazz.com/calendar",
+            "venue": venue,
+            "price": price or None,
+            "category": "music",
+        }
+        if not m:
+            ev["time_unknown"] = True
+        events.append(ev)
+    return events
+
+
+def scrape_hothouse_jazz(url, ua, days=14, post=None):
+    """Hot House Jazz Guide: NYC jazz listings, one calendar call per day (venues outside the five
+    boroughs, which the guide also covers, are skipped)."""
+    post = post or (lambda day_iso: _SESSION.post(
+        "https://www.hothousejazz.com/calendar-filter-artist",
+        data={"venue": "", "location": "", "Selected_Date_": day_iso, "selected_date": day_iso},
+        headers={"User-Agent": ua or UA_CHROME, "X-Requested-With": "XMLHttpRequest"}, timeout=30).json())
+    today = datetime.now(EASTERN).date()
+    now = datetime.now(timezone.utc)
+    events = []
+    for i in range(days):
+        day = today + timedelta(days=i)
+        try:
+            data = post(day.isoformat())
+        except SiteRefused:
+            break
+        except Exception:
+            continue
+        for ev in _parse_hothouse_day((data or {}).get("data"), day):
+            if ev.get("time_unknown") or datetime.fromisoformat(ev["date"]) >= now:
+                events.append(ev)
+    return events
+
+
 def scrape_columbus_circle_holiday_market(url, ua):
     """Columbus Circle Holiday Market (Urbanspace) — Dec 1 to Dec 31, 2026 (closed Dec 25)."""
     schedule = []
@@ -11522,6 +11746,8 @@ _ALL_VENUES = [
     {"name": "SalsaVida NYC Socials", "url": "https://www.salsavida.com/guides/new-york/calendar/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "dance"},
     {"name": "SalsaVida NYC Socials (list)", "url": "https://www.salsavida.com/guides/new-york/new-york-city/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "dance", "kwargs": {"link_re": "^/event/"}},
     {"name": "Dance/NYC Community Calendar", "url": "https://www.dance.nyc/for-audiences/community-calendar/", "ua": UA_CHROME, "scraper": scrape_dance_nyc, "default_category": "dance"},
+    {"name": "IFPA Pinball Tournaments (NYC)", "url": "https://www.ifpapinball.com/calendar/search.php?type=near&latitude=40.7128&longitude=-74.0060&distance=15&distance_type=m", "ua": UA_CHROME, "scraper": scrape_ifpa_nearby, "default_category": "gaming"},
+    {"name": "Hot House Jazz Guide", "url": "https://www.hothousejazz.com/calendar", "ua": UA_CHROME, "scraper": scrape_hothouse_jazz, "default_category": "music"},
     {"name": "New York Transit Museum", "url": "https://www.nytransitmuseum.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "family"},
     {"name": "Scandinavia House", "url": "https://www.scandinaviahouse.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
     {"name": "Ukrainian Institute of America", "url": "https://ukrainianinstitute.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
@@ -13177,6 +13403,10 @@ def get_all_events(force=False):
     except Exception as exc:
         print(f"start-time lookup failed: {exc}")
     _discover_eventbrite_organizers(results)
+    try:
+        _report_allevents_overlap(results)
+    except Exception as exc:
+        print(f"AllEvents overlap report failed: {exc}")
     _apply_geocodes(results)
 
     payload = {
