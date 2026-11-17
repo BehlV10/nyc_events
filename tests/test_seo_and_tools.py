@@ -283,6 +283,31 @@ class TestScripts(unittest.TestCase):
         self.assertEqual((items[0]["title"], items[0]["venue"]), ("Lime Garden", "Elsewhere"))
         self.assertIsNone(items[1]["date"])
 
+    def test_select_og_picks_skips_early_morning_and_diversifies_categories(self):
+        from export_og import select_og_picks
+
+        events = [
+            _ev("3AM Spa Promo", _at(0, 3), venue="Manhattan", category="deals"),
+            _ev("6AM Jersey City Run", _at(0, 6), venue="Jersey City, NJ", category="outdoors"),
+            _ev("Unlinked Show", _at(0, 20), venue="Bowery Ballroom", category="music", url="https://www.google.com/search?q=x"),
+            _ev("Indie Concert", _at(0, 20), venue="Brooklyn Steel", category="music", _alt_sources=[{"url": "a"}]),
+            _ev("Second Concert", _at(0, 21), venue="Bowery Ballroom", category="music", _alt_sources=[{"url": "a"}, {"url": "b"}]),
+            _ev("Standup Showcase", _at(0, 19, 30), venue="Comedy Cellar", category="comedy"),
+            _ev("Off-Broadway Play", _at(0, 19), venue="The Public Theater", category="theater"),
+            _ev("Holiday Night Market", _at(0, 17), venue="Bryant Park", category="markets"),
+        ]
+        picks = select_og_picks(events, count=4)
+        names = [e["name"] for e in picks]
+        self.assertEqual(len(names), 4)
+        self.assertNotIn("3AM Spa Promo", names)
+        self.assertNotIn("6AM Jersey City Run", names)
+        self.assertNotIn("Unlinked Show", names)
+        # Should pick 4 distinct categories and prefer the 3-source concert over the 2-source concert
+        self.assertEqual(
+            names,
+            ["Holiday Night Market", "Off-Broadway Play", "Standup Showcase", "Second Concert"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
