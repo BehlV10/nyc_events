@@ -137,5 +137,36 @@ class HotHouseJazz(unittest.TestCase):
         self.assertEqual((len(asked), evs), (3, []))
 
 
+class PoshNyc(unittest.TestCase):
+    def _ev(self, slug, title, venue, days=2, hour=22, group="Night Crew", price=20, tz="America/New_York"):
+        start = (datetime.now(timezone.utc) + timedelta(days=days)).replace(hour=hour, minute=0, second=0, microsecond=0)
+        return {"url": slug, "title": title, "venueName": venue, "startDate": start.isoformat().replace("+00:00", "Z"),
+                "timezone": tz, "groupName": group, "minTicketPrice": price}
+
+    def test_filters_and_pagination(self):
+        pages = [
+            {"events": [self._ev("a", "Salsa Night", "San Antonios", price=0),
+                        self._ev("b", "Secret Rave", "Location given day of"),
+                        self._ev("c", "Online Mixer", "Virtual"),
+                        self._ev("d", "Jersey Jam", "Maddhatter Hoboken"),
+                        self._ev("e", "Old Party", "Bar 13", days=-3)], "nextCursor": 20},
+            {"events": [self._ev("f", "Harbor Cruise", "Pier 40", group="iBoat Cruises NYC"),
+                        self._ev("g", "Late One", "Bar 13", hour=23, group="Bar 13"),
+                        self._ev("h", "Later One", "Bar 13", hour=23, group="Bar 13"),
+                        self._ev("i", "Latest One", "Bar 13", hour=23, group="Bar 13"), self._ev("a", "Salsa Night", "San Antonios")],
+             "nextCursor": None},
+        ]
+        asked = []
+        evs = scrapers.scrape_posh_nyc("u", "ua", get=lambda p: asked.append(p.get("cursor")) or pages[len(asked) - 1])
+        self.assertEqual(asked, [None, 20])
+        names = sorted(e["name"] for e in evs)
+        self.assertEqual(len([n for n in names if n.endswith("One")]), 2)  # at most two a day per organizer
+        self.assertIn("Salsa Night", names)
+        for gone in ("Secret Rave", "Online Mixer", "Jersey Jam", "Old Party", "Harbor Cruise"):
+            self.assertNotIn(gone, names)
+        salsa = next(e for e in evs if e["name"] == "Salsa Night")
+        self.assertEqual((salsa["url"], salsa["price"], salsa["venue"]), ("https://posh.vip/e/a", "Free", "San Antonios"))
+
+
 if __name__ == "__main__":
     unittest.main()
