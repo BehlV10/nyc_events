@@ -128,15 +128,21 @@ class Page(unittest.TestCase):
             self.assertEqual(cls, "event", name)
             self.assertNotIn('class="avail', li)
 
-    def test_sold_out_listings_go_last_behind_a_toggle(self):
+    def test_sold_out_listings_go_last(self):
         order = [self.html.index(f'rel="noopener">{n}</a>') for n in ("Open Show", "Weekly Club Night", "Gone Show", "Opening Reception",
                                               "Waitlist Show", "Legacy Listing")]
         self.assertEqual(order[:2], sorted(order[:2]))
         self.assertLess(max(order[:2]), min(order[2:]))
-        # One fold per bucket ("Opening Reception" lands in Arts by its title): 3 + 1.
-        counts = re.findall(r'data-n="(\d+)">\+ (\d+) sold out or full</button>', self.html)
-        self.assertEqual(sorted(int(a) for a, b in counts if a == b), [1, 3])
-        self.assertIn("body:not(.soldout-open) .bucket:not(.show-soldout) .event.soldout { display: none; }", self.html)
+        self.assertEqual(len(re.findall(r'<li class="event soldout"[^>]* data-soldout="true"', self.html)), 4)
+
+    def test_skip_sold_out_checkbox_is_on_by_default(self):
+        self.assertIn('<input type="checkbox" id="skip-soldout-chk" checked>', self.html)
+        self.assertIn("Skip sold-out events", self.html)
+        # Search and My Schedule still show them; unticking is remembered in the link (#soldout=1).
+        self.assertIn("const skipSoldout = !!(skipSoldoutChk && skipSoldoutChk.checked) && !searchText && !starredOnly;", self.html)
+        self.assertIn("const soldoutOk = !skipSoldout || !m.soldout;", self.html)
+        self.assertIn("params.set('soldout', '1')", self.html)
+        self.assertIn("if (skipSoldoutChk) skipSoldoutChk.checked = true;", self.html)  # Reset turns skipping back on
 
     def test_schema_and_guide_pages(self):
         events = {e["name"]: e for _d, evs in self.dated for e in evs}

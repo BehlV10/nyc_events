@@ -2913,13 +2913,9 @@ def render_page(results, split_deferred=False, context_out=None):
                 continue
             cats = dict(CATEGORY_BUCKETS).get(bname, [])
             accent = CATEGORY_STYLES.get(cats[0], CATEGORY_STYLES["other"])[0] if cats else CATEGORY_STYLES["other"][0]
-            # Sold-out and full listings go last, folded behind a "+ N sold out or full" row.
+            # Sold-out and full listings go last (they're hidden while "Skip sold-out events" is on).
             bucket_events = sorted(bucket_events, key=lambda e: bool(avail_of(e)))
-            n_gone = sum(1 for e in bucket_events if avail_of(e))
             items = "\n".join(render_event(e) for e in bucket_events)
-            if n_gone:
-                items += (f'<li class="soldout-more"><button type="button" class="soldout-toggle" data-n="{n_gone}">'
-                          f'+ {n_gone} sold out or full</button></li>')
             bucket_blocks.append(f'''
             <div class="bucket" data-bucket="{escape(bname)}" style="--accent:{accent};">
               <div class="bucket-head" role="button" tabindex="0" aria-expanded="true">
@@ -3730,11 +3726,8 @@ def render_page(results, split_deferred=False, context_out=None):
   .avail {{ display:inline-block; margin-left: 6px; font-size: 11px; padding: 1px 6px; border-radius: 5px; border: 1px dashed var(--border-hover); color: var(--muted); cursor: help; }}
   .avail-sold-out, .avail-waitlist {{ color: var(--warn); border-color: currentColor; font-weight: 600; }}
   .event.soldout .what > a {{ opacity: .7; }}
-  body:not(.soldout-open) .bucket:not(.show-soldout) .event.soldout {{ display: none; }}
-  .soldout-more {{ list-style: none; padding: 2px 0 4px; }}
-  .soldout-more[hidden], body.soldout-open .soldout-more {{ display: none; }}
-  .soldout-toggle {{ background: none; border: 0; padding: 2px 0; color: var(--muted); font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline dotted; }}
-  .soldout-toggle:hover {{ color: var(--fg); }}
+  .soldout-skip-toggle {{ display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--muted); user-select: none; }}
+  .soldout-skip-toggle input {{ accent-color: var(--accent); width: 14px; height: 14px; cursor: pointer; margin: 0; }}
   .compare-tickets {{ font-size: 11px; color: var(--muted); }}
   .compare-tickets a {{ color: var(--accent); text-decoration: none; }}
   .compare-tickets a:hover {{ text-decoration: underline; }}
@@ -6114,6 +6107,10 @@ def render_page(results, split_deferred=False, context_out=None):
           <input type="checkbox" id="lgbtq-only-chk">
           <span><span class="chip-icon">🏳️‍🌈 </span>LGBTQ+ events only</span>
         </label>
+        <label class="soldout-skip-toggle" for="skip-soldout-chk" title="Hides sold-out shows, waitlists and full RSVPs. Searching or viewing My Schedule still shows them.">
+          <input type="checkbox" id="skip-soldout-chk" checked>
+          <span><span class="chip-icon">🚫 </span>Skip sold-out events</span>
+        </label>
         <div class="timeframe-toggle-wrap" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);">
           <label class="timeframe-toggle" for="timeframe-enable-chk">
             <input type="checkbox" id="timeframe-enable-chk">
@@ -6538,6 +6535,7 @@ def render_page(results, split_deferred=False, context_out=None):
     const freeCatchChk = document.getElementById('free-catch-chk');
     const guestlistOnlyChk = document.getElementById('guestlist-only-chk');
     const lgbtqOnlyChk = document.getElementById('lgbtq-only-chk');
+    const skipSoldoutChk = document.getElementById('skip-soldout-chk');
 
     const locChips = document.querySelectorAll('#location-chips .loc-chip');
     const subareaBar = document.getElementById('subarea-chips-bar');
@@ -7496,9 +7494,10 @@ def render_page(results, split_deferred=False, context_out=None):
       const isFree = (freeOnlyChk && freeOnlyChk.checked) || (freeCatchChk && freeCatchChk.checked);
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
       const isLgbtq = lgbtqOnlyChk && lgbtqOnlyChk.checked;
+      const showsSoldout = skipSoldoutChk && !skipSoldoutChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
       const isGenreFiltered = Array.from(genreBoxes).some(b => !b.checked);
-      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || isLgbtq || starredOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || isLgbtq || showsSoldout || starredOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -7554,6 +7553,7 @@ def render_page(results, split_deferred=False, context_out=None):
       if (freeOnlyChk && freeOnlyChk.checked) params.set('free', (freeCatchChk && freeCatchChk.checked) ? '2' : '1');
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
       if (lgbtqOnlyChk && lgbtqOnlyChk.checked) params.set('lgbtq', '1');
+      if (skipSoldoutChk && !skipSoldoutChk.checked) params.set('soldout', '1');
       if (starredOnly) params.set('saved', '1');
       if (timeFrom !== null || timeTo !== null) {{
         if (timeFrom !== null) params.set('from', formatMinutesToHHMM(timeFrom));
@@ -7584,6 +7584,7 @@ def render_page(results, split_deferred=False, context_out=None):
         if (params.get('free') === '2' && freeCatchChk) freeCatchChk.checked = true;
         if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
         if (params.get('lgbtq') === '1' && lgbtqOnlyChk) lgbtqOnlyChk.checked = true;
+        if (params.get('soldout') === '1' && skipSoldoutChk) skipSoldoutChk.checked = false;
         if (params.get('saved') === '1') starredOnly = true;
         if (params.get('past') === '1') showPastToday = true;
         if (params.get('v') === 'map') {{
@@ -7721,8 +7722,8 @@ def render_page(results, split_deferred=False, context_out=None):
       const cities = new Set(Array.from(cityBoxes).filter(boxOn).map(b => b.value));
       const starDates = starredOnly ? new Set(Array.from(starredEvents).map(k => k.split('|')[0])) : null;
       const searchText = searchInput.value.trim().toLowerCase();
-      // Searching or viewing saved events shows sold-out listings in place rather than folded away.
-      document.body.classList.toggle('soldout-open', searchText.length > 0 || starredOnly);
+      // Searching or viewing saved events shows sold-out listings even while they're skipped.
+      const skipSoldout = !!(skipSoldoutChk && skipSoldoutChk.checked) && !searchText && !starredOnly;
       const freeOnly = freeOnlyChk ? freeOnlyChk.checked : false;
       const freeCatch = freeOnly && freeCatchChk ? freeCatchChk.checked : false;
       const guestlistOnly = guestlistOnlyChk ? guestlistOnlyChk.checked : false;
@@ -7836,7 +7837,7 @@ def render_page(results, split_deferred=False, context_out=None):
               return;
             }}
             b._pruned = false;
-            let bucketVisible = 0, bucketSoldout = 0;
+            let bucketVisible = 0;
             events.forEach(li => {{
               let m = li._meta;
               if (!m) {{
@@ -7868,6 +7869,7 @@ def render_page(results, split_deferred=False, context_out=None):
               const freeOk = !freeOnly || m.free || (freeCatch && m.freeCatch);
               const guestlistOk = !guestlistOnly || m.guestlist;
               const lgbtqOk = !lgbtqOnly || m.lgbtq;
+              const soldoutOk = !skipSoldout || !m.soldout;
               const starOk = !starredOnly || starredEvents.has(eventKey(li));
               const searchOk = !searchText || (m.text || (m.text = li.textContent.toLowerCase())).includes(searchText);
 
@@ -7893,20 +7895,13 @@ def render_page(results, split_deferred=False, context_out=None):
               }}
 
               const genreOk = genreOkFor(m.bucket, m.genre);
-              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && starOk && todOk && timePastOk;
+              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && soldoutOk && starOk && todOk && timePastOk;
               if (m.hidden === isVisible) {{ m.hidden = !isVisible; li.classList.toggle('hidden', !isVisible); }}
               if (isVisible) {{
                 bucketVisible++;
-                if (m.soldout) bucketSoldout++;
                 if (isToday && !isPast) visibleTonightCount++;
               }}
             }});
-            const soldBtn = b._soldBtn === undefined ? (b._soldBtn = b.querySelector('.soldout-toggle')) : b._soldBtn;
-            if (soldBtn) {{
-              soldBtn.parentElement.hidden = bucketSoldout === 0;
-              soldBtn.dataset.n = bucketSoldout;
-              if (!b.classList.contains('show-soldout')) soldBtn.textContent = `+ ${{bucketSoldout}} sold out or full`;
-            }}
             b.classList.toggle('empty', bucketVisible === 0);
             setCount(countEl, bucketVisible);
             cityVisible += bucketVisible;
@@ -8065,9 +8060,10 @@ def render_page(results, split_deferred=False, context_out=None):
             const freeOk = !freeOnly || li.dataset.free === 'true' || (freeCatch && li.dataset.freeCatch === 'true');
             const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
             const lgbtqOk = !lgbtqOnly || li.dataset.lgbtq === 'true';
+            const soldoutOk = !skipSoldout || li.dataset.soldout !== 'true';
             const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
             const genreOk = genreOkFor(li.dataset.bucket, li.dataset.genre);
-            const isVisible = catOk && genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk;
+            const isVisible = catOk && genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && soldoutOk;
             li.classList.toggle('hidden', !isVisible);
           }});
         }}
@@ -8192,6 +8188,7 @@ def render_page(results, split_deferred=False, context_out=None):
 
     if (guestlistOnlyChk) guestlistOnlyChk.addEventListener('change', apply);
     if (lgbtqOnlyChk) lgbtqOnlyChk.addEventListener('change', apply);
+    if (skipSoldoutChk) skipSoldoutChk.addEventListener('change', apply);
 
     document.addEventListener('keydown', (e) => {{
       if ((e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) &&
@@ -8338,14 +8335,6 @@ def render_page(results, split_deferred=False, context_out=None):
     if (genreAllBtn) genreAllBtn.addEventListener('click', () => setAllGenres(true));
     const genreNoneBtn = document.getElementById('genre-none');
     if (genreNoneBtn) genreNoneBtn.addEventListener('click', () => setAllGenres(false));
-    // "+ 3 sold out or full" unfolds a bucket's sold-out listings; clicking again folds them.
-    document.addEventListener('click', (e) => {{
-      const btn = e.target.closest && e.target.closest('.soldout-toggle');
-      if (!btn) return;
-      const bucket = btn.closest('.bucket');
-      const open = bucket.classList.toggle('show-soldout');
-      btn.textContent = open ? 'Hide sold out' : `+ ${{btn.dataset.n}} sold out or full`;
-    }});
     // Clicking a genre pill on a card shows only that genre; clicking it again shows all.
     document.addEventListener('click', (e) => {{
       const pill = e.target.closest && e.target.closest('button.genre-pill');
@@ -8400,6 +8389,7 @@ def render_page(results, split_deferred=False, context_out=None):
       if (freeCatchChk) freeCatchChk.checked = false;
       if (guestlistOnlyChk) guestlistOnlyChk.checked = false;
       if (lgbtqOnlyChk) lgbtqOnlyChk.checked = false;
+      if (skipSoldoutChk) skipSoldoutChk.checked = true;
       starredOnly = false;
       clearRange();
       timeFrom = null;
