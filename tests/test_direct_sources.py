@@ -181,7 +181,8 @@ class DonycDetails(unittest.TestCase):
     def test_free_and_sold_out_flags(self):
         free, gone = self._event("A"), self._event("B", p="/b", price="$20")
         self._run([self._donyc(free, gone)], {"/events/2026/12/1/a": {"free": True}, "/b": {"sold_out": True}})
-        self.assertEqual((free["price"], gone["price"]), ("Free", "$20 (sold out)"))
+        self.assertEqual((free["price"], gone["price"]), ("Free", "$20"))
+        self.assertEqual((free.get("sold_out"), gone.get("sold_out")), (None, True))
 
     def test_skips_events_another_source_lists(self):
         e = self._event("Big Show")

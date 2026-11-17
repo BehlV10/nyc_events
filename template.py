@@ -718,6 +718,82 @@ def _is_event_guestlist(e):
     return False
 
 
+_SOLD_OUT_PRICE_RE = re.compile(r"[\(\[]?\s*\bsold[\s-]*out\b!*\s*[\)\]]?", re.I)
+_AVAILABILITY_KEYS = ("sold_out", "waitlist", "series")
+
+
+def _normalize_sold_out_price(e):
+    """Some sources (and older cached listings) put the sell-out in the price: "Sold Out",
+    "$25 (sold out)". Move it to the sold_out flag so the price and free checks see a real price."""
+    price = e.get("price")
+    if isinstance(price, str) and _SOLD_OUT_PRICE_RE.search(price):
+        rest = re.sub(r"\s+", " ", _SOLD_OUT_PRICE_RE.sub(" ", price)).strip(" -–·,;:|")
+        e["price"] = rest or None
+        e["sold_out"] = True
+    return e
+
+
+def _copy_availability(src, dst):
+    for key in _AVAILABILITY_KEYS:
+        if src.get(key):
+            dst[key] = True
+        else:
+            dst.pop(key, None)
+
+
+# label, tooltip
+SOLD_OUT_LABELS = {
+    "sold_out": ("Sold out", "No tickets left on the ticket site."),
+    "waitlist": ("Waitlist", "Sold out, but the ticket site has a waitlist you can join."),
+    "rsvp_full": ("RSVP full", "The free RSVPs are taken on the ticket site. Walk-ins are often still "
+                               "welcome at openings and receptions; check the event page."),
+}
+
+
+def sold_out_state(e, recurring=False):
+    """How to show a sold-out listing: "sold_out" (paid, no tickets left), "waitlist", "rsvp_full"
+    (a free RSVP that filled up), or None when there's nothing worth saying. A weekly party whose
+    free guestlist tier ran out still lets people in at the door, so it gets no label at all (a
+    weekly storytime or workshop that's full does)."""
+    if not e.get("sold_out"):
+        return None
+    guestlist = _is_event_guestlist(e)
+    free_tier = guestlist or _free_signal(e)
+    nightlife = guestlist or category_bucket(e.get("category")) == "Music & nightlife"
+    if free_tier and nightlife and (recurring or e.get("series")):
+        return None
+    if e.get("waitlist"):
+        return "waitlist"
+    return "rsvp_full" if free_tier else "sold_out"
+
+
+def sold_out_badge(state):
+    if not state:
+        return ""
+    label, tip = SOLD_OUT_LABELS[state]
+    return f'<span class="avail avail-{state.replace("_", "-")}" title="{escape(tip)}">{label}</span>'
+
+
+def _listing_state(e):
+    """sold_out_state as the page showed it (render_page knows whether the event repeats weekly)."""
+    return e["_avail"] if "_avail" in e else sold_out_state(e)
+
+
+def listing_sold_out(e):
+    """True when the page shows this listing as sold out, full or waitlist-only."""
+    return bool(_listing_state(e))
+
+
+def price_with_availability(e):
+    """Price text with the sell-out noted, for feeds and plain-text roundups: "$25 (sold out)"."""
+    price = (e.get("price") or "").strip()
+    state = _listing_state(e)
+    if not state:
+        return price or None
+    label = SOLD_OUT_LABELS[state][0]
+    return f"{price} ({label.lower()})" if price else label
+
+
 def _build_gcal_link(e, title, venue, city):
     raw_date = e.get("date")
     if not raw_date:
@@ -1009,19 +1085,22 @@ def format_date_heading(date_obj):
     return f"{prefix} · {date_obj.strftime('%b %-d')}"
 
 
+def recurring_key(e):
+    """Key compute_recurring files an event under. Venue is part of it: a group posting the same
+    title at a different bar each week isn't one recurring event."""
+    return ((e.get("name") or "").strip().lower(), e.get("_source_venue") or "", (e.get("venue") or "").strip().lower())
+
+
 def compute_recurring(dated):
-    """Return set of (normalized_name, source_venue) keys for events that appear
-    on the same weekday roughly a week apart — treated as weekly recurring."""
+    """Return set of recurring_key()s for events that appear on the same weekday roughly a week
+    apart — treated as weekly recurring."""
     groups = defaultdict(list)
     for _, events in dated:
         for e in events:
             t = e.get("_time")
-            name = (e.get("name") or "").strip().lower()
-            if not t or not name:
+            key = recurring_key(e)
+            if not t or not key[0]:
                 continue
-            # Venue is part of the key: a group posting the same title at a different bar each
-            # week isn't one recurring event.
-            key = (name, e.get("_source_venue") or "", (e.get("venue") or "").strip().lower())
             groups[key].append(t)
     recurring = set()
     for key, times in groups.items():
@@ -2167,6 +2246,9 @@ def _merge_duplicates(events, word_freq=None):
                 free_claim = bool(re.search(r"\bfree\b|^\$?0(\.00)?$", str(e["price"]).strip(), re.I))
                 if not (free_claim and _TICKET_SELLER_RE.search(match.get("url") or "")):
                     match["price"] = e["price"]
+                    _copy_availability(e, match)  # whether it's sold out comes with the price it belongs to
+            if e.get("sold_out") and not match.get("sold_out") and not match.get("price"):
+                _copy_availability(e, match)
             if (not match.get("lat") or not match.get("lng")) and e.get("lat") and e.get("lng"):
                 match["lat"] = e["lat"]
                 match["lng"] = e["lng"]
@@ -2471,7 +2553,7 @@ def group_by_date(results):
             n_low = (e.get("name") or "").lower()
             if _ONLINE_TITLE_RE.search(n_low) and not re.search(r"in[- ]person|hybrid|\birl\b", n_low):
                 continue
-            entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
+            entry = _normalize_sold_out_price({"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")})
             entry["url"] = sanitize_event_url(fix_doubled_url(entry.get("url")), fallback=r.get("url") or None)
             entry["venue"] = e.get("venue") or r.get("venue", "")
             if (entry.get("venue") or "").strip().lower() == "dance/nyc community calendar":
@@ -2658,10 +2740,13 @@ def render_page(results, split_deferred=False, context_out=None):
         weather_pill_html = f'<span class="pill-weather" title="{weather.get("label", "")} in NYC (Central Park)">{weather.get("icon", "🌤️")} {weather.get("temp", "--")}°F <span class="weather-label">{weather.get("label", "")}</span></span>'
 
     def is_recurring(e):
-        return (
-            (e.get("name") or "").strip().lower(),
-            e.get("_source_venue") or "",
-        ) in recurring_keys
+        return recurring_key(e) in recurring_keys
+
+    def avail_of(e):
+        """sold_out_state, worked out once per event."""
+        if "_avail" not in e:
+            e["_avail"] = sold_out_state(e, is_recurring(e))
+        return e["_avail"]
 
     def render_event(e):
         raw_title = e.get("name") or "Untitled"
@@ -2683,6 +2768,8 @@ def render_page(results, split_deferred=False, context_out=None):
             price_tag = f'<span class="price">{price_raw}</span>'
         else:
             price_tag = ""
+        avail = avail_of(e)
+        price_tag += sold_out_badge(avail)
 
         cat = e.get("category") or "other"
         bucket = category_bucket(cat)
@@ -2802,8 +2889,9 @@ def render_page(results, split_deferred=False, context_out=None):
         ev_id = _event_stable_id(e)
         # Flags are emitted only when true (the page tests `=== 'true'`), and nothing that the
         # page can derive (subarea name, HH:MM) is repeated per event: deferred days are ~17k <li>s.
-        flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-free-catch="true"' if free_kind == "catch" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
-        return _compact_li(f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{epoch_attr}{time_attr}{geo_attrs}>
+        flag_attrs = (' data-soldout="true"' if avail else "") + (' data-free="true"' if free_flag == "true" else "") + (' data-free-catch="true"' if free_kind == "catch" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
+        li_class = "event soldout" if avail else "event"
+        return _compact_li(f'''<li class="{li_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}{_other_times_html(e)}{_more_dates_html(e)}</div>
           <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
@@ -2825,7 +2913,13 @@ def render_page(results, split_deferred=False, context_out=None):
                 continue
             cats = dict(CATEGORY_BUCKETS).get(bname, [])
             accent = CATEGORY_STYLES.get(cats[0], CATEGORY_STYLES["other"])[0] if cats else CATEGORY_STYLES["other"][0]
+            # Sold-out and full listings go last, folded behind a "+ N sold out or full" row.
+            bucket_events = sorted(bucket_events, key=lambda e: bool(avail_of(e)))
+            n_gone = sum(1 for e in bucket_events if avail_of(e))
             items = "\n".join(render_event(e) for e in bucket_events)
+            if n_gone:
+                items += (f'<li class="soldout-more"><button type="button" class="soldout-toggle" data-n="{n_gone}">'
+                          f'+ {n_gone} sold out or full</button></li>')
             bucket_blocks.append(f'''
             <div class="bucket" data-bucket="{escape(bname)}" style="--accent:{accent};">
               <div class="bucket-head" role="button" tabindex="0" aria-expanded="true">
@@ -3633,6 +3727,14 @@ def render_page(results, split_deferred=False, context_out=None):
   .price[title] {{ cursor: help; }}
   .free-catch-toggle {{ margin-left: 22px; font-weight: 500; font-size: 11px; opacity: .9; }}
   .price.ticketed {{ background: rgba(139, 178, 255, 0.12); color: #8bb2ff; border: 1px solid rgba(139, 178, 255, 0.3); font-weight: 600; font-size: 10px; }}
+  .avail {{ display:inline-block; margin-left: 6px; font-size: 11px; padding: 1px 6px; border-radius: 5px; border: 1px dashed var(--border-hover); color: var(--muted); cursor: help; }}
+  .avail-sold-out, .avail-waitlist {{ color: var(--warn); border-color: currentColor; font-weight: 600; }}
+  .event.soldout .what > a {{ opacity: .7; }}
+  body:not(.soldout-open) .bucket:not(.show-soldout) .event.soldout {{ display: none; }}
+  .soldout-more {{ list-style: none; padding: 2px 0 4px; }}
+  .soldout-more[hidden], body.soldout-open .soldout-more {{ display: none; }}
+  .soldout-toggle {{ background: none; border: 0; padding: 2px 0; color: var(--muted); font: inherit; font-size: 12px; cursor: pointer; text-decoration: underline dotted; }}
+  .soldout-toggle:hover {{ color: var(--fg); }}
   .compare-tickets {{ font-size: 11px; color: var(--muted); }}
   .compare-tickets a {{ color: var(--accent); text-decoration: none; }}
   .compare-tickets a:hover {{ text-decoration: underline; }}
@@ -7619,6 +7721,8 @@ def render_page(results, split_deferred=False, context_out=None):
       const cities = new Set(Array.from(cityBoxes).filter(boxOn).map(b => b.value));
       const starDates = starredOnly ? new Set(Array.from(starredEvents).map(k => k.split('|')[0])) : null;
       const searchText = searchInput.value.trim().toLowerCase();
+      // Searching or viewing saved events shows sold-out listings in place rather than folded away.
+      document.body.classList.toggle('soldout-open', searchText.length > 0 || starredOnly);
       const freeOnly = freeOnlyChk ? freeOnlyChk.checked : false;
       const freeCatch = freeOnly && freeCatchChk ? freeCatchChk.checked : false;
       const guestlistOnly = guestlistOnlyChk ? guestlistOnlyChk.checked : false;
@@ -7732,7 +7836,7 @@ def render_page(results, split_deferred=False, context_out=None):
               return;
             }}
             b._pruned = false;
-            let bucketVisible = 0;
+            let bucketVisible = 0, bucketSoldout = 0;
             events.forEach(li => {{
               let m = li._meta;
               if (!m) {{
@@ -7749,6 +7853,7 @@ def render_page(results, split_deferred=False, context_out=None):
                   freeCatch: li.dataset.freeCatch === 'true',
                   guestlist: li.dataset.guestlist === 'true',
                   lgbtq: li.dataset.lgbtq === 'true',
+                  soldout: li.dataset.soldout === 'true',
                   timeMins: tm ? parseInt(tm, 10) : -1,
                   epoch: li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0,
                   text: null,
@@ -7792,9 +7897,16 @@ def render_page(results, split_deferred=False, context_out=None):
               if (m.hidden === isVisible) {{ m.hidden = !isVisible; li.classList.toggle('hidden', !isVisible); }}
               if (isVisible) {{
                 bucketVisible++;
+                if (m.soldout) bucketSoldout++;
                 if (isToday && !isPast) visibleTonightCount++;
               }}
             }});
+            const soldBtn = b._soldBtn === undefined ? (b._soldBtn = b.querySelector('.soldout-toggle')) : b._soldBtn;
+            if (soldBtn) {{
+              soldBtn.parentElement.hidden = bucketSoldout === 0;
+              soldBtn.dataset.n = bucketSoldout;
+              if (!b.classList.contains('show-soldout')) soldBtn.textContent = `+ ${{bucketSoldout}} sold out or full`;
+            }}
             b.classList.toggle('empty', bucketVisible === 0);
             setCount(countEl, bucketVisible);
             cityVisible += bucketVisible;
@@ -8226,6 +8338,14 @@ def render_page(results, split_deferred=False, context_out=None):
     if (genreAllBtn) genreAllBtn.addEventListener('click', () => setAllGenres(true));
     const genreNoneBtn = document.getElementById('genre-none');
     if (genreNoneBtn) genreNoneBtn.addEventListener('click', () => setAllGenres(false));
+    // "+ 3 sold out or full" unfolds a bucket's sold-out listings; clicking again folds them.
+    document.addEventListener('click', (e) => {{
+      const btn = e.target.closest && e.target.closest('.soldout-toggle');
+      if (!btn) return;
+      const bucket = btn.closest('.bucket');
+      const open = bucket.classList.toggle('show-soldout');
+      btn.textContent = open ? 'Hide sold out' : `+ ${{btn.dataset.n}} sold out or full`;
+    }});
     // Clicking a genre pill on a card shows only that genre; clicking it again shows all.
     document.addEventListener('click', (e) => {{
       const pill = e.target.closest && e.target.closest('button.genre-pill');

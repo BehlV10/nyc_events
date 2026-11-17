@@ -142,7 +142,9 @@ def event_schema(e, site_url=None):
         "description": (e.get("description") or f"{name} at {venue}, {locality}.")[:300],
         "organizer": {"@type": "Organization", "name": e.get("_presenter") or venue, "url": url},
     }
-    offer = {"@type": "Offer", "url": url, "priceCurrency": "USD", "availability": "https://schema.org/InStock"}
+    from template import listing_sold_out
+    availability = "SoldOut" if listing_sold_out(e) else "InStock"
+    offer = {"@type": "Offer", "url": url, "priceCurrency": "USD", "availability": f"https://schema.org/{availability}"}
     if _is_event_free(e):
         offer["price"] = "0"
     elif _price_number(e.get("price")):
@@ -315,7 +317,7 @@ def hub_events(hub, dated, limit=None):
     """Deduplicated upcoming events matching a hub's filters, in start order."""
     if hub.get("style") == "camps":
         return camps.load_camps()
-    from template import _event_city, _is_event_free
+    from template import _event_city, _is_event_free, listing_sold_out
     from venues_geo import resolve_event_geo
 
     today = datetime.now(EASTERN).date()
@@ -324,6 +326,8 @@ def hub_events(hub, dated, limit=None):
     is_markets = hub.get("style") == "markets"
     out = []
     for e in _upcoming(dated, include_tba=is_markets):
+        if listing_sold_out(e):  # guide pages list what you can still go to
+            continue
         t = e.get("_time")
         d = t.date() if isinstance(t, datetime) else None
         if time_rule == "today" and d != today:

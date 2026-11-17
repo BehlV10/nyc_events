@@ -16,7 +16,7 @@ def clean(name, **extra):
 
 
 class SoldOutTitles(unittest.TestCase):
-    def test_note_moves_from_the_title_to_the_price(self):
+    def test_note_moves_from_the_title_to_the_sold_out_flag(self):
         for title, name in (("[SOLD OUT] Fahim Anwar", "Fahim Anwar"), ("SOLD OUT - Jacqueline Novak", "Jacqueline Novak"),
                             ("SOLD OUT: DANNA- THE BEDROOM SESSIONS US TOUR", "DANNA- THE BEDROOM SESSIONS US TOUR"),
                             ("Fabrizio - SOLD OUT", "Fabrizio"), ("Jackie Evans SOLD OUT", "Jackie Evans"),
@@ -24,15 +24,16 @@ class SoldOutTitles(unittest.TestCase):
                             ("Late Show (Sold Out)", "Late Show")):
             e = clean(title)
             self.assertEqual(e["name"], name)
-            self.assertEqual(e["price"], "Sold out")
+            self.assertTrue(e["sold_out"])
+            self.assertNotIn("price", e)
 
     def test_a_listed_price_is_kept(self):
-        self.assertEqual(clean("SOLD OUT: Show", price="$25")["price"], "$25 (sold out)")
-        self.assertEqual(clean("SOLD OUT: Show", price="Sold Out")["price"], "Sold Out")
+        e = clean("SOLD OUT: Show", price="$25")
+        self.assertEqual((e["price"], e["sold_out"]), ("$25", True))
 
     def test_is_stable_when_cached_events_are_cleaned_again(self):
-        e = clean("SOLD OUT: Show", price="$25")
-        self.assertEqual(scrapers._clean_scraped_events([e])[0]["price"], "$25 (sold out)")
+        e = scrapers._clean_scraped_events([clean("SOLD OUT: Show", price="$25")])[0]
+        self.assertEqual((e["name"], e["price"], e["sold_out"]), ("Show", "$25", True))
 
     def test_a_title_about_something_else_stays(self):
         self.assertEqual(clean("Speed dating for NYC Singles (30s/40s) Women Sold Out")["name"],

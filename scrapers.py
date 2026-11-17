@@ -1487,7 +1487,7 @@ def _apply_donyc_detail(e, detail):
         m = _DONYC_PRICE_RE.search(detail.get("info") or "")
         e["price"] = "Free" if detail.get("free") else (m.group(0).replace(" ", "") if m else None)
     if detail.get("sold_out"):
-        e["price"] = f"{e['price']} (sold out)" if e.get("price") else "Sold out"
+        e["sold_out"] = True
 
 
 def _enrich_donyc_events(results, ua=None, limit=None, path=None):
@@ -1847,10 +1847,7 @@ def _eventbrite_event_details(event_id, ua):
                         headers={"User-Agent": ua, "Accept": "application/json"}, timeout=12)
     resp.raise_for_status()
     ev = resp.json()
-    sold_out = bool((ev.get("ticket_availability") or {}).get("is_sold_out"))
-    if sold_out:  # _eb_price says "Sold Out"; the price tier is more useful, so ask without the flag
-        ev = {**ev, "ticket_availability": {**ev["ticket_availability"], "is_sold_out": False}}
-    return {"price": _eb_price(ev), "sold_out": sold_out, "status": ev.get("status"), "organizer_id": ev.get("organizer_id"),
+    return {"price": _eb_price(ev), **_eb_availability(ev), "status": ev.get("status"), "organizer_id": ev.get("organizer_id"),
             "organizer_name": ((ev.get("organizer") or {}).get("name") or "").strip() or None,
             "category_id": ev.get("category_id")}
 
@@ -1964,8 +1961,7 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
         if info.get("price") and info["price"] != e.get("price"):
             e["price"] = info["price"]
             priced += 1
-        if info.get("sold_out"):
-            e["sold_out"] = True
+        if _apply_sold_out(e, info):
             soldout += 1
     for path, data, ttl in ((links_path, links, ALLEVENTS_LINK_TTL), (details_path, eb, EVENTBRITE_DETAIL_TTL)):
         try:
@@ -3143,7 +3139,6 @@ def scrape_sesh_comedy(url, ua):
 
         clean_title = re.sub(r"^\d+/\d+\s*", "", title).strip()
         ev_url = f"https://seshcomedy.com/{rel_url}" if rel_url else "https://seshcomedy.com/"
-        price = "Sold Out" if is_sold_out else "$20.00 – $30.00 (BYOB)"
         key = (clean_title.lower(), dt.strftime("%Y-%m-%dT%H"))
         if key not in seen:
             seen.add(key)
@@ -3152,9 +3147,11 @@ def scrape_sesh_comedy(url, ua):
                 "date": dt.astimezone(timezone.utc).isoformat(),
                 "venue": "Sesh Comedy (Chinatown / LES)",
                 "url": ev_url,
-                "price": price,
+                "price": "$20.00 – $30.00 (BYOB)",
                 "category": "comedy",
             }
+            if is_sold_out:
+                ev_obj["sold_out"] = True
             if _is_within_horizon(ev_obj):
                 events.append(ev_obj)
 
@@ -5186,12 +5183,30 @@ def _eb_end_utc(ev, start):
     return end.isoformat() if end > start else None
 
 
+def _eb_availability(ev):
+    """{"sold_out", "waitlist", "series"} for one Eventbrite event. The price stays the ticket price:
+    the page decides how to word a sold-out listing (a free RSVP that filled up isn't a sold-out show)."""
+    ta = ev.get("ticket_availability") or {}
+    sold_out = bool(ta.get("is_sold_out"))
+    return {"sold_out": sold_out, "waitlist": sold_out and bool(ta.get("waitlist_available")),
+            "series": bool(ev.get("is_series"))}
+
+
+def _apply_sold_out(e, info):
+    """Copy Eventbrite's sold-out flags onto a listing (only the true ones, so events.json stays small)."""
+    if not info.get("sold_out"):
+        return False
+    e["sold_out"] = True
+    for key in ("waitlist", "series"):
+        if info.get(key):
+            e[key] = True
+    return True
+
+
 def _eb_price(ev):
     if ev.get("is_free"):
         return "Free"
     ta = ev.get("ticket_availability") or {}
-    if ta.get("is_sold_out"):
-        return "Sold Out"
     lo = ((ta.get("minimum_ticket_price") or {}).get("major_value"))
     hi = ((ta.get("maximum_ticket_price") or {}).get("major_value"))
     try:
@@ -5285,8 +5300,7 @@ def scrape_eventbrite_organizer(url, ua, max_pages=4):
             }
             if address:
                 e["address"] = address
-            if (ev.get("ticket_availability") or {}).get("is_sold_out"):
-                e["sold_out"] = True
+            _apply_sold_out(e, _eb_availability(ev))
             events.append(e)
         pag = data.get("pagination") or {}
         continuation = pag.get("continuation")
@@ -12688,8 +12702,8 @@ _SOLD_OUT_BARE_RE = re.compile(r"\s+SOLD[\s-]*OUT!*\s*$")
 
 
 def _tidy_sold_out(e, name):
-    """"[SOLD OUT] Show" -> "Show" with the note on the price, so a sold-out early show and its late
-    show read as two times of one event."""
+    """"[SOLD OUT] Show" -> "Show" with the event flagged sold out, so a sold-out early show and its
+    late show read as two times of one event."""
     m = _SOLD_OUT_PREFIX_RE.match(name)
     tidied = name[m.end():].strip() if m else ""
     if not tidied:
@@ -12697,8 +12711,7 @@ def _tidy_sold_out(e, name):
         tidied = name[:m.start()].strip() if m else ""
     if not tidied:
         return name
-    price = (e.get("price") or "").strip()
-    e["price"] = price if "sold out" in price.lower() else (f"{price} (sold out)" if price else "Sold out")
+    e["sold_out"] = True
     return tidied
 
 
