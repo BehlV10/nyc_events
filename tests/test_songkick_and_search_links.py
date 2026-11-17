@@ -206,5 +206,37 @@ class TomorrowAuditFixes(unittest.TestCase):
         self.assertEqual(evs[0]["address"], "551 Grand Street, New York City, NY, 10002")
 
 
+    def test_noon_placeholder_feed_is_time_unknown_and_filled_from_page(self):
+        evs = [{"name": f"Cabaret Night {i}", "date": f"2099-11-{17 + i}T17:00:00+00:00",
+                "url": f"https://54below.org/events/show-{i}/", "venue": "Feinstein's/54 Below", "category": "music"}
+               for i in range(4)]
+        self.assertTrue(scrapers.is_noon_placeholder_feed(evs))
+        results = [{"venue": "Feinstein's/54 Below", "url": "https://54below.org/", "events": [dict(e) for e in evs]}]
+        days, _, _ = T.group_by_date(results)
+        self.assertTrue(all(e.get("_time_unknown") for _, day in days for e in day))
+        import os, tempfile
+        with tempfile.TemporaryDirectory() as d:
+            filled = scrapers._fill_missing_times(
+                results, path=os.path.join(d, "times.json"),
+                fetch=lambda u: '{"startDate":"2099-11-17T21:30:00-05:00"}' if "show-0" in u else "<p>none</p>")
+        self.assertEqual(filled, 1)
+        self.assertEqual(results[0]["events"][0]["date"], "2099-11-18T02:30:00+00:00")
+
+    def test_noon_feed_needs_most_events_at_noon(self):
+        evs = [{"date": "2099-11-17T17:00:00+00:00"}, {"date": "2099-11-18T00:00:00+00:00"},
+               {"date": "2099-11-19T00:30:00+00:00"}, {"date": "2099-11-20T17:00:00+00:00"}]
+        self.assertFalse(scrapers.is_noon_placeholder_feed(evs))
+        market = [{"date": f"2099-12-0{i}T17:00:00+00:00", "end": f"2099-12-0{i}T23:00:00+00:00"} for i in range(1, 5)]
+        self.assertFalse(scrapers.is_noon_placeholder_feed(market))
+        flagged = [{"date": "2099-11-17T17:00:00+00:00", "time_unknown": True}] + [{"date": "2099-11-18T17:00:00+00:00"}] * 3
+        self.assertFalse(scrapers.is_noon_placeholder_feed(flagged))  # scraper already marks its placeholders
+
+    def test_venue_calendar_skips_feed_and_aggregator_urls(self):
+        for name in ("Arlene's Grocery", "City Winery", "The Skint", "Skinny Dennis"):
+            url = scrapers.known_venue_calendar(name)
+            self.assertFalse(url and scrapers._FEED_URL_RE.search(url), (name, url))
+        self.assertIsNone(scrapers.known_venue_calendar("Skint"))
+
+
 if __name__ == "__main__":
     unittest.main()

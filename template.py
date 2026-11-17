@@ -45,6 +45,8 @@ from scrapers import (
     BROADWAY_THEATRES,
     CINEMA_VENUES,
     known_venue_calendar,
+    is_noon_placeholder_feed,
+    _is_noon_at,
 )
 from holiday_themes import HOLIDAYS, HOLIDAY_KEYS, greeting_html, holiday_calendar, holiday_on, holiday_theme_css
 from lgbtq import is_lgbtq_event
@@ -2453,6 +2455,7 @@ def group_by_date(results):
     ongoing = []
     for r in results:
         date_only_feed = _is_date_only_feed(r.get("events", []))
+        noon_feed = is_noon_placeholder_feed(r.get("events", []))
         for e in r.get("events", []):
             if is_placeholder_or_closed_event(e.get("name")) or is_closed_show(e.get("venue")) or is_standing_exhibit(e):
                 continue
@@ -2520,6 +2523,8 @@ def group_by_date(results):
                         entry["_time_unknown"] = True  # the scraper's time is a placeholder
                     if dt.hour == 0 and dt.minute == 0 and (date_only_feed or entry["category"] not in _REAL_MIDNIGHT_CATEGORIES):
                         entry["_time_unknown"] = True
+                    if noon_feed and _is_noon_at(e):
+                        entry["_time_unknown"] = True  # a bare noon from a feed with no real times
                 except (TypeError, ValueError):
                     pass
             if e.get("_exhibition"):

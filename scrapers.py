@@ -12254,6 +12254,13 @@ _NON_VENUE_CALENDAR_HOSTS = (
     "meetup.com", "ra.co", "dice.fm", "songkick.com", "feverup.com", "lu.ma", "luma.com",
     "partiful.com", "nycgovparks.org", "data.cityofnewyork.us", "google.com", "danceus.org",
     "salsavida.com", "newyorktheatreguide.com", "broadway.com", "playbill.com",
+    "theskint.com", "secretnyc.co", "viewcy.com", "aftontickets.com",
+)
+# Scraper URLs that are data feeds (APIs, JSON, iCal), not pages a person can read
+_FEED_URL_RE = re.compile(
+    r"/api/|/api\.|[./]api[.-]|awsapi\.|/feeds?/|/json/|[?&]format=json|\.ics\b|\.json\b|\.xml\b|"
+    r"/rss\b|calendar\.ashx|[?&](?:key|api_key|token)=",
+    re.I,
 )
 _VENUE_SUFFIX_RE = re.compile(
     r"\s+(?:nyc|new york|new york city|manhattan|brooklyn|queens|bronx|staten island|"
@@ -12276,7 +12283,8 @@ def _build_known_venue_calendars():
         return _KNOWN_VENUE_CALENDARS
     for v in VENUES:
         url = (v.get("url") or "").strip()
-        if not url.startswith("http") or any(h in url.lower() for h in _NON_VENUE_CALENDAR_HOSTS):
+        if not url.startswith("http") or any(h in url.lower() for h in _NON_VENUE_CALENDAR_HOSTS) \
+                or _FEED_URL_RE.search(url):
             continue
         if "/wp-json/" in url:
             url = url.split("/wp-json/")[0] + "/events/"
@@ -12954,6 +12962,28 @@ def start_time_from_page(page, day):
     return near.pop() if len(near) == 1 else None
 
 
+def _is_noon_at(e):
+    """True when an event without an end time starts at exactly 12:00 PM New York time."""
+    if e.get("end"):
+        return False
+    try:
+        t = datetime.fromisoformat(str(e.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
+    except (TypeError, ValueError):
+        return False
+    return (t.hour, t.minute) == (12, 0)
+
+
+def is_noon_placeholder_feed(events):
+    """True when nearly all of a feed's events start at noon. Card scrapers use noon as the
+    placeholder for "no time given"; listings cached before they flagged it as time_unknown
+    still carry a bare noon, so an unflagged feed that is 80%+ noon is treated as having no
+    real times."""
+    events = [e for e in events or [] if e.get("date")]
+    if any(e.get("time_unknown") for e in events):
+        return False  # the scraper already flags its placeholders, so an unflagged noon is real
+    return len(events) >= 3 and sum(1 for e in events if _is_noon_at(e)) >= 0.8 * len(events)
+
+
 def _fill_missing_times(results, ua=None, limit=None, path=None, fetch=None):
     """Give listings without a start time the one on their own page (see start_time_from_page).
     Soonest first within a per-run budget; answers, including "the page doesn't say", are cached.
@@ -12975,12 +13005,14 @@ def _fill_missing_times(results, ua=None, limit=None, path=None, fetch=None):
         if source.startswith(_NO_DETAIL_TIME_SOURCES):
             continue
         listing = (r.get("url") or "").rstrip("/")
+        noon_feed = is_noon_placeholder_feed(r.get("events"))
         for e in r.get("events") or []:
             try:
                 when = datetime.fromisoformat(str(e.get("date")).replace("Z", "+00:00")).astimezone(EASTERN)
             except (TypeError, ValueError):
                 continue
-            midnight = (when.hour, when.minute) == (0, 0) and e.get("category") not in ("clubbing", "party")
+            midnight = ((when.hour, when.minute) == (0, 0) and e.get("category") not in ("clubbing", "party")) \
+                or (noon_feed and _is_noon_at(e))
             url = e.get("url") or ""
             if not (e.get("time_unknown") or midnight) or when.date() < today:
                 continue
