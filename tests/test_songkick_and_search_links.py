@@ -108,5 +108,135 @@ class WarsawTimes(unittest.TestCase):
         self.assertEqual(ev[0]["date"], "2099-12-10T00:00:00+00:00")  # 7pm Eastern
 
 
+class TomorrowAuditFixes(unittest.TestCase):
+    def test_search_fallback_uses_scraped_venue_calendar(self):
+        t = "2030-01-08T19:00:00-05:00"
+        results = [{"venue": "DoNYC Citywide", "url": "https://donyc.com/events", "events": [
+            {"name": "DJ Awesome", "date": t, "url": "https://www.google.com/search?q=DJ+Awesome+Shrine+NYC",
+             "venue": "Shrine", "category": "clubbing"},
+            {"name": "Afrobeat Late Set", "date": "2030-01-08T22:00:00-05:00",
+             "url": "https://www.google.com/search?q=Afrobeat+Shrine+NYC", "venue": "Shrine", "category": "clubbing"},
+        ]}]
+        cards = _cards(results)
+        self.assertEqual(len(cards), 2)
+        self.assertEqual(cards[0]["url"], "https://www.shrinenyc.com/calendar_main.php")
+
+    def test_compare_links_only_when_major_seller_lists_event(self):
+        donyc_only = {
+            "name": "Indie Band Night", "venue": "Bowery Ballroom", "_source_venue": "DoNYC Citywide",
+            "url": "https://www.boweryballroom.com/e/1", "price": "$25", "category": "music",
+        }
+        self.assertEqual(T._build_compare_links(donyc_only, donyc_only["name"]), "")
+        tm_ev = {
+            "name": "Indie Band Night", "venue": "Bowery Ballroom", "_source_venue": "Ticketmaster NYC",
+            "url": "https://www.ticketmaster.com/event/123", "price": "$25", "category": "music",
+        }
+        self.assertIn("StubHub", T._build_compare_links(tm_ev, tm_ev["name"]))
+
+    def test_daily_tours_sink_below_timed_events(self):
+        results = [{"venue": "DoNYC Citywide", "url": "https://donyc.com/events", "events": [
+            {"name": "Lincoln Center Tours", "date": "2030-01-08T10:15:00-05:00",
+             "url": "https://lincolncenter.org/tours", "venue": "Lincoln Center", "category": "music"},
+            {"name": "Evening Jazz Concert", "date": "2030-01-08T20:00:00-05:00",
+             "url": "https://lincolncenter.org/jazz", "venue": "Lincoln Center", "category": "music"},
+        ]}]
+        cards = _cards(results)
+        self.assertEqual([c["name"] for c in cards], ["Evening Jazz Concert", "Lincoln Center Tours"])
+
+    def test_shop_and_support_cashmere_sale_filtered(self):
+        self.assertTrue(scrapers.is_service_ad("Shop + Support: JCC Party at The Cashmere Sale", "JCC Manhattan"))
+
+    def test_flozier_54_below_start_time_extracted(self):
+        from datetime import date
+        html = '<h4 class="dt-duration">November 17, 2026</h4><a href="https://54below.org/t">Tue, Nov 17 :9:30 pm / 9:00 pm</a>'
+        self.assertEqual(scrapers.start_time_from_page(html, date(2026, 11, 17)), (21, 30))
+
+    def test_cinema_regular_runs_dropped_and_film_society_categorized_as_film(self):
+        results = [{"venue": "DoNYC Citywide", "url": "https://donyc.com/events", "events": [
+            {"name": "Fatherland", "date": "2030-01-08T17:30:00-05:00", "url": "https://filmlinc.org/f",
+             "venue": "Film Society of Lincoln Center", "category": "music"},
+            {"name": "Fatherland", "date": "2030-01-09T17:30:00-05:00", "url": "https://filmlinc.org/f",
+             "venue": "Film Society of Lincoln Center", "category": "music"},
+            {"name": "Fatherland", "date": "2030-01-10T17:30:00-05:00", "url": "https://filmlinc.org/f",
+             "venue": "Film Society of Lincoln Center", "category": "music"},
+            {"name": "Rare 35mm Restoration", "date": "2030-01-08T19:00:00-05:00", "url": "https://filmlinc.org/r",
+             "venue": "Film Society of Lincoln Center", "category": "music"},
+        ]}]
+        days, _, _ = T.group_by_date(results)
+        all_cards = [e for _, evs in days for e in evs]
+        self.assertEqual([c["name"] for c in all_cards], ["Rare 35mm Restoration"])
+        self.assertEqual(all_cards[0]["category"], "film")
+
+    def test_dance_nyc_extracts_venue_and_address_and_drops_zoom(self):
+        from unittest import mock
+        listing_html = """
+        <div class="event">
+          <div class="event_time">6:30pm</div>
+          <div class="event_details">
+            <a href="/for-audiences/community-calendar/view/Modern-Showcase/2099-11-18/"><h3>Modern Showcase</h3></a>
+            <p>Taylor Center for Dance Education<br/>An evening of movement.</p>
+          </div>
+        </div>
+        <div class="event">
+          <div class="event_time">10:00am</div>
+          <div class="event_details">
+            <a href="/for-audiences/community-calendar/view/Zoom-Class/2099-11-18/"><h3>Morning Movement</h3></a>
+            <p>Online Dance Co<br/>Join from home.</p>
+          </div>
+        </div>
+        """
+        detail_pages = {
+            "https://www.dance.nyc/for-audiences/community-calendar/view/Modern-Showcase/2099-11-18/": """
+                <div class="event_details">
+                  <p><b>Company:</b> Taylor Center for Dance Education<br/><b>Venue:</b> Taylor Dance East<br/><b>Location:</b> New York City, NY</p>
+                  <p>Taylor Center for Dance Education<br/>551 Grand Street<br/>New York City, NY, 10002</p>
+                </div>
+            """,
+            "https://www.dance.nyc/for-audiences/community-calendar/view/Zoom-Class/2099-11-18/": """
+                <div class="event_details">
+                  <p><b>Company:</b> Online Dance Co<br/><b>Venue:</b> Zoom<br/><b>Location:</b> New York, NY</p>
+                </div>
+            """,
+        }
+        with mock.patch.object(scrapers, "fetch_soup", return_value=scrapers.BeautifulSoup(listing_html, "html.parser")):
+            evs = scrapers.scrape_dance_nyc("https://www.dance.nyc/for-audiences/community-calendar/", "ua",
+                                            fetch_detail=lambda u: detail_pages[u])
+        self.assertEqual(len(evs), 1)
+        self.assertEqual(evs[0]["venue"], "Taylor Dance East")
+        self.assertEqual(evs[0]["address"], "551 Grand Street, New York City, NY, 10002")
+
+
+    def test_noon_placeholder_feed_is_time_unknown_and_filled_from_page(self):
+        evs = [{"name": f"Cabaret Night {i}", "date": f"2099-11-{17 + i}T17:00:00+00:00",
+                "url": f"https://54below.org/events/show-{i}/", "venue": "Feinstein's/54 Below", "category": "music"}
+               for i in range(4)]
+        self.assertTrue(scrapers.is_noon_placeholder_feed(evs))
+        results = [{"venue": "Feinstein's/54 Below", "url": "https://54below.org/", "events": [dict(e) for e in evs]}]
+        days, _, _ = T.group_by_date(results)
+        self.assertTrue(all(e.get("_time_unknown") for _, day in days for e in day))
+        import os, tempfile
+        with tempfile.TemporaryDirectory() as d:
+            filled = scrapers._fill_missing_times(
+                results, path=os.path.join(d, "times.json"),
+                fetch=lambda u: '{"startDate":"2099-11-17T21:30:00-05:00"}' if "show-0" in u else "<p>none</p>")
+        self.assertEqual(filled, 1)
+        self.assertEqual(results[0]["events"][0]["date"], "2099-11-18T02:30:00+00:00")
+
+    def test_noon_feed_needs_most_events_at_noon(self):
+        evs = [{"date": "2099-11-17T17:00:00+00:00"}, {"date": "2099-11-18T00:00:00+00:00"},
+               {"date": "2099-11-19T00:30:00+00:00"}, {"date": "2099-11-20T17:00:00+00:00"}]
+        self.assertFalse(scrapers.is_noon_placeholder_feed(evs))
+        market = [{"date": f"2099-12-0{i}T17:00:00+00:00", "end": f"2099-12-0{i}T23:00:00+00:00"} for i in range(1, 5)]
+        self.assertFalse(scrapers.is_noon_placeholder_feed(market))
+        flagged = [{"date": "2099-11-17T17:00:00+00:00", "time_unknown": True}] + [{"date": "2099-11-18T17:00:00+00:00"}] * 3
+        self.assertFalse(scrapers.is_noon_placeholder_feed(flagged))  # scraper already marks its placeholders
+
+    def test_venue_calendar_skips_feed_and_aggregator_urls(self):
+        for name in ("Arlene's Grocery", "City Winery", "The Skint", "Skinny Dennis"):
+            url = scrapers.known_venue_calendar(name)
+            self.assertFalse(url and scrapers._FEED_URL_RE.search(url), (name, url))
+        self.assertIsNone(scrapers.known_venue_calendar("Skint"))
+
+
 if __name__ == "__main__":
     unittest.main()
