@@ -9,6 +9,7 @@ installed the export skips these quietly and pages fall back to whatever image e
 """
 
 import os
+import re
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -24,7 +25,8 @@ MUTED = "#94a3b8"
 CAT_COLORS = {
     "music": "#7aa2f7", "clubbing": "#f7768e", "dance": "#ff7ab2", "comedy": "#bb9af7",
     "theater": "#e0af68", "film": "#7dcfff", "art": "#ffd866", "books": "#9ece6a", "food": "#ff9e64",
-    "outdoors": "#73daca", "sports": "#2ac3de", "gaming": "#b4f9f8", "community": "#c0caf5", "talks": "#a9b1d6",
+    "markets": "#ff9e64", "outdoors": "#73daca", "sports": "#2ac3de", "gaming": "#b4f9f8",
+    "community": "#c0caf5", "talks": "#a9b1d6",
 }
 
 _FONT_CANDIDATES = {
@@ -109,7 +111,7 @@ def render_main_card(path, count_label, picks, site_label):
     d = ImageDraw.Draw(img)
     _frame(d)
     f_pill = _font(19, bold=True)
-    x = _pill(d, (70, 56), "● LIVE · UPDATED EVERY 30 MIN", "#34d399", "#06261f", "#10b981", f_pill)
+    x = _pill(d, (70, 56), "● LIVE · UPDATED TWICE DAILY", "#34d399", "#06261f", "#10b981", f_pill)
     _pill(d, (x + 14, 56), f"{count_label} EVENTS", GOLD, "#1c1708", "#806600", f_pill)
     d.text((70, 120), "NYC Events", fill="#ffffff", font=_font(78, bold=True))
     sub = "Concerts, DJ nights, comedy, theater, run clubs, hikes & free things to do — all five boroughs."
@@ -127,9 +129,9 @@ def render_main_card(path, count_label, picks, site_label):
         t = e["_time"]
         when = f"{t.strftime('%a')} {t.strftime('%-I:%M%p').lower()}"
         d.text((94, y + 12), when, fill=col, font=f_m)
-        title = _wrap(d, e.get("name") or "", f_t, 560, 1)
+        title = _wrap(d, _clean_og_title(e.get("name") or ""), f_t, 560, 1)
         d.text((250, y + 10), title[0] if title else "", fill="#f8fafc", font=f_t)
-        venue = _wrap(d, e.get("venue") or "", f_m, 270, 1)
+        venue = _wrap(d, _clean_og_venue(e.get("venue") or ""), f_m, 270, 1)
         if venue:
             d.text((1110 - d.textlength(venue[0], font=f_m), y + 13), venue[0], fill="#64748b", font=f_m)
         y += 58
@@ -159,6 +161,85 @@ def render_hub_card(path, badge, title, subtitle, count_label, site_label):
     img.save(path, "JPEG", quality=88, optimize=True)
 
 
+_OG_SHOWCASE_CATS = ("music", "comedy", "theater", "outdoors", "art", "books", "dance", "clubbing", "markets")
+_OG_SKIP_CATS = {"services", "dance class", "family", "deals", "cruises", "experiences", "other", "volunteering"}
+
+
+def _clean_og_venue(venue):
+    return re.sub(r"\s*\(.*$", "", (venue or "").strip()).strip()
+
+
+def _clean_og_title(name):
+    # Strip trailing "| Day, Month Nth @Time" boilerplate from Eventbrite/comedy titles
+    return re.sub(r"\s*\|\s*(?:mon|tue|tues|wed|thu|thur|thurs|fri|sat|sun)\b.*$", "", (name or "").strip(), flags=re.I).strip()
+
+
+def select_og_picks(events, count=4):
+    """Pick up to `count` varied, prime-time NYC events across distinct categories for og-image.jpg."""
+    from template import _event_city
+    from venues_geo import resolve_event_geo
+
+    deduped = []
+    seen = set()
+    for e in events or []:
+        name = (e.get("name") or "").strip()
+        key = name.lower()
+        if not name or key in seen or e.get("_time_unknown") or e.get("_venue_unknown"):
+            continue
+        t = e.get("_time")
+        if not t:
+            continue
+        seen.add(key)
+        deduped.append(e)
+
+    prime = []
+    for e in deduped:
+        cat = (e.get("category") or "").lower()
+        if cat in _OG_SKIP_CATS:
+            continue
+        t = e["_time"]
+        if not (11 <= t.hour <= 22):
+            continue
+        venue = _clean_og_venue(e.get("venue") or "")
+        if not venue or re.match(r"^\d+\s+", venue):
+            continue
+        url = (e.get("url") or "").lower()
+        if "google.com/search" in url or "allevents." in url:
+            continue
+        city = _event_city(e.get("venue") or "", e.get("_source_venue"), geo=resolve_event_geo(e), event=e)
+        if city in ("other", "citywide"):
+            continue
+        prime.append(e)
+
+    # Sort prime candidates so multi-source corroborated events and evening prime-time shows lead
+    prime.sort(key=lambda e: (
+        -(len(e.get("_alt_sources") or [])),
+        0 if 17 <= e["_time"].hour <= 21 else 1,
+        e["_time"],
+    ))
+
+    picks = []
+    used_cats = set()
+    for cat in _OG_SHOWCASE_CATS:
+        for e in prime:
+            if (e.get("category") or "").lower() == cat and e not in picks:
+                picks.append(e)
+                used_cats.add(cat)
+                break
+        if len(picks) >= count:
+            break
+
+    for pool in (prime, deduped):
+        for e in pool:
+            if len(picks) >= count:
+                break
+            if e not in picks:
+                picks.append(e)
+    picks = picks[:count]
+    picks.sort(key=lambda e: e["_time"])
+    return picks
+
+
 def write_og_images(base_dir, dated, total_events, site_url):
     """Render og-image.jpg and one og-<hub>.jpg per landing page. Returns paths written."""
     if not HAS_PIL:
@@ -170,12 +251,7 @@ def write_og_images(base_dir, dated, total_events, site_url):
     site_label = site_url.split("://", 1)[-1].rstrip("/")
     out = []
     main = os.path.join(base_dir, "og-image.jpg")
-    picks, seen = [], set()
-    for e in feed_events(dated, days=2):
-        key = (e.get("name") or "").strip().lower()
-        if key not in seen:
-            seen.add(key)
-            picks.append(e)
+    picks = select_og_picks(feed_events(dated, days=3, limit=500), count=4)
     render_main_card(main, _rounded_count(total_events), picks, site_label)
     out.append(main)
     for slug, hub in HUBS.items():
