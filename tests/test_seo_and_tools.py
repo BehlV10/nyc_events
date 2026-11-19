@@ -355,3 +355,91 @@ class TestFetchResilience(unittest.TestCase):
             self.assertEqual(len(calls), scrapers.HOST_FAILURE_LIMIT)
         finally:
             scrapers._reset_host_breakers()
+
+    def test_get_all_events_continues_past_pass_failures_and_logs_them(self):
+        ran = []
+        with tempfile.TemporaryDirectory() as tmp:
+            fp = os.path.join(tmp, "run_failures.txt")
+            with patch.object(scrapers, "_run_with_lanes", return_value=[{"venue": "V", "url": "https://v.example", "events": [{"name": "Show"}]}]), \
+                 patch.object(scrapers, "_pick_rotation_refreshes", return_value=set()), \
+                 patch.object(scrapers, "_expand_manual_recurring", return_value=[]), \
+                 patch.object(scrapers, "_load_community_events", return_value=[]), \
+                 patch.object(scrapers, "_enrich_donyc_events", side_effect=RuntimeError("donyc boom")), \
+                 patch.object(scrapers, "_enrich_from_primary_pages", side_effect=lambda r: ran.append("primary")), \
+                 patch.object(scrapers, "_fill_missing_times", side_effect=lambda r: ran.append("times")), \
+                 patch.object(scrapers, "_enrich_event_times", side_effect=lambda r: ran.append("danceus")), \
+                 patch.object(scrapers, "_resolve_allevents_links", side_effect=lambda r: ran.append("allevents")), \
+                 patch.object(scrapers, "_discover_eventbrite_organizers", side_effect=lambda r: ran.append("eb")), \
+                 patch.object(scrapers, "_report_allevents_overlap", side_effect=lambda r: ran.append("overlap")), \
+                 patch.object(scrapers, "_apply_geocodes", side_effect=lambda r: ran.append("geo")), \
+                 patch.object(scrapers, "fetch_nyc_weather", return_value={"temp": 60}), \
+                 patch.object(scrapers, "fetch_luckyseat_nyc", side_effect=ValueError("ls down")):
+                payload = scrapers.get_all_events(force=True, failures_path=fp)
+            self.assertEqual(len(payload["venues"]), 1)
+            self.assertEqual(payload["weather"], {"temp": 60})
+            self.assertEqual(payload["luckyseat"], [])
+            self.assertEqual(set(ran), {"primary", "times", "danceus", "allevents", "eb", "overlap", "geo"})
+            with open(fp, encoding="utf-8") as f:
+                logged = f.read()
+            self.assertIn("[donyc_details] RuntimeError: donyc boom", logged)
+            self.assertIn("[luckyseat] ValueError: ls down", logged)
+
+    def test_get_all_events_soft_deadline_lets_tracks_finish_and_still_returns_data(self):
+        import threading
+        import time as _time
+
+        def cooperative_pass(r):
+            # Like the real passes: keep fetching until the deadline, then return on its own.
+            stop = _time.monotonic() + 3.0
+            while not scrapers._past_run_deadline() and _time.monotonic() < stop:
+                _time.sleep(0.02)
+            r[0]["events"][0]["timed"] = True
+
+        threads_before = threading.active_count()
+        with tempfile.TemporaryDirectory() as tmp:
+            fp = os.path.join(tmp, "run_failures.txt")
+            with patch.object(scrapers, "_run_with_lanes", return_value=[{"venue": "V", "url": "https://v.example", "events": [{"name": "Show"}]}]), \
+                 patch.object(scrapers, "_pick_rotation_refreshes", return_value=set()), \
+                 patch.object(scrapers, "_expand_manual_recurring", return_value=[]), \
+                 patch.object(scrapers, "_load_community_events", return_value=[]), \
+                 patch.object(scrapers, "_enrich_donyc_events", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_enrich_from_primary_pages", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_fill_missing_times", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_enrich_event_times", side_effect=cooperative_pass), \
+                 patch.object(scrapers, "_resolve_allevents_links", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_discover_eventbrite_organizers", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_report_allevents_overlap", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_apply_geocodes", side_effect=lambda r: None), \
+                 patch.object(scrapers, "fetch_nyc_weather", return_value=None), \
+                 patch.object(scrapers, "fetch_luckyseat_nyc", return_value=[]):
+                t0 = _time.monotonic()
+                payload = scrapers.get_all_events(force=True, soft_deadline_secs=0.2, failures_path=fp)
+                elapsed = _time.monotonic() - t0
+            self.assertLess(elapsed, 1.5)
+            # The track finished (its edit is in the payload) and left no thread behind.
+            self.assertTrue(payload["venues"][0]["events"][0].get("timed"))
+            self.assertEqual(threading.active_count(), threads_before)
+            self.assertIsNone(scrapers._RUN_DEADLINE)
+            with open(fp, encoding="utf-8") as f:
+                logged = f.read()
+            self.assertIn("[enrichment] hit the soft deadline", logged)
+
+    def test_enrichment_pass_past_deadline_fetches_nothing_but_applies_cache(self):
+        import time as _time
+
+        day = (datetime.now(EASTERN) + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+        url = "https://www.danceus.org/event/salsa-social"
+        results = [{"venue": "DanceUS", "events": [{"name": "Salsa", "url": url, "date": day.isoformat()}]}]
+        start = day.replace(hour=19, minute=30).isoformat()
+        calls = []
+        with tempfile.TemporaryDirectory() as tmp:
+            path = os.path.join(tmp, "times.json")
+            other = "https://www.danceus.org/event/uncached"
+            results[0]["events"].append({"name": "Bachata", "url": other, "date": day.isoformat()})
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump({url: {"start": start, "ts": _time.time()}}, f)
+            with patch.object(scrapers, "_RUN_DEADLINE", _time.monotonic() - 1):
+                scrapers._enrich_event_times(results, path=path, fetch=lambda u, ua: calls.append(u))
+        self.assertEqual(calls, [])
+        timed = datetime.fromisoformat(results[0]["events"][0]["date"]).astimezone(EASTERN)
+        self.assertEqual((timed.hour, timed.minute), (19, 30))

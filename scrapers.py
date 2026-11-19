@@ -289,6 +289,15 @@ class _HostGate:
 
 HOST_GATE = _HostGate()
 
+# Soft deadline for the post-scrape enrichment passes (a time.monotonic() value, or None). Set by
+# get_all_events(); each pass checks it before starting another fetch and then applies what it has,
+# so its thread ends on its own instead of being abandoned while it still edits the results.
+_RUN_DEADLINE = None
+
+
+def _past_run_deadline():
+    return _RUN_DEADLINE is not None and time.monotonic() >= _RUN_DEADLINE
+
 
 def _retry_after_secs(resp):
     raw = (resp.headers or {}).get("Retry-After", "")
@@ -1518,6 +1527,8 @@ def _enrich_donyc_events(results, ua=None, limit=None, path=None):
                 wanted.append((e.get("date") or "", p))
     fetched = 0
     for _when, p in sorted(wanted)[:limit]:
+        if _past_run_deadline():
+            break
         try:
             cache[p] = dict(_donyc_detail(p, ua) or {}, ts=now)
             fetched += 1
@@ -1601,6 +1612,8 @@ def _enrich_event_times(results, ua=None, limit=None, path=None, fetch=None):
             break
         if url in cache and now - cache[url].get("ts", 0) < EVENT_TIME_TTL:
             continue
+        if _past_run_deadline():
+            break
         try:
             cache[url] = {"start": fetch(url, ua), "ts": now}
             fetched += 1
@@ -1713,6 +1726,8 @@ def _enrich_from_primary_pages(results, ua=None, limit=None, path=None, fetch=No
         to_fetch.append(url)
 
     def _get_one(url):
+        if _past_run_deadline():
+            return url, None, False
         try:
             return url, fetch(url, ua), False
         except SiteRefused:
@@ -1916,8 +1931,8 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
             links[url] = {"ts": now, "origin": "eventbrite", "ticket": eb_url}
             derived += 1
             continue
-        if pages >= page_limit or refusals > ALLEVENTS_REFUSAL_RETRIES:
-            continue
+        if pages >= page_limit or refusals > ALLEVENTS_REFUSAL_RETRIES or _past_run_deadline():
+            continue  # ids can still be relinked without a page read
         try:
             page = fetch(url)
             origin, ticket = _allevents_ticket_link(page)
@@ -1927,7 +1942,7 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
             # AllEvents rate-limits after ~150 pages; one refusal used to end relinking for the
             # run, so most listings never got a seller link. Back off and resume a few times.
             refusals += 1
-            if refusals > ALLEVENTS_REFUSAL_RETRIES:
+            if refusals > ALLEVENTS_REFUSAL_RETRIES or _past_run_deadline():
                 continue  # stop reading pages; ids can still be relinked
             time.sleep(ALLEVENTS_REFUSAL_BACKOFF)
             HOST_GATE.refused.pop(_host_of(url), None)
@@ -1943,6 +1958,8 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
         event_id = match.group(1)
         if event_id in eb and now - eb[event_id].get("ts", 0) < EVENTBRITE_DETAIL_TTL:
             continue
+        if _past_run_deadline():
+            break
         try:
             if fetched:
                 time.sleep(EVENTBRITE_API_GAP)
@@ -2070,7 +2087,7 @@ def _discover_eventbrite_organizers(results, details_path=None, path=None, scrap
         rec = found.get(oid)
         if rec and (rec.get("status") == "ok" or now - rec.get("ts", 0) < DISCOVER_REJECT_TTL):
             continue
-        if tried >= max_new or len(kept) >= max_total:
+        if tried >= max_new or len(kept) >= max_total or _past_run_deadline():
             break
         if tried:
             sleep(EVENTBRITE_API_GAP)
@@ -13284,6 +13301,8 @@ def _fill_missing_times(results, ua=None, limit=None, path=None, fetch=None):
 
     def _get_time(item):
         key, url, day = item
+        if _past_run_deadline():
+            return key, None, False
         host = _host_of(url)
         with refused_lock:
             if host in refused:
@@ -13421,11 +13440,56 @@ def _apply_learned_pins(results):
     return n
 
 
-def get_all_events(force=False):
+RUN_FAILURES_PATH = os.path.join(CACHE_DIR, "run_failures.txt")
+
+
+def _write_run_failures(failures, path=None):
+    """Persist any non-fatal stage failures from a scrape run so CI can still publish partial
+    results and then fail at the end of the workflow."""
+    path = path or RUN_FAILURES_PATH
+    try:
+        if failures:
+            os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                for line in failures:
+                    f.write(f"{line}\n")
+        elif os.path.exists(path):
+            os.remove(path)
+    except OSError:
+        pass
+
+
+def get_all_events(force=False, soft_deadline_secs=None, failures_path=None):
     now = time.time()
     if not force and _cache["data"] and (now - _cache["ts"] < CACHE_SECONDS):
         return _cache["data"]
 
+    if soft_deadline_secs is None:
+        raw_budget = (os.environ.get("SCRAPE_SOFT_DEADLINE_SECS") or "").strip()
+        try:
+            soft_deadline_secs = float(raw_budget) if raw_budget else None
+        except ValueError:
+            soft_deadline_secs = None
+    run_started = time.monotonic()
+    deadline = (run_started + soft_deadline_secs) if soft_deadline_secs else None
+
+    failures = []
+    fail_lock = threading.Lock()
+
+    def _record_failure(stage, msg):
+        line = f"[{stage}] {msg}"
+        print(f"RUN FAILURE {line}")
+        with fail_lock:
+            failures.append(line)
+
+    def _run_pass(stage, fn, default=None):
+        try:
+            return fn()
+        except Exception as exc:
+            _record_failure(stage, f"{type(exc).__name__}: {exc}")
+            return default
+
+    _write_run_failures([], path=failures_path)
     _reset_host_breakers()
     HOST_GATE.reset()  # a site that refused us last run gets asked again, once
     live = {host: _pick_rotation_refreshes(VENUES, host, lim(), ttl(), force=force)
@@ -13441,8 +13505,8 @@ def get_all_events(force=False):
     print(f"Scraped {len(results)} sources in {time.monotonic() - t_lanes:.1f}s")
 
     # Add recurring events (expanded for 8 weeks / 56 days)
-    results.extend(_expand_manual_recurring(weeks=8))
-    results.extend(_load_community_events())
+    results.extend(_run_pass("manual_recurring", lambda: _expand_manual_recurring(weeks=8), default=[]) or [])
+    results.extend(_run_pass("community_events", _load_community_events, default=[]) or [])
 
     # Run independent enrichment tracks in parallel (they touch disjoint sources/hosts; HOST_GATE
     # still enforces per-host pacing). Track 3 appends newly discovered Eventbrite organizers to a
@@ -13453,43 +13517,56 @@ def get_all_events(force=False):
 
     def _track_leads():
         t0 = time.monotonic()
-        _enrich_donyc_events(results)
-        _enrich_from_primary_pages(results)
-        try:
-            _fill_missing_times(results)
-        except Exception as exc:
-            print(f"start-time lookup failed: {exc}")
+        _run_pass("donyc_details", lambda: _enrich_donyc_events(results))
+        _run_pass("primary_pages", lambda: _enrich_from_primary_pages(results))
+        _run_pass("missing_times", lambda: _fill_missing_times(results))
         print(f"Track leads (DoNYC + primary + start-times) finished in {time.monotonic() - t0:.1f}s")
 
     def _track_danceus():
         t0 = time.monotonic()
-        _enrich_event_times(results)
+        _run_pass("danceus_times", lambda: _enrich_event_times(results))
         print(f"Track danceus finished in {time.monotonic() - t0:.1f}s")
 
     def _track_allevents():
         t0 = time.monotonic()
-        _resolve_allevents_links(results)
-        _discover_eventbrite_organizers(discovered_snapshot)
+        _run_pass("allevents_links", lambda: _resolve_allevents_links(results))
+        _run_pass("eventbrite_discovery", lambda: _discover_eventbrite_organizers(discovered_snapshot))
         print(f"Track allevents (+ EB discovery) finished in {time.monotonic() - t0:.1f}s")
 
-    with ThreadPoolExecutor(max_workers=3) as ex:
-        futs = [ex.submit(fn) for fn in (_track_leads, _track_danceus, _track_allevents)]
-        for f in futs:
-            f.result()
+    # Past the soft deadline each pass stops starting fetches and applies what it has (cached answers
+    # included), so every track ends on its own and nothing edits `results` once we move on.
+    global _RUN_DEADLINE
+    _RUN_DEADLINE = deadline
+    try:
+        tracks = {"leads": _track_leads, "danceus": _track_danceus, "allevents": _track_allevents}
+        with ThreadPoolExecutor(max_workers=len(tracks)) as ex:
+            fut_to_name = {ex.submit(fn): name for name, fn in tracks.items()}
+            for f, name in fut_to_name.items():
+                try:
+                    f.result()
+                except Exception as exc:
+                    _record_failure(f"track:{name}", f"{type(exc).__name__}: {exc}")
+    finally:
+        _RUN_DEADLINE = None
+    if deadline is not None and time.monotonic() >= deadline:
+        _record_failure("enrichment", f"hit the soft deadline ({int(soft_deadline_secs)}s); "
+                                      "remaining page fetches left for the next run")
     results.extend(discovered_snapshot[base_len:])
     print(f"Enrichment tracks finished in {time.monotonic() - t_enrich:.1f}s")
 
-    try:
-        _report_allevents_overlap(results)
-    except Exception as exc:
-        print(f"AllEvents overlap report failed: {exc}")
-    _apply_geocodes(results)
+    # Cheap or cache-backed: these run even past the deadline.
+    _run_pass("allevents_overlap", lambda: _report_allevents_overlap(results))
+    _run_pass("geocodes", lambda: _apply_geocodes(results))
 
+    weather = _run_pass("weather", fetch_nyc_weather, default=None)
+    luckyseat = _run_pass("luckyseat", fetch_luckyseat_nyc, default=[])
+
+    _write_run_failures(failures, path=failures_path)
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "venues": results,
-        "weather": fetch_nyc_weather(),
-        "luckyseat": fetch_luckyseat_nyc(),
+        "weather": weather,
+        "luckyseat": luckyseat,
     }
     _cache["ts"] = now
     _cache["data"] = payload
