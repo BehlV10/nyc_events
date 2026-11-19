@@ -9705,8 +9705,9 @@ _POSH_NO_PLACE_RE = re.compile(
     r"^\s*$|^(?:virtual|online|zoom|tba|tbd|no location|location (?:given|sent|revealed|tba)|secret location|private location|"
     r"address (?:sent|given|after)|dm for|\d{1,2}:\d{2})\b|\b(?:location given day of|sent (?:after|upon) (?:purchase|rsvp))\b",
     re.I)
-_NOT_NYC_PLACE_RE = re.compile(r"\b(?:jersey city|hoboken|newark|paterson|elizabeth|weehawken|union city|yonkers|"
-                               r"long branch|asbury park|nj|n\.j\.|new jersey|westchester|long island)\b", re.I)
+# "Long Island City" is Queens and Elizabeth Street is Manhattan, so neither name alone means out of town.
+_NOT_NYC_PLACE_RE = re.compile(r"\b(?:jersey city|hoboken|newark|paterson|weehawken|union city|yonkers|"
+                               r"long branch|asbury park|nj|n\.j\.|new jersey|westchester|long island(?! city))\b", re.I)
 POSH_PER_GROUP_DAY = 2
 
 
@@ -9714,8 +9715,13 @@ def scrape_posh_nyc(url, ua, get=None, max_pages=120):
     """Posh (posh.vip) parties near NYC from its explore API, this month's window. Skips listings with no
     real venue (virtual, "location given day of"), New Jersey ones, organizers that look like vendors
     (vendor_signals: boat cruises, the same promo repeated), and keeps at most two a day per organizer."""
-    get = get or (lambda params: _SESSION.get(url, params=params, headers={"User-Agent": ua or UA_CHROME,
-                                                                         "Accept": "application/json"}, timeout=20).json())
+    def _get(params):
+        resp = _SESSION.get(url, params=params, headers={"User-Agent": ua or UA_CHROME, "Accept": "application/json"},
+                            timeout=20)
+        resp.raise_for_status()
+        return resp.json()
+
+    get = get or _get
     raw, cursor = [], None
     for _ in range(max_pages):
         params = {"lat": 40.7128, "lng": -74.006, "timezone": "America/New_York", "when": "This Month"}
@@ -9723,7 +9729,12 @@ def scrape_posh_nyc(url, ua, get=None, max_pages=120):
             params["cursor"] = cursor
         try:
             data = get(params)
-        except SiteRefused:
+        except Exception as exc:
+            if not raw:
+                raise  # nothing fetched: _scrape_one serves the last run's list
+            # Keep the pages we have; flagging the host makes _scrape_one add last run's listings
+            # for the rest instead of saving a short list.
+            HOST_GATE.refuse(_host_of(url), f"failed after {len(raw)} listings: {type(exc).__name__}")
             break
         raw.extend(data.get("events") or [])
         cursor = data.get("nextCursor")
@@ -9758,8 +9769,11 @@ def scrape_posh_nyc(url, ua, get=None, max_pages=120):
             per_day[day] += 1
             if per_day[day] > POSH_PER_GROUP_DAY:
                 continue
-            p = e.get("minTicketPrice")
-            price = None if p is None else ("Free" if float(p) == 0 else f"${float(p):g}+")
+            try:
+                p = None if e.get("minTicketPrice") is None else float(e["minTicketPrice"])
+            except (TypeError, ValueError):
+                p = None
+            price = None if p is None else ("Free" if p == 0 else f"${p:g}+")
             events.append({
                 "name": " ".join((e.get("title") or "").split()),
                 "date": start.isoformat(),
