@@ -2619,8 +2619,8 @@ def event_genre(e):
 
 
 DEFERRED_CHUNK_DAYS = 7
-INLINE_DAYS = 1
-DEFERRED_SINGLE_DAYS = 6
+INLINE_DAYS = 2
+DEFERRED_SINGLE_DAYS = 5
 
 
 def render_page(results, split_deferred=False, context_out=None):

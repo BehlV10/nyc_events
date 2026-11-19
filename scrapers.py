@@ -1703,19 +1703,36 @@ def _enrich_from_primary_pages(results, ua=None, limit=None, path=None, fetch=No
             if when and when.date() >= today and _primary_candidate(url):
                 todo.append((when, url, e))
     todo.sort(key=lambda x: x[0])
-    fetched = applied = 0
+    to_fetch, seen_urls = [], set()
     for _when, url, _e in todo:
-        if fetched >= limit:
+        if len(to_fetch) >= limit:
             break
-        if url in cache and now - cache[url].get("ts", 0) < PRIMARY_PAGES_TTL:
+        if url in seen_urls or (url in cache and now - cache[url].get("ts", 0) < PRIMARY_PAGES_TTL):
             continue
+        seen_urls.add(url)
+        to_fetch.append(url)
+
+    def _get_one(url):
         try:
-            cache[url] = {"ts": now, "entries": fetch(url, ua)}
-            fetched += 1
+            return url, fetch(url, ua), False
         except SiteRefused:
-            cache[url] = {"ts": now, "entries": []}
+            return url, [], True
         except Exception:
-            continue  # asked again next run
+            return url, None, False
+
+    fetched = applied = 0
+    workers = 8 if fetch is _primary_page_entries and len(to_fetch) > 1 else 1
+    if workers > 1:
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            fetch_results = list(ex.map(_get_one, to_fetch))
+    else:
+        fetch_results = [_get_one(u) for u in to_fetch]
+    for url, entries, refused in fetch_results:
+        if refused:
+            cache[url] = {"ts": now, "entries": []}
+        elif entries is not None:
+            cache[url] = {"ts": now, "entries": entries}
+            fetched += 1
     for when, url, e in todo:
         entries = [x for x in (cache.get(url) or {}).get("entries") or [] if x.get("date")]
         same_day = []
@@ -1762,7 +1779,7 @@ def _enrich_from_primary_pages(results, ua=None, limit=None, path=None, fetch=No
 # us the real price and sold-out state (Eventbrite's event API) and lets duplicates merge on one URL.
 ALLEVENTS_LINKS_PATH = os.path.join(CACHE_DIR, "_allevents_links.json")
 EVENTBRITE_EVENTS_PATH = os.path.join(CACHE_DIR, "_eventbrite_events.json")
-ALLEVENTS_PAGES_PER_RUN = 350
+ALLEVENTS_PAGES_PER_RUN = 200
 ALLEVENTS_REFUSAL_RETRIES = 3
 ALLEVENTS_REFUSAL_BACKOFF = 60
 # AllEvents imports resale listings (event_origin "ticket-network", "vividseats"), whose dates and times
@@ -13218,7 +13235,6 @@ def _fill_missing_times(results, ua=None, limit=None, path=None, fetch=None):
     ua = ua or UA_CHROME
     limit = DETAIL_TIMES_PER_RUN if limit is None else limit
     path = path or DETAIL_TIMES_PATH
-    fetch = fetch or (lambda url: fetch_text(url, headers={"User-Agent": ua})[1])
     try:
         with open(path, "r", encoding="utf-8") as f:
             cache = json.load(f)
@@ -13247,25 +13263,56 @@ def _fill_missing_times(results, ua=None, limit=None, path=None, fetch=None):
             if url.startswith("http") and url.rstrip("/") != listing:
                 todo.append((when, url, e))
     todo.sort(key=lambda x: x[0])
+    default_fetch = fetch is None
+    fetch = fetch or (lambda url: fetch_text(url, headers={"User-Agent": ua})[1])
+    to_fetch, seen_keys = [], set()
+    for when, url, _e in todo:
+        if len(to_fetch) >= limit:
+            break
+        key = f"{url}|{when.date().isoformat()}"
+        if key in seen_keys:
+            continue
+        hit = cache.get(key)
+        if hit and now - hit.get("ts", 0) <= (DETAIL_TIMES_TTL if hit.get("hm") else DETAIL_TIMES_MISS_TTL):
+            continue
+        seen_keys.add(key)
+        to_fetch.append((key, url, when.date()))
+
     fetched = filled = 0
     refused = set()
+    refused_lock = threading.Lock()
+
+    def _get_time(item):
+        key, url, day = item
+        host = _host_of(url)
+        with refused_lock:
+            if host in refused:
+                return key, None, False
+        try:
+            hm = start_time_from_page(fetch(url), day)
+            return key, list(hm) if hm else None, True
+        except SiteRefused:
+            with refused_lock:
+                refused.add(host)
+            return key, None, False
+        except Exception:
+            return key, None, False
+
+    workers = 8 if default_fetch and len(to_fetch) > 1 else 1
+    if workers > 1:
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            time_results = list(ex.map(_get_time, to_fetch))
+    else:
+        time_results = [_get_time(item) for item in to_fetch]
+    for key, hm, ok in time_results:
+        if ok:
+            cache[key] = {"ts": now, "hm": hm}
+            fetched += 1
+
     for when, url, e in todo:
         key = f"{url}|{when.date().isoformat()}"
         hit = cache.get(key)
-        if not hit or now - hit.get("ts", 0) > (DETAIL_TIMES_TTL if hit.get("hm") else DETAIL_TIMES_MISS_TTL):
-            host = _host_of(url)
-            if fetched >= limit or host in refused:
-                continue
-            try:
-                hm = start_time_from_page(fetch(url), when.date())
-                hit = cache[key] = {"ts": now, "hm": list(hm) if hm else None}
-                fetched += 1
-            except SiteRefused:
-                refused.add(host)
-                continue
-            except Exception:
-                continue
-        if hit.get("hm"):
+        if hit and hit.get("hm"):
             hh, mm = hit["hm"]
             e["date"] = when.replace(hour=hh, minute=mm).astimezone(timezone.utc).isoformat()
             e.pop("time_unknown", None)
@@ -13389,20 +13436,49 @@ def get_all_events(force=False):
         allow = host not in live or v["name"] in live[host]
         return _scrape_one(v, force=force, allow_live=allow)
 
+    t_lanes = time.monotonic()
     results = _run_with_lanes(VENUES, _worker, live)
+    print(f"Scraped {len(results)} sources in {time.monotonic() - t_lanes:.1f}s")
 
     # Add recurring events (expanded for 8 weeks / 56 days)
     results.extend(_expand_manual_recurring(weeks=8))
     results.extend(_load_community_events())
-    _enrich_donyc_events(results)
-    _enrich_event_times(results)
-    _enrich_from_primary_pages(results)
-    _resolve_allevents_links(results)
-    try:
-        _fill_missing_times(results)
-    except Exception as exc:
-        print(f"start-time lookup failed: {exc}")
-    _discover_eventbrite_organizers(results)
+
+    # Run independent enrichment tracks in parallel (they touch disjoint sources/hosts; HOST_GATE
+    # still enforces per-host pacing). Track 3 appends newly discovered Eventbrite organizers to a
+    # separate snapshot list so `results` isn't mutated concurrently.
+    t_enrich = time.monotonic()
+    discovered_snapshot = list(results)
+    base_len = len(discovered_snapshot)
+
+    def _track_leads():
+        t0 = time.monotonic()
+        _enrich_donyc_events(results)
+        _enrich_from_primary_pages(results)
+        try:
+            _fill_missing_times(results)
+        except Exception as exc:
+            print(f"start-time lookup failed: {exc}")
+        print(f"Track leads (DoNYC + primary + start-times) finished in {time.monotonic() - t0:.1f}s")
+
+    def _track_danceus():
+        t0 = time.monotonic()
+        _enrich_event_times(results)
+        print(f"Track danceus finished in {time.monotonic() - t0:.1f}s")
+
+    def _track_allevents():
+        t0 = time.monotonic()
+        _resolve_allevents_links(results)
+        _discover_eventbrite_organizers(discovered_snapshot)
+        print(f"Track allevents (+ EB discovery) finished in {time.monotonic() - t0:.1f}s")
+
+    with ThreadPoolExecutor(max_workers=3) as ex:
+        futs = [ex.submit(fn) for fn in (_track_leads, _track_danceus, _track_allevents)]
+        for f in futs:
+            f.result()
+    results.extend(discovered_snapshot[base_len:])
+    print(f"Enrichment tracks finished in {time.monotonic() - t_enrich:.1f}s")
+
     try:
         _report_allevents_overlap(results)
     except Exception as exc:
