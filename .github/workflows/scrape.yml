@@ -23,7 +23,7 @@ concurrency:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
 
@@ -69,7 +69,7 @@ jobs:
         env:
           # Set this repository secret to a fresh key, then delete the fallback key in scrapers.py.
           TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
-        run: python server.py export events.json
+        run: python -u server.py export events.json
 
       # A source that returns half or less of its usual events is probably a half-broken
       # scraper (see source_health.track_history). One issue per newly shrunk batch.
