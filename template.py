@@ -1091,20 +1091,28 @@ def recurring_key(e):
     return ((e.get("name") or "").strip().lower(), e.get("_source_venue") or "", (e.get("venue") or "").strip().lower())
 
 
+# A title on more weekdays than this is a run (a Broadway show, a nightly comedy showcase), not a weekly
+# event. Residencies like Mon+Tue at Birdland or a Thu-Sat salsa night still count as weekly.
+WEEKLY_MAX_WEEKDAYS = 3
+# Ticket-seller feeds list an arbitrary handful of a run's performances (a Broadway show on five
+# Sundays), which looks weekly from the dates alone.
+WEEKLY_SKIP_SOURCES = ("Ticketmaster NYC", "SeatGeek NYC")
+
+
 def compute_recurring(dated):
     """Return set of recurring_key()s for events that appear on the same weekday roughly a week
-    apart — treated as weekly recurring."""
+    apart, on at most WEEKLY_MAX_WEEKDAYS weekdays — treated as weekly recurring."""
     groups = defaultdict(list)
     for _, events in dated:
         for e in events:
             t = e.get("_time")
             key = recurring_key(e)
-            if not t or not key[0]:
+            if not t or not key[0] or key[1] in WEEKLY_SKIP_SOURCES:
                 continue
             groups[key].append(t)
     recurring = set()
     for key, times in groups.items():
-        if len(times) < 2:
+        if len(times) < 2 or len({t.weekday() for t in times}) > WEEKLY_MAX_WEEKDAYS:
             continue
         times.sort()
         for i in range(len(times) - 1):

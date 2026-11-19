@@ -74,6 +74,25 @@ class States(unittest.TestCase):
         # A paid weekly show that sold out is still sold out.
         self.assertEqual(T.sold_out_state({"price": "$55.80", "sold_out": True, "series": True}), "sold_out")
 
+    def test_weekly_means_a_few_weekdays_not_a_nightly_run(self):
+        start = datetime(2026, 11, 23, 20, tzinfo=EASTERN)  # a Monday
+
+        def ev(name, offsets):
+            return [{"name": name, "_source_venue": "V", "venue": "Club", "_time": start + timedelta(days=d)}
+                    for d in offsets]
+
+        events = (ev("Mon Night Jazz", [0, 7, 14])                                   # weekly
+                  + ev("Residency", [0, 1, 7, 8, 14, 15])                             # Mon + Tue, weekly
+                  + ev("Six", [d for d in range(15) if d % 7 != 0])                   # six nights a week
+                  + ev("One Off", [3]))
+        keys = T.compute_recurring([(None, events)])
+        names = {k[0] for k in keys}
+        self.assertEqual(names, {"mon night jazz", "residency"})
+        self.assertEqual(T.recurring_key(events[0]), ("mon night jazz", "V", "club"))
+        # A ticket seller's handful of a run's dates isn't a weekly event.
+        sampled = [dict(e, _source_venue="SeatGeek NYC") for e in ev("& Juliet", [6, 13, 20])]
+        self.assertEqual(T.compute_recurring([(None, sampled)]), set())
+
     def test_price_text_for_feeds(self):
         self.assertEqual(T.price_with_availability({"price": "$20", "sold_out": True}), "$20 (sold out)")
         self.assertEqual(T.price_with_availability({"price": "Free", "sold_out": True}), "Free (rsvp full)")
