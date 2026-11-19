@@ -2711,7 +2711,7 @@ def render_page(results, split_deferred=False, context_out=None):
         recur_flag = "weekly" if recurring else "once"
         is_hourly = len(e.get("_tour_times") or []) > 1
         recur_badge = '<span class="recur">↻ hourly</span>' if is_hourly else ('<span class="recur">↻ weekly</span>' if recurring else "")
-        alt_html = ""
+        alt_html = also_listed_html = ""
         # One link per provider label: the same listing reached through several topic feeds
         # (Eventbrite run-club / 5K / outdoor searches) only needs to be offered once.
         alts, other_titles, seen_alt_urls, seen_alt_labels = [], [], {_clean_event_url(e.get("url")) or e.get("url")}, set()
@@ -2743,7 +2743,7 @@ def render_page(results, split_deferred=False, context_out=None):
             if alt_links:
                 alt_html = f'<span class="alt-sources">also on {alt_links}</span>'
         if other_titles:
-            alt_html += f'<span class="also-listed">Also listed: {" · ".join(other_titles)}</span>'
+            also_listed_html = f'<span class="also-listed">Also listed: {" · ".join(other_titles)}</span>'
 
         compare_html = _build_compare_links(e, raw_title)
 
@@ -2797,7 +2797,12 @@ def render_page(results, split_deferred=False, context_out=None):
             time_attr = f' data-time-mins="{time_mins}"'
         else:
             time_attr = ' data-time-mins="-1"'
-        extra_html = f' · {compare_html}' if compare_html else ''
+        # "also on" carries its own " · " so hiding it on phones takes the dot with it
+        extra_html = f'<span class="also-on"> · {alt_html}</span>' if alt_html else ""
+        if also_listed_html:
+            extra_html += also_listed_html if alt_html else f" · {also_listed_html}"
+        if compare_html:
+            extra_html += f" · {compare_html}"
         pres_attr = f' data-presenter="{escape(presenter)}"' if presenter else ''
         ev_id = _event_stable_id(e)
         # Flags are emitted only when true (the page tests `=== 'true'`), and nothing that the
@@ -2806,7 +2811,7 @@ def render_page(results, split_deferred=False, context_out=None):
         return _compact_li(f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}{_other_times_html(e)}{_more_dates_html(e)}</div>
           <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{recur_badge}
-            <div class="venue-tag">{cat_tag} · {venue_html}{(" · " + alt_html) if alt_html else ""}{extra_html}{cal_html}</div>
+            <div class="venue-tag">{cat_tag} · {venue_html}{extra_html}{cal_html}</div>
             {desc_html}
           </div>
         </li>''')
@@ -3081,7 +3086,7 @@ def render_page(results, split_deferred=False, context_out=None):
             <input type="checkbox" class="venue-chk" value="{escape(v)}" checked>
             <span>{escape(v)} <span class="count">{venue_counts.get(v, 0)}</span></span>
           </label>'''
-        for v in all_venue_names
+        for v in sorted(all_venue_names, key=lambda name: name.lower())
     )
 
     city_order = ["manhattan", "brooklyn", "queens", "bronx", "staten_island", "citywide", "other"]
@@ -3571,7 +3576,25 @@ def render_page(results, split_deferred=False, context_out=None):
     justify-content: space-between;
     padding-bottom: 8px;
     border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
   }}
+  .city-head::after {{
+    content: "▾";
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: 8px;
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+  }}
+  .city-section.collapsed > .buckets {{ display: none; }}
+  .city-section.collapsed > .city-head {{
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom-color: transparent;
+  }}
+  .city-section.collapsed > .city-head::after {{ transform: rotate(-90deg); }}
+  .banner-title .banner-home {{ color: inherit; text-decoration: none; }}
   .city-pill {{
     display: inline-flex;
     align-items: center;
@@ -3587,7 +3610,7 @@ def render_page(results, split_deferred=False, context_out=None):
     text-transform: uppercase;
   }}
   .city-pill .city-dot {{ width: 8px; height: 8px; border-radius: 50%; display: inline-block; background: var(--city-color, var(--accent)); box-shadow: 0 0 8px var(--city-color, var(--accent)); }}
-  .city-head .count {{ background: rgba(127, 127, 127, 0.12); color: var(--muted); font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }}
+  .city-head .count {{ margin-left: auto; background: rgba(127, 127, 127, 0.12); color: var(--muted); font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }}
   .buckets {{ display: flex; flex-direction: column; gap: 10px; }}
   .bucket {{ border-left: 3px solid var(--accent, #444); padding: 2px 0 2px 12px; border-left-color: var(--accent); }}
   .bucket-head {{ display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); font-weight: 600; cursor: pointer; user-select: none; }}
@@ -3910,7 +3933,8 @@ def render_page(results, split_deferred=False, context_out=None):
     align-items: center;
     gap: 10px;
   }}
-  .map-toggle-btn {{
+  .map-toggle-btn,
+  .simple-view-btn {{
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--border);
     color: var(--muted);
@@ -3927,14 +3951,85 @@ def render_page(results, split_deferred=False, context_out=None):
     flex-shrink: 0;
     transition: all 0.15s ease;
   }}
-  .map-toggle-btn:hover {{
+  .map-toggle-btn:hover,
+  .simple-view-btn:hover {{
     color: var(--fg);
     border-color: var(--accent);
   }}
-  .map-toggle-btn.active {{
+  .map-toggle-btn.active,
+  .simple-view-btn.active {{
     background: var(--accent-glow);
     border-color: var(--accent);
     color: var(--accent);
+    font-weight: 700;
+  }}
+  /* Simple View: compact scan mode showing just time, title, and venue */
+  body.simple-view li.event {{
+    padding: 6px 10px;
+  }}
+  body.simple-view li.event .desc,
+  body.simple-view li.event .alt-sources,
+  body.simple-view li.event .also-on,
+  body.simple-view li.event .also-listed,
+  body.simple-view li.event .compare-tickets,
+  body.simple-view li.event .badge-guestlist,
+  body.simple-view li.event .badge-special,
+  body.simple-view li.event .badge-community,
+  body.simple-view li.event .recur,
+  body.simple-view li.event .cal-links,
+  body.simple-view li.event .cat-pill,
+  body.simple-view li.event .subarea-tag,
+  body.simple-view li.event .presenter-tag,
+  body.simple-view li.event .geo-btn,
+  body.simple-view li.event .price {{
+    display: none !important;
+  }}
+  body.simple-view li.event .venue-tag {{
+    font-size: 0;
+    margin-top: 2px;
+  }}
+  body.simple-view li.event .venue-link {{
+    font-size: 12px;
+  }}
+  /* Full-width Time Window Popover (next to pick date) */
+  .timeframe-popover {{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-top: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  }}
+  .timeframe-popover .timeframe-popover-head {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }}
+  .btn-clear-time-range {{
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+  }}
+  .btn-clear-time-range:hover {{
+    border-color: var(--accent);
+    color: var(--accent);
+  }}
+  #timeframe-toggle-btn.active {{
+    border-color: var(--accent);
+    color: var(--accent);
+  }}
+  /* Phones: simpler event cards (hide scraped description, presenter, and "also on" clutter) */
+  @media (max-width: 640px) {{
+    .event .desc, .event .presenter-tag, .event .also-on {{ display: none; }}
   }}
   .share-filter-btn {{
     background: transparent;
@@ -4549,9 +4644,15 @@ def render_page(results, split_deferred=False, context_out=None):
 
     .week-nav {{
       justify-content: space-between;
-      gap: 6px;
-      padding: 8px 10px;
+      gap: 4px;
+      padding: 8px 8px;
       flex-wrap: wrap;
+    }}
+    .week-nav button {{
+      padding: 4px 7px;
+      font-size: 11px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }}
     #week-label, #week-label-b {{
       min-width: 0;
@@ -5958,7 +6059,7 @@ def render_page(results, split_deferred=False, context_out=None):
     <div class="banner-inner">
       <div class="banner-top-tag"><span class="live-pulse"></span> NYC LIVE EVENTS &amp; SHOWS</div>
       {greeting_html()}
-      <h1 class="banner-title">NYC Events</h1>
+      <h1 class="banner-title"><a href="/" class="banner-home" title="Back to all events">NYC Events</a></h1>
       <div class="banner-meta-pill">
         {weather_pill_html}
         <span class="pill-dot">·</span>
@@ -6012,26 +6113,6 @@ def render_page(results, split_deferred=False, context_out=None):
           <input type="checkbox" id="lgbtq-only-chk">
           <span><span class="chip-icon">🏳️‍🌈 </span>LGBTQ+ events only</span>
         </label>
-        <div class="timeframe-toggle-wrap" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border);">
-          <label class="timeframe-toggle" for="timeframe-enable-chk">
-            <input type="checkbox" id="timeframe-enable-chk">
-            <span><span class="chip-icon">⏱️ </span>Set timeframe window</span>
-          </label>
-          <div class="custom-time-range" id="custom-time-range" style="display: none; margin-top: 10px;">
-            <div class="time-select-row">
-              <div class="time-input-wrap">
-                <label for="time-from-select">From</label>
-                <select id="time-from-select" class="time-dropdown"></select>
-              </div>
-              <div class="time-range-arrow">→</div>
-              <div class="time-input-wrap">
-                <label for="time-to-select">To</label>
-                <select id="time-to-select" class="time-dropdown"></select>
-              </div>
-            </div>
-            <div class="time-range-active-indicator" id="time-range-active-indicator" style="display:none;"></div>
-          </div>
-        </div>
       </div>
       <div class="filter-group">
         <h3>Category <span class="spacer"></span> <button type="button" id="cat-all">all</button> <button type="button" id="cat-none">none</button></h3>
@@ -6070,6 +6151,9 @@ def render_page(results, split_deferred=False, context_out=None):
           <button type="button" class="map-toggle-btn" id="btn-view-map" title="Toggle interactive venue map">
             <span id="map-btn-label">Map</span>
           </button>
+          <button type="button" class="simple-view-btn" id="btn-simple-view" aria-pressed="false" title="Toggle compact simple view (time, title, and venue only)">
+            <span>Simple view</span>
+          </button>
         </div>
       </div>
       <div class="location-chips-bar" id="location-chips">
@@ -6087,8 +6171,30 @@ def render_page(results, split_deferred=False, context_out=None):
         <span id="week-label">Today, {today.strftime("%b %d")}</span>
         <button type="button" id="week-next" aria-label="Next">next →</button>
         <button type="button" id="week-today">today</button>
-        <button type="button" id="cal-toggle" aria-expanded="false">📅 pick date</button>
+        <button type="button" id="cal-toggle" aria-expanded="false"><span class="chip-icon">📅 </span>pick date</button>
+        <button type="button" id="timeframe-toggle-btn" aria-expanded="false" title="Filter events to a specific time window"><span class="chip-icon">⏱️ </span>time window</button>
         <button type="button" class="chip chip-time-custom" id="quick-custom-time-chip" style="display:none;" title="Click to clear timeframe filter"><span id="active-timeframe-label"></span> <span class="chip-icon" style="margin-left:4px;">✕</span></button>
+      </div>
+      <div class="timeframe-popover custom-time-range" id="custom-time-range" style="display: none;">
+        <div class="timeframe-popover-head">
+          <label class="timeframe-toggle" for="timeframe-enable-chk">
+            <input type="checkbox" id="timeframe-enable-chk">
+            <span><span class="chip-icon">⏱️ </span>Filter by time window</span>
+          </label>
+          <button type="button" class="btn-clear-time-range" id="btn-clear-time-window">Clear</button>
+        </div>
+        <div class="time-select-row">
+          <div class="time-input-wrap">
+            <label for="time-from-select">From</label>
+            <select id="time-from-select" class="time-dropdown"></select>
+          </div>
+          <div class="time-range-arrow">→</div>
+          <div class="time-input-wrap">
+            <label for="time-to-select">To</label>
+            <select id="time-to-select" class="time-dropdown"></select>
+          </div>
+        </div>
+        <div class="time-range-active-indicator" id="time-range-active-indicator" style="display:none;"></div>
       </div>
       <div class="mini-cal" id="mini-cal" hidden>
         <div class="mini-cal-head">
@@ -6671,9 +6777,10 @@ def render_page(results, split_deferred=False, context_out=None):
       if (timeframeEnableChk) {{
         timeframeEnableChk.checked = isCustomActive;
       }}
-      if (customTimeRangeDiv) {{
-        customTimeRangeDiv.style.display = isCustomActive ? 'block' : 'none';
-      }}
+      // The panel is a popover that only the "time window" button opens; a time range from a
+      // shared link or a reset just lights up (or clears) the button
+      const tfBtn = document.getElementById('timeframe-toggle-btn');
+      if (tfBtn) tfBtn.classList.toggle('active', isCustomActive);
 
       if (timeFromSelect && timeFrom !== null) {{
         timeFromSelect.value = formatMinutesToHHMM(timeFrom);
@@ -8167,7 +8274,16 @@ def render_page(results, split_deferred=False, context_out=None):
     document.getElementById('cal-toggle').addEventListener('click', (e) => {{
       const cal = document.getElementById('mini-cal');
       const open = cal.hasAttribute('hidden');
-      if (open) cal.removeAttribute('hidden'); else cal.setAttribute('hidden', '');
+      if (open) {{
+        cal.removeAttribute('hidden');
+        // One popover at a time: opening the calendar closes the time window
+        const tw = document.getElementById('custom-time-range');
+        if (tw) tw.style.display = 'none';
+        const twBtn = document.getElementById('timeframe-toggle-btn');
+        if (twBtn) twBtn.setAttribute('aria-expanded', 'false');
+      }} else {{
+        cal.setAttribute('hidden', '');
+      }}
       e.currentTarget.setAttribute('aria-expanded', open ? 'true' : 'false');
     }});
     document.getElementById('cal-prev-month').addEventListener('click', () => {{
@@ -8347,7 +8463,17 @@ def render_page(results, split_deferred=False, context_out=None):
       }});
     }});
 
+    // Collapsible borough and category/bucket sections on click (delegated so deferred days work too)
     document.addEventListener('click', (e) => {{
+      const cityHead = e.target.closest('.city-head');
+      if (cityHead) {{
+        const sec = cityHead.closest('.city-section');
+        if (sec) {{
+          const collapsed = sec.classList.toggle('collapsed');
+          cityHead.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+        }}
+        return;
+      }}
       const head = e.target.closest('.bucket-head');
       if (!head) return;
       const bucket = head.closest('.bucket');
@@ -8363,10 +8489,64 @@ def render_page(results, split_deferred=False, context_out=None):
       head.click();
     }});
 
+    const timeframeToggleBtn = document.getElementById('timeframe-toggle-btn');
+    const btnClearTimeWindow = document.getElementById('btn-clear-time-window');
+    const btnSimpleView = document.getElementById('btn-simple-view');
+
+    function setSimpleView(on) {{
+      document.body.classList.toggle('simple-view', !!on);
+      if (btnSimpleView) {{
+        btnSimpleView.classList.toggle('active', !!on);
+        btnSimpleView.setAttribute('aria-pressed', on ? 'true' : 'false');
+      }}
+      try {{ localStorage.setItem('nyc_events_simple_view', on ? '1' : '0'); }} catch (e) {{}}
+    }}
+    try {{
+      if (localStorage.getItem('nyc_events_simple_view') === '1') setSimpleView(true);
+    }} catch (e) {{}}
+    if (btnSimpleView) {{
+      btnSimpleView.addEventListener('click', () => setSimpleView(!document.body.classList.contains('simple-view')));
+    }}
+
+    function closeTimeframePopover() {{
+      if (customTimeRangeDiv) customTimeRangeDiv.style.display = 'none';
+      if (timeframeToggleBtn) timeframeToggleBtn.setAttribute('aria-expanded', 'false');
+    }}
+
+    if (timeframeToggleBtn && customTimeRangeDiv) {{
+      timeframeToggleBtn.addEventListener('click', () => {{
+        const open = customTimeRangeDiv.style.display !== 'none';
+        if (open) {{
+          closeTimeframePopover();
+        }} else {{
+          const cal = document.getElementById('mini-cal');
+          if (cal) cal.setAttribute('hidden', '');
+          const calBtn = document.getElementById('cal-toggle');
+          if (calBtn) calBtn.setAttribute('aria-expanded', 'false');
+          customTimeRangeDiv.style.display = 'block';
+          timeframeToggleBtn.setAttribute('aria-expanded', 'true');
+        }}
+      }});
+    }}
+
+    if (btnClearTimeWindow) {{
+      btnClearTimeWindow.addEventListener('click', () => {{
+        if (timeframeEnableChk) timeframeEnableChk.checked = false;
+        setTimeRange(null, null);
+        closeTimeframePopover();
+      }});
+    }}
+
+    // The title goes to "/" with no #filters; also clear saved venue/category picks so it resets to the default view
+    const bannerHome = document.querySelector('.banner-home');
+    if (bannerHome) bannerHome.addEventListener('click', () => {{
+      try {{ localStorage.removeItem('nyc_saved_venues'); localStorage.removeItem('nyc_saved_cats'); }} catch (_) {{}}
+    }});
+
     if (quickCustomTimeChip) {{
       quickCustomTimeChip.addEventListener('click', () => {{
         if (timeframeEnableChk) timeframeEnableChk.checked = false;
-        if (customTimeRangeDiv) customTimeRangeDiv.style.display = 'none';
+        closeTimeframePopover();
         setTimeRange(null, null);
       }});
     }}
