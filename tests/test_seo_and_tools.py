@@ -355,3 +355,60 @@ class TestFetchResilience(unittest.TestCase):
             self.assertEqual(len(calls), scrapers.HOST_FAILURE_LIMIT)
         finally:
             scrapers._reset_host_breakers()
+
+    def test_get_all_events_continues_past_pass_failures_and_logs_them(self):
+        ran = []
+        with tempfile.TemporaryDirectory() as tmp:
+            fp = os.path.join(tmp, "run_failures.txt")
+            with patch.object(scrapers, "_run_with_lanes", return_value=[{"venue": "V", "url": "https://v.example", "events": [{"name": "Show"}]}]), \
+                 patch.object(scrapers, "_pick_rotation_refreshes", return_value=set()), \
+                 patch.object(scrapers, "_expand_manual_recurring", return_value=[]), \
+                 patch.object(scrapers, "_load_community_events", return_value=[]), \
+                 patch.object(scrapers, "_enrich_donyc_events", side_effect=RuntimeError("donyc boom")), \
+                 patch.object(scrapers, "_enrich_from_primary_pages", side_effect=lambda r: ran.append("primary")), \
+                 patch.object(scrapers, "_fill_missing_times", side_effect=lambda r: ran.append("times")), \
+                 patch.object(scrapers, "_enrich_event_times", side_effect=lambda r: ran.append("danceus")), \
+                 patch.object(scrapers, "_resolve_allevents_links", side_effect=lambda r: ran.append("allevents")), \
+                 patch.object(scrapers, "_discover_eventbrite_organizers", side_effect=lambda r: ran.append("eb")), \
+                 patch.object(scrapers, "_report_allevents_overlap", side_effect=lambda r: ran.append("overlap")), \
+                 patch.object(scrapers, "_apply_geocodes", side_effect=lambda r: ran.append("geo")), \
+                 patch.object(scrapers, "fetch_nyc_weather", return_value={"temp": 60}), \
+                 patch.object(scrapers, "fetch_luckyseat_nyc", side_effect=ValueError("ls down")):
+                payload = scrapers.get_all_events(force=True, failures_path=fp)
+            self.assertEqual(len(payload["venues"]), 1)
+            self.assertEqual(payload["weather"], {"temp": 60})
+            self.assertEqual(payload["luckyseat"], [])
+            self.assertEqual(set(ran), {"primary", "times", "danceus", "allevents", "eb", "overlap", "geo"})
+            with open(fp, encoding="utf-8") as f:
+                logged = f.read()
+            self.assertIn("[donyc_details] RuntimeError: donyc boom", logged)
+            self.assertIn("[luckyseat] ValueError: ls down", logged)
+
+    def test_get_all_events_honors_soft_deadline_and_still_returns_data(self):
+        import time as _time
+
+        with tempfile.TemporaryDirectory() as tmp:
+            fp = os.path.join(tmp, "run_failures.txt")
+            with patch.object(scrapers, "_run_with_lanes", return_value=[{"venue": "V", "url": "https://v.example", "events": [{"name": "Show"}]}]), \
+                 patch.object(scrapers, "_pick_rotation_refreshes", return_value=set()), \
+                 patch.object(scrapers, "_expand_manual_recurring", return_value=[]), \
+                 patch.object(scrapers, "_load_community_events", return_value=[]), \
+                 patch.object(scrapers, "_enrich_donyc_events", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_enrich_from_primary_pages", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_fill_missing_times", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_enrich_event_times", side_effect=lambda r: _time.sleep(2.0)), \
+                 patch.object(scrapers, "_resolve_allevents_links", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_discover_eventbrite_organizers", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_report_allevents_overlap", side_effect=lambda r: None), \
+                 patch.object(scrapers, "_apply_geocodes", side_effect=lambda r: None), \
+                 patch.object(scrapers, "fetch_nyc_weather", return_value=None), \
+                 patch.object(scrapers, "fetch_luckyseat_nyc", return_value=[]):
+                t0 = _time.monotonic()
+                payload = scrapers.get_all_events(force=True, soft_deadline_secs=0.2, failures_path=fp)
+                elapsed = _time.monotonic() - t0
+            self.assertLess(elapsed, 1.5)
+            self.assertEqual(len(payload["venues"]), 1)
+            with open(fp, encoding="utf-8") as f:
+                logged = f.read()
+            self.assertIn("track:danceus", logged)
+            self.assertIn("soft deadline", logged)

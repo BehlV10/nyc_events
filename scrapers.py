@@ -13421,11 +13421,67 @@ def _apply_learned_pins(results):
     return n
 
 
-def get_all_events(force=False):
+RUN_FAILURES_PATH = os.path.join(CACHE_DIR, "run_failures.txt")
+
+
+def _write_run_failures(failures, path=None):
+    """Persist any non-fatal stage failures from a scrape run so CI can still publish partial
+    results and then fail at the end of the workflow."""
+    path = path or RUN_FAILURES_PATH
+    try:
+        if failures:
+            os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                for line in failures:
+                    f.write(f"{line}\n")
+        elif os.path.exists(path):
+            os.remove(path)
+    except OSError:
+        pass
+
+
+def get_all_events(force=False, soft_deadline_secs=None, failures_path=None):
     now = time.time()
     if not force and _cache["data"] and (now - _cache["ts"] < CACHE_SECONDS):
         return _cache["data"]
 
+    from concurrent.futures import wait as _futures_wait
+
+    if soft_deadline_secs is None:
+        raw_budget = (os.environ.get("SCRAPE_SOFT_DEADLINE_SECS") or "").strip()
+        try:
+            soft_deadline_secs = float(raw_budget) if raw_budget else None
+        except ValueError:
+            soft_deadline_secs = None
+    run_started = time.monotonic()
+    deadline = (run_started + soft_deadline_secs) if soft_deadline_secs else None
+
+    failures = []
+    fail_lock = threading.Lock()
+
+    def _record_failure(stage, msg):
+        line = f"[{stage}] {msg}"
+        print(f"RUN FAILURE {line}")
+        with fail_lock:
+            failures.append(line)
+
+    def _remaining():
+        return None if deadline is None else max(0.0, deadline - time.monotonic())
+
+    def _past_deadline():
+        return deadline is not None and time.monotonic() >= deadline
+
+    def _run_pass(stage, fn, default=None):
+        if _past_deadline():
+            _record_failure(stage, f"skipped after soft deadline ({int(soft_deadline_secs)}s)")
+            return default
+        try:
+            return fn()
+        except Exception as exc:
+            _record_failure(stage, f"{type(exc).__name__}: {exc}")
+            return default
+
+    _write_run_failures([], path=failures_path)
     _reset_host_breakers()
     HOST_GATE.reset()  # a site that refused us last run gets asked again, once
     live = {host: _pick_rotation_refreshes(VENUES, host, lim(), ttl(), force=force)
@@ -13441,8 +13497,8 @@ def get_all_events(force=False):
     print(f"Scraped {len(results)} sources in {time.monotonic() - t_lanes:.1f}s")
 
     # Add recurring events (expanded for 8 weeks / 56 days)
-    results.extend(_expand_manual_recurring(weeks=8))
-    results.extend(_load_community_events())
+    results.extend(_run_pass("manual_recurring", lambda: _expand_manual_recurring(weeks=8), default=[]) or [])
+    results.extend(_run_pass("community_events", _load_community_events, default=[]) or [])
 
     # Run independent enrichment tracks in parallel (they touch disjoint sources/hosts; HOST_GATE
     # still enforces per-host pacing). Track 3 appends newly discovered Eventbrite organizers to a
@@ -13453,43 +13509,57 @@ def get_all_events(force=False):
 
     def _track_leads():
         t0 = time.monotonic()
-        _enrich_donyc_events(results)
-        _enrich_from_primary_pages(results)
-        try:
-            _fill_missing_times(results)
-        except Exception as exc:
-            print(f"start-time lookup failed: {exc}")
+        _run_pass("donyc_details", lambda: _enrich_donyc_events(results))
+        _run_pass("primary_pages", lambda: _enrich_from_primary_pages(results))
+        _run_pass("missing_times", lambda: _fill_missing_times(results))
         print(f"Track leads (DoNYC + primary + start-times) finished in {time.monotonic() - t0:.1f}s")
 
     def _track_danceus():
         t0 = time.monotonic()
-        _enrich_event_times(results)
+        _run_pass("danceus_times", lambda: _enrich_event_times(results))
         print(f"Track danceus finished in {time.monotonic() - t0:.1f}s")
 
     def _track_allevents():
         t0 = time.monotonic()
-        _resolve_allevents_links(results)
-        _discover_eventbrite_organizers(discovered_snapshot)
+        _run_pass("allevents_links", lambda: _resolve_allevents_links(results))
+        _run_pass("eventbrite_discovery", lambda: _discover_eventbrite_organizers(discovered_snapshot))
         print(f"Track allevents (+ EB discovery) finished in {time.monotonic() - t0:.1f}s")
 
-    with ThreadPoolExecutor(max_workers=3) as ex:
-        futs = [ex.submit(fn) for fn in (_track_leads, _track_danceus, _track_allevents)]
-        for f in futs:
-            f.result()
+    if _past_deadline():
+        _record_failure("enrichment", f"skipped all tracks after soft deadline ({int(soft_deadline_secs)}s)")
+    else:
+        tracks = {"leads": _track_leads, "danceus": _track_danceus, "allevents": _track_allevents}
+        ex = ThreadPoolExecutor(max_workers=len(tracks))
+        fut_to_name = {ex.submit(fn): name for name, fn in tracks.items()}
+        done, not_done = _futures_wait(fut_to_name.keys(), timeout=_remaining())
+        for f in done:
+            try:
+                f.result()
+            except Exception as exc:
+                _record_failure(f"track:{fut_to_name[f]}", f"{type(exc).__name__}: {exc}")
+        if not_done:
+            for f in not_done:
+                _record_failure(f"track:{fut_to_name[f]}", f"timed out past soft deadline ({int(soft_deadline_secs)}s)")
+            ex.shutdown(wait=False, cancel_futures=True)
+        else:
+            ex.shutdown(wait=True)
+    # Only merge newly discovered Eventbrite organizers once track_allevents is done (snapshot list
+    # appends are atomic in CPython; slicing safely takes whatever completed).
     results.extend(discovered_snapshot[base_len:])
     print(f"Enrichment tracks finished in {time.monotonic() - t_enrich:.1f}s")
 
-    try:
-        _report_allevents_overlap(results)
-    except Exception as exc:
-        print(f"AllEvents overlap report failed: {exc}")
-    _apply_geocodes(results)
+    _run_pass("allevents_overlap", lambda: _report_allevents_overlap(results))
+    _run_pass("geocodes", lambda: _apply_geocodes(results))
 
+    weather = _run_pass("weather", fetch_nyc_weather, default=None)
+    luckyseat = _run_pass("luckyseat", fetch_luckyseat_nyc, default=[])
+
+    _write_run_failures(failures, path=failures_path)
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "venues": results,
-        "weather": fetch_nyc_weather(),
-        "luckyseat": fetch_luckyseat_nyc(),
+        "weather": weather,
+        "luckyseat": luckyseat,
     }
     _cache["ts"] = now
     _cache["data"] = payload
