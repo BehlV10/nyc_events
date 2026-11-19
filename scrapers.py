@@ -289,6 +289,15 @@ class _HostGate:
 
 HOST_GATE = _HostGate()
 
+# Soft deadline for the post-scrape enrichment passes (a time.monotonic() value, or None). Set by
+# get_all_events(); each pass checks it before starting another fetch and then applies what it has,
+# so its thread ends on its own instead of being abandoned while it still edits the results.
+_RUN_DEADLINE = None
+
+
+def _past_run_deadline():
+    return _RUN_DEADLINE is not None and time.monotonic() >= _RUN_DEADLINE
+
 
 def _retry_after_secs(resp):
     raw = (resp.headers or {}).get("Retry-After", "")
@@ -1518,6 +1527,8 @@ def _enrich_donyc_events(results, ua=None, limit=None, path=None):
                 wanted.append((e.get("date") or "", p))
     fetched = 0
     for _when, p in sorted(wanted)[:limit]:
+        if _past_run_deadline():
+            break
         try:
             cache[p] = dict(_donyc_detail(p, ua) or {}, ts=now)
             fetched += 1
@@ -1601,6 +1612,8 @@ def _enrich_event_times(results, ua=None, limit=None, path=None, fetch=None):
             break
         if url in cache and now - cache[url].get("ts", 0) < EVENT_TIME_TTL:
             continue
+        if _past_run_deadline():
+            break
         try:
             cache[url] = {"start": fetch(url, ua), "ts": now}
             fetched += 1
@@ -1713,6 +1726,8 @@ def _enrich_from_primary_pages(results, ua=None, limit=None, path=None, fetch=No
         to_fetch.append(url)
 
     def _get_one(url):
+        if _past_run_deadline():
+            return url, None, False
         try:
             return url, fetch(url, ua), False
         except SiteRefused:
@@ -1916,8 +1931,8 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
             links[url] = {"ts": now, "origin": "eventbrite", "ticket": eb_url}
             derived += 1
             continue
-        if pages >= page_limit or refusals > ALLEVENTS_REFUSAL_RETRIES:
-            continue
+        if pages >= page_limit or refusals > ALLEVENTS_REFUSAL_RETRIES or _past_run_deadline():
+            continue  # ids can still be relinked without a page read
         try:
             page = fetch(url)
             origin, ticket = _allevents_ticket_link(page)
@@ -1927,7 +1942,7 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
             # AllEvents rate-limits after ~150 pages; one refusal used to end relinking for the
             # run, so most listings never got a seller link. Back off and resume a few times.
             refusals += 1
-            if refusals > ALLEVENTS_REFUSAL_RETRIES:
+            if refusals > ALLEVENTS_REFUSAL_RETRIES or _past_run_deadline():
                 continue  # stop reading pages; ids can still be relinked
             time.sleep(ALLEVENTS_REFUSAL_BACKOFF)
             HOST_GATE.refused.pop(_host_of(url), None)
@@ -1943,6 +1958,8 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
         event_id = match.group(1)
         if event_id in eb and now - eb[event_id].get("ts", 0) < EVENTBRITE_DETAIL_TTL:
             continue
+        if _past_run_deadline():
+            break
         try:
             if fetched:
                 time.sleep(EVENTBRITE_API_GAP)
@@ -2070,7 +2087,7 @@ def _discover_eventbrite_organizers(results, details_path=None, path=None, scrap
         rec = found.get(oid)
         if rec and (rec.get("status") == "ok" or now - rec.get("ts", 0) < DISCOVER_REJECT_TTL):
             continue
-        if tried >= max_new or len(kept) >= max_total:
+        if tried >= max_new or len(kept) >= max_total or _past_run_deadline():
             break
         if tried:
             sleep(EVENTBRITE_API_GAP)
@@ -13284,6 +13301,8 @@ def _fill_missing_times(results, ua=None, limit=None, path=None, fetch=None):
 
     def _get_time(item):
         key, url, day = item
+        if _past_run_deadline():
+            return key, None, False
         host = _host_of(url)
         with refused_lock:
             if host in refused:
@@ -13445,8 +13464,6 @@ def get_all_events(force=False, soft_deadline_secs=None, failures_path=None):
     if not force and _cache["data"] and (now - _cache["ts"] < CACHE_SECONDS):
         return _cache["data"]
 
-    from concurrent.futures import wait as _futures_wait
-
     if soft_deadline_secs is None:
         raw_budget = (os.environ.get("SCRAPE_SOFT_DEADLINE_SECS") or "").strip()
         try:
@@ -13465,16 +13482,7 @@ def get_all_events(force=False, soft_deadline_secs=None, failures_path=None):
         with fail_lock:
             failures.append(line)
 
-    def _remaining():
-        return None if deadline is None else max(0.0, deadline - time.monotonic())
-
-    def _past_deadline():
-        return deadline is not None and time.monotonic() >= deadline
-
     def _run_pass(stage, fn, default=None):
-        if _past_deadline():
-            _record_failure(stage, f"skipped after soft deadline ({int(soft_deadline_secs)}s)")
-            return default
         try:
             return fn()
         except Exception as exc:
@@ -13525,29 +13533,28 @@ def get_all_events(force=False, soft_deadline_secs=None, failures_path=None):
         _run_pass("eventbrite_discovery", lambda: _discover_eventbrite_organizers(discovered_snapshot))
         print(f"Track allevents (+ EB discovery) finished in {time.monotonic() - t0:.1f}s")
 
-    if _past_deadline():
-        _record_failure("enrichment", f"skipped all tracks after soft deadline ({int(soft_deadline_secs)}s)")
-    else:
+    # Past the soft deadline each pass stops starting fetches and applies what it has (cached answers
+    # included), so every track ends on its own and nothing edits `results` once we move on.
+    global _RUN_DEADLINE
+    _RUN_DEADLINE = deadline
+    try:
         tracks = {"leads": _track_leads, "danceus": _track_danceus, "allevents": _track_allevents}
-        ex = ThreadPoolExecutor(max_workers=len(tracks))
-        fut_to_name = {ex.submit(fn): name for name, fn in tracks.items()}
-        done, not_done = _futures_wait(fut_to_name.keys(), timeout=_remaining())
-        for f in done:
-            try:
-                f.result()
-            except Exception as exc:
-                _record_failure(f"track:{fut_to_name[f]}", f"{type(exc).__name__}: {exc}")
-        if not_done:
-            for f in not_done:
-                _record_failure(f"track:{fut_to_name[f]}", f"timed out past soft deadline ({int(soft_deadline_secs)}s)")
-            ex.shutdown(wait=False, cancel_futures=True)
-        else:
-            ex.shutdown(wait=True)
-    # Only merge newly discovered Eventbrite organizers once track_allevents is done (snapshot list
-    # appends are atomic in CPython; slicing safely takes whatever completed).
+        with ThreadPoolExecutor(max_workers=len(tracks)) as ex:
+            fut_to_name = {ex.submit(fn): name for name, fn in tracks.items()}
+            for f, name in fut_to_name.items():
+                try:
+                    f.result()
+                except Exception as exc:
+                    _record_failure(f"track:{name}", f"{type(exc).__name__}: {exc}")
+    finally:
+        _RUN_DEADLINE = None
+    if deadline is not None and time.monotonic() >= deadline:
+        _record_failure("enrichment", f"hit the soft deadline ({int(soft_deadline_secs)}s); "
+                                      "remaining page fetches left for the next run")
     results.extend(discovered_snapshot[base_len:])
     print(f"Enrichment tracks finished in {time.monotonic() - t_enrich:.1f}s")
 
+    # Cheap or cache-backed: these run even past the deadline.
     _run_pass("allevents_overlap", lambda: _report_allevents_overlap(results))
     _run_pass("geocodes", lambda: _apply_geocodes(results))
 
