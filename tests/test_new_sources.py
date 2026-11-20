@@ -137,5 +137,64 @@ class HotHouseJazz(unittest.TestCase):
         self.assertEqual((len(asked), evs), (3, []))
 
 
+class PoshNyc(unittest.TestCase):
+    def _ev(self, slug, title, venue, days=2, hour=22, group="Night Crew", price=20, tz="America/New_York"):
+        start = (datetime.now(timezone.utc) + timedelta(days=days)).replace(hour=hour, minute=0, second=0, microsecond=0)
+        return {"url": slug, "title": title, "venueName": venue, "startDate": start.isoformat().replace("+00:00", "Z"),
+                "timezone": tz, "groupName": group, "minTicketPrice": price}
+
+    def test_filters_and_pagination(self):
+        pages = [
+            {"events": [self._ev("a", "Salsa Night", "San Antonios", price=0),
+                        self._ev("b", "Secret Rave", "Location given day of"),
+                        self._ev("c", "Online Mixer", "Virtual"),
+                        self._ev("d", "Jersey Jam", "Maddhatter Hoboken"),
+                        self._ev("e", "Old Party", "Bar 13", days=-3)], "nextCursor": 20},
+            {"events": [self._ev("f", "Harbor Cruise", "Pier 40", group="iBoat Cruises NYC"),
+                        self._ev("g", "Late One", "Bar 13", hour=23, group="Bar 13"),
+                        self._ev("h", "Later One", "Bar 13", hour=23, group="Bar 13"),
+                        self._ev("i", "Latest One", "Bar 13", hour=23, group="Bar 13"), self._ev("a", "Salsa Night", "San Antonios")],
+             "nextCursor": None},
+        ]
+        asked = []
+        evs = scrapers.scrape_posh_nyc("u", "ua", get=lambda p: asked.append(p.get("cursor")) or pages[len(asked) - 1])
+        self.assertEqual(asked, [None, 20])
+        names = sorted(e["name"] for e in evs)
+        self.assertEqual(len([n for n in names if n.endswith("One")]), 2)  # at most two a day per organizer
+        self.assertIn("Salsa Night", names)
+        for gone in ("Secret Rave", "Online Mixer", "Jersey Jam", "Old Party", "Harbor Cruise"):
+            self.assertNotIn(gone, names)
+        salsa = next(e for e in evs if e["name"] == "Salsa Night")
+        self.assertEqual((salsa["url"], salsa["price"], salsa["venue"]), ("https://posh.vip/e/a", "Free", "San Antonios"))
+
+    def test_nyc_places_with_out_of_town_words_are_kept(self):
+        pages = [{"events": [self._ev("a", "LIC Rooftop", "Cavalli Long Island City"),
+                             self._ev("b", "Nolita Night", "Bar on Elizabeth St", group="Other"),
+                             self._ev("c", "Out East", "Patchogue, Long Island", group="Third")], "nextCursor": None}]
+        names = {e["name"] for e in scrapers.scrape_posh_nyc("u", "ua", get=lambda p: pages[0])}
+        self.assertEqual(names, {"LIC Rooftop", "Nolita Night"})
+
+    def test_failure_partway_keeps_fetched_pages(self):
+        url = "https://posh.vip/api/bff/v1/explore/events"
+        first = {"events": [self._ev("a", "Salsa Night", "San Antonios", price="n/a")], "nextCursor": 20}
+
+        def get(params):
+            if params.get("cursor") is None:
+                return first
+            raise ValueError("Expecting value: line 1 column 1 (char 0)")  # an HTML error page
+
+        scrapers.HOST_GATE.reset()
+        try:
+            evs = scrapers.scrape_posh_nyc(url, "ua", get=get)
+            self.assertEqual([(e["name"], e["price"]) for e in evs], [("Salsa Night", None)])
+            # Flagged so _scrape_one tops this short list up with last run's listings.
+            self.assertIn(scrapers._host_of(url), scrapers.HOST_GATE.refused)
+        finally:
+            scrapers.HOST_GATE.reset()
+        with self.assertRaises(ValueError):  # nothing fetched at all: the last run's list is served
+            scrapers.scrape_posh_nyc(url, "ua", get=lambda p: get({"cursor": 1}))
+        scrapers.HOST_GATE.reset()
+
+
 if __name__ == "__main__":
     unittest.main()

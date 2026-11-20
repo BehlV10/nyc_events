@@ -1152,6 +1152,24 @@ def is_service_ad(name, venue=None):
     return bool(venue and _SERVICE_AD_VENUE_RE.search(venue))
 
 
+# "Primary Ballet I (Ages 4-6)", "Ballet I/II (Ages 8+)", "Art Lab (Ages 6-12)", "Grades K-2": a class
+# or program for children, whatever the source filed it under. A range counts when it starts at 12
+# or under; an open-ended "N+" only when N is 10 or under ("Ages 13+" / "14+" classes run into adult levels).
+_KID_AGE_RANGE_RE = re.compile(r"(?i)\bages?\s*(\d{1,2})\s*(?:[-–—]|to)\s*\d{1,2}\b")
+_KID_AGE_PLUS_RE = re.compile(r"(?i)\bages?\s*(\d{1,2})\s*(?:\+|and up\b|& up\b)")
+_KID_GRADES_RE = re.compile(r"(?i)\bgrades?\s*(?:pre-?k|k|[1-5])\b")
+
+
+def _for_kids_by_age(name):
+    m = _KID_AGE_RANGE_RE.search(name)
+    if m and int(m.group(1)) <= 12:
+        return True
+    m = _KID_AGE_PLUS_RE.search(name)
+    if m and int(m.group(1)) <= 10:
+        return True
+    return bool(_KID_GRADES_RE.search(name))
+
+
 def is_kid_family_event(name, venue=None):
     """Return True if an event is meant for infants, toddlers, kids, or family storytimes."""
     if not name:
@@ -1160,7 +1178,7 @@ def is_kid_family_event(name, venue=None):
         return False  # "Baby Shoes Comedy Show"
     if EXCLUDE_KID_FAMILY_RE.search(name) or re.search(r"\b(?:18|21)\s*\+|\badults? only\b|\bburlesque\b|\bdating\b|\bsingles\b|\bmixer\b|\bages? (?:1[89]|[2-9]\d)\b", name, re.I):
         return False
-    return bool(KID_FAMILY_EVENT_RE.search(name))
+    return bool(KID_FAMILY_EVENT_RE.search(name)) or _for_kids_by_age(name)
 
 
 # --- NYC Weather ---
@@ -1496,7 +1514,7 @@ def _apply_donyc_detail(e, detail):
         m = _DONYC_PRICE_RE.search(detail.get("info") or "")
         e["price"] = "Free" if detail.get("free") else (m.group(0).replace(" ", "") if m else None)
     if detail.get("sold_out"):
-        e["price"] = f"{e['price']} (sold out)" if e.get("price") else "Sold out"
+        e["sold_out"] = True
 
 
 def _enrich_donyc_events(results, ua=None, limit=None, path=None):
@@ -1879,10 +1897,7 @@ def _eventbrite_event_details(event_id, ua):
                         headers={"User-Agent": ua, "Accept": "application/json"}, timeout=12)
     resp.raise_for_status()
     ev = resp.json()
-    sold_out = bool((ev.get("ticket_availability") or {}).get("is_sold_out"))
-    if sold_out:  # _eb_price says "Sold Out"; the price tier is more useful, so ask without the flag
-        ev = {**ev, "ticket_availability": {**ev["ticket_availability"], "is_sold_out": False}}
-    return {"price": _eb_price(ev), "sold_out": sold_out, "status": ev.get("status"), "organizer_id": ev.get("organizer_id"),
+    return {"price": _eb_price(ev), **_eb_availability(ev), "status": ev.get("status"), "organizer_id": ev.get("organizer_id"),
             "organizer_name": ((ev.get("organizer") or {}).get("name") or "").strip() or None,
             "category_id": ev.get("category_id")}
 
@@ -1998,8 +2013,7 @@ def _resolve_allevents_links(results, ua=None, page_limit=None, detail_limit=Non
         if info.get("price") and info["price"] != e.get("price"):
             e["price"] = info["price"]
             priced += 1
-        if info.get("sold_out"):
-            e["sold_out"] = True
+        if _apply_sold_out(e, info):
             soldout += 1
     for path, data, ttl in ((links_path, links, ALLEVENTS_LINK_TTL), (details_path, eb, EVENTBRITE_DETAIL_TTL)):
         try:
@@ -3177,7 +3191,6 @@ def scrape_sesh_comedy(url, ua):
 
         clean_title = re.sub(r"^\d+/\d+\s*", "", title).strip()
         ev_url = f"https://seshcomedy.com/{rel_url}" if rel_url else "https://seshcomedy.com/"
-        price = "Sold Out" if is_sold_out else "$20.00 – $30.00 (BYOB)"
         key = (clean_title.lower(), dt.strftime("%Y-%m-%dT%H"))
         if key not in seen:
             seen.add(key)
@@ -3186,9 +3199,11 @@ def scrape_sesh_comedy(url, ua):
                 "date": dt.astimezone(timezone.utc).isoformat(),
                 "venue": "Sesh Comedy (Chinatown / LES)",
                 "url": ev_url,
-                "price": price,
+                "price": "$20.00 – $30.00 (BYOB)",
                 "category": "comedy",
             }
+            if is_sold_out:
+                ev_obj["sold_out"] = True
             if _is_within_horizon(ev_obj):
                 events.append(ev_obj)
 
@@ -4357,6 +4372,29 @@ def scrape_shrine_harlem(url, ua, venue=None, address=None):
     return out
 
 
+def _with_support(title, support):
+    """"Sweet Pill" + "Heart to Gold, Stereosity" -> "Sweet Pill with Heart to Gold, Stereosity".
+
+    Takes a string or a list of acts; skips acts already named in the title, and leaves very
+    long lineups off rather than make an unreadable title. "X with Y" keeps the head title
+    "x", so it still merges with other sources' plain "X" listing."""
+    if isinstance(support, str):
+        support = [a for a in re.split(r"\s*,\s*", support)]
+    low = (title or "").lower()
+    acts, seen = [], set()
+    for a in support or []:
+        a = re.sub(r"\s+", " ", html.unescape(a or "")).strip()
+        a = re.sub(r"^(?:with|w/|feat\.?|featuring|special guests?:?)\s+", "", a, flags=re.I)
+        a = re.sub(r"\s+(?:opening|opens|to open)$", "", a, flags=re.I).strip()
+        if a and a.lower() not in low and a.lower() not in seen:
+            seen.add(a.lower())
+            acts.append(a)
+    if not acts:
+        return title
+    full = f"{title} with {', '.join(acts)}"
+    return full if len(full) <= 100 else title
+
+
 def scrape_bowery_presents(url, ua):
     """The Bowery Presents — direct AEG feeds for Webster Hall, Brooklyn Steel, Terminal 5, MHOW, Racket, etc."""
     urls = [
@@ -4397,7 +4435,8 @@ def scrape_bowery_presents(url, ua):
                 if dt < now:
                     continue
                 title_obj = ev.get("title") or {}
-                name = title_obj.get("eventTitleText") or title_obj.get("headlinersText") or "Live in Concert"
+                name = (title_obj.get("headlinersText") or title_obj.get("eventTitleText") or "Live in Concert").strip()
+                name = _with_support(name, title_obj.get("supportingText") or "")
                 ticketing = ev.get("ticketing") or {}
                 t_url = ticketing.get("eventUrl") or ticketing.get("url") or ticketing.get("ticketURL") or "https://www.bowerypresents.com/"
                 price = None
@@ -4408,7 +4447,7 @@ def scrape_bowery_presents(url, ua):
                 if k not in seen:
                     seen.add(k)
                     events.append({
-                        "name": name[:90],
+                        "name": name[:100],
                         "date": dt.isoformat(),
                         "url": t_url,
                         "venue": v_title,
@@ -5220,12 +5259,30 @@ def _eb_end_utc(ev, start):
     return end.isoformat() if end > start else None
 
 
+def _eb_availability(ev):
+    """{"sold_out", "waitlist", "series"} for one Eventbrite event. The price stays the ticket price:
+    the page decides how to word a sold-out listing (a free RSVP that filled up isn't a sold-out show)."""
+    ta = ev.get("ticket_availability") or {}
+    sold_out = bool(ta.get("is_sold_out"))
+    return {"sold_out": sold_out, "waitlist": sold_out and bool(ta.get("waitlist_available")),
+            "series": bool(ev.get("is_series"))}
+
+
+def _apply_sold_out(e, info):
+    """Copy Eventbrite's sold-out flags onto a listing (only the true ones, so events.json stays small)."""
+    if not info.get("sold_out"):
+        return False
+    e["sold_out"] = True
+    for key in ("waitlist", "series"):
+        if info.get(key):
+            e[key] = True
+    return True
+
+
 def _eb_price(ev):
     if ev.get("is_free"):
         return "Free"
     ta = ev.get("ticket_availability") or {}
-    if ta.get("is_sold_out"):
-        return "Sold Out"
     lo = ((ta.get("minimum_ticket_price") or {}).get("major_value"))
     hi = ((ta.get("maximum_ticket_price") or {}).get("major_value"))
     try:
@@ -5319,8 +5376,7 @@ def scrape_eventbrite_organizer(url, ua, max_pages=4):
             }
             if address:
                 e["address"] = address
-            if (ev.get("ticket_availability") or {}).get("is_sold_out"):
-                e["sold_out"] = True
+            _apply_sold_out(e, _eb_availability(ev))
             events.append(e)
         pag = data.get("pagination") or {}
         continuation = pag.get("continuation")
@@ -9735,6 +9791,90 @@ def scrape_hothouse_jazz(url, ua, days=14, post=None):
     return events
 
 
+_POSH_NO_PLACE_RE = re.compile(
+    r"^\s*$|^(?:virtual|online|zoom|tba|tbd|no location|location (?:given|sent|revealed|tba)|secret location|private location|"
+    r"address (?:sent|given|after)|dm for|\d{1,2}:\d{2})\b|\b(?:location given day of|sent (?:after|upon) (?:purchase|rsvp))\b",
+    re.I)
+# "Long Island City" is Queens and Elizabeth Street is Manhattan, so neither name alone means out of town.
+_NOT_NYC_PLACE_RE = re.compile(r"\b(?:jersey city|hoboken|newark|paterson|weehawken|union city|yonkers|"
+                               r"long branch|asbury park|nj|n\.j\.|new jersey|westchester|long island(?! city))\b", re.I)
+POSH_PER_GROUP_DAY = 2
+
+
+def scrape_posh_nyc(url, ua, get=None, max_pages=120):
+    """Posh (posh.vip) parties near NYC from its explore API, this month's window. Skips listings with no
+    real venue (virtual, "location given day of"), New Jersey ones, organizers that look like vendors
+    (vendor_signals: boat cruises, the same promo repeated), and keeps at most two a day per organizer."""
+    def _get(params):
+        resp = _SESSION.get(url, params=params, headers={"User-Agent": ua or UA_CHROME, "Accept": "application/json"},
+                            timeout=20)
+        resp.raise_for_status()
+        return resp.json()
+
+    get = get or _get
+    raw, cursor = [], None
+    for _ in range(max_pages):
+        params = {"lat": 40.7128, "lng": -74.006, "timezone": "America/New_York", "when": "This Month"}
+        if cursor is not None:
+            params["cursor"] = cursor
+        try:
+            data = get(params)
+        except Exception as exc:
+            if not raw:
+                raise  # nothing fetched: _scrape_one serves the last run's list
+            # Keep the pages we have; flagging the host makes _scrape_one add last run's listings
+            # for the rest instead of saving a short list.
+            HOST_GATE.refuse(_host_of(url), f"failed after {len(raw)} listings: {type(exc).__name__}")
+            break
+        raw.extend(data.get("events") or [])
+        cursor = data.get("nextCursor")
+        if cursor is None:
+            break
+    now = datetime.now(timezone.utc)
+    horizon = now + timedelta(days=HORIZON_DAYS)
+    by_group = collections.defaultdict(list)
+    seen = set()
+    for e in raw:
+        slug = (e.get("url") or "").strip()
+        venue = " ".join((e.get("venueName") or "").split())
+        try:
+            start = datetime.fromisoformat(str(e.get("startDate")).replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if not slug or slug in seen or not (now <= start <= horizon):
+            continue
+        if (e.get("timezone") or "America/New_York") != "America/New_York":
+            continue
+        if _POSH_NO_PLACE_RE.search(venue) or _NOT_NYC_PLACE_RE.search(venue):
+            continue
+        seen.add(slug)
+        by_group[(e.get("groupName") or "").strip()].append((start, slug, venue, e))
+    events = []
+    for group, items in by_group.items():
+        if group and vendor_signals(group, [it[3].get("title") for it in items]):
+            continue
+        per_day = collections.Counter()
+        for start, slug, venue, e in sorted(items, key=lambda it: it[0]):
+            day = start.astimezone(EASTERN).date()
+            per_day[day] += 1
+            if per_day[day] > POSH_PER_GROUP_DAY:
+                continue
+            try:
+                p = None if e.get("minTicketPrice") is None else float(e["minTicketPrice"])
+            except (TypeError, ValueError):
+                p = None
+            price = None if p is None else ("Free" if p == 0 else f"${p:g}+")
+            events.append({
+                "name": " ".join((e.get("title") or "").split()),
+                "date": start.isoformat(),
+                "url": f"https://posh.vip/e/{slug}",
+                "venue": venue,
+                "price": price,
+                "category": "party",
+            })
+    return events
+
+
 def scrape_columbus_circle_holiday_market(url, ua):
     """Columbus Circle Holiday Market (Urbanspace) — Dec 1 to Dec 31, 2026 (closed Dec 25)."""
     schedule = []
@@ -11781,6 +11921,7 @@ _ALL_VENUES = [
     {"name": "SalsaVida NYC Socials (list)", "url": "https://www.salsavida.com/guides/new-york/new-york-city/calendar/", "ua": UA_CHROME, "scraper": scrape_html_cards, "default_category": "dance", "kwargs": {"link_re": "^/event/"}},
     {"name": "Dance/NYC Community Calendar", "url": "https://www.dance.nyc/for-audiences/community-calendar/", "ua": UA_CHROME, "scraper": scrape_dance_nyc, "default_category": "dance"},
     {"name": "IFPA Pinball Tournaments (NYC)", "url": "https://www.ifpapinball.com/calendar/search.php?type=near&latitude=40.7128&longitude=-74.0060&distance=15&distance_type=m", "ua": UA_CHROME, "scraper": scrape_ifpa_nearby, "default_category": "gaming"},
+    {"name": "Posh NYC", "url": "https://posh.vip/api/bff/v1/explore/events", "ua": UA_CHROME, "scraper": scrape_posh_nyc, "default_category": "party"},
     {"name": "Hot House Jazz Guide", "url": "https://www.hothousejazz.com/calendar", "ua": UA_CHROME, "scraper": scrape_hothouse_jazz, "default_category": "music"},
     {"name": "New York Transit Museum", "url": "https://www.nytransitmuseum.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "family"},
     {"name": "Scandinavia House", "url": "https://www.scandinaviahouse.org/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "art"},
@@ -12722,8 +12863,8 @@ _SOLD_OUT_BARE_RE = re.compile(r"\s+SOLD[\s-]*OUT!*\s*$")
 
 
 def _tidy_sold_out(e, name):
-    """"[SOLD OUT] Show" -> "Show" with the note on the price, so a sold-out early show and its late
-    show read as two times of one event."""
+    """"[SOLD OUT] Show" -> "Show" with the event flagged sold out, so a sold-out early show and its
+    late show read as two times of one event."""
     m = _SOLD_OUT_PREFIX_RE.match(name)
     tidied = name[m.end():].strip() if m else ""
     if not tidied:
@@ -12731,8 +12872,7 @@ def _tidy_sold_out(e, name):
         tidied = name[:m.start()].strip() if m else ""
     if not tidied:
         return name
-    price = (e.get("price") or "").strip()
-    e["price"] = price if "sold out" in price.lower() else (f"{price} (sold out)" if price else "Sold out")
+    e["sold_out"] = True
     return tidied
 
 

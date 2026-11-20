@@ -39,6 +39,8 @@ from template import (  # noqa: E402
     _is_event_free,
     compute_recurring,
     group_by_date,
+    recurring_key,
+    sold_out_state,
 )
 from venues_geo import resolve_event_geo  # noqa: E402
 
@@ -72,6 +74,9 @@ def score_event(e, recurring_keys):
     if city in ("other", "citywide"):
         return None, []
     name = e.get("name") or ""
+    recurring = recurring_key(e) in recurring_keys
+    if sold_out_state(e, recurring):
+        return None, []  # no picks people can't get into
     reasons = []
     score = 0.0
 
@@ -102,7 +107,7 @@ def score_event(e, recurring_keys):
         reasons.insert(0, "free")
     if e.get("description"):
         score += 0.5
-    if (name.strip().lower(), e.get("_source_venue") or "") in recurring_keys:
+    if recurring:
         score -= 4
     if GENERIC_TITLE_RE.search(name):
         score -= 3

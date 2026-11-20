@@ -29,7 +29,7 @@ sys.path.insert(0, ROOT)
 from seo import page_url  # noqa: E402
 from template import (  # noqa: E402
     CITY_LABELS, EASTERN, _event_city, _get_event_highlight, _is_event_free, _load_highlights,
-    compute_recurring, group_by_date,
+    compute_recurring, group_by_date, recurring_key, sold_out_state,
 )
 from scrapers import TECH_EVENT_RE, category_bucket  # noqa: E402
 from venues_geo import resolve_event_geo  # noqa: E402
@@ -175,8 +175,10 @@ def build(week_start):
     total = sum(len(v) for v in by_day.values())
 
     def is_recurring(e):
-        return ((e.get("name") or "").strip().lower(), e.get("_source_venue") or "",
-                (e.get("venue") or "").strip().lower()) in recurring
+        return recurring_key(e) in recurring
+
+    # Sold-out shows and full RSVPs aren't worth recommending.
+    by_day = {d: [e for e in evs if not sold_out_state(e, is_recurring(e))] for d, evs in by_day.items()}
 
     # Group each show's nights: 3+ nights is a run ("All week"), otherwise list it on its first night
     runs = defaultdict(list)

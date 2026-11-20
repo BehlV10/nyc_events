@@ -718,6 +718,82 @@ def _is_event_guestlist(e):
     return False
 
 
+_SOLD_OUT_PRICE_RE = re.compile(r"[\(\[]?\s*\bsold[\s-]*out\b!*\s*[\)\]]?", re.I)
+_AVAILABILITY_KEYS = ("sold_out", "waitlist", "series")
+
+
+def _normalize_sold_out_price(e):
+    """Some sources (and older cached listings) put the sell-out in the price: "Sold Out",
+    "$25 (sold out)". Move it to the sold_out flag so the price and free checks see a real price."""
+    price = e.get("price")
+    if isinstance(price, str) and _SOLD_OUT_PRICE_RE.search(price):
+        rest = re.sub(r"\s+", " ", _SOLD_OUT_PRICE_RE.sub(" ", price)).strip(" -–·,;:|")
+        e["price"] = rest or None
+        e["sold_out"] = True
+    return e
+
+
+def _copy_availability(src, dst):
+    for key in _AVAILABILITY_KEYS:
+        if src.get(key):
+            dst[key] = True
+        else:
+            dst.pop(key, None)
+
+
+# label, tooltip
+SOLD_OUT_LABELS = {
+    "sold_out": ("Sold out", "No tickets left on the ticket site."),
+    "waitlist": ("Waitlist", "Sold out, but the ticket site has a waitlist you can join."),
+    "rsvp_full": ("RSVP full", "The free RSVPs are taken on the ticket site. Walk-ins are often still "
+                               "welcome at openings and receptions; check the event page."),
+}
+
+
+def sold_out_state(e, recurring=False):
+    """How to show a sold-out listing: "sold_out" (paid, no tickets left), "waitlist", "rsvp_full"
+    (a free RSVP that filled up), or None when there's nothing worth saying. A weekly party whose
+    free guestlist tier ran out still lets people in at the door, so it gets no label at all (a
+    weekly storytime or workshop that's full does)."""
+    if not e.get("sold_out"):
+        return None
+    guestlist = _is_event_guestlist(e)
+    free_tier = guestlist or _free_signal(e)
+    nightlife = guestlist or category_bucket(e.get("category")) == "Music & nightlife"
+    if free_tier and nightlife and (recurring or e.get("series")):
+        return None
+    if e.get("waitlist"):
+        return "waitlist"
+    return "rsvp_full" if free_tier else "sold_out"
+
+
+def sold_out_badge(state):
+    if not state:
+        return ""
+    label, tip = SOLD_OUT_LABELS[state]
+    return f'<span class="avail avail-{state.replace("_", "-")}" title="{escape(tip)}">{label}</span>'
+
+
+def _listing_state(e):
+    """sold_out_state as the page showed it (render_page knows whether the event repeats weekly)."""
+    return e["_avail"] if "_avail" in e else sold_out_state(e)
+
+
+def listing_sold_out(e):
+    """True when the page shows this listing as sold out, full or waitlist-only."""
+    return bool(_listing_state(e))
+
+
+def price_with_availability(e):
+    """Price text with the sell-out noted, for feeds and plain-text roundups: "$25 (sold out)"."""
+    price = (e.get("price") or "").strip()
+    state = _listing_state(e)
+    if not state:
+        return price or None
+    label = SOLD_OUT_LABELS[state][0]
+    return f"{price} ({label.lower()})" if price else label
+
+
 def _build_gcal_link(e, title, venue, city):
     raw_date = e.get("date")
     if not raw_date:
@@ -1009,23 +1085,34 @@ def format_date_heading(date_obj):
     return f"{prefix} · {date_obj.strftime('%b %-d')}"
 
 
+def recurring_key(e):
+    """Key compute_recurring files an event under. Venue is part of it: a group posting the same
+    title at a different bar each week isn't one recurring event."""
+    return ((e.get("name") or "").strip().lower(), e.get("_source_venue") or "", (e.get("venue") or "").strip().lower())
+
+
+# A title on more weekdays than this is a run (a Broadway show, a nightly comedy showcase), not a weekly
+# event. Residencies like Mon+Tue at Birdland or a Thu-Sat salsa night still count as weekly.
+WEEKLY_MAX_WEEKDAYS = 3
+# Ticket-seller feeds list an arbitrary handful of a run's performances (a Broadway show on five
+# Sundays), which looks weekly from the dates alone.
+WEEKLY_SKIP_SOURCES = ("Ticketmaster NYC", "SeatGeek NYC")
+
+
 def compute_recurring(dated):
-    """Return set of (normalized_name, source_venue) keys for events that appear
-    on the same weekday roughly a week apart — treated as weekly recurring."""
+    """Return set of recurring_key()s for events that appear on the same weekday roughly a week
+    apart, on at most WEEKLY_MAX_WEEKDAYS weekdays — treated as weekly recurring."""
     groups = defaultdict(list)
     for _, events in dated:
         for e in events:
             t = e.get("_time")
-            name = (e.get("name") or "").strip().lower()
-            if not t or not name:
+            key = recurring_key(e)
+            if not t or not key[0] or key[1] in WEEKLY_SKIP_SOURCES:
                 continue
-            # Venue is part of the key: a group posting the same title at a different bar each
-            # week isn't one recurring event.
-            key = (name, e.get("_source_venue") or "", (e.get("venue") or "").strip().lower())
             groups[key].append(t)
     recurring = set()
     for key, times in groups.items():
-        if len(times) < 2:
+        if len(times) < 2 or len({t.weekday() for t in times}) > WEEKLY_MAX_WEEKDAYS:
             continue
         times.sort()
         for i in range(len(times) - 1):
@@ -1250,6 +1337,14 @@ def _url_priority(url, source=None):
     if any(k in u for k in ("ticketmaster.com", "livenation.com", "ticketweb.com", "universe.com")) or "ticketmaster" in s:
         return 8
     return 10
+
+
+_RESALE_RE = re.compile(r"(?i)\b(seatgeek|stubhub|vividseats|vivid seats|tickpick|gametime|ticketnetwork|viagogo)\b")
+
+
+def _is_resale_link(a):
+    """A resale marketplace listing; not worth an 'also on' link next to the real seller."""
+    return bool(_RESALE_RE.search(a.get("venue") or "") or _RESALE_RE.search(a.get("url") or ""))
 
 
 def _source_priority(s):
@@ -1666,6 +1761,70 @@ def _other_start_times(e):
         if abs((t - own).total_seconds()) >= 15 * 60 and all(abs((t - o).total_seconds()) >= 60 for o in out):
             out.append(t)
     return sorted(out)
+
+
+_MISDATED_AGGREGATOR_RE = re.compile(
+    r"(?i)^(donyc|allevents|the skint|songkick|secret nyc|greenpointers|nyc for free|resident advisor nyc)\b"
+)
+
+
+def _venue_key(v):
+    """'Bowery Ballroom (Main Room)' and 'The Bowery Ballroom' -> 'boweryballroom'."""
+    v = re.sub(r"\(.*?\)", "", _fold(v or ""))
+    v = re.sub(r"^the\s+", "", v.strip())
+    return re.sub(r"[^a-z0-9]+", "", v)
+
+
+def _title_key(t):
+    return re.sub(r"[^a-z0-9]+", "", _fold(t or ""))
+
+
+def _title_lead(t):
+    """First two words, minus a leading 'the' and plural s: 'The Late Night w/ host Theo' -> ('late', 'night')."""
+    words = [re.sub(r"s$", "", w) for w in re.findall(r"[a-z0-9]+", _fold(t or ""))]
+    if words and words[0] == "the":
+        words = words[1:]
+    return tuple(words[:2]) if len(words) >= 2 else None
+
+
+def _drop_misdated_aggregator_listings(buckets, window_days=21):
+    """Drop an aggregator's listing when the venue's own calendar contradicts the date:
+      - the venue's own feed covers that day (has other events there that day),
+      - has nothing that day with a similar title (same first two words), and
+      - has the exact same title on a later date within three weeks.
+    Anything the venue doesn't list at all is left alone."""
+    own = {}  # venue key -> {date: [titles]} from the venue's own scraper
+    for day, events in buckets.items():
+        for e in events:
+            vk = _venue_key(e.get("venue"))
+            sk = _venue_key(e.get("_source_venue"))
+            if vk and sk and (vk == sk or vk.startswith(sk) or sk.startswith(vk)):
+                own.setdefault(vk, {}).setdefault(day, []).append(e.get("name") or "")
+
+    def exact(a, b):
+        a, b = _title_key(a), _title_key(b)
+        return a and b and (a == b or (min(len(a), len(b)) >= 6 and (a in b or b in a)))
+
+    def similar(a, b):
+        return exact(a, b) or (_title_lead(a) is not None and _title_lead(a) == _title_lead(b))
+
+    dropped = 0
+    for day, events in buckets.items():
+        keep = []
+        for e in events:
+            vk = _venue_key(e.get("venue"))
+            by_day = own.get(vk)
+            if by_day and day in by_day and _MISDATED_AGGREGATOR_RE.search(e.get("_source_venue") or ""):
+                name = e.get("name")
+                here = any(similar(name, t) for t in by_day[day])
+                later = any(day < d <= day + timedelta(days=window_days) and any(exact(name, t) for t in ts)
+                            for d, ts in by_day.items())
+                if later and not here:
+                    dropped += 1
+                    continue
+            keep.append(e)
+        buckets[day] = keep
+    return dropped
 
 
 def _merge_duplicates(events, word_freq=None):
@@ -2167,6 +2326,9 @@ def _merge_duplicates(events, word_freq=None):
                 free_claim = bool(re.search(r"\bfree\b|^\$?0(\.00)?$", str(e["price"]).strip(), re.I))
                 if not (free_claim and _TICKET_SELLER_RE.search(match.get("url") or "")):
                     match["price"] = e["price"]
+                    _copy_availability(e, match)  # whether it's sold out comes with the price it belongs to
+            if e.get("sold_out") and not match.get("sold_out") and not match.get("price"):
+                _copy_availability(e, match)
             if (not match.get("lat") or not match.get("lng")) and e.get("lat") and e.get("lng"):
                 match["lat"] = e["lat"]
                 match["lng"] = e["lng"]
@@ -2471,7 +2633,7 @@ def group_by_date(results):
             n_low = (e.get("name") or "").lower()
             if _ONLINE_TITLE_RE.search(n_low) and not re.search(r"in[- ]person|hybrid|\birl\b", n_low):
                 continue
-            entry = {"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")}
+            entry = _normalize_sold_out_price({"venue_url": r.get("url", ""), **e, "_source_venue": r.get("venue", "")})
             entry["url"] = sanitize_event_url(fix_doubled_url(entry.get("url")), fallback=r.get("url") or None)
             entry["venue"] = e.get("venue") or r.get("venue", "")
             if (entry.get("venue") or "").strip().lower() == "dance/nyc community calendar":
@@ -2549,6 +2711,7 @@ def group_by_date(results):
                         buckets.setdefault(cur_day, []).append(day_entry)
                 else:
                     buckets.setdefault(key, []).append(entry)
+    _drop_misdated_aggregator_listings(buckets)
     word_freq = title_word_freq([e for evs in buckets.values() for e in evs])
     for date_key, events in list(buckets.items()):
         events.sort(key=lambda e: e.get("_time", datetime.min.replace(tzinfo=EASTERN)))
@@ -2658,10 +2821,13 @@ def render_page(results, split_deferred=False, context_out=None):
         weather_pill_html = f'<span class="pill-weather" title="{weather.get("label", "")} in NYC (Central Park)">{weather.get("icon", "🌤️")} {weather.get("temp", "--")}°F <span class="weather-label">{weather.get("label", "")}</span></span>'
 
     def is_recurring(e):
-        return (
-            (e.get("name") or "").strip().lower(),
-            e.get("_source_venue") or "",
-        ) in recurring_keys
+        return recurring_key(e) in recurring_keys
+
+    def avail_of(e):
+        """sold_out_state, worked out once per event."""
+        if "_avail" not in e:
+            e["_avail"] = sold_out_state(e, is_recurring(e))
+        return e["_avail"]
 
     def render_event(e):
         raw_title = e.get("name") or "Untitled"
@@ -2683,6 +2849,8 @@ def render_page(results, split_deferred=False, context_out=None):
             price_tag = f'<span class="price">{price_raw}</span>'
         else:
             price_tag = ""
+        avail = avail_of(e)
+        price_tag += sold_out_badge(avail)
 
         cat = e.get("category") or "other"
         bucket = category_bucket(cat)
@@ -2720,7 +2888,7 @@ def render_page(results, split_deferred=False, context_out=None):
             a_key = _clean_event_url(a_url) or a_url
             if not a_url or a_key in seen_alt_urls:
                 continue
-            if "allevents." in a_url.lower() or str(a.get("venue") or "").lower().startswith("allevents"):
+            if "allevents." in a_url.lower() or str(a.get("venue") or "").lower().startswith("allevents") or _is_resale_link(a):
                 continue
             if _titles_unrelated(raw_title, a.get("name")):
                 # Merged as the same time and place but titled differently: maybe a different event
@@ -2807,8 +2975,9 @@ def render_page(results, split_deferred=False, context_out=None):
         ev_id = _event_stable_id(e)
         # Flags are emitted only when true (the page tests `=== 'true'`), and nothing that the
         # page can derive (subarea name, HH:MM) is repeated per event: deferred days are ~17k <li>s.
-        flag_attrs = (' data-free="true"' if free_flag == "true" else "") + (' data-free-catch="true"' if free_kind == "catch" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
-        return _compact_li(f'''<li class="event" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{epoch_attr}{time_attr}{geo_attrs}>
+        flag_attrs = (' data-soldout="true"' if avail else "") + (' data-free="true"' if free_flag == "true" else "") + (' data-free-catch="true"' if free_kind == "catch" else "") + (' data-guestlist="true"' if guestlist_flag == "true" else "") + (' data-lgbtq="true"' if is_lgbtq_event(e) else "")
+        li_class = "event soldout" if avail else "event"
+        return _compact_li(f'''<li class="{li_class}" data-cat="{escape(cat)}" data-bucket="{escape(bucket)}"{genre_attr} data-venue="{escape(source)}"{pres_attr} data-city="{escape(city)}" data-subarea="{escape(sub_slug)}" data-recur="{recur_flag}"{flag_attrs}{epoch_attr}{time_attr}{geo_attrs}>
           <div class="when">{escape(format_when(e))}{_other_times_html(e)}{_more_dates_html(e)}</div>
           <div class="what"><button type="button" class="star-btn" aria-label="Add to My Schedule">☆</button>{link}{price_tag}{guestlist_badge}{recur_badge}
             <div class="venue-tag">{cat_tag} · {venue_html}{extra_html}{cal_html}</div>
@@ -2830,6 +2999,8 @@ def render_page(results, split_deferred=False, context_out=None):
                 continue
             cats = dict(CATEGORY_BUCKETS).get(bname, [])
             accent = CATEGORY_STYLES.get(cats[0], CATEGORY_STYLES["other"])[0] if cats else CATEGORY_STYLES["other"][0]
+            # Sold-out and full listings go last (they're hidden while "Skip sold-out events" is on).
+            bucket_events = sorted(bucket_events, key=lambda e: bool(avail_of(e)))
             items = "\n".join(render_event(e) for e in bucket_events)
             bucket_blocks.append(f'''
             <div class="bucket" data-bucket="{escape(bname)}" style="--accent:{accent};">
@@ -3656,6 +3827,11 @@ def render_page(results, split_deferred=False, context_out=None):
   .price[title] {{ cursor: help; }}
   .free-catch-toggle {{ margin-left: 22px; font-weight: 500; font-size: 11px; opacity: .9; }}
   .price.ticketed {{ background: rgba(139, 178, 255, 0.12); color: #8bb2ff; border: 1px solid rgba(139, 178, 255, 0.3); font-weight: 600; font-size: 10px; }}
+  .avail {{ display:inline-block; margin-left: 6px; font-size: 11px; padding: 1px 6px; border-radius: 5px; border: 1px dashed var(--border-hover); color: var(--muted); cursor: help; }}
+  .avail-sold-out, .avail-waitlist {{ color: var(--warn); border-color: currentColor; font-weight: 600; }}
+  .event.soldout .what > a {{ opacity: .7; }}
+  .soldout-skip-toggle {{ display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; font-weight: 600; cursor: pointer; color: var(--muted); user-select: none; }}
+  .soldout-skip-toggle input {{ accent-color: var(--accent); width: 14px; height: 14px; cursor: pointer; margin: 0; }}
   .compare-tickets {{ font-size: 11px; color: var(--muted); }}
   .compare-tickets a {{ color: var(--accent); text-decoration: none; }}
   .compare-tickets a:hover {{ text-decoration: underline; }}
@@ -6113,6 +6289,10 @@ def render_page(results, split_deferred=False, context_out=None):
           <input type="checkbox" id="lgbtq-only-chk">
           <span><span class="chip-icon">🏳️‍🌈 </span>LGBTQ+ events only</span>
         </label>
+        <label class="soldout-skip-toggle" for="skip-soldout-chk" title="Hides sold-out shows, waitlists and full RSVPs. Searching or viewing My Schedule still shows them.">
+          <input type="checkbox" id="skip-soldout-chk" checked>
+          <span><span class="chip-icon">🚫 </span>Skip sold-out events</span>
+        </label>
       </div>
       <div class="filter-group">
         <h3>Category <span class="spacer"></span> <button type="button" id="cat-all">all</button> <button type="button" id="cat-none">none</button></h3>
@@ -6542,6 +6722,7 @@ def render_page(results, split_deferred=False, context_out=None):
     const freeCatchChk = document.getElementById('free-catch-chk');
     const guestlistOnlyChk = document.getElementById('guestlist-only-chk');
     const lgbtqOnlyChk = document.getElementById('lgbtq-only-chk');
+    const skipSoldoutChk = document.getElementById('skip-soldout-chk');
 
     const locChips = document.querySelectorAll('#location-chips .loc-chip');
     const subareaBar = document.getElementById('subarea-chips-bar');
@@ -7501,9 +7682,10 @@ def render_page(results, split_deferred=False, context_out=None):
       const isFree = (freeOnlyChk && freeOnlyChk.checked) || (freeCatchChk && freeCatchChk.checked);
       const isGuestlist = guestlistOnlyChk && guestlistOnlyChk.checked;
       const isLgbtq = lgbtqOnlyChk && lgbtqOnlyChk.checked;
+      const showsSoldout = skipSoldoutChk && !skipSoldoutChk.checked;
       const isTimeFiltered = (timeFrom !== null || timeTo !== null);
       const isGenreFiltered = Array.from(genreBoxes).some(b => !b.checked);
-      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || isLgbtq || starredOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
+      const isFiltered = isCatFiltered || isGenreFiltered || (chkVenues < allVenues) || !citiesDefault || (chkRecurs < allRecurs) || isFree || isGuestlist || isLgbtq || showsSoldout || starredOnly || isTimeFiltered || (activeSubarea !== 'all') || (searchInput && !!searchInput.value.trim());
 
       if (mobileBadge) {{
         mobileBadge.textContent = isFiltered ? 'Active' : 'All';
@@ -7559,6 +7741,7 @@ def render_page(results, split_deferred=False, context_out=None):
       if (freeOnlyChk && freeOnlyChk.checked) params.set('free', (freeCatchChk && freeCatchChk.checked) ? '2' : '1');
       if (guestlistOnlyChk && guestlistOnlyChk.checked) params.set('guestlist', '1');
       if (lgbtqOnlyChk && lgbtqOnlyChk.checked) params.set('lgbtq', '1');
+      if (skipSoldoutChk && !skipSoldoutChk.checked) params.set('soldout', '1');
       if (starredOnly) params.set('saved', '1');
       if (timeFrom !== null || timeTo !== null) {{
         if (timeFrom !== null) params.set('from', formatMinutesToHHMM(timeFrom));
@@ -7589,6 +7772,7 @@ def render_page(results, split_deferred=False, context_out=None):
         if (params.get('free') === '2' && freeCatchChk) freeCatchChk.checked = true;
         if (params.get('guestlist') === '1' && guestlistOnlyChk) guestlistOnlyChk.checked = true;
         if (params.get('lgbtq') === '1' && lgbtqOnlyChk) lgbtqOnlyChk.checked = true;
+        if (params.get('soldout') === '1' && skipSoldoutChk) skipSoldoutChk.checked = false;
         if (params.get('saved') === '1') starredOnly = true;
         if (params.get('past') === '1') showPastToday = true;
         if (params.get('v') === 'map') {{
@@ -7726,6 +7910,8 @@ def render_page(results, split_deferred=False, context_out=None):
       const cities = new Set(Array.from(cityBoxes).filter(boxOn).map(b => b.value));
       const starDates = starredOnly ? new Set(Array.from(starredEvents).map(k => k.split('|')[0])) : null;
       const searchText = searchInput.value.trim().toLowerCase();
+      // Searching or viewing saved events shows sold-out listings even while they're skipped.
+      const skipSoldout = !!(skipSoldoutChk && skipSoldoutChk.checked) && !searchText && !starredOnly;
       const freeOnly = freeOnlyChk ? freeOnlyChk.checked : false;
       const freeCatch = freeOnly && freeCatchChk ? freeCatchChk.checked : false;
       const guestlistOnly = guestlistOnlyChk ? guestlistOnlyChk.checked : false;
@@ -7856,6 +8042,7 @@ def render_page(results, split_deferred=False, context_out=None):
                   freeCatch: li.dataset.freeCatch === 'true',
                   guestlist: li.dataset.guestlist === 'true',
                   lgbtq: li.dataset.lgbtq === 'true',
+                  soldout: li.dataset.soldout === 'true',
                   timeMins: tm ? parseInt(tm, 10) : -1,
                   epoch: li.dataset.epoch ? parseInt(li.dataset.epoch, 10) : 0,
                   text: null,
@@ -7870,6 +8057,7 @@ def render_page(results, split_deferred=False, context_out=None):
               const freeOk = !freeOnly || m.free || (freeCatch && m.freeCatch);
               const guestlistOk = !guestlistOnly || m.guestlist;
               const lgbtqOk = !lgbtqOnly || m.lgbtq;
+              const soldoutOk = !skipSoldout || !m.soldout;
               const starOk = !starredOnly || starredEvents.has(eventKey(li));
               const searchOk = !searchText || (m.text || (m.text = li.textContent.toLowerCase())).includes(searchText);
 
@@ -7895,7 +8083,7 @@ def render_page(results, split_deferred=False, context_out=None):
               }}
 
               const genreOk = genreOkFor(m.bucket, m.genre);
-              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && starOk && todOk && timePastOk;
+              const isVisible = genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && soldoutOk && starOk && todOk && timePastOk;
               if (m.hidden === isVisible) {{ m.hidden = !isVisible; li.classList.toggle('hidden', !isVisible); }}
               if (isVisible) {{
                 bucketVisible++;
@@ -8060,9 +8248,10 @@ def render_page(results, split_deferred=False, context_out=None):
             const freeOk = !freeOnly || li.dataset.free === 'true' || (freeCatch && li.dataset.freeCatch === 'true');
             const guestlistOk = !guestlistOnly || li.dataset.guestlist === 'true';
             const lgbtqOk = !lgbtqOnly || li.dataset.lgbtq === 'true';
+            const soldoutOk = !skipSoldout || li.dataset.soldout !== 'true';
             const searchOk = !searchText || li.textContent.toLowerCase().includes(searchText);
             const genreOk = genreOkFor(li.dataset.bucket, li.dataset.genre);
-            const isVisible = catOk && genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk;
+            const isVisible = catOk && genreOk && venueOk && recurOk && cityOk && subareaOk && searchOk && freeOk && guestlistOk && lgbtqOk && soldoutOk;
             li.classList.toggle('hidden', !isVisible);
           }});
         }}
@@ -8187,6 +8376,7 @@ def render_page(results, split_deferred=False, context_out=None):
 
     if (guestlistOnlyChk) guestlistOnlyChk.addEventListener('change', apply);
     if (lgbtqOnlyChk) lgbtqOnlyChk.addEventListener('change', apply);
+    if (skipSoldoutChk) skipSoldoutChk.addEventListener('change', apply);
 
     document.addEventListener('keydown', (e) => {{
       if ((e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k')) &&
@@ -8396,6 +8586,7 @@ def render_page(results, split_deferred=False, context_out=None):
       if (freeCatchChk) freeCatchChk.checked = false;
       if (guestlistOnlyChk) guestlistOnlyChk.checked = false;
       if (lgbtqOnlyChk) lgbtqOnlyChk.checked = false;
+      if (skipSoldoutChk) skipSoldoutChk.checked = true;
       starredOnly = false;
       clearRange();
       timeFrom = null;
