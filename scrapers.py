@@ -8194,7 +8194,15 @@ def _local_iso_to_utc(raw, tz=EASTERN):
     try:
         dt = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
     except ValueError:
-        return None
+        # Some sites write a 12-hour clock after the T: "2026-11-20T7:00 PM" (Muse Paintbar)
+        m = re.match(r"^\s*(\d{4}-\d{2}-\d{2})T(\d{1,2}):(\d{2})\s*([AP])\.?M\.?\s*$", str(raw), re.I)
+        if not m:
+            return None
+        hour = int(m.group(2)) % 12 + (12 if m.group(4).upper() == "P" else 0)
+        try:
+            dt = datetime.fromisoformat(f"{m.group(1)}T{hour:02d}:{m.group(3)}")
+        except ValueError:
+            return None
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=tz)
     return dt.astimezone(timezone.utc)
@@ -8357,11 +8365,13 @@ def _allevents_card_times(soup):
     return out
 
 
-def scrape_jsonld(url, ua, venue_prefix=None, address_fallback=None):
+def scrape_jsonld(url, ua, venue_prefix=None, address_fallback=None, venue=None, address=None):
     """Generic schema.org JSON-LD Event scraper for any page that embeds Events.
 
     venue_prefix / address_fallback: for campuses whose JSON-LD names only the room
-    ("Stage One", address "NY") -> "Wagner College (Stage One)" at the campus address."""
+    ("Stage One", address "NY") -> "Wagner College (Stage One)" at the campus address.
+    venue / address: one-location pages whose JSON-LD names a neighborhood, not the place
+    ("NYC - Tribeca", "New York  NY")."""
     soup = fetch_soup(url, ua)
     events = []
     seen = set()
@@ -8390,6 +8400,10 @@ def scrape_jsonld(url, ua, venue_prefix=None, address_fallback=None):
             entry["venue"] = f"{venue_prefix} ({v})" if v and venue_prefix.lower() not in v.lower() else (v or venue_prefix)
         if address_fallback and len(entry.get("address") or "") < 12:
             entry["address"] = address_fallback
+        if venue:
+            entry["venue"] = venue
+        if address:
+            entry["address"] = address
         key = (entry["name"].lower(), entry["date"])
         if key in seen:
             continue
@@ -11825,6 +11839,8 @@ _ALL_VENUES = [
     {"name": "The PIT (People's Improv Theater)", "url": "https://thepit-nyc.com/calendar/", "ua": UA_CHROME, "scraper": scrape_pit_calendar, "default_category": "comedy"},
     {"name": "Brooklyn Improv", "url": "https://improv.com/brooklyn/calendar/", "ua": UA_CHROME, "scraper": scrape_improv_calendar, "default_category": "comedy"},
     {"name": "Greenpoint Comedy Club", "url": "https://punchup.live/venue/greenpointcomedyclub", "ua": UA_CHROME, "scraper": scrape_punchup_venue, "default_category": "comedy"},
+    {"name": "Muse Paintbar Tribeca", "url": "https://www.musepaintbar.com/events/tribeca/", "ua": UA_CHROME, "scraper": scrape_jsonld, "default_category": "art",
+     "kwargs": {"venue": "Muse Paintbar Tribeca", "address": "329 Greenwich St, New York, NY 10013"}},
     {"name": "Bushwick Comedy Club", "url": "https://www.bushwickcomedy.com/shows", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "comedy"},
     {"name": "Bushwick Comedy Club Open Mics", "url": "https://www.bushwickcomedy.com/open-mics", "ua": UA_CHROME, "scraper": scrape_wix_events, "default_category": "comedy"},
     {"name": "Comedy Village (Hell's Kitchen)", "url": "https://comedyvillage.com/wp-json/tribe/events/v1/events?per_page=50", "ua": UA_CHROME, "scraper": scrape_tribe_events_api, "default_category": "comedy"},

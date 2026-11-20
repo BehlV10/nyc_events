@@ -204,5 +204,18 @@ class PoshIsCrawledGently(unittest.TestCase):
         self.assertGreaterEqual(scrapers.POSH_TTL, 12 * 3600)
 
 
+class TwelveHourJsonLdTimes(unittest.TestCase):
+    def test_parses_clock_after_t(self):
+        self.assertEqual(scrapers._local_iso_to_utc("2026-11-20T7:00 PM").isoformat(), "2026-11-21T00:00:00+00:00")
+        self.assertEqual(scrapers._local_iso_to_utc("2026-11-21T12:30 pm").isoformat(), "2026-11-21T17:30:00+00:00")
+        self.assertEqual(scrapers._local_iso_to_utc("2026-11-21T12:15 AM").isoformat(), "2026-11-21T05:15:00+00:00")
+        self.assertIsNone(scrapers._local_iso_to_utc("next Tuesday"))
+
+    def test_muse_paintbar_source_names_the_place(self):
+        src = next(v for v in scrapers.VENUES if v["name"] == "Muse Paintbar Tribeca")
+        self.assertEqual(src["kwargs"]["venue"], "Muse Paintbar Tribeca")
+        self.assertIn("329 Greenwich", src["kwargs"]["address"])
+
+
 if __name__ == "__main__":
     unittest.main()
