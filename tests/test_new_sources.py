@@ -196,5 +196,13 @@ class PoshNyc(unittest.TestCase):
         scrapers.HOST_GATE.reset()
 
 
+class PoshIsCrawledGently(unittest.TestCase):
+    def test_posh_pacing_and_daily_refresh(self):
+        self.assertEqual(scrapers._host_policy("posh.vip"), (1, 4.0))
+        src = next(v for v in scrapers.VENUES if v["name"] == "Posh NYC")
+        self.assertEqual(scrapers._get_venue_ttl(src["name"], v=src), scrapers.POSH_TTL)
+        self.assertGreaterEqual(scrapers.POSH_TTL, 12 * 3600)
+
+
 if __name__ == "__main__":
     unittest.main()
