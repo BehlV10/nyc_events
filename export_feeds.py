@@ -16,6 +16,7 @@ from html import escape
 
 from scrapers import EASTERN
 from seo import SITE_NAME, _upcoming, get_site_url, page_url
+from template import price_with_availability
 
 
 def _event_uid(e):
@@ -40,8 +41,9 @@ def build_rss(events, site_url=None):
         when = "time TBA" if e.get("_time_unknown") else t.strftime("%-I:%M %p")
         title = f"{e.get('name')} — {venue} ({t.strftime('%a %b')} {t.day}, {when})"
         desc = e.get("description") or f"{e.get('name')} at {venue}."
-        if e.get("price"):
-            desc = f"{desc} Price: {e['price']}."
+        price = price_with_availability(e)
+        if price:
+            desc = f"{desc} Price: {price}."
         items.append(f"""    <item>
       <title>{escape(title)}</title>
       <link>{escape(e.get('url') or page_url('', site_url))}</link>
@@ -103,7 +105,8 @@ def build_ics(events, site_url=None):
         venue = e.get("venue") or e.get("_source_venue") or "New York"
         location = venue if not e.get("address") or e["address"] in venue else f"{venue}, {e['address']}"
         url = e.get("url") or page_url("", site_url)
-        desc = " · ".join(x for x in (e.get("description"), e.get("price") and f"Price: {e['price']}", url) if x)
+        price = price_with_availability(e)
+        desc = " · ".join(x for x in (e.get("description"), price and f"Price: {price}", url) if x)
         lines += [
             "BEGIN:VEVENT",
             f"UID:{_event_uid(e)}@{host}",
