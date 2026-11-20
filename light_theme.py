@@ -78,6 +78,7 @@ LIGHT_THEME_CSS = """
   [data-theme="light"] .genre-tag-list li a,
   [data-theme="light"] .view-toggle,
   [data-theme="light"] .map-toggle-btn,
+  [data-theme="light"] .simple-view-btn,
   [data-theme="light"] .map-tool-btn,
   [data-theme="light"] .near-stream-clear-btn,
   [data-theme="light"] .past-banner-btn,
