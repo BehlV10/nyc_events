@@ -7664,8 +7664,34 @@ def scrape_symphony_space(url, ua):
     return events
 
 
+# SmallsLIVE runs one calendar for three rooms; each card says which ("Live at Mezzrow").
+_SMALLSLIVE_ROOMS = {
+    "smalls": {"venue": "Smalls Jazz Club (West Village)", "lat": 40.7344, "lng": -74.0033,
+               "address": "183 W 10th St, New York, NY", "neighborhood": "Greenwich Village"},
+    "mezzrow": {"venue": "Mezzrow", "address": "163 W 10th St, New York, NY 10014", "neighborhood": "Greenwich Village"},
+    "jazzcultural": {"venue": "Jazzcultural"},
+}
+
+
+def _smalls_card(a):
+    """The card around one show link: the nearest ancestor holding exactly one room label (a
+    carousel row holds several shows, and reading its text mixes up their dates and rooms)."""
+    p = a
+    for _ in range(10):
+        p = p.parent
+        if p is None:
+            return None, None
+        labels = p.select(".venue")
+        if len(labels) == 1:
+            room = next((k for k in _SMALLSLIVE_ROOMS if k in labels[0].get_text(" ", strip=True).lower()), None)
+            return p, room
+        if len(labels) > 1:
+            return None, None
+    return None, None
+
+
 def scrape_smalls_live(url, ua):
-    """Smalls Jazz Club & Mezzrow — Official West Village live jazz schedule from SmallsLIVE."""
+    """Smalls Jazz Club, Mezzrow & Jazzcultural — the SmallsLIVE schedule, each show at its own room."""
     events = []
     target_url = url or "https://www.smallslive.com/"
     now = datetime.now(EASTERN)
@@ -7678,8 +7704,10 @@ def scrape_smalls_live(url, ua):
         soup = BeautifulSoup(resp.text, "html.parser")
         for a in soup.find_all("a", href=re.compile(r"/events/\d+-")):
             href = a["href"]
-            parent = a.find_parent("article") or a.find_parent("div", class_=lambda c: c and any(k in c.lower() for k in ["event", "schedule", "item"])) or a.parent
-            txt = parent.get_text(" | ", strip=True) if parent else a.get_text(" ", strip=True)
+            parent, room = _smalls_card(a)
+            if parent is None:
+                continue  # no single room label around it: can't tell where (or when) it is
+            txt = parent.get_text(" | ", strip=True)
             slug = re.sub(r"^/events/\d+-", "", href).rstrip("/").replace("-", " ").title()
 
             m_date = re.search(r"(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2})", txt, re.I)
@@ -7715,17 +7743,14 @@ def scrape_smalls_live(url, ua):
             if key in seen:
                 continue
             seen.add(key)
+            place = _SMALLSLIVE_ROOMS.get(room or "smalls")
             events.append({
-                "name": f"Smalls Jazz: {slug}",
+                "name": f"Smalls Jazz: {slug}" if (room or "smalls") == "smalls" else slug,
                 "date": dt.isoformat(),
                 "url": full_url,
-                "venue": "Smalls Jazz Club (West Village)",
                 "price": "$25",
                 "category": "music",
-                "lat": 40.7344,
-                "lng": -74.0033,
-                "address": "183 W 10th St, New York, NY",
-                "neighborhood": "Greenwich Village",
+                **place,
             })
     except Exception as e:
         print(f"Error scraping Smalls Live: {e}")

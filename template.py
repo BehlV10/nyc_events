@@ -1873,6 +1873,37 @@ def _drop_misdated_aggregator_listings(buckets, window_days=21):
     return dropped
 
 
+# Sister rooms a few doors apart that share artists, owners and a TicketWeb account: a show at
+# one is never the same show at the other, though their pins nearly touch.
+NEIGHBOR_VENUE_PAIRS = ({"small", "mezzrow"},)
+# Pins farther apart than this (~400 m) are different places, whatever a citywide feed says.
+DISTINCT_PIN_DEG = 0.004
+
+
+def _distinct_venues(v1_low, v2_low, e1, e2):
+    """Two named venues that are plainly different places: no distinctive word in common,
+    neither name contains the other, and either a known sister-room pair or both pinned far
+    apart. Same-place aliases ("New York City Ballet" / "David H. Koch Theater", "Eris" /
+    "Brooklyn Comedy Collective") share a pin, so they still merge."""
+    w1, w2 = _plain_venue_words(v1_low), _plain_venue_words(v2_low)
+    if not w1 or not w2 or (w1 & w2):
+        return False
+    sq = lambda t: re.sub(r"[^a-z0-9]", "", re.sub(r"\(.*?\)", "", t))
+    s1, s2 = sq(v1_low), sq(v2_low)
+    if not s1 or not s2 or s1 in s2 or s2 in s1:
+        return False
+    for pair in NEIGHBOR_VENUE_PAIRS:
+        a, b = tuple(pair)
+        if (a in w1 and b in w2) or (b in w1 and a in w2):
+            return True
+    if not (e1 and e2) or e1.get("_venue_unknown") or e2.get("_venue_unknown"):
+        return False
+    g1, g2 = _cached_geo(e1), _cached_geo(e2)
+    if not (g1 and g2):
+        return False
+    return abs(g1["lat"] - g2["lat"]) > DISTINCT_PIN_DEG or abs(g1["lng"] - g2["lng"]) > DISTINCT_PIN_DEG
+
+
 def _merge_duplicates(events, word_freq=None):
     """Collapse events sharing a normalized name or head title within the same day bucket.
 
@@ -1987,6 +2018,8 @@ def _merge_duplicates(events, word_freq=None):
             return True
         v1_low = v1.lower()
         v2_low = v2.lower()
+        if _distinct_venues(v1_low, v2_low, e1, e2):
+            return False  # even through a citywide feed: two real places, two shows
         if v1_low in generic_sources or v2_low in generic_sources or _is_generic_feed(e1) or _is_generic_feed(e2):
             return True
         if v1_low == v2_low:
