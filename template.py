@@ -1339,6 +1339,14 @@ def _url_priority(url, source=None):
     return 10
 
 
+_RESALE_RE = re.compile(r"(?i)\b(seatgeek|stubhub|vividseats|vivid seats|tickpick|gametime|ticketnetwork|viagogo)\b")
+
+
+def _is_resale_link(a):
+    """A resale marketplace listing; not worth an 'also on' link next to the real seller."""
+    return bool(_RESALE_RE.search(a.get("venue") or "") or _RESALE_RE.search(a.get("url") or ""))
+
+
 def _source_priority(s):
     return _url_priority(None, source=s)
 
@@ -1753,6 +1761,70 @@ def _other_start_times(e):
         if abs((t - own).total_seconds()) >= 15 * 60 and all(abs((t - o).total_seconds()) >= 60 for o in out):
             out.append(t)
     return sorted(out)
+
+
+_MISDATED_AGGREGATOR_RE = re.compile(
+    r"(?i)^(donyc|allevents|the skint|songkick|secret nyc|greenpointers|nyc for free|resident advisor nyc)\b"
+)
+
+
+def _venue_key(v):
+    """'Bowery Ballroom (Main Room)' and 'The Bowery Ballroom' -> 'boweryballroom'."""
+    v = re.sub(r"\(.*?\)", "", _fold(v or ""))
+    v = re.sub(r"^the\s+", "", v.strip())
+    return re.sub(r"[^a-z0-9]+", "", v)
+
+
+def _title_key(t):
+    return re.sub(r"[^a-z0-9]+", "", _fold(t or ""))
+
+
+def _title_lead(t):
+    """First two words, minus a leading 'the' and plural s: 'The Late Night w/ host Theo' -> ('late', 'night')."""
+    words = [re.sub(r"s$", "", w) for w in re.findall(r"[a-z0-9]+", _fold(t or ""))]
+    if words and words[0] == "the":
+        words = words[1:]
+    return tuple(words[:2]) if len(words) >= 2 else None
+
+
+def _drop_misdated_aggregator_listings(buckets, window_days=21):
+    """Drop an aggregator's listing when the venue's own calendar contradicts the date:
+      - the venue's own feed covers that day (has other events there that day),
+      - has nothing that day with a similar title (same first two words), and
+      - has the exact same title on a later date within three weeks.
+    Anything the venue doesn't list at all is left alone."""
+    own = {}  # venue key -> {date: [titles]} from the venue's own scraper
+    for day, events in buckets.items():
+        for e in events:
+            vk = _venue_key(e.get("venue"))
+            sk = _venue_key(e.get("_source_venue"))
+            if vk and sk and (vk == sk or vk.startswith(sk) or sk.startswith(vk)):
+                own.setdefault(vk, {}).setdefault(day, []).append(e.get("name") or "")
+
+    def exact(a, b):
+        a, b = _title_key(a), _title_key(b)
+        return a and b and (a == b or (min(len(a), len(b)) >= 6 and (a in b or b in a)))
+
+    def similar(a, b):
+        return exact(a, b) or (_title_lead(a) is not None and _title_lead(a) == _title_lead(b))
+
+    dropped = 0
+    for day, events in buckets.items():
+        keep = []
+        for e in events:
+            vk = _venue_key(e.get("venue"))
+            by_day = own.get(vk)
+            if by_day and day in by_day and _MISDATED_AGGREGATOR_RE.search(e.get("_source_venue") or ""):
+                name = e.get("name")
+                here = any(similar(name, t) for t in by_day[day])
+                later = any(day < d <= day + timedelta(days=window_days) and any(exact(name, t) for t in ts)
+                            for d, ts in by_day.items())
+                if later and not here:
+                    dropped += 1
+                    continue
+            keep.append(e)
+        buckets[day] = keep
+    return dropped
 
 
 def _merge_duplicates(events, word_freq=None):
@@ -2639,6 +2711,7 @@ def group_by_date(results):
                         buckets.setdefault(cur_day, []).append(day_entry)
                 else:
                     buckets.setdefault(key, []).append(entry)
+    _drop_misdated_aggregator_listings(buckets)
     word_freq = title_word_freq([e for evs in buckets.values() for e in evs])
     for date_key, events in list(buckets.items()):
         events.sort(key=lambda e: e.get("_time", datetime.min.replace(tzinfo=EASTERN)))
@@ -2815,7 +2888,7 @@ def render_page(results, split_deferred=False, context_out=None):
             a_key = _clean_event_url(a_url) or a_url
             if not a_url or a_key in seen_alt_urls:
                 continue
-            if "allevents." in a_url.lower() or str(a.get("venue") or "").lower().startswith("allevents"):
+            if "allevents." in a_url.lower() or str(a.get("venue") or "").lower().startswith("allevents") or _is_resale_link(a):
                 continue
             if _titles_unrelated(raw_title, a.get("name")):
                 # Merged as the same time and place but titled differently: maybe a different event

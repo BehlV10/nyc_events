@@ -1152,6 +1152,24 @@ def is_service_ad(name, venue=None):
     return bool(venue and _SERVICE_AD_VENUE_RE.search(venue))
 
 
+# "Primary Ballet I (Ages 4-6)", "Ballet I/II (Ages 8+)", "Art Lab (Ages 6-12)", "Grades K-2": a class
+# or program for children, whatever the source filed it under. A range counts when it starts at 12
+# or under; an open-ended "N+" only when N is 10 or under ("Ages 13+" / "14+" classes run into adult levels).
+_KID_AGE_RANGE_RE = re.compile(r"(?i)\bages?\s*(\d{1,2})\s*(?:[-–—]|to)\s*\d{1,2}\b")
+_KID_AGE_PLUS_RE = re.compile(r"(?i)\bages?\s*(\d{1,2})\s*(?:\+|and up\b|& up\b)")
+_KID_GRADES_RE = re.compile(r"(?i)\bgrades?\s*(?:pre-?k|k|[1-5])\b")
+
+
+def _for_kids_by_age(name):
+    m = _KID_AGE_RANGE_RE.search(name)
+    if m and int(m.group(1)) <= 12:
+        return True
+    m = _KID_AGE_PLUS_RE.search(name)
+    if m and int(m.group(1)) <= 10:
+        return True
+    return bool(_KID_GRADES_RE.search(name))
+
+
 def is_kid_family_event(name, venue=None):
     """Return True if an event is meant for infants, toddlers, kids, or family storytimes."""
     if not name:
@@ -1160,7 +1178,7 @@ def is_kid_family_event(name, venue=None):
         return False  # "Baby Shoes Comedy Show"
     if EXCLUDE_KID_FAMILY_RE.search(name) or re.search(r"\b(?:18|21)\s*\+|\badults? only\b|\bburlesque\b|\bdating\b|\bsingles\b|\bmixer\b|\bages? (?:1[89]|[2-9]\d)\b", name, re.I):
         return False
-    return bool(KID_FAMILY_EVENT_RE.search(name))
+    return bool(KID_FAMILY_EVENT_RE.search(name)) or _for_kids_by_age(name)
 
 
 # --- NYC Weather ---
@@ -4354,6 +4372,29 @@ def scrape_shrine_harlem(url, ua, venue=None, address=None):
     return out
 
 
+def _with_support(title, support):
+    """"Sweet Pill" + "Heart to Gold, Stereosity" -> "Sweet Pill with Heart to Gold, Stereosity".
+
+    Takes a string or a list of acts; skips acts already named in the title, and leaves very
+    long lineups off rather than make an unreadable title. "X with Y" keeps the head title
+    "x", so it still merges with other sources' plain "X" listing."""
+    if isinstance(support, str):
+        support = [a for a in re.split(r"\s*,\s*", support)]
+    low = (title or "").lower()
+    acts, seen = [], set()
+    for a in support or []:
+        a = re.sub(r"\s+", " ", html.unescape(a or "")).strip()
+        a = re.sub(r"^(?:with|w/|feat\.?|featuring|special guests?:?)\s+", "", a, flags=re.I)
+        a = re.sub(r"\s+(?:opening|opens|to open)$", "", a, flags=re.I).strip()
+        if a and a.lower() not in low and a.lower() not in seen:
+            seen.add(a.lower())
+            acts.append(a)
+    if not acts:
+        return title
+    full = f"{title} with {', '.join(acts)}"
+    return full if len(full) <= 100 else title
+
+
 def scrape_bowery_presents(url, ua):
     """The Bowery Presents — direct AEG feeds for Webster Hall, Brooklyn Steel, Terminal 5, MHOW, Racket, etc."""
     urls = [
@@ -4394,7 +4435,8 @@ def scrape_bowery_presents(url, ua):
                 if dt < now:
                     continue
                 title_obj = ev.get("title") or {}
-                name = title_obj.get("eventTitleText") or title_obj.get("headlinersText") or "Live in Concert"
+                name = (title_obj.get("headlinersText") or title_obj.get("eventTitleText") or "Live in Concert").strip()
+                name = _with_support(name, title_obj.get("supportingText") or "")
                 ticketing = ev.get("ticketing") or {}
                 t_url = ticketing.get("eventUrl") or ticketing.get("url") or ticketing.get("ticketURL") or "https://www.bowerypresents.com/"
                 price = None
@@ -4405,7 +4447,7 @@ def scrape_bowery_presents(url, ua):
                 if k not in seen:
                     seen.add(k)
                     events.append({
-                        "name": name[:90],
+                        "name": name[:100],
                         "date": dt.isoformat(),
                         "url": t_url,
                         "venue": v_title,
