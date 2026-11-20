@@ -1506,8 +1506,12 @@ def _cached_geo(e):
     return _memo(e, "_m_geo", lambda: resolve_event_geo(e))
 
 
+def _plain_venue_words(venue):
+    return {re.sub(r"s$", "", x) for x in re.findall(r"\w+", (venue or "").lower()) if len(x) >= 2} - _VENUE_GENERIC_WORDS
+
+
 def _venue_words(e):
-    return _memo(e, "_m_vwords", lambda: {re.sub(r"s$", "", x) for x in re.findall(r"\w+", (e.get("venue") or "").lower()) if len(x) >= 2} - _VENUE_GENERIC_WORDS)
+    return _memo(e, "_m_vwords", lambda: _plain_venue_words(e.get("venue")))
 
 
 def _cached_head(e):
@@ -1637,6 +1641,48 @@ def _title_words(title):
 
 
 _UNRELATED_STOP = {"night", "show", "tour", "featuring", "events"}
+
+
+_TM_LINK_RE = re.compile(r"(?i)^https?://(?:www\.)?(?:ticketmaster\.com|livenation\.com|ticketweb\.com)/")
+# Listing guides and calendars that aren't the event's own page: a card that links one of these
+# links the same show's Ticketmaster page instead. A venue's own website, AXS, DICE and other
+# original sellers stay the main link.
+_GUIDE_LINK_RE = re.compile(
+    r"(?i)^https?://(?:[\w-]+\.)*(?:hothousejazz\.com|amny\.com|brooklynpaper\.com|bronxtimes\.com|qns\.com|"
+    r"newyorktheatreguide\.com|thecomedybureau\.com|nycgovparks\.org|donyc\.com|theskint\.com|secretnyc\.co|"
+    r"greenpointers\.com|nycforfree\.co|allevents\.in|songkick\.com|bandsintown\.com|jambase\.com|"
+    r"seatgeek\.com|stubhub\.com|vividseats\.com|tickpick\.com|ticketnetwork\.com|google\.com/search)(?:[/:?#]|$)")
+
+
+def _prefer_ticketmaster(e):
+    """Make the same show's Ticketmaster / Live Nation / TicketWeb page the card's main link when
+    the card points at a listing guide or resale page (_GUIDE_LINK_RE); that page moves to "also on".
+
+    Only when the Ticketmaster listing names the same venue (a shared distinctive word) and a
+    related title: merges sometimes pair a club with its sister room's TicketWeb show (Smalls /
+    Mezzrow), or a book club's "A Christmas Carol" with a theater's. Returns True on a swap."""
+    url = e.get("url") or ""
+    if not url or not _GUIDE_LINK_RE.search(url):
+        return False
+    venue_words = _plain_venue_words(e.get("venue"))
+    if not venue_words:
+        return False
+    alts = e.get("_alt_sources") or []
+    for a in alts:
+        if not _TM_LINK_RE.search(a.get("url") or ""):
+            continue
+        if not (venue_words & _plain_venue_words(a.get("event_venue"))) or _titles_unrelated(e.get("name"), a.get("name")):
+            continue
+        src = e.get("_source_venue") or e.get("source") or "source"
+        rest = [x for x in alts if x is not a and x.get("url") != url]
+        rest.insert(0, {"venue": _source_display_label(src, url), "source": src, "url": url, "price": e.get("price"),
+                        "name": e.get("name"), "event_venue": e.get("venue")})
+        e["url"] = a["url"]
+        e["_alt_sources"] = rest
+        if not e.get("price") and a.get("price"):
+            e["price"] = a["price"]
+        return True
+    return False
 
 
 def _titles_unrelated(t1, t2):
@@ -2233,7 +2279,7 @@ def _merge_duplicates(events, word_freq=None):
             raw_src = e.get("_source_venue") or e.get("source") or e.get("venue") or "source"
             src_label = _source_display_label(raw_src, src_url)
             if src_url and not any(a.get("url") == src_url for a in match["_alt_sources"]) and src_url != match.get("url"):
-                match["_alt_sources"].append({"venue": src_label, "source": raw_src, "url": src_url, "price": e.get("price"), "name": e.get("name")})
+                match["_alt_sources"].append({"venue": src_label, "source": raw_src, "url": src_url, "price": e.get("price"), "name": e.get("name"), "event_venue": e.get("venue")})
 
             if match.get("_venue_unknown") and not e.get("_venue_unknown") and e.get("venue"):
                 match["venue"] = e["venue"]
@@ -2262,7 +2308,7 @@ def _merge_duplicates(events, word_freq=None):
                 old_src = match.get("_source_venue") or match.get("source") or "source"
                 old_label = _source_display_label(old_src, old_url)
                 if old_url and not any(a.get("url") == old_url for a in match["_alt_sources"]):
-                    match["_alt_sources"].append({"venue": old_label, "source": old_src, "url": old_url, "price": match.get("price"), "name": match.get("name")})
+                    match["_alt_sources"].append({"venue": old_label, "source": old_src, "url": old_url, "price": match.get("price"), "name": match.get("name"), "event_venue": match.get("venue")})
                 match["url"] = e.get("url")
                 match["name"] = e.get("name")
                 # The card takes the category of the listing whose title it shows
@@ -2294,7 +2340,7 @@ def _merge_duplicates(events, word_freq=None):
                     match["_alt_sources"] = [a for a in match["_alt_sources"] if a is not rsvp]
                     if old_url and not any(a.get("url") == old_url for a in match["_alt_sources"]):
                         old_src = match.get("_source_venue") or "source"
-                        match["_alt_sources"].append({"venue": _source_display_label(old_src, old_url), "source": old_src, "url": old_url, "price": match.get("price"), "name": match.get("name")})
+                        match["_alt_sources"].append({"venue": _source_display_label(old_src, old_url), "source": old_src, "url": old_url, "price": match.get("price"), "name": match.get("name"), "event_venue": match.get("venue")})
                     match["url"] = rsvp["url"]
 
             # If match has 19:00:00 (Eventbrite discovery fallback) while e has a real/earlier time, prefer e
@@ -2365,6 +2411,8 @@ def _merge_duplicates(events, word_freq=None):
             urls = [ev.get("url") or ""] + [a.get("url") or "" for a in ev.get("_alt_sources") or []]
             if any(_RSVP_HOST_RE.search(u) for u in urls) and any(_TICKET_SELLER_RE.search(u) for u in urls):
                 ev["price"] = None
+    for ev in out:
+        _prefer_ticketmaster(ev)
     # One start time per card: "date" (labels, calendar links, .ics, schedule keys, guide pages)
     # always follows _time (sort order, data-epoch), whichever listing's time won above.
     for e in out:
