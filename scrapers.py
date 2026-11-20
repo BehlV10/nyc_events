@@ -35,6 +35,7 @@ os.makedirs(CACHE_DIR, exist_ok=True)
 DEFAULT_VENUE_TTL = 3 * 3600    # 3 hours for standard venue feeds
 FAST_VENUE_TTL = 1 * 3600       # 1 hour for high-turnover feeds (Ticketmaster, SeatGeek, RA, Dice, DoNYC)
 SLOW_VENUE_TTL = 12 * 3600      # 12 hours for evergreen/slow feeds (NYC Parks XML, Trivia, Bookstores)
+POSH_TTL = 20 * 3600            # Posh's explore API is crawled about once a day (scrapes run twice daily)
 EVENTBRITE_TTL = 6 * 3600       # 6 hours for Eventbrite feeds to prevent Cloudflare bot blocking
 # The scrape runs twice a day, so every source that is past its TTL refreshes each run.
 # Throttle-sensitive hosts don't burst: their live fetches run on their own slow lanes
@@ -75,6 +76,8 @@ def _get_venue_ttl(vname, v=None):
         return EVENTBRITE_TTL
     if "meetup.com" in url:
         return MEETUP_TTL
+    if "posh.vip" in url:
+        return POSH_TTL
     if isinstance(v, dict) and v.get("scraper") is scrape_donyc_calendar:
         return DEFAULT_VENUE_TTL  # ~300 page loads; hourly would hammer DoNYC
     if any(k in low for k in ["ticketmaster", "seatgeek", "resident advisor", "dice.fm", "donyc", "the skint", "secret nyc", "greenpointers", "flop house", "sesh comedy", "luma"]):
@@ -222,6 +225,7 @@ HOST_POLICY = {
     "nycgovparks.org": (1, 1.0),  # its WAF answers rapid crawls with an empty 202
     "danceus.org": (1, 1.0),      # one page per event for start times (_enrich_event_times)
     "feverup.com": (1, 1.0),      # one plan page per listing for the real venue (scrape_fever)
+    "posh.vip": (1, 4.0),         # ~90 explore-API pages a run, one at a time (~6 min): stay well under any flagging
 }
 RETRY_STATUSES = {429, 502, 503, 504}
 MAX_RETRY_WAIT = 30
